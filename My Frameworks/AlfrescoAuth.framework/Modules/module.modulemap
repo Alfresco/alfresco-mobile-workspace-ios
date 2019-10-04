@@ -1,0 +1,11 @@
+framework module AlfrescoAuth {
+  umbrella header "AlfrescoAuth.h"
+
+  export *
+  module * { export * }
+}
+
+module AlfrescoAuth.Swift {
+    header "AlfrescoAuth-Swift.h"
+    requires objc
+}
