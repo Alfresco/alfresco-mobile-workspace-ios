@@ -1,6 +1,0 @@
-framework module Pods_DBPSampleAppTests {
-  umbrella header "Pods-DBPSampleAppTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
