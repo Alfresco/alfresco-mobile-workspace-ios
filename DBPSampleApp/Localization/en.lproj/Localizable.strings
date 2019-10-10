@@ -1,0 +1,28 @@
+/* 
+  Localization.strings
+  DBPSampleApp
+
+  Created by Emanuel Lupu on 08/10/2019.
+  Copyright © 2019 Alfresco. All rights reserved.
+*/
+
+// Login screen
+"uiAlfrescoURL"         = "Identity Service URL";
+"uiLoginHTTPS"          = "USE HTTPS";
+"uiLogin"               = "LOGIN";
+"uiAdvancedSettings"    = "ADVANCED SETTINGS";
+"uiHelp"                = "HELP";
+"msgDidLogIn"           = "Successfully logged in";
+
+// Login advanced settings screen
+"uiContentURL"          = "Content URL";
+"uiProcessURL"          = "Process URL";
+"uiRealm"               = "Realm";
+"uiClientID"            = "Client ID";
+"uiRedirectURI"         = "Redirect URI";
+"msgDidSavedLoginParams"= "Saved authentication parameters";
+
+// Authenticated screen
+"uiRefreshSession"      = "Refresh session";
+"msgSessionRefresh"     = "Session refreshed";
+"msgLoggedOut"          = "User was logged out";

@@ -7,19 +7,22 @@
 //
 
 import UIKit
-import AlfrescoAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var alfrescoAuthSession: AlfrescoAuthSession!
+    var authenticationService: AuthenticationService?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        authenticationService = AuthenticationService()
+        
         return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        return alfrescoAuthSession.resumeExternalUserAgentFlow(with: url)
+        guard var session = authenticationService?.session else { return false }
+        return session.resumeExternalUserAgentFlow(with: url)
     }
     
     // MARK: UISceneSession Lifecycle

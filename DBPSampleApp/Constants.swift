@@ -10,8 +10,14 @@ import Foundation
 import UIKit
 
 let appDelegate = (UIApplication.shared.delegate as? AppDelegate)
-let kBaseUrlString = "http://alfresco-identity-service.mobile.dev.alfresco.me"
-let kClientSecret = "4bd63685-9e36-492d-8002-df2c6652ffb1"
-let kClientID = "alfresco"
-let kRealm = "alfresco"
-let kRedirectUri = "iosapp://fake.url.here/auth"
+
+// Advanced settings screen
+let kContentURL = "content.alfresco.com"
+let kProcessURL = "process.alfresco.com"
+let kRealm      = "alfresco"
+let kClientID   = "alfresco"
+let kRedirectURI = "iosapp://fake.url.here/auth"
+
+// Segue identifiers
+let kSegueAdvancedSettingsViewController = "AdvancedSettingsViewControllerSegue"
+let kSegueAuthenticatedViewController = "AuthenticatedViewControllerSegue"

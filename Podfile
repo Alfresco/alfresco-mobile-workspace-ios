@@ -5,7 +5,9 @@ platform :ios, '13.0'
 
 target 'DBPSampleApp' do
   use_frameworks!
+  
   pod 'AlfrescoAuth'
+  pod 'MaterialComponents'
   
   target 'DBPSampleAppTests' do
     inherit! :search_paths
