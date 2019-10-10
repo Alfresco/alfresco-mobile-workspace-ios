@@ -11,6 +11,9 @@ import UIKit
 
 let appDelegate = (UIApplication.shared.delegate as? AppDelegate)
 
+// Login screen
+let kAlfrescoDocsURL = "https://docs.alfresco.com"
+
 // Advanced settings screen
 let kContentURL = "content.alfresco.com"
 let kProcessURL = "process.alfresco.com"

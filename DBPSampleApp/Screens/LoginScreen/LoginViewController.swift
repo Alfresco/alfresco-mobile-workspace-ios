@@ -86,6 +86,9 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func helpButtonTapped(_ sender: Any) {
+       if let url = URL(string: kAlfrescoDocsURL) {
+            UIApplication.shared.open(url)
+        }
     }
     
     @objc func dismissKeyboard() {
