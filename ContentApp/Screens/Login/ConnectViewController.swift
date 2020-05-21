@@ -1,29 +1,37 @@
 //
-//  ConnectViewController.swift
-//  ContentApp
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
-//  Created by Florin Baincescu on 20/05/2020.
-//  Copyright © 2020 Florin Baincescu. All rights reserved.
+// This file is part of the Alfresco Content Mobile iOS App.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
 //
 
 import UIKit
 import AlfrescoAuth
 
 class ConnectViewController: UIViewController {
-    
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var connectTextField: UITextField!
-    
+
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var advancedSettingsButton: UIButton!
     @IBOutlet weak var needHelpButton: UIButton!
-    
+
     @IBOutlet weak var copyrightLabel: UILabel!
-    
+
     var model: ConnectViewModel = ConnectViewModel()
-    
-    //MARK: - View Life Cycle
-    
+
+    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
@@ -31,30 +39,30 @@ class ConnectViewController: UIViewController {
         shouldEnableConnectButton()
         hideNavigationBar()
     }
-    
-    //MARK: - IBActions
-    
+
+    // MARK: - IBActions
+
     @IBAction func connectButtonTapped(_ sender: UIButton) {
         self.view.endEditing(true)
         if let connectURL = self.connectTextField.text {
             model.availableAuthType(for: connectURL)
         }
     }
-    
+
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
         self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
     }
-    
+
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
         self.performSegue(withIdentifier: kSegueIDHelpVCFromConnectVC, sender: nil)
     }
-    
+
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
-    
-    //MARK: - Helpers
-    
+
+    // MARK: - Helpers
+
     func addLocalization() {
         connectTextField.placeholder = LocalizationConstants.LoginIdentifiers.connectTextFieldPlaceholder
         connectButton.setTitle(LocalizationConstants.LoginIdentifiers.connectButton, for: .normal)
@@ -62,18 +70,18 @@ class ConnectViewController: UIViewController {
         needHelpButton.setTitle(LocalizationConstants.LoginIdentifiers.needHelpButton, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.LoginIdentifiers.copyright, Calendar.current.component(.year, from: Date()))
     }
-    
+
     func shouldEnableConnectButton() {
         self.connectButton.isEnabled = (self.connectTextField.text != "")
     }
-    
+
     func hideNavigationBar() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
     }
-    
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -87,21 +95,20 @@ class ConnectViewController: UIViewController {
 // MARK: - UITextField Delegate
 
 extension ConnectViewController: UITextFieldDelegate {
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         shouldEnableConnectButton()
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         shouldEnableConnectButton()
         return true
     }
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         shouldEnableConnectButton()
     }
@@ -110,8 +117,8 @@ extension ConnectViewController: UITextFieldDelegate {
 // MARK: - ConnectViewModel Delegate
 
 extension ConnectViewController: ConnectViewModelDelegate {
-    
-    func authServiceAvailable(for authType:AvailableAuthType) {
+
+    func authServiceAvailable(for authType: AvailableAuthType) {
         switch authType {
         case .aimsAuth:
             performSegue(withIdentifier: kSegueIDAimsVCFromConnectVC, sender: nil)
@@ -119,8 +126,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
             performSegue(withIdentifier: kSegueIDBasicVCFromConnectVC, sender: nil)
         }
     }
-    
-    func authServiceUnavailable(with error:APIError) {
-        
+
+    func authServiceUnavailable(with error: APIError) {
     }
 }

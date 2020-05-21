@@ -285,7 +285,8 @@
                         <outlet property="httpsSwitch" destination="RFO-oh-7nc" id="VeO-ir-ve7"/>
                         <outlet property="needHelpButton" destination="FzM-th-1FX" id="bNB-fL-iXt"/>
                         <outlet property="portTextField" destination="N0m-dZ-b4g" id="xU7-vz-f1b"/>
-                        <outlet property="realmTextField" destination="OFY-WU-gPl" id="BqW-rY-ANj"/>
+                        <outlet property="realmTextField" destination="dvy-b6-g7N" id="pB5-u5-7pW"/>
+                        <outlet property="serviceDocumentsTextField" destination="OFY-WU-gPl" id="mX2-3M-jrD"/>
                         <outlet property="settingsLabel" destination="FqR-h3-5Mv" id="Wot-Pa-vM1"/>
                         <outlet property="transportProtocolLabel" destination="A9s-P8-aaS" id="2qv-iZ-N51"/>
                     </connections>
