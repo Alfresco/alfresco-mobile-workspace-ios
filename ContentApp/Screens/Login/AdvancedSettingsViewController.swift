@@ -18,6 +18,7 @@ class AdvancedSettingsViewController: UIViewController {
     @IBOutlet weak var httpsSwitch: UISwitch!
     
     @IBOutlet weak var portTextField: UITextField!
+    @IBOutlet weak var serviceDocumentsTextField: UITextField!
     @IBOutlet weak var realmTextField: UITextField!
     @IBOutlet weak var clientIDTextField: UITextField!
     
@@ -54,12 +55,7 @@ class AdvancedSettingsViewController: UIViewController {
 
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField {
-        case portTextField:
-            se
-        default:
-            <#code#>
-        }
+
         return true
     }
 }
