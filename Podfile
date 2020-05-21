@@ -6,6 +6,7 @@ use_frameworks!
 
 target 'ContentApp' do
   pod 'AlfrescoAuth'
+  pod 'SwiftLint'
   
   target 'ContentAppTests' do
     inherit! :search_paths

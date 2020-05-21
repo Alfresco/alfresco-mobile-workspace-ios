@@ -12,42 +12,41 @@ class ConnectViewController: UIViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var connectTextField: UITextField!
-    
+
     @IBOutlet weak var connectButton: UIButton!
     @IBOutlet weak var advancedSettingsButton: UIButton!
     @IBOutlet weak var needHelpButton: UIButton!
-    
+
     @IBOutlet weak var copyrightLabel: UILabel!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         hideNavigationBar()
     }
-    
-    //MARK: - IBActions
-    
+
+    // MARK: - IBActions
+
     @IBAction func connectButtonTapped(_ sender: UIButton) {
-        
+
     }
-    
+
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
         self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
     }
-    
+
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
-        
+
     }
-    
-    //MARK: - Helpers
-    
+
+    // MARK: - Helpers
+
     func hideNavigationBar() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
     }
-    
+
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
