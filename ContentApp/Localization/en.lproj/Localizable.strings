@@ -5,3 +5,11 @@
   Created by Florin Baincescu on 20/05/2020.
   Copyright © 2020 Florin Baincescu. All rights reserved.
 */
+
+//MARK: - Login Screens
+
+"loginCopyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
+"loginConnectTextFieldPlaceholder" = "Connect To";
+"loginConnectButton" = "CONNECT";
+"loginAdvancedSettingButton" = "ADVANCED SETTINGS";
+"loginNeedHelpButton" = "NEED HELP";

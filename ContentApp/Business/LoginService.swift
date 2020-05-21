@@ -20,8 +20,8 @@ class LoginService {
     
     var session: AlfrescoAuthSession?
     
-    init() {
-        
+    init(with authenticationParameters: AuthSettingsParameters) {
+        self.authParameters = authenticationParameters
     }
     
     func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>) {
@@ -36,7 +36,7 @@ class LoginService {
         let authConfig = AuthConfiguration(baseUrl: authParameters.fullFormatURL,
                                            clientID: authParameters.clientID,
                                            realm: authParameters.realm,
-                                           redirectURI: authParameters.redirectURI)
+                                           redirectURI: authParameters.redirectURI.encoding())
         
         return authConfig
     }

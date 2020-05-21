@@ -9,6 +9,8 @@
 import Foundation
 
 let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"
-
+let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
+let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
+let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
 
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"

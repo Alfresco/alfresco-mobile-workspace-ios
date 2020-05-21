@@ -22,6 +22,10 @@
 		E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */; };
 		E35FB746247664A9004674FD /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB745247664A9004674FD /* LoginService.swift */; };
 		E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthSettingsParameters.swift */; };
+		E35FB74A2476693C004674FD /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB7492476693C004674FD /* String+Helpers.swift */; };
+		E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB74B24766DFC004674FD /* ConnectViewModel.swift */; };
+		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
+		E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Helpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +67,10 @@
 		E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewController.swift; sourceTree = "<group>"; };
 		E35FB745247664A9004674FD /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		E35FB747247665C6004674FD /* AuthSettingsParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthSettingsParameters.swift; sourceTree = "<group>"; };
+		E35FB7492476693C004674FD /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
+		E35FB74B24766DFC004674FD /* ConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewModel.swift; sourceTree = "<group>"; };
+		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
+		E37618052476912000DA13ED /* Mirror+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Helpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +109,8 @@
 			isa = PBXGroup;
 			children = (
 				E334C07D24757E6C00F74880 /* NSLayoutConstraint+Rate.swift */,
+				E35FB7492476693C004674FD /* String+Helpers.swift */,
+				E37618052476912000DA13ED /* Mirror+Helpers.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -132,8 +142,8 @@
 				E334C07A24755F0200F74880 /* Constants.swift */,
 				E334C03F24755D8E00F74880 /* AppDelegate.swift */,
 				E334C04124755D8E00F74880 /* SceneDelegate.swift */,
-				E35FB747247665C6004674FD /* AuthSettingsParameters.swift */,
-				E35FB745247664A9004674FD /* LoginService.swift */,
+				E35FB75024767528004674FD /* Models */,
+				E35FB75124767536004674FD /* Business */,
 				E31D8E9524764F7500FF5060 /* Extensions */,
 				E334C07C24755F1D00F74880 /* Screens */,
 				E334C06F24755DA700F74880 /* Storyboard */,
@@ -208,9 +218,27 @@
 			isa = PBXGroup;
 			children = (
 				E334C080247582B400F74880 /* ConnectViewController.swift */,
+				E35FB74B24766DFC004674FD /* ConnectViewModel.swift */,
 				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		E35FB75024767528004674FD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				E35FB747247665C6004674FD /* AuthSettingsParameters.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E35FB75124767536004674FD /* Business */ = {
+			isa = PBXGroup;
+			children = (
+				E37618032476873900DA13ED /* AlfrescoLog.swift */,
+				E35FB745247664A9004674FD /* LoginService.swift */,
+			);
+			path = Business;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,6 +373,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */,
+				E35FB74A2476693C004674FD /* String+Helpers.swift in Sources */,
+				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
@@ -353,6 +384,7 @@
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
+				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

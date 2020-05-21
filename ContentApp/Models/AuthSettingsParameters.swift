@@ -18,17 +18,10 @@
 
 import Foundation
 
-enum AuthenticationType {
-    case connect
-    case baseAuthOnPremise
-    case baseAuthCloud
-    case sso
-}
-
 class AuthSettingsParameters: Codable {
     var https: Bool = false
     var port: String = "80"
-    var serviceDocument: String = "activiti-app"
+    var serviceDocument: String = "content-app"
     var realm: String = "alfresco"
     var clientID: String = "alfresco-ios-acs-app"
     var redirectURI: String = "iosacsapp://aims/auth"
@@ -59,5 +52,6 @@ class AuthSettingsParameters: Codable {
         UserDefaults.standard.set(try? PropertyListEncoder().encode(self),
                                   forKey: kSaveAuthSettingsParameters)
         defaults.synchronize()
+        AlfrescoLog.debug("Authentication Settings Parameters saved in UserDefaults:\n\(Mirror.description(for: self))")
     }
 }
