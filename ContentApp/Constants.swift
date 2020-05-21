@@ -7,3 +7,5 @@
 //
 
 import Foundation
+
+let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"

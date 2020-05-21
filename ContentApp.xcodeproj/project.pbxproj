@@ -17,6 +17,9 @@
 		E334C07424755E6B00F74880 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E334C07624755E6B00F74880 /* Localizable.strings */; };
 		E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07824755ECA00F74880 /* LocalizationConstants.swift */; };
 		E334C07B24755F0200F74880 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07A24755F0200F74880 /* Constants.swift */; };
+		E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07D24757E6C00F74880 /* NSLayoutConstraint+Rate.swift */; };
+		E334C081247582B400F74880 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C080247582B400F74880 /* ConnectViewController.swift */; };
+		E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +56,9 @@
 		E334C07524755E6B00F74880 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E334C07824755ECA00F74880 /* LocalizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstants.swift; sourceTree = "<group>"; };
 		E334C07A24755F0200F74880 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E334C07D24757E6C00F74880 /* NSLayoutConstraint+Rate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+Rate.swift"; sourceTree = "<group>"; };
+		E334C080247582B400F74880 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
+		E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +86,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E31D8E9524764F7500FF5060 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E334C07D24757E6C00F74880 /* NSLayoutConstraint+Rate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		E334C03324755D8E00F74880 = {
 			isa = PBXGroup;
 			children = (
@@ -106,6 +120,7 @@
 				E334C07A24755F0200F74880 /* Constants.swift */,
 				E334C03F24755D8E00F74880 /* AppDelegate.swift */,
 				E334C04124755D8E00F74880 /* SceneDelegate.swift */,
+				E31D8E9524764F7500FF5060 /* Extensions */,
 				E334C07C24755F1D00F74880 /* Screens */,
 				E334C06F24755DA700F74880 /* Storyboard */,
 				E334C07724755E7E00F74880 /* Localization */,
@@ -170,8 +185,18 @@
 		E334C07C24755F1D00F74880 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E334C07F2475828800F74880 /* Login */,
 			);
 			path = Screens;
+			sourceTree = "<group>";
+		};
+		E334C07F2475828800F74880 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E334C080247582B400F74880 /* ConnectViewController.swift */,
+				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -309,7 +334,10 @@
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */,
+				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
+				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
+				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -493,7 +521,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
-				INFOPLIST_FILE = ContentApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -513,7 +541,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
-				INFOPLIST_FILE = ContentApp/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
