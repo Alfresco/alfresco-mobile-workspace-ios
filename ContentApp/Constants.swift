@@ -23,5 +23,6 @@ let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
 let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
 let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
 let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
+let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
 
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"

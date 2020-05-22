@@ -20,9 +20,12 @@ import UIKit
 
 class AdvancedSettingsViewController: UIViewController {
 
+    @IBOutlet weak var backPadButton: UIButton!
+    @IBOutlet weak var titlePadLabel: UILabel!
+    @IBOutlet weak var savePadButton: UIButton!
+
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var navigationBar: UINavigationBar!
 
     @IBOutlet weak var transportProtocolLabel: UILabel!
     @IBOutlet weak var settingsLabel: UILabel!
@@ -47,22 +50,32 @@ class AdvancedSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
-
-        saveButton.isEnabled = false
+        saveButtons(enable: false)
         authParameters = AuthSettingsParameters.parameters()
         updateFields()
     }
 
     // MARK: - IBAction
 
+    @IBAction func backPadButtonTapped(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
+    }
+
+    @IBAction func savePadButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
+        saveFields()
+        saveButtons(enable: false)
+    }
+
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
-        saveButton.isEnabled = true
+        saveButtons(enable: true)
+        self.view.endEditing(true)
     }
 
     @IBAction func resetButtonTapped(_ sender: UIButton) {
         authParameters = AuthSettingsParameters()
         updateFields()
-        saveButton.isEnabled = true
+        saveButtons(enable: true)
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -71,7 +84,7 @@ class AdvancedSettingsViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         self.view.endEditing(true)
         saveFields()
-        saveButton.isEnabled = false
+        saveButtons(enable: false)
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -81,6 +94,10 @@ class AdvancedSettingsViewController: UIViewController {
     // MARK: - Helpers
 
     func addLocalization() {
+        self.titlePadLabel.text = LocalizationConstants.ScreenTitles.advancedSettings
+        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
+        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .disabled)
+
         self.title = LocalizationConstants.ScreenTitles.advancedSettings
 
         transportProtocolLabel.text = LocalizationConstants.Labels.transportProtocol
@@ -115,6 +132,11 @@ class AdvancedSettingsViewController: UIViewController {
         authParameters.clientID = clientIDTextField.text ?? ""
         authParameters.save()
     }
+
+    func saveButtons(enable: Bool) {
+        saveButton.isEnabled = enable
+        savePadButton.isEnabled = enable
+    }
 }
 
 extension AdvancedSettingsViewController: UITextFieldDelegate {
@@ -134,7 +156,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        saveButton.isEnabled = true
+        saveButtons(enable: true)
     }
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {

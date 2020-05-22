@@ -37,8 +37,11 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        addLocalization()
+
+        self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
         model.delegate = self
+
+        addLocalization()
         shouldEnableConnectButton()
     }
 
@@ -62,7 +65,11 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
-        self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.delegate?.showAdvancedSettingsScreen()
+        } else {
+            self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
+        }
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -102,6 +109,7 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.delegate?.backButton(hidden: false)
         switch segue.identifier {
         case kSegueIDHelpVCFromConnectVC: break
         default: break
