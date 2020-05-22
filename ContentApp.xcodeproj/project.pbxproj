@@ -26,6 +26,8 @@
 		E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB74B24766DFC004674FD /* ConnectViewModel.swift */; };
 		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
 		E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Helpers.swift */; };
+		E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625B2476D6440091896D /* KeyboardHandling.swift */; };
+		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		E35FB74B24766DFC004674FD /* ConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewModel.swift; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
 		E37618052476912000DA13ED /* Mirror+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Helpers.swift"; sourceTree = "<group>"; };
+		E3F5625B2476D6440091896D /* KeyboardHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
+		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +224,7 @@
 				E334C080247582B400F74880 /* ConnectViewController.swift */,
 				E35FB74B24766DFC004674FD /* ConnectViewModel.swift */,
 				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
+				E3F5625D2476F6490091896D /* SplashViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 		E35FB75124767536004674FD /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E37618032476873900DA13ED /* AlfrescoLog.swift */,
 				E35FB745247664A9004674FD /* LoginService.swift */,
 			);
@@ -402,7 +408,9 @@
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */,
+				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
+				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
@@ -592,6 +600,7 @@
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -612,6 +621,7 @@
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

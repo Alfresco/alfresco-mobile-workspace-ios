@@ -19,11 +19,32 @@
 import Foundation
 
 struct LocalizationConstants {
-    struct LoginIdentifiers {
-        static let copyright = NSLocalizedString("loginCopyrightFormat", comment: "")
-        static let connectTextFieldPlaceholder = NSLocalizedString("loginConnectTextFieldPlaceholder", comment: "")
-        static let connectButton = NSLocalizedString("loginConnectButton", comment: "")
-        static let advancedSettingButton = NSLocalizedString("loginAdvancedSettingButton", comment: "")
-        static let needHelpButton = NSLocalizedString("loginNeedHelpButton", comment: "")
+    static let copyright = NSLocalizedString("copyrightFormat", comment: "")
+
+    struct Buttons {
+        static let connect = NSLocalizedString("connectButton", comment: "")
+        static let advancedSetting = NSLocalizedString("advancedSettingButton", comment: "")
+        static let needHelp = NSLocalizedString("needHelpButton", comment: "")
+        static let resetToDefault = NSLocalizedString("resetToDefaultButton", comment: "")
+        static let save = NSLocalizedString("saveButton", comment: "")
+    }
+
+    struct TextFieldPlaceholders {
+        static let connect = NSLocalizedString("loginConnectTextFieldPlaceholder", comment: "")
+        static let port = NSLocalizedString("loginPortTextFieldPlaceholder", comment: "")
+        static let serviceDocuments = NSLocalizedString("loginServiceDocumentsTextFieldPlaceholder", comment: "")
+        static let realm = NSLocalizedString("loginRealmTextFieldPlaceholder", comment: "")
+        static let clientID = NSLocalizedString("loginClientIDTextFieldPlaceholder", comment: "")
+    }
+
+    struct Labels {
+        static let transportProtocol = NSLocalizedString("loginTransportProtocolLabel", comment: "")
+        static let https = NSLocalizedString("https", comment: "")
+        static let alfrescoContentServicesSettings = NSLocalizedString("alfrescoContentServicesSettings", comment: "")
+        static let authentication = NSLocalizedString("authentication", comment: "")
+    }
+
+    struct ScreenTitles {
+        static let advancedSettings = NSLocalizedString("advancedSettings", comment: "")
     }
 }
