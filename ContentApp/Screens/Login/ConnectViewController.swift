@@ -19,7 +19,9 @@
 import UIKit
 import AlfrescoAuth
 
-class ConnectViewController: UIViewController {
+class ConnectViewController: UIViewController, SplashScreenProtocol {
+    weak var delegate: SplashScreenDelegate?
+
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var connectTextField: UITextField!
 
@@ -32,12 +34,22 @@ class ConnectViewController: UIViewController {
     var model: ConnectViewModel = ConnectViewModel()
 
     // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
         model.delegate = self
         shouldEnableConnectButton()
-        hideNavigationBar()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationBar(hide: true)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationBar(hide: false)
     }
 
     // MARK: - IBActions
@@ -64,22 +76,27 @@ class ConnectViewController: UIViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        connectTextField.placeholder = LocalizationConstants.LoginIdentifiers.connectTextFieldPlaceholder
-        connectButton.setTitle(LocalizationConstants.LoginIdentifiers.connectButton, for: .normal)
-        advancedSettingsButton.setTitle(LocalizationConstants.LoginIdentifiers.advancedSettingButton, for: .normal)
-        needHelpButton.setTitle(LocalizationConstants.LoginIdentifiers.needHelpButton, for: .normal)
-        copyrightLabel.text = String(format: LocalizationConstants.LoginIdentifiers.copyright, Calendar.current.component(.year, from: Date()))
+        connectTextField.placeholder = LocalizationConstants.TextFieldPlaceholders.connect
+        connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
+        advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
+        needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
+        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
     func shouldEnableConnectButton() {
         self.connectButton.isEnabled = (self.connectTextField.text != "")
     }
 
-    func hideNavigationBar() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = .clear
+    func navigationBar(hide: Bool) {
+        if hide {
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.isTranslucent = true
+            self.navigationController?.view.backgroundColor = .clear
+        } else {
+            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            self.navigationController?.navigationBar.shadowImage = nil
+        }
     }
 
     // MARK: - Navigation

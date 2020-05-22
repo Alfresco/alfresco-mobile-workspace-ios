@@ -16,10 +16,28 @@
 //  limitations under the License.
 //
 
-// MARK: - Login Screens
+"copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
 
-"loginCopyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
+// MARK: - Buttons
+"connectButton" = "Connect";
+"advancedSettingButton" = "Advanced Settings";
+"needHelpButton" = "Need Help";
+"resetToDefaultButton" = "Reset to Default";
+"saveButton" = "Save";
+
+// MARK: - PlaceHolders
+
 "loginConnectTextFieldPlaceholder" = "Connect To";
-"loginConnectButton" = "CONNECT";
-"loginAdvancedSettingButton" = "ADVANCED SETTINGS";
-"loginNeedHelpButton" = "NEED HELP";
+"loginPortTextFieldPlaceholder" = "Port";
+"loginServiceDocumentsTextFieldPlaceholder" = "Service Documents";
+"loginRealmTextFieldPlaceholder" = "Realm";
+"loginClientIDTextFieldPlaceholder" = "Client ID";
+
+// MARK: - Labels
+"loginTransportProtocolLabel" = "Transport Protocol";
+"https" = "HTTPS";
+"alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
+"authentication" = "Authentication";
+
+// MARK: - Screen Titles
+"advancedSettings" = "Advanced Settings";
