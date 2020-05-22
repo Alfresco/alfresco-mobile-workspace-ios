@@ -20,6 +20,7 @@ import UIKit
 
 protocol SplashScreenDelegate: class {
     func showAdvancedSettingsScreen()
+    func backButton(hidden: Bool)
 }
 
 protocol SplashScreenProtocol: class {
@@ -28,10 +29,13 @@ protocol SplashScreenProtocol: class {
 
 class SplashViewController: UIViewController {
 
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var whiteAlphaView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var blurEfectView: UIVisualEffectView!
     @IBOutlet weak var shadowView: UIView!
+
+    weak var navigationControllerFromContainer: UINavigationController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,12 +48,14 @@ class SplashViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationBar(hide: true)
+        backButton(hidden: true)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationBar(hide: false)
+    // MARK: - IBActions
+
+    @IBAction func backButtonTapped(_ sender: UIButton) {
+        navigationControllerFromContainer?.popViewController(animated: true)
+        backButton.isHidden = (navigationControllerFromContainer?.viewControllers.count ?? 0 < 2)
     }
 
     // MARK: - Helpers
@@ -69,24 +75,13 @@ class SplashViewController: UIViewController {
         baseView.layer.masksToBounds = true
     }
 
-    func navigationBar(hide: Bool) {
-        if hide {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.isTranslucent = true
-            self.navigationController?.view.backgroundColor = .clear
-        } else {
-            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            self.navigationController?.navigationBar.shadowImage = nil
-        }
-    }
-
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case kSegueIDEmbedContentVCInSplashVC:
             if let destinationVC = segue.destination as? UINavigationController {
+                navigationControllerFromContainer = destinationVC
                 if let cvc = destinationVC.viewControllers.first as? ConnectViewController {
                     cvc.delegate = self
                 }
@@ -100,6 +95,12 @@ class SplashViewController: UIViewController {
 
 extension SplashViewController: SplashScreenDelegate {
     func showAdvancedSettingsScreen() {
-        self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
+        self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromSplashVC, sender: nil)
+    }
+
+    func backButton(hidden: Bool) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.backButton.isHidden = hidden
+        }
     }
 }

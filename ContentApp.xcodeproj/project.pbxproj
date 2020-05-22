@@ -221,10 +221,10 @@
 		E334C07F2475828800F74880 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				E3F5625D2476F6490091896D /* SplashViewController.swift */,
 				E334C080247582B400F74880 /* ConnectViewController.swift */,
 				E35FB74B24766DFC004674FD /* ConnectViewModel.swift */,
 				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
-				E3F5625D2476F6490091896D /* SplashViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
