@@ -53,7 +53,6 @@ class AdvancedSettingsViewController: UIViewController {
         updateFields()
     }
 
-
     // MARK: - IBAction
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
@@ -140,7 +139,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         let textFieldRect = scrollView.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height 
+        let heightTextFieldOpened = textFieldRect.size.height
         keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
                              in: view)
         return true

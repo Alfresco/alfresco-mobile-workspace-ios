@@ -20,7 +20,7 @@ import UIKit
 import AlfrescoAuth
 
 class ConnectViewController: UIViewController, SplashScreenProtocol {
-    var delegate: SplashScreenDelegate?
+    weak var delegate: SplashScreenDelegate?
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var connectTextField: UITextField!
@@ -62,7 +62,6 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
-//        self.delegate?.showAdvancedSettingsScreen()
         self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
     }
 
