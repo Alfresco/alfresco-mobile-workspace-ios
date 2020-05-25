@@ -44,14 +44,19 @@ class AdvancedSettingsViewController: UIViewController {
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    var authParameters = AuthSettingsParameters()
+    var model = AdvancedSettingsViewModel()
     var keyboardHandling = KeyboardHandling()
+    var enableSaveButton: Bool = false {
+        didSet {
+            saveButton.isEnabled = enableSaveButton
+            savePadButton.isEnabled = enableSaveButton
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
-        saveButtons(enable: false)
-        authParameters = AuthSettingsParameters.parameters()
+        enableSaveButton = false
         updateFields()
     }
 
@@ -64,18 +69,18 @@ class AdvancedSettingsViewController: UIViewController {
     @IBAction func savePadButtonTapped(_ sender: UIButton) {
         self.view.endEditing(true)
         saveFields()
-        saveButtons(enable: false)
+        enableSaveButton = false
     }
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
-        saveButtons(enable: true)
         self.view.endEditing(true)
+        enableSaveButton = true
     }
 
     @IBAction func resetButtonTapped(_ sender: UIButton) {
-        authParameters = AuthSettingsParameters()
+        model.resetAuthParameters()
         updateFields()
-        saveButtons(enable: true)
+        enableSaveButton = true
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -84,7 +89,7 @@ class AdvancedSettingsViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
         self.view.endEditing(true)
         saveFields()
-        saveButtons(enable: false)
+        enableSaveButton = false
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -117,29 +122,35 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     func updateFields() {
-        httpsSwitch.isOn = authParameters.https
-        portTextField.text = authParameters.port
-        serviceDocumentsTextField.text = authParameters.serviceDocument
-        realmTextField.text = authParameters.realm
-        clientIDTextField.text = authParameters.clientID
+        httpsSwitch.isOn = model.authParameters.https
+        portTextField.text = model.authParameters.port
+        serviceDocumentsTextField.text = model.authParameters.serviceDocument
+        realmTextField.text = model.authParameters.realm
+        clientIDTextField.text = model.authParameters.clientID
     }
 
     func saveFields() {
-        authParameters.https = httpsSwitch.isOn
-        authParameters.port = portTextField.text ?? ""
-        authParameters.serviceDocument = serviceDocumentsTextField.text ?? ""
-        authParameters.realm = realmTextField.text ?? ""
-        authParameters.clientID = clientIDTextField.text ?? ""
-        authParameters.save()
-    }
-
-    func saveButtons(enable: Bool) {
-        saveButton.isEnabled = enable
-        savePadButton.isEnabled = enable
+        model.saveFields(https: httpsSwitch.isOn,
+                         port: portTextField.text,
+                         serviceDocuments: serviceDocumentsTextField.text,
+                         realm: realmTextField.text,
+                         clientID: clientIDTextField.text)
     }
 }
 
 extension AdvancedSettingsViewController: UITextFieldDelegate {
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let textFieldRect = scrollView.convert(textField.frame, to: UIApplication.shared.windows[0])
+        let heightTextFieldOpened = textFieldRect.size.height
+        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
+                             in: view)
+        return true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        enableSaveButton = true
+    }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {
@@ -152,18 +163,6 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         default:
             textField.resignFirstResponder()
         }
-        return true
-    }
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        saveButtons(enable: true)
-    }
-
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let textFieldRect = scrollView.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height
-        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
-                             in: view)
         return true
     }
 }
