@@ -135,16 +135,18 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="send"/>
                                 <connections>
-                                    <outlet property="delegate" destination="Iev-B0-N8v" id="3Vf-Nt-iIM"/>
+                                    <outlet property="delegate" destination="Iev-B0-N8v" id="pjH-IB-YQR"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-5l-lsq">
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VaN-5l-lsq">
                                 <rect key="frame" x="30" y="399" width="440" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="gDs-N1-V2R"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="sign in with sso"/>
+                                <state key="normal" title="sign in with sso" image="signin-icon">
+                                    <color key="titleColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
                                 <state key="disabled" title="sign in with sso">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -202,7 +204,7 @@
                         <outlet property="copyrightLabel" destination="ns9-x8-NeV" id="81g-ef-8lU"/>
                         <outlet property="infoLabel" destination="bcm-4S-gYH" id="BWF-GG-a0S"/>
                         <outlet property="logoImageView" destination="0CU-Tt-c1d" id="bcP-JD-UCa"/>
-                        <outlet property="repositoryTextFields" destination="gir-R5-JLj" id="FrD-1A-7IP"/>
+                        <outlet property="repositoryTextField" destination="gir-R5-JLj" id="FrD-1A-7IP"/>
                         <outlet property="signInButton" destination="VaN-5l-lsq" id="mUF-cH-lqK"/>
                     </connections>
                 </viewController>
@@ -271,7 +273,7 @@
                                 <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <state key="normal" title="sign in" image="signin-icon">
-                                    <color key="titleColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <color key="titleColor" red="0.20392156862745098" green="0.47450980392156861" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <state key="disabled" title="sign in">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
