@@ -24,6 +24,7 @@
 "needHelpButton" = "Need Help";
 "resetToDefaultButton" = "Reset to Default";
 "saveButton" = "Save";
+"signin" = "Sign in";
 
 // MARK: - PlaceHolders
 
@@ -32,12 +33,15 @@
 "loginServiceDocumentsTextFieldPlaceholder" = "Service Documents";
 "loginRealmTextFieldPlaceholder" = "Realm";
 "loginClientIDTextFieldPlaceholder" = "Client ID";
+"loginUsernameTextFieldPlaceholder" = "Username or Email";
+"loginPasswordTextFieldPlaceholder" = "Password";
 
 // MARK: - Labels
 "loginTransportProtocolLabel" = "Transport Protocol";
 "https" = "HTTPS";
 "alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
+"infoConnectTo" = "Connect to %@";
 
 // MARK: - Screen Titles
 "advancedSettings" = "Advanced Settings";
