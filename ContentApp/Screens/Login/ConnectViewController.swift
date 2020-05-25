@@ -31,7 +31,13 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
     @IBOutlet weak var copyrightLabel: UILabel!
 
+    var keyboardHandling = KeyboardHandling()
     var model: ConnectViewModel = ConnectViewModel()
+    var enableConnectButton: Bool = false {
+        didSet {
+            connectButton.isEnabled = enableConnectButton
+        }
+    }
 
     // MARK: - View Life Cycle
 
@@ -42,7 +48,7 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
         model.delegate = self
 
         addLocalization()
-        shouldEnableConnectButton()
+        enableConnectButton = (connectTextField.text != "")
 
         // Title section
 
@@ -62,9 +68,10 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
         self.view.endEditing(true)
-        if let connectURL = self.connectTextField.text {
-            model.availableAuthType(for: connectURL)
+        guard let connectURL = connectTextField.text else {
+            return
         }
+        model.availableAuthType(for: connectURL)
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
@@ -93,10 +100,6 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func shouldEnableConnectButton() {
-        self.connectButton.isEnabled = (self.connectTextField.text != "")
-    }
-
     func navigationBar(hide: Bool) {
         if hide {
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -123,27 +126,29 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 // MARK: - UITextField Delegate
 
 extension ConnectViewController: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        shouldEnableConnectButton()
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        let textFieldRect = view.convert(textField.frame, to: UIApplication.shared.windows[0])
+        let heightTextFieldOpened = textFieldRect.size.height
+        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
+                             in: view)
+        return true
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        shouldEnableConnectButton()
+        enableConnectButton = (textField.updatedText(for: range, replacementString: string) != "")
         return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        if connectButton.isEnabled {
-            connectButtonTapped(connectButton)
-        }
+        connectButtonTapped(connectButton)
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        shouldEnableConnectButton()
+        enableConnectButton = (textField.text != "")
     }
-
 }
 
 // MARK: - ConnectViewModel Delegate
