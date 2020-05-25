@@ -43,6 +43,9 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
         addLocalization()
         shouldEnableConnectButton()
+
+        // Title section
+
     }
 
     override func viewWillAppear(_ animated: Bool) {

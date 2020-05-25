@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E47247825E20063E938 /* ServiceRepository.swift */; };
+		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
+		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
+		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
+		B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
 		E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C04124755D8E00F74880 /* SceneDelegate.swift */; };
 		E334C04724755D8E00F74880 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04524755D8E00F74880 /* Main.storyboard */; };
@@ -48,6 +53,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B91A5E47247825E20063E938 /* ServiceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRepository.swift; sourceTree = "<group>"; };
+		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
+		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
+		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
+		B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingServiceWorkers.swift; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E334C03F24755D8E00F74880 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E334C04124755D8E00F74880 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +119,87 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		B91A5E46247825CF0063E938 /* ServiceRepository */ = {
+			isa = PBXGroup;
+			children = (
+				B91A5E47247825E20063E938 /* ServiceRepository.swift */,
+			);
+			path = ServiceRepository;
+			sourceTree = "<group>";
+		};
+		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD02476B18D00811F15 /* Services */,
+			);
+			path = PresentationLayer;
+			sourceTree = "<group>";
+		};
+		B959CCCD2476B03F00811F15 /* BusinessLayer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = BusinessLayer;
+			sourceTree = "<group>";
+		};
+		B959CCCE2476B14400811F15 /* DataAccessLayer */ = {
+			isa = PBXGroup;
+			children = (
+				B91A5E46247825CF0063E938 /* ServiceRepository */,
+			);
+			path = DataAccessLayer;
+			sourceTree = "<group>";
+		};
+		B959CCD02476B18D00811F15 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD22476C90100811F15 /* ThemingService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B959CCD12476B1CA00811F15 /* PersistenceLayer */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PersistenceLayer;
+			sourceTree = "<group>";
+		};
+		B959CCD22476C90100811F15 /* ThemingService */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD32476C91D00811F15 /* ThemingService.swift */,
+				B959CCDC2477B32A00811F15 /* Scenes */,
+				B959CCDD2477B34300811F15 /* Workers */,
+				B959CCDB2477B31D00811F15 /* Themes */,
+			);
+			path = ThemingService;
+			sourceTree = "<group>";
+		};
+		B959CCDB2477B31D00811F15 /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD52476C96E00811F15 /* PresentationTheme.swift */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
+		B959CCDC2477B32A00811F15 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD72476CB0D00811F15 /* ThemingScene.swift */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		B959CCDD2477B34300811F15 /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */,
+			);
+			path = Workers;
+			sourceTree = "<group>";
+		};
 		E31D8E9524764F7500FF5060 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -143,6 +234,10 @@
 		E334C03E24755D8E00F74880 /* ContentApp */ = {
 			isa = PBXGroup;
 			children = (
+				B959CCCA2476AFE500811F15 /* PresentationLayer */,
+				B959CCCD2476B03F00811F15 /* BusinessLayer */,
+				B959CCCE2476B14400811F15 /* DataAccessLayer */,
+				B959CCD12476B1CA00811F15 /* PersistenceLayer */,
 				E334C07A24755F0200F74880 /* Constants.swift */,
 				E334C03F24755D8E00F74880 /* AppDelegate.swift */,
 				E334C04124755D8E00F74880 /* SceneDelegate.swift */,
@@ -403,10 +498,14 @@
 			files = (
 				E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Helpers.swift in Sources */,
+				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
+				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
+				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
+				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
@@ -414,6 +513,7 @@
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
+				B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */,
 				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 			);
