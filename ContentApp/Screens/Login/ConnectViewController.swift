@@ -123,13 +123,8 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 // MARK: - UITextField Delegate
 
 extension ConnectViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         shouldEnableConnectButton()
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -137,9 +132,18 @@ extension ConnectViewController: UITextFieldDelegate {
         return true
     }
 
-    func textFieldDidBeginEditing(_ textField: UITextField) {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        if connectButton.isEnabled {
+            connectButtonTapped(connectButton)
+        }
+        return true
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
         shouldEnableConnectButton()
     }
+
 }
 
 // MARK: - ConnectViewModel Delegate

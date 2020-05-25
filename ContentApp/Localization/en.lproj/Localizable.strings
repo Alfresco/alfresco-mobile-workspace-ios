@@ -25,6 +25,7 @@
 "resetToDefaultButton" = "Reset to Default";
 "saveButton" = "Save";
 "signin" = "Sign in";
+"signInWithSSO" = "Sign in with SSO";
 
 // MARK: - PlaceHolders
 
@@ -34,6 +35,7 @@
 "loginRealmTextFieldPlaceholder" = "Realm";
 "loginClientIDTextFieldPlaceholder" = "Client ID";
 "loginUsernameTextFieldPlaceholder" = "Username or Email";
+"loginRepositoryTextFieldPlaceholder" = "Content repository location";
 "loginPasswordTextFieldPlaceholder" = "Password";
 
 // MARK: - Labels
@@ -42,6 +44,7 @@
 "alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
 "infoConnectTo" = "Connect to %@";
+"loginAllowSSO" = "To allow successful single sign on access, please provide the location of your Content Services environment.";
 
 // MARK: - Screen Titles
 "advancedSettings" = "Advanced Settings";
