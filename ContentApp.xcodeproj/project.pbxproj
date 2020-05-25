@@ -15,6 +15,7 @@
 		E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */; };
 		E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D5247BEC9B0044BE0D /* AimsViewController.swift */; };
 		E31184D8247BFAFA0044BE0D /* UITextField+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D7247BFAFA0044BE0D /* UITextField+Helpers.swift */; };
+		E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */; };
 		E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DB247C01470044BE0D /* AimsViewModel.swift */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
 		E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C04124755D8E00F74880 /* SceneDelegate.swift */; };
@@ -65,6 +66,7 @@
 		E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewController.swift; sourceTree = "<group>"; };
 		E31184D5247BEC9B0044BE0D /* AimsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewController.swift; sourceTree = "<group>"; };
 		E31184D7247BFAFA0044BE0D /* UITextField+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Helpers.swift"; sourceTree = "<group>"; };
+		E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewModel.swift; sourceTree = "<group>"; };
 		E31184DB247C01470044BE0D /* AimsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewModel.swift; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E334C03F24755D8E00F74880 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -330,6 +332,7 @@
 				E35FB74B24766DFC004674FD /* ConnectViewModel.swift */,
 				E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */,
 				E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */,
+				E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */,
 				E31184D5247BEC9B0044BE0D /* AimsViewController.swift */,
 				E31184DB247C01470044BE0D /* AimsViewModel.swift */,
 			);
@@ -519,6 +522,7 @@
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
+				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
 				E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
