@@ -18,17 +18,25 @@
 
 import UIKit
 
+import MaterialComponents.MaterialButtons
+import MaterialComponents.MaterialButtons_Theming
+import MaterialComponents.MaterialTextControls_FilledTextFields
+import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+
 class BasicAuthViewController: UIViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
+    @IBOutlet weak var productLabel: UILabel!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var hostnameLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var usernameTextField: MDCFilledTextField!
+    @IBOutlet weak var passwordTextField: MDCFilledTextField!
     var showPasswordButton = UIButton()
 
-    @IBOutlet weak var signInButton: UIButton!
+    @IBOutlet weak var signInButton: MDCButton!
+    @IBOutlet weak var needHelpButton: MDCButton!
 
     var model = BasicAuthViewModel()
     var keyboardHandling = KeyboardHandling()
@@ -39,24 +47,29 @@ class BasicAuthViewController: UIViewController {
         }
     }
 
+    var theme = MaterialDesignThemingService()
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        theme.activeTheme = DefaultTheme()
         addLocalization()
-        updateLayout()
+        addMaterialComponentsTheme()
         enableSignInButton = false
     }
 
     // MARK: - IBActions
 
-    @IBAction func signInButtonTapped(_ sender: UIButton) {
+    @IBAction func signInButtonTapped(_ sender: Any) {
         self.view.endEditing(true)
         guard let username = usernameTextField.text, let password = passwordTextField.text else {
             return
         }
         model.authenticate(username: username, password: password)
+    }
+
+    @IBAction func needHelpButtonTapped(_ sender: Any) {
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -70,28 +83,53 @@ class BasicAuthViewController: UIViewController {
 
     // MARK: - Helpers
 
-    func updateLayout() {
-        usernameTextField.rightViewMode = .unlessEditing
-        usernameTextField.rightView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.rightView?.tintColor = #colorLiteral(red: 0.7254338861, green: 0.7255221009, blue: 0.7254036665, alpha: 1)
+    func addLocalization() {
+        self.title = ""
+        productLabel.text = LocalizationConstants.productName
+        infoLabel.text = LocalizationConstants.Labels.infoConnectTo
+        hostnameLabel.text = model.authParameters.hostname
+        usernameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.username
+        passwordTextField.label.text = LocalizationConstants.TextFieldPlaceholders.password
+        signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .normal)
+        signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .disabled)
+        needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
+        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+    }
+
+    func addMaterialComponentsTheme() {
+        signInButton.applyContainedTheme(withScheme: theme.containerScheming(for: .loginButton))
+        needHelpButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginNeedHelpButton))
+
+        usernameTextField.applyTheme(withScheme: theme.containerScheming(for: .loginTextField))
+        usernameTextField.trailingViewMode = .unlessEditing
+        usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
+        usernameTextField.trailingView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
+        usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
+        usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
         showPasswordButton.setImage(UIImage(named: "hide-password-icon"), for: .normal)
         showPasswordButton.setImage(UIImage(named: "show-password-icon"), for: .selected)
         showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped(_:)), for: .touchUpInside)
 
-        passwordTextField.rightViewMode = .always
-        passwordTextField.rightView = showPasswordButton
-        passwordTextField.rightView?.tintColor = #colorLiteral(red: 0.7254338861, green: 0.7255221009, blue: 0.7254036665, alpha: 1)
-    }
+        passwordTextField.applyTheme(withScheme: theme.containerScheming(for: .loginTextField))
+        passwordTextField.trailingView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
+        passwordTextField.trailingViewMode = .always
+        passwordTextField.trailingView = showPasswordButton
+        passwordTextField.trailingView?.tintColor = passwordTextField.textColor
+        passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
+        passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-    func addLocalization() {
-        self.title = ""
-        infoLabel.text = String(format: LocalizationConstants.Labels.infoConnectTo, model.authParameters.hostname)
-        usernameTextField.placeholder = LocalizationConstants.TextFieldPlaceholders.username
-        passwordTextField.placeholder = LocalizationConstants.TextFieldPlaceholders.password
-        signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .normal)
-        signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .disabled)
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        productLabel.textColor = theme.activeTheme?.productLabelColor
+        productLabel.font = theme.activeTheme?.productLabelFont
+
+        infoLabel.textColor = theme.activeTheme?.loginInfoLabelColor
+        infoLabel.font = theme.activeTheme?.loginInfoLabelFont
+
+        hostnameLabel.textColor = theme.activeTheme?.loginInfoLabelColor
+        hostnameLabel.font = theme.activeTheme?.loginInfoHostnameLabelFont
+
+        copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
+        copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 
     // MARK: - Navigation
@@ -103,7 +141,7 @@ class BasicAuthViewController: UIViewController {
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = #colorLiteral(red: 0.07236295193, green: 0.6188754439, blue: 0.2596520483, alpha: 1)
+        textField.rightView?.tintColor = theme.activeTheme?.loginTextFieldPrimaryColor
 
         let textFieldRect = view.convert(textField.frame, to: UIApplication.shared.windows[0])
         let heightTextFieldOpened = textFieldRect.size.height
@@ -129,14 +167,14 @@ extension BasicAuthViewController: UITextFieldDelegate {
             passwordTextField.becomeFirstResponder()
         case passwordTextField:
             passwordTextField.resignFirstResponder()
-            signInButtonTapped(signInButton)
+            signInButtonTapped(signInButton as Any)
         default: break
         }
         return true
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = #colorLiteral(red: 0.7254338861, green: 0.7255221009, blue: 0.7254036665, alpha: 1)
+        textField.rightView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
         return true
     }
 

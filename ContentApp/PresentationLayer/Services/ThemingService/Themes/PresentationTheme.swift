@@ -32,6 +32,8 @@ protocol PresentationTheme {
     var loginFieldLabelFont: UIFont { get }
     var loginHTTPSLabelFont: UIFont { get }
     var loginTitleLabelFont: UIFont { get }
+    var loginInfoLabelFont: UIFont { get }
+    var loginInfoHostnameLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
 
@@ -46,12 +48,14 @@ protocol PresentationTheme {
     var applicationTitleColor: UIColor { get }
     var loginCopyrightLabelColor: UIColor { get }
     var loginFieldLabelColor: UIColor { get }
+    var loginInfoLabelColor: UIColor { get }
     var loginFieldDisableLabelColor: UIColor { get }
     var loginTitleLabelColor: UIColor { get }
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
     var loginTextFieldErrorColor: UIColor { get }
     var loginTextFieldOnSurfaceColor: UIColor { get }
+    var loginTextFieldIconColor: UIColor { get }
 }
 
 struct DefaultTheme: PresentationTheme {
@@ -68,6 +72,8 @@ struct DefaultTheme: PresentationTheme {
     var loginFieldLabelFont = UIFont.systemFont(ofSize: 16)
     var loginHTTPSLabelFont = UIFont.systemFont(ofSize: 17)
     var loginTitleLabelFont = UIFont.systemFont(ofSize: 20)
+    var loginInfoLabelFont = UIFont.systemFont(ofSize: 12)
+    var loginInfoHostnameLabelFont = UIFont.systemFont(ofSize: 14)
     /// TextFields
     var loginTextFieldFont = UIFont.systemFont(ofSize: 16)
 
@@ -84,8 +90,10 @@ struct DefaultTheme: PresentationTheme {
     var loginFieldLabelColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     var loginFieldDisableLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
     var loginTitleLabelColor = #colorLiteral(red: 0.1254901961, green: 0.1254901961, blue: 0.1254901961, alpha: 1)
+    var loginInfoLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
     /// TextFields
     var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
     var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
     var loginTextFieldOnSurfaceColor = #colorLiteral(red: 0.2078431373, green: 0.2078431373, blue: 0.2078431373, alpha: 1)
+    var loginTextFieldIconColor = #colorLiteral(red: 0.7098039216, green: 0.7098039216, blue: 0.7098039216, alpha: 1)
 }

@@ -26,6 +26,5 @@ class BasicAuthViewModel {
     var authParameters = AuthSettingsParameters.parameters()
 
     func authenticate(username: String, password: String) {
-        print(username + " + " + password)
     }
 }

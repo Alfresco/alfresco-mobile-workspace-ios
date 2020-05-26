@@ -44,7 +44,7 @@
 "https" = "HTTPS";
 "alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
-"infoConnectTo" = "Connect to %@";
+"infoConnectTo" = "Connect to";
 "loginAllowSSO" = "To allow successful single sign on access, please provide the location of your Content Services environment.";
 
 // MARK: - Screen Titles
