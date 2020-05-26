@@ -43,6 +43,8 @@ class SplashViewController: UIViewController {
         applyCornerRadius(to: whiteAlphaView)
         applyCornerRadius(to: containerView)
         applyCornerRadius(to: blurEfectView)
+
+        self.view.layoutIfNeeded()
         applyShadow(to: shadowView)
     }
 

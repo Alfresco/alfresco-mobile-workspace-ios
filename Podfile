@@ -9,13 +9,12 @@ target 'ContentApp' do
   pod 'SwiftLint'
 
   # Material Components
+#  pod 'MaterialComponents'
   pod 'MaterialComponents/Buttons'
   pod 'MaterialComponents/Buttons+Theming'
-  pod 'MaterialComponents/TextControls+FilledTextAreas'
   pod 'MaterialComponents/TextControls+FilledTextFields'
-  pod 'MaterialComponents/TextControls+OutlinedTextAreas'
-  pod 'MaterialComponents/TextControls+OutlinedTextFields'
-  
+  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming'
+
   target 'ContentAppTests' do
     inherit! :search_paths
   end

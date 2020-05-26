@@ -20,6 +20,7 @@ import Foundation
 
 struct LocalizationConstants {
     static let copyright = NSLocalizedString("copyrightFormat", comment: "")
+    static let productName = NSLocalizedString("productName", comment: "")
 
     struct Buttons {
         static let connect = NSLocalizedString("connectButton", comment: "")

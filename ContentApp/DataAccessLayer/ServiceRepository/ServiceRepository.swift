@@ -47,13 +47,13 @@ extension Service {
 
 // MARK: - Service repository
 
-
 /// Repository pattern protocol intended to host business layer services
 protocol ServiceRepositoryProtocol {
     associatedtype ServiceType
 
     /// Registers a service with the repository based on the service's identifier.
     /// - Parameter service: <#service description#>
+    /// - Parameter service:
     func register(service: ServiceType)
     func service(of type: String) -> Service?
 }
@@ -61,7 +61,7 @@ protocol ServiceRepositoryProtocol {
 class ServiceRepository: ServiceRepositoryProtocol {
     typealias ServiceType = Service
 
-    private var services: [String : Service] = [:]
+    private var services: [String: Service] = [:]
 
     func register(service: ServiceType) {
         services[service.serviceIdentifier] = service

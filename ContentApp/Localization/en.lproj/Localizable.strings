@@ -17,6 +17,7 @@
 //
 
 "copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
+"productName" = "Content Services";
 
 // MARK: - Buttons
 "connectButton" = "Connect";

@@ -19,15 +19,20 @@
 import UIKit
 import AlfrescoAuth
 
+import MaterialComponents.MaterialButtons
+import MaterialComponents.MaterialButtons_Theming
+import MaterialComponents.MaterialTextControls_FilledTextFields
+import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+
 class ConnectViewController: UIViewController, SplashScreenProtocol {
     weak var delegate: SplashScreenDelegate?
 
     @IBOutlet weak var logoImageView: UIImageView!
-    @IBOutlet weak var connectTextField: UITextField!
-
-    @IBOutlet weak var connectButton: UIButton!
-    @IBOutlet weak var advancedSettingsButton: UIButton!
-    @IBOutlet weak var needHelpButton: UIButton!
+    @IBOutlet weak var productLabel: UILabel!
+    @IBOutlet weak var connectTextField: MDCFilledTextField!
+    @IBOutlet weak var connectButton: MDCButton!
+    @IBOutlet weak var advancedSettingsButton: MDCButton!
+    @IBOutlet weak var needHelpButton: MDCButton!
 
     @IBOutlet weak var copyrightLabel: UILabel!
 
@@ -48,9 +53,8 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
         model.delegate = self
 
         addLocalization()
+        addMaterialComponentsTheme()
         enableConnectButton = (connectTextField.text != "")
-
-        // Title section
 
     }
 
@@ -93,7 +97,8 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
     // MARK: - Helpers
 
     func addLocalization() {
-        connectTextField.placeholder = LocalizationConstants.TextFieldPlaceholders.connect
+        productLabel.text = LocalizationConstants.productName
+        connectTextField.label.text = LocalizationConstants.TextFieldPlaceholders.connect
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
@@ -110,6 +115,25 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
             self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             self.navigationController?.navigationBar.shadowImage = nil
         }
+    }
+
+    func addMaterialComponentsTheme() {
+        let theme = MaterialDesignThemingService()
+        theme.activeTheme = DefaultTheme()
+
+        connectButton.applyContainedTheme(withScheme: theme.containerScheming(for: .loginButton))
+        advancedSettingsButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginAdvancedSettingsButton))
+        needHelpButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginNeedHelpButton))
+
+        connectTextField.applyTheme(withScheme: theme.containerScheming(for: .loginTextField))
+        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
+        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
+
+        productLabel.textColor = theme.activeTheme?.productLabelColor
+        productLabel.font = theme.activeTheme?.productLabelFont
+
+        copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
+        copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 
     // MARK: - Navigation
