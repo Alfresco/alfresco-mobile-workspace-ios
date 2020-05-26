@@ -30,4 +30,6 @@ enum MaterialComponentsThemingScene {
     case loginButton
     case loginAdvancedSettingsButton
     case loginNeedHelpButton
+    case loginResetButton
+    case loginSavePadButton
 }
