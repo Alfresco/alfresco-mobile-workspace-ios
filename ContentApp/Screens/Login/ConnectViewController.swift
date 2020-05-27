@@ -24,19 +24,20 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class ConnectViewController: UIViewController, SplashScreenProtocol {
-    weak var delegate: SplashScreenDelegate?
-
+class ConnectViewController: UIViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
     @IBOutlet weak var connectTextField: MDCFilledTextField!
     @IBOutlet weak var connectButton: MDCButton!
     @IBOutlet weak var advancedSettingsButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
-
     @IBOutlet weak var copyrightLabel: UILabel!
 
     var keyboardHandling = KeyboardHandling()
+    
+    weak var splashScreenDelegate: SplashScreenDelegate?
+    weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
+
     var model: ConnectViewModel = ConnectViewModel()
     var enableConnectButton: Bool = false {
         didSet {
@@ -49,7 +50,6 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
         model.delegate = self
 
         addLocalization()
@@ -60,12 +60,8 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationBar(hide: true)
-    }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationBar(hide: false)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
     // MARK: - IBActions
@@ -80,9 +76,9 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            self.delegate?.showAdvancedSettingsScreen()
+            splashScreenDelegate?.showAdvancedSettingsScreen()
         } else {
-            self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromConnectVC, sender: nil)
+            connectScreenCoordinatorDelegate?.showAdvancedSettingsScreen()
         }
     }
 
@@ -105,18 +101,6 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func navigationBar(hide: Bool) {
-        if hide {
-            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-            self.navigationController?.navigationBar.shadowImage = UIImage()
-            self.navigationController?.navigationBar.isTranslucent = true
-            self.navigationController?.view.backgroundColor = .clear
-        } else {
-            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            self.navigationController?.navigationBar.shadowImage = nil
-        }
-    }
-
     func addMaterialComponentsTheme() {
         let theme = MaterialDesignThemingService()
         theme.activeTheme = DefaultTheme()
@@ -136,15 +120,6 @@ class ConnectViewController: UIViewController, SplashScreenProtocol {
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.delegate?.backButton(hidden: false)
-        switch segue.identifier {
-        case kSegueIDHelpVCFromConnectVC: break
-        default: break
-        }
-    }
 }
 
 // MARK: - UITextField Delegate
@@ -191,3 +166,5 @@ extension ConnectViewController: ConnectViewModelDelegate {
     func authServiceUnavailable(with error: APIError) {
     }
 }
+
+extension ConnectViewController: StoryboardInstantiable { }

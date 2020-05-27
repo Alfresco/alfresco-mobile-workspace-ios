@@ -20,37 +20,34 @@ import UIKit
 
 protocol SplashScreenDelegate: class {
     func showAdvancedSettingsScreen()
-    func backButton(hidden: Bool)
-}
-
-protocol SplashScreenProtocol: class {
-    var delegate: SplashScreenDelegate? {get set}
 }
 
 class SplashViewController: UIViewController {
-
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var whiteAlphaView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var blurEfectView: UIVisualEffectView!
     @IBOutlet weak var shadowView: UIView!
 
+    weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
     weak var navigationControllerFromContainer: UINavigationController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        applyCornerRadius(to: whiteAlphaView)
-        applyCornerRadius(to: containerView)
-        applyCornerRadius(to: blurEfectView)
+        whiteAlphaView.applyCornerRadius(with: 10)
+        containerView.applyCornerRadius(with: 10)
+        blurEfectView.applyCornerRadius(with: 10)
 
-        self.view.layoutIfNeeded()
-        applyShadow(to: shadowView)
+        coordinatorDelegate?.showLoginContainerView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        backButton(hidden: true)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.backButton.isHidden = true
+        shadowView.dropContourShadow(opacity: 0.4, radius: 50)
     }
 
     // MARK: - IBActions
@@ -59,50 +56,12 @@ class SplashViewController: UIViewController {
         navigationControllerFromContainer?.popViewController(animated: true)
         backButton.isHidden = (navigationControllerFromContainer?.viewControllers.count ?? 0 < 2)
     }
-
-    // MARK: - Helpers
-
-    func applyShadow(to baseView: UIView) {
-        baseView.layer.shadowColor = UIColor.black.cgColor
-        baseView.layer.shadowOpacity = 0.4
-        baseView.layer.shadowOffset = .zero
-        baseView.layer.shadowRadius = 50.0
-        baseView.layer.shadowPath = UIBezierPath(rect: baseView.bounds).cgPath
-        baseView.layer.shouldRasterize = true
-        baseView.layer.rasterizationScale = UIScreen.main.scale
-    }
-
-    func applyCornerRadius(to baseView: UIView) {
-        baseView.layer.cornerRadius = 10.0
-        baseView.layer.masksToBounds = true
-    }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case kSegueIDEmbedContentVCInSplashVC:
-            if let destinationVC = segue.destination as? UINavigationController {
-                navigationControllerFromContainer = destinationVC
-                if let cvc = destinationVC.viewControllers.first as? ConnectViewController {
-                    cvc.delegate = self
-                }
-            }
-        case kSegueIDAdvancedSettingsVCFromConnectVC: break
-        default:
-            break
-        }
-    }
 }
 
 extension SplashViewController: SplashScreenDelegate {
     func showAdvancedSettingsScreen() {
-        self.performSegue(withIdentifier: kSegueIDAdvancedSettingsVCFromSplashVC, sender: nil)
-    }
-
-    func backButton(hidden: Bool) {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            self.backButton.isHidden = hidden
-        }
+        coordinatorDelegate?.showAdvancedSettingsScreen()
     }
 }
+
+extension SplashViewController: StoryboardInstantiable { }

@@ -52,10 +52,16 @@ protocol ServiceRepositoryProtocol {
     associatedtype ServiceType
 
     /// Registers a service with the repository based on the service's identifier.
-    /// - Parameter service: <#service description#>
-    /// - Parameter service:
+    /// - Parameter service: service to be registered
     func register(service: ServiceType)
+
+    /// Returns a registered service given it's service identifier string value
+    /// - Parameter type: service identifier value
     func service(of type: String) -> Service?
+
+    /// Removes a service given it's service identifier.
+    /// - Parameter type: service identifier value
+    func remove(service type: String)
 }
 
 class ServiceRepository: ServiceRepositoryProtocol {
@@ -69,5 +75,9 @@ class ServiceRepository: ServiceRepositoryProtocol {
 
     func service(of type: String) -> Service? {
         return services[type]
+    }
+
+    func remove(service type: String) {
+        services.removeValue(forKey: type)
     }
 }
