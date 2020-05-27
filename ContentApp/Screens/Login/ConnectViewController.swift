@@ -136,6 +136,14 @@ class ConnectViewController: UIViewController {
             self.navigationController?.navigationBar.shadowImage = nil
         }
     }
+
+    func showAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 // MARK: - UITextField Delegate
@@ -173,13 +181,14 @@ extension ConnectViewController: ConnectViewModelDelegate {
     func authServiceAvailable(for authType: AvailableAuthType) {
         switch authType {
         case .aimsAuth:
-            performSegue(withIdentifier: kSegueIDAimsVCFromConnectVC, sender: nil)
+            showAlert(message: "AIMS authentication")
         case .basicAuth:
-            performSegue(withIdentifier: kSegueIDBasicVCFromConnectVC, sender: nil)
+            showAlert(message: "Basic authentication")
         }
     }
 
     func authServiceUnavailable(with error: APIError) {
+        showAlert(message: error.localizedDescription)
     }
 }
 

@@ -188,6 +188,15 @@ class AdvancedSettingsViewController: UIViewController {
                          serviceDocuments: serviceDocumentsTextField.text,
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
+        showAlert(message: "Settings saved!")
+    }
+
+    func showAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
