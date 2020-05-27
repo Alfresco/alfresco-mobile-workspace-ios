@@ -26,8 +26,10 @@ import Foundation
  are available you could construct it by specifyng the intent as well i.e. *identityServiceLoginButton*.
 */
 enum MaterialComponentsThemingScene {
-    case loginURLTextField
+    case loginTextField
     case loginButton
     case loginAdvancedSettingsButton
     case loginNeedHelpButton
+    case loginResetButton
+    case loginSavePadButton
 }

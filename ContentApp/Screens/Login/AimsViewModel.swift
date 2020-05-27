@@ -17,14 +17,16 @@
 //
 
 import Foundation
+import UIKit
+import AlfrescoAuth
 
-let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"
-let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
-let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
-let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
-let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
-let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
+protocol AimsAuthViewModelDelegate: class {
+}
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80";
-let kDefaultLoginSecuredPort = "443";
+class AimsViewModel {
+    weak var delegate: AimsAuthViewModelDelegate?
+    var authParameters = AuthSettingsParameters.parameters()
+
+    func authenticate(repository: String, in viewController: UIViewController) {
+    }
+}

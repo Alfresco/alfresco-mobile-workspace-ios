@@ -20,6 +20,7 @@ import Foundation
 
 struct LocalizationConstants {
     static let copyright = NSLocalizedString("copyrightFormat", comment: "")
+    static let productName = NSLocalizedString("productName", comment: "")
 
     struct Buttons {
         static let connect = NSLocalizedString("connectButton", comment: "")
@@ -27,6 +28,8 @@ struct LocalizationConstants {
         static let needHelp = NSLocalizedString("needHelpButton", comment: "")
         static let resetToDefault = NSLocalizedString("resetToDefaultButton", comment: "")
         static let save = NSLocalizedString("saveButton", comment: "")
+        static let signin = NSLocalizedString("signin", comment: "")
+        static let signInWithSSO = NSLocalizedString("signInWithSSO", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -35,6 +38,9 @@ struct LocalizationConstants {
         static let serviceDocuments = NSLocalizedString("loginServiceDocumentsTextFieldPlaceholder", comment: "")
         static let realm = NSLocalizedString("loginRealmTextFieldPlaceholder", comment: "")
         static let clientID = NSLocalizedString("loginClientIDTextFieldPlaceholder", comment: "")
+        static let username = NSLocalizedString("loginUsernameTextFieldPlaceholder", comment: "")
+        static let repository = NSLocalizedString("loginRepositoryTextFieldPlaceholder", comment: "")
+        static let password = NSLocalizedString("loginPasswordTextFieldPlaceholder", comment: "")
     }
 
     struct Labels {
@@ -42,6 +48,8 @@ struct LocalizationConstants {
         static let https = NSLocalizedString("https", comment: "")
         static let alfrescoContentServicesSettings = NSLocalizedString("alfrescoContentServicesSettings", comment: "")
         static let authentication = NSLocalizedString("authentication", comment: "")
+        static let infoConnectTo = NSLocalizedString("infoConnectTo", comment: "")
+        static let allowSSO = NSLocalizedString("loginAllowSSO", comment: "")
     }
 
     struct ScreenTitles {

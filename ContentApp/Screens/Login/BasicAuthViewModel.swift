@@ -18,13 +18,13 @@
 
 import Foundation
 
-let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"
-let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
-let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
-let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
-let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
-let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
+protocol BasicAuthViewModelDelegate: class {
+}
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80";
-let kDefaultLoginSecuredPort = "443";
+class BasicAuthViewModel {
+    weak var delegate: BasicAuthViewModelDelegate?
+    var authParameters = AuthSettingsParameters.parameters()
+
+    func authenticate(username: String, password: String) {
+    }
+}

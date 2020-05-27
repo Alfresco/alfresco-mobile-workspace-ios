@@ -17,14 +17,13 @@
 //
 
 import Foundation
+import UIKit
 
-let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"
-let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
-let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
-let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
-let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
-let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
-
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80";
-let kDefaultLoginSecuredPort = "443";
+extension UITextField {
+    func updatedText(for range: NSRange, replacementString string: String) -> String? {
+        if let text = self.text, let textRange = Range(range, in: text) {
+           return text.replacingCharacters(in: textRange, with: string)
+        }
+        return nil
+    }
+}
