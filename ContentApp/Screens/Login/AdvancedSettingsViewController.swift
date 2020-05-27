@@ -82,7 +82,8 @@ class AdvancedSettingsViewController: UIViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (httpsSwitch.isOn) ? theme.activeTheme?.loginFieldLabelColor : theme.activeTheme?.loginFieldLabelColor
+        httpsLabel.textColor = (httpsSwitch.isOn) ? theme.activeTheme?.loginFieldLabelColor : theme.activeTheme?.loginFieldDisableLabelColor
+        portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = true
     }
 
@@ -150,7 +151,7 @@ class AdvancedSettingsViewController: UIViewController {
         transportProtocolLabel.textColor = theme.activeTheme?.loginFieldLabelColor
         transportProtocolLabel.font = theme.activeTheme?.loginFieldLabelFont
 
-        httpsLabel.textColor = theme.activeTheme?.loginFieldLabelColor
+        httpsLabel.textColor = (model.authParameters.https) ? theme.activeTheme?.loginFieldLabelColor : theme.activeTheme?.loginFieldDisableLabelColor
         httpsLabel.font = theme.activeTheme?.loginHTTPSLabelFont
 
         settingsLabel.textColor = theme.activeTheme?.loginFieldLabelColor
