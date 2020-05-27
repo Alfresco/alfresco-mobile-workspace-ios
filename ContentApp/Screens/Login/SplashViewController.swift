@@ -29,7 +29,7 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var blurEfectView: UIVisualEffectView!
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var copyrightLabel: UILabel!
-    
+
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
     weak var navigationControllerFromContainer: UINavigationController?
 

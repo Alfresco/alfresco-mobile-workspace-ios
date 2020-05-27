@@ -26,5 +26,5 @@ let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
 let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
 
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80";
-let kDefaultLoginSecuredPort = "443";
+let kDefaultLoginUnsecuredPort = "80"
+let kDefaultLoginSecuredPort = "443"

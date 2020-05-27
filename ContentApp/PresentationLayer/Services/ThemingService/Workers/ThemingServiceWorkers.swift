@@ -74,7 +74,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
         return containerScheme
     }
-    
+
     private func loginSavePadButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.loginSavePadButtonColor
