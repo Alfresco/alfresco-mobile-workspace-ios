@@ -34,7 +34,7 @@ class ConnectViewController: UIViewController {
     @IBOutlet weak var copyrightLabel: UILabel!
 
     var keyboardHandling = KeyboardHandling()
-    
+
     weak var splashScreenDelegate: SplashScreenDelegate?
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
 
@@ -49,6 +49,7 @@ class ConnectViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
 
         model.delegate = self
 
@@ -60,8 +61,12 @@ class ConnectViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationBar(hide: true)
+    }
 
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationBar(hide: false)
     }
 
     // MARK: - IBActions
@@ -120,6 +125,17 @@ class ConnectViewController: UIViewController {
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 
+    func navigationBar(hide: Bool) {
+        if hide {
+            self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            self.navigationController?.navigationBar.shadowImage = UIImage()
+            self.navigationController?.navigationBar.isTranslucent = true
+            self.navigationController?.view.backgroundColor = .clear
+        } else {
+            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+            self.navigationController?.navigationBar.shadowImage = nil
+        }
+    }
 }
 
 // MARK: - UITextField Delegate

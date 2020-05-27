@@ -10,8 +10,8 @@
 		B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E47247825E20063E938 /* ServiceRepository.swift */; };
 		B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4D247BD5A10063E938 /* Coordinator.swift */; };
 		B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */; };
-		B91A5E52247BD9020063E938 /* SplashscreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */; };
-		B91A5E54247C28900063E938 /* AdvancedSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */; };
+		B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */; };
+		B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */; };
 		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
@@ -69,8 +69,8 @@
 		B91A5E4A247BD3A20063E938 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		B91A5E4D247BD5A10063E938 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
-		B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashscreenCoordinator.swift; sourceTree = "<group>"; };
-		B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E57247E3F1D0063E938 /* UIView+LayerTransformations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LayerTransformations.swift"; sourceTree = "<group>"; };
 		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
@@ -158,8 +158,8 @@
 			children = (
 				B91A5E4D247BD5A10063E938 /* Coordinator.swift */,
 				B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */,
-				B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */,
-				B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */,
+				B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */,
+				B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */,
 				B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -567,7 +567,7 @@
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
-				B91A5E52247BD9020063E938 /* SplashscreenCoordinator.swift in Sources */,
+				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E31184D8247BFAFA0044BE0D /* UITextField+Helpers.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
@@ -588,7 +588,7 @@
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */,
-				B91A5E54247C28900063E938 /* AdvancedSettingsCoordinator.swift in Sources */,
+				B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */,
 				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 				E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */,

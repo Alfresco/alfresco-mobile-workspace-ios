@@ -18,7 +18,11 @@
 
 import UIKit
 
-class AdvancedSettingsCoordinator: Coordinator {
+protocol AdvancedSettingsScreenCoordinatorDelegate: class {
+    func dismiss()
+}
+
+class AdvancedSettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var advancedSettingsViewController: AdvancedSettingsViewController?
 
@@ -29,6 +33,13 @@ class AdvancedSettingsCoordinator: Coordinator {
     func start() {
         let viewController = AdvancedSettingsViewController.instantiateViewController()
         advancedSettingsViewController = viewController
+        advancedSettingsViewController?.advSettingsScreenCoordinatorDelegate = self
         presenter.pushViewController(viewController, animated: true)
+    }
+}
+
+extension AdvancedSettingsScreenCoordinator: AdvancedSettingsScreenCoordinatorDelegate {
+    func dismiss() {
+        self.presenter.popViewController(animated: true)
     }
 }

@@ -32,6 +32,8 @@ class SplashViewController: UIViewController {
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
     weak var navigationControllerFromContainer: UINavigationController?
 
+    var applyShadow: Bool = true
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -47,7 +49,10 @@ class SplashViewController: UIViewController {
 
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.backButton.isHidden = true
-        shadowView.dropContourShadow(opacity: 0.4, radius: 50)
+        if applyShadow {
+            shadowView.dropContourShadow(opacity: 0.4, radius: 50)
+            applyShadow = false
+        }
     }
 
     // MARK: - IBActions

@@ -26,7 +26,7 @@ protocol SplashScreenCoordinatorDelegate: class {
 class SplashScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var splashScreenViewController: SplashViewController?
-    private var advancedSettingsCoordinator: AdvancedSettingsCoordinator?
+    private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
     private var connectScreenCoordinator: ConnectScreenCoordinator?
 
     init(with presenter: UINavigationController) {
@@ -52,7 +52,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     }
 
     func showAdvancedSettingsScreen() {
-        let advancedSettingsCoordinator = AdvancedSettingsCoordinator(with: presenter)
+        let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: presenter)
         advancedSettingsCoordinator.start()
 
         self.advancedSettingsCoordinator = advancedSettingsCoordinator

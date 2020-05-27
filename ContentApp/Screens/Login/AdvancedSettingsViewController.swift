@@ -51,6 +51,8 @@ class AdvancedSettingsViewController: UIViewController {
 
     var model = AdvancedSettingsViewModel()
     var keyboardHandling = KeyboardHandling()
+    weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
+
     var enableSaveButton: Bool = false {
         didSet {
             saveButton.isEnabled = enableSaveButton
@@ -71,7 +73,7 @@ class AdvancedSettingsViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        advSettingsScreenCoordinatorDelegate?.dismiss()
     }
 
     @IBAction func savePadButtonTapped(_ sender: UIButton) {
