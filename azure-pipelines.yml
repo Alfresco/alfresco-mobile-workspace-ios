@@ -1,0 +1,99 @@
+trigger:
+- master
+
+pr: none
+
+pool:
+  vmImage: 'macos-latest'
+
+variables:
+  - group: git-credentials
+  - group: source-clear-credentials
+  - group: ios-signing
+  - group: content-ios
+  - name: configuration
+    value: 'Release'
+  - name: sdk
+    value: 'iphoneos'
+
+steps:
+- checkout: self
+
+- task: CmdLine@2
+  displayName: Adding Alfresco private podspec repository
+  inputs:
+    script: |
+      pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
+
+- task: CmdLine@2
+  displayName: Installing pods
+  inputs:
+    script: |
+      pod install
+
+- task: InstallAppleCertificate@2
+  inputs:
+   certSecureFile: '$(p12FileName)'
+   certPwd: '$(p12Password)'
+   keychain: 'temp'
+   deleteCert: true 
+  
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+   provisioningProfileLocation: 'secureFiles'
+   provProfileSecureFile: '$(contentReleaseProvisioningProfile)'
+   removeProfile: true
+
+- task: Xcode@5
+  displayName: 'Running Content app tests'
+  inputs:
+    actions: 'clean test'
+    sdk: 'iphonesimulator'
+    xcodeVersion: 11
+    scheme: 'ContentApp'
+    configuration: 'Debug'
+    destinationPlatformOption: 'custom'
+    destinationPlatform: 'iOS'
+    destinationSimulators: 'iPhone 11'
+    xcWorkspacePath: 'ContentApp.xcworkspace'
+    useXcpretty: true
+    publishJUnitResults: 'build/reports/junit.xml'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'build/reports/junit.xml'
+    failTaskOnFailedTests: true
+    testRunTitle: 'Publishing test results'
+
+- task: Xcode@5
+  displayName: 'Generate Content IPA'
+  inputs:
+    actions: 'build'
+    scheme: 'ContentApp'
+    sdk: '$(sdk)'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/ContentApp.xcworkspace'
+    xcodeVersion: 'default'
+    packageApp: true
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+
+- task: CmdLine@2
+  inputs:
+    script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
+  displayName: 'Performing Source Clear checks'
+  env:
+    SRCCLR_API_TOKEN: $(source_clear_token)
+
+- task: AppStoreRelease@1
+  inputs:
+    serviceEndpoint: 'AppleStore Publisher'
+    appIdentifier: 'com.alfresco.contentapp'
+    appType: 'iOS'
+    ipaPath: '**/*.ipa'
+    releaseTrack: 'TestFlight'
+    shouldSkipWaitingForProcessing: true
+    teamId: 'W8N95J537P'
+    teamName: 'Alfresco Software, Inc.'
