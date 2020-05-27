@@ -18,20 +18,21 @@
 
 import UIKit
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    private var applicationCoordinator: ApplicationCoordinator?
+class ApplicationCoordinator: Coordinator {
+    let window: UIWindow
+    let rootViewController: UINavigationController
+    let splashScreenCoordinator: SplashScreenCoordinator
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        let applicationCoordinator = ApplicationCoordinator(window: window)
-
+    init(window: UIWindow) {
         self.window = window
-        self.applicationCoordinator = applicationCoordinator
 
-        applicationCoordinator.start()
+        rootViewController = UINavigationController()
+        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+    }
 
-        return true
+    func start() {
+        window.rootViewController = rootViewController
+        splashScreenCoordinator.start()
+        window.makeKeyAndVisible()
     }
 }

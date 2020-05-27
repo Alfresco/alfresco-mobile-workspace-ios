@@ -8,12 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E47247825E20063E938 /* ServiceRepository.swift */; };
+		B91A5E4B247BD3A20063E938 /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4A247BD3A20063E938 /* StoryboardInstantiable.swift */; };
+		B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4D247BD5A10063E938 /* Coordinator.swift */; };
+		B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */; };
+		B91A5E52247BD9020063E938 /* SplashscreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */; };
+		B91A5E54247C28900063E938 /* AdvancedSettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */; };
+		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
+		B91A5E58247E3F1D0063E938 /* UIView+LayerTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E57247E3F1D0063E938 /* UIView+LayerTransformations.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
 		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
 		B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
-		E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C04124755D8E00F74880 /* SceneDelegate.swift */; };
 		E334C04724755D8E00F74880 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04524755D8E00F74880 /* Main.storyboard */; };
 		E334C04924755D9000F74880 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E334C04824755D9000F74880 /* Assets.xcassets */; };
 		E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04A24755D9000F74880 /* LaunchScreen.storyboard */; };
@@ -54,13 +60,19 @@
 
 /* Begin PBXFileReference section */
 		B91A5E47247825E20063E938 /* ServiceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRepository.swift; sourceTree = "<group>"; };
+		B91A5E4A247BD3A20063E938 /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
+		B91A5E4D247BD5A10063E938 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashscreenCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
+		B91A5E57247E3F1D0063E938 /* UIView+LayerTransformations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LayerTransformations.swift"; sourceTree = "<group>"; };
 		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
 		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
 		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
 		B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingServiceWorkers.swift; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E334C03F24755D8E00F74880 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E334C04124755D8E00F74880 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E334C04624755D8E00F74880 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E334C04824755D9000F74880 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E334C04B24755D9000F74880 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -127,9 +139,32 @@
 			path = ServiceRepository;
 			sourceTree = "<group>";
 		};
+		B91A5E49247BD3770063E938 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B91A5E4A247BD3A20063E938 /* StoryboardInstantiable.swift */,
+				B91A5E57247E3F1D0063E938 /* UIView+LayerTransformations.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		B91A5E4C247BD5910063E938 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				B91A5E4D247BD5A10063E938 /* Coordinator.swift */,
+				B91A5E4F247BD5E90063E938 /* ApplicationCoordinator.swift */,
+				B91A5E51247BD9020063E938 /* SplashscreenCoordinator.swift */,
+				B91A5E53247C28900063E938 /* AdvancedSettingsCoordinator.swift */,
+				B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				B91A5E4C247BD5910063E938 /* Coordinator */,
+				B91A5E49247BD3770063E938 /* Extensions */,
 				B959CCD02476B18D00811F15 /* Services */,
 			);
 			path = PresentationLayer;
@@ -240,7 +275,6 @@
 				B959CCD12476B1CA00811F15 /* PersistenceLayer */,
 				E334C07A24755F0200F74880 /* Constants.swift */,
 				E334C03F24755D8E00F74880 /* AppDelegate.swift */,
-				E334C04124755D8E00F74880 /* SceneDelegate.swift */,
 				E35FB75024767528004674FD /* Models */,
 				E35FB75124767536004674FD /* Business */,
 				E31D8E9524764F7500FF5060 /* Extensions */,
@@ -497,16 +531,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */,
+				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
+				B91A5E58247E3F1D0063E938 /* UIView+LayerTransformations.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Helpers.swift in Sources */,
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
+				B91A5E4B247BD3A20063E938 /* StoryboardInstantiable.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,
+				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
+				B91A5E52247BD9020063E938 /* SplashscreenCoordinator.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
-				E334C04224755D8E00F74880 /* SceneDelegate.swift in Sources */,
+				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
@@ -514,6 +553,7 @@
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E334C07E24757E6C00F74880 /* NSLayoutConstraint+Rate.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */,
+				B91A5E54247C28900063E938 /* AdvancedSettingsCoordinator.swift in Sources */,
 				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 			);

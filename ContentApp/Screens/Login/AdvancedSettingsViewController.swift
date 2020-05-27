@@ -167,3 +167,5 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         return true
     }
 }
+
+extension AdvancedSettingsViewController: StoryboardInstantiable { }
