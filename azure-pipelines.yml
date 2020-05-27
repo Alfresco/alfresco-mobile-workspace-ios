@@ -45,6 +45,28 @@ steps:
    removeProfile: true
 
 - task: Xcode@5
+  displayName: 'Running Content app tests'
+  inputs:
+    actions: 'clean test'
+    sdk: 'iphonesimulator'
+    xcodeVersion: 11
+    scheme: 'ContentApp'
+    configuration: 'Debug'
+    destinationPlatformOption: 'custom'
+    destinationPlatform: 'iOS'
+    destinationSimulators: 'iPhone 11'
+    xcWorkspacePath: 'ContentApp.xcworkspace'
+    useXcpretty: true
+    publishJUnitResults: 'build/reports/junit.xml'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: 'build/reports/junit.xml'
+    failTaskOnFailedTests: true
+    testRunTitle: 'Publishing test results'
+
+- task: Xcode@5
   displayName: 'Generate Content IPA'
   inputs:
     actions: 'build'
