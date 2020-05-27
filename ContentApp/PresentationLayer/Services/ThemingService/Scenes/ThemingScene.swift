@@ -16,22 +16,18 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    private var applicationCoordinator: ApplicationCoordinator?
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        let applicationCoordinator = ApplicationCoordinator(window: window)
-
-        self.window = window
-        self.applicationCoordinator = applicationCoordinator
-
-        applicationCoordinator.start()
-
-        return true
-    }
+/**
+ The theming scenes enum structure is intended to be used as a component identifier in a particular UI
+ setup.
+ - Note: Basic convetion for creating a scene enum value is to referene a UI component from a scene
+ or screen. Eg. a scene for the login button would be *loginButton*. If variations for that specific components
+ are available you could construct it by specifyng the intent as well i.e. *identityServiceLoginButton*.
+*/
+enum MaterialComponentsThemingScene {
+    case loginURLTextField
+    case loginButton
+    case loginAdvancedSettingsButton
+    case loginNeedHelpButton
 }

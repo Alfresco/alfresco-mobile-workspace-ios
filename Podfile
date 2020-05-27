@@ -7,6 +7,14 @@ use_frameworks!
 target 'ContentApp' do
   pod 'AlfrescoAuth'
   pod 'SwiftLint'
+
+  # Material Components
+  pod 'MaterialComponents/Buttons'
+  pod 'MaterialComponents/Buttons+Theming'
+  pod 'MaterialComponents/TextControls+FilledTextAreas'
+  pod 'MaterialComponents/TextControls+FilledTextFields'
+  pod 'MaterialComponents/TextControls+OutlinedTextAreas'
+  pod 'MaterialComponents/TextControls+OutlinedTextFields'
   
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -18,20 +18,17 @@
 
 import UIKit
 
-@UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-    var window: UIWindow?
-    private var applicationCoordinator: ApplicationCoordinator?
+class AdvancedSettingsCoordinator: Coordinator {
+    private let presenter: UINavigationController
+    private var advancedSettingsViewController: AdvancedSettingsViewController?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        let applicationCoordinator = ApplicationCoordinator(window: window)
+    init(with presenter: UINavigationController) {
+        self.presenter = presenter
+    }
 
-        self.window = window
-        self.applicationCoordinator = applicationCoordinator
-
-        applicationCoordinator.start()
-
-        return true
+    func start() {
+        let viewController = AdvancedSettingsViewController.instantiateViewController()
+        advancedSettingsViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
