@@ -33,7 +33,7 @@ class BasicAuthViewController: UIViewController {
 
     @IBOutlet weak var usernameTextField: MDCFilledTextField!
     @IBOutlet weak var passwordTextField: MDCFilledTextField!
-    var showPasswordButton = UIButton()
+    var showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
 
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
@@ -77,8 +77,8 @@ class BasicAuthViewController: UIViewController {
     }
 
     @objc func showPasswordButtonTapped(_ sender: UIButton) {
-        passwordTextField.isSecureTextEntry = showPasswordButton.isSelected
-        showPasswordButton.isSelected = !showPasswordButton.isSelected
+        passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
+        showPasswordImageView.image = (passwordTextField.isSecureTextEntry) ? UIImage(named: "hide-password-icon") : UIImage(named: "show-password-icon")
     }
 
     // MARK: - Helpers
@@ -107,17 +107,15 @@ class BasicAuthViewController: UIViewController {
         usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
         usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        showPasswordButton.setImage(UIImage(named: "hide-password-icon"), for: .normal)
-        showPasswordButton.setImage(UIImage(named: "show-password-icon"), for: .selected)
-        showPasswordButton.addTarget(self, action: #selector(showPasswordButtonTapped(_:)), for: .touchUpInside)
-
         passwordTextField.applyTheme(withScheme: theme.containerScheming(for: .loginTextField))
-        passwordTextField.trailingView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
         passwordTextField.trailingViewMode = .always
-        passwordTextField.trailingView = showPasswordButton
-        passwordTextField.trailingView?.tintColor = passwordTextField.textColor
+        passwordTextField.trailingView = showPasswordImageView
+        passwordTextField.trailingView?.isUserInteractionEnabled = true
+        passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
+        passwordTextField.trailingView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
         passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
         passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
+        passwordTextField.isSecureTextEntry = true
 
         productLabel.textColor = theme.activeTheme?.productLabelColor
         productLabel.font = theme.activeTheme?.productLabelFont
