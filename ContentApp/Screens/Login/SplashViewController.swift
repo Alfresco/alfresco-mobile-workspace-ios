@@ -28,7 +28,8 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var blurEfectView: UIVisualEffectView!
     @IBOutlet weak var shadowView: UIView!
-
+    @IBOutlet weak var copyrightLabel: UILabel!
+    
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
     weak var navigationControllerFromContainer: UINavigationController?
 
@@ -42,6 +43,9 @@ class SplashViewController: UIViewController {
         blurEfectView.applyCornerRadius(with: 10)
 
         coordinatorDelegate?.showLoginContainerView()
+
+        addMaterialComponentsTheme()
+        addLocalization()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -60,6 +64,19 @@ class SplashViewController: UIViewController {
     @IBAction func backButtonTapped(_ sender: UIButton) {
         navigationControllerFromContainer?.popViewController(animated: true)
         backButton.isHidden = (navigationControllerFromContainer?.viewControllers.count ?? 0 < 2)
+    }
+
+    // MARK: - Helpers
+
+    func addLocalization() {
+        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+    }
+
+    func addMaterialComponentsTheme() {
+        let theme = MaterialDesignThemingService()
+        theme.activeTheme = DefaultTheme()
+        copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
+        copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 }
 
