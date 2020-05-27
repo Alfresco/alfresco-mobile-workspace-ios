@@ -16,6 +16,9 @@ variables:
   - name: sdk
     value: 'iphoneos'
 
+steps:
+- checkout: self
+
 - task: CmdLine@2
   displayName: Adding Alfresco private podspec repository
   inputs:
