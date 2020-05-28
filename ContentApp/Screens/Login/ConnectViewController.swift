@@ -179,11 +179,14 @@ extension ConnectViewController: UITextFieldDelegate {
 extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceAvailable(for authType: AvailableAuthType) {
-        switch authType {
-        case .aimsAuth:
-            showAlert(message: "AIMS authentication")
-        case .basicAuth:
-            showAlert(message: "Basic authentication")
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            switch authType {
+            case .aimsAuth:
+                sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
+            case .basicAuth:
+                sSelf.connectScreenCoordinatorDelegate?.showBasicAuthScreen()
+            }
         }
     }
 

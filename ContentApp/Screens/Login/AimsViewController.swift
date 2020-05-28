@@ -145,3 +145,5 @@ extension AimsViewController: UITextFieldDelegate {
         enableSignInButton = (textField.text != "")
     }
 }
+
+extension AimsViewController: StoryboardInstantiable { }

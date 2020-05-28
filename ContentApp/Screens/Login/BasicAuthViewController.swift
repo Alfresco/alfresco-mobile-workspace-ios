@@ -180,3 +180,5 @@ extension BasicAuthViewController: UITextFieldDelegate {
         enableSignInButton = (usernameTextField.text != "" && passwordTextField.text != "")
     }
 }
+
+extension BasicAuthViewController: StoryboardInstantiable { }

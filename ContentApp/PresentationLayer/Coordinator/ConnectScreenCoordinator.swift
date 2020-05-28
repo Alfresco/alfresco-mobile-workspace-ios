@@ -20,6 +20,8 @@ import UIKit
 
 protocol ConnectScreenCoordinatorDelegate: class {
     func showAdvancedSettingsScreen()
+    func showBasicAuthScreen()
+    func showAimsScreen()
 }
 
 class ConnectScreenCoordinator: Coordinator {
@@ -27,6 +29,8 @@ class ConnectScreenCoordinator: Coordinator {
     private var connectViewController: ConnectViewController?
     private var containerViewNavigationController: UINavigationController?
     private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
+    private var basicAuthCoordinator: BasicAuthScreenCoordinator?
+    private var aimsCoordinator: AimsScreenCoordinator?
 
     init(with presenter: SplashViewController) {
         self.presenter = presenter
@@ -55,6 +59,24 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
             advancedSettingsCoordinator.start()
 
             self.advancedSettingsCoordinator = advancedSettingsCoordinator
+        }
+    }
+
+    func showBasicAuthScreen() {
+        if let containerViewNavigationController = self.containerViewNavigationController {
+            let basicAuthCoordinator = BasicAuthScreenCoordinator(with: containerViewNavigationController)
+            basicAuthCoordinator.start()
+
+            self.basicAuthCoordinator = basicAuthCoordinator
+        }
+    }
+
+    func showAimsScreen() {
+        if let containerViewNavigationController = self.containerViewNavigationController {
+            let aimsCoordinator = AimsScreenCoordinator(with: containerViewNavigationController)
+            aimsCoordinator.start()
+
+            self.aimsCoordinator = aimsCoordinator
         }
     }
 }
