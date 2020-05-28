@@ -23,3 +23,6 @@ let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
+
+let kAnimationSplashScreenLogo = 2.0
+let kAnimationSplashScreenContainerViews = 1.5

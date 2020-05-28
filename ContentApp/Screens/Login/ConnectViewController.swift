@@ -39,6 +39,7 @@ class ConnectViewController: UIViewController {
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
 
     var model: ConnectViewModel = ConnectViewModel()
+    var openKeyboard: Bool = true
     var enableConnectButton: Bool = false {
         didSet {
             connectButton.isEnabled = enableConnectButton
@@ -61,6 +62,19 @@ class ConnectViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationBar(hide: true)
         self.splashScreenDelegate?.showBackPadButton(enable: false)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if openKeyboard {
+            openKeyboard = false
+            DispatchQueue.main.asyncAfter(deadline: .now() + kAnimationSplashScreenLogo + kAnimationSplashScreenContainerViews,
+                execute: { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.connectTextField.becomeFirstResponder()
+            })
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
