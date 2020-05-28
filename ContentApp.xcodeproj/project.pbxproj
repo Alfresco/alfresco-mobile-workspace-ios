@@ -17,6 +17,7 @@
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
 		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
 		B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */; };
+		B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99E1C46247FA77300116F05 /* CALayer+Animations.swift */; };
 		E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */; };
 		E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D5247BEC9B0044BE0D /* AimsViewController.swift */; };
 		E31184D8247BFAFA0044BE0D /* UITextField+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D7247BFAFA0044BE0D /* UITextField+Helpers.swift */; };
@@ -77,6 +78,7 @@
 		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
 		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
 		B959CCD92477AD3D00811F15 /* ThemingServiceWorkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingServiceWorkers.swift; sourceTree = "<group>"; };
+		B99E1C46247FA77300116F05 /* CALayer+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Animations.swift"; sourceTree = "<group>"; };
 		E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewController.swift; sourceTree = "<group>"; };
 		E31184D5247BEC9B0044BE0D /* AimsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewController.swift; sourceTree = "<group>"; };
 		E31184D7247BFAFA0044BE0D /* UITextField+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Helpers.swift"; sourceTree = "<group>"; };
@@ -388,6 +390,7 @@
 			children = (
 				E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */,
 				E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */,
+				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -574,6 +577,7 @@
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
+				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
