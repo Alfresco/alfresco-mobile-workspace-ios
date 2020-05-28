@@ -50,6 +50,10 @@ class ConnectScreenCoordinator: Coordinator {
         self.connectViewController = connectViewController
         self.containerViewNavigationController = containerViewNavigationController
     }
+
+    func popViewController() {
+        self.containerViewNavigationController?.popViewController(animated: true)
+    }
 }
 
 extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {

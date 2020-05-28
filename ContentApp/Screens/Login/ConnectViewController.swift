@@ -50,18 +50,17 @@ class ConnectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
-
         model.delegate = self
 
         addLocalization()
         addMaterialComponentsTheme()
         enableConnectButton = (connectTextField.text != "")
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationBar(hide: true)
+        self.splashScreenDelegate?.showBackPadButton(enable: false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -123,6 +122,8 @@ class ConnectViewController: UIViewController {
 
         copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
+
+        self.navigationController?.navigationBar.tintColor = theme.activeTheme?.loginButtonColor
     }
 
     func navigationBar(hide: Bool) {
@@ -181,6 +182,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
     func authServiceAvailable(for authType: AvailableAuthType) {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
+            sSelf.splashScreenDelegate?.showBackPadButton(enable: true)
             switch authType {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()

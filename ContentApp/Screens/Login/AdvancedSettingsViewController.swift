@@ -172,6 +172,7 @@ class AdvancedSettingsViewController: UIViewController {
         savePadButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginSavePadButton))
         needHelpButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginNeedHelpButton))
         saveButton.tintColor = theme.activeTheme?.loginButtonColor
+        backPadButton.tintColor = theme.activeTheme?.loginButtonColor
     }
 
     func updateFields() {
