@@ -43,6 +43,7 @@
 		E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Helpers.swift */; };
 		E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */; };
 		E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */; };
+		E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */; };
 		E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */; };
 		E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625B2476D6440091896D /* KeyboardHandling.swift */; };
 		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
@@ -110,6 +111,7 @@
 		E37618052476912000DA13ED /* Mirror+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Helpers.swift"; sourceTree = "<group>"; };
 		E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayerTransformations.swift"; sourceTree = "<group>"; };
+		E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3F5625B2476D6440091896D /* KeyboardHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
 		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 				B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */,
 				B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */,
 				B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */,
+				E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */,
 				E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */,
 			);
 			path = Coordinator;
@@ -566,6 +569,7 @@
 				E37618062476912000DA13ED /* Mirror+Helpers.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Helpers.swift in Sources */,
+				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,

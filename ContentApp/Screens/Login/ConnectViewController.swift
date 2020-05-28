@@ -185,7 +185,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
             case .basicAuth:
-            showAlert(message: "Basic authentication")
+                sSelf.connectScreenCoordinatorDelegate?.showBasicAuthScreen()
             }
         }
     }
