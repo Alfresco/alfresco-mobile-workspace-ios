@@ -25,16 +25,20 @@ protocol SplashScreenDelegate: class {
 
 class SplashViewController: UIViewController {
     @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var logoImageView: UIImageView!
+
     @IBOutlet weak var whiteAlphaView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var blurEfectView: UIVisualEffectView!
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var copyrightLabel: UILabel!
 
+    @IBOutlet weak var logoWidthConstraint: NSLayoutConstraint!
+
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
     weak var navigationControllerFromContainer: UINavigationController?
 
-    var applyShadow: Bool = true
+    var applyAnimations: Bool = true
     var shadowLayer: CALayer?
     let shadowLayerRadius: Float = 50
     let shadowLayerOpacity: Float = 0.4
@@ -44,6 +48,7 @@ class SplashViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        logoImageView.isHidden = false
         whiteAlphaView.applyCornerRadius(with: 10)
         containerView.applyCornerRadius(with: 10)
         blurEfectView.applyCornerRadius(with: 10)
@@ -52,6 +57,8 @@ class SplashViewController: UIViewController {
 
         addMaterialComponentsTheme()
         addLocalization()
+
+        containerViews(alpha: 0.0, hidden: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -59,9 +66,9 @@ class SplashViewController: UIViewController {
 
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.backButton.isHidden = true
-        if applyShadow {
-            self.shadowLayer = shadowView.dropContourShadow(opacity: shadowLayerOpacity, radius: shadowLayerRadius)
-            applyShadow = false
+        if applyAnimations {
+            applyAnimations = false
+            animateLogo()
         }
     }
 
@@ -74,6 +81,41 @@ class SplashViewController: UIViewController {
             sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
             sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
+    }
+
+    func animateLogo() {
+        self.logoWidthConstraint.constant += 30.0
+        UIView.animate(withDuration: kAnimationSplashScreenLogo, animations: { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.view.layoutIfNeeded()
+        }) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.logoImageView.isHidden = true
+            sSelf.animateContainerViews()
+        }
+    }
+
+    func animateContainerViews() {
+        self.containerViews(alpha: 0.0, hidden: false)
+        UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.containerViews(alpha: 1.0, hidden: false)
+        }) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
+        }
+    }
+
+    func containerViews(alpha: CGFloat, hidden: Bool) {
+        containerView.alpha = alpha
+        blurEfectView.alpha = alpha
+        shadowView.alpha = alpha
+        copyrightLabel.alpha = alpha
+        whiteAlphaView.isHidden = hidden
+        containerView.isHidden = hidden
+        blurEfectView.isHidden = hidden
+        shadowView.isHidden = hidden
+        copyrightLabel.isHidden = hidden
     }
 
     // MARK: - IBActions
