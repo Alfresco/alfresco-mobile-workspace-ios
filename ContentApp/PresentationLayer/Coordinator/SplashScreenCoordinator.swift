@@ -21,6 +21,7 @@ import UIKit
 protocol SplashScreenCoordinatorDelegate: class {
     func showLoginContainerView()
     func showAdvancedSettingsScreen()
+    func popViewControllerFromContainer()
 }
 
 class SplashScreenCoordinator: Coordinator {
@@ -47,6 +48,10 @@ class SplashScreenCoordinator: Coordinator {
 }
 
 extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
+    func popViewControllerFromContainer() {
+        self.connectScreenCoordinator?.popViewController()
+    }
+
     func showLoginContainerView() {
         connectScreenCoordinator?.start()
     }

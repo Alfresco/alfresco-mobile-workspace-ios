@@ -20,6 +20,7 @@ import UIKit
 
 protocol SplashScreenDelegate: class {
     func showAdvancedSettingsScreen()
+    func showBackPadButton(enable: Bool)
 }
 
 class SplashViewController: UIViewController {
@@ -62,8 +63,7 @@ class SplashViewController: UIViewController {
     // MARK: - IBActions
 
     @IBAction func backButtonTapped(_ sender: UIButton) {
-        navigationControllerFromContainer?.popViewController(animated: true)
-        backButton.isHidden = (navigationControllerFromContainer?.viewControllers.count ?? 0 < 2)
+        self.coordinatorDelegate?.popViewControllerFromContainer()
     }
 
     // MARK: - Helpers
@@ -75,12 +75,24 @@ class SplashViewController: UIViewController {
     func addMaterialComponentsTheme() {
         let theme = MaterialDesignThemingService()
         theme.activeTheme = DefaultTheme()
+
         copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
+
+        backButton.tintColor = theme.activeTheme?.loginButtonColor
     }
 }
 
 extension SplashViewController: SplashScreenDelegate {
+
+    func showBackPadButton(enable: Bool) {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            backButton.isHidden = !enable
+        } else {
+            backButton.isHidden = true
+        }
+    }
+
     func showAdvancedSettingsScreen() {
         coordinatorDelegate?.showAdvancedSettingsScreen()
     }
