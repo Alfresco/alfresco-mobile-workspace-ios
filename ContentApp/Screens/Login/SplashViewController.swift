@@ -97,12 +97,11 @@ class SplashViewController: UIViewController {
 
     func animateContainerViews() {
         self.containerViews(alpha: 0.0, hidden: false)
-        UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
+        self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity, radius: self.shadowLayerRadius)
+        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: Float(kAnimationSplashScreenContainerViews), completionHandler: nil)
+        UIView.animate(withDuration: kAnimationSplashScreenContainerViews) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.containerViews(alpha: 1.0, hidden: false)
-        }) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
         }
     }
 
