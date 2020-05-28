@@ -68,10 +68,10 @@ class SplashViewController: UIViewController {
         shadowLayer?.removeFromSuperlayer()
 
         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
-            if let opacity = self?.shadowLayerOpacity, let radius = self?.shadowLayerRadius {
-                self?.shadowLayer = self?.shadowView.dropContourShadow(opacity: opacity, radius: radius)
-            }
-            self?.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
+            guard let sSelf = self else { return }
+
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
+            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
     }
 
