@@ -62,7 +62,6 @@ extension UIView {
         shadowLayer.mask = maskLayer
 
         self.layer.superlayer?.insertSublayer(shadowLayer, above: self.layer)
-//        self.layer.addSublayer(shadowLayer)
 
         return shadowLayer
     }
