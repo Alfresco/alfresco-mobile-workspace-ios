@@ -20,6 +20,7 @@ import UIKit
 
 protocol ConnectScreenCoordinatorDelegate: class {
     func showAdvancedSettingsScreen()
+    func showAimsScreen()
 }
 
 class ConnectScreenCoordinator: Coordinator {
@@ -27,6 +28,7 @@ class ConnectScreenCoordinator: Coordinator {
     private var connectViewController: ConnectViewController?
     private var containerViewNavigationController: UINavigationController?
     private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
+    private var aimsCoordinator: AimsScreenCoordinator?
 
     init(with presenter: SplashViewController) {
         self.presenter = presenter
@@ -55,6 +57,16 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
             advancedSettingsCoordinator.start()
 
             self.advancedSettingsCoordinator = advancedSettingsCoordinator
+        }
+    }
+
+
+    func showAimsScreen() {
+        if let containerViewNavigationController = self.containerViewNavigationController {
+            let aimsCoordinator = AimsScreenCoordinator(with: containerViewNavigationController)
+            aimsCoordinator.start()
+
+            self.aimsCoordinator = aimsCoordinator
         }
     }
 }
