@@ -35,6 +35,11 @@ class SplashViewController: UIViewController {
     weak var navigationControllerFromContainer: UINavigationController?
 
     var applyShadow: Bool = true
+    var shadowLayer: CALayer?
+    let shadowLayerRadius: Float = 50
+    let shadowLayerOpacity: Float = 0.4
+
+    var observation: NSKeyValueObservation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,8 +60,19 @@ class SplashViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.backButton.isHidden = true
         if applyShadow {
-            shadowView.dropContourShadow(opacity: 0.4, radius: 50)
+            self.shadowLayer = shadowView.dropContourShadow(opacity: shadowLayerOpacity, radius: shadowLayerRadius)
             applyShadow = false
+        }
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        shadowLayer?.removeFromSuperlayer()
+
+        coordinator.animate(alongsideTransition: nil) { [weak self] _ in
+            guard let sSelf = self else { return }
+
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
+            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
     }
 

@@ -29,7 +29,7 @@ extension UIView {
         self.layer.rasterizationScale = UIScreen.main.scale
     }
 
-    func dropContourShadow(opacity: Float, radius: Float, xOffset: Float = 0, yOffset: Float = 0) {
+    func dropContourShadow(opacity: Float, radius: Float, xOffset: Float = 0, yOffset: Float = 0) -> CALayer {
         let xOffset = CGFloat(xOffset)
         let yOffset = CGFloat(yOffset)
         let shadowOffset = CGSize(width: xOffset, height: yOffset)
@@ -62,6 +62,8 @@ extension UIView {
         shadowLayer.mask = maskLayer
 
         self.layer.superlayer?.insertSublayer(shadowLayer, above: self.layer)
+
+        return shadowLayer
     }
 
     func applyCornerRadius(with radius: Float, mask: CACornerMask = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]) {

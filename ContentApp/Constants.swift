@@ -18,12 +18,7 @@
 
 import Foundation
 
-let kSegueIDAdvancedSettingsVCFromConnectVC = "segueIDAdvancedSettingsVCFromConnectVC"
-let kSegueIDBasicVCFromConnectVC = "segueIDBasicVCFromConnectVC"
-let kSegueIDAimsVCFromConnectVC = "segueIDaimsVCFromConnectVC"
 let kSegueIDHelpVCFromConnectVC = "segueIDHelpVCFromConnectVC"
-let kSegueIDEmbedContentVCInSplashVC = "segueIDEmbedContentVCInSplashVC"
-let kSegueIDAdvancedSettingsVCFromSplashVC = "segueIDAdvancedSettingsVCFromSplashVC"
 
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
 let kDefaultLoginUnsecuredPort = "80"
