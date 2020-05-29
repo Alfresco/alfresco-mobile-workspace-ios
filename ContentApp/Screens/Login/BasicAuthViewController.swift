@@ -38,8 +38,11 @@ class BasicAuthViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
-    var model = BasicAuthViewModel()
-    var keyboardHandling = KeyboardHandling()
+    var model: BasicAuthViewModel?
+
+    var keyboardHandling: KeyboardHandling? = KeyboardHandling()
+    var theme: MaterialDesignThemingService?
+
     var enableSignInButton: Bool = false {
         didSet {
             signInButton.isEnabled = enableSignInButton
@@ -47,13 +50,11 @@ class BasicAuthViewController: UIViewController {
         }
     }
 
-    var theme = MaterialDesignThemingService()
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        theme.activeTheme = DefaultTheme()
+
         addLocalization()
         addMaterialComponentsTheme()
         enableSignInButton = false
@@ -66,7 +67,7 @@ class BasicAuthViewController: UIViewController {
         guard let username = usernameTextField.text, let password = passwordTextField.text else {
             return
         }
-        model.authenticate(username: username, password: password)
+        model?.authenticate(username: username, password: password)
     }
 
     @IBAction func needHelpButtonTapped(_ sender: Any) {
@@ -87,7 +88,7 @@ class BasicAuthViewController: UIViewController {
         self.title = ""
         productLabel.text = LocalizationConstants.productName
         infoLabel.text = LocalizationConstants.Labels.infoConnectTo
-        hostnameLabel.text = model.authParameters.hostname
+        hostnameLabel.text = model?.hostname()
         usernameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.username
         passwordTextField.label.text = LocalizationConstants.TextFieldPlaceholders.password
         signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .normal)
@@ -97,6 +98,10 @@ class BasicAuthViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
+        guard let theme = self.theme else {
+            return
+        }
+
         signInButton.applyContainedTheme(withScheme: theme.containerScheming(for: .loginButton))
         needHelpButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginNeedHelpButton))
 
@@ -129,22 +134,13 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
-
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    }
 }
 
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = theme.activeTheme?.loginTextFieldPrimaryColor
-
-        let textFieldRect = view.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height
-        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
-                             in: view)
+        textField.rightView?.tintColor = theme?.activeTheme?.loginTextFieldPrimaryColor
+        keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
 
@@ -172,7 +168,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = theme.activeTheme?.loginTextFieldIconColor
+        textField.rightView?.tintColor = theme?.activeTheme?.loginTextFieldIconColor
         return true
     }
 

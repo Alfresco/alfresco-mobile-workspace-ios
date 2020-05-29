@@ -21,6 +21,8 @@ import UIKit
 class BasicAuthScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var basicAuthViewController: BasicAuthViewController?
+    var loginService: LoginService?
+    var themeService: MaterialDesignThemingService?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -29,6 +31,8 @@ class BasicAuthScreenCoordinator: Coordinator {
     func start() {
         let viewController = BasicAuthViewController.instantiateViewController()
         basicAuthViewController = viewController
+        basicAuthViewController?.theme = self.themeService
+        basicAuthViewController?.model = BasicAuthViewModel(with: self.loginService)
         presenter.pushViewController(viewController, animated: true)
     }
 }

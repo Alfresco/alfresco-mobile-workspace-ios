@@ -34,16 +34,33 @@ class LoginService {
         self.authParameters = authenticationParameters
     }
 
+    func update(authenticationParameters: AuthSettingsParameters) {
+        self.authParameters = authenticationParameters
+    }
+
     func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>) {
         let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.availableAuthType(handler: handler)
     }
 
+    func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
+        let authConfig = AuthConfiguration(baseUrl: authParameters.fullContentURL,
+                                           clientID: authParameters.clientID,
+                                           realm: authParameters.realm,
+                                           redirectURI: authParameters.redirectURI.encoding())
+        alfrescoAuth.update(configuration: authConfig)
+        alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
+    }
+
+    func saveAuthParameters() {
+        authParameters.save()
+    }
+
     // MARK: - Private
 
     private func authConfiguration() -> AuthConfiguration {
-        let authConfig = AuthConfiguration(baseUrl: authParameters.fullFormatURL,
+        let authConfig = AuthConfiguration(baseUrl: authParameters.fullHostnameURL,
                                            clientID: authParameters.clientID,
                                            realm: authParameters.realm,
                                            redirectURI: authParameters.redirectURI.encoding())

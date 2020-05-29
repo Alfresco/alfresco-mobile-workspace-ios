@@ -49,9 +49,11 @@ class AdvancedSettingsViewController: UIViewController {
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    var model = AdvancedSettingsViewModel()
-    var keyboardHandling = KeyboardHandling()
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
+    var model = AdvancedSettingsViewModel()
+
+    var keyboardHandling: KeyboardHandling? = KeyboardHandling()
+    var theme: MaterialDesignThemingService?
 
     var enableSaveButton: Bool = false {
         didSet {
@@ -59,11 +61,9 @@ class AdvancedSettingsViewController: UIViewController {
             savePadButton.isEnabled = enableSaveButton
         }
     }
-    var theme = MaterialDesignThemingService()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        theme.activeTheme = DefaultTheme()
         addLocalization()
         addMaterialComponentsTheme()
         enableSaveButton = false
@@ -84,7 +84,7 @@ class AdvancedSettingsViewController: UIViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (httpsSwitch.isOn) ? theme.activeTheme?.loginFieldLabelColor : theme.activeTheme?.loginFieldDisableLabelColor
+        httpsLabel.textColor = (httpsSwitch.isOn) ? theme?.activeTheme?.loginFieldLabelColor : theme?.activeTheme?.loginFieldDisableLabelColor
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = true
     }
@@ -134,6 +134,9 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
+        guard let theme = self.theme else {
+            return
+        }
         portTextField.applyTheme(withScheme: theme.containerScheming(for: .loginTextField))
         portTextField.setFilledBackgroundColor(.clear, for: .normal)
         portTextField.setFilledBackgroundColor(.clear, for: .editing)
@@ -204,10 +207,7 @@ class AdvancedSettingsViewController: UIViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let textFieldRect = scrollView.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height
-        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
-                             in: view)
+        keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
         return true
     }
 
@@ -216,18 +216,33 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        var nextTextField = textField
         switch textField {
         case portTextField:
-            serviceDocumentsTextField.becomeFirstResponder()
+            nextTextField = serviceDocumentsTextField
         case serviceDocumentsTextField:
-            realmTextField.becomeFirstResponder()
+            nextTextField = realmTextField
         case realmTextField:
-            clientIDTextField.becomeFirstResponder()
+            nextTextField = clientIDTextField
         default:
             textField.resignFirstResponder()
+            return true
         }
+//        scrollView.scrollToView(view: nextTextField, animated: true)
+        nextTextField.becomeFirstResponder()
         return true
     }
+}
+
+extension UIScrollView {
+
+    func scrollToView(view: UIView, animated: Bool) {
+        if let origin = view.superview {
+            let childStartPoint = origin.convert(view.frame.origin, to: self)
+            self.scrollRectToVisible(CGRect(x: 0, y: childStartPoint.y, width: 1, height: self.frame.height), animated: animated)
+        }
+    }
+
 }
 
 extension AdvancedSettingsViewController: StoryboardInstantiable { }

@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
@@ -36,8 +37,10 @@ class AimsViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
-    var model = AimsViewModel()
-    var keyboardHandling = KeyboardHandling()
+    var model: AimsViewModel?
+
+    var keyboardHandling: KeyboardHandling? = KeyboardHandling()
+    var theme: MaterialDesignThemingService?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -50,6 +53,9 @@ class AimsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        model?.delegate = self
+
         addLocalization()
         addMaterialComponentsTheme()
         enableSignInButton = (repositoryTextField.text != "")
@@ -62,7 +68,7 @@ class AimsViewController: UIViewController {
         guard let repositoryURL = repositoryTextField.text else {
             return
         }
-        model.authenticate(repository: repositoryURL, in: self)
+        model?.login(repository: repositoryURL, in: self)
     }
 
     @IBAction func needHelpButtonTapped(_ sender: Any) {
@@ -78,7 +84,7 @@ class AimsViewController: UIViewController {
         self.title = ""
         productLabel.text = LocalizationConstants.productName
         infoLabel.text = LocalizationConstants.Labels.infoConnectTo
-        hostnameLabel.text = model.authParameters.hostname
+        hostnameLabel.text = model?.hostname()
         allowLabel.text = LocalizationConstants.Labels.allowSSO
         repositoryTextField.label.text = LocalizationConstants.TextFieldPlaceholders.repository
         signInButton.setTitle(LocalizationConstants.Buttons.signInWithSSO, for: .normal)
@@ -88,8 +94,9 @@ class AimsViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        let theme = MaterialDesignThemingService()
-        theme.activeTheme = DefaultTheme()
+        guard let theme = self.theme else {
+            return
+        }
 
         signInButton.applyContainedTheme(withScheme: theme.containerScheming(for: .loginButton))
         needHelpButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginNeedHelpButton))
@@ -114,19 +121,19 @@ class AimsViewController: UIViewController {
         copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
     }
 
-    // MARK: - Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    func showAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
 extension AimsViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let textFieldRect = view.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height
-        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
-                             in: view)
+        keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
 
@@ -143,6 +150,16 @@ extension AimsViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         enableSignInButton = (textField.text != "")
+    }
+}
+
+extension AimsViewController: AimsViewModelDelegate {
+    func logInFailed(with error: APIError) {
+        showAlert(message: error.localizedDescription)
+    }
+
+    func logInSuccessful() {
+        showAlert(message: "Login with AIMS with success!")
     }
 }
 

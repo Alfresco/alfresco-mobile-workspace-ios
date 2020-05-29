@@ -27,8 +27,16 @@ class AuthSettingsParameters: Codable {
     var redirectURI: String = "iosacsapp://aims/auth"
     var hostname: String = ""
     var contentURL: String = ""
-    var fullFormatURL: String {
+    var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
+        if port.count != 0 {
+            fullFormatURL.append(contentsOf: String(format: ":%@", port))
+        }
+        return fullFormatURL
+    }
+
+    var fullContentURL: String {
+        var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", contentURL)
         if port.count != 0 {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }

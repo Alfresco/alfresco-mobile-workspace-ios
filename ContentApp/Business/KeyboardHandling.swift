@@ -20,38 +20,45 @@ import Foundation
 import UIKit
 
 class KeyboardHandling {
-    private var positionObjectInSuperview: CGFloat
-    private var view: UIView
+    private var view: UIView?
+    private var object: UIView?
 
     init() {
-        self.positionObjectInSuperview = 0.0
-        self.view = UIView()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
-    func add(positionObjectInSuperview: CGFloat, in view: UIView) {
-        self.positionObjectInSuperview = positionObjectInSuperview
+    func adaptFrame(in view: UIView, subview: UIView) {
         self.view = view
+        self.object = subview
     }
 
     // MARK: - Keyboard Notification
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardHeight =  keyboardFrame.cgRectValue.height
-            let margin = ((UIDevice.current.userInterfaceIdiom == .phone)) ?
-                view.frame.size.height - positionObjectInSuperview :
-                UIApplication.shared.windows[0].frame.size.height - positionObjectInSuperview
-            if view.frame.origin.y == 0 && margin < keyboardHeight {
-                view.frame.origin.y -= (keyboardHeight - margin)
-            }
+        guard let view = self.view, let object = self.object,
+            let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  else {
+            return
+        }
+        let frameObjectInView = view.convert(object.frame, to: UIApplication.shared.windows[0])
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        let windowHeight = UIApplication.shared.windows[0].frame.size.height
+
+        let objectPositionYInSuperview = view.frame.size.height - (frameObjectInView.origin.y + frameObjectInView.size.height)
+        let objectPositionYInWindow = windowHeight - (frameObjectInView.origin.y + frameObjectInView.size.height)
+        let objectPositionY = ((UIDevice.current.userInterfaceIdiom == .phone)) ? objectPositionYInSuperview : objectPositionYInWindow
+
+        if objectPositionY < keyboardHeight {
+            view.superview?.frame.origin.y -= (keyboardHeight - objectPositionY)
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if view.frame.origin.y != 0 {
-            view.frame.origin.y = 0
+        guard let view = self.view else {
+            return
+        }
+        if view.superview?.frame.origin.y != 0 {
+            view.superview?.frame.origin.y = 0
         }
     }
 }

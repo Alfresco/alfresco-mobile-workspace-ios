@@ -21,6 +21,8 @@ import UIKit
 class AimsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var aimsViewController: AimsViewController?
+    var loginService: LoginService?
+    var themeService: MaterialDesignThemingService?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -29,6 +31,8 @@ class AimsScreenCoordinator: Coordinator {
     func start() {
         let viewController = AimsViewController.instantiateViewController()
         aimsViewController = viewController
+        aimsViewController?.theme = self.themeService
+        aimsViewController?.model = AimsViewModel(with: self.loginService)
         presenter.pushViewController(viewController, animated: true)
     }
 }

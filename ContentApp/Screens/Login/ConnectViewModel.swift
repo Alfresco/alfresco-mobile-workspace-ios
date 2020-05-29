@@ -18,7 +18,6 @@
 
 import Foundation
 import AlfrescoAuth
-import os.log
 
 protocol ConnectViewModelDelegate: class {
     func authServiceAvailable(for authType: AvailableAuthType)
@@ -29,10 +28,14 @@ class ConnectViewModel {
     weak var delegate: ConnectViewModelDelegate?
     var authenticationService: LoginService?
 
+    init(with loginService: LoginService?) {
+        authenticationService = loginService
+    }
+
     func availableAuthType(for url: String) {
         let authParameters = AuthSettingsParameters.parameters()
         authParameters.hostname = url
-        authenticationService = LoginService(with: authParameters)
+        authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
@@ -43,7 +46,7 @@ class ConnectViewModel {
                 case .basicAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
-                authParameters.save()
+                sSelf.authenticationService?.saveAuthParameters()
                 sSelf.delegate?.authServiceAvailable(for: authType)
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")

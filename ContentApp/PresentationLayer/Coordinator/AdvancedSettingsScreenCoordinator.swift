@@ -25,6 +25,8 @@ protocol AdvancedSettingsScreenCoordinatorDelegate: class {
 class AdvancedSettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var advancedSettingsViewController: AdvancedSettingsViewController?
+    var loginService: LoginService?
+    var themeService: MaterialDesignThemingService?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -33,6 +35,7 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
     func start() {
         let viewController = AdvancedSettingsViewController.instantiateViewController()
         advancedSettingsViewController = viewController
+        advancedSettingsViewController?.theme = self.themeService
         advancedSettingsViewController?.advSettingsScreenCoordinatorDelegate = self
         presenter.pushViewController(viewController, animated: true)
     }
