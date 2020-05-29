@@ -39,11 +39,14 @@ class SplashViewController: UIViewController {
     weak var navigationControllerFromContainer: UINavigationController?
 
     var applyAnimations: Bool = true
+    var isAnimationInProgress: Bool = false
+    var wasRotatedInAnimationProgress: Bool = false
     var shadowLayer: CALayer?
     let shadowLayerRadius: Float = 50
     let shadowLayerOpacity: Float = 0.4
 
     var observation: NSKeyValueObservation?
+    var theme: MaterialDesignThemingService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,24 +66,52 @@ class SplashViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         self.backButton.isHidden = true
         if applyAnimations {
             applyAnimations = false
+            isAnimationInProgress = true
             animateLogo()
         }
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         shadowLayer?.removeFromSuperlayer()
+        if isAnimationInProgress {
+            wasRotatedInAnimationProgress = true
+            return
+        }
 
         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
             guard let sSelf = self else { return }
-
             sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
             sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
+    }
+
+    // MARK: - IBActions
+
+    @IBAction func backButtonTapped(_ sender: UIButton) {
+        self.coordinatorDelegate?.popViewControllerFromContainer()
+    }
+
+    @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
+        self.view.endEditing(true)
+    }
+
+    // MARK: - Helpers
+
+    func addLocalization() {
+        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+    }
+
+    func addMaterialComponentsTheme() {
+        guard let theme = self.theme else {
+            return
+        }
+        copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
+        copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
+        backButton.tintColor = theme.activeTheme?.loginButtonColor
     }
 
     func animateLogo() {
@@ -97,11 +128,21 @@ class SplashViewController: UIViewController {
 
     func animateContainerViews() {
         self.containerViews(alpha: 0.0, hidden: false)
+        self.wasRotatedInAnimationProgress = false
         self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity, radius: self.shadowLayerRadius)
-        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: Float(kAnimationSplashScreenContainerViews), completionHandler: nil)
-        UIView.animate(withDuration: kAnimationSplashScreenContainerViews) { [weak self] in
+        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: Float(kAnimationSplashScreenContainerViews), completionHandler: {  [weak self] in
+            guard let sSelf = self, sSelf.wasRotatedInAnimationProgress == true else { return }
+            sSelf.shadowLayer?.removeFromSuperlayer()
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
+            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.0, completionHandler: nil)
+        })
+
+        UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
             guard let sSelf = self else { return }
             sSelf.containerViews(alpha: 1.0, hidden: false)
+        }) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.isAnimationInProgress = false
         }
     }
 
@@ -116,32 +157,9 @@ class SplashViewController: UIViewController {
         shadowView.isHidden = hidden
         copyrightLabel.isHidden = hidden
     }
-
-    // MARK: - IBActions
-
-    @IBAction func backButtonTapped(_ sender: UIButton) {
-        self.coordinatorDelegate?.popViewControllerFromContainer()
-    }
-
-    // MARK: - Helpers
-
-    func addLocalization() {
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
-    }
-
-    func addMaterialComponentsTheme() {
-        let theme = MaterialDesignThemingService()
-        theme.activeTheme = DefaultTheme()
-
-        copyrightLabel.textColor = theme.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = theme.activeTheme?.loginCopyrightLabelFont
-
-        backButton.tintColor = theme.activeTheme?.loginButtonColor
-    }
 }
 
 extension SplashViewController: SplashScreenDelegate {
-
     func showBackPadButton(enable: Bool) {
         if UIDevice.current.userInterfaceIdiom == .pad {
             backButton.isHidden = !enable
