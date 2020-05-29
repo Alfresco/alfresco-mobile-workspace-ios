@@ -20,13 +20,45 @@ import Foundation
 import UIKit
 import AlfrescoAuth
 
-protocol AimsAuthViewModelDelegate: class {
+protocol AimsViewModelDelegate: class {
+    func logInFailed(with error: APIError)
+    func logInSuccessful()
 }
 
 class AimsViewModel {
-    weak var delegate: AimsAuthViewModelDelegate?
-    var authParameters = AuthSettingsParameters.parameters()
+    weak var delegate: AimsViewModelDelegate?
+    var authenticationService: LoginService?
 
-    func authenticate(repository: String, in viewController: UIViewController) {
+    init(with loginService: LoginService?) {
+        authenticationService = loginService
+    }
+
+    func login(repository: String, in viewController: UIViewController) {
+        let authParameters = AuthSettingsParameters.parameters()
+        authParameters.contentURL = repository
+        authenticationService?.update(authenticationParameters: authParameters)
+        authenticationService?.aimsAuthentication(on: viewController, delegate: self)
+    }
+
+    func hostname() -> String {
+        return authenticationService?.authParameters.hostname ?? ""
+    }
+}
+
+extension AimsViewModel: AlfrescoAuthDelegate {
+    func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
+        switch result {
+        case .success(let credentials):
+            AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: credentials))")
+            authenticationService?.saveAuthParameters()
+            self.delegate?.logInSuccessful()
+        case .failure(let error):
+            AlfrescoLog.error("Error \(String(describing: authenticationService?.authParameters.contentURL)) login with aims : \(error.localizedDescription)")
+            self.delegate?.logInFailed(with: error)
+        }
+    }
+
+    func didLogOut(result: Result<Int, APIError>) {
+
     }
 }
