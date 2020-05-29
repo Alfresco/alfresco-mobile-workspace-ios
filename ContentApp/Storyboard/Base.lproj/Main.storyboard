@@ -529,11 +529,11 @@
                                 </constraints>
                                 <variation key="heightClass=regular-widthClass=regular" hidden="NO"/>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Tf-4h-x8v">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Tf-4h-x8v">
                                 <rect key="frame" x="0.0" y="100" width="1024" height="1246"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feP-M4-o5O">
-                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="697"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="1024" height="733"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Transport Protocol" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A9s-P8-aaS">
                                                 <rect key="frame" x="93" y="13" width="838" height="21"/>
@@ -614,22 +614,28 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T7-TA-4a6" customClass="MDCButton">
-                                                <rect key="frame" x="457.5" y="536" width="109" height="30"/>
+                                                <rect key="frame" x="457.5" y="536" width="109" height="48"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="2gZ-rU-SIw"/>
+                                                </constraints>
                                                 <state key="normal" title="Reset to default"/>
                                                 <connections>
                                                     <action selector="resetButtonTapped:" destination="U7y-JF-Com" eventType="touchUpInside" id="WQz-YV-0Hb"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzM-th-1FX" customClass="MDCButton">
-                                                <rect key="frame" x="478" y="596" width="68" height="30"/>
+                                                <rect key="frame" x="478" y="614" width="68" height="48"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="wCu-QM-tpj"/>
+                                                </constraints>
                                                 <state key="normal" title="need help"/>
                                                 <connections>
                                                     <action selector="needHelpButtonTapped:" destination="U7y-JF-Com" eventType="touchUpInside" id="pKb-E5-Lyo"/>
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD5-6O-qcf">
-                                                <rect key="frame" x="20" y="666" width="984" height="21"/>
+                                                <rect key="frame" x="20" y="702" width="984" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -782,6 +788,13 @@
                                 <gestureRecognizers/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIx-80-1iM">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ZWe-sy-lKu" appends="YES" id="2EN-jP-3J9"/>
+                                </connections>
+                            </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-sk-1EV">
                                 <rect key="frame" x="362" y="320.5" width="300" height="270"/>
                                 <constraints>
@@ -855,7 +868,9 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="PIx-80-1iM" secondAttribute="bottom" id="1Ba-al-ZVt"/>
                             <constraint firstAttribute="trailing" secondItem="Wzt-I1-tMz" secondAttribute="trailing" id="1b6-z2-egI"/>
+                            <constraint firstAttribute="trailing" secondItem="PIx-80-1iM" secondAttribute="trailing" id="2gx-H6-GLN"/>
                             <constraint firstItem="Wzt-I1-tMz" firstAttribute="centerY" secondItem="I33-Hh-kSK" secondAttribute="centerY" id="4MB-bq-jJS"/>
                             <constraint firstItem="Bwz-0U-oSs" firstAttribute="leading" secondItem="I33-Hh-kSK" secondAttribute="leading" id="82y-4f-5zO"/>
                             <constraint firstAttribute="bottom" secondItem="Wzt-I1-tMz" secondAttribute="bottom" id="8GO-47-VbU"/>
@@ -874,7 +889,9 @@
                             <constraint firstItem="bMK-ga-uUN" firstAttribute="leading" secondItem="Wzt-I1-tMz" secondAttribute="leading" id="bZ5-i0-6SC"/>
                             <constraint firstAttribute="bottom" secondItem="Bwz-0U-oSs" secondAttribute="bottom" id="fdw-nK-aHc"/>
                             <constraint firstItem="Koq-Ke-AQc" firstAttribute="centerX" secondItem="I33-Hh-kSK" secondAttribute="centerX" id="gIJ-Um-KDc"/>
+                            <constraint firstItem="PIx-80-1iM" firstAttribute="top" secondItem="I33-Hh-kSK" secondAttribute="top" id="lQP-Dv-oZ7"/>
                             <constraint firstItem="Bwz-0U-oSs" firstAttribute="top" secondItem="I33-Hh-kSK" secondAttribute="top" id="nHW-2D-74b"/>
+                            <constraint firstItem="PIx-80-1iM" firstAttribute="leading" secondItem="I33-Hh-kSK" secondAttribute="leading" id="nZ8-cl-Ftl"/>
                             <constraint firstItem="Wzt-I1-tMz" firstAttribute="leading" secondItem="I33-Hh-kSK" secondAttribute="leading" id="np6-Ct-cZb"/>
                             <constraint firstItem="BPK-yd-UK7" firstAttribute="leading" secondItem="2Rr-Bl-YlK" secondAttribute="leading" constant="33" id="oN9-do-1kh"/>
                             <constraint firstItem="d3P-sd-wQI" firstAttribute="top" secondItem="Wzt-I1-tMz" secondAttribute="top" constant="5" id="qhC-wn-gJU"/>
@@ -920,6 +937,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uf7-aA-EaL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="ZWe-sy-lKu">
+                    <connections>
+                        <action selector="viewTapped:" destination="u8X-4F-Wje" id="RZL-3k-WNq"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1199.4140625" y="137.48169838945827"/>
         </scene>
