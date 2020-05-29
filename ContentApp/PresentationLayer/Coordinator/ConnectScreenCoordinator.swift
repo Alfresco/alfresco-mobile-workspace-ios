@@ -31,6 +31,8 @@ class ConnectScreenCoordinator: Coordinator {
     private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
     private var basicAuthCoordinator: BasicAuthScreenCoordinator?
     private var aimsCoordinator: AimsScreenCoordinator?
+    var loginService: LoginService?
+    var themeService: MaterialDesignThemingService?
 
     init(with presenter: SplashViewController) {
         self.presenter = presenter
@@ -48,6 +50,8 @@ class ConnectScreenCoordinator: Coordinator {
         containerViewNavigationController.didMove(toParent: presenter)
 
         self.connectViewController = connectViewController
+        self.connectViewController?.model = ConnectViewModel(with: self.loginService)
+        self.connectViewController?.theme = self.themeService
         self.containerViewNavigationController = containerViewNavigationController
     }
 
@@ -60,8 +64,9 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
     func showAdvancedSettingsScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: containerViewNavigationController)
+            advancedSettingsCoordinator.loginService = loginService
+            advancedSettingsCoordinator.themeService = themeService
             advancedSettingsCoordinator.start()
-
             self.advancedSettingsCoordinator = advancedSettingsCoordinator
         }
     }
@@ -69,8 +74,9 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
     func showBasicAuthScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let basicAuthCoordinator = BasicAuthScreenCoordinator(with: containerViewNavigationController)
+            basicAuthCoordinator.loginService = loginService
+            basicAuthCoordinator.themeService = themeService
             basicAuthCoordinator.start()
-
             self.basicAuthCoordinator = basicAuthCoordinator
         }
     }
@@ -78,8 +84,9 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
     func showAimsScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let aimsCoordinator = AimsScreenCoordinator(with: containerViewNavigationController)
+            aimsCoordinator.loginService = loginService
+            aimsCoordinator.themeService = themeService
             aimsCoordinator.start()
-
             self.aimsCoordinator = aimsCoordinator
         }
     }

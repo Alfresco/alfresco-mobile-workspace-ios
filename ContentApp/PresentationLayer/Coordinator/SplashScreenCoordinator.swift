@@ -29,6 +29,8 @@ class SplashScreenCoordinator: Coordinator {
     private var splashScreenViewController: SplashViewController?
     private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
     private var connectScreenCoordinator: ConnectScreenCoordinator?
+    var loginService: LoginService?
+    var themeService: MaterialDesignThemingService?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -38,11 +40,14 @@ class SplashScreenCoordinator: Coordinator {
         // Set up the splash view controller
         let splashScreenViewController = SplashViewController.instantiateViewController()
         splashScreenViewController.coordinatorDelegate = self
+        splashScreenViewController.theme = themeService
         self.splashScreenViewController = splashScreenViewController
         presenter.pushViewController(splashScreenViewController, animated: true)
 
         // Set up the connect view controller
         let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController)
+        connectScreenCoordinator.loginService = loginService
+        connectScreenCoordinator.themeService = themeService
         self.connectScreenCoordinator = connectScreenCoordinator
     }
 }
@@ -58,8 +63,9 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
     func showAdvancedSettingsScreen() {
         let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: presenter)
+        advancedSettingsCoordinator.loginService = loginService
+        advancedSettingsCoordinator.themeService = themeService
         advancedSettingsCoordinator.start()
-
         self.advancedSettingsCoordinator = advancedSettingsCoordinator
     }
 }

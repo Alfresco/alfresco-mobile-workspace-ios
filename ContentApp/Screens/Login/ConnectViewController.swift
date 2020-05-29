@@ -33,13 +33,14 @@ class ConnectViewController: UIViewController {
     @IBOutlet weak var needHelpButton: MDCButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    var keyboardHandling = KeyboardHandling()
-
     weak var splashScreenDelegate: SplashScreenDelegate?
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
+    var model: ConnectViewModel?
 
-    var model: ConnectViewModel = ConnectViewModel()
+    var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
+    var theme: MaterialDesignThemingService?
+
     var enableConnectButton: Bool = false {
         didSet {
             connectButton.isEnabled = enableConnectButton
@@ -51,7 +52,7 @@ class ConnectViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
-        model.delegate = self
+        model?.delegate = self
 
         addLocalization()
         addMaterialComponentsTheme()
@@ -89,7 +90,7 @@ class ConnectViewController: UIViewController {
         guard let connectURL = connectTextField.text else {
             return
         }
-        model.availableAuthType(for: connectURL)
+        model?.availableAuthType(for: connectURL)
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
@@ -120,8 +121,9 @@ class ConnectViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        let theme = MaterialDesignThemingService()
-        theme.activeTheme = DefaultTheme()
+        guard let theme = self.theme else {
+            return
+        }
 
         connectButton.applyContainedTheme(withScheme: theme.containerScheming(for: .loginButton))
         advancedSettingsButton.applyTextTheme(withScheme: theme.containerScheming(for: .loginAdvancedSettingsButton))
@@ -166,10 +168,7 @@ class ConnectViewController: UIViewController {
 extension ConnectViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        let textFieldRect = view.convert(textField.frame, to: UIApplication.shared.windows[0])
-        let heightTextFieldOpened = textFieldRect.size.height
-        keyboardHandling.add(positionObjectInSuperview: textFieldRect.origin.y + heightTextFieldOpened,
-                             in: view)
+        keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
 
