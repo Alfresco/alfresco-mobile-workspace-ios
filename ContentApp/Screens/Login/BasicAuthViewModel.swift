@@ -23,8 +23,16 @@ protocol BasicAuthViewModelDelegate: class {
 
 class BasicAuthViewModel {
     weak var delegate: BasicAuthViewModelDelegate?
-    var authParameters = AuthSettingsParameters.parameters()
+    var authenticationService: LoginService?
+
+    init(with loginService: LoginService?) {
+        authenticationService = loginService
+    }
 
     func authenticate(username: String, password: String) {
+    }
+
+    func hostname() -> String {
+        return authenticationService?.authParameters.hostname ?? ""
     }
 }

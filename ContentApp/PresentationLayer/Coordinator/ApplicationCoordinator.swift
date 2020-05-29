@@ -22,12 +22,18 @@ class ApplicationCoordinator: Coordinator {
     let window: UIWindow
     let rootViewController: UINavigationController
     let splashScreenCoordinator: SplashScreenCoordinator
+    var loginService: LoginService
+    var themeService: MaterialDesignThemingService
 
     init(window: UIWindow) {
         self.window = window
-
+        self.themeService = MaterialDesignThemingService()
+        themeService.activeTheme = DefaultTheme()
+        self.loginService = LoginService(with: AuthSettingsParameters.parameters())
         rootViewController = UINavigationController()
         splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+        splashScreenCoordinator.loginService = loginService
+        splashScreenCoordinator.themeService = themeService
     }
 
     func start() {
