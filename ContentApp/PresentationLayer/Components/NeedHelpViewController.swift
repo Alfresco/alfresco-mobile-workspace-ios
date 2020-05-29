@@ -50,8 +50,9 @@ class NeedHelpViewController: UIViewController {
         }
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         textView.contentInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         textView.contentOffset = .zero
         textViewHeightConstraint.constant = textView.calculatedContentSize().height

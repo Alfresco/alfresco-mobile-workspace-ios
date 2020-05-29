@@ -37,6 +37,7 @@ class AimsViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
+    weak var aimsScreenCoordinatorDelegate: AimsScreenCoordinatorDelegate?
     var viewModel: AimsViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
@@ -72,6 +73,7 @@ class AimsViewController: UIViewController {
     }
 
     @IBAction func needHelpButtonTapped(_ sender: Any) {
+        aimsScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {

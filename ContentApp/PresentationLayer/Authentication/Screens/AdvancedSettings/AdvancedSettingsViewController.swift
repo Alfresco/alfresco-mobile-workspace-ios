@@ -96,6 +96,7 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
+        advSettingsScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
@@ -229,7 +230,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
             return true
         }
-//        scrollView.scrollToView(view: nextTextField, animated: true)
+
         nextTextField.becomeFirstResponder()
         return true
     }

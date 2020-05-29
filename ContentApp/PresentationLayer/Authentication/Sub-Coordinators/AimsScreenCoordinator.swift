@@ -18,9 +18,14 @@
 
 import UIKit
 
+protocol AimsScreenCoordinatorDelegate: class {
+    func showNeedHelpSheet()
+}
+
 class AimsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var aimsViewController: AimsViewController?
+    private var needHelpCoordinator: NeedHelpCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -28,9 +33,20 @@ class AimsScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = AimsViewController.instantiateViewController()
-        aimsViewController = viewController
-        aimsViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        aimsViewController?.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        viewController.aimsScreenCoordinatorDelegate = self
+        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
         presenter.pushViewController(viewController, animated: true)
+
+        aimsViewController = viewController
+    }
+}
+
+extension AimsScreenCoordinator: AimsScreenCoordinatorDelegate {
+    func showNeedHelpSheet() {
+        let needHelpCoordinator = NeedHelpCoordinator(with: presenter, model: NeedHelpAIMSModel())
+        needHelpCoordinator.start()
+
+        self.needHelpCoordinator = needHelpCoordinator
     }
 }

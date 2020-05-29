@@ -20,11 +20,13 @@ import UIKit
 
 protocol AdvancedSettingsScreenCoordinatorDelegate: class {
     func dismiss()
+    func showNeedHelpSheet()
 }
 
 class AdvancedSettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var advancedSettingsViewController: AdvancedSettingsViewController?
+    private var needHelpCoordinator: NeedHelpCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -40,6 +42,13 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
 }
 
 extension AdvancedSettingsScreenCoordinator: AdvancedSettingsScreenCoordinatorDelegate {
+    func showNeedHelpSheet() {
+        let needHelpCoordinator = NeedHelpCoordinator(with: presenter, model: NeedHelpAdvancedSettingsModel())
+        needHelpCoordinator.start()
+
+        self.needHelpCoordinator = needHelpCoordinator
+    }
+
     func dismiss() {
         self.presenter.popViewController(animated: true)
     }

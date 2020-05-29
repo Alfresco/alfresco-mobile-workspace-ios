@@ -30,7 +30,7 @@ extension UITextView {
         let selectable = self.isSelectable
         self.isSelectable = true
 
-        let textSize = self.attributedText.boundingRect(with: CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading] , context: nil).size
+        let textSize = self.attributedText.boundingRect(with: CGSize(width: maxWidth, height: CGFloat.greatestFiniteMagnitude), options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).size
         self.isSelectable = selectable
 
         contentSize.height = CGFloat(ceilf(Float(textSize.height)))
