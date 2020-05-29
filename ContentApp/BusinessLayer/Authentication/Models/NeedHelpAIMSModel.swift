@@ -16,23 +16,9 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
-
-    init(window: UIWindow) {
-        self.window = window
-
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
-    }
-
-    func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
-    }
+struct NeedHelpAIMSModel: NeedHelpModelProtocol {
+    var titleText = LocalizationConstants.Labels.needHelpTitle
+    var hintText = LocalizationConstants.Textviews.ssoHint
 }

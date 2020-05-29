@@ -14,6 +14,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', :inhibit_warnings => true
+  pod 'MaterialComponents/BottomSheet'
 
   target 'ContentAppTests' do
     inherit! :search_paths

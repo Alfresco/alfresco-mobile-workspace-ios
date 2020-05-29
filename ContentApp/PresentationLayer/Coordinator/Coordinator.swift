@@ -19,3 +19,9 @@
 protocol Coordinator {
     func start()
 }
+
+extension Coordinator {
+    var serviceRepository: ServiceRepository {
+        return ApplicationBootstrap.shared().serviceRepository
+    }
+}

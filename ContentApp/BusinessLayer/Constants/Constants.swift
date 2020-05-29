@@ -16,23 +16,11 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
+let kDefaultLoginUnsecuredPort = "80"
+let kDefaultLoginSecuredPort = "443"
 
-    init(window: UIWindow) {
-        self.window = window
-
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
-    }
-
-    func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
-    }
-}
+let kAnimationSplashScreenLogo = 2.0
+let kAnimationSplashScreenContainerViews = 1.5

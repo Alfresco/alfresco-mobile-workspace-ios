@@ -18,21 +18,19 @@
 
 import UIKit
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+class AimsScreenCoordinator: Coordinator {
+    private let presenter: UINavigationController
+    private var aimsViewController: AimsViewController?
 
-    init(window: UIWindow) {
-        self.window = window
-
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+    init(with presenter: UINavigationController) {
+        self.presenter = presenter
     }
 
     func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
+        let viewController = AimsViewController.instantiateViewController()
+        aimsViewController = viewController
+        aimsViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        aimsViewController?.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        presenter.pushViewController(viewController, animated: true)
     }
 }
