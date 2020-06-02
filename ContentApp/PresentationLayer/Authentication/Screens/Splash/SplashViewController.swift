@@ -168,6 +168,7 @@ extension SplashViewController: SplashScreenDelegate {
     }
 
     func showAdvancedSettingsScreen() {
+        self.view.endEditing(true)
         coordinatorDelegate?.showAdvancedSettingsScreen()
     }
 }

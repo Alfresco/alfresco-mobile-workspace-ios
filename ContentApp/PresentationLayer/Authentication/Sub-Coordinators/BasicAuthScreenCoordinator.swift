@@ -31,6 +31,6 @@ class BasicAuthScreenCoordinator: Coordinator {
         basicAuthViewController = viewController
         basicAuthViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         basicAuthViewController?.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
-        presenter.pushViewController(viewController, animated: true)
+        presenter.pushViewController(viewController, animated: kPushAnimation)
     }
 }
