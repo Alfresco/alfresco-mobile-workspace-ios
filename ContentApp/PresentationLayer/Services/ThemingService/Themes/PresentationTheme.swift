@@ -34,8 +34,11 @@ protocol PresentationTheme {
     var loginTitleLabelFont: UIFont { get }
     var loginInfoLabelFont: UIFont { get }
     var loginInfoHostnameLabelFont: UIFont { get }
+    var needHelpTitleLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
+    /// Textviews
+    var needHelpHintTextViewFont: UIFont { get }
 
     // COLORS - LOGIN COMPONENTS
     /// Buttons
@@ -51,15 +54,17 @@ protocol PresentationTheme {
     var loginInfoLabelColor: UIColor { get }
     var loginFieldDisableLabelColor: UIColor { get }
     var loginTitleLabelColor: UIColor { get }
+    var needHelpTitleColor: UIColor { get }
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
     var loginTextFieldErrorColor: UIColor { get }
     var loginTextFieldOnSurfaceColor: UIColor { get }
     var loginTextFieldIconColor: UIColor { get }
+    /// Textviews
+    var needHelpHintTextViewColor: UIColor { get }
 }
 
 struct DefaultTheme: PresentationTheme {
-
     // MARK: - TYPOGRAPHY - LOGIN COMPONENTS
     /// Buttons
     var loginButtonFont = UIFont.systemFont(ofSize: 22)
@@ -74,8 +79,11 @@ struct DefaultTheme: PresentationTheme {
     var loginTitleLabelFont = UIFont.systemFont(ofSize: 20)
     var loginInfoLabelFont = UIFont.systemFont(ofSize: 12)
     var loginInfoHostnameLabelFont = UIFont.systemFont(ofSize: 14)
+    var needHelpTitleLabelFont: UIFont = UIFont.systemFont(ofSize: 24)
     /// TextFields
     var loginTextFieldFont = UIFont.systemFont(ofSize: 16)
+    /// TextViews
+    var needHelpHintTextViewFont: UIFont = UIFont.systemFont(ofSize: 14)
 
     // MARK: - COLORS - LOGIN COMPONENTS
     /// Buttons
@@ -91,9 +99,12 @@ struct DefaultTheme: PresentationTheme {
     var loginFieldDisableLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
     var loginTitleLabelColor = #colorLiteral(red: 0.1254901961, green: 0.1254901961, blue: 0.1254901961, alpha: 1)
     var loginInfoLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
+    var needHelpTitleColor = #colorLiteral(red: 0.2745098039, green: 0.2745098039, blue: 0.2745098039, alpha: 1)
     /// TextFields
     var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
     var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
     var loginTextFieldOnSurfaceColor = #colorLiteral(red: 0.2078431373, green: 0.2078431373, blue: 0.2078431373, alpha: 1)
     var loginTextFieldIconColor = #colorLiteral(red: 0.7098039216, green: 0.7098039216, blue: 0.7098039216, alpha: 1)
+    /// Textviews
+    var needHelpHintTextViewColor = #colorLiteral(red: 0.2980392157, green: 0.2980392157, blue: 0.2980392157, alpha: 1)
 }

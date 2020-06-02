@@ -36,10 +36,15 @@ extension NameDescribable {
 }
 
 protocol Service: NameDescribable {
+    static var serviceIdentifier: ServiceIdentifier { get }
     var serviceIdentifier: ServiceIdentifier { get }
 }
 
 extension Service {
+    static var serviceIdentifier: ServiceIdentifier {
+        return typeName
+    }
+
     var serviceIdentifier: ServiceIdentifier {
         return typeName
     }
