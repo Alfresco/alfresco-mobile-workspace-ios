@@ -71,6 +71,7 @@ steps:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(Build.BuildId)'
+    versionName: 
     printFile: true
 
 - task: Xcode@5
