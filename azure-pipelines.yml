@@ -66,6 +66,13 @@ steps:
     failTaskOnFailedTests: true
     testRunTitle: 'Publishing test results'
 
+- task: ios-bundle-version@1
+  inputs:
+    sourcePath: 'ContentApp/Supporting Files/Info.plist'
+    versionCodeOption: 'buildid'
+    versionCode: '$(Build.BuildId)'
+    printFile: true
+
 - task: Xcode@5
   displayName: 'Generate Content IPA'
   inputs:
