@@ -21,7 +21,7 @@ import Foundation
 class AuthSettingsParameters: Codable {
     var https: Bool = false
     var port: String = "80"
-    var serviceDocument: String = "content-app"
+    var serviceDocument: String = "alfresco"
     var realm: String = "alfresco"
     var clientID: String = "alfresco-ios-acs-app"
     var redirectURI: String = "iosacsapp://aims/auth"
@@ -32,6 +32,15 @@ class AuthSettingsParameters: Codable {
         if port.count != 0 {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }
+        return fullFormatURL
+    }
+
+    var fullHostnameBasicAuthGetProfileURL: String {
+        var fullFormatURL = "\(https ? "https" : "http")://\(hostname)"
+        if port.count != 0 {
+            fullFormatURL.append(":\(port)")
+        }
+        fullFormatURL.append("/" + serviceDocument + kPathGetProfile)
         return fullFormatURL
     }
 

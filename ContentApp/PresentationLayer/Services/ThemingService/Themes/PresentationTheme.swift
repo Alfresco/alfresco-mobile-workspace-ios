@@ -67,21 +67,21 @@ protocol PresentationTheme {
 struct DefaultTheme: PresentationTheme {
     // MARK: - TYPOGRAPHY - LOGIN COMPONENTS
     /// Buttons
-    var loginButtonFont = UIFont.systemFont(ofSize: 22)
-    var loginUtilitiesButtonFont = UIFont.systemFont(ofSize: 14)
-    var loginSavePadButtonFont = UIFont.systemFont(ofSize: 17)
+    var loginButtonFont = UIFont.alfrescoRegularFont(ofSize: 22)
+    var loginUtilitiesButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
+    var loginSavePadButtonFont = UIFont.alfrescoRegularFont(ofSize: 17)
     /// Labels
-    var productLabelFont = UIFont.systemFont(ofSize: 24)
-    var applicationTitleFont = UIFont.systemFont(ofSize: 24)
-    var loginCopyrightLabelFont = UIFont.systemFont(ofSize: 12)
-    var loginFieldLabelFont = UIFont.systemFont(ofSize: 16)
-    var loginHTTPSLabelFont = UIFont.systemFont(ofSize: 17)
-    var loginTitleLabelFont = UIFont.systemFont(ofSize: 20)
-    var loginInfoLabelFont = UIFont.systemFont(ofSize: 12)
-    var loginInfoHostnameLabelFont = UIFont.systemFont(ofSize: 14)
+    var productLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
+    var applicationTitleFont = UIFont.alfrescoRegularFont(ofSize: 24)
+    var loginCopyrightLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
+    var loginFieldLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
+    var loginHTTPSLabelFont = UIFont.alfrescoRegularFont(ofSize: 17)
+    var loginTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 20)
+    var loginInfoLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
+    var loginInfoHostnameLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
     var needHelpTitleLabelFont: UIFont = UIFont.systemFont(ofSize: 24)
     /// TextFields
-    var loginTextFieldFont = UIFont.systemFont(ofSize: 16)
+    var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextViews
     var needHelpHintTextViewFont: UIFont = UIFont.systemFont(ofSize: 14)
 

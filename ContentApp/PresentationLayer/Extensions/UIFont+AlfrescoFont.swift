@@ -19,11 +19,8 @@
 import Foundation
 import UIKit
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "/api/-default-/public/alfresco/versions/1/people/-me-"
-
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+extension UIFont {
+    class func alfrescoRegularFont(ofSize fontSize: CGFloat) -> UIFont {
+        return UIFont.systemFont(ofSize: fontSize)
+    }
+}

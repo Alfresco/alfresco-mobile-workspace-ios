@@ -73,6 +73,7 @@ class AdvancedSettingsViewController: UIViewController {
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
+        self.view.endEditing(true)
         advSettingsScreenCoordinatorDelegate?.dismiss()
     }
 

@@ -36,7 +36,7 @@ class AimsScreenCoordinator: Coordinator {
         viewController.aimsScreenCoordinatorDelegate = self
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
-        presenter.pushViewController(viewController, animated: true)
+        presenter.pushViewController(viewController, animated: kPushAnimation)
 
         aimsViewController = viewController
     }

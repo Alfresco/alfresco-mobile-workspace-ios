@@ -55,6 +55,8 @@ class BasicAuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel?.delegate = self
+
         addLocalization()
         addMaterialComponentsTheme()
         enableSignInButton = false
@@ -134,6 +136,14 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
     }
+
+    func showAlert(message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 extension BasicAuthViewController: UITextFieldDelegate {
@@ -174,6 +184,16 @@ extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         enableSignInButton = (usernameTextField.text != "" && passwordTextField.text != "")
+    }
+}
+
+extension BasicAuthViewController: BasicAuthViewModelDelegate {
+   func logInFailed(with error: Error) {
+        showAlert(message: error.localizedDescription)
+    }
+
+    func logInSuccessful() {
+        showAlert(message: "Login with AIMS with success!")
     }
 }
 
