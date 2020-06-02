@@ -19,6 +19,8 @@
 import Foundation
 
 protocol BasicAuthViewModelDelegate: class {
+    func logInFailed(with error: Error)
+    func logInSuccessful()
 }
 
 class BasicAuthViewModel {
@@ -30,6 +32,16 @@ class BasicAuthViewModel {
     }
 
     func authenticate(username: String, password: String) {
+        authenticationService?.basicAuthentication(username: username, password: password, handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success:
+                sSelf.delegate?.logInSuccessful()
+            case .failure(let error):
+                AlfrescoLog.error("Error basic-auth: \(error.localizedDescription)")
+                sSelf.delegate?.logInFailed(with: error)
+            }
+        })
     }
 
     func hostname() -> String {
