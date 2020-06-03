@@ -37,11 +37,13 @@ class AimsViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
+    weak var splashScreenDelegate: SplashScreenDelegate?
     weak var aimsScreenCoordinatorDelegate: AimsScreenCoordinatorDelegate?
     var viewModel: AimsViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
+    var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -62,6 +64,17 @@ class AimsViewController: UIViewController {
         enableSignInButton = (repositoryTextField.text != "")
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicator = ActivityIndicatorView(themingService: themingService)
+        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        activityIndicator?.reload(from: size)
+    }
+
     // MARK: - IBActions
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
@@ -69,6 +82,7 @@ class AimsViewController: UIViewController {
         guard let repositoryURL = repositoryTextField.text else {
             return
         }
+        activityIndicator?.state = .isLoading
         viewModel?.login(repository: repositoryURL, in: self)
     }
 
@@ -132,6 +146,8 @@ class AimsViewController: UIViewController {
     }
 }
 
+// MARK: - UITextField Delegate
+
 extension AimsViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -155,14 +171,20 @@ extension AimsViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - Aims ViewModel Delegate
+
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
+        activityIndicator?.state = .isIdle
         showAlert(message: error.localizedDescription)
     }
 
     func logInSuccessful() {
+        activityIndicator?.state = .isIdle
         showAlert(message: "Login with AIMS with success!")
     }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension AimsViewController: StoryboardInstantiable { }

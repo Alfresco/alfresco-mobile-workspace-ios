@@ -24,11 +24,13 @@ protocol AimsScreenCoordinatorDelegate: class {
 
 class AimsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
+    private let splashScreen: SplashViewController
     private var aimsViewController: AimsViewController?
     private var needHelpCoordinator: NeedHelpCoordinator?
 
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController, splashScreen: SplashViewController) {
         self.presenter = presenter
+        self.splashScreen = splashScreen
     }
 
     func start() {
@@ -36,8 +38,8 @@ class AimsScreenCoordinator: Coordinator {
         viewController.aimsScreenCoordinatorDelegate = self
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        viewController.splashScreenDelegate = self.splashScreen
         presenter.pushViewController(viewController, animated: kPushAnimation)
-
         aimsViewController = viewController
     }
 }
@@ -46,7 +48,6 @@ extension AimsScreenCoordinator: AimsScreenCoordinatorDelegate {
     func showNeedHelpSheet() {
         let needHelpCoordinator = NeedHelpCoordinator(with: presenter, model: NeedHelpAIMSModel())
         needHelpCoordinator.start()
-
         self.needHelpCoordinator = needHelpCoordinator
     }
 }

@@ -38,10 +38,12 @@ class BasicAuthViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
+    weak var splashScreenDelegate: SplashScreenDelegate?
     var viewModel: BasicAuthViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
+    var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -62,6 +64,17 @@ class BasicAuthViewController: UIViewController {
         enableSignInButton = false
     }
 
+   override func viewWillAppear(_ animated: Bool) {
+       super.viewWillAppear(animated)
+       activityIndicator = ActivityIndicatorView(themingService: themingService)
+       activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+   }
+
+   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+       super.viewWillTransition(to: size, with: coordinator)
+       activityIndicator?.reload(from: size)
+   }
+
     // MARK: - IBActions
 
     @IBAction func signInButtonTapped(_ sender: Any) {
@@ -69,6 +82,7 @@ class BasicAuthViewController: UIViewController {
         guard let username = usernameTextField.text, let password = passwordTextField.text else {
             return
         }
+        activityIndicator?.state = .isLoading
         viewModel?.authenticate(username: username, password: password)
     }
 
@@ -146,6 +160,8 @@ class BasicAuthViewController: UIViewController {
     }
 }
 
+// MARK: - UITextField Delegate
+
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
@@ -188,13 +204,17 @@ extension BasicAuthViewController: UITextFieldDelegate {
 }
 
 extension BasicAuthViewController: BasicAuthViewModelDelegate {
-   func logInFailed(with error: Error) {
+    func logInFailed(with error: Error) {
+        activityIndicator?.state = .isIdle
         showAlert(message: error.localizedDescription)
     }
 
     func logInSuccessful() {
+        activityIndicator?.state = .isIdle
         showAlert(message: "Login with AIMS with success!")
     }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension BasicAuthViewController: StoryboardInstantiable { }

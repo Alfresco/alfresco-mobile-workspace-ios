@@ -46,6 +46,8 @@
 "infoConnectTo" = "Connect to";
 "loginAllowSSO" = "To allow successful single sign on access, please provide the location of your Content Services environment.";
 "needHelpTitle" = "Help";
+"connecting" = "Connecting";
+"signingIn" = "Signing In";
 
 // MARK: - Screen Titles
 "advancedSettings" = "Advanced Settings";

@@ -20,7 +20,8 @@ import UIKit
 
 protocol SplashScreenDelegate: class {
     func showAdvancedSettingsScreen()
-    func showBackPadButton(enable: Bool)
+    func backPadButton(hidden: Bool)
+    func backPadButton(userInteraction: Bool)
 }
 
 class SplashViewController: UIViewController {
@@ -46,6 +47,8 @@ class SplashViewController: UIViewController {
     let shadowLayerOpacity: Float = 0.4
 
     var themingService: MaterialDesignThemingService?
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +78,7 @@ class SplashViewController: UIViewController {
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         shadowLayer?.removeFromSuperlayer()
         if isAnimationInProgress {
             wasRotatedInAnimationProgress = true
@@ -158,10 +162,12 @@ class SplashViewController: UIViewController {
     }
 }
 
+// MARK: - SplashScreen Delegate
+
 extension SplashViewController: SplashScreenDelegate {
-    func showBackPadButton(enable: Bool) {
+    func backPadButton(hidden: Bool) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            backButton.isHidden = !enable
+            backButton.isHidden = !hidden
         } else {
             backButton.isHidden = true
         }
@@ -171,6 +177,12 @@ extension SplashViewController: SplashScreenDelegate {
         self.view.endEditing(true)
         coordinatorDelegate?.showAdvancedSettingsScreen()
     }
+
+    func backPadButton(userInteraction: Bool) {
+        backButton.isUserInteractionEnabled = userInteraction
+    }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension SplashViewController: StoryboardInstantiable { }
