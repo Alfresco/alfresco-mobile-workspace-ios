@@ -42,16 +42,15 @@ class ConnectScreenCoordinator: Coordinator {
         let connectViewController = ConnectViewController.instantiateViewController()
         connectViewController.splashScreenDelegate = presenter
         connectViewController.connectScreenCoordinatorDelegate = self
-        let containerViewNavigationController = UINavigationController(rootViewController: connectViewController)
+        connectViewController.viewModel = ConnectViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        connectViewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        self.connectViewController = connectViewController
 
+        let containerViewNavigationController = UINavigationController(rootViewController: connectViewController)
         presenter.addChild(containerViewNavigationController)
         containerViewNavigationController.view.frame = CGRect(x: 0, y: 0, width: presenter.containerView.frame.size.width, height: presenter.containerView.frame.size.height)
         presenter.containerView.addSubview(containerViewNavigationController.view)
         containerViewNavigationController.didMove(toParent: presenter)
-
-        self.connectViewController = connectViewController
-        self.connectViewController?.viewModel = ConnectViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
-        self.connectViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         self.containerViewNavigationController = containerViewNavigationController
     }
 
@@ -71,7 +70,7 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
 
     func showBasicAuthScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
-            let basicAuthCoordinator = BasicAuthScreenCoordinator(with: containerViewNavigationController)
+            let basicAuthCoordinator = BasicAuthScreenCoordinator(with: containerViewNavigationController, splashScreen: self.presenter)
             basicAuthCoordinator.start()
             self.basicAuthCoordinator = basicAuthCoordinator
         }
@@ -79,7 +78,7 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
 
     func showAimsScreen() {
         if let containerViewNavigationController = self.containerViewNavigationController {
-            let aimsCoordinator = AimsScreenCoordinator(with: containerViewNavigationController)
+            let aimsCoordinator = AimsScreenCoordinator(with: containerViewNavigationController, splashScreen: self.presenter)
             aimsCoordinator.start()
             self.aimsCoordinator = aimsCoordinator
         }
@@ -89,7 +88,6 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let needHelpCoordinator = NeedHelpCoordinator(with: containerViewNavigationController, model: NeedHelpConnectScreenModel())
             needHelpCoordinator.start()
-
             self.needHelpCoordinator = needHelpCoordinator
         }
     }

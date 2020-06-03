@@ -40,6 +40,7 @@ class ConnectViewController: UIViewController {
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var themingService: MaterialDesignThemingService?
+    var activityIndicator: ActivityIndicatorView?
 
     var enableConnectButton: Bool = false {
         didSet {
@@ -61,8 +62,10 @@ class ConnectViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        activityIndicator = ActivityIndicatorView(themingService: themingService)
         navigationBar(hide: true)
-        self.splashScreenDelegate?.showBackPadButton(enable: false)
+        self.splashScreenDelegate?.backPadButton(hidden: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -83,6 +86,11 @@ class ConnectViewController: UIViewController {
         navigationBar(hide: false)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        activityIndicator?.reload(from: size)
+    }
+
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
@@ -90,6 +98,7 @@ class ConnectViewController: UIViewController {
         guard let connectURL = connectTextField.text else {
             return
         }
+        activityIndicator?.state = .isLoading
         viewModel?.availableAuthType(for: connectURL)
     }
 
@@ -118,6 +127,7 @@ class ConnectViewController: UIViewController {
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+
     }
 
     func addMaterialComponentsTheme() {
@@ -193,9 +203,10 @@ extension ConnectViewController: UITextFieldDelegate {
 extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceAvailable(for authType: AvailableAuthType) {
+        activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.splashScreenDelegate?.showBackPadButton(enable: true)
+            sSelf.splashScreenDelegate?.backPadButton(hidden: true)
             switch authType {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
@@ -206,8 +217,11 @@ extension ConnectViewController: ConnectViewModelDelegate {
     }
 
     func authServiceUnavailable(with error: APIError) {
+        activityIndicator?.state = .isIdle
         showAlert(message: error.localizedDescription)
     }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension ConnectViewController: StoryboardInstantiable { }

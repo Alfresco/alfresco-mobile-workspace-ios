@@ -51,6 +51,8 @@ struct LocalizationConstants {
         static let infoConnectTo = NSLocalizedString("infoConnectTo", comment: "")
         static let allowSSO = NSLocalizedString("loginAllowSSO", comment: "")
         static let needHelpTitle = NSLocalizedString("needHelpTitle", comment: "")
+        static let conneting = NSLocalizedString("connecting", comment: "")
+        static let signingIn = NSLocalizedString("signingIn", comment: "")
     }
 
     struct ScreenTitles {

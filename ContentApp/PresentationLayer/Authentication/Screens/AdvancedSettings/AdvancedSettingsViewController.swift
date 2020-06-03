@@ -62,6 +62,8 @@ class AdvancedSettingsViewController: UIViewController {
         }
     }
 
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
@@ -207,8 +209,9 @@ class AdvancedSettingsViewController: UIViewController {
     }
 }
 
-extension AdvancedSettingsViewController: UITextFieldDelegate {
+// MARK: - UITextField Delegate
 
+extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
         return true
@@ -237,15 +240,6 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
     }
 }
 
-extension UIScrollView {
-
-    func scrollToView(view: UIView, animated: Bool) {
-        if let origin = view.superview {
-            let childStartPoint = origin.convert(view.frame.origin, to: self)
-            self.scrollRectToVisible(CGRect(x: 0, y: childStartPoint.y, width: 1, height: self.frame.height), animated: animated)
-        }
-    }
-
-}
+// MARK: - Storyboard Instantiable
 
 extension AdvancedSettingsViewController: StoryboardInstantiable { }

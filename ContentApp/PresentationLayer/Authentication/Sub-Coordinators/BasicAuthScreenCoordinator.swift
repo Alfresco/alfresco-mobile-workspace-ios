@@ -21,16 +21,19 @@ import UIKit
 class BasicAuthScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var basicAuthViewController: BasicAuthViewController?
+    private let splashScreen: SplashViewController
 
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController, splashScreen: SplashViewController) {
         self.presenter = presenter
+        self.splashScreen = splashScreen
     }
 
     func start() {
         let viewController = BasicAuthViewController.instantiateViewController()
-        basicAuthViewController = viewController
-        basicAuthViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        basicAuthViewController?.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        viewController.splashScreenDelegate = self.splashScreen
+        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
         presenter.pushViewController(viewController, animated: kPushAnimation)
+        basicAuthViewController = viewController
     }
 }

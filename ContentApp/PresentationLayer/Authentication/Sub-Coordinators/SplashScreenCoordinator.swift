@@ -39,9 +39,8 @@ class SplashScreenCoordinator: Coordinator {
         let splashScreenViewController = SplashViewController.instantiateViewController()
         splashScreenViewController.coordinatorDelegate = self
         splashScreenViewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        self.splashScreenViewController = splashScreenViewController
         presenter.pushViewController(splashScreenViewController, animated: true)
-
+        self.splashScreenViewController = splashScreenViewController
         // Set up the connect view controller
         let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController)
         self.connectScreenCoordinator = connectScreenCoordinator

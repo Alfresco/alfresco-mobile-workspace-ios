@@ -34,10 +34,10 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = AdvancedSettingsViewController.instantiateViewController()
-        advancedSettingsViewController = viewController
-        advancedSettingsViewController?.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        advancedSettingsViewController?.advSettingsScreenCoordinatorDelegate = self
+        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.advSettingsScreenCoordinatorDelegate = self
         presenter.pushViewController(viewController, animated: true)
+        advancedSettingsViewController = viewController
     }
 }
 
@@ -45,7 +45,6 @@ extension AdvancedSettingsScreenCoordinator: AdvancedSettingsScreenCoordinatorDe
     func showNeedHelpSheet() {
         let needHelpCoordinator = NeedHelpCoordinator(with: presenter, model: NeedHelpAdvancedSettingsModel())
         needHelpCoordinator.start()
-
         self.needHelpCoordinator = needHelpCoordinator
     }
 

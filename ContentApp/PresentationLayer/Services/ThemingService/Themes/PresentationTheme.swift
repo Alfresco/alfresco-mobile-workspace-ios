@@ -35,6 +35,7 @@ protocol PresentationTheme {
     var loginInfoLabelFont: UIFont { get }
     var loginInfoHostnameLabelFont: UIFont { get }
     var needHelpTitleLabelFont: UIFont { get }
+    var activityIndicatorLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
     /// Textviews
@@ -55,6 +56,7 @@ protocol PresentationTheme {
     var loginFieldDisableLabelColor: UIColor { get }
     var loginTitleLabelColor: UIColor { get }
     var needHelpTitleColor: UIColor { get }
+    var activityIndicatorLabelColor: UIColor { get }
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
     var loginTextFieldErrorColor: UIColor { get }
@@ -62,6 +64,8 @@ protocol PresentationTheme {
     var loginTextFieldIconColor: UIColor { get }
     /// Textviews
     var needHelpHintTextViewColor: UIColor { get }
+    /// Views
+    var activityIndicatorViewColor: UIColor { get }
 }
 
 struct DefaultTheme: PresentationTheme {
@@ -79,7 +83,8 @@ struct DefaultTheme: PresentationTheme {
     var loginTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 20)
     var loginInfoLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
     var loginInfoHostnameLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var needHelpTitleLabelFont: UIFont = UIFont.systemFont(ofSize: 24)
+    var needHelpTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
+    var activityIndicatorLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextFields
     var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextViews
@@ -100,6 +105,7 @@ struct DefaultTheme: PresentationTheme {
     var loginTitleLabelColor = #colorLiteral(red: 0.1254901961, green: 0.1254901961, blue: 0.1254901961, alpha: 1)
     var loginInfoLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
     var needHelpTitleColor = #colorLiteral(red: 0.2745098039, green: 0.2745098039, blue: 0.2745098039, alpha: 1)
+    var activityIndicatorLabelColor = #colorLiteral(red: 0.568627451, green: 0.568627451, blue: 0.568627451, alpha: 1)
     /// TextFields
     var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
     var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
@@ -107,4 +113,6 @@ struct DefaultTheme: PresentationTheme {
     var loginTextFieldIconColor = #colorLiteral(red: 0.7098039216, green: 0.7098039216, blue: 0.7098039216, alpha: 1)
     /// Textviews
     var needHelpHintTextViewColor = #colorLiteral(red: 0.2980392157, green: 0.2980392157, blue: 0.2980392157, alpha: 1)
+    /// Views
+    var activityIndicatorViewColor = #colorLiteral(red: 0.07236295193, green: 0.6188754439, blue: 0.2596520483, alpha: 1)
 }
