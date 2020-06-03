@@ -17,15 +17,8 @@
 //
 
 import Foundation
-import UIKit
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
-
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
-
-let kSessionExpirationTimeIntervalCheck = 20
+protocol AuthenticationProviderProtocol {
+    func authorizationHeader() -> String
+    func areCredentialsValid() -> Bool
+}

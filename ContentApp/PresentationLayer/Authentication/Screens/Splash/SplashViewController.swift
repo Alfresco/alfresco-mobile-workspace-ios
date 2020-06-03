@@ -119,14 +119,16 @@ class SplashViewController: UIViewController {
 
     func animateLogo() {
         self.logoWidthConstraint.constant += 30.0
-        UIView.animate(withDuration: kAnimationSplashScreenLogo, animations: { [weak self] in
+
+        UIView.animate(withDuration: kAnimationSplashScreenLogo, animations: {
+            [weak self] in
             guard let sSelf = self else { return }
             sSelf.view.layoutIfNeeded()
-        }) { [weak self] _ in
+        }, completion: { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.logoImageView.isHidden = true
             sSelf.animateContainerViews()
-        }
+        })
     }
 
     func animateContainerViews() {
@@ -143,10 +145,10 @@ class SplashViewController: UIViewController {
         UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
             guard let sSelf = self else { return }
             sSelf.containerViews(alpha: 1.0, hidden: false)
-        }) { [weak self] _ in
+        }, completion: { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.isAnimationInProgress = false
-        }
+        })
     }
 
     func containerViews(alpha: CGFloat, hidden: Bool) {
