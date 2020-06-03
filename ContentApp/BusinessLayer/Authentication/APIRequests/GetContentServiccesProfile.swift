@@ -17,15 +17,28 @@
 //
 
 import Foundation
-import UIKit
+import AlfrescoCore
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
+struct GetContentServicesProfile: APIRequest {
+    typealias Response = StatusCodeResponse
+    let authenticationProvider: BasicAuthenticationProvider
 
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+    var path: String {
+        return kPathGetProfile
+    }
 
-let kSessionExpirationTimeIntervalCheck = 20
+    var method: HttpMethod {
+        return .get
+    }
+    var headers: [String: String] {
+        return ["Authorization": authenticationProvider.authorizationHeader()]
+    }
+
+    var parameters: [String: String] {
+        return [:]
+    }
+
+    init(with authenticationProvider: BasicAuthenticationProvider) {
+        self.authenticationProvider = authenticationProvider
+    }
+}

@@ -1,13 +1,13 @@
 PODS:
-  - AlfrescoAuth (2.1.0):
+  - AlfrescoAuth (2.1.1):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoCore (2.0.0)
-  - AppAuth (1.3.0):
-    - AppAuth/Core (= 1.3.0)
-    - AppAuth/ExternalUserAgent (= 1.3.0)
-  - AppAuth/Core (1.3.0)
-  - AppAuth/ExternalUserAgent (1.3.0)
+  - AlfrescoCore (2.0.1)
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - MaterialComponents/ActivityIndicator (109.5.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
@@ -142,7 +142,7 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
     - AlfrescoAuth
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
@@ -155,9 +155,9 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
-  AlfrescoAuth: 0e4d598845d5efd41eaadf2d16981bf59fdc5095
-  AlfrescoCore: d28a8593e87b52952f70a5378b4047770f404af5
-  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
+  AlfrescoAuth: daa4c9858d37170aa88c17ae3368f585e8f7a020
+  AlfrescoCore: f6a118f7b271d8843143ad5e2c28794f5a50b150
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   MaterialComponents: 7698cdf7eacb5f192456dbbe597aa7a8857fa3ef
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53

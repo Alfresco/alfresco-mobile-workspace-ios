@@ -35,15 +35,6 @@ class AuthSettingsParameters: Codable {
         return fullFormatURL
     }
 
-    var fullHostnameBasicAuthGetProfileURL: String {
-        var fullFormatURL = "\(https ? "https" : "http")://\(hostname)"
-        if port.count != 0 {
-            fullFormatURL.append(":\(port)")
-        }
-        fullFormatURL.append("/" + serviceDocument + kPathGetProfile)
-        return fullFormatURL
-    }
-
     var fullContentURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", contentURL)
         if port.count != 0 {

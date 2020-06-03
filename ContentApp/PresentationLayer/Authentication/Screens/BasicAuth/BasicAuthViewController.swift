@@ -211,7 +211,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInSuccessful() {
         activityIndicator?.state = .isIdle
-        showAlert(message: "Login with AIMS with success!")
+        showAlert(message: "Login with Basic Auth is successfull!")
     }
 }
 

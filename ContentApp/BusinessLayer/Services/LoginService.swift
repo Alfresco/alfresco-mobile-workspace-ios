@@ -29,6 +29,7 @@ class LoginService: Service {
     }()
 
     var session: AlfrescoAuthSession?
+    var apiClient: APIClientProtocol?
 
     init(with authenticationParameters: AuthSettingsParameters) {
         self.authParameters = authenticationParameters
@@ -54,41 +55,18 @@ class LoginService: Service {
     }
 
     func basicAuthentication(username: String, password: String, handler: @escaping ((Result<Bool, NSError>) -> Void)) {
-        guard let loginData = String(format: "%@:%@", username, password).data(using: String.Encoding.utf8),
-            let url = URL(string: authParameters.fullHostnameBasicAuthGetProfileURL) else {
-            handler(.failure(NSError()))
-            return
-        }
-        let base64LoginString = loginData.base64EncodedString()
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("Basic \(base64LoginString)", forHTTPHeaderField: "Authorization")
-        let session = URLSession(configuration: .default)
+        let basicAuthCredential = BasicAuthCredential(username: username, password: password)
+        let basicAuthCredentialProvider = BasicAuthenticationProvider(with: basicAuthCredential)
 
-        let task = session.dataTask(with: request) { (data, response, error) in
-            if let error = error {
+        apiClient = APIClient(with: String(format: "%@/%@/", authParameters.fullHostnameURL, authParameters.serviceDocument))
+        _ = apiClient?.send(GetContentServicesProfile(with: basicAuthCredentialProvider), completion: { (result) in
+            switch result {
+            case .success(_):
+                handler(.success(true))
+            case .failure(let error):
                 handler(.failure(error as NSError))
-                return
             }
-            guard let data = data, let response = response as? HTTPURLResponse else {
-                handler(.failure(NSError()))
-                return
-            }
-            guard (StatusCodes.Code200OK.code ... StatusCodes.Code209IMUsed.code) ~= response.statusCode else {
-                do {
-                    if let errorDictionary = try data.convertToDictionary() {
-                        handler(.failure(NSError(domain: "basicAuth", code: 404, userInfo: errorDictionary)))
-                    } else {
-                        handler(.failure(NSError()))
-                    }
-                } catch {
-                    handler(.failure(error as NSError))
-                }
-                return
-            }
-            handler(.success(true))
-        }
-        task.resume()
+        })
     }
 
     func saveAuthParameters() {
@@ -105,10 +83,4 @@ class LoginService: Service {
         return authConfig
     }
 
-}
-
-extension Data {
-    func convertToDictionary() throws -> [String: Any]? {
-        return try JSONSerialization.jsonObject(with: self, options: []) as? [String: Any]
-    }
 }
