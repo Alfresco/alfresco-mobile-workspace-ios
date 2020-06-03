@@ -32,6 +32,8 @@ class NeedHelpViewController: UIViewController {
     var model: NeedHelpModelProtocol?
     var themingService: ThemingService?
 
+    // MARK: - View Life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -60,11 +62,18 @@ class NeedHelpViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        calculatePreferredSize()
+        calculatePreferredSize(view.bounds.size)
     }
 
-    private func calculatePreferredSize() {
-        let targetSize = CGSize(width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        calculatePreferredSize(size)
+    }
+
+    // MARK: - Private Utils
+
+    private func calculatePreferredSize(_ size: CGSize) {
+        let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 
