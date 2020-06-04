@@ -40,7 +40,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hL4-en-dv3" customClass="MDCButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hL4-en-dv3" customClass="MDCButton">
                                 <rect key="frame" x="30" y="296" width="354" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="3aY-1B-DQU"/>
@@ -50,8 +50,8 @@
                                     <action selector="connectButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cwh-BM-Ypf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tk9-MN-NR6" customClass="MDCButton">
-                                <rect key="frame" x="144" y="535.66666666666663" width="126" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tk9-MN-NR6" customClass="MDCButton">
+                                <rect key="frame" x="132.66666666666666" y="535.66666666666663" width="148.99999999999997" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="LrS-fE-rH3"/>
                                 </constraints>
@@ -60,8 +60,8 @@
                                     <action selector="advancedSettingsButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="giE-YX-jpr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfR-nP-w23" customClass="MDCButton">
-                                <rect key="frame" x="173" y="623.66666666666663" width="68" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bfR-nP-w23" customClass="MDCButton">
+                                <rect key="frame" x="167" y="623.66666666666663" width="80" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="TpX-mC-xLQ"/>
                                 </constraints>
@@ -205,8 +205,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJF-tl-dHT" customClass="MDCButton">
-                                <rect key="frame" x="173" y="623.66666666666663" width="68" height="48"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HJF-tl-dHT" customClass="MDCButton">
+                                <rect key="frame" x="167" y="623.66666666666663" width="80" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="6eh-Pj-fUb"/>
                                 </constraints>
@@ -430,8 +430,8 @@
                                     <action selector="signInButtonTapped:" destination="9ED-3y-Ryf" eventType="touchUpInside" id="BGx-Jl-CG3"/>
                                 </connections>
                             </button>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2u3-dL-Bhb" customClass="MDCButton">
-                                <rect key="frame" x="173" y="623.66666666666663" width="68" height="48"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2u3-dL-Bhb" customClass="MDCButton">
+                                <rect key="frame" x="167" y="623.66666666666663" width="80" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="o01-xs-OET"/>
                                 </constraints>
@@ -665,8 +665,8 @@
                                                     <outlet property="delegate" destination="U7y-JF-Com" id="Am9-Hz-LUI"/>
                                                 </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T7-TA-4a6" customClass="MDCButton">
-                                                <rect key="frame" x="152.66666666666666" y="540" width="108.99999999999997" height="48"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3T7-TA-4a6" customClass="MDCButton">
+                                                <rect key="frame" x="143" y="540" width="128" height="48"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="2gZ-rU-SIw"/>
                                                 </constraints>
@@ -675,8 +675,8 @@
                                                     <action selector="resetButtonTapped:" destination="U7y-JF-Com" eventType="touchUpInside" id="WQz-YV-0Hb"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzM-th-1FX" customClass="MDCButton">
-                                                <rect key="frame" x="173" y="618" width="68" height="48"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzM-th-1FX" customClass="MDCButton">
+                                                <rect key="frame" x="167" y="618" width="80" height="48"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="48" id="wCu-QM-tpj"/>
