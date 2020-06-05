@@ -46,10 +46,7 @@ class LoginService: Service {
     }
 
     func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
-        let authConfig = AuthConfiguration(baseUrl: authParameters.fullContentURL,
-                                           clientID: authParameters.clientID,
-                                           realm: authParameters.realm,
-                                           redirectURI: authParameters.redirectURI.encoding())
+        let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
