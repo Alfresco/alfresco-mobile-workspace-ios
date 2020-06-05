@@ -103,7 +103,7 @@ class BasicAuthViewController: UIViewController {
     func addLocalization() {
         self.title = ""
         productLabel.text = LocalizationConstants.productName
-        infoLabel.text = LocalizationConstants.Labels.infoConnectTo
+        infoLabel.text = LocalizationConstants.Labels.infoBasicAuthConnectTo
         hostnameLabel.text = viewModel?.hostname()
         usernameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.username
         passwordTextField.label.text = LocalizationConstants.TextFieldPlaceholders.password

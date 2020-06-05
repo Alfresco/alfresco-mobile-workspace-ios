@@ -99,7 +99,7 @@ class AimsViewController: UIViewController {
     func addLocalization() {
         self.title = ""
         productLabel.text = LocalizationConstants.productName
-        infoLabel.text = LocalizationConstants.Labels.infoConnectTo
+        infoLabel.text = LocalizationConstants.Labels.infoAimsConnectTo
         hostnameLabel.text = viewModel?.hostname()
         allowLabel.text = LocalizationConstants.Labels.allowSSO
         repositoryTextField.label.text = LocalizationConstants.TextFieldPlaceholders.repository

@@ -35,16 +35,17 @@
 "loginRealmTextFieldPlaceholder" = "Realm";
 "loginClientIDTextFieldPlaceholder" = "Client ID";
 "loginUsernameTextFieldPlaceholder" = "Username or Email";
-"loginRepositoryTextFieldPlaceholder" = "Content repository location";
 "loginPasswordTextFieldPlaceholder" = "Password";
+"loginRepositoryTextFieldPlaceholder" = "Content Services URL";
 
 // MARK: - Labels
 "loginTransportProtocolLabel" = "Transport Protocol";
 "https" = "HTTPS";
 "alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
-"infoConnectTo" = "Connect to";
-"loginAllowSSO" = "To allow successful single sign on access, please provide the location of your Content Services environment.";
+"infoBasicAuthConnectTo" = "Connected to: ";
+"infoAimsConnectTo" = "Signing in to: ";
+"loginAllowSSO" = "Please provide the URL of your Content Services environment.";
 "needHelpTitle" = "Help";
 "connecting" = "Connecting";
 "signingIn" = "Signing In";

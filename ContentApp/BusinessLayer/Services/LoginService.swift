@@ -73,6 +73,14 @@ class LoginService: Service {
         authParameters.save()
     }
 
+    func resumeExternalUserAgentFlow(with url: URL) -> Bool {
+        if session == nil {
+            session = AlfrescoAuthSession()
+        }
+        guard let authSession = session else { return false}
+        return authSession.resumeExternalUserAgentFlow(with: url)
+    }
+
     // MARK: - Private
 
     private func authConfiguration() -> AuthConfiguration {
