@@ -396,7 +396,7 @@
                                     <constraint firstAttribute="height" constant="60" id="lQJ-CC-RT0"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" textContentType="username"/>
                                 <connections>
                                     <outlet property="delegate" destination="9ED-3y-Ryf" id="PV0-Xi-E28"/>
                                 </connections>
@@ -408,7 +408,7 @@
                                     <constraint firstAttribute="height" constant="60" id="PBn-Gt-Di5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" textContentType="password"/>
                                 <connections>
                                     <outlet property="delegate" destination="9ED-3y-Ryf" id="BzK-re-EBa"/>
                                 </connections>

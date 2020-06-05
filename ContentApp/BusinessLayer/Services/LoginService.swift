@@ -46,10 +46,7 @@ class LoginService: Service {
     }
 
     func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
-        let authConfig = AuthConfiguration(baseUrl: authParameters.fullContentURL,
-                                           clientID: authParameters.clientID,
-                                           realm: authParameters.realm,
-                                           redirectURI: authParameters.redirectURI.encoding())
+        let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
@@ -71,6 +68,14 @@ class LoginService: Service {
 
     func saveAuthParameters() {
         authParameters.save()
+    }
+
+    func resumeExternalUserAgentFlow(with url: URL) -> Bool {
+        if session == nil {
+            session = AlfrescoAuthSession()
+        }
+        guard let authSession = session else { return false}
+        return authSession.resumeExternalUserAgentFlow(with: url)
     }
 
     // MARK: - Private

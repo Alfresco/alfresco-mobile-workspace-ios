@@ -34,4 +34,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+        let loginService = self.applicationCoordinator?.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService
+        return loginService?.resumeExternalUserAgentFlow(with: url) ?? false
+    }
 }
