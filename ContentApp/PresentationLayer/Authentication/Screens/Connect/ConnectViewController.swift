@@ -65,7 +65,7 @@ class ConnectViewController: UIViewController {
 
         activityIndicator = ActivityIndicatorView(themingService: themingService)
         navigationBar(hide: true)
-        self.splashScreenDelegate?.backPadButton(hidden: false)
+        self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -89,6 +89,18 @@ class ConnectViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         activityIndicator?.reload(from: size)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -124,6 +136,7 @@ class ConnectViewController: UIViewController {
         productLabel.text = LocalizationConstants.productName
         connectTextField.label.text = LocalizationConstants.TextFieldPlaceholders.connect
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
+        connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .disabled)
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
@@ -134,14 +147,12 @@ class ConnectViewController: UIViewController {
         guard let themingService = self.themingService else {
             return
         }
-
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        connectButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
-        connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
-        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
+        connectTextFieldAddMaterialComponents(errorTheme: false)
 
         productLabel.textColor = themingService.activeTheme?.productLabelColor
         productLabel.font = themingService.activeTheme?.productLabelFont
@@ -150,6 +161,20 @@ class ConnectViewController: UIViewController {
         copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
 
         self.navigationController?.navigationBar.tintColor = themingService.activeTheme?.loginButtonColor
+    }
+
+    func connectTextFieldAddMaterialComponents(errorTheme: Bool) {
+        guard let themingService = self.themingService else {
+            return
+        }
+        if errorTheme {
+            connectTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        } else {
+            connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            connectTextField.leadingAssistiveLabel.text = ""
+        }
+        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
+        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
     }
 
     func navigationBar(hide: Bool) {

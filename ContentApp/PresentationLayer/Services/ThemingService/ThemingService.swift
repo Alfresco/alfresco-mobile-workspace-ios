@@ -63,6 +63,22 @@ class MaterialDesignThemingService: ThemingService, MaterialDesignThemingService
     private var themingWorkers: [MaterialDesignThemingServiceWorkerProtocol] = [LoginComponentsThemingServiceWorker()]
     private var defaultScheme = MDCContainerScheme() // TODO: Switch this to default scheme
 
+    func activateDarkTheme() {
+        for theme in themes {
+            if let darkTheme = theme as? DarkTheme {
+                self.activeTheme = darkTheme
+            }
+        }
+    }
+
+    func activateDefaultTheme() {
+        for theme in themes {
+            if let defaultTheme = theme as? DefaultTheme {
+                self.activeTheme = defaultTheme
+            }
+        }
+    }
+
     func containerScheming(for scene: MaterialComponentsThemingScene) -> MDCContainerScheming {
         guard let theme = activeTheme else { return MDCContainerScheme() }
 

@@ -18,13 +18,13 @@
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="3t8-OA-OyT">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <gestureRecognizers/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </imageView>
                             <imageView hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper-phones" translatesAutoresizingMaskIntoConstraints="NO" id="dKq-ay-Y0V">
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <gestureRecognizers/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
                             </imageView>

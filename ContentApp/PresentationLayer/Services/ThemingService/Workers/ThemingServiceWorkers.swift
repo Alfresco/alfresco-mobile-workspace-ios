@@ -24,6 +24,7 @@ protocol MaterialDesignThemingServiceWorkerProtocol {
 }
 
 class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
+
     func containerScheme(for scene: MaterialComponentsThemingScene, on theme: PresentationTheme) -> MDCContainerScheming? {
         switch scene {
         case .loginButton:
@@ -46,6 +47,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
     private func loginButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.loginButtonColor
+        containerScheme.colorScheme.onPrimaryColor = theme.loginTextButtonColor
         containerScheme.typographyScheme.button = theme.loginButtonFont
 
         return containerScheme
@@ -87,6 +89,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.loginTextFieldPrimaryColor
         containerScheme.colorScheme.onSurfaceColor = theme.loginTextFieldOnSurfaceColor
+        containerScheme.colorScheme.errorColor = theme.loginTextFieldErrorColor
         containerScheme.typographyScheme.subtitle1 = theme.loginTextFieldFont
 
         return containerScheme

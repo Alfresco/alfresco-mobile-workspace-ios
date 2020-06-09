@@ -72,6 +72,19 @@ class AdvancedSettingsViewController: UIViewController {
         updateFields()
     }
 
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
+    }
+
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
@@ -178,6 +191,7 @@ class AdvancedSettingsViewController: UIViewController {
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
+        savePadButton.setTitleColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
         saveButton.tintColor = themingService.activeTheme?.loginButtonColor
         backPadButton.tintColor = themingService.activeTheme?.loginButtonColor

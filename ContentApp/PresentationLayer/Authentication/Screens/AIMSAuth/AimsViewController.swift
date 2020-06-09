@@ -75,6 +75,18 @@ class AimsViewController: UIViewController {
         activityIndicator?.reload(from: size)
     }
 
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
+    }
+
     // MARK: - IBActions
 
     @IBAction func signInButtonTapped(_ sender: UIButton) {
@@ -115,6 +127,7 @@ class AimsViewController: UIViewController {
         }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))

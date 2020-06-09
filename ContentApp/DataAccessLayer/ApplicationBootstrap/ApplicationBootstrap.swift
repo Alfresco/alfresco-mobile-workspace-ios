@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ApplicationBootstrap {
     private static var sharedApplicationBootstrap: ApplicationBootstrap = {
@@ -37,10 +38,16 @@ class ApplicationBootstrap {
     }
 
     private func themingService() -> ThemingService {
-        let defaultTheme = DefaultTheme()
+        let darkMode = (UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark)
         let themingService = MaterialDesignThemingService()
+
+        let defaultTheme = DefaultTheme()
         themingService.register(theme: defaultTheme)
-        themingService.activeTheme = defaultTheme
+
+        let darkTheme = DarkTheme()
+        themingService.register(theme: darkTheme)
+
+        themingService.activeTheme = (darkMode) ? darkTheme : defaultTheme
 
         return themingService
     }
