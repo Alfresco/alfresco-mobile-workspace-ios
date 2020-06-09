@@ -17,9 +17,11 @@
 //
 
 import Foundation
+import AlfrescoAuth
 
 protocol BasicAuthViewModelDelegate: class {
-    func logInFailed(with error: Error)
+    func logInFailed(with error: APIError)
+    func logInWarning(with message: String)
     func logInSuccessful()
 }
 
@@ -32,13 +34,17 @@ class BasicAuthViewModel {
     }
 
     func authenticate(username: String, password: String) {
+        if authenticationService?.authParameters.serviceDocument == "" {
+            self.delegate?.logInWarning(with: LocalizationConstants.Errors.serviceDocumentEmpty)
+            return
+        }
         authenticationService?.basicAuthentication(username: username, password: password, handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
             case .success:
                 sSelf.delegate?.logInSuccessful()
             case .failure(let error):
-                AlfrescoLog.error("Error basic-auth: \(error.localizedDescription)")
+                AlfrescoLog.error("Error basic-auth: \(error)")
                 sSelf.delegate?.logInFailed(with: error)
             }
         })

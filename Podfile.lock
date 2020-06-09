@@ -58,6 +58,9 @@ PODS:
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
+  - MaterialComponents/OverlayWindow (109.5.0):
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Application
   - MaterialComponents/Palettes (109.5.0)
   - MaterialComponents/private/Application (109.5.0)
   - MaterialComponents/private/Color (109.5.0):
@@ -65,6 +68,7 @@ PODS:
   - MaterialComponents/private/KeyboardWatcher (109.5.0):
     - MaterialComponents/private/Application
   - MaterialComponents/private/Math (109.5.0)
+  - MaterialComponents/private/Overlay (109.5.0)
   - "MaterialComponents/private/TextControlsPrivate+BaseStyle (109.5.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/private/Math
@@ -109,6 +113,19 @@ PODS:
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
+  - MaterialComponents/Snackbar (109.5.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Availability
+    - MaterialComponents/Buttons
+    - MaterialComponents/Elevation
+    - MaterialComponents/OverlayWindow
+    - MaterialComponents/private/Application
+    - MaterialComponents/private/KeyboardWatcher
+    - MaterialComponents/private/Math
+    - MaterialComponents/private/Overlay
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Typography
   - "MaterialComponents/TextControls+BaseTextFields (109.5.0)":
     - "MaterialComponents/private/TextControlsPrivate+BaseStyle"
     - "MaterialComponents/private/TextControlsPrivate+Shared"
@@ -137,12 +154,13 @@ DEPENDENCIES:
   - MaterialComponents/BottomSheet
   - MaterialComponents/Buttons
   - "MaterialComponents/Buttons+Theming"
+  - MaterialComponents/Snackbar
   - "MaterialComponents/TextControls+FilledTextFields"
   - "MaterialComponents/TextControls+FilledTextFieldsTheming"
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
     - AlfrescoAuth
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
@@ -165,6 +183,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 6a952117ecb182a3b5ce474ac2e782caf61264a4
+PODFILE CHECKSUM: 1b33452d9b956c441d96ad6047863cb419287a40
 
 COCOAPODS: 1.9.1

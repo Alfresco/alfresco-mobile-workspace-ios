@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
@@ -41,6 +42,7 @@ class BasicAuthViewController: UIViewController {
     weak var splashScreenDelegate: SplashScreenDelegate?
     var viewModel: BasicAuthViewModel?
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
@@ -69,6 +71,11 @@ class BasicAuthViewController: UIViewController {
        activityIndicator = ActivityIndicatorView(themingService: themingService)
        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        snackbar?.dismiss()
+    }
 
    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
        super.viewWillTransition(to: size, with: coordinator)
@@ -217,9 +224,22 @@ extension BasicAuthViewController: UITextFieldDelegate {
 }
 
 extension BasicAuthViewController: BasicAuthViewModelDelegate {
-    func logInFailed(with error: Error) {
+    func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
-        showAlert(message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.snackbar = Snackbar(with: message, type: .warning, themingService: themingService, automaticallyDismisses: false)
+            sSelf.snackbar?.show(completionHandler: nil)
+        }
+    }
+
+    func logInFailed(with error: APIError) {
+        activityIndicator?.state = .isIdle
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, themingService: themingService, automaticallyDismisses: false)
+            sSelf.snackbar?.show(completionHandler: nil)
+        }
     }
 
     func logInSuccessful() {

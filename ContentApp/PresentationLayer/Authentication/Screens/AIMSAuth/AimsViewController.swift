@@ -41,6 +41,7 @@ class AimsViewController: UIViewController {
     weak var aimsScreenCoordinatorDelegate: AimsScreenCoordinatorDelegate?
     var viewModel: AimsViewModel?
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
@@ -68,6 +69,11 @@ class AimsViewController: UIViewController {
         super.viewWillAppear(animated)
         activityIndicator = ActivityIndicatorView(themingService: themingService)
         activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        snackbar?.dismiss()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -189,7 +195,13 @@ extension AimsViewController: UITextFieldDelegate {
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
-        showAlert(message: error.localizedDescription)
+        if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+                sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, themingService: themingService, automaticallyDismisses: false)
+                sSelf.snackbar?.show(completionHandler: nil)
+            }
+        }
     }
 
     func logInSuccessful() {

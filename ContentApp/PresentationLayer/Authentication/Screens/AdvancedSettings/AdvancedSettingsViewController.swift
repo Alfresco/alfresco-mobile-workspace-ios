@@ -52,6 +52,7 @@ class AdvancedSettingsViewController: UIViewController {
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
     var viewModel = AdvancedSettingsViewModel()
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
 
@@ -72,6 +73,10 @@ class AdvancedSettingsViewController: UIViewController {
         updateFields()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        snackbar?.dismiss()
+    }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
@@ -211,15 +216,12 @@ class AdvancedSettingsViewController: UIViewController {
                          serviceDocuments: serviceDocumentsTextField.text,
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
-        showAlert(message: "Settings saved!")
-    }
 
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+        guard let themingService = self.themingService else {
+            return
         }
+        snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, themingService: themingService, automaticallyDismisses: true)
+        snackbar?.show(completionHandler: nil)
     }
 }
 

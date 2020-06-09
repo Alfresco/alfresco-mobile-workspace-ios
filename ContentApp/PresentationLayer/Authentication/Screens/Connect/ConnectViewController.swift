@@ -37,6 +37,7 @@ class ConnectViewController: UIViewController {
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
     var viewModel: ConnectViewModel?
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var themingService: MaterialDesignThemingService?
@@ -120,6 +121,7 @@ class ConnectViewController: UIViewController {
         } else {
             connectScreenCoordinatorDelegate?.showAdvancedSettingsScreen()
         }
+        snackbar?.dismiss()
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -188,14 +190,6 @@ class ConnectViewController: UIViewController {
             self.navigationController?.navigationBar.shadowImage = nil
         }
     }
-
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
 }
 
 // MARK: - UITextField Delegate
@@ -231,7 +225,9 @@ extension ConnectViewController: ConnectViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.splashScreenDelegate?.backPadButton(hidden: true)
+            sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+            sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+            sSelf.snackbar?.dismiss()
             switch authType {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
@@ -242,8 +238,15 @@ extension ConnectViewController: ConnectViewModelDelegate {
     }
 
     func authServiceUnavailable(with error: APIError) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.connectTextFieldAddMaterialComponents(errorTheme: true)
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, themingService: themingService, automaticallyDismisses: false)
+            sSelf.snackbar?.show {
+                sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+            }
+        }
         activityIndicator?.state = .isIdle
-        showAlert(message: error.localizedDescription)
     }
 }
 
