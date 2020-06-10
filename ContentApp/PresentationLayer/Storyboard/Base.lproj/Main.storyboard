@@ -859,7 +859,7 @@
                                     </constraint>
                                 </constraints>
                             </imageView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPK-yd-UK7">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BPK-yd-UK7">
                                 <rect key="frame" x="33" y="50" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="YTt-ix-CoP"/>
@@ -869,7 +869,6 @@
                                 <state key="normal" image="ic-chevron-left">
                                     <color key="titleColor" red="0.20392156859999999" green="0.47058823529999999" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
-                                <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
                                 <connections>
                                     <action selector="backButtonTapped:" destination="u8X-4F-Wje" eventType="touchUpInside" id="6Og-2s-f7n"/>
                                 </connections>

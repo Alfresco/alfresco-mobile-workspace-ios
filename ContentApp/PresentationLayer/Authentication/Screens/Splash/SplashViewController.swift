@@ -37,7 +37,6 @@ class SplashViewController: UIViewController {
     @IBOutlet weak var logoWidthConstraint: NSLayoutConstraint!
 
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
-    weak var navigationControllerFromContainer: UINavigationController?
 
     var applyAnimations: Bool = true
     var isAnimationInProgress: Bool = false
@@ -64,12 +63,12 @@ class SplashViewController: UIViewController {
         addLocalization()
 
         containerViews(alpha: 0.0, hidden: true)
+        self.backButton.isHidden = true
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
-        self.backButton.isHidden = true
         if applyAnimations {
             applyAnimations = false
             isAnimationInProgress = true
