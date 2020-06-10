@@ -220,8 +220,10 @@ class AdvancedSettingsViewController: UIViewController {
         guard let themingService = self.themingService else {
             return
         }
-        snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, themingService: themingService, automaticallyDismisses: true)
-        snackbar?.show(completionHandler: nil)
+        snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
+        snackbar?.applyThemingService(themingService)
+        snackbar?.hideButton(true)
+        snackbar?.show(completion: nil)
     }
 }
 

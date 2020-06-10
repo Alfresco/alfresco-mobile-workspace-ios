@@ -228,8 +228,9 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-            sSelf.snackbar = Snackbar(with: message, type: .warning, themingService: themingService, automaticallyDismisses: false)
-            sSelf.snackbar?.show(completionHandler: nil)
+            sSelf.snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: nil)
         }
     }
 
@@ -237,8 +238,9 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, themingService: themingService, automaticallyDismisses: false)
-            sSelf.snackbar?.show(completionHandler: nil)
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: nil)
         }
     }
 

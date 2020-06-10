@@ -884,7 +884,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="500" height="600"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
-                                <blurEffect style="systemThinMaterial"/>
+                                <blurEffect style="prominent"/>
                             </visualEffectView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMK-ga-uUN">
                                 <rect key="frame" x="262" y="383" width="500" height="600"/>

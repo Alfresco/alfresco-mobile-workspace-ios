@@ -30,13 +30,20 @@ class Snackbar {
     private var type: SnackBarType
     private var snackBar = MDCSnackbarMessage()
     private var buttonTitle: String
+    private var hideButton: Bool = false
 
-    init(with message: String, type: SnackBarType, themingService: MaterialDesignThemingService,
-         automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.ok) {
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.okk) {
         self.type = type
         self.buttonTitle = buttonTitle
+        self.hideButton = (buttonTitle == "")
         self.snackBar.text = message
         self.snackBar.automaticallyDismisses = automaticallyDismisses
+        self.addButton()
+    }
+
+    // MARK: - Public methods
+
+    func applyThemingService(_ themingService: MaterialDesignThemingService) {
         switch type {
         case .error:
             MDCSnackbarManager.snackbarMessageViewBackgroundColor = themingService.activeTheme?.snackbarErrorColor
@@ -47,19 +54,28 @@ class Snackbar {
         }
     }
 
-    func show(completionHandler: (() -> Void)?) {
-        let action = MDCSnackbarMessageAction()
-        action.handler = {() in
-            if let completionHandler = completionHandler {
-                completionHandler()
-            }
-        }
-        action.title = buttonTitle
-        snackBar.action = action
+    func show(completion: ((Bool) -> Void)?) {
+        snackBar.completionHandler = completion
         MDCSnackbarManager.show(snackBar)
+    }
+
+    func hideButton(_ hidden: Bool) {
+        hideButton = false
+        snackBar.action = nil
     }
 
     func dismiss() {
         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: nil)
+    }
+
+    // MARK: - Private methods
+
+    private func addButton() {
+        guard hideButton  else {
+            return
+        }
+        let action = MDCSnackbarMessageAction()
+        action.title = buttonTitle
+        snackBar.action = action
     }
 }

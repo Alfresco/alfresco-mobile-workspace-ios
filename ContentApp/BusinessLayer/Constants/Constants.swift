@@ -29,4 +29,4 @@ let kAnimationSplashScreenContainerViews = 1.5
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 
 let kSessionExpirationTimeIntervalCheck = 20
-let kLoginAIMSCancelWebViewErrorCode = -3;
+let kLoginAIMSCancelWebViewErrorCode = -3

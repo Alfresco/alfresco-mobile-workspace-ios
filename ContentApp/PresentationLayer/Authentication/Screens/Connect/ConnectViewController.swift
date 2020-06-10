@@ -241,10 +241,11 @@ extension ConnectViewController: ConnectViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
             sSelf.connectTextFieldAddMaterialComponents(errorTheme: true)
-            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, themingService: themingService, automaticallyDismisses: false)
-            sSelf.snackbar?.show {
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: { (_) in
                 sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
-            }
+            })
         }
         activityIndicator?.state = .isIdle
     }
