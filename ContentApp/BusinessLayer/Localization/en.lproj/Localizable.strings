@@ -27,11 +27,12 @@
 "saveButton" = "Save";
 "signin" = "Sign in";
 "signInWithSSO" = "Sign in with SSO";
+"Ok" = "Ok";
 
 // MARK: - PlaceHolders
 "loginConnectTextFieldPlaceholder" = "Connect To";
 "loginPortTextFieldPlaceholder" = "Port";
-"loginServiceDocumentsTextFieldPlaceholder" = "Service Documents";
+"loginServiceDocumentsTextFieldPlaceholder" = "Service Document";
 "loginRealmTextFieldPlaceholder" = "Realm";
 "loginClientIDTextFieldPlaceholder" = "Client ID";
 "loginUsernameTextFieldPlaceholder" = "Username or Email";
@@ -57,3 +58,11 @@
 "serviceURLHint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
 "advancedSettingsHint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
 "ssoHint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
+
+// MARK: - Login Errors
+"loginGenericErrorText" = "Something went wrong. Contact your administrator for help. Error code: %d";
+"loginErrorNoAuthAlfrescoURL" = "No authentication service can be found at the provided Alfresco URL.";
+"loginErrorCheckConnectURL" = "Check your Connect to URL.";
+"loginErrorWrongCredentialProvided" = "Wrong username or password provided.";
+"loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
+"loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";

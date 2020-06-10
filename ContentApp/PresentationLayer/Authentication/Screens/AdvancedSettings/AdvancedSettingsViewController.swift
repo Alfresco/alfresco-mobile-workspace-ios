@@ -52,6 +52,7 @@ class AdvancedSettingsViewController: UIViewController {
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
     var viewModel = AdvancedSettingsViewModel()
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
 
@@ -72,6 +73,23 @@ class AdvancedSettingsViewController: UIViewController {
         updateFields()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        snackbar?.dismiss()
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
+    }
+
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
@@ -89,7 +107,7 @@ class AdvancedSettingsViewController: UIViewController {
         self.view.endEditing(true)
         httpsLabel.textColor = (httpsSwitch.isOn) ? themingService?.activeTheme?.loginFieldLabelColor : themingService?.activeTheme?.loginFieldDisableLabelColor
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
-        enableSaveButton = true
+        enableSaveButton = (serviceDocumentsTextField.text != "")
     }
 
     @IBAction func resetButtonTapped(_ sender: UIButton) {
@@ -128,7 +146,7 @@ class AdvancedSettingsViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
 
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
-        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments
+        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments + "*"
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
@@ -178,6 +196,7 @@ class AdvancedSettingsViewController: UIViewController {
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
+        savePadButton.setTitleColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
         saveButton.tintColor = themingService.activeTheme?.loginButtonColor
         backPadButton.tintColor = themingService.activeTheme?.loginButtonColor
@@ -192,20 +211,22 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     func saveFields() {
+        if serviceDocumentsTextField.text == "" {
+            return
+        }
         viewModel.saveFields(https: httpsSwitch.isOn,
                          port: portTextField.text,
                          serviceDocuments: serviceDocumentsTextField.text,
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
-        showAlert(message: "Settings saved!")
-    }
 
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+        guard let themingService = self.themingService else {
+            return
         }
+        snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
+        snackbar?.applyThemingService(themingService)
+        snackbar?.hideButton(true)
+        snackbar?.show(completion: nil)
     }
 }
 
@@ -214,11 +235,21 @@ class AdvancedSettingsViewController: UIViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
+        enableSaveButton = (serviceDocumentsTextField.text != "")
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        enableSaveButton = true
+        enableSaveButton = (serviceDocumentsTextField.text != "")
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == serviceDocumentsTextField {
+            enableSaveButton = (textField.updatedText(for: range, replacementString: string) != "")
+        } else {
+            enableSaveButton = (serviceDocumentsTextField.text != "")
+        }
+        return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -236,6 +267,13 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         }
 
         nextTextField.becomeFirstResponder()
+        return true
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == serviceDocumentsTextField {
+            enableSaveButton = false
+        }
         return true
     }
 }

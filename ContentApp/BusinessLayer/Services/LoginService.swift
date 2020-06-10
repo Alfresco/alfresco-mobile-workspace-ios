@@ -51,7 +51,7 @@ class LoginService: Service {
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
 
-    func basicAuthentication(username: String, password: String, handler: @escaping ((Result<Bool, NSError>) -> Void)) {
+    func basicAuthentication(username: String, password: String, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
         let basicAuthCredential = BasicAuthCredential(username: username, password: password)
         let basicAuthCredentialProvider = BasicAuthenticationProvider(with: basicAuthCredential)
 
@@ -61,7 +61,7 @@ class LoginService: Service {
             case .success(_):
                 handler(.success(true))
             case .failure(let error):
-                handler(.failure(error as NSError))
+                handler(.failure(error))
             }
         })
     }

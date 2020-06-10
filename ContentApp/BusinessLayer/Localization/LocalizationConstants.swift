@@ -30,6 +30,7 @@ struct LocalizationConstants {
         static let save = NSLocalizedString("saveButton", comment: "")
         static let signin = NSLocalizedString("signin", comment: "")
         static let signInWithSSO = NSLocalizedString("signInWithSSO", comment: "")
+        static let okConfirmation = NSLocalizedString("Ok", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -64,5 +65,14 @@ struct LocalizationConstants {
         static let serviceURLHint = NSLocalizedString("serviceURLHint", comment: "")
         static let advancedSettingsHint = NSLocalizedString("advancedSettingsHint", comment: "")
         static let ssoHint = NSLocalizedString("ssoHint", comment: "")
+    }
+
+    struct Errors {
+        static let generic = NSLocalizedString("loginGenericErrorText", comment: "")
+        static let noAuthAlfrescoURL = NSLocalizedString("loginErrorNoAuthAlfrescoURL", comment: "")
+        static let checkConnectURL = NSLocalizedString("loginErrorCheckConnectURL", comment: "")
+        static let wrongCredentials = NSLocalizedString("loginErrorWrongCredentialProvided", comment: "")
+        static let saveSettings = NSLocalizedString("loginApprovedSaveSettings", comment: "")
+        static let serviceDocumentEmpty = NSLocalizedString("loginWarningServiceDocumetEmptyText", comment: "")
     }
 }

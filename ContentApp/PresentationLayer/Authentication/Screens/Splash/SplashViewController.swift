@@ -20,7 +20,7 @@ import UIKit
 
 protocol SplashScreenDelegate: class {
     func showAdvancedSettingsScreen()
-    func backPadButton(hidden: Bool)
+    func backPadButtonNeedsTo(hide: Bool)
     func backPadButton(userInteraction: Bool)
 }
 
@@ -90,6 +90,18 @@ class SplashViewController: UIViewController {
             sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
             sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -167,9 +179,9 @@ class SplashViewController: UIViewController {
 // MARK: - SplashScreen Delegate
 
 extension SplashViewController: SplashScreenDelegate {
-    func backPadButton(hidden: Bool) {
+    func backPadButtonNeedsTo(hide: Bool) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            backButton.isHidden = !hidden
+            backButton.isHidden = !hide
         } else {
             backButton.isHidden = true
         }

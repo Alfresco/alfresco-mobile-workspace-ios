@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
@@ -41,6 +42,7 @@ class BasicAuthViewController: UIViewController {
     weak var splashScreenDelegate: SplashScreenDelegate?
     var viewModel: BasicAuthViewModel?
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
@@ -70,10 +72,27 @@ class BasicAuthViewController: UIViewController {
        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
    }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        snackbar?.dismiss()
+    }
+
    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
        super.viewWillTransition(to: size, with: coordinator)
        activityIndicator?.reload(from: size)
    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
+    }
 
     // MARK: - IBActions
 
@@ -119,6 +138,7 @@ class BasicAuthViewController: UIViewController {
         }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         usernameTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
@@ -204,9 +224,24 @@ extension BasicAuthViewController: UITextFieldDelegate {
 }
 
 extension BasicAuthViewController: BasicAuthViewModelDelegate {
-    func logInFailed(with error: Error) {
+    func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
-        showAlert(message: error.localizedDescription)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: nil)
+        }
+    }
+
+    func logInFailed(with error: APIError) {
+        activityIndicator?.state = .isIdle
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: nil)
+        }
     }
 
     func logInSuccessful() {

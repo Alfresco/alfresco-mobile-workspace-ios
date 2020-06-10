@@ -37,6 +37,7 @@ class ConnectViewController: UIViewController {
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
     var viewModel: ConnectViewModel?
 
+    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var themingService: MaterialDesignThemingService?
@@ -65,7 +66,7 @@ class ConnectViewController: UIViewController {
 
         activityIndicator = ActivityIndicatorView(themingService: themingService)
         navigationBar(hide: true)
-        self.splashScreenDelegate?.backPadButton(hidden: false)
+        self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -91,6 +92,18 @@ class ConnectViewController: UIViewController {
         activityIndicator?.reload(from: size)
     }
 
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        switch newCollection.userInterfaceStyle {
+        case .dark:
+            self.themingService?.activateDarkTheme()
+        case .light:
+            self.themingService?.activateDefaultTheme()
+        default: break
+        }
+        addMaterialComponentsTheme()
+    }
+
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
@@ -108,6 +121,7 @@ class ConnectViewController: UIViewController {
         } else {
             connectScreenCoordinatorDelegate?.showAdvancedSettingsScreen()
         }
+        snackbar?.dismiss()
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -124,6 +138,7 @@ class ConnectViewController: UIViewController {
         productLabel.text = LocalizationConstants.productName
         connectTextField.label.text = LocalizationConstants.TextFieldPlaceholders.connect
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
+        connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .disabled)
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
@@ -134,14 +149,12 @@ class ConnectViewController: UIViewController {
         guard let themingService = self.themingService else {
             return
         }
-
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        connectButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
-        connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
-        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
+        connectTextFieldAddMaterialComponents(errorTheme: false)
 
         productLabel.textColor = themingService.activeTheme?.productLabelColor
         productLabel.font = themingService.activeTheme?.productLabelFont
@@ -150,6 +163,20 @@ class ConnectViewController: UIViewController {
         copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
 
         self.navigationController?.navigationBar.tintColor = themingService.activeTheme?.loginButtonColor
+    }
+
+    func connectTextFieldAddMaterialComponents(errorTheme: Bool) {
+        guard let themingService = self.themingService else {
+            return
+        }
+        if errorTheme {
+            connectTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        } else {
+            connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            connectTextField.leadingAssistiveLabel.text = ""
+        }
+        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
+        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
     }
 
     func navigationBar(hide: Bool) {
@@ -161,14 +188,6 @@ class ConnectViewController: UIViewController {
         } else {
             self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             self.navigationController?.navigationBar.shadowImage = nil
-        }
-    }
-
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -206,7 +225,9 @@ extension ConnectViewController: ConnectViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.splashScreenDelegate?.backPadButton(hidden: true)
+            sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+            sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+            sSelf.snackbar?.dismiss()
             switch authType {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
@@ -217,8 +238,16 @@ extension ConnectViewController: ConnectViewModelDelegate {
     }
 
     func authServiceUnavailable(with error: APIError) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            sSelf.connectTextFieldAddMaterialComponents(errorTheme: true)
+            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            sSelf.snackbar?.applyThemingService(themingService)
+            sSelf.snackbar?.show(completion: { (_) in
+                sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+            })
+        }
         activityIndicator?.state = .isIdle
-        showAlert(message: error.localizedDescription)
     }
 }
 

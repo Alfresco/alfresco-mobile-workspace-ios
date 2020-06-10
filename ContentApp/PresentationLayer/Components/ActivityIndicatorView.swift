@@ -84,7 +84,11 @@ class ActivityIndicatorView: UIView {
         activityIndicator.strokeWidth = 7
         activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
         if let overlayView = self.overlayView {
-            overlayView.backgroundColor = .white
+            if #available(iOS 13.0, *) {
+                overlayView.backgroundColor = .systemBackground
+            } else {
+                overlayView.backgroundColor = .white
+            }
             overlayView.alpha = 0.87
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
