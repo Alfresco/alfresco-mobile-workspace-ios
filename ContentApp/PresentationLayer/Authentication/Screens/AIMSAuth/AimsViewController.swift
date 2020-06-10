@@ -41,7 +41,6 @@ class AimsViewController: UIViewController {
     weak var aimsScreenCoordinatorDelegate: AimsScreenCoordinatorDelegate?
     var viewModel: AimsViewModel?
 
-    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
@@ -73,7 +72,7 @@ class AimsViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        snackbar?.dismiss()
+        Snackbar.dimissAll()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -198,9 +197,9 @@ extension AimsViewController: AimsViewModelDelegate {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-                sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-                sSelf.snackbar?.applyThemingService(themingService)
-                sSelf.snackbar?.show(completion: nil)
+                let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+                snackbar.applyThemingService(themingService)
+                snackbar.show(completion: nil)
             }
         }
     }

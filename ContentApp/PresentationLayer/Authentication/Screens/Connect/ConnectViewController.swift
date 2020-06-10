@@ -37,7 +37,6 @@ class ConnectViewController: UIViewController {
     weak var connectScreenCoordinatorDelegate: ConnectScreenCoordinatorDelegate?
     var viewModel: ConnectViewModel?
 
-    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var themingService: MaterialDesignThemingService?
@@ -121,7 +120,7 @@ class ConnectViewController: UIViewController {
         } else {
             connectScreenCoordinatorDelegate?.showAdvancedSettingsScreen()
         }
-        snackbar?.dismiss()
+        Snackbar.dimissAll()
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
@@ -227,7 +226,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
             guard let sSelf = self else { return }
             sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
             sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
-            sSelf.snackbar?.dismiss()
+            Snackbar.dimissAll()
             switch authType {
             case .aimsAuth:
                 sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
@@ -241,9 +240,10 @@ extension ConnectViewController: ConnectViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
             sSelf.connectTextFieldAddMaterialComponents(errorTheme: true)
-            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            sSelf.snackbar?.applyThemingService(themingService)
-            sSelf.snackbar?.show(completion: { (_) in
+            Snackbar.dimissAll()
+            let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            snackbar.applyThemingService(themingService)
+            snackbar.show(completion: { () in
                 sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
             })
         }

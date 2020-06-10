@@ -42,7 +42,6 @@ class BasicAuthViewController: UIViewController {
     weak var splashScreenDelegate: SplashScreenDelegate?
     var viewModel: BasicAuthViewModel?
 
-    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
@@ -74,7 +73,7 @@ class BasicAuthViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        snackbar?.dismiss()
+        Snackbar.dimissAll()
     }
 
    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -141,23 +140,6 @@ class BasicAuthViewController: UIViewController {
         signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
-        usernameTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        usernameTextField.trailingViewMode = .unlessEditing
-        usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
-        usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
-        usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
-
-        passwordTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        passwordTextField.trailingViewMode = .always
-        passwordTextField.trailingView = showPasswordImageView
-        passwordTextField.trailingView?.isUserInteractionEnabled = true
-        passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
-        passwordTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
-        passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
-        passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
-        passwordTextField.isSecureTextEntry = true
-
         productLabel.textColor = themingService.activeTheme?.productLabelColor
         productLabel.font = themingService.activeTheme?.productLabelFont
 
@@ -169,6 +151,36 @@ class BasicAuthViewController: UIViewController {
 
         copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+
+        applyThemingInTextField(errorTheme: false)
+    }
+
+    func applyThemingInTextField(errorTheme: Bool) {
+        guard let themingService = self.themingService else {
+            return
+        }
+        if errorTheme {
+            usernameTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        } else {
+            usernameTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        }
+
+        usernameTextField.trailingViewMode = .unlessEditing
+        usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
+        usernameTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
+        usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
+        usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
+
+        passwordTextField.trailingViewMode = .always
+        passwordTextField.trailingView = showPasswordImageView
+        passwordTextField.trailingView?.isUserInteractionEnabled = true
+        passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
+        passwordTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
+        passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
+        passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
+        passwordTextField.isSecureTextEntry = true
     }
 
     func showAlert(message: String) {
@@ -228,9 +240,10 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-            sSelf.snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-            sSelf.snackbar?.applyThemingService(themingService)
-            sSelf.snackbar?.show(completion: nil)
+            Snackbar.dimissAll()
+            let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
+            snackbar.applyThemingService(themingService)
+            snackbar.show(completion: nil)
         }
     }
 
@@ -238,9 +251,15 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-            sSelf.snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            sSelf.snackbar?.applyThemingService(themingService)
-            sSelf.snackbar?.show(completion: nil)
+            if error.responseCode == 401 {
+                sSelf.applyThemingInTextField(errorTheme: true)
+            }
+            Snackbar.dimissAll()
+            let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            snackbar.applyThemingService(themingService)
+            snackbar.show(completion: { () in
+                sSelf.applyThemingInTextField(errorTheme: false)
+            })
         }
     }
 

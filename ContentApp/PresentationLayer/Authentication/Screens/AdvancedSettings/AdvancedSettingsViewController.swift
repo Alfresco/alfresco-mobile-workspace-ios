@@ -52,7 +52,6 @@ class AdvancedSettingsViewController: UIViewController {
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
     var viewModel = AdvancedSettingsViewModel()
 
-    var snackbar: Snackbar?
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
 
@@ -75,7 +74,7 @@ class AdvancedSettingsViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        snackbar?.dismiss()
+        Snackbar.dimissAll()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -223,10 +222,10 @@ class AdvancedSettingsViewController: UIViewController {
         guard let themingService = self.themingService else {
             return
         }
-        snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar?.applyThemingService(themingService)
-        snackbar?.hideButton(true)
-        snackbar?.show(completion: nil)
+        let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
+        snackbar.applyThemingService(themingService)
+        snackbar.hideButton(true)
+        snackbar.show(completion: nil)
     }
 }
 
