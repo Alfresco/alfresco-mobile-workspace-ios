@@ -32,7 +32,7 @@
 // MARK: - PlaceHolders
 "loginConnectTextFieldPlaceholder" = "Connect To";
 "loginPortTextFieldPlaceholder" = "Port";
-"loginServiceDocumentsTextFieldPlaceholder" = "Service Documents";
+"loginServiceDocumentsTextFieldPlaceholder" = "Service Document";
 "loginRealmTextFieldPlaceholder" = "Realm";
 "loginClientIDTextFieldPlaceholder" = "Client ID";
 "loginUsernameTextFieldPlaceholder" = "Username or Email";

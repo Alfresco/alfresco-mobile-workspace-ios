@@ -107,7 +107,7 @@ class AdvancedSettingsViewController: UIViewController {
         self.view.endEditing(true)
         httpsLabel.textColor = (httpsSwitch.isOn) ? themingService?.activeTheme?.loginFieldLabelColor : themingService?.activeTheme?.loginFieldDisableLabelColor
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
-        enableSaveButton = true
+        enableSaveButton = (serviceDocumentsTextField.text != "")
     }
 
     @IBAction func resetButtonTapped(_ sender: UIButton) {
@@ -146,7 +146,7 @@ class AdvancedSettingsViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
 
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
-        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments
+        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments + "*"
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
@@ -211,6 +211,9 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     func saveFields() {
+        if serviceDocumentsTextField.text == "" {
+            return
+        }
         viewModel.saveFields(https: httpsSwitch.isOn,
                          port: portTextField.text,
                          serviceDocuments: serviceDocumentsTextField.text,
@@ -232,11 +235,21 @@ class AdvancedSettingsViewController: UIViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
+        enableSaveButton = (serviceDocumentsTextField.text != "")
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        enableSaveButton = true
+        enableSaveButton = (serviceDocumentsTextField.text != "")
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == serviceDocumentsTextField {
+            enableSaveButton = (textField.updatedText(for: range, replacementString: string) != "")
+        } else {
+            enableSaveButton = (serviceDocumentsTextField.text != "")
+        }
+        return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -254,6 +267,13 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         }
 
         nextTextField.becomeFirstResponder()
+        return true
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        if textField == serviceDocumentsTextField {
+            enableSaveButton = false
+        }
         return true
     }
 }
