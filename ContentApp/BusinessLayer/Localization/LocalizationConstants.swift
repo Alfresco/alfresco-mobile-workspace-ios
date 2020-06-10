@@ -30,7 +30,7 @@ struct LocalizationConstants {
         static let save = NSLocalizedString("saveButton", comment: "")
         static let signin = NSLocalizedString("signin", comment: "")
         static let signInWithSSO = NSLocalizedString("signInWithSSO", comment: "")
-        static let okk = NSLocalizedString("Ok", comment: "")
+        static let okConfirmation = NSLocalizedString("Ok", comment: "")
     }
 
     struct TextFieldPlaceholders {

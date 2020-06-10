@@ -32,7 +32,7 @@ class Snackbar {
     private var buttonTitle: String
     private var hideButton: Bool = false
 
-    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.okk) {
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.okConfirmation) {
         self.type = type
         self.buttonTitle = buttonTitle
         self.hideButton = (buttonTitle == "")
