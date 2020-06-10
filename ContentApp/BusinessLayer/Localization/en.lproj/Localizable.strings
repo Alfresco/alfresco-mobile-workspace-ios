@@ -64,5 +64,5 @@
 "loginErrorNoAuthAlfrescoURL" = "No authentication service can be found at the provided Alfresco URL.";
 "loginErrorCheckConnectURL" = "Check your Connect to URL.";
 "loginErrorWrongCredentialProvided" = "Wrong username or password provided.";
-"loginApprovedSaveSettings" = "Changes to the configuration have been saved";
+"loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
 "loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";

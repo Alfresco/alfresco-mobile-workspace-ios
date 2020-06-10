@@ -160,7 +160,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gir-R5-JLj" customClass="MDCFilledTextField">
-                                <rect key="frame" x="70" y="304.5" width="884" height="60"/>
+                                <rect key="frame" x="50" y="304.5" width="924" height="60"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="clU-La-QPF"/>
@@ -194,7 +194,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="To allow successful single sign on access, please provide the location of your Process Services environment." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Icp-Qw-ERC">
-                                <rect key="frame" x="70" y="272.5" width="884" height="17"/>
+                                <rect key="frame" x="50" y="272.5" width="924" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -229,7 +229,7 @@
                             <constraint firstItem="HJF-tl-dHT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="VaN-5l-lsq" secondAttribute="bottom" constant="40" id="12G-G8-7rz"/>
                             <constraint firstItem="ns9-x8-NeV" firstAttribute="leading" secondItem="blY-7h-Q4d" secondAttribute="leading" constant="20" id="2Au-t4-QSa"/>
                             <constraint firstItem="Icp-Qw-ERC" firstAttribute="top" secondItem="T1n-xl-Uw9" secondAttribute="bottom" priority="201" constant="15" id="4iw-tc-ZDE"/>
-                            <constraint firstItem="Icp-Qw-ERC" firstAttribute="trailing" secondItem="bcm-4S-gYH" secondAttribute="trailing" constant="-20" id="758-1u-SQa"/>
+                            <constraint firstItem="Icp-Qw-ERC" firstAttribute="trailing" secondItem="bcm-4S-gYH" secondAttribute="trailing" id="758-1u-SQa"/>
                             <constraint firstItem="Icp-Qw-ERC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="T1n-xl-Uw9" secondAttribute="bottom" id="7F8-DN-lR4"/>
                             <constraint firstItem="HJF-tl-dHT" firstAttribute="centerX" secondItem="PgP-QA-6Yw" secondAttribute="centerX" id="7Rf-XM-2Zz"/>
                             <constraint firstItem="gir-R5-JLj" firstAttribute="leading" secondItem="Icp-Qw-ERC" secondAttribute="leading" id="7c0-c4-qN9"/>
@@ -238,7 +238,7 @@
                             <constraint firstItem="gir-R5-JLj" firstAttribute="top" secondItem="Icp-Qw-ERC" secondAttribute="bottom" constant="15" id="EQw-21-nHz"/>
                             <constraint firstItem="VaN-5l-lsq" firstAttribute="leading" secondItem="bcm-4S-gYH" secondAttribute="leading" id="GJW-yd-V28"/>
                             <constraint firstItem="bcm-4S-gYH" firstAttribute="trailing" secondItem="qnk-dG-bEL" secondAttribute="trailing" id="Hly-ds-0k3"/>
-                            <constraint firstItem="Icp-Qw-ERC" firstAttribute="leading" secondItem="bcm-4S-gYH" secondAttribute="leading" constant="20" id="I1c-5A-cuo"/>
+                            <constraint firstItem="Icp-Qw-ERC" firstAttribute="leading" secondItem="bcm-4S-gYH" secondAttribute="leading" id="I1c-5A-cuo"/>
                             <constraint firstItem="blY-7h-Q4d" firstAttribute="trailing" secondItem="ns9-x8-NeV" secondAttribute="trailing" constant="20" id="KhQ-Lg-XAc"/>
                             <constraint firstItem="HJF-tl-dHT" firstAttribute="top" secondItem="VaN-5l-lsq" secondAttribute="bottom" priority="200" constant="288.32999999999998" id="Lvz-HH-6QU"/>
                             <constraint firstItem="0CU-Tt-c1d" firstAttribute="height" secondItem="PgP-QA-6Yw" secondAttribute="height" multiplier="0.0758929" id="PvN-5v-SOf"/>
