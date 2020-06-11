@@ -18,19 +18,8 @@
 
 import Foundation
 
-class AdvancedSettingsViewModel {
-    var authParameters = AuthenticationParameters.parameters()
-
-    func resetAuthParameters() {
-        authParameters = AuthenticationParameters()
-    }
-
-    func saveFields(https: Bool, port: String?, serviceDocuments: String?, realm: String?, clientID: String?) {
-        authParameters.https = https
-        authParameters.port = port ?? ""
-        authParameters.serviceDocument = serviceDocuments ?? ""
-        authParameters.realm = realm ?? ""
-        authParameters.clientID = clientID ?? ""
-        authParameters.save()
-    }
+protocol AccountProtocol {
+    var session: AccountSessionProtocol { get set }
+    var authParams: AuthenticationParameters { get set }
+    var identifier: String { get }
 }

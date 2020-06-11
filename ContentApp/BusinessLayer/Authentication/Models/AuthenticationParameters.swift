@@ -18,7 +18,7 @@
 
 import Foundation
 
-class AuthSettingsParameters: Codable {
+class AuthenticationParameters: Codable {
     var https: Bool = false
     var port: String = "80"
     var serviceDocument: String = "alfresco"
@@ -43,20 +43,28 @@ class AuthSettingsParameters: Codable {
         return fullFormatURL
     }
 
-    static func parameters() -> AuthSettingsParameters {
+    static func parameters() -> AuthenticationParameters {
+        parameters(for: kSaveAuthSettingsParameters)
+    }
+
+    static func parameters(for accountIdentifier: String) -> AuthenticationParameters {
         let defaults = UserDefaults.standard
-        if let data = defaults.value(forKey: kSaveAuthSettingsParameters) as? Data {
-            if let params = try? PropertyListDecoder().decode(AuthSettingsParameters.self, from: data) {
+        if let data = defaults.value(forKey: accountIdentifier) as? Data {
+            if let params = try? PropertyListDecoder().decode(AuthenticationParameters.self, from: data) {
                 return params
             }
         }
-        return AuthSettingsParameters()
+        return AuthenticationParameters()
     }
 
     func save() {
+        save(for: kSaveAuthSettingsParameters)
+    }
+
+    func save(for accountIdentifier: String) {
         let defaults = UserDefaults.standard
         UserDefaults.standard.set(try? PropertyListEncoder().encode(self),
-                                  forKey: kSaveAuthSettingsParameters)
+                                  forKey: accountIdentifier)
         defaults.synchronize()
         AlfrescoLog.debug("Authentication Settings Parameters saved in UserDefaults:\n\(Mirror.description(for: self))")
     }

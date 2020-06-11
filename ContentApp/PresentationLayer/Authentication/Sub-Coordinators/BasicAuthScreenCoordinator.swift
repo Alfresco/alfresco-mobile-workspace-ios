@@ -32,7 +32,8 @@ class BasicAuthScreenCoordinator: Coordinator {
         let viewController = BasicAuthViewController.instantiateViewController()
         viewController.splashScreenDelegate = self.splashScreen
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        viewController.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
+                                                      accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
         presenter.pushViewController(viewController, animated: kPushAnimation)
         basicAuthViewController = viewController
     }

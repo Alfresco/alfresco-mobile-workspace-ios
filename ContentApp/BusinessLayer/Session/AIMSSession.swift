@@ -17,20 +17,25 @@
 //
 
 import Foundation
+import AlfrescoAuth
 
-class AdvancedSettingsViewModel {
-    var authParameters = AuthenticationParameters.parameters()
+class AIMSSession: AccountSessionProtocol {
+    private var session: AlfrescoAuthSession
 
-    func resetAuthParameters() {
-        authParameters = AuthenticationParameters()
+    init(with session: AlfrescoAuthSession) {
+        self.session = session
     }
 
-    func saveFields(https: Bool, port: String?, serviceDocuments: String?, realm: String?, clientID: String?) {
-        authParameters.https = https
-        authParameters.port = port ?? ""
-        authParameters.serviceDocument = serviceDocuments ?? ""
-        authParameters.realm = realm ?? ""
-        authParameters.clientID = clientID ?? ""
-        authParameters.save()
+
+    func getSession() {
+
+    }
+
+    func invalidateSessionRefresh() {
+
+    }
+
+    func logout() {
+
     }
 }

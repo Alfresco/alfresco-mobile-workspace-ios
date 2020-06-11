@@ -27,14 +27,16 @@ protocol AimsViewModelDelegate: class {
 
 class AimsViewModel {
     weak var delegate: AimsViewModelDelegate?
-    var authenticationService: LoginService?
+    var authenticationService: AuthenticationServiceProtocol?
+    var accountService: AccountServiceProtocol?
 
-    init(with loginService: LoginService?) {
-        authenticationService = loginService
+    init(with authenticationService: AuthenticationServiceProtocol?, accountService: AccountServiceProtocol?) {
+        self.authenticationService = authenticationService
+        self.accountService = accountService
     }
 
     func login(repository: String, in viewController: UIViewController) {
-        let authParameters = AuthSettingsParameters.parameters()
+        let authParameters = AuthenticationParameters.parameters()
         authParameters.contentURL = repository
         authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.aimsAuthentication(on: viewController, delegate: self)
@@ -48,9 +50,15 @@ class AimsViewModel {
 extension AimsViewModel: AlfrescoAuthDelegate {
     func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
         switch result {
-        case .success(let credentials):
-            AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: credentials))")
-            authenticationService?.saveAuthParameters()
+        case .success(let aimsCredential):
+            AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: aimsCredential))")
+
+            if let authSession = session, let accountParams = authenticationService?.authParameters {
+                let accountSession = AIMSSession(with: authSession)
+                let account = AIMSAccount(with: accountSession, authParams: accountParams, credential: aimsCredential)
+                accountService?.register(account: account)
+                accountService?.activeAccount = account
+            }
             self.delegate?.logInSuccessful()
         case .failure(let error):
             AlfrescoLog.error("Error \(String(describing: authenticationService?.authParameters.contentURL)) login with aims : \(error.localizedDescription)")

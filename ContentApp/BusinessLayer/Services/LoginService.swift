@@ -19,10 +19,21 @@
 import Foundation
 import AlfrescoAuth
 
+protocol AuthenticationServiceProtocol {
+    var authParameters: AuthenticationParameters { get }
+
+    init(with authenticationParameters: AuthenticationParameters)
+
+    func update(authenticationParameters: AuthenticationParameters)
+    func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>)
+    func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate)
+    func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void))
+}
+
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
-class LoginService: Service {
-    private (set) var authParameters: AuthSettingsParameters
+class AuthenticationService: AuthenticationServiceProtocol, Service {
+    private (set) var authParameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = authConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
@@ -31,11 +42,11 @@ class LoginService: Service {
     var session: AlfrescoAuthSession?
     var apiClient: APIClientProtocol?
 
-    init(with authenticationParameters: AuthSettingsParameters) {
+    required init(with authenticationParameters: AuthenticationParameters) {
         self.authParameters = authenticationParameters
     }
 
-    func update(authenticationParameters: AuthSettingsParameters) {
+    func update(authenticationParameters: AuthenticationParameters) {
         self.authParameters = authenticationParameters
     }
 
@@ -51,9 +62,8 @@ class LoginService: Service {
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
 
-    func basicAuthentication(username: String, password: String, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
-        let basicAuthCredential = BasicAuthCredential(username: username, password: password)
-        let basicAuthCredentialProvider = BasicAuthenticationProvider(with: basicAuthCredential)
+    func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+        let basicAuthCredentialProvider = BasicAuthenticationProvider(with: credentials)
 
         apiClient = APIClient(with: String(format: "%@/%@/", authParameters.fullHostnameURL, authParameters.serviceDocument))
         _ = apiClient?.send(GetContentServicesProfile(with: basicAuthCredentialProvider), completion: { (result) in

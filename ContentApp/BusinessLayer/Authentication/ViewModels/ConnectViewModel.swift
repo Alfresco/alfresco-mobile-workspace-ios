@@ -26,14 +26,14 @@ protocol ConnectViewModelDelegate: class {
 
 class ConnectViewModel {
     weak var delegate: ConnectViewModelDelegate?
-    var authenticationService: LoginService?
+    var authenticationService: AuthenticationService?
 
-    init(with loginService: LoginService?) {
+    init(with loginService: AuthenticationService?) {
         authenticationService = loginService
     }
 
     func availableAuthType(for url: String) {
-        let authParameters = AuthSettingsParameters.parameters()
+        let authParameters = AuthenticationParameters.parameters()
         authParameters.hostname = url
         authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.availableAuthType(handler: { [weak self] (result) in
