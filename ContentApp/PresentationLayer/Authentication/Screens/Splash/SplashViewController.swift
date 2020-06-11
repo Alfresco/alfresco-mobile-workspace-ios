@@ -83,9 +83,10 @@ class SplashViewController: UIViewController {
             wasRotatedInAnimationProgress = true
             return
         }
-
         coordinator.animate(alongsideTransition: nil) { [weak self] _ in
             guard let sSelf = self else { return }
+            sSelf.view.frame.size = size
+            sSelf.view.layoutIfNeeded()
             sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
             sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
