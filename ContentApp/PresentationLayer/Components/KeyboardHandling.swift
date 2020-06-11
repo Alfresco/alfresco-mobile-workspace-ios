@@ -22,6 +22,7 @@ import UIKit
 class KeyboardHandling {
     private var view: UIView?
     private var object: UIView?
+    private var viewChanged: Bool = false
 
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -49,7 +50,8 @@ class KeyboardHandling {
         let objectPositionY = ((UIDevice.current.userInterfaceIdiom == .phone)) ? objectPositionYInSuperview : objectPositionYInWindow
 
         if objectPositionY < keyboardHeight {
-            view.superview?.frame.origin.y -= (keyboardHeight - objectPositionY)
+            view.frame.origin.y -= (keyboardHeight - objectPositionY)
+            viewChanged = true
         }
     }
 
@@ -57,8 +59,8 @@ class KeyboardHandling {
         guard let view = self.view else {
             return
         }
-        if view.superview?.frame.origin.y != 0 {
-            view.superview?.frame.origin.y = 0
+        if view.frame.origin.y != 0 && viewChanged == true {
+            view.frame.origin.y = 0
         }
     }
 }

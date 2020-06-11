@@ -30,7 +30,7 @@
 "Ok" = "Ok";
 
 // MARK: - PlaceHolders
-"loginConnectTextFieldPlaceholder" = "Connect To";
+"loginConnectTextFieldPlaceholder" = "Connect to";
 "loginPortTextFieldPlaceholder" = "Port";
 "loginServiceDocumentsTextFieldPlaceholder" = "Service Document";
 "loginRealmTextFieldPlaceholder" = "Realm";

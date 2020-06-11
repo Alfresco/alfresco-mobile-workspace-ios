@@ -28,15 +28,15 @@ enum SnackBarType {
 
 class Snackbar {
     private var type: SnackBarType
-    private var snackBar = MDCSnackbarMessage()
+    private var snackBar: MDCSnackbarMessage
     private var buttonTitle: String
     private var hideButton: Bool = false
 
-    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.okConfirmation) {
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.snackbarConfirmation) {
         self.type = type
         self.buttonTitle = buttonTitle
         self.hideButton = (buttonTitle == "")
-        self.snackBar.text = message
+        self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses
         self.addButton()
     }
@@ -54,8 +54,14 @@ class Snackbar {
         }
     }
 
-    func show(completion: ((Bool) -> Void)?) {
-        snackBar.completionHandler = completion
+    func show(completion: (() -> Void)?) {
+        snackBar.completionHandler = { (userInitiated) in
+            if userInitiated {
+                if let completion = completion {
+                    completion()
+                }
+            }
+        }
         MDCSnackbarManager.show(snackBar)
     }
 
@@ -65,13 +71,17 @@ class Snackbar {
     }
 
     func dismiss() {
-        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: nil)
+        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
+    }
+
+    class func dimissAll() {
+         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: nil)
     }
 
     // MARK: - Private methods
 
     private func addButton() {
-        guard hideButton  else {
+        guard !hideButton  else {
             return
         }
         let action = MDCSnackbarMessageAction()
