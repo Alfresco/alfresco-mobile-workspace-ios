@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import AlfrescoAuth
 
 class AuthenticationParameters: Codable {
     var https: Bool = false
@@ -67,5 +68,13 @@ class AuthenticationParameters: Codable {
                                   forKey: accountIdentifier)
         defaults.synchronize()
         AlfrescoLog.debug("Authentication Settings Parameters saved in UserDefaults:\n\(Mirror.description(for: self))")
+    }
+
+    func authenticationConfiguration() -> AuthConfiguration {
+        let authConfig = AuthConfiguration(baseUrl: fullHostnameURL,
+                                           clientID: clientID,
+                                           realm: realm,
+                                           redirectURI: redirectURI.encoding())
+        return authConfig
     }
 }

@@ -22,7 +22,7 @@ import JWTDecode
 
 class AIMSAccount: AccountProtocol {
     var identifier: String {
-        guard let token = credential.accessToken else { return "" }
+        guard let token = session.credential?.accessToken else { return "" }
 
         do {
             let jwt = try decode(jwt: token)
@@ -36,13 +36,29 @@ class AIMSAccount: AccountProtocol {
 
         return ""
     }
-    var session: AccountSessionProtocol
-    var authParams: AuthenticationParameters
-    var credential: AlfrescoCredential
+    var session: AIMSSession
 
-    init(with session: AccountSessionProtocol, authParams: AuthenticationParameters, credential: AlfrescoCredential) {
+    init(with session: AIMSSession) {
         self.session = session
-        self.authParams = authParams
-        self.credential = credential
+    }
+
+    func persistAuthenticationParameters() {
+        session.parameters.save(for: identifier)
+    }
+
+    func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        // Check if existing credentials are valid and return them if true
+        if let credential = session.credential {
+            let aimsAuthenticationProvider = AIMSAuthenticationProvider(with: credential)
+
+            if aimsAuthenticationProvider.areCredentialsValid() {
+                completionHandler(aimsAuthenticationProvider)
+            } else { // Otherwise refresh the session
+                session.refreshSession { (credential) in
+                    let aimsAuthenticationProvider = AIMSAuthenticationProvider(with: credential)
+                    completionHandler(aimsAuthenticationProvider)
+                }
+            }
+        }
     }
 }

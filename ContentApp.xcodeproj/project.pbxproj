@@ -31,7 +31,6 @@
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
 		B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AD24813BAF004833BC /* UITextview+Size.swift */; };
-		B9E7D601249115CA0056292B /* AccountSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D600249115CA0056292B /* AccountSessionProtocol.swift */; };
 		B9E7D603249119370056292B /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D602249119370056292B /* AccountProtocol.swift */; };
 		B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60424911D380056292B /* BasicAuthAccount.swift */; };
 		B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60624911D4D0056292B /* AIMSAccount.swift */; };
@@ -116,7 +115,6 @@
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
 		B9B630AD24813BAF004833BC /* UITextview+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextview+Size.swift"; sourceTree = "<group>"; };
-		B9E7D600249115CA0056292B /* AccountSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSessionProtocol.swift; sourceTree = "<group>"; };
 		B9E7D602249119370056292B /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
 		B9E7D60424911D380056292B /* BasicAuthAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthAccount.swift; sourceTree = "<group>"; };
 		B9E7D60624911D4D0056292B /* AIMSAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSAccount.swift; sourceTree = "<group>"; };
@@ -455,22 +453,13 @@
 		B9E7D5FF249115BA0056292B /* Session */ = {
 			isa = PBXGroup;
 			children = (
-				B9F6EBA024923BE100D980FA /* Protocols */,
+				B9E7D602249119370056292B /* AccountProtocol.swift */,
 				B9E7D60424911D380056292B /* BasicAuthAccount.swift */,
 				B9E7D60624911D4D0056292B /* AIMSAccount.swift */,
 				B9F6EBA124923C2900D980FA /* AIMSSession.swift */,
 				B9F6EBA324923C4300D980FA /* BasicSession.swift */,
 			);
 			path = Session;
-			sourceTree = "<group>";
-		};
-		B9F6EBA024923BE100D980FA /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-				B9E7D600249115CA0056292B /* AccountSessionProtocol.swift */,
-				B9E7D602249119370056292B /* AccountProtocol.swift */,
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		E334C03324755D8E00F74880 = {
@@ -792,7 +781,6 @@
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
-				B9E7D601249115CA0056292B /* AccountSessionProtocol.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
 				E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */,

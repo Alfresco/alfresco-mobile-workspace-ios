@@ -23,7 +23,7 @@ protocol AccountServiceProtocol {
     var activeAccount: AccountProtocol? { get set }
 
     func register(account: AccountProtocol)
-    func getSessionForCurrentAccount()
+    func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
 }
 
 class AccountService: AccountServiceProtocol, Service {
@@ -32,12 +32,12 @@ class AccountService: AccountServiceProtocol, Service {
 
     func register(account: AccountProtocol) {
         accounts?.append(account)
-
-        // Save authentication parameters
-        account.authParams.save(for: account.identifier)
+        account.persistAuthenticationParameters()
     }
 
-    func getSessionForCurrentAccount() {
+    func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        activeAccount?.getSession(completionHandler: { (authenticationProivder) in
+            completionHandler(authenticationProivder)
+        })
     }
-
 }

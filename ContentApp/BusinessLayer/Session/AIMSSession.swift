@@ -19,23 +19,80 @@
 import Foundation
 import AlfrescoAuth
 
-class AIMSSession: AccountSessionProtocol {
+class AIMSSession {
     private var session: AlfrescoAuthSession
+    private var alfrescoAuth: AlfrescoAuth?
+    private (set) var parameters: AuthenticationParameters
+    private (set) var credential: AlfrescoCredential?
 
-    init(with session: AlfrescoAuthSession) {
+    private var refreshGroup = DispatchGroup()
+    private var refreshInProgress = false
+    private var refreshTimer: Timer?
+
+    init(with session: AlfrescoAuthSession, parameters: AuthenticationParameters, credential: AlfrescoCredential) {
         self.session = session
+        self.parameters = parameters
+        self.credential = credential
+        let authConfig = parameters.authenticationConfiguration()
+        self.alfrescoAuth = AlfrescoAuth.init(configuration: authConfig)
     }
 
+    func refreshSession(completionHandler: ((AlfrescoCredential) -> Void)?) {
+        refreshGroup.enter()
 
-    func getSession() {
+        if !refreshInProgress {
+            refreshInProgress = true
 
+            alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
+            alfrescoAuth?.pkceRefresh(session: session, delegate: self)
+        }
+
+        refreshGroup.notify(queue: DispatchQueue.main) {
+            if let credential = self.credential {
+                if let completionHandler = completionHandler {
+                    completionHandler(credential)
+                }
+            }
+        }
     }
 
     func invalidateSessionRefresh() {
-
+        refreshTimer?.invalidate()
     }
 
     func logout() {
 
     }
+
+    private func scheduleSessionRefresh() {
+        if let accessTokenExpiresIn = self.credential?.accessTokenExpiresIn {
+            let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn) - Date().timeIntervalSince1970 - TimeInterval(kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer)
+            refreshTimer = Timer.scheduledTimer(withTimeInterval: aimsAccesstokenRefreshInterval, repeats: true, block: { [weak self] timer in
+                guard let sSelf = self else { return }
+                sSelf.refreshSession(completionHandler: nil)
+            })
+        }
+    }
+}
+
+extension AIMSSession: AlfrescoAuthDelegate {
+    func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
+        switch result {
+        case .success(let credential):
+            if let refreshedSession = session {
+                self.session = refreshedSession
+                self.credential = credential
+            }
+
+        case .failure(let error):
+            AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
+        }
+        refreshInProgress = false
+        refreshGroup.leave()
+    }
+
+    func didLogOut(result: Result<Int, APIError>) {
+
+    }
+
 }

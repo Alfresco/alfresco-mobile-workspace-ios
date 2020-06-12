@@ -16,10 +16,11 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-protocol AccountSessionProtocol {
-    func getSession()
-    func invalidateSessionRefresh()
-    func logout()
+protocol AccountProtocol {
+    var identifier: String { get }
+
+    func persistAuthenticationParameters()
+    func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
 }

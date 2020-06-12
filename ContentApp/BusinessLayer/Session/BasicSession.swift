@@ -18,18 +18,13 @@
 
 import Foundation
 
-class BasicSession: AccountSessionProtocol {
-    func getSession() {
-
-    }
-
+class BasicSession {
     func invalidateSessionRefresh() {
 
     }
 
     func logout() {
-        
-    }
 
+    }
 
 }

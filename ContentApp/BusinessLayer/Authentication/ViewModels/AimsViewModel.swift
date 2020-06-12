@@ -43,7 +43,7 @@ class AimsViewModel {
     }
 
     func hostname() -> String {
-        return authenticationService?.authParameters.hostname ?? ""
+        return authenticationService?.parameters.hostname ?? ""
     }
 }
 
@@ -53,15 +53,15 @@ extension AimsViewModel: AlfrescoAuthDelegate {
         case .success(let aimsCredential):
             AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: aimsCredential))")
 
-            if let authSession = session, let accountParams = authenticationService?.authParameters {
-                let accountSession = AIMSSession(with: authSession)
-                let account = AIMSAccount(with: accountSession, authParams: accountParams, credential: aimsCredential)
+            if let authSession = session, let accountParams = authenticationService?.parameters {
+                let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
+                let account = AIMSAccount(with: accountSession)
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
             }
             self.delegate?.logInSuccessful()
         case .failure(let error):
-            AlfrescoLog.error("Error \(String(describing: authenticationService?.authParameters.contentURL)) login with aims : \(error.localizedDescription)")
+            AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")
             self.delegate?.logInFailed(with: error)
         }
     }

@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 
 protocol AuthenticationServiceProtocol {
-    var authParameters: AuthenticationParameters { get }
+    var parameters: AuthenticationParameters { get }
 
     init(with authenticationParameters: AuthenticationParameters)
 
@@ -33,9 +33,9 @@ protocol AuthenticationServiceProtocol {
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
 class AuthenticationService: AuthenticationServiceProtocol, Service {
-    private (set) var authParameters: AuthenticationParameters
+    private (set) var parameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
     }()
 
@@ -43,21 +43,21 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     var apiClient: APIClientProtocol?
 
     required init(with authenticationParameters: AuthenticationParameters) {
-        self.authParameters = authenticationParameters
+        self.parameters = authenticationParameters
     }
 
     func update(authenticationParameters: AuthenticationParameters) {
-        self.authParameters = authenticationParameters
+        self.parameters = authenticationParameters
     }
 
     func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>) {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.availableAuthType(handler: handler)
     }
 
     func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
@@ -65,7 +65,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
         let basicAuthCredentialProvider = BasicAuthenticationProvider(with: credentials)
 
-        apiClient = APIClient(with: String(format: "%@/%@/", authParameters.fullHostnameURL, authParameters.serviceDocument))
+        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.serviceDocument))
         _ = apiClient?.send(GetContentServicesProfile(with: basicAuthCredentialProvider), completion: { (result) in
             switch result {
             case .success(_):
@@ -77,7 +77,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     }
 
     func saveAuthParameters() {
-        authParameters.save()
+        parameters.save()
     }
 
     func resumeExternalUserAgentFlow(with url: URL) -> Bool {
@@ -87,15 +87,4 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         guard let authSession = session else { return false}
         return authSession.resumeExternalUserAgentFlow(with: url)
     }
-
-    // MARK: - Private
-
-    private func authConfiguration() -> AuthConfiguration {
-        let authConfig = AuthConfiguration(baseUrl: authParameters.fullHostnameURL,
-                                           clientID: authParameters.clientID,
-                                           realm: authParameters.realm,
-                                           redirectURI: authParameters.redirectURI.encoding())
-        return authConfig
-    }
-
 }

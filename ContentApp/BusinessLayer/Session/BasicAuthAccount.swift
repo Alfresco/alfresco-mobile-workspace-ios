@@ -22,13 +22,21 @@ class BasicAuthAccount: AccountProtocol {
     var identifier: String {
         return credential.username
     }
-    var session: AccountSessionProtocol
-    var authParams: AuthenticationParameters
+    var session: BasicSession
+    var authParameters: AuthenticationParameters
     var credential: BasicAuthCredential
 
-    init(with session: AccountSessionProtocol, authParams: AuthenticationParameters, credential: BasicAuthCredential) {
+    init(with session: BasicSession, authParams: AuthenticationParameters, credential: BasicAuthCredential) {
         self.session = session
-        self.authParams = authParams
+        self.authParameters = authParams
         self.credential = credential
+    }
+
+    func persistAuthenticationParameters() {
+        
+    }
+
+    func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        
     }
 }
