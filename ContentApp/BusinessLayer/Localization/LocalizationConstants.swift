@@ -31,6 +31,7 @@ struct LocalizationConstants {
         static let signin = NSLocalizedString("signin", comment: "")
         static let signInWithSSO = NSLocalizedString("signInWithSSO", comment: "")
         static let snackbarConfirmation = "x"
+        static let signOut = NSLocalizedString("signOut", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -59,6 +60,7 @@ struct LocalizationConstants {
 
     struct ScreenTitles {
         static let advancedSettings = NSLocalizedString("advancedSettings", comment: "")
+        static let account = NSLocalizedString("account", comment: "")
     }
 
     struct Textviews {
@@ -74,5 +76,12 @@ struct LocalizationConstants {
         static let wrongCredentials = NSLocalizedString("loginErrorWrongCredentialProvided", comment: "")
         static let saveSettings = NSLocalizedString("loginApprovedSaveSettings", comment: "")
         static let serviceDocumentEmpty = NSLocalizedString("loginWarningServiceDocumetEmptyText", comment: "")
+    }
+
+    struct Theme {
+        static let theme = NSLocalizedString("theme", comment: "")
+        static let auto = NSLocalizedString("auto", comment: "")
+        static let dark = NSLocalizedString("dark", comment: "")
+        static let light = NSLocalizedString("light", comment: "")
     }
 }

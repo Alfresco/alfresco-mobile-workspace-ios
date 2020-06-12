@@ -39,6 +39,8 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
             return loginResetButtonContainerScheme(for: theme)
         case .loginSavePadButton:
             return loginSavePadButtonContainerScheme(for: theme)
+        case .signOutButton:
+            return signOutButtonContainerScheme(for: theme)
         }
     }
 
@@ -91,6 +93,15 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
         containerScheme.colorScheme.onSurfaceColor = theme.loginTextFieldOnSurfaceColor
         containerScheme.colorScheme.errorColor = theme.loginTextFieldErrorColor
         containerScheme.typographyScheme.subtitle1 = theme.loginTextFieldFont
+
+        return containerScheme
+    }
+
+    private func signOutButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
+        containerScheme.colorScheme.primaryColor = theme.signOutButtonColor
+        containerScheme.colorScheme.onPrimaryColor = theme.signOutTextButtonColor
+        containerScheme.typographyScheme.button = theme.signOutButtonFont
 
         return containerScheme
     }

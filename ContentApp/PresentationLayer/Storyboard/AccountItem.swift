@@ -17,17 +17,22 @@
 //
 
 import Foundation
-import UIKit
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kSaveThemeMode = "kSaveThemeMode"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
+enum AccountItemType {
+    case name
+    case theme
+}
 
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+class AccountItem {
+    var icon: String
+    var title: String
+    var subtitle: String
+    var type: AccountItemType
 
-let kSessionExpirationTimeIntervalCheck = 20
-let kLoginAIMSCancelWebViewErrorCode = -3
+    init(type: AccountItemType, title: String, subtitle: String, icon: String) {
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+        self.type = type
+    }
+}

@@ -17,17 +17,18 @@
 //
 
 import Foundation
-import UIKit
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kSaveThemeMode = "kSaveThemeMode"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
+class AccountViewModel {
+    var items: [AccountItem] = []
 
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+    init() {
+        reload()
+    }
 
-let kSessionExpirationTimeIntervalCheck = 20
-let kLoginAIMSCancelWebViewErrorCode = -3
+    func reload() {
+        items = [AccountItem(type: .name, title: "John Doe", subtitle: "josh.doe@alfresco.com", icon: "account-circle")]
+        if #available(iOS 13.0, *) {
+            items.append(AccountItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: ThemeMode.get().rawValue, icon: "theme"))
+        }
+    }
+}

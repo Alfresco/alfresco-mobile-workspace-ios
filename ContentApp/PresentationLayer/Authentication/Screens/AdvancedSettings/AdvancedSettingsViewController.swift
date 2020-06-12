@@ -79,6 +79,7 @@ class AdvancedSettingsViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
+        guard ThemeMode.get() == .auto else { return }
         switch newCollection.userInterfaceStyle {
         case .dark:
             self.themingService?.activateDarkTheme()

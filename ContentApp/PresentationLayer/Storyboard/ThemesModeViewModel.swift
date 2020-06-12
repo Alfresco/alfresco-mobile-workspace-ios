@@ -17,17 +17,15 @@
 //
 
 import Foundation
-import UIKit
 
-let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
-let kSaveThemeMode = "kSaveThemeMode"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
+class ThemeModesViewModel {
+    var items: [ThemeModeType]
 
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+    init() {
+        items = [.auto, .dark, .light]
+    }
 
-let kSessionExpirationTimeIntervalCheck = 20
-let kLoginAIMSCancelWebViewErrorCode = -3
+    func saveThemeMode(_ item: ThemeModeType, themingService: MaterialDesignThemingService?) {
+        ThemeMode.save(mode: item, themingService: themingService)
+    }
+}

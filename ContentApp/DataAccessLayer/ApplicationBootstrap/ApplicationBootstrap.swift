@@ -38,17 +38,12 @@ class ApplicationBootstrap {
     }
 
     private func themingService() -> ThemingService {
-        let darkMode = (UIApplication.shared.windows[0].traitCollection.userInterfaceStyle == .dark)
         let themingService = MaterialDesignThemingService()
-
         let defaultTheme = DefaultTheme()
-        themingService.register(theme: defaultTheme)
-
         let darkTheme = DarkTheme()
+        themingService.register(theme: defaultTheme)
         themingService.register(theme: darkTheme)
-
-        themingService.activeTheme = (darkMode) ? darkTheme : defaultTheme
-
+        ThemeMode.save(mode: ThemeMode.get(), themingService: themingService)
         return themingService
     }
 
