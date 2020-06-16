@@ -61,15 +61,15 @@ class BasicAuthViewController: UIViewController {
         viewModel?.delegate = self
 
         addLocalization()
-        addMaterialComponentsTheme()
         enableSignInButton = false
     }
 
-   override func viewWillAppear(_ animated: Bool) {
-       super.viewWillAppear(animated)
-       activityIndicator = ActivityIndicatorView(themingService: themingService)
-       activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
-   }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addMaterialComponentsTheme()
+        activityIndicator = ActivityIndicatorView(themingService: themingService)
+        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+    }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -83,13 +83,7 @@ class BasicAuthViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        switch newCollection.userInterfaceStyle {
-        case .dark:
-            self.themingService?.activateDarkTheme()
-        case .light:
-            self.themingService?.activateDefaultTheme()
-        default: break
-        }
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
     }
 

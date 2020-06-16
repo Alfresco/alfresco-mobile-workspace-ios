@@ -17,6 +17,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/BottomSheet'
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/Snackbar'
+  pod 'MaterialComponents/Dialogs'
   pod 'JWTDecode'
 
   target 'ContentAppTests' do

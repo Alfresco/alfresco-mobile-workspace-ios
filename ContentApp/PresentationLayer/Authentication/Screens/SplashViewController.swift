@@ -59,11 +59,15 @@ class SplashViewController: UIViewController {
 
         coordinatorDelegate?.showLoginContainerView()
 
-        addMaterialComponentsTheme()
         addLocalization()
 
         containerViews(alpha: 0.0, hidden: true)
         self.backButton.isHidden = true
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addMaterialComponentsTheme()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -94,13 +98,7 @@ class SplashViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        switch newCollection.userInterfaceStyle {
-        case .dark:
-            self.themingService?.activateDarkTheme()
-        case .light:
-            self.themingService?.activateDefaultTheme()
-        default: break
-        }
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
     }
 

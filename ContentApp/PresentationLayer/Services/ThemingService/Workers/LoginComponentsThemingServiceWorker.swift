@@ -19,10 +19,6 @@
 import Foundation
 import MaterialComponents.MaterialContainerScheme
 
-protocol MaterialDesignThemingServiceWorkerProtocol {
-    func containerScheme(for scene: MaterialComponentsThemingScene, on theme: PresentationTheme) -> MDCContainerScheming?
-}
-
 class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
 
     func containerScheme(for scene: MaterialComponentsThemingScene, on theme: PresentationTheme) -> MDCContainerScheming? {
@@ -39,6 +35,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
             return loginResetButtonContainerScheme(for: theme)
         case .loginSavePadButton:
             return loginSavePadButtonContainerScheme(for: theme)
+        default: return nil
         }
     }
 

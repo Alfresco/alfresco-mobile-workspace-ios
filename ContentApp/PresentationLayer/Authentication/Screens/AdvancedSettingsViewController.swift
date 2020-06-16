@@ -67,7 +67,6 @@ class AdvancedSettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addLocalization()
-        addMaterialComponentsTheme()
         enableSaveButton = false
         updateFields()
     }
@@ -77,15 +76,14 @@ class AdvancedSettingsViewController: UIViewController {
         Snackbar.dimissAll()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addMaterialComponentsTheme()
+    }
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        switch newCollection.userInterfaceStyle {
-        case .dark:
-            self.themingService?.activateDarkTheme()
-        case .light:
-            self.themingService?.activateDefaultTheme()
-        default: break
-        }
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
     }
 

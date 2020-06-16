@@ -20,6 +20,7 @@ import Foundation
 import UIKit
 
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
+let kSaveThemeMode = "kSaveThemeMode"
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"

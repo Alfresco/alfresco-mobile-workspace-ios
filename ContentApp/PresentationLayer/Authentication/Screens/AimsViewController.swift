@@ -60,12 +60,12 @@ class AimsViewController: UIViewController {
         viewModel?.delegate = self
 
         addLocalization()
-        addMaterialComponentsTheme()
         enableSignInButton = (repositoryTextField.text != "")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(themingService: themingService)
         activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
     }
@@ -82,13 +82,7 @@ class AimsViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        switch newCollection.userInterfaceStyle {
-        case .dark:
-            self.themingService?.activateDarkTheme()
-        case .light:
-            self.themingService?.activateDefaultTheme()
-        default: break
-        }
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
     }
 

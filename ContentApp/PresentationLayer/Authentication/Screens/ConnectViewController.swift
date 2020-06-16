@@ -39,6 +39,7 @@ class ConnectViewController: UIViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
+    var errorShowInProgress: Bool = false
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
@@ -56,13 +57,12 @@ class ConnectViewController: UIViewController {
         viewModel?.delegate = self
 
         addLocalization()
-        addMaterialComponentsTheme()
         enableConnectButton = (connectTextField.text != "")
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(themingService: themingService)
         navigationBar(hide: true)
         self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
@@ -93,16 +93,9 @@ class ConnectViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        switch newCollection.userInterfaceStyle {
-        case .dark:
-            self.themingService?.activateDarkTheme()
-        case .light:
-            self.themingService?.activateDefaultTheme()
-        default: break
-        }
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
     }
-
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
@@ -153,7 +146,7 @@ class ConnectViewController: UIViewController {
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
-        connectTextFieldAddMaterialComponents(errorTheme: false)
+        connectTextFieldAddMaterialComponents()
 
         productLabel.textColor = themingService.activeTheme?.productLabelColor
         productLabel.font = themingService.activeTheme?.productLabelFont
@@ -164,11 +157,11 @@ class ConnectViewController: UIViewController {
         self.navigationController?.navigationBar.tintColor = themingService.activeTheme?.loginButtonColor
     }
 
-    func connectTextFieldAddMaterialComponents(errorTheme: Bool) {
+    func connectTextFieldAddMaterialComponents() {
         guard let themingService = self.themingService else {
             return
         }
-        if errorTheme {
+        if errorShowInProgress {
             connectTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         } else {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
@@ -225,7 +218,8 @@ extension ConnectViewController: ConnectViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-            sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+            sSelf.errorShowInProgress = false
+            sSelf.connectTextFieldAddMaterialComponents()
             Snackbar.dimissAll()
             switch authType {
             case .aimsAuth:
@@ -239,12 +233,14 @@ extension ConnectViewController: ConnectViewModelDelegate {
     func authServiceUnavailable(with error: APIError) {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-            sSelf.connectTextFieldAddMaterialComponents(errorTheme: true)
+            sSelf.errorShowInProgress = true
+            sSelf.connectTextFieldAddMaterialComponents()
             Snackbar.dimissAll()
             let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
             snackbar.applyThemingService(themingService)
             snackbar.show(completion: { () in
-                sSelf.connectTextFieldAddMaterialComponents(errorTheme: false)
+                sSelf.errorShowInProgress = false
+                sSelf.connectTextFieldAddMaterialComponents()
             })
         }
         activityIndicator?.state = .isIdle

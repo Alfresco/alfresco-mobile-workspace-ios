@@ -25,7 +25,6 @@ class ApplicationCoordinator: Coordinator {
 
     init(window: UIWindow) {
         self.window = window
-
         rootViewController = UINavigationController()
         splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
     }
