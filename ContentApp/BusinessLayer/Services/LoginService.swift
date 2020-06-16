@@ -19,43 +19,69 @@
 import Foundation
 import AlfrescoAuth
 
+protocol AuthenticationServiceProtocol {
+    /// Parameters used as part of the login flow process
+    var parameters: AuthenticationParameters { get }
+
+    init(with authenticationParameters: AuthenticationParameters)
+
+    /// Overrides the existing parameters used to create a session with new ones.
+    /// - Parameter authenticationParameters: Authentication parameters such as hostname, port etc.
+    func update(authenticationParameters: AuthenticationParameters)
+
+    /// Returns via a closure the available authentication method for the given authentication parameters.
+    /// - Parameter handler:Authentication type available
+    func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>)
+
+    /// Initiates a login session with AIMS.
+    /// - Parameters:
+    ///   - viewController: View controller where the AIMS webview component will be displayed over
+    ///   - delegate: Authentication delegate
+    func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate)
+
+    /// Initiates a login with basic authentication.
+    /// - Parameters:
+    ///   - credentials: Credential object containing the username and password
+    ///   - handler: Signals the success or failure of the operation with additional error information
+    func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void))
+}
+
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
-class LoginService: Service {
-    private (set) var authParameters: AuthSettingsParameters
+class AuthenticationService: AuthenticationServiceProtocol, Service {
+    private (set) var parameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
     }()
 
     var session: AlfrescoAuthSession?
     var apiClient: APIClientProtocol?
 
-    init(with authenticationParameters: AuthSettingsParameters) {
-        self.authParameters = authenticationParameters
+    required init(with authenticationParameters: AuthenticationParameters) {
+        self.parameters = authenticationParameters
     }
 
-    func update(authenticationParameters: AuthSettingsParameters) {
-        self.authParameters = authenticationParameters
+    func update(authenticationParameters: AuthenticationParameters) {
+        self.parameters = authenticationParameters
     }
 
     func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>) {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.availableAuthType(handler: handler)
     }
 
     func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
-        let authConfig = authConfiguration()
+        let authConfig = parameters.authenticationConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
     }
 
-    func basicAuthentication(username: String, password: String, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
-        let basicAuthCredential = BasicAuthCredential(username: username, password: password)
-        let basicAuthCredentialProvider = BasicAuthenticationProvider(with: basicAuthCredential)
+    func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+        let basicAuthCredentialProvider = BasicAuthenticationProvider(with: credentials)
 
-        apiClient = APIClient(with: String(format: "%@/%@/", authParameters.fullHostnameURL, authParameters.serviceDocument))
+        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.serviceDocument))
         _ = apiClient?.send(GetContentServicesProfile(with: basicAuthCredentialProvider), completion: { (result) in
             switch result {
             case .success(_):
@@ -67,7 +93,7 @@ class LoginService: Service {
     }
 
     func saveAuthParameters() {
-        authParameters.save()
+        parameters.save()
     }
 
     func resumeExternalUserAgentFlow(with url: URL) -> Bool {
@@ -77,15 +103,4 @@ class LoginService: Service {
         guard let authSession = session else { return false}
         return authSession.resumeExternalUserAgentFlow(with: url)
     }
-
-    // MARK: - Private
-
-    private func authConfiguration() -> AuthConfiguration {
-        let authConfig = AuthConfiguration(baseUrl: authParameters.fullHostnameURL,
-                                           clientID: authParameters.clientID,
-                                           realm: authParameters.realm,
-                                           redirectURI: authParameters.redirectURI.encoding())
-        return authConfig
-    }
-
 }

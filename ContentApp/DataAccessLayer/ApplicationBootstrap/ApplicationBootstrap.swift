@@ -30,7 +30,8 @@ class ApplicationBootstrap {
     private init() {
         self.serviceRepository = ServiceRepository()
         self.serviceRepository.register(service: themingService())
-        self.serviceRepository.register(service: loginService())
+        self.serviceRepository.register(service: authenticationService())
+        self.serviceRepository.register(service: accountService())
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -45,7 +46,11 @@ class ApplicationBootstrap {
         return themingService
     }
 
-    private func loginService() -> LoginService {
-        return LoginService(with: AuthSettingsParameters.parameters())
+    private func authenticationService() -> AuthenticationService {
+        return AuthenticationService(with: AuthenticationParameters.parameters())
+    }
+
+    private func accountService() -> AccountService {
+        return AccountService()
     }
 }

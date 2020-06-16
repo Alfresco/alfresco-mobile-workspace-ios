@@ -24,6 +24,7 @@ let kSaveThemeMode = "kSaveThemeMode"
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
+let kAIMSAccessTokenRefreshTimeBuffer = 20
 
 let kAnimationSplashScreenLogo = 2.0
 let kAnimationSplashScreenContainerViews = 1.5

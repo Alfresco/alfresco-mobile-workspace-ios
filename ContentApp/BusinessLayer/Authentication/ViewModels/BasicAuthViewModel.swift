@@ -27,21 +27,29 @@ protocol BasicAuthViewModelDelegate: class {
 
 class BasicAuthViewModel {
     weak var delegate: BasicAuthViewModelDelegate?
-    var authenticationService: LoginService?
+    var authenticationService: AuthenticationService?
+    var accountService: AccountServiceProtocol?
 
-    init(with loginService: LoginService?) {
-        authenticationService = loginService
+    init(with authenticationService: AuthenticationService?, accountService: AccountServiceProtocol?) {
+        self.authenticationService = authenticationService
     }
 
     func authenticate(username: String, password: String) {
-        if authenticationService?.authParameters.serviceDocument == "" {
+        if authenticationService?.parameters.serviceDocument == "" {
             self.delegate?.logInWarning(with: LocalizationConstants.Errors.serviceDocumentEmpty)
             return
         }
-        authenticationService?.basicAuthentication(username: username, password: password, handler: { [weak self] (result) in
+        let basicAuthCredential = BasicAuthCredential(username: username, password: password)
+        authenticationService?.basicAuthentication(with: basicAuthCredential, handler: { [weak self] (result) in
             guard let sSelf = self else { return }
             switch result {
             case .success:
+                if let accountParams = sSelf.authenticationService?.parameters {
+                    let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
+                    sSelf.accountService?.register(account: account)
+                    sSelf.accountService?.activeAccount = account
+                }
+
                 sSelf.delegate?.logInSuccessful()
             case .failure(let error):
                 AlfrescoLog.error("Error basic-auth: \(error)")
@@ -51,6 +59,6 @@ class BasicAuthViewModel {
     }
 
     func hostname() -> String {
-        return authenticationService?.authParameters.hostname ?? ""
+        return authenticationService?.parameters.hostname ?? ""
     }
 }

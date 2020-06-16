@@ -8,6 +8,7 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - JWTDecode (2.4.1)
   - MaterialComponents/ActivityIndicator (109.6.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
@@ -160,6 +161,7 @@ PODS:
 
 DEPENDENCIES:
   - AlfrescoAuth
+  - JWTDecode
   - MaterialComponents/ActivityIndicator
   - MaterialComponents/BottomSheet
   - MaterialComponents/Buttons
@@ -176,6 +178,7 @@ SPEC REPOS:
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
     - AppAuth
+    - JWTDecode
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
@@ -187,6 +190,7 @@ SPEC CHECKSUMS:
   AlfrescoAuth: daa4c9858d37170aa88c17ae3368f585e8f7a020
   AlfrescoCore: f6a118f7b271d8843143ad5e2c28794f5a50b150
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  JWTDecode: 4bd4da0cdf0f8154fd467fa48499f34ec057fb88
   MaterialComponents: 7c5a7d77fbe08aca9383fc97aeb7423b1fbce6b4
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
@@ -194,6 +198,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: c52faa2d949b203e2262da36525c907d51954673
+PODFILE CHECKSUM: 048a8ed2e1cae8f71ddb99922f126d3cb62047a3
 
 COCOAPODS: 1.9.1

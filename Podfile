@@ -18,6 +18,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/Snackbar'
   pod 'MaterialComponents/Dialogs'
+  pod 'JWTDecode'
 
   target 'ContentAppTests' do
     inherit! :search_paths

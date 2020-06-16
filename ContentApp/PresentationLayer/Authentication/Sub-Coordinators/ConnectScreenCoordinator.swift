@@ -42,7 +42,7 @@ class ConnectScreenCoordinator: Coordinator {
         let connectViewController = ConnectViewController.instantiateViewController()
         connectViewController.splashScreenDelegate = presenter
         connectViewController.connectScreenCoordinatorDelegate = self
-        connectViewController.viewModel = ConnectViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        connectViewController.viewModel = ConnectViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService)
         connectViewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         self.connectViewController = connectViewController
 
