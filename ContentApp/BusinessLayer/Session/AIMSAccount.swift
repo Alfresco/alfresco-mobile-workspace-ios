@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 import JWTDecode
 
-class AIMSAccount: AccountProtocol {
+class AIMSAccount: AccountProtocol, Equatable {
     var identifier: String {
         guard let token = session.credential?.accessToken else { return "" }
 
@@ -38,12 +38,20 @@ class AIMSAccount: AccountProtocol {
     }
     var session: AIMSSession
 
+    static func == (lhs: AIMSAccount, rhs: AIMSAccount) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+
     init(with session: AIMSSession) {
         self.session = session
     }
 
     func persistAuthenticationParameters() {
         session.parameters.save(for: identifier)
+    }
+
+    func removeAuthenticationParameters() {
+        session.parameters.remove(for: identifier)
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -60,5 +68,10 @@ class AIMSAccount: AccountProtocol {
                 }
             }
         }
+    }
+
+    func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        guard let viewController = onViewController else { return }
+        session.logOut(onViewController: viewController, completionHandler: completionHandler)
     }
 }

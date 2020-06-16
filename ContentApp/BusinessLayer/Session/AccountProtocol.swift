@@ -16,11 +16,15 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-protocol AccountProtocol {
+typealias LogoutHandler = (Error?) -> Void
+
+protocol AccountProtocol: class {
     var identifier: String { get }
 
     func persistAuthenticationParameters()
+    func removeAuthenticationParameters()
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
+    func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler)
 }

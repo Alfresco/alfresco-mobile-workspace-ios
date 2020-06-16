@@ -16,14 +16,17 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
 protocol AccountServiceProtocol {
     var accounts: [AccountProtocol]? { get }
     var activeAccount: AccountProtocol? { get set }
 
     func register(account: AccountProtocol)
-    func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
+    func unregister(account: AccountProtocol)
+    func getSessionForCurrentAccount(completionHandler: @escaping (AuthenticationProviderProtocol) -> Void)
+    func logOutFromAccount(account: AccountProtocol, viewController: UIViewController?, completionHandler: @escaping LogoutHandler)
+    func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler)
 }
 
 class AccountService: AccountServiceProtocol, Service {
@@ -39,5 +42,27 @@ class AccountService: AccountServiceProtocol, Service {
         activeAccount?.getSession(completionHandler: { (authenticationProivder) in
             completionHandler(authenticationProivder)
         })
+    }
+
+    func logOutFromAccount(account: AccountProtocol, viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        account.logOut(onViewController: viewController, completionHandler: { error in
+            completionHandler(error)
+        })
+    }
+
+    func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        if let account = activeAccount {
+            logOutFromAccount(account: account, viewController: viewController) { error in
+                completionHandler(error)
+            }
+        }
+
+        activeAccount = nil
+    }
+
+    func unregister(account: AccountProtocol) {
+        if let index = accounts?.firstIndex(where: { account === $0 }) {
+            accounts?.remove(at: index)
+        }
     }
 }

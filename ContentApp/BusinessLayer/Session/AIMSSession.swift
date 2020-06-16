@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 
 class AIMSSession {
-    private var session: AlfrescoAuthSession
+    private var session: AlfrescoAuthSession?
     private var alfrescoAuth: AlfrescoAuth?
     private (set) var parameters: AuthenticationParameters
     private (set) var credential: AlfrescoCredential?
@@ -28,6 +28,7 @@ class AIMSSession {
     private var refreshGroup = DispatchGroup()
     private var refreshInProgress = false
     private var refreshTimer: Timer?
+    private var logoutHandler: LogoutHandler?
 
     init(with session: AlfrescoAuthSession, parameters: AuthenticationParameters, credential: AlfrescoCredential) {
         self.session = session
@@ -35,6 +36,7 @@ class AIMSSession {
         self.credential = credential
         let authConfig = parameters.authenticationConfiguration()
         self.alfrescoAuth = AlfrescoAuth.init(configuration: authConfig)
+        scheduleSessionRefresh()
     }
 
     func refreshSession(completionHandler: ((AlfrescoCredential) -> Void)?) {
@@ -44,7 +46,10 @@ class AIMSSession {
             refreshInProgress = true
 
             alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
-            alfrescoAuth?.pkceRefresh(session: session, delegate: self)
+
+            if let session = self.session {
+                alfrescoAuth?.pkceRefresh(session: session, delegate: self)
+            }
         }
 
         refreshGroup.notify(queue: DispatchQueue.main) {
@@ -60,14 +65,18 @@ class AIMSSession {
         refreshTimer?.invalidate()
     }
 
-    func logout() {
-
+    func logOut(onViewController viewController: UIViewController, completionHandler:@escaping LogoutHandler) {
+        session = nil
+        alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
+        if let credential = self.credential {
+            alfrescoAuth?.logout(onViewController: viewController, delegate: self, forCredential: credential)
+        }
     }
 
     private func scheduleSessionRefresh() {
         if let accessTokenExpiresIn = self.credential?.accessTokenExpiresIn {
-            let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn) - Date().timeIntervalSince1970 - TimeInterval(kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer)
-            refreshTimer = Timer.scheduledTimer(withTimeInterval: aimsAccesstokenRefreshInterval, repeats: true, block: { [weak self] timer in
+            let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn) - Date().timeIntervalSince1970 - TimeInterval(kAIMSAccessTokenRefreshTimeBuffer)
+            refreshTimer = Timer.scheduledTimer(withTimeInterval: aimsAccesstokenRefreshInterval, repeats: true, block: { [weak self] _ in
                 guard let sSelf = self else { return }
                 sSelf.refreshSession(completionHandler: nil)
             })
@@ -92,7 +101,17 @@ extension AIMSSession: AlfrescoAuthDelegate {
     }
 
     func didLogOut(result: Result<Int, APIError>) {
+        if let handler = logoutHandler {
+            switch result {
+            case .success(_):
+                AlfrescoLog.debug("Succesfully logged out.")
+                handler(nil)
+            case .failure(let error):
+                AlfrescoLog.error("Failed to log out. Reason: \(error)")
+                handler(error)
+            }
 
+            invalidateSessionRefresh()
+        }
     }
-
 }

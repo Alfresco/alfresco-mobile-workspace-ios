@@ -45,8 +45,7 @@ class BasicAuthViewModel {
             switch result {
             case .success:
                 if let accountParams = sSelf.authenticationService?.parameters {
-                    let accountSession = BasicSession()
-                    let account = BasicAuthAccount(with: accountSession, authParams: accountParams, credential: basicAuthCredential)
+                    let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account
                 }

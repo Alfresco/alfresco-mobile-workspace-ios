@@ -16,27 +16,38 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class BasicAuthAccount: AccountProtocol {
+class BasicAuthAccount: AccountProtocol, Equatable {
     var identifier: String {
         return credential.username
     }
-    var session: BasicSession
-    var authParameters: AuthenticationParameters
+    var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
 
-    init(with session: BasicSession, authParams: AuthenticationParameters, credential: BasicAuthCredential) {
-        self.session = session
-        self.authParameters = authParams
+    static func == (lhs: BasicAuthAccount, rhs: BasicAuthAccount) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+
+    init(with authParams: AuthenticationParameters, credential: BasicAuthCredential) {
+        self.parameters = authParams
         self.credential = credential
     }
 
     func persistAuthenticationParameters() {
-        
+        parameters.save(for: identifier)
+    }
+
+    func removeAuthenticationParameters() {
+        parameters.remove(for: identifier)
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
-        
+        let basicAuthenticationProvider = BasicAuthenticationProvider(with: credential)
+        completionHandler(basicAuthenticationProvider)
+    }
+
+    func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        completionHandler(nil)
     }
 }
