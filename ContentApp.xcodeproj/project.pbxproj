@@ -31,6 +31,11 @@
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
 		B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AD24813BAF004833BC /* UITextview+Size.swift */; };
+		B9E7D603249119370056292B /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D602249119370056292B /* AccountProtocol.swift */; };
+		B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60424911D380056292B /* BasicAuthAccount.swift */; };
+		B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60624911D4D0056292B /* AIMSAccount.swift */; };
+		B9E7D60924911F190056292B /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60824911F190056292B /* AccountService.swift */; };
+		B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F6EBA124923C2900D980FA /* AIMSSession.swift */; };
 		E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */; };
 		E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */; };
 		E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D5247BEC9B0044BE0D /* AimsViewController.swift */; };
@@ -51,7 +56,7 @@
 		E334C081247582B400F74880 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C080247582B400F74880 /* ConnectViewController.swift */; };
 		E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */; };
 		E35FB746247664A9004674FD /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB745247664A9004674FD /* LoginService.swift */; };
-		E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthSettingsParameters.swift */; };
+		E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthenticationParameters.swift */; };
 		E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB7492476693C004674FD /* String+Encoding.swift */; };
 		E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB74B24766DFC004674FD /* ConnectViewModel.swift */; };
 		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
@@ -109,6 +114,11 @@
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
 		B9B630AD24813BAF004833BC /* UITextview+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextview+Size.swift"; sourceTree = "<group>"; };
+		B9E7D602249119370056292B /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
+		B9E7D60424911D380056292B /* BasicAuthAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthAccount.swift; sourceTree = "<group>"; };
+		B9E7D60624911D4D0056292B /* AIMSAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSAccount.swift; sourceTree = "<group>"; };
+		B9E7D60824911F190056292B /* AccountService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountService.swift; sourceTree = "<group>"; };
+		B9F6EBA124923C2900D980FA /* AIMSSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSSession.swift; sourceTree = "<group>"; };
 		E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollTo.swift"; sourceTree = "<group>"; };
 		E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewController.swift; sourceTree = "<group>"; };
 		E31184D5247BEC9B0044BE0D /* AimsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewController.swift; sourceTree = "<group>"; };
@@ -135,7 +145,7 @@
 		E334C080247582B400F74880 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewController.swift; sourceTree = "<group>"; };
 		E35FB745247664A9004674FD /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
-		E35FB747247665C6004674FD /* AuthSettingsParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthSettingsParameters.swift; sourceTree = "<group>"; };
+		E35FB747247665C6004674FD /* AuthenticationParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationParameters.swift; sourceTree = "<group>"; };
 		E35FB7492476693C004674FD /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 		E35FB74B24766DFC004674FD /* ConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewModel.swift; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
@@ -364,7 +374,7 @@
 		B96B9AF12480F9AD0035AE97 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E35FB747247665C6004674FD /* AuthSettingsParameters.swift */,
+				E35FB747247665C6004674FD /* AuthenticationParameters.swift */,
 				B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */,
 				B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */,
 				B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */,
@@ -396,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				E35FB745247664A9004674FD /* LoginService.swift */,
+				B9E7D60824911F190056292B /* AccountService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -435,6 +446,17 @@
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B9E7D5FF249115BA0056292B /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				B9E7D602249119370056292B /* AccountProtocol.swift */,
+				B9E7D60424911D380056292B /* BasicAuthAccount.swift */,
+				B9E7D60624911D4D0056292B /* AIMSAccount.swift */,
+				B9F6EBA124923C2900D980FA /* AIMSSession.swift */,
+			);
+			path = Session;
 			sourceTree = "<group>";
 		};
 		E334C03324755D8E00F74880 = {
@@ -542,6 +564,7 @@
 		E3A2A8FE247E7D950046582C /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				B9E7D5FF249115BA0056292B /* Session */,
 				B96B9AEB2480F76E0035AE97 /* Authentication */,
 				B96B9AF22480F9D70035AE97 /* Extensions */,
 				B96B9AF32480FA5A0035AE97 /* Constants */,
@@ -721,7 +744,8 @@
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
-				E35FB748247665C7004674FD /* AuthSettingsParameters.swift in Sources */,
+				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
+				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
@@ -731,10 +755,13 @@
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
+				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
 				B99D9BBA24866F1400FBFC9B /* GetContentServiccesProfile.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
+				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,
+				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
@@ -756,6 +783,7 @@
 				E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */,
 				B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */,
 				E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */,
+				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* ThemingServiceWorkers.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,

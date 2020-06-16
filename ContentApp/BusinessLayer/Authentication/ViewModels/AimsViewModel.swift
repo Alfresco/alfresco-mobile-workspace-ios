@@ -27,33 +27,41 @@ protocol AimsViewModelDelegate: class {
 
 class AimsViewModel {
     weak var delegate: AimsViewModelDelegate?
-    var authenticationService: LoginService?
+    var authenticationService: AuthenticationServiceProtocol?
+    var accountService: AccountServiceProtocol?
 
-    init(with loginService: LoginService?) {
-        authenticationService = loginService
+    init(with authenticationService: AuthenticationServiceProtocol?, accountService: AccountServiceProtocol?) {
+        self.authenticationService = authenticationService
+        self.accountService = accountService
     }
 
     func login(repository: String, in viewController: UIViewController) {
-        let authParameters = AuthSettingsParameters.parameters()
+        let authParameters = AuthenticationParameters.parameters()
         authParameters.contentURL = repository
         authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.aimsAuthentication(on: viewController, delegate: self)
     }
 
     func hostname() -> String {
-        return authenticationService?.authParameters.hostname ?? ""
+        return authenticationService?.parameters.hostname ?? ""
     }
 }
 
 extension AimsViewModel: AlfrescoAuthDelegate {
     func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
         switch result {
-        case .success(let credentials):
-            AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: credentials))")
-            authenticationService?.saveAuthParameters()
+        case .success(let aimsCredential):
+            AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: aimsCredential))")
+
+            if let authSession = session, let accountParams = authenticationService?.parameters {
+                let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
+                let account = AIMSAccount(with: accountSession)
+                accountService?.register(account: account)
+                accountService?.activeAccount = account
+            }
             self.delegate?.logInSuccessful()
         case .failure(let error):
-            AlfrescoLog.error("Error \(String(describing: authenticationService?.authParameters.contentURL)) login with aims : \(error.localizedDescription)")
+            AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")
             self.delegate?.logInFailed(with: error)
         }
     }

@@ -37,7 +37,8 @@ class AimsScreenCoordinator: Coordinator {
         let viewController = AimsViewController.instantiateViewController()
         viewController.aimsScreenCoordinatorDelegate = self
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: LoginService.serviceIdentifier) as? LoginService)
+        viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
+                                                 accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
         viewController.splashScreenDelegate = self.splashScreen
         presenter.pushViewController(viewController, animated: kPushAnimation)
         aimsViewController = viewController
