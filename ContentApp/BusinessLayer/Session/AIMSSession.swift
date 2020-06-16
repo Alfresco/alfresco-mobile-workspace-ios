@@ -26,6 +26,7 @@ class AIMSSession {
     private (set) var credential: AlfrescoCredential?
 
     private var refreshGroup = DispatchGroup()
+    private var refreshGroupRequestCount = 0
     private var refreshInProgress = false
     private var refreshTimer: Timer?
     private var logoutHandler: LogoutHandler?
@@ -40,7 +41,7 @@ class AIMSSession {
     }
 
     func refreshSession(completionHandler: ((AlfrescoCredential) -> Void)?) {
-        refreshGroup.enter()
+        queueRefreshOperationRequest()
 
         if !refreshInProgress {
             refreshInProgress = true
@@ -82,6 +83,17 @@ class AIMSSession {
             })
         }
     }
+
+    private func queueRefreshOperationRequest() {
+        refreshGroup.enter()
+        refreshGroupRequestCount+=1
+    }
+
+    private func dequeueRefreshOperationRequests() {
+        for _ in 0..<refreshGroupRequestCount {
+            refreshGroup.leave()
+        }
+    }
 }
 
 extension AIMSSession: AlfrescoAuthDelegate {
@@ -97,7 +109,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
         }
         refreshInProgress = false
-        refreshGroup.leave()
+        dequeueRefreshOperationRequests()
     }
 
     func didLogOut(result: Result<Int, APIError>) {
