@@ -20,13 +20,29 @@ import Foundation
 import AlfrescoAuth
 
 protocol AuthenticationServiceProtocol {
+    /// Parameters used as part of the login flow process
     var parameters: AuthenticationParameters { get }
 
     init(with authenticationParameters: AuthenticationParameters)
 
+    /// Overrides the existing parameters used to create a session with new ones.
+    /// - Parameter authenticationParameters: Authentication parameters such as hostname, port etc.
     func update(authenticationParameters: AuthenticationParameters)
+
+    /// Returns via a closure the available authentication method for the given authentication parameters.
+    /// - Parameter handler:Authentication type available
     func availableAuthType(handler: @escaping AvailableAuthTypeCallback<AvailableAuthType>)
+
+    /// Initiates a login session with AIMS.
+    /// - Parameters:
+    ///   - viewController: View controller where the AIMS webview component will be displayed over
+    ///   - delegate: Authentication delegate
     func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate)
+
+    /// Initiates a login with basic authentication.
+    /// - Parameters:
+    ///   - credentials: Credential object containing the username and password
+    ///   - handler: Signals the success or failure of the operation with additional error information
     func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void))
 }
 

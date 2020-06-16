@@ -19,13 +19,34 @@
 import UIKit
 
 protocol AccountServiceProtocol {
+    /// Array of registered accounts.
     var accounts: [AccountProtocol]? { get }
+    /// Account on which requests will be executed.
     var activeAccount: AccountProtocol? { get set }
 
+    /// Registers an account and persists authentication related parameters.
+    /// - Parameter account: Account to be registered
     func register(account: AccountProtocol)
+
+    /// Removes an account but it doesn not automatically log out the user from it.
+    /// - Parameter account: Account to be removed
     func unregister(account: AccountProtocol)
+
+    /// Returns a valid session, whether that's being a cached one or it needs to be recreated.
+    /// - Parameter completionHandler: Authentication provider containing credentials
     func getSessionForCurrentAccount(completionHandler: @escaping (AuthenticationProviderProtocol) -> Void)
+
+    /// Logs out of an account. Does not automatically unregisters the account
+    /// - Parameters:
+    ///   - account: Account from which to log out. If it's the current account, a substitute will have to be provided manually.
+    ///   - viewController: Optional view controller on which to present optional log out context for some accounts
+    ///   - completionHandler: Success or failure of the operation
     func logOutFromAccount(account: AccountProtocol, viewController: UIViewController?, completionHandler: @escaping LogoutHandler)
+
+    /// Conveniece method for logging out of the current account.
+    /// - Parameters:
+    ///   - viewController: Optional view controller on which to present optional log out context for some accounts
+    ///   - completionHandler: Success or failure of the operation
     func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler)
 }
 

@@ -21,10 +21,22 @@ import UIKit
 typealias LogoutHandler = (Error?) -> Void
 
 protocol AccountProtocol: class {
+    /// Account identifier string, eg. username
     var identifier: String { get }
 
+    /// Persists the authentication parameters for this account across multiple app launches
     func persistAuthenticationParameters()
+
+    /// Removes authentication parameters for this account
     func removeAuthenticationParameters()
+
+    /// Returns a valid cached session or recreates one.
+    /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
+
+    /// Logs out of the current account session.
+    /// - Parameters:
+    ///   - onViewController: Optional view controller to show the log out context for some authentication types.
+    ///   - completionHandler: Success or failure of the operation.
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler)
 }
