@@ -54,7 +54,7 @@ class ThemesModeViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.configureNoAutoTheme()
+        themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
         tableView.reloadData()
     }

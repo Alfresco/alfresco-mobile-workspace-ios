@@ -37,7 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         let themingService = applicationCoordinator?.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        themingService?.changeAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

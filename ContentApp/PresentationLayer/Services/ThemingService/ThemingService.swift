@@ -97,7 +97,7 @@ class ThemingService: ThemingServiceProtocol {
         }
     }
 
-    func changeAutoTheme(for userInterfaceStyle: UIUserInterfaceStyle) {
+    func activateAutoTheme(for userInterfaceStyle: UIUserInterfaceStyle) {
         switch self.getThemeMode() {
         case .auto:
             if userInterfaceStyle == .dark {
@@ -112,19 +112,17 @@ class ThemingService: ThemingServiceProtocol {
         }
     }
 
-    func configureNoAutoTheme() {
-        if self.getThemeMode() != .auto {
-            var userInterfaceStyle: UIUserInterfaceStyle = .light
-            switch self.getThemeMode() {
-            case .dark:
-                userInterfaceStyle = .dark
-            case .light:
-                userInterfaceStyle = .light
-            default: break
-            }
+    func activateUserSelectedTheme() {
+        switch self.getThemeMode() {
+        case .dark:
             if #available(iOS 13.0, *) {
-                UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
+                UIApplication.shared.windows[0].overrideUserInterfaceStyle = .dark
             }
+        case .light:
+            if #available(iOS 13.0, *) {
+                UIApplication.shared.windows[0].overrideUserInterfaceStyle = .light
+            }
+        default: break
         }
     }
 
