@@ -18,20 +18,18 @@
 
 import UIKit
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+class FavoritesViewController: UIViewController {
 
-    init(window: UIWindow) {
-        self.window = window
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
-    }
+    var themingService: MaterialDesignThemingService?
 
-    func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
+    // MARK: - View Life Cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.title = LocalizationConstants.ScreenTitles.favorites
     }
 }
+
+// MARK: - Storyboard Instantiable
+
+extension FavoritesViewController: StoryboardInstantiable { }

@@ -16,22 +16,23 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+enum SettingsItemType {
+    case account
+    case theme
+}
 
-    init(window: UIWindow) {
-        self.window = window
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
-    }
+class SettingsItem {
+    var icon: String
+    var title: String
+    var subtitle: String
+    var type: SettingsItemType
 
-    func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
+    init(type: SettingsItemType, title: String, subtitle: String, icon: String) {
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+        self.type = type
     }
 }

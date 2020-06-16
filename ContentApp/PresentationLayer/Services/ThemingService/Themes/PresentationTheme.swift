@@ -36,8 +36,8 @@ protocol PresentationTheme {
     var loginInfoHostnameLabelFont: UIFont { get }
     var needHelpTitleLabelFont: UIFont { get }
     var activityIndicatorLabelFont: UIFont { get }
-    var accountTitleLabelFont: UIFont { get }
-    var accountSubtitleLabelFont: UIFont { get }
+    var settingsTitleLabelFont: UIFont { get }
+    var settingsSubtitleLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
     /// Textviews
@@ -63,8 +63,8 @@ protocol PresentationTheme {
     var loginTitleLabelColor: UIColor { get }
     var needHelpTitleColor: UIColor { get }
     var activityIndicatorLabelColor: UIColor { get }
-    var accountTitleLabelColor: UIColor { get }
-    var accountSubtitleLabelColor: UIColor { get }
+    var settingsTitleLabelColor: UIColor { get }
+    var settingsSubtitleLabelColor: UIColor { get }
 
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
@@ -79,131 +79,5 @@ protocol PresentationTheme {
     var snackbarErrorColor: UIColor { get }
     var snackbarApproved: UIColor { get }
     var snackbarWarning: UIColor { get }
-    var accountIconColor: UIColor { get }
-}
-
-struct DefaultTheme: PresentationTheme {
-    // MARK: - TYPOGRAPHY - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonFont = UIFont.alfrescoRegularFont(ofSize: 22)
-    var loginUtilitiesButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var loginSavePadButtonFont = UIFont.alfrescoRegularFont(ofSize: 17)
-    var signOutButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    /// Labels
-    var productLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var applicationTitleFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var loginCopyrightLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var loginFieldLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var loginHTTPSLabelFont = UIFont.alfrescoRegularFont(ofSize: 17)
-    var loginTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 20)
-    var loginInfoLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var loginInfoHostnameLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var needHelpTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var activityIndicatorLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var accountTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var accountSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    /// TextFields
-    var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    /// TextViews
-    var needHelpHintTextViewFont: UIFont = UIFont.alfrescoRegularFont(ofSize: 14)
-
-    // MARK: - COLORS - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var loginButtonDisableColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
-    var loginTextButtonColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var loginNeedHelpButtonColor = #colorLiteral(red: 0.1333333333, green: 0.4156862745, blue: 0.8431372549, alpha: 1)
-    var loginAdvancedSettingsButtonColor = #colorLiteral(red: 0.05098039216, green: 0.3882352941, blue: 0.2235294118, alpha: 1)
-    var loginSavePadButtonColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var signOutButtonColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-    var signOutTextButtonColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
-    /// Labels
-    var productLabelColor = #colorLiteral(red: 0.09803921569, green: 0.09803921569, blue: 0.09803921569, alpha: 1)
-    var applicationTitleColor = #colorLiteral(red: 0.1254901961, green: 0.1254901961, blue: 0.1254901961, alpha: 1)
-    var loginCopyrightLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var loginFieldLabelColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    var loginFieldDisableLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var loginTitleLabelColor = #colorLiteral(red: 0.1254901961, green: 0.1254901961, blue: 0.1254901961, alpha: 1)
-    var loginInfoLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var needHelpTitleColor = #colorLiteral(red: 0.2745098039, green: 0.2745098039, blue: 0.2745098039, alpha: 1)
-    var activityIndicatorLabelColor = #colorLiteral(red: 0.568627451, green: 0.568627451, blue: 0.568627451, alpha: 1)
-    var accountTitleLabelColor = #colorLiteral(red: 0.1279757321, green: 0.1371012032, blue: 0.158791095, alpha: 1)
-    var accountSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    /// TextFields
-    var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
-    var loginTextFieldOnSurfaceColor = #colorLiteral(red: 0.2078431373, green: 0.2078431373, blue: 0.2078431373, alpha: 1)
-    var loginTextFieldIconColor = #colorLiteral(red: 0.7098039216, green: 0.7098039216, blue: 0.7098039216, alpha: 1)
-    /// Textviews
-    var needHelpHintTextViewColor = #colorLiteral(red: 0.2980392157, green: 0.2980392157, blue: 0.2980392157, alpha: 1)
-    /// Views
-    var backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var activityIndicatorViewColor = #colorLiteral(red: 0.07236295193, green: 0.6188754439, blue: 0.2596520483, alpha: 1)
-    var snackbarErrorColor = #colorLiteral(red: 0.8117647059, green: 0, blue: 0.1607843137, alpha: 1)
-    var snackbarApproved = #colorLiteral(red: 0.1921568627, green: 0.5490196078, blue: 0.1725490196, alpha: 1)
-    var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)
-    var accountIconColor = #colorLiteral(red: 0.3999670744, green: 0.4000185132, blue: 0.3999494314, alpha: 1)
-}
-
-struct DarkTheme: PresentationTheme {
-    // MARK: - TYPOGRAPHY - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonFont = UIFont.alfrescoRegularFont(ofSize: 22)
-    var loginUtilitiesButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var loginSavePadButtonFont = UIFont.alfrescoRegularFont(ofSize: 17)
-    var signOutButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    /// Labels
-    var productLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var applicationTitleFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var loginCopyrightLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var loginFieldLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var loginHTTPSLabelFont = UIFont.alfrescoRegularFont(ofSize: 17)
-    var loginTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 20)
-    var loginInfoLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var loginInfoHostnameLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var needHelpTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 24)
-    var activityIndicatorLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var accountTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var accountSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    /// TextFields
-    var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    /// TextViews
-    var needHelpHintTextViewFont: UIFont = UIFont.alfrescoRegularFont(ofSize: 14)
-
-    // MARK: - COLORS - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var loginButtonDisableColor = #colorLiteral(red: 0.9999960065, green: 1, blue: 1, alpha: 0.12)
-    var loginTextButtonColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    var loginNeedHelpButtonColor = #colorLiteral(red: 0.1333333333, green: 0.4156862745, blue: 0.8431372549, alpha: 1)
-    var loginAdvancedSettingsButtonColor = #colorLiteral(red: 0.05098039216, green: 0.3882352941, blue: 0.2235294118, alpha: 1)
-    var loginSavePadButtonColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var signOutButtonColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-    var signOutTextButtonColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
-    /// Labels
-    var productLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.9)
-    var applicationTitleColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var loginCopyrightLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var loginFieldLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var loginFieldDisableLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var loginTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var loginInfoLabelColor = #colorLiteral(red: 0.5215686275, green: 0.5215686275, blue: 0.5215686275, alpha: 1)
-    var needHelpTitleColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var activityIndicatorLabelColor = #colorLiteral(red: 0.568627451, green: 0.568627451, blue: 0.568627451, alpha: 1)
-    var accountTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var accountSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    /// TextFields
-    var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
-    var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
-    var loginTextFieldOnSurfaceColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var loginTextFieldIconColor = #colorLiteral(red: 0.7098039216, green: 0.7098039216, blue: 0.7098039216, alpha: 1)
-    /// Textviews
-    var needHelpHintTextViewColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    /// Views
-    var backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    var activityIndicatorViewColor = #colorLiteral(red: 0.07236295193, green: 0.6188754439, blue: 0.2596520483, alpha: 1)
-    var snackbarErrorColor = #colorLiteral(red: 0.8117647059, green: 0, blue: 0.1607843137, alpha: 1)
-    var snackbarApproved = #colorLiteral(red: 0.1921568627, green: 0.5490196078, blue: 0.1725490196, alpha: 1)
-    var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)
-    var accountIconColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var settingsIconColor: UIColor { get }
 }

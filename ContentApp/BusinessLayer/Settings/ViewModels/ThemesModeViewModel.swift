@@ -16,22 +16,17 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class ApplicationCoordinator: Coordinator {
-    let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+class ThemeModesViewModel {
+    var items: [ThemeModeType]
+    var themingService: MaterialDesignThemingService?
 
-    init(window: UIWindow) {
-        self.window = window
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+    init() {
+        items = [.auto, .dark, .light]
     }
 
-    func start() {
-        window.rootViewController = rootViewController
-        splashScreenCoordinator.start()
-        window.makeKeyAndVisible()
+    func saveThemeMode(_ item: ThemeModeType, themingService: MaterialDesignThemingService?) {
+        themingService?.saveTheme(mode: item)
     }
 }

@@ -334,7 +334,7 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="wyW-y1-MX0" firstAttribute="bottom" secondItem="dWD-At-g4N" secondAttribute="bottom" priority="250" id="6kH-0m-1ug"/>
+                            <constraint firstAttribute="bottom" secondItem="dWD-At-g4N" secondAttribute="bottom" priority="250" id="6kH-0m-1ug"/>
                             <constraint firstItem="dWD-At-g4N" firstAttribute="top" secondItem="N5j-bp-srx" secondAttribute="bottom" constant="20" id="Crb-Ek-5h3"/>
                             <constraint firstItem="N5j-bp-srx" firstAttribute="top" secondItem="wyW-y1-MX0" secondAttribute="top" id="PN1-1R-gcI"/>
                             <constraint firstItem="wyW-y1-MX0" firstAttribute="trailing" secondItem="XlP-6d-9oz" secondAttribute="trailing" constant="30" id="TSR-QI-9L7"/>
@@ -518,10 +518,10 @@
             </objects>
             <point key="canvasLocation" x="3655" y="137"/>
         </scene>
-        <!--Account View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="1gj-Tw-zqr">
             <objects>
-                <viewController storyboardIdentifier="AccountViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WNx-bA-SRT" customClass="AccountViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="WNx-bA-SRT" customClass="SettingsViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vS2-ul-0Cb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -530,7 +530,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="659"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountItemTableViewCell" rowHeight="64" id="6bm-LK-Mdu" customClass="AccountItemTableViewCell" customModule="ContentApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingsItemTableViewCell" rowHeight="64" id="6bm-LK-Mdu" customClass="SettingsItemTableViewCell" customModule="ContentApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6bm-LK-Mdu" id="gIi-l4-Fp7">
@@ -703,6 +703,72 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hiw-at-KPx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2025" y="935"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="ds5-Pa-0Ue">
+            <objects>
+                <viewController storyboardIdentifier="FavoritesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LDf-Y4-g6i" customClass="FavoritesViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="PgE-GD-8sz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="M3n-ep-kjQ"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="AcD-Y1-I3A"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mab-wc-DAg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2812" y="1673"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="Xfg-j2-6SG">
+            <objects>
+                <viewController storyboardIdentifier="RecentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NG4-3E-muz" customClass="RecentViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FH7-eE-aUw">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="R3q-PP-wrU">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="NG4-3E-muz" id="6EO-SR-l3Y"/>
+                                    <outlet property="delegate" destination="NG4-3E-muz" id="Tkc-oS-1mV"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="T4f-FT-0jU" firstAttribute="bottom" secondItem="R3q-PP-wrU" secondAttribute="bottom" id="USo-ky-MJO"/>
+                            <constraint firstItem="R3q-PP-wrU" firstAttribute="leading" secondItem="T4f-FT-0jU" secondAttribute="leading" id="eZh-HQ-ihg"/>
+                            <constraint firstItem="R3q-PP-wrU" firstAttribute="top" secondItem="T4f-FT-0jU" secondAttribute="top" id="fPB-B7-nFE"/>
+                            <constraint firstItem="T4f-FT-0jU" firstAttribute="trailing" secondItem="R3q-PP-wrU" secondAttribute="trailing" id="sl3-Pq-K7m"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="T4f-FT-0jU"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="Js1-qJ-83R"/>
+                    <connections>
+                        <outlet property="tableView" destination="R3q-PP-wrU" id="D4A-td-Z4d"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nm2-eT-l1F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2025" y="1673"/>
+        </scene>
+        <!--Tab Bar Main View Controller-->
+        <scene sceneID="da4-wW-oHr">
+            <objects>
+                <tabBarController storyboardIdentifier="TabBarMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="DIA-on-z1z" customClass="TabBarMainViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oF9-ok-68r">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                    </tabBar>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YZW-At-SL8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1199" y="1674"/>
         </scene>
         <!--Advanced Settings-->
         <scene sceneID="77T-Mm-sSl">

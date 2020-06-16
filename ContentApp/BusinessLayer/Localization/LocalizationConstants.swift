@@ -60,7 +60,9 @@ struct LocalizationConstants {
 
     struct ScreenTitles {
         static let advancedSettings = NSLocalizedString("advancedSettings", comment: "")
-        static let account = NSLocalizedString("account", comment: "")
+        static let settings = NSLocalizedString("settings", comment: "")
+        static let recent = NSLocalizedString("recent", comment: "")
+        static let favorites = NSLocalizedString("favorites", comment: "")
     }
 
     struct Textviews {

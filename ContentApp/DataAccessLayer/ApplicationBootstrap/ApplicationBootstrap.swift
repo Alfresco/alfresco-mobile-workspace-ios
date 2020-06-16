@@ -39,11 +39,9 @@ class ApplicationBootstrap {
 
     private func themingService() -> ThemingService {
         let themingService = MaterialDesignThemingService()
-        let defaultTheme = DefaultTheme()
-        let darkTheme = DarkTheme()
-        themingService.register(theme: defaultTheme)
-        themingService.register(theme: darkTheme)
-        ThemeMode.save(mode: ThemeMode.get(), themingService: themingService)
+        themingService.register(theme: DefaultTheme())
+        themingService.register(theme: DarkTheme())
+        themingService.saveTheme(mode: themingService.getThemeMode())
         return themingService
     }
 

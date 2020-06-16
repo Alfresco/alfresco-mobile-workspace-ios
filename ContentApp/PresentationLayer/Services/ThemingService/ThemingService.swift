@@ -23,7 +23,7 @@ typealias Themable = ThemingServiceProtocol & MaterialDesignThemingServiceProtoc
 
 protocol ThemingServiceProtocol: Service {
     /// Returns and sets the active theme across the app
-    var activeTheme: PresentationTheme? { get set }
+    var activeTheme: PresentationTheme? { get }
     /// An array of registered themes
     var themes: [PresentationTheme] { get }
 
@@ -50,38 +50,94 @@ protocol MaterialDesignThemingServiceProtocol: ThemingServiceProtocol {
     func containerScheming(for scene: MaterialComponentsThemingScene) -> MDCContainerScheming
 }
 
+enum ThemeModeType: String {
+    case auto = "Auto"
+    case dark = "Dark"
+    case light = "Light"
+}
+
 class ThemingService: ThemingServiceProtocol {
     var activeTheme: PresentationTheme?
     var themes: [PresentationTheme] = []
+    var modeType: ThemeModeType = .auto
 
     func register(theme: PresentationTheme) {
         themes.append(theme)
     }
+
+    func activate<T: PresentationTheme>(theme: T.Type) {
+        for object in themes where object is T {
+            activeTheme = object
+        }
+    }
+
+    func saveTheme(mode: ThemeModeType) {
+        UserDefaults.standard.set(mode.rawValue, forKey: kSaveThemeMode)
+        UserDefaults.standard.synchronize()
+        AlfrescoLog.debug("Theme \(mode.rawValue) was saved in UserDefaults.")
+
+        var userInterfaceStyle: UIUserInterfaceStyle = .light
+        switch mode {
+        case .dark:
+            self.activate(theme: DarkTheme.self)
+            userInterfaceStyle = .dark
+        case .light:
+            self.activate(theme: DefaultTheme.self)
+            userInterfaceStyle = .light
+        default:
+            if UIScreen.main.traitCollection.userInterfaceStyle == .dark {
+                self.activate(theme: DarkTheme.self)
+            } else {
+                self.activate(theme: DefaultTheme.self)
+            }
+            userInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
+        }
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
+        }
+    }
+
+    func changeAutoTheme(for userInterfaceStyle: UIUserInterfaceStyle) {
+        switch self.getThemeMode() {
+        case .auto:
+            if userInterfaceStyle == .dark {
+                self.activate(theme: DarkTheme.self)
+            } else {
+                self.activate(theme: DefaultTheme.self)
+            }
+            if #available(iOS 13.0, *) {
+                UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
+            }
+        default: break
+        }
+    }
+
+    func configureNoAutoTheme() {
+        if self.getThemeMode() != .auto {
+            var userInterfaceStyle: UIUserInterfaceStyle = .light
+            switch self.getThemeMode() {
+            case .dark:
+                userInterfaceStyle = .dark
+            case .light:
+                userInterfaceStyle = .light
+            default: break
+            }
+            if #available(iOS 13.0, *) {
+                UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
+            }
+        }
+    }
+
+    func getThemeMode() -> ThemeModeType {
+        return ThemeModeType(rawValue: UserDefaults.standard.value(forKey: kSaveThemeMode) as? String ?? "Auto") ?? .auto
+    }
 }
 
 class MaterialDesignThemingService: ThemingService, MaterialDesignThemingServiceProtocol {
-    private var themingWorkers: [MaterialDesignThemingServiceWorkerProtocol] = [LoginComponentsThemingServiceWorker()]
-    private var defaultScheme = MDCContainerScheme() // TODO: Switch this to default scheme
-
-    func activateDarkTheme() {
-        for theme in themes {
-            if let darkTheme = theme as? DarkTheme {
-                self.activeTheme = darkTheme
-            }
-        }
-    }
-
-    func activateDefaultTheme() {
-        for theme in themes {
-            if let defaultTheme = theme as? DefaultTheme {
-                self.activeTheme = defaultTheme
-            }
-        }
-    }
+    private var themingWorkers: [MaterialDesignThemingServiceWorkerProtocol] = [LoginComponentsThemingServiceWorker(), SettingsComponentsThemingServiceWorker()]
 
     func containerScheming(for scene: MaterialComponentsThemingScene) -> MDCContainerScheming {
         guard let theme = activeTheme else { return MDCContainerScheme() }
-
         return containerScheming(for: scene, on: theme)
     }
 
@@ -91,7 +147,6 @@ class MaterialDesignThemingService: ThemingService, MaterialDesignThemingService
                 return containerScheme
             }
         }
-
-        return defaultScheme
+        return MDCContainerScheme()
     }
 }
