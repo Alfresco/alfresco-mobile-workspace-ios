@@ -93,6 +93,8 @@ class AIMSSession {
         for _ in 0..<refreshGroupRequestCount {
             refreshGroup.leave()
         }
+
+        refreshGroupRequestCount = 0
     }
 }
 

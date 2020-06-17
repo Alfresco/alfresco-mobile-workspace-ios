@@ -39,15 +39,19 @@ class TabBarScreenCoordinator: Coordinator {
         let viewController = TabBarMainViewController.instantiateViewController()
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         viewController.tabBarCoordinatorDelegate = self
-        presenter.pushViewController(viewController, animated: true)
+        viewController.modalTransitionStyle = .crossDissolve
+        viewController.modalPresentationStyle = .fullScreen
+        presenter.present(viewController, animated: true, completion: nil)
         self.tabBarMainViewController = viewController
     }
 }
 
 extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     func showSettingsScreen() {
-        settingsCoordinator = AcccountScreenCoordinator(with: presenter)
-        settingsCoordinator?.start()
+        if let navigationController = tabBarMainViewController?.viewControllers?.first as? UINavigationController {
+            settingsCoordinator = AcccountScreenCoordinator(with: navigationController)
+            settingsCoordinator?.start()
+        }
     }
 
     func showRecentScreen() {

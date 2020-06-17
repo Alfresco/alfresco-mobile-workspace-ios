@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoAuth
+import AlfrescoContentServices
 
 protocol BasicAuthViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -49,6 +50,8 @@ class BasicAuthViewModel {
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account
                     sSelf.saveToKeychain(forIdentifier: account.identifier, username: username, password: password)
+
+                    AlfrescoContentServicesAPI.basePath = account.apiBasePath
                 }
 
                 sSelf.delegate?.logInSuccessful()

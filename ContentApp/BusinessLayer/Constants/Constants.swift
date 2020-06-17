@@ -23,7 +23,6 @@ let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
 let kSaveThemeMode = "kSaveThemeMode"
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
-let kPathGetProfile = "api/-default-/public/alfresco/versions/1/people/-me-"
 let kAIMSAccessTokenRefreshTimeBuffer = 20
 
 let kAnimationSplashScreenLogo = 2.0
@@ -32,3 +31,7 @@ let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 
 let kSessionExpirationTimeIntervalCheck = 20
 let kLoginAIMSCancelWebViewErrorCode = -3
+
+let kAPIPathGetProfile = "\(kAPIPathBase))/people/-me-"
+let kAPIPathBase = "api/-default-/public"
+let kAPIPathMe = "-me-"

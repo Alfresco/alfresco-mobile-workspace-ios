@@ -17,14 +17,18 @@
 //
 
 import Foundation
+import AlfrescoContentServices
 
 class SettingsViewModel {
     var items: [SettingsItem] = []
     var themingService: MaterialDesignThemingService?
+    var accountService: AccountService?
 
-    init(themingService: MaterialDesignThemingService?) {
+    init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
-        reload()
+        self.accountService = accountService
+
+        fetchProfileInformation()
     }
 
     func reload() {
@@ -45,5 +49,18 @@ class SettingsViewModel {
             themeName = LocalizationConstants.Theme.auto
         }
         return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: "theme")
+    }
+
+    func fetchProfileInformation() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
+                guard let sSelf = self else { return }
+                print(personEntry)
+                print(error)
+
+                sSelf.reload()
+            }
+        })
     }
 }

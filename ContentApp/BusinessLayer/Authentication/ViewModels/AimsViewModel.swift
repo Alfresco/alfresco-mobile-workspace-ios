@@ -19,6 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
+import AlfrescoContentServices
 
 protocol AimsViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -70,6 +71,8 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
                 self.saveToKeychain(forIdentifier: account.identifier, session: authSession, credential: aimsCredential)
+
+                AlfrescoContentServicesAPI.basePath = account.apiBasePath
             }
             self.delegate?.logInSuccessful()
         case .failure(let error):

@@ -19,6 +19,13 @@
 import Foundation
 
 protocol AuthenticationProviderProtocol {
-    func authorizationHeader() -> String
+    func authorizationHeaderValue() -> String
+    func authorizationHeader() -> [String: String]
     func areCredentialsValid() -> Bool
+}
+
+extension AuthenticationProviderProtocol {
+    func authorizationHeader() -> [String: String] {
+        return ["Authorization": authorizationHeaderValue()]
+    }
 }

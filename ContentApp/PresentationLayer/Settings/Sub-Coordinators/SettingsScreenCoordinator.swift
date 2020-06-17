@@ -33,9 +33,12 @@ class AcccountScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = SettingsViewController.instantiateViewController()
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = SettingsViewModel(themingService: viewController.themingService)
+        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        viewController.themingService = themingService
+        viewController.viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
         viewController.settingsScreenCoordinatorDelegate = self
+        viewController.hidesBottomBarWhenPushed = true
         presenter.pushViewController(viewController, animated: true)
         settingsViewController = viewController
     }

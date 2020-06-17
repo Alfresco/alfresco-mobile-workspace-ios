@@ -26,8 +26,9 @@ class AIMSAuthenticationProvider: AuthenticationProviderProtocol {
         self.credential = credential
     }
 
-    func authorizationHeader() -> String {
-        return String("Bearer \(credential.accessToken)")
+    func authorizationHeaderValue() -> String {
+        guard let accessToken = credential.accessToken else { return "" }
+        return String("Bearer \(accessToken)")
     }
 
     func areCredentialsValid() -> Bool {

@@ -16,24 +16,15 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class BasicAuthenticationProvider: AuthenticationProviderProtocol, Encodable {
-    let credential: BasicAuthCredential
-
-    required init(with credential: BasicAuthCredential) {
-        self.credential = credential
-    }
-
-    func authorizationHeaderValue() -> String {
-        guard let loginData = String(format: "%@:%@", credential.username, credential.password).data(using: String.Encoding.utf8) else {
-            return ""
-        }
-        let base64LoginString = loginData.base64EncodedString()
-        return String("Basic \(base64LoginString)")
-    }
-
-    func areCredentialsValid() -> Bool {
-        true
+extension UINavigationController {
+    func pushFadeViewController(_ viewController: UIViewController) {
+        let transition: CATransition = CATransition()
+        transition.duration = 0.3
+        transition.type = CATransitionType.fade
+        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+        view.layer.add(transition, forKey: nil)
+        pushViewController(viewController, animated: false)
     }
 }

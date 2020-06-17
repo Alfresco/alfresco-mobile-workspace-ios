@@ -148,14 +148,6 @@ class AimsViewController: UIViewController {
         copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
         copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
     }
-
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
 }
 
 // MARK: - UITextField Delegate
@@ -200,7 +192,7 @@ extension AimsViewController: AimsViewModelDelegate {
 
     func logInSuccessful() {
         activityIndicator?.state = .isIdle
-        showAlert(message: "Login with AIMS with success!")
+        aimsScreenCoordinatorDelegate?.showApplicationTabBar()
     }
 }
 
