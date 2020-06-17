@@ -45,6 +45,17 @@ class AimsViewModel {
     func hostname() -> String {
         return authenticationService?.parameters.hostname ?? ""
     }
+
+    private func saveToKeychain(forIdentifier identifier: String, session: AlfrescoAuthSession, credential: AlfrescoCredential) {
+        do {
+            let credentialData = try JSONEncoder().encode(credential)
+            let sessionData = try NSKeyedArchiver.archivedData(withRootObject: session, requiringSecureCoding: true)
+            _ = Keychain.standard.set(value: sessionData, forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
+            _ = Keychain.standard.set(value: credentialData, forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
+        } catch {
+            AlfrescoLog.error("Unable to persist credentials to Keychain.")
+        }
+    }
 }
 
 extension AimsViewModel: AlfrescoAuthDelegate {
@@ -58,6 +69,7 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 let account = AIMSAccount(with: accountSession)
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
+                self.saveToKeychain(forIdentifier: account.identifier, session: authSession, credential: aimsCredential)
             }
             self.delegate?.logInSuccessful()
         case .failure(let error):
