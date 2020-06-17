@@ -85,6 +85,7 @@
 		E3D25C892493EF6B00FFD87F /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C882493EF6B00FFD87F /* FavoritesViewController.swift */; };
 		E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */; };
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
+		E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */; };
 		E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */; };
 		E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB26248F99BE00635521 /* Snackbar.swift */; };
 		E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625B2476D6440091896D /* KeyboardHandling.swift */; };
@@ -193,6 +194,7 @@
 		E3D25C882493EF6B00FFD87F /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
+		E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Mapper.swift"; sourceTree = "<group>"; };
 		E3EFAB26248F99BE00635521 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
 		E3F5625B2476D6440091896D /* KeyboardHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		B959CCCE2476B14400811F15 /* DataAccessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				E3AD23EE249A28E0008B9712 /* KeychainWrapper */,
 				B96B9AF52480FCAA0035AE97 /* ApplicationBootstrap */,
 				B91A5E46247825CF0063E938 /* ServiceRepository */,
 			);
@@ -588,6 +591,14 @@
 			path = PersistenceLayer;
 			sourceTree = "<group>";
 		};
+		E3AD23EE249A28E0008B9712 /* KeychainWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */,
+			);
+			path = KeychainWrapper;
+			sourceTree = "<group>";
+		};
 		E3C128062498EB2700AE832F /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -883,6 +894,7 @@
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
+				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
