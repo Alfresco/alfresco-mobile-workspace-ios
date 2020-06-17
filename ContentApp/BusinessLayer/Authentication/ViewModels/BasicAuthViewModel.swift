@@ -48,6 +48,7 @@ class BasicAuthViewModel {
                     let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account
+                    sSelf.saveToKeychain(forIdentifier: account.identifier, username: username, password: password)
                 }
 
                 sSelf.delegate?.logInSuccessful()
@@ -60,5 +61,10 @@ class BasicAuthViewModel {
 
     func hostname() -> String {
         return authenticationService?.parameters.hostname ?? ""
+    }
+
+    private func saveToKeychain(forIdentifier identifier: String, username: String, password: String) {
+        _ = Keychain.standard.set(value: username, forKey: "\(identifier)-username")
+        _ = Keychain.standard.set(value: password, forKey: "\(identifier)-password")
     }
 }
