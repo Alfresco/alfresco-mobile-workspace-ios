@@ -107,6 +107,12 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+extension SettingsViewController: SettingsViewModelDelegate {
+    func didUpdateDataSource() {
+        tableView.reloadData()
+    }
+}
+
 extension SettingsViewController: ThemesModeScrenDelegate {
     func dismiss() {
         tableView.reloadData()

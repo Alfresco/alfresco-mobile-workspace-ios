@@ -19,10 +19,16 @@
 import Foundation
 import AlfrescoContentServices
 
+protocol SettingsViewModelDelegate: class {
+    func didUpdateDataSource()
+}
+
 class SettingsViewModel {
     var items: [SettingsItem] = []
     var themingService: MaterialDesignThemingService?
     var accountService: AccountService?
+    var userProfile: PersonEntry?
+    weak var viewModelDelegate: SettingsViewModelDelegate?
 
     init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
@@ -32,10 +38,15 @@ class SettingsViewModel {
     }
 
     func reload() {
-        items = [SettingsItem(type: .account, title: "John Doe", subtitle: "john.doe@alfresco.com", icon: "account-circle")]
+        if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
+            items = [SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle")]
+        }
+
         if #available(iOS 13.0, *) {
             items.append(getThemeItem())
         }
+
+        self.viewModelDelegate?.didUpdateDataSource()
     }
 
     func getThemeItem() -> SettingsItem {
@@ -56,10 +67,13 @@ class SettingsViewModel {
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
-                print(personEntry)
-                print(error)
 
-                sSelf.reload()
+                if error == nil {
+                    sSelf.userProfile = personEntry
+                    sSelf.reload()
+                } else {
+                    AlfrescoLog.error("Failed to fetch profile information for current user.")
+                }
             }
         })
     }
