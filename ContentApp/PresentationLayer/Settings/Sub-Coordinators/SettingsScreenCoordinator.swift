@@ -20,9 +20,10 @@ import UIKit
 
 protocol SettingsScreenCoordinatorDelegate: class {
     func showThemesModeScreen()
+    func showLoginScreen()
 }
 
-class AcccountScreenCoordinator: Coordinator {
+class SettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var settingsViewController: SettingsViewController?
     private var themesModeCoordinator: ThemesModeScreenCoordinator?
@@ -46,7 +47,11 @@ class AcccountScreenCoordinator: Coordinator {
     }
 }
 
-extension AcccountScreenCoordinator: SettingsScreenCoordinatorDelegate {
+extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
+    func showLoginScreen() {
+
+    }
+
     func showThemesModeScreen() {
         if let settingsViewController = self.settingsViewController {
             let themesModeCoordinator = ThemesModeScreenCoordinator(with: self.presenter, settingsScreen: settingsViewController)

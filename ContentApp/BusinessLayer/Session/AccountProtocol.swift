@@ -17,8 +17,9 @@
 //
 
 import UIKit
+import AlfrescoAuth
 
-typealias LogoutHandler = (Error?) -> Void
+typealias LogoutHandler = (APIError?) -> Void
 
 protocol AccountProtocol: class {
     /// Account identifier string, eg. username

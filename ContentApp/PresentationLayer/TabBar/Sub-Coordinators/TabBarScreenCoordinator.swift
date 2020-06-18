@@ -29,7 +29,7 @@ class TabBarScreenCoordinator: Coordinator {
     private var tabBarMainViewController: TabBarMainViewController?
     private var recentCoordinator: RecentScreenCoordinator?
     private var favoritesCoordinator: FavoritesScreenCoordinator?
-    private var settingsCoordinator: AcccountScreenCoordinator?
+    private var settingsCoordinator: SettingsScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -49,7 +49,7 @@ class TabBarScreenCoordinator: Coordinator {
 extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     func showSettingsScreen() {
         if let navigationController = tabBarMainViewController?.viewControllers?.first as? UINavigationController {
-            settingsCoordinator = AcccountScreenCoordinator(with: navigationController)
+            settingsCoordinator = SettingsScreenCoordinator(with: navigationController)
             settingsCoordinator?.start()
         }
     }

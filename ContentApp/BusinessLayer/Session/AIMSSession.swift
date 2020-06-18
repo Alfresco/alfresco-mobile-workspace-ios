@@ -66,8 +66,8 @@ class AIMSSession {
         refreshTimer?.invalidate()
     }
 
-    func logOut(onViewController viewController: UIViewController, completionHandler:@escaping LogoutHandler) {
-        session = nil
+    func logOut(onViewController viewController: UIViewController, completionHandler: @escaping LogoutHandler) {
+        logoutHandler = completionHandler
         alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
         if let credential = self.credential {
             alfrescoAuth?.logout(onViewController: viewController, delegate: self, forCredential: credential)
@@ -119,13 +119,17 @@ extension AIMSSession: AlfrescoAuthDelegate {
             switch result {
             case .success(_):
                 AlfrescoLog.debug("Succesfully logged out.")
+                session = nil
+                invalidateSessionRefresh()
                 handler(nil)
             case .failure(let error):
                 AlfrescoLog.error("Failed to log out. Reason: \(error)")
+                if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                    session = nil
+                    invalidateSessionRefresh()
+                }
                 handler(error)
             }
-
-            invalidateSessionRefresh()
         }
     }
 }

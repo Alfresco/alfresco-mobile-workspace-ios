@@ -18,9 +18,12 @@
 
 import Foundation
 import AlfrescoContentServices
+import AlfrescoAuth
 
 protocol SettingsViewModelDelegate: class {
     func didUpdateDataSource()
+    func logOutWithSuccess()
+    func displayError(message: String)
 }
 
 class SettingsViewModel {
@@ -30,12 +33,16 @@ class SettingsViewModel {
     var userProfile: PersonEntry?
     weak var viewModelDelegate: SettingsViewModelDelegate?
 
+    // MARK: - Init
+
     init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
         self.accountService = accountService
 
         fetchProfileInformation()
     }
+
+    // MARK: - Public methods
 
     func reloadDataSource() {
         if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
@@ -50,7 +57,20 @@ class SettingsViewModel {
 
     }
 
-    func getThemeItem() -> SettingsItem {
+    func performLogOutForCurrentAccount(in viewController: UIViewController) {
+        accountService?.logOutFromCurrentAccount(viewController: viewController, completionHandler: { [weak self] (error) in
+            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
+            if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                Keychain.standard.delete(forKey: "\(currentAccount.identifier)-\(String(describing: AlfrescoAuthSession.self))")
+                Keychain.standard.delete(forKey: "\(currentAccount.identifier)-\(String(describing: AlfrescoCredential.self))")
+                sSelf.viewModelDelegate?.logOutWithSuccess()
+            }
+        })
+    }
+
+    // MARK: - Private methods
+
+    private func getThemeItem() -> SettingsItem {
         var themeName = LocalizationConstants.Theme.auto
         switch themingService?.getThemeMode() {
         case .light:
@@ -63,17 +83,17 @@ class SettingsViewModel {
         return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: "theme")
     }
 
-    func fetchProfileInformation() {
+    private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
-
-                if error == nil {
+                if let error = error {
+                    AlfrescoLog.error(error)
+                    sSelf.viewModelDelegate?.displayError(message: "Failed to fetch profile information for current user.") //TODO: Localisation
+                } else {
                     sSelf.userProfile = personEntry
                     sSelf.reloadDataSource()
-                } else {
-                    AlfrescoLog.error("Failed to fetch profile information for current user.")
                 }
             }
         })
