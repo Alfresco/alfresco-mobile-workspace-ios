@@ -19,10 +19,15 @@
 import Foundation
 import AlfrescoContentServices
 
+protocol SettingsViewModelDelegate: class {
+    func dataSourceReloaded()
+}
+
 class SettingsViewModel {
     var items: [SettingsItem] = []
     var themingService: MaterialDesignThemingService?
     var accountService: AccountService?
+    weak var delegate: SettingsViewModelDelegate?
 
     init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
@@ -31,11 +36,12 @@ class SettingsViewModel {
         fetchProfileInformation()
     }
 
-    func reload() {
+    func reloadDataSource() {
         items = [SettingsItem(type: .account, title: "John Doe", subtitle: "john.doe@alfresco.com", icon: "account-circle")]
         if #available(iOS 13.0, *) {
             items.append(getThemeItem())
         }
+        self.delegate?.dataSourceReloaded()
     }
 
     func getThemeItem() -> SettingsItem {
@@ -58,8 +64,7 @@ class SettingsViewModel {
                 guard let sSelf = self else { return }
                 print(personEntry)
                 print(error)
-
-                sSelf.reload()
+                sSelf.reloadDataSource()
             }
         })
     }

@@ -36,6 +36,7 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.title = LocalizationConstants.ScreenTitles.settings
+        self.viewModel?.delegate = self
         addLocalization()
     }
 
@@ -108,13 +109,15 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension SettingsViewController: ThemesModeScrenDelegate {
-    func dismiss() {
-        tableView.reloadData()
-    }
-
     func changeThemeMode() {
-        viewModel?.reload()
+        viewModel?.reloadDataSource()
         addMaterialComponentsTheme()
+    }
+}
+
+extension SettingsViewController: SettingsViewModelDelegate {
+    func dataSourceReloaded() {
+        tableView.reloadData()
     }
 }
 
