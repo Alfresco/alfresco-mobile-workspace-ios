@@ -24,14 +24,14 @@ struct GetContentServicesProfile: APIRequest {
     let authenticationProvider: BasicAuthenticationProvider
 
     var path: String {
-        return kPathGetProfile
+        return kAPIPathGetProfile
     }
 
     var method: HttpMethod {
         return .get
     }
     var headers: [String: String] {
-        return ["Authorization": authenticationProvider.authorizationHeader()]
+        return authenticationProvider.authorizationHeader()
     }
 
     var parameters: [String: String] {

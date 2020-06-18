@@ -20,6 +20,7 @@ import UIKit
 
 protocol AimsScreenCoordinatorDelegate: class {
     func showNeedHelpSheet()
+    func showApplicationTabBar()
 }
 
 class AimsScreenCoordinator: Coordinator {
@@ -27,6 +28,7 @@ class AimsScreenCoordinator: Coordinator {
     private let splashScreen: SplashViewController
     private var aimsViewController: AimsViewController?
     private var needHelpCoordinator: NeedHelpCoordinator?
+    private var tabBarCoordinator: TabBarScreenCoordinator?
 
     init(with presenter: UINavigationController, splashScreen: SplashViewController) {
         self.presenter = presenter
@@ -50,5 +52,11 @@ extension AimsScreenCoordinator: AimsScreenCoordinatorDelegate {
         let needHelpCoordinator = NeedHelpCoordinator(with: presenter, model: NeedHelpAIMSModel())
         needHelpCoordinator.start()
         self.needHelpCoordinator = needHelpCoordinator
+    }
+
+    func showApplicationTabBar() {
+        let tabBarCoordinator = TabBarScreenCoordinator(with: presenter)
+        tabBarCoordinator.start()
+        self.tabBarCoordinator = tabBarCoordinator
     }
 }

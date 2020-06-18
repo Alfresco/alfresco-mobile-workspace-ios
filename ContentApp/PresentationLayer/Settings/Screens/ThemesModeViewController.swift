@@ -20,7 +20,6 @@ import UIKit
 
 protocol ThemesModeScrenDelegate: class {
     func changeThemeMode()
-    func dismiss()
 }
 
 class ThemesModeViewController: UIViewController {
@@ -31,13 +30,11 @@ class ThemesModeViewController: UIViewController {
     weak var delegate: ThemesModeScrenDelegate?
     var themingService: MaterialDesignThemingService?
     var viewModel = ThemeModesViewModel()
-    var selectedItem: ThemeModeType?
     var heightCell: CGFloat = 44.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.themingService = themingService
-        selectedItem = themingService?.getThemeMode()
         addLocalization()
         addMaterialComponentsTheme()
     }
@@ -57,11 +54,6 @@ class ThemesModeViewController: UIViewController {
         themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
         tableView.reloadData()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.delegate?.dismiss()
     }
 
     // MARK: - Helpers
@@ -98,17 +90,15 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
         }
         cell.applyThemingService(themingService)
         cell.item = viewModel.items[indexPath.row]
-        if viewModel.items[indexPath.row] == selectedItem {
+        if viewModel.items[indexPath.row] == themingService?.getThemeMode() {
             cell.selectRadioButton()
         }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedItem = viewModel.items[indexPath.row]
-        tableView.reloadData()
         viewModel.saveThemeMode(viewModel.items[indexPath.row], themingService: themingService)
-        delegate?.dismiss()
+        tableView.reloadData()
         delegate?.changeThemeMode()
         self.dismiss(animated: true, completion: nil)
     }

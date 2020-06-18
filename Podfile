@@ -19,6 +19,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/Snackbar'
   pod 'MaterialComponents/Dialogs'
   pod 'JWTDecode'
+  pod 'AlfrescoContentServices'
 
   target 'ContentAppTests' do
     inherit! :search_paths

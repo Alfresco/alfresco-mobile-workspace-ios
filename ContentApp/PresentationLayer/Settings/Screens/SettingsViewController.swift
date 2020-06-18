@@ -54,6 +54,7 @@ class SettingsViewController: UIViewController {
     // MARK: - IBActions
 
     @IBAction func signOutButtonnTapped(_ sender: MDCButton) {
+        viewModel?.performLogOutForCurrentAccount(in: self)
     }
 
     // MARK: - Helpers
@@ -107,13 +108,28 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension SettingsViewController: ThemesModeScrenDelegate {
-    func dismiss() {
-        tableView.reloadData()
+extension SettingsViewController: SettingsViewModelDelegate {
+    func logOutWithSuccess() {
+        self.settingsScreenCoordinatorDelegate?.showLoginScreen()
     }
 
+    func displayError(message: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            let snackbar = Snackbar(with: message, type: .error)
+            snackbar.applyThemingService(themingService)
+            snackbar.show(completion: nil)
+        }
+    }
+
+    func didUpdateDataSource() {
+        tableView.reloadData()
+    }
+}
+
+extension SettingsViewController: ThemesModeScrenDelegate {
     func changeThemeMode() {
-        viewModel?.reload()
+        viewModel?.reloadDataSource()
         addMaterialComponentsTheme()
     }
 }

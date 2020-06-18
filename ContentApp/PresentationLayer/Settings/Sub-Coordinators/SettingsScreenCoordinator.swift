@@ -20,9 +20,10 @@ import UIKit
 
 protocol SettingsScreenCoordinatorDelegate: class {
     func showThemesModeScreen()
+    func showLoginScreen()
 }
 
-class AcccountScreenCoordinator: Coordinator {
+class SettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var settingsViewController: SettingsViewController?
     private var themesModeCoordinator: ThemesModeScreenCoordinator?
@@ -33,15 +34,24 @@ class AcccountScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = SettingsViewController.instantiateViewController()
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = SettingsViewModel(themingService: viewController.themingService)
+        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        viewController.themingService = themingService
+        let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
+        viewModel.viewModelDelegate = viewController
+        viewController.viewModel = viewModel
         viewController.settingsScreenCoordinatorDelegate = self
+        viewController.hidesBottomBarWhenPushed = true
         presenter.pushViewController(viewController, animated: true)
         settingsViewController = viewController
     }
 }
 
-extension AcccountScreenCoordinator: SettingsScreenCoordinatorDelegate {
+extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
+    func showLoginScreen() {
+
+    }
+
     func showThemesModeScreen() {
         if let settingsViewController = self.settingsViewController {
             let themesModeCoordinator = ThemesModeScreenCoordinator(with: self.presenter, settingsScreen: settingsViewController)

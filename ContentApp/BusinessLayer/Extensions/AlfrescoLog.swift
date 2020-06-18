@@ -24,6 +24,10 @@ class AlfrescoLog {
         os_log(.error, log: .default, "%@", message)
     }
 
+    class func error(_ message: Error) {
+        os_log(.error, log: .default, "%@", message as CVarArg)
+    }
+
     class func info(_ message: String) {
         os_log(.info, log: .default, "%@", message)
     }

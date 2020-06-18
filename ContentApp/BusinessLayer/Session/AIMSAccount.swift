@@ -36,6 +36,9 @@ class AIMSAccount: AccountProtocol, Equatable {
 
         return ""
     }
+    var apiBasePath: String {
+        return "\(session.parameters.fullContentURL)/\(session.parameters.serviceDocument)/\(kAPIPathBase)"
+    }
     var session: AIMSSession
 
     static func == (lhs: AIMSAccount, rhs: AIMSAccount) -> Bool {

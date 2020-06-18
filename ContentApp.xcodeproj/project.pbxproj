@@ -13,6 +13,7 @@
 		B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */; };
 		B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */; };
 		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
+		B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
 		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
@@ -116,6 +117,7 @@
 		B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
+		B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+FadePresentation.swift"; sourceTree = "<group>"; };
 		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
 		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
 		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 				E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */,
 				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
+				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -960,6 +963,7 @@
 				E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,
+				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
 				B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */,

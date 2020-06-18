@@ -17,12 +17,15 @@
 //
 
 import UIKit
+import AlfrescoAuth
 
-typealias LogoutHandler = (Error?) -> Void
+typealias LogoutHandler = (APIError?) -> Void
 
 protocol AccountProtocol: class {
     /// Account identifier string, eg. username
     var identifier: String { get }
+
+    var apiBasePath: String { get }
 
     /// Persists the authentication parameters for this account across multiple app launches
     func persistAuthenticationParameters()

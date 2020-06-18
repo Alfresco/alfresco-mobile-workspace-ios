@@ -1,7 +1,10 @@
 PODS:
+  - Alamofire (4.9.1)
   - AlfrescoAuth (2.1.1):
     - AlfrescoCore
     - AppAuth
+  - AlfrescoContentServices (0.0.1):
+    - Alamofire (~> 4.9.0)
   - AlfrescoCore (2.0.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
@@ -161,6 +164,7 @@ PODS:
 
 DEPENDENCIES:
   - AlfrescoAuth
+  - AlfrescoContentServices
   - JWTDecode
   - MaterialComponents/ActivityIndicator
   - MaterialComponents/BottomSheet
@@ -173,10 +177,12 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
     - AlfrescoAuth
+    - AlfrescoContentServices
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
+    - Alamofire
     - AppAuth
     - JWTDecode
     - MaterialComponents
@@ -187,7 +193,9 @@ SPEC REPOS:
     - SwiftLint
 
 SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: daa4c9858d37170aa88c17ae3368f585e8f7a020
+  AlfrescoContentServices: 1abc8ea89753d32e4f0337620b9996df2c155e3c
   AlfrescoCore: f6a118f7b271d8843143ad5e2c28794f5a50b150
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   JWTDecode: 4bd4da0cdf0f8154fd467fa48499f34ec057fb88
@@ -198,6 +206,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 048a8ed2e1cae8f71ddb99922f126d3cb62047a3
+PODFILE CHECKSUM: 2a38387844a8118f9a7213713e633f850326dd97
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

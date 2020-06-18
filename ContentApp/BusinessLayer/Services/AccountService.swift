@@ -73,12 +73,14 @@ class AccountService: AccountServiceProtocol, Service {
 
     func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         if let account = activeAccount {
-            logOutFromAccount(account: account, viewController: viewController) { error in
+            logOutFromAccount(account: account, viewController: viewController) { [weak self] error in
+                guard let sSelf = self else { return }
                 completionHandler(error)
+                if error == nil {
+                    sSelf.activeAccount = nil
+                }
             }
         }
-
-        activeAccount = nil
     }
 
     func unregister(account: AccountProtocol) {
