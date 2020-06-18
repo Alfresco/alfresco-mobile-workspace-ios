@@ -79,10 +79,10 @@ class ThemingService: ThemingServiceProtocol {
         var userInterfaceStyle: UIUserInterfaceStyle = .light
         switch mode {
         case .dark:
-            self.activate(theme: DarkTheme.self)
+            activate(theme: DarkTheme.self)
             userInterfaceStyle = .dark
         case .light:
-            self.activate(theme: DefaultTheme.self)
+            activate(theme: DefaultTheme.self)
             userInterfaceStyle = .light
         default:
             if UIScreen.main.traitCollection.userInterfaceStyle == .dark {
@@ -92,22 +92,18 @@ class ThemingService: ThemingServiceProtocol {
             }
             userInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
         }
-        if #available(iOS 13.0, *) {
-            UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
-        }
+        overrideUserInterfaceStyle(userInterfaceStyle)
     }
 
     func activateAutoTheme(for userInterfaceStyle: UIUserInterfaceStyle) {
         switch self.getThemeMode() {
         case .auto:
             if userInterfaceStyle == .dark {
-                self.activate(theme: DarkTheme.self)
+                activate(theme: DarkTheme.self)
             } else {
-                self.activate(theme: DefaultTheme.self)
+                activate(theme: DefaultTheme.self)
             }
-            if #available(iOS 13.0, *) {
-                UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
-            }
+            overrideUserInterfaceStyle(userInterfaceStyle)
         default: break
         }
     }
@@ -115,14 +111,18 @@ class ThemingService: ThemingServiceProtocol {
     func activateUserSelectedTheme() {
         switch self.getThemeMode() {
         case .dark:
-            if #available(iOS 13.0, *) {
-                UIApplication.shared.windows[0].overrideUserInterfaceStyle = .dark
-            }
+            activate(theme: DarkTheme.self)
+            overrideUserInterfaceStyle(.dark)
         case .light:
-            if #available(iOS 13.0, *) {
-                UIApplication.shared.windows[0].overrideUserInterfaceStyle = .light
-            }
+            activate(theme: DefaultTheme.self)
+            overrideUserInterfaceStyle(.light)
         default: break
+        }
+    }
+
+    func overrideUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
+        if #available(iOS 13.0, *) {
+            UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
         }
     }
 

@@ -37,7 +37,7 @@ class SettingsViewModel {
         fetchProfileInformation()
     }
 
-    func reload() {
+    func reloadDataSource() {
         if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
             items = [SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle")]
         }
@@ -47,6 +47,7 @@ class SettingsViewModel {
         }
 
         self.viewModelDelegate?.didUpdateDataSource()
+
     }
 
     func getThemeItem() -> SettingsItem {
@@ -70,7 +71,7 @@ class SettingsViewModel {
 
                 if error == nil {
                     sSelf.userProfile = personEntry
-                    sSelf.reload()
+                    sSelf.reloadDataSource()
                 } else {
                     AlfrescoLog.error("Failed to fetch profile information for current user.")
                 }

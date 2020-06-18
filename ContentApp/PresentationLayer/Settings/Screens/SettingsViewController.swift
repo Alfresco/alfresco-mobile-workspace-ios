@@ -114,12 +114,8 @@ extension SettingsViewController: SettingsViewModelDelegate {
 }
 
 extension SettingsViewController: ThemesModeScrenDelegate {
-    func dismiss() {
-        tableView.reloadData()
-    }
-
     func changeThemeMode() {
-        viewModel?.reload()
+        viewModel?.reloadDataSource()
         addMaterialComponentsTheme()
     }
 }

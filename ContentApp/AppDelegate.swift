@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         let themingService = applicationCoordinator?.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
     }
