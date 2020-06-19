@@ -86,4 +86,9 @@ struct LocalizationConstants {
         static let dark = NSLocalizedString("dark", comment: "")
         static let light = NSLocalizedString("light", comment: "")
     }
+
+    struct Settings {
+        static let failedProfileInfo = NSLocalizedString("failedProfileInfo", comment: "")
+        static let appVersion = NSLocalizedString("appVersion", comment: "")
+    }
 }

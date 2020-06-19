@@ -17,11 +17,13 @@
 //
 
 import UIKit
+import MaterialComponents.MDCButton
 
-class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol {
+class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var signOutButton: MDCButton!
     @IBOutlet weak var separator: UIView!
 
     weak var delegate: SettingsTableViewCellDelegate?
@@ -43,12 +45,27 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
         super.setSelected(selected, animated: animated)
     }
 
+    @IBAction func signOutButtonTapped(_ sender: MDCButton) {
+        if let item = self.item {
+            delegate?.signOutButtonTapped(for: item)
+        }
+    }
+
     func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        titleLabel.font = themingService?.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService?.activeTheme?.settingsTitleLabelColor
-        subtitleLabel.font = themingService?.activeTheme?.settingsSubtitleLabelFont
-        subtitleLabel.textColor = themingService?.activeTheme?.settingsSubtitleLabelColor
-        iconImageView.tintColor = themingService?.activeTheme?.settingsIconColor
+        guard let themingService = themingService else {
+            return
+        }
+        titleLabel.font = themingService.activeTheme?.settingsTitleLabelFont
+        titleLabel.textColor = themingService.activeTheme?.settingsTitleLabelColor
+
+        subtitleLabel.font = themingService.activeTheme?.settingsSubtitleLabelFont
+        subtitleLabel.textColor = themingService.activeTheme?.settingsSubtitleLabelColor
+
+        iconImageView.tintColor = themingService.activeTheme?.settingsIconColor
+
+        signOutButton.isUppercaseTitle = false
+        signOutButton.setTitle(LocalizationConstants.Buttons.signOut, for: .normal)
+        signOutButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .signOutButton))
     }
 
     func shouldHideSeparator(hidden: Bool) {

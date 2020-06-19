@@ -71,8 +71,10 @@
 "loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
 "loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";
 
-// MARK: - Theme
+// MARK: - Settings Screen
 "theme" = "Theme Mode";
 "auto" = "Auto";
 "light" = "Light";
 "dark" = "Dark";
+"failedProfileInfo" = "Failed to fetch profile information for current user.";
+"appVersion" = "App Version %@-%@";
