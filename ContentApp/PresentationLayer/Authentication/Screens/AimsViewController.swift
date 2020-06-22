@@ -43,7 +43,6 @@ class AimsViewController: UIViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var themingService: MaterialDesignThemingService?
-    var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -66,20 +65,13 @@ class AimsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService)
-        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
     }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        activityIndicator?.reload(from: size)
-    }
-
+    
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         themingService?.activateUserSelectedTheme()
@@ -93,7 +85,6 @@ class AimsViewController: UIViewController {
         guard let repositoryURL = repositoryTextField.text else {
             return
         }
-        activityIndicator?.state = .isLoading
         viewModel?.login(repository: repositoryURL, in: self)
     }
 
@@ -179,7 +170,6 @@ extension AimsViewController: UITextFieldDelegate {
 
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
-        activityIndicator?.state = .isIdle
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self, let themingService = sSelf.themingService  else { return }
@@ -191,7 +181,6 @@ extension AimsViewController: AimsViewModelDelegate {
     }
 
     func logInSuccessful() {
-        activityIndicator?.state = .isIdle
         aimsScreenCoordinatorDelegate?.showApplicationTabBar()
     }
 }
