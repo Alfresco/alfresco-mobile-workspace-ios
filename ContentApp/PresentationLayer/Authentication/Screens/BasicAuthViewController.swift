@@ -37,7 +37,6 @@ class BasicAuthViewController: UIViewController {
     var showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
 
     @IBOutlet weak var signInButton: MDCButton!
-    @IBOutlet weak var needHelpButton: MDCButton!
 
     weak var splashScreenDelegate: SplashScreenDelegate?
     var viewModel: BasicAuthViewModel?
@@ -59,7 +58,6 @@ class BasicAuthViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel?.delegate = self
-        showPasswordImageView.contentMode = .scaleAspectFit
 
         addLocalization()
         enableSignInButton = false
@@ -99,9 +97,6 @@ class BasicAuthViewController: UIViewController {
         viewModel?.authenticate(username: username, password: password)
     }
 
-    @IBAction func needHelpButtonTapped(_ sender: Any) {
-    }
-
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
@@ -122,7 +117,6 @@ class BasicAuthViewController: UIViewController {
         passwordTextField.label.text = LocalizationConstants.TextFieldPlaceholders.password
         signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .normal)
         signInButton.setTitle(LocalizationConstants.Buttons.signin, for: .disabled)
-        needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
@@ -133,7 +127,6 @@ class BasicAuthViewController: UIViewController {
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         productLabel.textColor = themingService.activeTheme?.productLabelColor
         productLabel.font = themingService.activeTheme?.productLabelFont
@@ -168,6 +161,8 @@ class BasicAuthViewController: UIViewController {
         usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
         usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
+        showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
+        showPasswordImageView.contentMode = .scaleAspectFit
         passwordTextField.trailingViewMode = .always
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
