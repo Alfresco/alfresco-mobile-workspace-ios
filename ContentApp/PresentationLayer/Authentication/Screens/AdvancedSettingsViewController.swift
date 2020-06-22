@@ -217,11 +217,10 @@ class AdvancedSettingsViewController: UIViewController {
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
 
-        guard let themingService = self.themingService else {
-            return
-        }
         let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar.applyThemingService(themingService)
+        if let theme = self.themingService?.activeTheme {
+            snackbar.applyTheme(theme: theme)
+        }
         snackbar.hideButton(true)
         snackbar.show(completion: nil)
     }

@@ -23,7 +23,8 @@ let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
 let kSaveThemeMode = "kSaveThemeMode"
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
-let kAIMSAccessTokenRefreshTimeBuffer = 20
+let kAIMSAccessTokenRefreshTimeBuffer = 20.0
+let kActiveAccountIdentifier = "kActiveAccountIdentifier"
 
 let kAnimationSplashScreenLogo = 2.0
 let kAnimationSplashScreenContainerViews = 1.5
@@ -31,7 +32,9 @@ let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 
 let kSessionExpirationTimeIntervalCheck = 20
 let kLoginAIMSCancelWebViewErrorCode = -3
+let kShowLoginScreenNotification = "kShowLoginScreenNotification"
 
+let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
 let kAPIPathGetProfile = "\(kAPIPathBase))/people/-me-"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"

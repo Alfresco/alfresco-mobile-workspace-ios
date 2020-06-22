@@ -17,21 +17,50 @@
 //
 
 import UIKit
+import AlfrescoCore
 
 class ApplicationCoordinator: Coordinator {
     let window: UIWindow
-    let rootViewController: UINavigationController
-    let splashScreenCoordinator: SplashScreenCoordinator
+    var rootViewController: UINavigationController
+    var splashScreenCoordinator: SplashScreenCoordinator
 
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
         splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(self.handleUnauthorizedAPIAccess(notification:)), name: Notification.Name(kAPIUnauthorizedRequestNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.loadSplashScreenCoordinator(notification:)), name: Notification.Name(kShowLoginScreenNotification), object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     func start() {
         window.rootViewController = rootViewController
+
+        let options: UIView.AnimationOptions = .transitionCrossDissolve
+        let duration: TimeInterval = 0.25
+        UIView.transition(with: window, duration: duration, options: options, animations: {}, completion: nil)
+
         splashScreenCoordinator.start()
         window.makeKeyAndVisible()
+    }
+
+    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
+        rootViewController = UINavigationController()
+        if let error = notification.userInfo?["error"] as? APIError {
+            splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController, authenticationError: error)
+        }
+
+        start()
+    }
+
+    @objc private func loadSplashScreenCoordinator(notification: Notification) {
+        rootViewController = UINavigationController()
+        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+
+        start()
     }
 }

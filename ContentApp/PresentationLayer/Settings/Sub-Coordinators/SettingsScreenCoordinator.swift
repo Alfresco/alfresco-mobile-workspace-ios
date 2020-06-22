@@ -49,7 +49,7 @@ class SettingsScreenCoordinator: Coordinator {
 
 extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     func showLoginScreen() {
-
+        NotificationCenter.default.post(Notification.init(name: Notification.Name(rawValue: kShowLoginScreenNotification)))
     }
 
     func showThemesModeScreen() {

@@ -184,7 +184,9 @@ extension AimsViewController: AimsViewModelDelegate {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self, let themingService = sSelf.themingService  else { return }
                 let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-                snackbar.applyThemingService(themingService)
+                if let theme = themingService.activeTheme {
+                    snackbar.applyTheme(theme: theme)
+                }
                 snackbar.show(completion: nil)
             }
         }

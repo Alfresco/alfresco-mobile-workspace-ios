@@ -182,6 +182,19 @@ class ConnectViewController: UIViewController {
             self.navigationController?.navigationBar.shadowImage = nil
         }
     }
+
+    func showError(message: String) {
+        Snackbar.dimissAll()
+        let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: false)
+        if let theme = themingService?.activeTheme {
+            snackbar.applyTheme(theme: theme)
+        }
+        snackbar.show(completion: { [weak self] () in
+            guard let sSelf = self else { return }
+            sSelf.errorShowInProgress = false
+            sSelf.connectTextFieldAddMaterialComponents()
+        })
+    }
 }
 
 // MARK: - UITextField Delegate
@@ -232,16 +245,11 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceUnavailable(with error: APIError) {
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            guard let sSelf = self else { return }
             sSelf.errorShowInProgress = true
             sSelf.connectTextFieldAddMaterialComponents()
-            Snackbar.dimissAll()
-            let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            snackbar.applyThemingService(themingService)
-            snackbar.show(completion: { () in
-                sSelf.errorShowInProgress = false
-                sSelf.connectTextFieldAddMaterialComponents()
-            })
+
+            sSelf.showError(message: error.mapToMessage())
         }
         activityIndicator?.state = .isIdle
     }

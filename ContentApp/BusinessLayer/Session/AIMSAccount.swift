@@ -20,6 +20,10 @@ import Foundation
 import AlfrescoAuth
 import JWTDecode
 
+protocol AIMSAccountDelegate: class {
+    func sessionFailedToRefresh(error: APIError)
+}
+
 class AIMSAccount: AccountProtocol, Equatable {
     var identifier: String {
         guard let token = session.credential?.accessToken else { return "" }
@@ -47,14 +51,34 @@ class AIMSAccount: AccountProtocol, Equatable {
 
     init(with session: AIMSSession) {
         self.session = session
+        session.delegate = self
     }
 
     func persistAuthenticationParameters() {
         session.parameters.save(for: identifier)
     }
 
+    func persistAuthenticationCredentials() {
+        do {
+            if let authSession = session.session {
+                let credentialData = try JSONEncoder().encode(session.credential)
+                let sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
+
+                _ = Keychain.set(value: credentialData, forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
+                _ = Keychain.set(value: sessionData, forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
+            }
+        } catch {
+            AlfrescoLog.error("Unable to persist credentials to Keychain.")
+        }
+    }
+
     func removeAuthenticationParameters() {
         session.parameters.remove(for: identifier)
+    }
+
+    func removeAuthenticationCredentials() {
+        Keychain.delete(forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
+        Keychain.delete(forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -76,5 +100,11 @@ class AIMSAccount: AccountProtocol, Equatable {
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         guard let viewController = onViewController else { return }
         session.logOut(onViewController: viewController, completionHandler: completionHandler)
+    }
+}
+
+extension AIMSAccount: AIMSAccountDelegate {
+    func sessionFailedToRefresh(error: APIError) {
+        removeAuthenticationCredentials()
     }
 }

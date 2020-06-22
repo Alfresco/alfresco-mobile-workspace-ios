@@ -57,8 +57,6 @@ class SplashViewController: UIViewController {
         containerView.applyCornerRadius(with: 10)
         blurEfectView.applyCornerRadius(with: 10)
 
-        coordinatorDelegate?.showLoginContainerView()
-
         addLocalization()
 
         containerViews(alpha: 0.0, hidden: true)
@@ -137,6 +135,7 @@ class SplashViewController: UIViewController {
         }, completion: { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.logoImageView.isHidden = true
+            sSelf.coordinatorDelegate?.showLoginContainerView()
             sSelf.animateContainerViews()
         })
     }

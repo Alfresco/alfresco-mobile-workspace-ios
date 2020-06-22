@@ -20,7 +20,9 @@ import Foundation
 import AlfrescoAuth
 
 class AIMSSession {
-    private var session: AlfrescoAuthSession?
+    weak var delegate: AIMSAccountDelegate?
+
+    private (set) var session: AlfrescoAuthSession?
     private var alfrescoAuth: AlfrescoAuth?
     private (set) var parameters: AuthenticationParameters
     private (set) var credential: AlfrescoCredential?
@@ -77,6 +79,11 @@ class AIMSSession {
     private func scheduleSessionRefresh() {
         if let accessTokenExpiresIn = self.credential?.accessTokenExpiresIn {
             let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn) - Date().timeIntervalSince1970 - TimeInterval(kAIMSAccessTokenRefreshTimeBuffer)
+
+            if aimsAccesstokenRefreshInterval < TimeInterval(kAIMSAccessTokenRefreshTimeBuffer) {
+                return
+            }
+
             refreshTimer = Timer.scheduledTimer(withTimeInterval: aimsAccesstokenRefreshInterval, repeats: true, block: { [weak self] _ in
                 guard let sSelf = self else { return }
                 sSelf.refreshSession(completionHandler: nil)
@@ -109,6 +116,9 @@ extension AIMSSession: AlfrescoAuthDelegate {
 
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
+            let errorDict = ["error": error]
+            delegate?.sessionFailedToRefresh(error: error)
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kAPIUnauthorizedRequestNotification), object: nil, userInfo: errorDict)
         }
         refreshInProgress = false
         dequeueRefreshOperationRequests()

@@ -43,14 +43,14 @@ class Snackbar {
 
     // MARK: - Public methods
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService) {
+    func applyTheme(theme: PresentationTheme) {
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = themingService.activeTheme?.snackbarErrorColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarErrorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = themingService.activeTheme?.snackbarApproved
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarApproved
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = themingService.activeTheme?.snackbarWarning
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarWarning
         }
     }
 

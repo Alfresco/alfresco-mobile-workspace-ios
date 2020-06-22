@@ -41,8 +41,16 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         parameters.save(for: identifier)
     }
 
+    func persistAuthenticationCredentials() {
+        _ = Keychain.set(value: credential.password, forKey: identifier)
+    }
+
     func removeAuthenticationParameters() {
         parameters.remove(for: identifier)
+    }
+
+    func removeAuthenticationCredentials() {
+        _ = Keychain.delete(forKey: identifier)
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
