@@ -17,30 +17,13 @@
 //
 
 import Foundation
+import UIKit
 
-enum SettingsItemType {
-    case account
-    case theme
-    case label
-}
-
-class SettingsItem: Equatable {
-    var icon: String
-    var title: String
-    var subtitle: String
-    var type: SettingsItemType
-
-    init(type: SettingsItemType, title: String, subtitle: String, icon: String) {
-        self.icon = icon
-        self.title = title
-        self.subtitle = subtitle
-        self.type = type
+extension Bundle {
+    var releaseVersionNumber: String? {
+        return infoDictionary?["CFBundleShortVersionString"] as? String
     }
-
-    static func == (lhs: SettingsItem, rhs: SettingsItem) -> Bool {
-        if lhs.icon == rhs.icon && lhs.title == rhs.title && lhs.subtitle == rhs.subtitle {
-            return true
-        }
-        return false
+    var buildVersionNumber: String? {
+        return infoDictionary?["CFBundleVersion"] as? String
     }
 }

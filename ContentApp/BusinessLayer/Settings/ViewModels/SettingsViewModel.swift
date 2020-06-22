@@ -27,7 +27,7 @@ protocol SettingsViewModelDelegate: class {
 }
 
 class SettingsViewModel {
-    var items: [SettingsItem] = []
+    var items: [[SettingsItem]] = []
     var themingService: MaterialDesignThemingService?
     var accountService: AccountService?
     var userProfile: PersonEntry?
@@ -45,13 +45,14 @@ class SettingsViewModel {
     // MARK: - Public methods
 
     func reloadDataSource() {
+        items = []
         if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
-            items = [SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle")]
+            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle")])
         }
-
         if #available(iOS 13.0, *) {
-            items.append(getThemeItem())
+            items.append([getThemeItem()])
         }
+        items.append([getVersionItem()])
 
         self.viewModelDelegate?.didUpdateDataSource()
 
@@ -83,6 +84,13 @@ class SettingsViewModel {
         return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: "theme")
     }
 
+    private func getVersionItem() -> SettingsItem {
+        if let version = Bundle.main.releaseVersionNumber, let build = Bundle.main.buildVersionNumber {
+            return SettingsItem(type: .label, title: String(format: LocalizationConstants.Settings.appVersion, version, build), subtitle: "", icon: "")
+        }
+        return SettingsItem(type: .label, title: "", subtitle: "", icon: "")
+    }
+
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -90,7 +98,7 @@ class SettingsViewModel {
                 guard let sSelf = self else { return }
                 if let error = error {
                     AlfrescoLog.error(error)
-                    sSelf.viewModelDelegate?.displayError(message: "Failed to fetch profile information for current user.") //TODO: Localisation
+                    sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
                 } else {
                     sSelf.userProfile = personEntry
                     sSelf.reloadDataSource()

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -63,6 +63,9 @@
 		E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */; };
 		E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34984C62493603500A8A440 /* ThemesModeViewController.swift */; };
 		E34984C92493621100A8A440 /* ThemesModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34984C82493621100A8A440 /* ThemesModeViewModel.swift */; };
+		E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */; };
+		E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */; };
+		E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */; };
 		E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */; };
 		E35FB746247664A9004674FD /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB745247664A9004674FD /* LoginService.swift */; };
 		E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthenticationParameters.swift */; };
@@ -73,6 +76,7 @@
 		E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA02493E874006373FD /* TabBarMainViewController.swift */; };
 		E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */; };
 		E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */; };
+		E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */; };
 		E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */; };
 		E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */; };
 		E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */; };
@@ -173,6 +177,9 @@
 		E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponentsThemingServiceWorker.swift; sourceTree = "<group>"; };
 		E34984C62493603500A8A440 /* ThemesModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeViewController.swift; sourceTree = "<group>"; };
 		E34984C82493621100A8A440 /* ThemesModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeViewModel.swift; sourceTree = "<group>"; };
+		E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellProtocol.swift; sourceTree = "<group>"; };
+		E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelTableViewCell.swift; sourceTree = "<group>"; };
+		E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+VersionString.swift"; sourceTree = "<group>"; };
 		E35FB73D247657AE004674FD /* AdvancedSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewController.swift; sourceTree = "<group>"; };
 		E35FB745247664A9004674FD /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		E35FB747247665C6004674FD /* AuthenticationParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationParameters.swift; sourceTree = "<group>"; };
@@ -183,6 +190,7 @@
 		E37D1CA02493E874006373FD /* TabBarMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainViewController.swift; sourceTree = "<group>"; };
 		E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarScreenCoordinator.swift; sourceTree = "<group>"; };
 		E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountTableViewCell.swift; sourceTree = "<group>"; };
 		E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayerTransformations.swift"; sourceTree = "<group>"; };
 		E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthScreenCoordinator.swift; sourceTree = "<group>"; };
@@ -569,6 +577,7 @@
 				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
 				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
+				E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -660,7 +669,10 @@
 			isa = PBXGroup;
 			children = (
 				E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */,
+				E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */,
+				E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */,
 				E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */,
+				E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -941,6 +953,7 @@
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
+				E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */,
 				B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */,
@@ -950,6 +963,7 @@
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
+				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
@@ -960,7 +974,9 @@
 				B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */,
 				E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */,
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
+				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */,
+				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,

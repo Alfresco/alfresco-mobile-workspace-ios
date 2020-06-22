@@ -17,13 +17,10 @@
 //
 
 import UIKit
-import MaterialComponents.MaterialButtons
-import MaterialComponents.MaterialButtons_Theming
 
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var signOutButton: MDCButton!
 
     weak var settingsScreenCoordinatorDelegate: SettingsScreenCoordinatorDelegate?
     var themingService: MaterialDesignThemingService?
@@ -34,8 +31,9 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.title = LocalizationConstants.ScreenTitles.settings
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = heightCell
+        navigationController?.setNavigationBarHidden(false, animated: true)
         addLocalization()
     }
 
@@ -51,60 +49,72 @@ class SettingsViewController: UIViewController {
         tableView.reloadData()
     }
 
-    // MARK: - IBActions
-
-    @IBAction func signOutButtonnTapped(_ sender: MDCButton) {
-        viewModel?.performLogOutForCurrentAccount(in: self)
-    }
-
     // MARK: - Helpers
 
     func addLocalization() {
-        signOutButton.isUppercaseTitle = false
-        signOutButton.setTitle(LocalizationConstants.Buttons.signOut, for: .normal)
+        self.title = LocalizationConstants.ScreenTitles.settings
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
-        signOutButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .signOutButton))
     }
 }
 
 // MARK: - UITableView Delegate and Data Source
 
 extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel?.items.count ?? 0
     }
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel?.items[section].count ?? 0
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let identifier = NSStringFromClass(SettingsItemTableViewCell.self).components(separatedBy: ".").last,
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsItemTableViewCell,
-            let item = viewModel?.items[indexPath.row] else {
+        guard let item = viewModel?.items[indexPath.section][indexPath.row] else {
             return UITableViewCell()
         }
-        cell.applyThemingService(themingService)
-        cell.item = item
-        return cell
+
+        var cell: SettingsTablewViewCellProtocol?
+        switch item.type {
+        case .account:
+            let identifier = String(describing: SettingsAccountTableViewCell.self)
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsAccountTableViewCell
+        case .theme:
+            let identifier = String(describing: SettingsItemTableViewCell.self)
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsItemTableViewCell
+        case .label:
+            let identifier = String(describing: SettingsLabelTableViewCell.self)
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsLabelTableViewCell
+        }
+        cell?.item = item
+        cell?.delegate = self
+        cell?.applyThemingService(themingService)
+        if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
+            cell?.shouldHideSeparator(hidden: true)
+        } else {
+            cell?.shouldHideSeparator(hidden: viewModel?.items[indexPath.section].last != item)
+        }
+        return cell ?? UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let item = viewModel?.items[indexPath.row] else { return }
+        guard let item = viewModel?.items[indexPath.section][indexPath.row] else { return }
         switch item.type {
         case .theme:
             settingsScreenCoordinatorDelegate?.showThemesModeScreen()
         default: break
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return heightCell
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNonzeroMagnitude
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return CGFloat.leastNonzeroMagnitude
     }
 }
 
@@ -124,6 +134,12 @@ extension SettingsViewController: SettingsViewModelDelegate {
 
     func didUpdateDataSource() {
         tableView.reloadData()
+    }
+}
+
+extension SettingsViewController: SettingsTableViewCellDelegate {
+    func signOutButtonTapped(for item: SettingsItem) {
+        self.viewModel?.performLogOutForCurrentAccount(in: self)
     }
 }
 

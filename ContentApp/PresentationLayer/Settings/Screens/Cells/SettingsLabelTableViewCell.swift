@@ -18,20 +18,14 @@
 
 import UIKit
 
-class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol {
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var subtitleLabel: UILabel!
+class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol {
     @IBOutlet weak var separator: UIView!
+    @IBOutlet weak var titleLabel: UILabel!
 
     weak var delegate: SettingsTableViewCellDelegate?
     var item: SettingsItem? {
         didSet {
-            if let item = item {
-                iconImageView.image = UIImage(named: item.icon)
-                titleLabel.text = item.title
-                subtitleLabel.text = item.subtitle
-            }
+            titleLabel.text = item?.title
         }
     }
 
@@ -44,11 +38,8 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
     }
 
     func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        titleLabel.font = themingService?.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService?.activeTheme?.settingsTitleLabelColor
-        subtitleLabel.font = themingService?.activeTheme?.settingsSubtitleLabelFont
-        subtitleLabel.textColor = themingService?.activeTheme?.settingsSubtitleLabelColor
-        iconImageView.tintColor = themingService?.activeTheme?.settingsIconColor
+        titleLabel.font = themingService?.activeTheme?.settingsSubtitleLabelFont
+        titleLabel.textColor = themingService?.activeTheme?.settingsSubtitleLabelColor
     }
 
     func shouldHideSeparator(hidden: Bool) {

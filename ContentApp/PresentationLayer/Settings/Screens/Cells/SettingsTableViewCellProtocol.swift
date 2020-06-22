@@ -16,31 +16,16 @@
 //  limitations under the License.
 //
 
+import UIKit
 import Foundation
 
-enum SettingsItemType {
-    case account
-    case theme
-    case label
+protocol SettingsTableViewCellDelegate: class {
+    func signOutButtonTapped(for item: SettingsItem)
 }
 
-class SettingsItem: Equatable {
-    var icon: String
-    var title: String
-    var subtitle: String
-    var type: SettingsItemType
-
-    init(type: SettingsItemType, title: String, subtitle: String, icon: String) {
-        self.icon = icon
-        self.title = title
-        self.subtitle = subtitle
-        self.type = type
-    }
-
-    static func == (lhs: SettingsItem, rhs: SettingsItem) -> Bool {
-        if lhs.icon == rhs.icon && lhs.title == rhs.title && lhs.subtitle == rhs.subtitle {
-            return true
-        }
-        return false
-    }
+protocol SettingsTablewViewCellProtocol: UITableViewCell {
+    var delegate: SettingsTableViewCellDelegate? { get set }
+    var item: SettingsItem? { get set }
+    func applyThemingService(_ themingService: MaterialDesignThemingService?)
+    func shouldHideSeparator(hidden: Bool)
 }
