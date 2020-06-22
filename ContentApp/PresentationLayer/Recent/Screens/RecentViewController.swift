@@ -21,14 +21,19 @@ import UIKit
 class RecentViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    var settingsButton = UIButton(type: .custom)
 
     var themingService: MaterialDesignThemingService?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    var viewModel: RecentViewModel?
+
+    var settingsButtonHeight: CGFloat = 30
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel?.viewModelDelegate = self
         configureNavigationBar()
         addLocalization()
     }
@@ -58,8 +63,20 @@ class RecentViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.searchController = UISearchController(searchResultsController: nil)
         navigationItem.hidesSearchBarWhenScrolling = false
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "account-circle"),
-                                                           style: .plain, target: self, action: #selector(settingsButtonTapped))
+
+        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
+        settingsButton.setImage(UIImage(named: "account-circle"), for: .normal)
+        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
+        settingsButton.layer.cornerRadius = settingsButtonHeight / 2
+        settingsButton.layer.masksToBounds = true
+
+        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonHeight)
+        currWidth?.isActive = true
+        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonHeight)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
+
         tableView.contentInsetAdjustmentBehavior = .never
     }
 
@@ -93,6 +110,14 @@ extension RecentViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
+    }
+}
+
+// MARK: - Recent ViewModel Delegate
+
+extension RecentViewController: RecentViewModelDelegate {
+    func didUpdateAvatarImage(image: UIImage) {
+        settingsButton.setImage(image, for: .normal)
     }
 }
 

@@ -36,5 +36,6 @@ let kShowLoginScreenNotification = "kShowLoginScreenNotification"
 
 let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
 let kAPIPathGetProfile = "\(kAPIPathBase))/people/-me-"
+let kAPIPathGetAvatarProfile = "alfresco/versions/1/people/-me-/avatar"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"

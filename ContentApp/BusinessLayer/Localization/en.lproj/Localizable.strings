@@ -29,6 +29,7 @@
 "signInWithSSO" = "Sign in with SSO";
 "Ok" = "Ok";
 "signOut" = "Sign out";
+"retry" = "Retry";
 
 // MARK: - PlaceHolders
 "loginConnectTextFieldPlaceholder" = "Connect to";

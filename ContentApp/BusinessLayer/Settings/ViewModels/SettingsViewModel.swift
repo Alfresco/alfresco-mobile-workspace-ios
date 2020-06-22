@@ -31,7 +31,9 @@ class SettingsViewModel {
     var themingService: MaterialDesignThemingService?
     var accountService: AccountService?
     var userProfile: PersonEntry?
+    var userAvatar: UIImage?
     weak var viewModelDelegate: SettingsViewModelDelegate?
+    var apiClient: APIClientProtocol?
 
     // MARK: - Init
 
@@ -40,6 +42,7 @@ class SettingsViewModel {
         self.accountService = accountService
 
         fetchProfileInformation()
+        featchAvatar()
     }
 
     // MARK: - Public methods
@@ -47,7 +50,7 @@ class SettingsViewModel {
     func reloadDataSource() {
         items = []
         if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
-            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle")])
+            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle", image: userAvatar)])
         }
         if #available(iOS 13.0, *) {
             items.append([getThemeItem()])
@@ -90,6 +93,26 @@ class SettingsViewModel {
         return SettingsItem(type: .label, title: "", subtitle: "", icon: "")
     }
 
+    private func featchAvatar() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
+            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/")
+            _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
+                switch result {
+                case .success(let data):
+                    if let image = UIImage(data: data) {
+                        sSelf.userAvatar = image
+                        DispatchQueue.main.async {
+                            sSelf.reloadDataSource()
+                        }
+                    }
+                case .failure(let error):
+                    AlfrescoLog.error(error)
+                }
+            })
+        })
+    }
+
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -100,7 +123,9 @@ class SettingsViewModel {
                     sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
                 } else {
                     sSelf.userProfile = personEntry
-                    sSelf.reloadDataSource()
+                    DispatchQueue.main.async {
+                        sSelf.reloadDataSource()
+                    }
                 }
             }
         })
