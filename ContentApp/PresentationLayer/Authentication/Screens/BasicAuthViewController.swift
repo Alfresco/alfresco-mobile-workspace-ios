@@ -59,6 +59,7 @@ class BasicAuthViewController: UIViewController {
         super.viewDidLoad()
 
         viewModel?.delegate = self
+        showPasswordImageView.contentMode = .scaleAspectFit
 
         addLocalization()
         enableSignInButton = false
