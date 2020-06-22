@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoCore
 
 protocol ConnectScreenCoordinatorDelegate: class {
     func showAdvancedSettingsScreen()
@@ -33,9 +34,11 @@ class ConnectScreenCoordinator: Coordinator {
     private var basicAuthCoordinator: BasicAuthScreenCoordinator?
     private var aimsCoordinator: AimsScreenCoordinator?
     private var needHelpCoordinator: NeedHelpCoordinator?
+    private var authenticationError: APIError?
 
-    init(with presenter: SplashViewController) {
+    init(with presenter: SplashViewController, authenticationError: APIError? = nil) {
         self.presenter = presenter
+        self.authenticationError = authenticationError
     }
 
     func start() {
@@ -52,6 +55,10 @@ class ConnectScreenCoordinator: Coordinator {
         presenter.containerView.addSubview(containerViewNavigationController.view)
         containerViewNavigationController.didMove(toParent: presenter)
         self.containerViewNavigationController = containerViewNavigationController
+
+        if authenticationError != nil {
+            connectViewController.showError(message: LocalizationConstants.Errors.noLongerAuthenticated)
+        }
     }
 
     func popViewController() {

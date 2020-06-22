@@ -20,11 +20,9 @@ import Foundation
 
 class Keychain {
 
-    public static let standard = Keychain()
-
     // MARK: - Public methods
 
-    func set(value: Data, forKey key: String) -> Bool {
+    static func set(value: Data, forKey key: String) -> Bool {
         let dictionary = self.accessDictionary(for: key)
         dictionary.setObject(value, forKey: String(kSecValueData) as NSCopying)
         dictionary.setObject(kSecAttrAccessibleWhenUnlocked, forKey: String(kSecAttrAccessible) as NSCopying)
@@ -41,14 +39,14 @@ class Keychain {
         }
     }
 
-    func set(value: String, forKey key: String) -> Bool {
+    static func set(value: String, forKey key: String) -> Bool {
         if let data = value.data(using: String.Encoding.utf8) {
             return self.set(value: data, forKey: key)
         }
         return false
     }
 
-    func update(value: Data, forKey key: String) -> Bool {
+    static func update(value: Data, forKey key: String) -> Bool {
         let dictionary = self.accessDictionary(for: key)
         let updateDictionary = NSMutableDictionary()
         updateDictionary.setObject(value, forKey: String(kSecValueData) as NSCopying)
@@ -63,25 +61,25 @@ class Keychain {
         }
     }
 
-    func update(value: String, forKey key: String) -> Bool {
+    static func update(value: String, forKey key: String) -> Bool {
         if let data = value.data(using: String.Encoding.utf8) {
             return self.update(value: data, forKey: key)
         }
         return false
     }
 
-    func data(forKey key: String) -> Data? {
+    static func data(forKey key: String) -> Data? {
         return self.searchMatching(identifier: key)
     }
 
-    func string(forKey key: String) -> String? {
+    static func string(forKey key: String) -> String? {
         if let data = self.searchMatching(identifier: key) {
             return String(decoding: data, as: UTF8.self)
         }
         return nil
     }
 
-    func delete(forKey key: String) {
+    static func delete(forKey key: String) {
         let dictionary = self.accessDictionary(for: key)
         _ = SecItemDelete(dictionary)
         AlfrescoLog.info("Deleted value to Keychain for identifier: \(key)")
@@ -89,7 +87,7 @@ class Keychain {
 
     // MARK: - Private utils
 
-    private func accessDictionary(for identifier: String) -> NSMutableDictionary {
+    private static func accessDictionary(for identifier: String) -> NSMutableDictionary {
         let searchDictionary = NSMutableDictionary()
         searchDictionary.setObject(kSecClassGenericPassword, forKey: String(kSecClass) as NSCopying)
         searchDictionary.setObject(Bundle.main.infoDictionary?["CFBundleIdentifier"] ?? "", forKey: String(kSecAttrService) as NSCopying)
@@ -100,7 +98,7 @@ class Keychain {
         return searchDictionary
     }
 
-    private func searchMatching(identifier: String) -> Data? {
+    private static func searchMatching(identifier: String) -> Data? {
         let dictionary = self.accessDictionary(for: identifier)
         dictionary.setObject(kSecMatchLimitOne, forKey: String(kSecMatchLimit) as NSCopying)
         dictionary.setObject(kCFBooleanTrue ?? true, forKey: String(kSecReturnData) as NSCopying)

@@ -52,11 +52,23 @@ protocol AccountServiceProtocol {
 
 class AccountService: AccountServiceProtocol, Service {
     private (set) var accounts: [AccountProtocol]? = []
-    var activeAccount: AccountProtocol?
+    var activeAccount: AccountProtocol? {
+        didSet {
+            let defaults = UserDefaults.standard
+            if let activeAccountIdentifier = activeAccount?.identifier {
+                defaults.set(activeAccountIdentifier, forKey: kActiveAccountIdentifier)
+            } else {
+                defaults.removeObject(forKey: kActiveAccountIdentifier)
+            }
+
+            defaults.synchronize()
+        }
+    }
 
     func register(account: AccountProtocol) {
         accounts?.append(account)
         account.persistAuthenticationParameters()
+        account.persistAuthenticationCredentials()
     }
 
     func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -85,6 +97,10 @@ class AccountService: AccountServiceProtocol, Service {
 
     func unregister(account: AccountProtocol) {
         if let index = accounts?.firstIndex(where: { account === $0 }) {
+            let defaults = UserDefaults.standard
+            if account.identifier == activeAccount?.identifier {
+                defaults.removeObject(forKey: kActiveAccountIdentifier)
+            }
             accounts?.remove(at: index)
         }
     }

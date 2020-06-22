@@ -41,8 +41,9 @@ class TabBarScreenCoordinator: Coordinator {
         viewController.tabBarCoordinatorDelegate = self
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .fullScreen
-        presenter.present(viewController, animated: true, completion: nil)
         self.tabBarMainViewController = viewController
+
+        presenter.present(viewController, animated: true, completion: nil)
     }
 }
 

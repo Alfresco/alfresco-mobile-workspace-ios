@@ -25,13 +25,20 @@ protocol AccountProtocol: class {
     /// Account identifier string, eg. username
     var identifier: String { get }
 
+    /// Path for which domain specific requests are built
     var apiBasePath: String { get }
 
     /// Persists the authentication parameters for this account across multiple app launches
     func persistAuthenticationParameters()
 
+    /// Securely persist the authentication credentials across multiple app launches
+    func persistAuthenticationCredentials()
+
     /// Removes authentication parameters for this account
     func removeAuthenticationParameters()
+
+    /// Removes authentication credentials for this account
+    func removeAuthenticationCredentials()
 
     /// Returns a valid cached session or recreates one.
     /// - Parameter completionHandler: Authentication provider containing  session credentials

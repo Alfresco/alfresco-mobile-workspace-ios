@@ -125,9 +125,11 @@ extension SettingsViewController: SettingsViewModelDelegate {
 
     func displayError(message: String) {
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            guard let sSelf = self else { return }
             let snackbar = Snackbar(with: message, type: .error)
-            snackbar.applyThemingService(themingService)
+            if let theme = sSelf.themingService?.activeTheme {
+                snackbar.applyTheme(theme: theme)
+            }
             snackbar.show(completion: nil)
         }
     }

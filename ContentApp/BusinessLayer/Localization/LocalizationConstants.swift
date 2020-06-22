@@ -78,6 +78,7 @@ struct LocalizationConstants {
         static let wrongCredentials = NSLocalizedString("loginErrorWrongCredentialProvided", comment: "")
         static let saveSettings = NSLocalizedString("loginApprovedSaveSettings", comment: "")
         static let serviceDocumentEmpty = NSLocalizedString("loginWarningServiceDocumetEmptyText", comment: "")
+        static let noLongerAuthenticated = NSLocalizedString("loginNoLongerAuthenticatedText", comment: "")
     }
 
     struct Theme {

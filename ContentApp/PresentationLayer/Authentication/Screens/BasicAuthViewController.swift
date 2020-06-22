@@ -229,10 +229,12 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
     func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            guard let sSelf = self else { return }
             Snackbar.dimissAll()
             let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-            snackbar.applyThemingService(themingService)
+            if let theme = sSelf.themingService?.activeTheme {
+                snackbar.applyTheme(theme: theme)
+            }
             snackbar.show(completion: nil)
         }
     }
@@ -240,13 +242,15 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self, let themingService = sSelf.themingService  else { return }
+            guard let sSelf = self else { return }
             if error.responseCode == 401 {
                 sSelf.applyThemingInTextField(errorTheme: true)
             }
             Snackbar.dimissAll()
             let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            snackbar.applyThemingService(themingService)
+            if let theme = sSelf.themingService?.activeTheme {
+                snackbar.applyTheme(theme: theme)
+            }
             snackbar.show(completion: { () in
                 sSelf.applyThemingInTextField(errorTheme: false)
             })

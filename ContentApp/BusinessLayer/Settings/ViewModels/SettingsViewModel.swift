@@ -62,8 +62,7 @@ class SettingsViewModel {
         accountService?.logOutFromCurrentAccount(viewController: viewController, completionHandler: { [weak self] (error) in
             guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
-                Keychain.standard.delete(forKey: "\(currentAccount.identifier)-\(String(describing: AlfrescoAuthSession.self))")
-                Keychain.standard.delete(forKey: "\(currentAccount.identifier)-\(String(describing: AlfrescoCredential.self))")
+                currentAccount.removeAuthenticationCredentials()
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })

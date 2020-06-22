@@ -17,6 +17,8 @@
 //
 
 import UIKit
+import AlfrescoAuth
+import AlfrescoContentServices
 
 protocol SplashScreenCoordinatorDelegate: class {
     func showLoginContainerView()
@@ -29,9 +31,12 @@ class SplashScreenCoordinator: Coordinator {
     private var splashScreenViewController: SplashViewController?
     private var advancedSettingsCoordinator: AdvancedSettingsScreenCoordinator?
     private var connectScreenCoordinator: ConnectScreenCoordinator?
+    private var tabBarScreenCoordinator: TabBarScreenCoordinator?
+    private var authenticationError: APIError?
 
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController, authenticationError: APIError? = nil) {
         self.presenter = presenter
+        self.authenticationError = authenticationError
     }
 
     func start() {
@@ -42,7 +47,7 @@ class SplashScreenCoordinator: Coordinator {
         presenter.pushViewController(splashScreenViewController, animated: true)
         self.splashScreenViewController = splashScreenViewController
         // Set up the connect view controller
-        let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController)
+        let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController, authenticationError: authenticationError)
         self.connectScreenCoordinator = connectScreenCoordinator
     }
 }
@@ -53,7 +58,46 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     }
 
     func showLoginContainerView() {
-        connectScreenCoordinator?.start()
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+
+        if let activeAccountIdentifier = UserDefaults.standard.value(forKey: kActiveAccountIdentifier) as? String {
+            let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
+
+            // Check account type whether it's Basic or AIMS
+            if let activeAccountPassword = Keychain.string(forKey: activeAccountIdentifier) {
+                let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
+                let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
+
+                accountService?.register(account: account)
+                accountService?.activeAccount = account
+            } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
+                let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
+
+                do {
+                    let decoder = JSONDecoder()
+
+                    if let aimsSession = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(activeAccountSessionData) as? AlfrescoAuthSession {
+                        let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+
+                        let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
+                        let account = AIMSAccount(with: accountSession)
+                        accountService?.register(account: account)
+                        accountService?.activeAccount = account
+
+                        AlfrescoContentServicesAPI.basePath = account.apiBasePath
+
+                        tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
+                        tabBarScreenCoordinator?.start()
+                    }
+                } catch {
+                    AlfrescoLog.error("Unable to deserialize session information")
+                }
+            } else {
+                connectScreenCoordinator?.start()
+            }
+        } else {
+            connectScreenCoordinator?.start()
+        }
     }
 
     func showAdvancedSettingsScreen() {
