@@ -58,8 +58,6 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     }
 
     func showLoginContainerView() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-
         if let activeAccountIdentifier = UserDefaults.standard.value(forKey: kActiveAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
 
@@ -68,8 +66,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
                 let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
                 let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
 
-                accountService?.register(account: account)
-                accountService?.activeAccount = account
+                registerAndPresent(account: account)
             } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
                 let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
 
@@ -81,13 +78,8 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
                         let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
                         let account = AIMSAccount(with: accountSession)
-                        accountService?.register(account: account)
-                        accountService?.activeAccount = account
 
-                        AlfrescoContentServicesAPI.basePath = account.apiBasePath
-
-                        tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
-                        tabBarScreenCoordinator?.start()
+                        registerAndPresent(account: account)
                     }
                 } catch {
                     AlfrescoLog.error("Unable to deserialize session information")
@@ -104,5 +96,17 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
         let advancedSettingsCoordinator = AdvancedSettingsScreenCoordinator(with: presenter)
         advancedSettingsCoordinator.start()
         self.advancedSettingsCoordinator = advancedSettingsCoordinator
+    }
+
+    private func registerAndPresent(account: AccountProtocol) {
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+
+        accountService?.register(account: account)
+        accountService?.activeAccount = account
+
+        AlfrescoContentServicesAPI.basePath = account.apiBasePath
+
+        tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
+        tabBarScreenCoordinator?.start()
     }
 }

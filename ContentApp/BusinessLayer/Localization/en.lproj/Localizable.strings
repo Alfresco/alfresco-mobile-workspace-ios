@@ -30,6 +30,8 @@
 "Ok" = "Ok";
 "signOut" = "Sign out";
 "retry" = "Retry";
+"yes" = "Yes";
+"cancel" = "Cancel";
 
 // MARK: - PlaceHolders
 "loginConnectTextFieldPlaceholder" = "Connect to";
@@ -80,3 +82,4 @@
 "dark" = "Dark";
 "failedProfileInfo" = "Failed to fetch profile information for current user.";
 "appVersion" = "App Version %@-%@";
+"signOutConfirmation" = "Are you sure you want to sign out of Alfresco Content mobile?";

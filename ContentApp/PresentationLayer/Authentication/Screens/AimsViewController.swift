@@ -71,7 +71,7 @@ class AimsViewController: UIViewController {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
     }
-    
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         themingService?.activateUserSelectedTheme()
