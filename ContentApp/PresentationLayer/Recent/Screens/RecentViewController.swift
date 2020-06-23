@@ -41,6 +41,9 @@ class RecentViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
+        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: viewModel?.accountService?.activeAccount?.identifier ?? "") {
+            settingsButton.setImage(avatar, for: .normal)
+        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -66,6 +69,9 @@ class RecentViewController: UIViewController {
 
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
         settingsButton.setImage(UIImage(named: "account-circle"), for: .normal)
+        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: viewModel?.accountService?.activeAccount?.identifier ?? "") {
+            settingsButton.setImage(avatar, for: .normal)
+        }
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
         settingsButton.layer.cornerRadius = settingsButtonHeight / 2
         settingsButton.layer.masksToBounds = true
@@ -119,6 +125,7 @@ extension RecentViewController: RecentViewModelDelegate {
     func didUpdateAvatarImage(image: UIImage) {
         settingsButton.setImage(image, for: .normal)
     }
+
 }
 
 // MARK: - Storyboard Instantiable

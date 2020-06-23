@@ -40,6 +40,7 @@
 		E300204924A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204824A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift */; };
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
 		E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */; };
+		E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */; };
 		E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */; };
 		E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D5247BEC9B0044BE0D /* AimsViewController.swift */; };
 		E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */; };
@@ -150,6 +151,7 @@
 		E300204824A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServicesAvatarProfile.swift; sourceTree = "<group>"; };
 		E300204E24A0EC90004FB12D /* RecentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewModel.swift; sourceTree = "<group>"; };
 		E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollTo.swift"; sourceTree = "<group>"; };
+		E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskServices.swift; sourceTree = "<group>"; };
 		E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewController.swift; sourceTree = "<group>"; };
 		E31184D5247BEC9B0044BE0D /* AimsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewController.swift; sourceTree = "<group>"; };
 		E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Replacement.swift"; sourceTree = "<group>"; };
@@ -287,6 +289,7 @@
 				E3AD23EE249A28E0008B9712 /* KeychainWrapper */,
 				B96B9AF52480FCAA0035AE97 /* ApplicationBootstrap */,
 				B91A5E46247825CF0063E938 /* ServiceRepository */,
+				E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */,
 			);
 			path = DataAccessLayer;
 			sourceTree = "<group>";
@@ -987,6 +990,7 @@
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
+				E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
@@ -1192,7 +1196,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
@@ -1205,7 +1209,7 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App Development";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1215,7 +1219,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
@@ -1228,7 +1232,7 @@
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App AppStore";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App Development";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

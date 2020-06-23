@@ -34,12 +34,12 @@ class RecentViewModel {
 
     init(accountService: AccountService?) {
         self.accountService = accountService
-        featchAvatar()
+        fetchAvatar()
     }
 
     // MARK: - Private methods
 
-    private func featchAvatar() {
+    private func fetchAvatar() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
             sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/")
@@ -49,6 +49,7 @@ class RecentViewModel {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             sSelf.viewModelDelegate?.didUpdateAvatarImage(image: image)
+                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
                         }
                     }
                 case .failure(let error):

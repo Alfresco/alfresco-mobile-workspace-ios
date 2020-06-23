@@ -25,6 +25,7 @@ let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kAIMSAccessTokenRefreshTimeBuffer = 20.0
 let kActiveAccountIdentifier = "kActiveAccountIdentifier"
+let kProfileAvatarImageFileName = "avatar"
 
 let kAnimationSplashScreenLogo = 2.0
 let kAnimationSplashScreenContainerViews = 1.5

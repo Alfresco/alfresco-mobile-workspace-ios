@@ -42,7 +42,7 @@ class SettingsViewModel {
         self.accountService = accountService
 
         fetchProfileInformation()
-        featchAvatar()
+        fetchAvatar()
     }
 
     // MARK: - Public methods
@@ -93,7 +93,7 @@ class SettingsViewModel {
         return SettingsItem(type: .label, title: "", subtitle: "", icon: "")
     }
 
-    private func featchAvatar() {
+    private func fetchAvatar() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
             sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/")
@@ -103,7 +103,8 @@ class SettingsViewModel {
                     if let image = UIImage(data: data) {
                         sSelf.userAvatar = image
                         DispatchQueue.main.async {
-                            sSelf.reloadDataSource()
+                            sSelf.viewModelDelegate?.didUpdateDataSource()
+                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
                         }
                     }
                 case .failure(let error):
