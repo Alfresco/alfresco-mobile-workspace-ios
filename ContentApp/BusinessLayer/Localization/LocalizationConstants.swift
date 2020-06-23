@@ -32,6 +32,7 @@ struct LocalizationConstants {
         static let signInWithSSO = NSLocalizedString("signInWithSSO", comment: "")
         static let snackbarConfirmation = "x"
         static let signOut = NSLocalizedString("signOut", comment: "")
+        static let retry = NSLocalizedString("retry", comment: "")
     }
 
     struct TextFieldPlaceholders {

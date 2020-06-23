@@ -33,6 +33,11 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
                 iconImageView.image = UIImage(named: item.icon)
                 titleLabel.text = item.title
                 subtitleLabel.text = item.subtitle
+                if let image = item.iconImage {
+                    iconImageView.image = image
+                    iconImageView.layer.cornerRadius = iconImageView.frame.size.height / 2
+                    iconImageView.layer.masksToBounds = true
+                }
             }
         }
     }

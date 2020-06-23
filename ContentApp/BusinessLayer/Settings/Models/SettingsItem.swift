@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum SettingsItemType {
     case account
@@ -26,15 +27,17 @@ enum SettingsItemType {
 
 class SettingsItem: Equatable {
     var icon: String
+    var iconImage: UIImage?
     var title: String
     var subtitle: String
     var type: SettingsItemType
 
-    init(type: SettingsItemType, title: String, subtitle: String, icon: String) {
+    init(type: SettingsItemType, title: String, subtitle: String, icon: String, image: UIImage? = nil) {
         self.icon = icon
         self.title = title
         self.subtitle = subtitle
         self.type = type
+        self.iconImage = image
     }
 
     static func == (lhs: SettingsItem, rhs: SettingsItem) -> Bool {
