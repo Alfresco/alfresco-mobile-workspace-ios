@@ -19,6 +19,7 @@
 import Foundation
 import AlfrescoContentServices
 import AlfrescoAuth
+import MaterialComponents.MaterialDialogs
 
 protocol SettingsViewModelDelegate: class {
     func didUpdateDataSource()
@@ -62,16 +63,36 @@ class SettingsViewModel {
     }
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
+        if accountService?.activeAccount is BasicAuthAccount {
+            let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut, message: LocalizationConstants.Settings.signOutConfirmation)
+
+            let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.logOutForCurrentAccount(in: viewController)
+            }
+            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+
+            alert.addAction(confirmAction)
+            alert.addAction(cancelAction)
+
+            viewController.present(alert, animated: true, completion: nil)
+        } else {
+            logOutForCurrentAccount(in: viewController)
+        }
+    }
+
+    // MARK: - Private methods
+
+    private func logOutForCurrentAccount(in viewController: UIViewController) {
         accountService?.logOutFromCurrentAccount(viewController: viewController, completionHandler: { [weak self] (error) in
             guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
+
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
     }
-
-    // MARK: - Private methods
 
     private func getThemeItem() -> SettingsItem {
         var themeName = LocalizationConstants.Theme.auto

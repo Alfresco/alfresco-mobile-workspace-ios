@@ -33,6 +33,7 @@ class BasicAuthViewModel {
 
     init(with authenticationService: AuthenticationService?, accountService: AccountServiceProtocol?) {
         self.authenticationService = authenticationService
+        self.accountService = accountService
     }
 
     func authenticate(username: String, password: String) {

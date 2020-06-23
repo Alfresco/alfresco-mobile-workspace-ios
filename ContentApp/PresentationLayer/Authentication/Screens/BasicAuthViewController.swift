@@ -39,6 +39,8 @@ class BasicAuthViewController: UIViewController {
     @IBOutlet weak var signInButton: MDCButton!
 
     weak var splashScreenDelegate: SplashScreenDelegate?
+    weak var basicAuthCoordinatorDelegate: BasicAuthScreenCoordinatorDelegate?
+
     var viewModel: BasicAuthViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
@@ -172,14 +174,6 @@ class BasicAuthViewController: UIViewController {
         passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
         passwordTextField.isSecureTextEntry = true
     }
-
-    func showAlert(message: String) {
-        DispatchQueue.main.async {
-            let alert = UIAlertController(title: "", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
 }
 
 // MARK: - UITextField Delegate
@@ -258,8 +252,12 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
     }
 
     func logInSuccessful() {
-        activityIndicator?.state = .isIdle
-        showAlert(message: "Login with Basic Auth is successfull!")
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+
+            sSelf.activityIndicator?.state = .isIdle
+            sSelf.basicAuthCoordinatorDelegate?.showApplicationTabBar()
+        }
     }
 }
 

@@ -36,7 +36,8 @@ let kLoginAIMSCancelWebViewErrorCode = -3
 let kShowLoginScreenNotification = "kShowLoginScreenNotification"
 
 let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
-let kAPIPathGetProfile = "\(kAPIPathBase))/people/-me-"
-let kAPIPathGetAvatarProfile = "alfresco/versions/1/people/-me-/avatar"
+let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
+let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
+let kAPIPathGetAvatarProfile = "\(kAPIPathVersion)/people/-me-/avatar"

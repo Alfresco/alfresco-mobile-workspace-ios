@@ -33,6 +33,8 @@ struct LocalizationConstants {
         static let snackbarConfirmation = "x"
         static let signOut = NSLocalizedString("signOut", comment: "")
         static let retry = NSLocalizedString("retry", comment: "")
+        static let yes = NSLocalizedString("yes", comment: "")
+        static let cancel = NSLocalizedString("cancel", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -92,5 +94,6 @@ struct LocalizationConstants {
     struct Settings {
         static let failedProfileInfo = NSLocalizedString("failedProfileInfo", comment: "")
         static let appVersion = NSLocalizedString("appVersion", comment: "")
+        static let signOutConfirmation = NSLocalizedString("signOutConfirmation", comment: "")
     }
 }

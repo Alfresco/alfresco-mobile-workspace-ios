@@ -23,7 +23,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         return credential.username
     }
     var apiBasePath: String {
-        return "\(parameters.fullContentURL)/\(parameters.serviceDocument)/\(kAPIPathBase)"
+        return "\(parameters.fullHostnameURL)/\(parameters.serviceDocument)/\(kAPIPathBase)"
     }
     var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
