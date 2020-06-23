@@ -25,7 +25,7 @@ class DiskServices {
         let fileManager = FileManager.default
         if let newDirectoryPath = create(directory: directory) {
             fileManager.createFile(atPath: "\(newDirectoryPath)/\(imageNamed)",
-                contents: image.jpegData(compressionQuality: 0.5), attributes: nil)
+                contents: image.pngData(), attributes: nil)
         }
     }
 
@@ -51,11 +51,11 @@ class DiskServices {
             do {
                 try fileManager.createDirectory(atPath: paths, withIntermediateDirectories: true, attributes: nil)
             } catch {
-                AlfrescoLog.error("Failed to create directory.")
+                AlfrescoLog.error("Failed to create \(directory) directory in path \(paths).")
                 return nil
             }
         } else {
-            AlfrescoLog.error("Already dictionary created.")
+            AlfrescoLog.error("\(directory) directory already created.")
         }
         return paths
     }
@@ -67,10 +67,10 @@ class DiskServices {
             do {
                 try fileManager.removeItem(atPath: paths)
             } catch {
-                AlfrescoLog.error("Failed to delete directory.")
+                AlfrescoLog.error("Failed to delete \(directory) directory in path \(paths).")
             }
         } else {
-            AlfrescoLog.error("Something wrong.")
+            AlfrescoLog.error("Something wrong when deleted \(directory) directory in path \(paths).")
         }
     }
 }
