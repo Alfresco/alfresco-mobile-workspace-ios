@@ -54,8 +54,6 @@ class DiskServices {
                 AlfrescoLog.error("Failed to create \(directory) directory in path \(paths).")
                 return nil
             }
-        } else {
-            AlfrescoLog.error("\(directory) directory already created.")
         }
         return paths
     }

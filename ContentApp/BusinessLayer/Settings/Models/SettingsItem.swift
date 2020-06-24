@@ -26,22 +26,20 @@ enum SettingsItemType {
 }
 
 class SettingsItem: Equatable {
-    var icon: String
-    var iconImage: UIImage?
+    var icon: UIImage?
     var title: String
     var subtitle: String
     var type: SettingsItemType
 
-    init(type: SettingsItemType, title: String, subtitle: String, icon: String, image: UIImage? = nil) {
+    init(type: SettingsItemType, title: String, subtitle: String, icon: UIImage?) {
         self.icon = icon
         self.title = title
         self.subtitle = subtitle
         self.type = type
-        self.iconImage = image
     }
 
     static func == (lhs: SettingsItem, rhs: SettingsItem) -> Bool {
-        if lhs.icon == rhs.icon && lhs.title == rhs.title && lhs.subtitle == rhs.subtitle {
+        if lhs.title == rhs.title && lhs.subtitle == rhs.subtitle {
             return true
         }
         return false

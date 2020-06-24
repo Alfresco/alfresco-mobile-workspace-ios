@@ -28,7 +28,7 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
     var item: SettingsItem? {
         didSet {
             if let item = item {
-                iconImageView.image = UIImage(named: item.icon)
+                iconImageView.image = item.icon
                 titleLabel.text = item.title
                 subtitleLabel.text = item.subtitle
             }
