@@ -71,7 +71,7 @@ class RecentViewController: UIViewController {
         settingsButton.setImage(UIImage(named: "account-circle"), for: .normal)
         if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: viewModel?.accountService?.activeAccount?.identifier ?? "") {
             settingsButton.setImage(avatar, for: .normal)
-            settingsButton.imageView?.contentMode = .scaleAspectFit
+            settingsButton.imageView?.contentMode = .scaleAspectFill
         }
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
         settingsButton.layer.cornerRadius = settingsButtonHeight / 2
