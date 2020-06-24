@@ -30,20 +30,17 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
     var item: SettingsItem? {
         didSet {
             if let item = item {
-                iconImageView.image = UIImage(named: item.icon)
+                iconImageView.image = item.icon
                 titleLabel.text = item.title
                 subtitleLabel.text = item.subtitle
-                if let image = item.iconImage {
-                    iconImageView.image = image
-                    iconImageView.layer.cornerRadius = iconImageView.frame.size.height / 2
-                    iconImageView.layer.masksToBounds = true
-                }
             }
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        iconImageView.layer.cornerRadius = iconImageView.frame.size.height / 2
+        iconImageView.layer.masksToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

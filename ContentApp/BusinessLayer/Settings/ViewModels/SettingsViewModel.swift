@@ -32,7 +32,6 @@ class SettingsViewModel {
     var themingService: MaterialDesignThemingService?
     var accountService: AccountService?
     var userProfile: PersonEntry?
-    var userAvatar: UIImage?
     weak var viewModelDelegate: SettingsViewModelDelegate?
     var apiClient: APIClientProtocol?
 
@@ -41,7 +40,6 @@ class SettingsViewModel {
     init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
         self.accountService = accountService
-
         fetchProfileInformation()
         fetchAvatar()
     }
@@ -51,7 +49,11 @@ class SettingsViewModel {
     func reloadDataSource() {
         items = []
         if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
-            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: "account-circle", image: userAvatar)])
+            var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+            if avatar == nil {
+                avatar = UIImage(named: "account-circle")
+            }
+            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: avatar)])
         }
         if #available(iOS 13.0, *) {
             items.append([getThemeItem()])
@@ -104,14 +106,14 @@ class SettingsViewModel {
         default:
             themeName = LocalizationConstants.Theme.auto
         }
-        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: "theme")
+        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "theme"))
     }
 
     private func getVersionItem() -> SettingsItem {
         if let version = Bundle.main.releaseVersionNumber, let build = Bundle.main.buildVersionNumber {
-            return SettingsItem(type: .label, title: String(format: LocalizationConstants.Settings.appVersion, version, build), subtitle: "", icon: "")
+            return SettingsItem(type: .label, title: String(format: LocalizationConstants.Settings.appVersion, version, build), subtitle: "", icon: nil)
         }
-        return SettingsItem(type: .label, title: "", subtitle: "", icon: "")
+        return SettingsItem(type: .label, title: "", subtitle: "", icon: nil)
     }
 
     private func fetchAvatar() {
@@ -122,10 +124,9 @@ class SettingsViewModel {
                 switch result {
                 case .success(let data):
                     if let image = UIImage(data: data) {
-                        sSelf.userAvatar = image
                         DispatchQueue.main.async {
-                            sSelf.viewModelDelegate?.didUpdateDataSource()
                             DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
+                            sSelf.viewModelDelegate?.didUpdateDataSource()
                         }
                     }
                 case .failure(let error):
