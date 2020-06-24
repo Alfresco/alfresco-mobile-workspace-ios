@@ -34,6 +34,7 @@ class SettingsViewModel {
     var userProfile: PersonEntry?
     weak var viewModelDelegate: SettingsViewModelDelegate?
     var apiClient: APIClientProtocol?
+    var avatarImage: UIImage?
 
     // MARK: - Init
 
@@ -101,7 +102,7 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = avatarImage//DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
@@ -131,14 +132,15 @@ class SettingsViewModel {
     private func fetchAvatar() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/")
+            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
             _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
                 switch result {
                 case .success(let data):
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
+                            sSelf.avatarImage = image
                             DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                            sSelf.viewModelDelegate?.didUpdateDataSource()
+                            sSelf.reloadDataSource()
                         }
                     }
                 case .failure(let error):
