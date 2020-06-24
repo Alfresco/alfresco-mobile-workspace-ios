@@ -62,10 +62,16 @@ extension AimsViewModel: AlfrescoAuthDelegate {
 
                 AlfrescoContentServicesAPI.basePath = account.apiBasePath
             }
-            self.delegate?.logInSuccessful()
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.delegate?.logInSuccessful()
+            }
         case .failure(let error):
             AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")
-            self.delegate?.logInFailed(with: error)
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.delegate?.logInFailed(with: error)
+            }
         }
     }
 
