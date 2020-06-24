@@ -72,15 +72,21 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
-        activeAccount?.getSession(completionHandler: { (authenticationProivder) in
-            completionHandler(authenticationProivder)
-        })
+        DispatchQueue.global().async { [weak self] in
+            guard let sSelf = self else { return }
+
+            sSelf.activeAccount?.getSession(completionHandler: { (authenticationProivder) in
+                completionHandler(authenticationProivder)
+            })
+        }
     }
 
     func logOutFromAccount(account: AccountProtocol, viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
-        account.logOut(onViewController: viewController, completionHandler: { error in
-            completionHandler(error)
-        })
+        DispatchQueue.main.async {
+            account.logOut(onViewController: viewController, completionHandler: { error in
+                completionHandler(error)
+            })
+        }
     }
 
     func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
