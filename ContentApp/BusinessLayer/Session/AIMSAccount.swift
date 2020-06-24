@@ -81,6 +81,10 @@ class AIMSAccount: AccountProtocol, Equatable {
         Keychain.delete(forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
     }
 
+    func removeDiskFolder() {
+        DiskServices.delete(directory: identifier)
+    }
+
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         // Check if existing credentials are valid and return them if true
         if let credential = session.credential {
@@ -106,5 +110,6 @@ class AIMSAccount: AccountProtocol, Equatable {
 extension AIMSAccount: AIMSAccountDelegate {
     func sessionFailedToRefresh(error: APIError) {
         removeAuthenticationCredentials()
+        removeDiskFolder()
     }
 }

@@ -19,6 +19,7 @@
 import UIKit
 
 class BasicAuthAccount: AccountProtocol, Equatable {
+
     var identifier: String {
         return credential.username
     }
@@ -51,6 +52,11 @@ class BasicAuthAccount: AccountProtocol, Equatable {
 
     func removeAuthenticationCredentials() {
         _ = Keychain.delete(forKey: identifier)
+
+    }
+
+    func removeDiskFolder() {
+        DiskServices.delete(directory: identifier)
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {

@@ -48,12 +48,9 @@ class SettingsViewModel {
 
     func reloadDataSource() {
         items = []
-        if let profileName = userProfile?.entry.displayName, let profileEmail = userProfile?.entry.email {
-            var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
-            if avatar == nil {
-                avatar = UIImage(named: "account-circle")
-            }
-            items.append([SettingsItem(type: .account, title: profileName, subtitle: profileEmail, icon: avatar)])
+
+        if let userProfile = userProfile?.entry {
+           items.append([getProfileItem(from: userProfile)])
         }
         if #available(iOS 13.0, *) {
             items.append([getThemeItem()])
@@ -61,7 +58,6 @@ class SettingsViewModel {
         items.append([getVersionItem()])
 
         self.viewModelDelegate?.didUpdateDataSource()
-
     }
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
@@ -91,9 +87,25 @@ class SettingsViewModel {
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
+                currentAccount.removeDiskFolder()
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
+    }
+
+    private func getProfileItem(from userProfile: Person) -> SettingsItem {
+        var profileName = userProfile.firstName
+        if let lastName = userProfile.lastName {
+            profileName = "\(profileName) \(lastName)"
+        }
+        if let displayName = userProfile.displayName {
+            profileName = displayName
+        }
+        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        if avatar == nil {
+            avatar = UIImage(named: "account-circle")
+        }
+        return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
     }
 
     private func getThemeItem() -> SettingsItem {

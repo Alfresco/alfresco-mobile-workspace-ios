@@ -40,6 +40,9 @@ protocol AccountProtocol: class {
     /// Removes authentication credentials for this account
     func removeAuthenticationCredentials()
 
+    /// Removes disk folder for this account
+    func removeDiskFolder()
+
     /// Returns a valid cached session or recreates one.
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
