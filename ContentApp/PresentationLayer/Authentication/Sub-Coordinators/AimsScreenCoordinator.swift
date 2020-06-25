@@ -56,7 +56,9 @@ extension AimsScreenCoordinator: AimsScreenCoordinatorDelegate {
 
     func showApplicationTabBar() {
         let tabBarCoordinator = TabBarScreenCoordinator(with: presenter)
-        tabBarCoordinator.start()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            tabBarCoordinator.start()
+        }
         self.tabBarCoordinator = tabBarCoordinator
     }
 }
