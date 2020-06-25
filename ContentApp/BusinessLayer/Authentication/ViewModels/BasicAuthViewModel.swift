@@ -84,8 +84,8 @@ class BasicAuthViewModel {
                         sSelf.accountService?.unregister(account: activeAccount)
                     }
                 } else {
-                    if let person = personEntry?.entry {
-                        sSelf.persistUserProfile(person: person)
+                    if let person = personEntry?.entry, let activeAccount = sSelf.accountService?.activeAccount {
+                        UserProfile.persistUserProfile(person: person, withAccountIdentifier: activeAccount.identifier)
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }
@@ -93,21 +93,5 @@ class BasicAuthViewModel {
                 }
             }
         })
-    }
-
-    private func persistUserProfile(person: Person) {
-        guard let identifier = accountService?.activeAccount?.identifier else { return }
-        var profileName = person.firstName
-        if let lastName = person.lastName {
-            profileName = "\(person) \(lastName)"
-        }
-        if let displayName = person.displayName {
-            profileName = displayName
-        }
-
-        let defaults = UserDefaults.standard
-        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
-        defaults.synchronize()
     }
 }

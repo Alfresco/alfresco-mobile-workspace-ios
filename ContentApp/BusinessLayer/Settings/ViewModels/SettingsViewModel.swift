@@ -97,16 +97,10 @@ class SettingsViewModel {
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
                 currentAccount.removeDiskFolder()
-                sSelf.removeUserProfile()
+                UserProfile.removeUserProfile(withAccountIdentifier: currentAccount.identifier)
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
-    }
-
-    func removeUserProfile() {
-        guard let identifier = accountService?.activeAccount?.identifier else { return }
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
     }
 
     private func getProfileItem(from userProfile: Person) -> SettingsItem {
@@ -121,40 +115,21 @@ class SettingsViewModel {
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        self.persistUserProfile(person: userProfile)
+        if let currentAccount = self.accountService?.activeAccount {
+            UserProfile.persistUserProfile(person: userProfile, withAccountIdentifier: currentAccount.identifier)
+        }
         return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
     }
 
-    private func persistUserProfile(person: Person) {
-        guard let identifier = accountService?.activeAccount?.identifier else { return }
-        var profileName = person.firstName
-        if let lastName = person.lastName {
-            profileName = "\(person) \(lastName)"
-        }
-        if let displayName = person.displayName {
-            profileName = displayName
-        }
-
-        let defaults = UserDefaults.standard
-        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
-        defaults.synchronize()
-    }
-
     private func getLocalProfileItem() -> SettingsItem? {
-        guard let identifier = accountService?.activeAccount?.identifier else { return nil}
+        guard let identifier = accountService?.activeAccount?.identifier else { return nil }
 
         var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-
-        let defaults = UserDefaults.standard
-        if let displayName = defaults.object(forKey: "\(identifier)-\(kSaveDiplayProfileName)") as? String,
-            let email = defaults.object(forKey: "\(identifier)-\(kSaveEmailProfile)") as? String {
-            return SettingsItem(type: .account, title: displayName, subtitle: email, icon: avatar)
-        }
-        return nil
+        return SettingsItem(type: .account, title: UserProfile.getProfileName(withAccountIdentifier: identifier),
+                            subtitle: UserProfile.getEmail(withAccountIdentifier: identifier), icon: avatar)
     }
 
     private func getThemeItem() -> SettingsItem {
