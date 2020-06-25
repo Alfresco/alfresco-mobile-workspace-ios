@@ -97,9 +97,16 @@ class SettingsViewModel {
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
                 currentAccount.removeDiskFolder()
+                sSelf.removeUserProfile()
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
+    }
+
+    func removeUserProfile() {
+        guard let identifier = accountService?.activeAccount?.identifier else { return }
+        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
+        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
     }
 
     private func getProfileItem(from userProfile: Person) -> SettingsItem {
@@ -114,8 +121,24 @@ class SettingsViewModel {
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        accountService?.activeAccount?.persistUserProfile(person: userProfile)
+        self.persistUserProfile(person: userProfile)
         return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
+    }
+
+    private func persistUserProfile(person: Person) {
+        guard let identifier = accountService?.activeAccount?.identifier else { return }
+        var profileName = person.firstName
+        if let lastName = person.lastName {
+            profileName = "\(person) \(lastName)"
+        }
+        if let displayName = person.displayName {
+            profileName = displayName
+        }
+
+        let defaults = UserDefaults.standard
+        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
+        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
+        defaults.synchronize()
     }
 
     private func getLocalProfileItem() -> SettingsItem? {

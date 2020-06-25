@@ -73,21 +73,6 @@ class AIMSAccount: AccountProtocol, Equatable {
         }
     }
 
-    func persistUserProfile(person: Person) {
-        var profileName = person.firstName
-        if let lastName = person.lastName {
-            profileName = "\(person) \(lastName)"
-        }
-        if let displayName = person.displayName {
-            profileName = displayName
-        }
-
-        let defaults = UserDefaults.standard
-        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
-        defaults.synchronize()
-    }
-
     func removeAuthenticationParameters() {
         session.parameters.remove(for: identifier)
     }
@@ -95,11 +80,6 @@ class AIMSAccount: AccountProtocol, Equatable {
     func removeAuthenticationCredentials() {
         Keychain.delete(forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
         Keychain.delete(forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
-    }
-
-    func removeUserProfile() {
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
     }
 
     func removeDiskFolder() {

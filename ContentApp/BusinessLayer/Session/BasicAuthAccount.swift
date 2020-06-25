@@ -47,32 +47,12 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         _ = Keychain.set(value: credential.password, forKey: identifier)
     }
 
-    func persistUserProfile(person: Person) {
-        var profileName = person.firstName
-        if let lastName = person.lastName {
-            profileName = "\(person) \(lastName)"
-        }
-        if let displayName = person.displayName {
-            profileName = displayName
-        }
-
-        let defaults = UserDefaults.standard
-        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
-        defaults.synchronize()
-    }
-
     func removeAuthenticationParameters() {
         parameters.remove(for: identifier)
     }
 
     func removeAuthenticationCredentials() {
         _ = Keychain.delete(forKey: identifier)
-    }
-
-    func removeUserProfile() {
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
     }
 
     func removeDiskFolder() {

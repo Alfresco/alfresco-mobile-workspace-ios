@@ -35,17 +35,11 @@ protocol AccountProtocol: class {
     /// Securely persist the authentication credentials across multiple app launches
     func persistAuthenticationCredentials()
 
-    /// Persist the profile user
-    func persistUserProfile(person: Person)
-
     /// Removes authentication parameters for this account
     func removeAuthenticationParameters()
 
     /// Removes authentication credentials for this account
     func removeAuthenticationCredentials()
-
-    /// Removes user profile for this account
-    func removeUserProfile()
 
     /// Removes disk folder for this account
     func removeDiskFolder()

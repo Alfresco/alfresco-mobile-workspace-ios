@@ -81,12 +81,11 @@ class BasicAuthViewModel {
                     if let activeAccount = sSelf.accountService?.activeAccount {
                         activeAccount.removeDiskFolder()
                         activeAccount.removeAuthenticationCredentials()
-                        activeAccount.removeUserProfile()
                         sSelf.accountService?.unregister(account: activeAccount)
                     }
                 } else {
                     if let person = personEntry?.entry {
-                        sSelf.accountService?.activeAccount?.persistUserProfile(person: person)
+                        sSelf.persistUserProfile(person: person)
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }
@@ -94,5 +93,21 @@ class BasicAuthViewModel {
                 }
             }
         })
+    }
+
+    private func persistUserProfile(person: Person) {
+        guard let identifier = accountService?.activeAccount?.identifier else { return }
+        var profileName = person.firstName
+        if let lastName = person.lastName {
+            profileName = "\(person) \(lastName)"
+        }
+        if let displayName = person.displayName {
+            profileName = displayName
+        }
+
+        let defaults = UserDefaults.standard
+        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
+        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
+        defaults.synchronize()
     }
 }
