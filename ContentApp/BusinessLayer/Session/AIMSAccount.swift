@@ -19,6 +19,7 @@
 import Foundation
 import AlfrescoAuth
 import JWTDecode
+import AlfrescoContentServices
 
 protocol AIMSAccountDelegate: class {
     func sessionFailedToRefresh(error: APIError)

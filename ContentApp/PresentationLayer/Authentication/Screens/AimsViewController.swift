@@ -171,14 +171,12 @@ extension AimsViewController: UITextFieldDelegate {
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self, let themingService = sSelf.themingService  else { return }
-                let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-                if let theme = themingService.activeTheme {
-                    snackbar.applyTheme(theme: theme)
-                }
-                snackbar.show(completion: nil)
+            guard let themingService = themingService  else { return }
+            let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+            if let theme = themingService.activeTheme {
+                snackbar.applyTheme(theme: theme)
             }
+            snackbar.show(completion: nil)
         }
     }
 

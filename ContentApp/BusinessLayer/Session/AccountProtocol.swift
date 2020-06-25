@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
+import AlfrescoContentServices
 
 typealias LogoutHandler = (APIError?) -> Void
 

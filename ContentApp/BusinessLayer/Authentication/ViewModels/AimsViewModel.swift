@@ -46,6 +46,33 @@ class AimsViewModel {
     func hostname() -> String {
         return authenticationService?.parameters.hostname ?? ""
     }
+
+    private func fetchProfileInformation() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
+                guard let sSelf = self else { return }
+                if let error = error {
+                    AlfrescoLog.error(error)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        sSelf.delegate?.logInFailed(with: APIError(domain: "", message: error.localizedDescription, error: error))
+                    }
+                    if let activeAccount = sSelf.accountService?.activeAccount {
+                        activeAccount.removeDiskFolder()
+                        activeAccount.removeAuthenticationCredentials()
+                        sSelf.accountService?.unregister(account: activeAccount)
+                    }
+                } else {
+                    if let person = personEntry?.entry, let activeAccount = sSelf.accountService?.activeAccount {
+                        UserProfile.persistUserProfile(person: person, withAccountIdentifier: activeAccount.identifier)
+                        DispatchQueue.main.async {
+                            sSelf.delegate?.logInSuccessful()
+                        }
+                    }
+                }
+            }
+        })
+    }
 }
 
 extension AimsViewModel: AlfrescoAuthDelegate {
@@ -61,10 +88,7 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 accountService?.activeAccount = account
 
                 AlfrescoContentServicesAPI.basePath = account.apiBasePath
-            }
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                sSelf.delegate?.logInSuccessful()
+                self.fetchProfileInformation()
             }
         case .failure(let error):
             AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")

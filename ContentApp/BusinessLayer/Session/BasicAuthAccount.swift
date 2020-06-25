@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoContentServices
 
 class BasicAuthAccount: AccountProtocol, Equatable {
 
@@ -52,7 +53,6 @@ class BasicAuthAccount: AccountProtocol, Equatable {
 
     func removeAuthenticationCredentials() {
         _ = Keychain.delete(forKey: identifier)
-
     }
 
     func removeDiskFolder() {
