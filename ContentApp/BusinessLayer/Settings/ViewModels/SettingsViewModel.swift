@@ -34,24 +34,32 @@ class SettingsViewModel {
     var userProfile: PersonEntry?
     weak var viewModelDelegate: SettingsViewModelDelegate?
     var apiClient: APIClientProtocol?
-    var avatarImage: UIImage?
 
     // MARK: - Init
 
     init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
         self.themingService = themingService
         self.accountService = accountService
-        fetchProfileInformation()
-        fetchAvatar()
+        reloadDataSource()
+        reloadRequests()
     }
 
     // MARK: - Public methods
+
+    func reloadRequests() {
+        fetchProfileInformation()
+        fetchAvatar()
+    }
 
     func reloadDataSource() {
         items = []
 
         if let userProfile = userProfile?.entry {
            items.append([getProfileItem(from: userProfile)])
+        } else {
+            if let profileItem = getLocalProfileItem() {
+                items.append([profileItem])
+            }
         }
         if #available(iOS 13.0, *) {
             items.append([getThemeItem()])
@@ -102,11 +110,28 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = avatarImage//DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
+        accountService?.activeAccount?.persistUserProfile(person: userProfile)
         return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
+    }
+
+    private func getLocalProfileItem() -> SettingsItem? {
+        guard let identifier = accountService?.activeAccount?.identifier else { return nil}
+
+        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        if avatar == nil {
+            avatar = UIImage(named: "account-circle")
+        }
+
+        let defaults = UserDefaults.standard
+        if let displayName = defaults.object(forKey: "\(identifier)-\(kSaveDiplayProfileName)") as? String,
+            let email = defaults.object(forKey: "\(identifier)-\(kSaveEmailProfile)") as? String {
+            return SettingsItem(type: .account, title: displayName, subtitle: email, icon: avatar)
+        }
+        return nil
     }
 
     private func getThemeItem() -> SettingsItem {
@@ -138,7 +163,6 @@ class SettingsViewModel {
                 case .success(let data):
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
-                            sSelf.avatarImage = image
                             DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
                             sSelf.reloadDataSource()
                         }

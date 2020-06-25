@@ -136,7 +136,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
                 snackbar.applyTheme(theme: theme)
             }
             snackbar.show {
-                sSelf.viewModel?.reloadDataSource()
+                sSelf.viewModel?.reloadRequests()
             }
         }
     }
