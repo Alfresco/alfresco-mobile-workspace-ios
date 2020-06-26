@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="ipad12_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="3t8-OA-OyT">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <gestureRecognizers/>
+                                <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
+                            </imageView>
+                            <imageView hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper-phones" translatesAutoresizingMaskIntoConstraints="NO" id="dKq-ay-Y0V">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="1366"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <gestureRecognizers/>
+                                <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="Mcl-7S-wHh">
+                                <rect key="frame" x="362" y="320.5" width="300" height="270"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="hJ0-Cd-aPw">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="300"/>
+                                    </constraint>
+                                    <constraint firstAttribute="height" constant="68" id="kc2-aV-5KS">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="270"/>
+                                    </constraint>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="Mcl-7S-wHh" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" multiplier="2/3" id="AW8-uh-KuP"/>
+                            <constraint firstItem="dKq-ay-Y0V" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="CgY-ad-wil"/>
+                            <constraint firstItem="3t8-OA-OyT" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="D6c-YT-h9e"/>
+                            <constraint firstItem="3t8-OA-OyT" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Og3-1h-HnO"/>
+                            <constraint firstAttribute="trailing" secondItem="3t8-OA-OyT" secondAttribute="trailing" id="cH2-Mi-K7g"/>
+                            <constraint firstAttribute="bottom" secondItem="3t8-OA-OyT" secondAttribute="bottom" id="dkg-cu-SH7"/>
+                            <constraint firstItem="dKq-ay-Y0V" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="oEo-rm-JUi"/>
+                            <constraint firstItem="Mcl-7S-wHh" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="sXt-05-Z47"/>
+                            <constraint firstAttribute="trailing" secondItem="dKq-ay-Y0V" secondAttribute="trailing" id="uwT-Th-y4s"/>
+                            <constraint firstAttribute="bottom" secondItem="dKq-ay-Y0V" secondAttribute="bottom" id="v41-xw-d7o"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53" y="375"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="logo-alfresco" width="265" height="68"/>
+        <image name="splash-wallpaper" width="1366" height="1366"/>
+        <image name="splash-wallpaper-phones" width="414" height="896"/>
+    </resources>
+</document>
