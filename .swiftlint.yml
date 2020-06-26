@@ -1,0 +1,15 @@
+excluded: # paths to ignore during linting. Takes precedence over `included`.
+- Carthage
+- Pods
+
+# rules that have both warning and error levels, can set just the warning level
+# implicitly
+line_length: 500
+
+file_length:
+  warning: 500
+  error: 1000
+
+
+disabled_rules:
+ empty_enum_arguments

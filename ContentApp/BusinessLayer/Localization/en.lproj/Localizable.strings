@@ -1,0 +1,85 @@
+//
+// Copyright (C) 2005-2020 Alfresco Software Limited.
+//
+// This file is part of the Alfresco Content Mobile iOS App.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+"copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
+"productName" = "Content Services";
+
+// MARK: - Buttons
+"connectButton" = "Connect";
+"advancedSettingButton" = "Advanced Settings";
+"needHelpButton" = "Need Help";
+"resetToDefaultButton" = "Reset to Default";
+"saveButton" = "Save";
+"signin" = "Sign in";
+"signInWithSSO" = "Sign in with SSO";
+"Ok" = "Ok";
+"signOut" = "Sign out";
+"retry" = "Retry";
+"yes" = "Yes";
+"cancel" = "Cancel";
+
+// MARK: - PlaceHolders
+"loginConnectTextFieldPlaceholder" = "Connect to";
+"loginPortTextFieldPlaceholder" = "Port";
+"loginServiceDocumentsTextFieldPlaceholder" = "Service Document";
+"loginRealmTextFieldPlaceholder" = "Realm";
+"loginClientIDTextFieldPlaceholder" = "Client ID";
+"loginUsernameTextFieldPlaceholder" = "Username or Email";
+"loginPasswordTextFieldPlaceholder" = "Password";
+"loginRepositoryTextFieldPlaceholder" = "Content Services URL";
+
+// MARK: - Labels
+"loginTransportProtocolLabel" = "Transport Protocol";
+"https" = "HTTPS";
+"alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
+"authentication" = "Authentication";
+"infoBasicAuthConnectTo" = "Connected to: ";
+"infoAimsConnectTo" = "Signing in to: ";
+"loginAllowSSO" = "Please provide the URL of your Content Services environment.";
+"needHelpTitle" = "Help";
+"connecting" = "Connecting";
+"signingIn" = "Signing In";
+
+// MARK: - Screen Titles
+"advancedSettings" = "Advanced Settings";
+"settings" = "Settings";
+"recent" = "Recent";
+"favorites" = "Favorites";
+
+// MARK: - Textviews
+"serviceURLHint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
+"advancedSettingsHint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
+"ssoHint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
+
+// MARK: - Login Errors
+"loginGenericErrorText" = "Something went wrong. Contact your administrator for help. Error code: %d";
+"loginErrorNoAuthAlfrescoURL" = "No authentication service can be found at the provided Alfresco URL.";
+"loginErrorCheckConnectURL" = "Check your Connect to URL.";
+"loginErrorWrongCredentialProvided" = "Wrong username or password provided.";
+"loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
+"loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";
+"loginNoLongerAuthenticatedText" = "You are no longer authenticated, please log in again.";
+
+// MARK: - Settings Screen
+"theme" = "Theme Mode";
+"auto" = "Auto";
+"light" = "Light";
+"dark" = "Dark";
+"failedProfileInfo" = "Failed to fetch profile information for current user.";
+"appVersion" = "App Version %@-%@";
+"signOutConfirmation" = "Are you sure you want to sign out of Alfresco Content mobile?";
