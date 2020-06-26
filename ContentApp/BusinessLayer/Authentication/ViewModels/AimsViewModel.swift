@@ -54,11 +54,10 @@ class AimsViewModel {
                 guard let sSelf = self else { return }
                 if let error = error {
                     AlfrescoLog.error(error)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                         sSelf.delegate?.logInFailed(with: APIError(domain: "", message: error.localizedDescription, error: error))
                     }
                     if let activeAccount = sSelf.accountService?.activeAccount {
-                        activeAccount.removeDiskFolder()
                         activeAccount.removeAuthenticationCredentials()
                         sSelf.accountService?.unregister(account: activeAccount)
                     }

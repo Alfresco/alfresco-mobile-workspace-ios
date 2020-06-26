@@ -107,6 +107,7 @@ class AccountService: AccountServiceProtocol, Service {
             if account.identifier == activeAccount?.identifier {
                 defaults.removeObject(forKey: kActiveAccountIdentifier)
             }
+            account.unregister()
             accounts?.remove(at: index)
         }
     }

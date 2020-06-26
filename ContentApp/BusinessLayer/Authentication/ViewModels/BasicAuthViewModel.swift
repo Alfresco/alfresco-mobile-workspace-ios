@@ -79,7 +79,6 @@ class BasicAuthViewModel {
                         sSelf.delegate?.logInFailed(with: APIError(domain: "", message: error.localizedDescription, error: error))
                     }
                     if let activeAccount = sSelf.accountService?.activeAccount {
-                        activeAccount.removeDiskFolder()
                         activeAccount.removeAuthenticationCredentials()
                         sSelf.accountService?.unregister(account: activeAccount)
                     }

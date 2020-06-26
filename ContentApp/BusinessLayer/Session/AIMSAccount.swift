@@ -86,6 +86,10 @@ class AIMSAccount: AccountProtocol, Equatable {
         DiskServices.delete(directory: identifier)
     }
 
+    func unregister() {
+        session.invalidateSessionRefresh()
+    }
+
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         // Check if existing credentials are valid and return them if true
         if let credential = session.credential {

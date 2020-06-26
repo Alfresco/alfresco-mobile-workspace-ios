@@ -44,6 +44,9 @@ protocol AccountProtocol: class {
     /// Removes disk folder for this account
     func removeDiskFolder()
 
+    /// Cleanup session for this account
+    func unregister()
+
     /// Returns a valid cached session or recreates one.
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))

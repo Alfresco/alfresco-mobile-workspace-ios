@@ -85,6 +85,7 @@ class AimsViewController: UIViewController {
         guard let repositoryURL = repositoryTextField.text else {
             return
         }
+        Snackbar.dimissAll()
         viewModel?.login(repository: repositoryURL, in: self)
     }
 

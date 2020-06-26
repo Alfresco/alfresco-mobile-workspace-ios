@@ -59,6 +59,10 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         DiskServices.delete(directory: identifier)
     }
 
+    func unregister() {
+        
+    }
+
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         let basicAuthenticationProvider = BasicAuthenticationProvider(with: credential)
         completionHandler(basicAuthenticationProvider)
