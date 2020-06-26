@@ -23,7 +23,7 @@ class UserProfile {
     static func persistUserProfile(person: Person, withAccountIdentifier identifier: String) {
         var profileName = person.firstName
         if let lastName = person.lastName {
-            profileName = "\(person) \(lastName)"
+            profileName = "\(profileName) \(lastName)"
         }
         if let displayName = person.displayName {
             profileName = displayName
