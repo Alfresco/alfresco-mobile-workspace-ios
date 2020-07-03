@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "account_circle_24px@1x.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "account_circle_24px@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "account_circle_24px@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "account_circle_24px.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
