@@ -83,3 +83,7 @@
 "failedProfileInfo" = "Failed to fetch profile information for current user.";
 "appVersion" = "App Version %@-%@";
 "signOutConfirmation" = "Are you sure you want to sign out of Alfresco Content mobile?";
+
+// MARK: - Empty List
+"emptyListTitle" = "Oops...";
+"emptyListSubtitle" = "We can’t find what you’re looking for";

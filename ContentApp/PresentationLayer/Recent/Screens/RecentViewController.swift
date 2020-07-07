@@ -20,12 +20,15 @@ import UIKit
 
 class RecentViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     var settingsButton = UIButton(type: .custom)
+    var searchController: UISearchController?
+    var resultViewController: ResultViewController?
 
     var themingService: MaterialDesignThemingService?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    var viewModel: RecentViewModel?
+    var recentViewModel: RecentViewModel?
+    var searchViewModel: SearchViewModel?
 
     var settingsButtonHeight: CGFloat = 30
 
@@ -33,17 +36,21 @@ class RecentViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel?.viewModelDelegate = self
+        recentViewModel?.viewModelDelegate = self
+        searchViewModel?.viewModelDelegate = self
+
         configureNavigationBar()
+        addSettingsButton()
+        addSearchController()
+
         addLocalization()
+        registerAlfrescoNodeCell()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: viewModel?.accountService?.activeAccount?.identifier ?? "") {
-            settingsButton.setImage(avatar, for: .normal)
-        }
+        addAvatar()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -61,15 +68,17 @@ class RecentViewController: UIViewController {
     // MARK: - Helpers
 
     func configureNavigationBar() {
+        definesPresentationContext = true
         navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.isTranslucent = true
         navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.searchController = UISearchController(searchResultsController: nil)
         navigationItem.hidesSearchBarWhenScrolling = false
+    }
 
+    func addSettingsButton() {
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
         settingsButton.setImage(UIImage(named: "account-circle"), for: .normal)
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: viewModel?.accountService?.activeAccount?.identifier ?? "") {
+        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: recentViewModel?.accountService?.activeAccount?.identifier ?? "") {
             settingsButton.setImage(avatar, for: .normal)
             settingsButton.imageView?.contentMode = .scaleAspectFill
         }
@@ -82,9 +91,30 @@ class RecentViewController: UIViewController {
         currWidth?.isActive = true
         let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonHeight)
         currHeight?.isActive = true
-        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
 
-        tableView.contentInsetAdjustmentBehavior = .never
+        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
+    }
+
+    func addSearchController() {
+        resultViewController = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
+        resultViewController?.themingService = themingService
+        searchController = UISearchController(searchResultsController: resultViewController)
+        searchController?.obscuresBackgroundDuringPresentation = false
+        searchController?.searchBar.delegate = self
+        searchController?.delegate = self
+        searchController?.searchResultsUpdater = self
+        navigationItem.searchController = searchController
+    }
+
+    func addAvatar() {
+        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: recentViewModel?.accountService?.activeAccount?.identifier ?? "") {
+            settingsButton.setImage(avatar, for: .normal)
+        }
+    }
+
+    func registerAlfrescoNodeCell() {
+        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
+        collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
     }
 
     func addLocalization() {
@@ -102,21 +132,23 @@ class RecentViewController: UIViewController {
     }
 }
 
-// MARK: - UITableView Delegates and DataSource
+// MARK: - UICollectionView DataSource & Delegate
 
-extension RecentViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        100
+extension RecentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return recentViewModel?.nodes.count ?? 0
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.textLabel?.text = "\(indexPath.row)"
-        return cell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let node = recentViewModel?.nodes[indexPath.row] else { return UICollectionViewCell() }
+        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? AlfrescoNodeCollectionViewCell
+        cell?.node = node
+        return cell ?? UICollectionViewCell()
     }
 
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.view.bounds.width, height: 64.0)
     }
 }
 
@@ -126,7 +158,48 @@ extension RecentViewController: RecentViewModelDelegate {
     func didUpdateAvatarImage(image: UIImage) {
         settingsButton.setImage(image, for: .normal)
     }
+}
 
+extension RecentViewController: SearchViewModelDelegate {
+    func search(results: [AlfrescoNode]) {
+        resultViewController?.resultsNodes = results
+        resultViewController?.emptyList = !results.isEmpty
+    }
+}
+
+// MARK: - UISearchBar Delegate
+
+extension RecentViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if let stringSearch = searchBar.text {
+            searchViewModel?.performSearch(for: stringSearch)
+        }
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        resultViewController?.resultsNodes = []
+        resultViewController?.emptyList = true
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        searchController?.searchResultsController?.view.isHidden = false
+    }
+}
+
+// MARK: - UISearch Results Updating
+
+extension RecentViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+    }
+}
+
+// MARK: - UISearchController Delegate
+
+extension RecentViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        resultViewController?.resultsNodes = []
+        searchController.searchResultsController?.view.isHidden = false
+    }
 }
 
 // MARK: - Storyboard Instantiable

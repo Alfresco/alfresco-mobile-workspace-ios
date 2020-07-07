@@ -25,7 +25,7 @@ protocol RecentViewModelDelegate: class {
 }
 
 class RecentViewModel {
-    var items: [[SettingsItem]] = []
+    var nodes: [AlfrescoNode] = []
     var accountService: AccountService?
     weak var viewModelDelegate: RecentViewModelDelegate?
     var apiClient: APIClientProtocol?

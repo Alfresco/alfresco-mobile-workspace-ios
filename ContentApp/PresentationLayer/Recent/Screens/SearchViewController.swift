@@ -21,17 +21,7 @@ import UIKit
 class ResultViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var emptyListView: UIView!
-    @IBOutlet weak var emptyListTitle: UILabel!
-    @IBOutlet weak var emptyListSubtitle: UILabel!
-    @IBOutlet weak var emptyListImageView: UIImageView!
-
-    var themingService: MaterialDesignThemingService?
-    var emptyList: Bool = true {
-        didSet {
-            emptyListView.isHidden = emptyList
-        }
-    }
+    @IBOutlet weak var button: UIButton!
     var resultsNodes: [AlfrescoNode] = [] {
         didSet {
             collectionView.reloadData()
@@ -42,16 +32,12 @@ class ResultViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        emptyListView.isHidden = true
         resultsNodes = []
         registerAlfrescoNodeCell()
-        addLocalization()
-        addMaterialComponentsTheme()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        view.isHidden = false
     }
 
     // MARK: - Helpers
@@ -59,21 +45,6 @@ class ResultViewController: UIViewController {
     func registerAlfrescoNodeCell() {
         let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
         collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
-    }
-
-    func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.EmptyList.title
-        emptyListSubtitle.text = LocalizationConstants.EmptyList.subtitle
-    }
-
-    func addMaterialComponentsTheme() {
-        guard let currentTheme = self.themingService?.activeTheme else {
-            return
-        }
-        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
-        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
-        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
-        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
     }
 }
 

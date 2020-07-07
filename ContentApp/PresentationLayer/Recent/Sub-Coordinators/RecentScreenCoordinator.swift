@@ -31,7 +31,8 @@ class RecentScreenCoordinator: Coordinator {
         let viewController = RecentViewController.instantiateViewController()
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        viewController.viewModel = RecentViewModel(accountService: accountService)
+        viewController.recentViewModel = RecentViewModel(accountService: accountService)
+        viewController.searchViewModel = SearchViewModel(accountService: accountService)
         viewController.tabBarScreenDelegate = presenter
         viewController.tabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
                                                  image: UIImage(named: "recent-selected"), selectedImage: UIImage(named: "recent-unselecte"))

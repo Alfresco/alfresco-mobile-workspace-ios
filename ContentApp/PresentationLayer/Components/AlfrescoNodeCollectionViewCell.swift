@@ -10,9 +10,23 @@ import UIKit
 
 class AlfrescoNodeCollectionViewCell: UICollectionViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var subtitle: UILabel!
+    @IBOutlet weak var moreButton: UIButton!
+    var node: AlfrescoNode? {
+        didSet {
+            if let node = node {
+                title.text = node.title
+                subtitle.text = node.path
+            }
+        }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
+    @IBAction func moreButtonTapped(_ sender: UIButton) {
+    }
 }

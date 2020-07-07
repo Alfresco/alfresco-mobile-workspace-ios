@@ -38,6 +38,8 @@ struct DarkTheme: PresentationTheme {
     var activityIndicatorLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var settingsTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var settingsSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
+    var emptyListTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 28)
+    var emptyListSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextFields
     var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextViews
@@ -65,6 +67,8 @@ struct DarkTheme: PresentationTheme {
     var activityIndicatorLabelColor = #colorLiteral(red: 0.568627451, green: 0.568627451, blue: 0.568627451, alpha: 1)
     var settingsTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var settingsSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
+    var emptyListTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var emptyListSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
     /// TextFields
     var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
     var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
