@@ -80,6 +80,7 @@ protocol PresentationTheme {
     /// Views
     var backgroundColor: UIColor { get }
     var activityIndicatorViewColor: UIColor { get }
+    var activityIndicatorSearchViewColor: UIColor { get }
     var snackbarErrorColor: UIColor { get }
     var snackbarApproved: UIColor { get }
     var snackbarWarning: UIColor { get }

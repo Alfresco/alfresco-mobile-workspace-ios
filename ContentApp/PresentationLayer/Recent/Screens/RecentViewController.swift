@@ -31,6 +31,7 @@ class RecentViewController: UIViewController {
     var searchViewModel: SearchViewModel?
 
     var settingsButtonHeight: CGFloat = 30
+    var cellNodeHeight: CGFloat = 64
 
     // MARK: - View Life Cycle
 
@@ -101,7 +102,6 @@ class RecentViewController: UIViewController {
         searchController = UISearchController(searchResultsController: resultViewController)
         searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.searchBar.delegate = self
-        searchController?.delegate = self
         searchController?.searchResultsUpdater = self
         navigationItem.searchController = searchController
     }
@@ -148,7 +148,7 @@ extension RecentViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: 64.0)
+        return CGSize(width: self.view.bounds.width, height: cellNodeHeight)
     }
 }
 
@@ -164,6 +164,7 @@ extension RecentViewController: SearchViewModelDelegate {
     func search(results: [AlfrescoNode]) {
         resultViewController?.resultsNodes = results
         resultViewController?.emptyList = !results.isEmpty
+        resultViewController?.activityIndicator?.state = .isIdle
     }
 }
 
@@ -173,6 +174,7 @@ extension RecentViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let stringSearch = searchBar.text {
             searchViewModel?.performSearch(for: stringSearch)
+            resultViewController?.activityIndicator?.state = .isLoading
         }
     }
 
@@ -180,25 +182,17 @@ extension RecentViewController: UISearchBarDelegate {
         resultViewController?.resultsNodes = []
         resultViewController?.emptyList = true
     }
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchController?.searchResultsController?.view.isHidden = false
-    }
 }
 
 // MARK: - UISearch Results Updating
 
 extension RecentViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-    }
-}
-
-// MARK: - UISearchController Delegate
-
-extension RecentViewController: UISearchControllerDelegate {
-    func willPresentSearchController(_ searchController: UISearchController) {
-        resultViewController?.resultsNodes = []
         searchController.searchResultsController?.view.isHidden = false
+        if searchController.searchBar.text == "" {
+            resultViewController?.resultsNodes = []
+            resultViewController?.emptyList = true
+        }
     }
 }
 

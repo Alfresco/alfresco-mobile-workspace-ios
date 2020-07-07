@@ -27,6 +27,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     var themingService: MaterialDesignThemingService?
+    var activityIndicator: ActivityIndicatorView?
     var emptyList: Bool = true {
         didSet {
             emptyListView.isHidden = emptyList
@@ -46,7 +47,12 @@ class ResultViewController: UIViewController {
         resultsNodes = []
         registerAlfrescoNodeCell()
         addLocalization()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         addMaterialComponentsTheme()
+        activityIndicator = ActivityIndicatorView(themingService: themingService, type: .search)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,8 +68,8 @@ class ResultViewController: UIViewController {
     }
 
     func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.EmptyList.title
-        emptyListSubtitle.text = LocalizationConstants.EmptyList.subtitle
+        emptyListTitle.text = LocalizationConstants.Search.title
+        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
     }
 
     func addMaterialComponentsTheme() {

@@ -171,7 +171,10 @@ class FileIcon {
         ]
     }
 
-    static func icon(for mimetype: String) -> UIImage? {
+    static func icon(for mimetype: String?) -> UIImage? {
+        guard let mimetype = mimetype else {
+            return UIImage(named: IconType.other.rawValue)
+        }
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
         }

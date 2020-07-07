@@ -19,6 +19,7 @@ class AlfrescoNodeCollectionViewCell: UICollectionViewCell {
             if let node = node {
                 title.text = node.title
                 subtitle.text = node.path
+                iconImageView.image = FileIcon.icon(for: node.mimeType)
             }
         }
     }

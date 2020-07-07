@@ -24,10 +24,16 @@ enum ActivityIndicatorControllerState {
     case isIdle
 }
 
+enum ActivityIndicatorControllerType {
+    case login
+    case search
+}
+
 class ActivityIndicatorView: UIView {
     private var activityIndicator = MDCActivityIndicator()
     private var overlayView: UIView?
     private var label: UILabel = UILabel()
+    private var type: ActivityIndicatorControllerType
 
     var state: ActivityIndicatorControllerState? {
         didSet {
@@ -42,13 +48,15 @@ class ActivityIndicatorView: UIView {
 
     // MARK: - Init
 
-    init(themingService: MaterialDesignThemingService?) {
+    init(themingService: MaterialDesignThemingService?, type: ActivityIndicatorControllerType = .login) {
+        self.type = type
         super.init(frame: UIApplication.shared.windows[0].bounds)
         self.commonInit()
         self.applyTheme(themingService)
     }
 
     required init?(coder: NSCoder) {
+        self.type = .login
         super.init(coder: coder)
         self.commonInit()
     }
@@ -71,18 +79,35 @@ class ActivityIndicatorView: UIView {
         activityIndicator.cycleColors = [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]
         label.textColor = themingService?.activeTheme?.activityIndicatorLabelColor
         label.font = themingService?.activeTheme?.activityIndicatorLabelFont
-        label.text = LocalizationConstants.Labels.conneting
+
+        switch self.type {
+        case .search:
+            label.text = LocalizationConstants.Search.searching
+            activityIndicator.cycleColors = [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]
+        default:
+            label.text = LocalizationConstants.Labels.conneting
+            activityIndicator.cycleColors = [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]
+        }
     }
 
     private func commonInit() {
         self.isUserInteractionEnabled = false
+
         overlayView = UIView(frame: frame)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+
+        switch self.type {
+        case .search:
+            activityIndicator.radius = 12
+            activityIndicator.strokeWidth = 2
+        default:
+            activityIndicator.radius = 40
+            activityIndicator.strokeWidth = 7
+        }
         activityIndicator.sizeToFit()
-        activityIndicator.radius = 40
-        activityIndicator.strokeWidth = 7
         activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
+        
         if let overlayView = self.overlayView {
             if #available(iOS 13.0, *) {
                 overlayView.backgroundColor = .systemBackground

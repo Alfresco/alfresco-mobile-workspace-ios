@@ -23,11 +23,13 @@ struct AlfrescoNode {
     var node: ResultNode
     var title: String
     var path: String?
+    var mimeType: String?
 
     init(node: ResultNode) {
         self.node = node
         self.title = node.name
-        self.path = node.path?.name
+        self.mimeType = node.content?.mimeType
+        self.path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
     }
 
     static func nodes(_ entries: [ResultSetRowEntry]) -> [AlfrescoNode] {
