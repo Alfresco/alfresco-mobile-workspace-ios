@@ -1,15 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "Vector.pdf",
+      "filename" : "ic-folder-Smart.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }
