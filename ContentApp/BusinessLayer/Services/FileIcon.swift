@@ -167,7 +167,8 @@ class FileIcon {
             "video/x-ms-wvx": .video,
             "video/x-msvideo": .video,
             "video/x-sgi-movie": .video,
-            "video/x-webex": .video
+            "video/x-webex": .video,
+            "cm:folder": .folder
         ]
     }
 

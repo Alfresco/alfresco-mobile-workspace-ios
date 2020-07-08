@@ -42,6 +42,7 @@
                             <constraint firstAttribute="width" constant="45" id="WAP-j1-T8D"/>
                             <constraint firstAttribute="width" secondItem="YfJ-2w-APk" secondAttribute="height" multiplier="1:1" id="gZG-76-pVu"/>
                         </constraints>
+                        <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                         <state key="normal" image="more"/>
                         <connections>
                             <action selector="moreButtonTapped:" destination="TZI-a9-K3a" eventType="touchUpInside" id="lrA-ho-yVK"/>

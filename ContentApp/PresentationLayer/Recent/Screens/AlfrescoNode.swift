@@ -29,6 +29,9 @@ struct AlfrescoNode {
         self.node = node
         self.title = node.name
         self.mimeType = node.content?.mimeType
+        if node.isFolder {
+            self.mimeType = node.nodeType
+        }
         self.path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
     }
 

@@ -48,7 +48,7 @@ class SearchViewModel {
     }
 
     private func searchRequest(_ string: String) -> SearchRequest {
-        let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string)
+        let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string + "*")
         let defaultRequest = RequestDefaults(textAttributes: nil, defaultFTSOperator: nil, defaultFTSFieldOperator: .and, namespace: nil, defaultFieldName: "keywords")
         let templates = RequestTemplates([RequestTemplatesInner(name: defaultRequest.defaultFieldName, template: "%(cm:name cm:title cm:description TEXT TAG)")])
         let filterQueries = RequestFilterQueries([RequestFilterQueriesInner(query: "+TYPE:'cm:folder' OR +TYPE:'cm:content'", tags: nil),
