@@ -30,7 +30,15 @@ struct NavigationURL: NavigationURLProtocol {
 
     var url: URL? {
         guard let route = self.route else { return nil }
-        return URL(string: route)
+        if let url = URL(string: route) {
+            return url
+        } else {
+            var allowedCharacters = CharacterSet()
+            allowedCharacters.formUnion(.urlHostAllowed)
+            allowedCharacters.formUnion(.urlPathAllowed)
+            let escapedURLString = route.addingPercentEncoding(withAllowedCharacters: allowedCharacters)
+            return URL(string: escapedURLString ?? "")
+        }
     }
 
     var queryItems: [URLQueryItem]? {

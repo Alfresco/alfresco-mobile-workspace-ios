@@ -31,7 +31,7 @@ class Router: RouterProtocol {
     private var viewControllerFactories = [NavigationRoute: ViewControllerFactory]()
 
     @discardableResult
-    func present(route: NavigationRoute, inside: UINavigationController?, from: UIViewController?, animated: Bool) -> UIViewController? {
+    func present(route: NavigationRoute, inside: UINavigationController? = nil, from: UIViewController? = nil, animated: Bool) -> UIViewController? {
         guard let viewController = factory(for: route) else { return nil }
         guard let navigationController = from ?? UIViewController.applicationTopMost?.navigationController else { return nil }
 

@@ -60,7 +60,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func unregister() {
-        
+    
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
