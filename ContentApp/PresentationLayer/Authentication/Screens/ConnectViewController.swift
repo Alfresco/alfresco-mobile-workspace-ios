@@ -63,7 +63,10 @@ class ConnectViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService)
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme, configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
+                                                                                                                                           radius: 40,
+                                                                                                                                           strokeWidth: 7,
+                                                                                                                                           cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
         navigationBar(hide: true)
         self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
     }

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-video.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -38,6 +38,8 @@ struct DarkTheme: PresentationTheme {
     var activityIndicatorLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var settingsTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var settingsSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
+    var emptyListTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 28)
+    var emptyListSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextFields
     var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextViews
@@ -65,6 +67,8 @@ struct DarkTheme: PresentationTheme {
     var activityIndicatorLabelColor = #colorLiteral(red: 0.568627451, green: 0.568627451, blue: 0.568627451, alpha: 1)
     var settingsTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var settingsSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
+    var emptyListTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var emptyListSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
     /// TextFields
     var loginTextFieldPrimaryColor = #colorLiteral(red: 0.1764705882, green: 0.5529411765, blue: 0.1568627451, alpha: 1)
     var loginTextFieldErrorColor = #colorLiteral(red: 1, green: 0.2470588235, blue: 0.2666666667, alpha: 1)
@@ -75,6 +79,7 @@ struct DarkTheme: PresentationTheme {
     /// Views
     var backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     var activityIndicatorViewColor = #colorLiteral(red: 0.07236295193, green: 0.6188754439, blue: 0.2596520483, alpha: 1)
+    var activityIndicatorSearchViewColor = #colorLiteral(red: 0.137254902, green: 0.3960784314, blue: 0.8549019608, alpha: 1)
     var snackbarErrorColor = #colorLiteral(red: 0.8117647059, green: 0, blue: 0.1607843137, alpha: 1)
     var snackbarApproved = #colorLiteral(red: 0.1921568627, green: 0.5490196078, blue: 0.1725490196, alpha: 1)
     var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)

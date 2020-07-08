@@ -50,6 +50,13 @@
 		E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */; };
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
 		E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */; };
+		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
+		E32B642524B31FE300085472 /* NodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642424B31FE300085472 /* NodeCollectionViewCell.swift */; };
+		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
+		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
+		E32B642E24B35C2100085472 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* SearchViewModel.swift */; };
+		E32B643124B360F100085472 /* AlfrescoNodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */; };
+		E32B643224B360F100085472 /* AlfrescoNodeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E32B643024B360F100085472 /* AlfrescoNodeCollectionViewCell.xib */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
 		E334C04724755D8E00F74880 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04524755D8E00F74880 /* Main.storyboard */; };
 		E334C04924755D9000F74880 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E334C04824755D9000F74880 /* Assets.xcassets */; };
@@ -162,6 +169,13 @@
 		E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeTableViewCell.swift; sourceTree = "<group>"; };
 		E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeScreenCoordinator.swift; sourceTree = "<group>"; };
 		E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+AlfrescoFont.swift"; sourceTree = "<group>"; };
+		E324779E24AB4F0B006D4B6F /* FileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIcon.swift; sourceTree = "<group>"; };
+		E32B642424B31FE300085472 /* NodeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCollectionViewCell.swift; sourceTree = "<group>"; };
+		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
+		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		E32B642D24B35C2100085472 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoNodeCollectionViewCell.swift; sourceTree = "<group>"; };
+		E32B643024B360F100085472 /* AlfrescoNodeCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlfrescoNodeCollectionViewCell.xib; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E334C03F24755D8E00F74880 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E334C04624755D8E00F74880 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -435,6 +449,7 @@
 			children = (
 				E35FB745247664A9004674FD /* LoginService.swift */,
 				B9E7D60824911F190056292B /* AccountService.swift */,
+				E324779E24AB4F0B006D4B6F /* FileIcon.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -473,6 +488,9 @@
 				B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */,
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
+				E32B642424B31FE300085472 /* NodeCollectionViewCell.swift */,
+				E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */,
+				E32B643024B360F100085472 /* AlfrescoNodeCollectionViewCell.xib */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -718,6 +736,9 @@
 			isa = PBXGroup;
 			children = (
 				E3D25C862493EF2E00FFD87F /* RecentViewController.swift */,
+				E32B642B24B358FD00085472 /* ResultViewController.swift */,
+				E32B642D24B35C2100085472 /* SearchViewModel.swift */,
+				E32B642624B326EB00085472 /* ListNode.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -886,6 +907,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
+				E32B643224B360F100085472 /* AlfrescoNodeCollectionViewCell.xib in Resources */,
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
@@ -940,6 +962,7 @@
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
+				E32B642E24B35C2100085472 /* SearchViewModel.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
@@ -949,9 +972,11 @@
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */,
+				E32B643124B360F100085472 /* AlfrescoNodeCollectionViewCell.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
+				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
@@ -980,6 +1005,7 @@
 				E348EDE12498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* RecentViewController.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
+				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
@@ -994,6 +1020,7 @@
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
+				E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
@@ -1020,6 +1047,7 @@
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 				E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */,
 				E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */,
+				E32B642524B31FE300085472 /* NodeCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

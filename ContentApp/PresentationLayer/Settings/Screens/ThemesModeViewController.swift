@@ -63,11 +63,11 @@ class ThemesModeViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
+        guard let currentTheme = self.themingService?.activeTheme else {
             return
         }
-        titleLabel.font = themingService.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService.activeTheme?.settingsTitleLabelColor
+        titleLabel.font = currentTheme.settingsTitleLabelFont
+        titleLabel.textColor = currentTheme.settingsTitleLabelColor
     }
 
     private func calculatePreferredSize(_ size: CGSize) {

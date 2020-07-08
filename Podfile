@@ -6,6 +6,7 @@ use_frameworks!
 
 target 'ContentApp' do
   pod 'AlfrescoAuth', :inhibit_warnings => true
+  pod 'AlfrescoContentServices', :inhibit_warnings => true
   pod 'SwiftLint', :inhibit_warnings => true
 
   # Material Components
@@ -19,7 +20,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/Snackbar'
   pod 'MaterialComponents/Dialogs'
   pod 'JWTDecode'
-  pod 'AlfrescoContentServices'
+
 
   target 'ContentAppTests' do
     inherit! :search_paths

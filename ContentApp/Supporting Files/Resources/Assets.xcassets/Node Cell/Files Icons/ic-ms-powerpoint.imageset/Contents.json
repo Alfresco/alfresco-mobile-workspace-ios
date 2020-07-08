@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-ms-powerpoint.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
