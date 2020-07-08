@@ -22,8 +22,37 @@ typealias NavigationRoute = String
 typealias ViewControllerFactory = (_ url: NavigationURL, _ values: [String: Any]) -> UIViewController?
 
 protocol RouterProtocol {
+    /**
+     Registers a view controller with the router given a path.
+     - Note: Navigation route should include at it's minimum a schema and a unique path identifying the factory. *Eg. contentapp://search*.
+     Additionally it can include placeholders for parametrized calls such as *contentapp://search/\<searchedText\>*
+     - Parameters:
+        - route: Navigation path against which the pattern matching will be performed during presentation.
+        - factory: Controller, matched navigation URL and parameters
+     */
     func register(route: NavigationRoute, factory: @escaping ViewControllerFactory)
+
+    /**
+     Pushes on the navigation stack a controller matching a given route.
+     - Parameters:
+        - route: Navigation route used to match a factory object. Should contain at it's minimum a schema and path element. It can be
+     used to pass parameters for the factory object. Eg. *contentapp://search/\<searchedText\>* will pass the coresponding value for the
+     *\<searchedText\>* to the responsible factory object.
+        - from: Optionaly define from which navigation controller should the factory be presented
+        - animated: Present the factory in an animated manner
+     */
     func push(route: NavigationRoute, from: UINavigationController?, animated: Bool) -> UIViewController?
+
+    /**
+     Modally presents on the navigation stack a controller matching a given route.
+     - Parameters:
+        - route: Navigation route used to match a factory object. Should contain at it's minimum a schema and path element. It can be
+     used to pass parameters for the factory object. Eg. *contentapp://search/\<searchedText\>* will pass the coresponding value for the
+     *\<searchedText\>* to the responsible factory object.
+        - inside: wraps the factory object into a specified navigation controller
+        - from: Optionaly define from which navigation controller should the factory be presented
+        - animated: Present the factory in an animated manner
+    */
     func present(route: NavigationRoute, inside: UINavigationController?, from: UIViewController?, animated: Bool) -> UIViewController?
 }
 
