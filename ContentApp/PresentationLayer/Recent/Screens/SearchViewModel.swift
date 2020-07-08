@@ -20,11 +20,11 @@ import Foundation
 import AlfrescoContentServices
 
 protocol SearchViewModelDelegate: class {
-    func search(results: [AlfrescoNode])
+    func search(results: [ListNode])
 }
 
 class SearchViewModel {
-    var nodes: [AlfrescoNode] = []
+    var nodes: [ListNode] = []
     var accountService: AccountService?
     weak var viewModelDelegate: SearchViewModelDelegate?
 
@@ -38,7 +38,7 @@ class SearchViewModel {
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: sSelf.searchRequest(string)) { (result, error) in
                 if let entries = result?.list?.entries {
-                    sSelf.nodes = AlfrescoNode.nodes(entries)
+                    sSelf.nodes = ListNode.nodes(entries)
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.search(results: sSelf.nodes)
                     }

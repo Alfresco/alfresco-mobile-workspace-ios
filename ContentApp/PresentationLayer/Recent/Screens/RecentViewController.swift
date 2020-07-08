@@ -51,7 +51,7 @@ class RecentViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        addAvatar()
+        addAvatarInSettingsButton()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -78,11 +78,8 @@ class RecentViewController: UIViewController {
 
     func addSettingsButton() {
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
-        settingsButton.setImage(UIImage(named: "account-circle"), for: .normal)
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: recentViewModel?.accountService?.activeAccount?.identifier ?? "") {
-            settingsButton.setImage(avatar, for: .normal)
-            settingsButton.imageView?.contentMode = .scaleAspectFill
-        }
+        addAvatarInSettingsButton()
+        settingsButton.imageView?.contentMode = .scaleAspectFill
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
         settingsButton.layer.cornerRadius = settingsButtonHeight / 2
         settingsButton.layer.masksToBounds = true
@@ -106,10 +103,8 @@ class RecentViewController: UIViewController {
         navigationItem.searchController = searchController
     }
 
-    func addAvatar() {
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: recentViewModel?.accountService?.activeAccount?.identifier ?? "") {
-            settingsButton.setImage(avatar, for: .normal)
-        }
+    func addAvatarInSettingsButton() {
+        settingsButton.setImage(self.recentViewModel?.getAvatar(), for: .normal)
     }
 
     func registerAlfrescoNodeCell() {
@@ -161,7 +156,7 @@ extension RecentViewController: RecentViewModelDelegate {
 }
 
 extension RecentViewController: SearchViewModelDelegate {
-    func search(results: [AlfrescoNode]) {
+    func search(results: [ListNode]) {
         resultViewController?.resultsNodes = results
         resultViewController?.emptyList = !results.isEmpty
         resultViewController?.activityIndicator?.state = .isIdle

@@ -52,7 +52,7 @@
 		E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */; };
 		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
 		E32B642524B31FE300085472 /* NodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642424B31FE300085472 /* NodeCollectionViewCell.swift */; };
-		E32B642724B326EB00085472 /* AlfrescoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* AlfrescoNode.swift */; };
+		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
 		E32B642E24B35C2100085472 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* SearchViewModel.swift */; };
 		E32B643124B360F100085472 /* AlfrescoNodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */; };
@@ -171,7 +171,7 @@
 		E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+AlfrescoFont.swift"; sourceTree = "<group>"; };
 		E324779E24AB4F0B006D4B6F /* FileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIcon.swift; sourceTree = "<group>"; };
 		E32B642424B31FE300085472 /* NodeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeCollectionViewCell.swift; sourceTree = "<group>"; };
-		E32B642624B326EB00085472 /* AlfrescoNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoNode.swift; sourceTree = "<group>"; };
+		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		E32B642D24B35C2100085472 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoNodeCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -738,7 +738,7 @@
 				E3D25C862493EF2E00FFD87F /* RecentViewController.swift */,
 				E32B642B24B358FD00085472 /* ResultViewController.swift */,
 				E32B642D24B35C2100085472 /* SearchViewModel.swift */,
-				E32B642624B326EB00085472 /* AlfrescoNode.swift */,
+				E32B642624B326EB00085472 /* ListNode.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -976,7 +976,7 @@
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
-				E32B642724B326EB00085472 /* AlfrescoNode.swift in Sources */,
+				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,

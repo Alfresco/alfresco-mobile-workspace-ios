@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoContentServices
 
-struct AlfrescoNode {
+struct ListNode {
     var node: ResultNode
     var title: String
     var path: String?
@@ -35,10 +35,10 @@ struct AlfrescoNode {
         self.path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
     }
 
-    static func nodes(_ entries: [ResultSetRowEntry]) -> [AlfrescoNode] {
-        var nodes: [AlfrescoNode] = []
+    static func nodes(_ entries: [ResultSetRowEntry]) -> [ListNode] {
+        var nodes: [ListNode] = []
         for entry in entries {
-            nodes.append(AlfrescoNode(node: entry.entry))
+            nodes.append(ListNode(node: entry.entry))
         }
         return nodes
     }

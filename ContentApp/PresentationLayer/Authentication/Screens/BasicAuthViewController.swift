@@ -68,8 +68,10 @@ class BasicAuthViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService)
-        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme, configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
+                                                                                                                                           radius: 40,
+                                                                                                                                           strokeWidth: 7,
+                                                                                                                                           cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
     }
 
     override func viewWillDisappear(_ animated: Bool) {

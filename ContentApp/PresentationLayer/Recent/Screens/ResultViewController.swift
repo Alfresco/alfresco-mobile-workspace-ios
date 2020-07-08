@@ -34,7 +34,7 @@ class ResultViewController: UIViewController {
             emptyListView.isHidden = emptyList
         }
     }
-    var resultsNodes: [AlfrescoNode] = [] {
+    var resultsNodes: [ListNode] = [] {
         didSet {
             collectionView.reloadData()
         }
@@ -53,7 +53,11 @@ class ResultViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService, type: .search)
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
+                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
+                                                                                                radius: 12,
+                                                                                                strokeWidth: 2,
+                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
     }
 
     override func viewDidAppear(_ animated: Bool) {

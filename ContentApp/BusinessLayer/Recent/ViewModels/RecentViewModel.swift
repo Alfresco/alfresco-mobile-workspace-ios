@@ -25,7 +25,7 @@ protocol RecentViewModelDelegate: class {
 }
 
 class RecentViewModel {
-    var nodes: [AlfrescoNode] = []
+    var nodes: [ListNode] = []
     var accountService: AccountService?
     weak var viewModelDelegate: RecentViewModelDelegate?
     var apiClient: APIClientProtocol?
@@ -35,6 +35,13 @@ class RecentViewModel {
     init(accountService: AccountService?) {
         self.accountService = accountService
         fetchAvatar()
+    }
+
+    func getAvatar() -> UIImage? {
+        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: accountService?.activeAccount?.identifier ?? "") {
+            return avatar
+        }
+        return UIImage(named: "account-circle")
     }
 
     // MARK: - Private methods

@@ -23,7 +23,7 @@ class NodeCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
-    var node: AlfrescoNode? {
+    var node: ListNode? {
         didSet {
             if let node = node {
                 title.text = node.title
