@@ -26,7 +26,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var recentSearch: UILabel!
-    
+
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
     var emptyList: Bool = true {

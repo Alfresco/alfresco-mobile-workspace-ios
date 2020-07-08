@@ -14,6 +14,9 @@
 		B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */; };
 		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
 		B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */; };
+		B92E13EB24AE01FC00D607D4 /* NavigationURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E13EA24AE01FC00D607D4 /* NavigationURL.swift */; };
+		B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */; };
+		B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957FE6B24A8EFBB007F13C0 /* Router.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
 		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
@@ -28,6 +31,8 @@
 		B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BC52486850C00FBFC9B /* AIMSAuthenticationProvider.swift */; };
 		B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99E1C46247FA77300116F05 /* CALayer+Animations.swift */; };
 		B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */; };
+		B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */; };
+		B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */; };
 		B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */; };
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
@@ -133,6 +138,9 @@
 		B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
 		B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+FadePresentation.swift"; sourceTree = "<group>"; };
+		B92E13EA24AE01FC00D607D4 /* NavigationURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURL.swift; sourceTree = "<group>"; };
+		B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLMatchResult.swift; sourceTree = "<group>"; };
+		B957FE6B24A8EFBB007F13C0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
 		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
 		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
@@ -147,6 +155,8 @@
 		B99D9BC52486850C00FBFC9B /* AIMSAuthenticationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSAuthenticationProvider.swift; sourceTree = "<group>"; };
 		B99E1C46247FA77300116F05 /* CALayer+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Animations.swift"; sourceTree = "<group>"; };
 		B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpViewController.swift; sourceTree = "<group>"; };
+		B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLPathComponent.swift; sourceTree = "<group>"; };
+		B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
 		B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpConnectScreenModel.swift; sourceTree = "<group>"; };
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
@@ -282,9 +292,21 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		B957FE6A24A8EFA7007F13C0 /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				B957FE6B24A8EFBB007F13C0 /* Router.swift */,
+				B92E13EA24AE01FC00D607D4 /* NavigationURL.swift */,
+				B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */,
+				B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */,
+			);
+			path = Router;
+			sourceTree = "<group>";
+		};
 		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				B957FE6A24A8EFA7007F13C0 /* Router */,
 				E334C06F24755DA700F74880 /* Storyboard */,
 				B91A5E4C247BD5910063E938 /* Coordinator */,
 				B96B9AEC2480F7A80035AE97 /* Authentication */,
@@ -622,6 +644,7 @@
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
 				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
 				E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */,
+				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -979,6 +1002,7 @@
 				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
+				B92E13EB24AE01FC00D607D4 /* NavigationURL.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
 				E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
@@ -990,10 +1014,12 @@
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
+				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
 				B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */,
+				B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E3D25C892493EF6B00FFD87F /* FavoritesViewController.swift in Sources */,
@@ -1021,6 +1047,7 @@
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
 				E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */,
+				B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
@@ -1038,6 +1065,7 @@
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,
+				B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,

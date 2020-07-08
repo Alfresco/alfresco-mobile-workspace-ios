@@ -8,6 +8,7 @@ target 'ContentApp' do
   pod 'AlfrescoAuth', :inhibit_warnings => true
   pod 'AlfrescoContentServices', :inhibit_warnings => true
   pod 'SwiftLint', :inhibit_warnings => true
+  pod 'JWTDecode', :inhibit_warnings => true
 
   # Material Components
 #  pod 'MaterialComponents'
@@ -15,11 +16,10 @@ target 'ContentApp' do
   pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', :inhibit_warnings => true
-  pod 'MaterialComponents/BottomSheet'
-  pod 'MaterialComponents/ActivityIndicator'
-  pod 'MaterialComponents/Snackbar'
-  pod 'MaterialComponents/Dialogs'
-  pod 'JWTDecode'
+  pod 'MaterialComponents/BottomSheet', :inhibit_warnings => true
+  pod 'MaterialComponents/ActivityIndicator', :inhibit_warnings => true
+  pod 'MaterialComponents/Snackbar', :inhibit_warnings => true
+  pod 'MaterialComponents/Dialogs', :inhibit_warnings => true
 
 
   target 'ContentAppTests' do
