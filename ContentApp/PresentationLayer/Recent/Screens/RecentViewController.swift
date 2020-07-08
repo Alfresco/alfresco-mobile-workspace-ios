@@ -165,6 +165,7 @@ extension RecentViewController: SearchViewModelDelegate {
         resultViewController?.resultsNodes = results
         resultViewController?.emptyList = !results.isEmpty
         resultViewController?.activityIndicator?.state = .isIdle
+        resultViewController?.recentSearch.isHidden = true
     }
 }
 
@@ -172,7 +173,7 @@ extension RecentViewController: SearchViewModelDelegate {
 
 extension RecentViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let stringSearch = searchBar.text {
+        if let stringSearch = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines), stringSearch != "" {
             searchViewModel?.performSearch(for: stringSearch)
             resultViewController?.activityIndicator?.state = .isLoading
         }
@@ -192,6 +193,7 @@ extension RecentViewController: UISearchResultsUpdating {
         if searchController.searchBar.text == "" {
             resultViewController?.resultsNodes = []
             resultViewController?.emptyList = true
+            resultViewController?.recentSearch.isHidden = false
         }
     }
 }

@@ -870,6 +870,12 @@
                                     <constraint firstItem="vsu-rv-NVr" firstAttribute="centerX" secondItem="qRs-WI-Kol" secondAttribute="centerX" id="wBM-aE-2rC"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent searches will appear here" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdB-ir-O59">
+                                <rect key="frame" x="0.0" y="74" width="414" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -877,8 +883,11 @@
                             <constraint firstItem="R3P-T3-czl" firstAttribute="bottom" secondItem="Zf2-Bm-0QO" secondAttribute="bottom" id="9o8-NR-2tP"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="IKw-E4-nkK"/>
                             <constraint firstItem="Zf2-Bm-0QO" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" id="JaY-HV-TPW"/>
+                            <constraint firstItem="qdB-ir-O59" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" constant="30" id="SBr-us-KXY"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="qRs-WI-Kol" secondAttribute="trailing" id="Uxt-uj-gs2"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" id="WZR-MB-eON"/>
+                            <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="qdB-ir-O59" secondAttribute="trailing" id="Xr0-gR-41k"/>
+                            <constraint firstItem="qdB-ir-O59" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="hXd-WR-kaD"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="height" secondItem="fEe-g3-7ko" secondAttribute="height" multiplier="1/2" id="qTo-Cf-Dt3"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="Zf2-Bm-0QO" secondAttribute="trailing" id="zZs-DG-FnI"/>
                         </constraints>
@@ -890,6 +899,7 @@
                         <outlet property="emptyListSubtitle" destination="4mB-KN-La8" id="7s4-M0-g5C"/>
                         <outlet property="emptyListTitle" destination="kqx-vg-iEE" id="jvg-OG-v8a"/>
                         <outlet property="emptyListView" destination="qRs-WI-Kol" id="hgc-gx-9xd"/>
+                        <outlet property="recentSearch" destination="qdB-ir-O59" id="aj6-jR-VjF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAh-kL-b3U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -919,7 +929,7 @@
                                     <outlet property="delegate" destination="NG4-3E-muz" id="FNl-PY-pov"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WMj-bA-FFY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Screen List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WMj-bA-FFY">
                                 <rect key="frame" x="0.0" y="39" width="414" height="818"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="33"/>
