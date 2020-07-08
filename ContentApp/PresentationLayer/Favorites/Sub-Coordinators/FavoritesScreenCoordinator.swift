@@ -31,7 +31,7 @@ class FavoritesScreenCoordinator: Coordinator {
         let viewController = FavoritesViewController.instantiateViewController()
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         viewController.tabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
-                                                 image: UIImage(named: "favorites"), selectedImage: UIImage(named: "recent-selected"))
+                                                 image: UIImage(named: "favorite-unselected"), selectedImage: UIImage(named: "favorite-selected"))
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController

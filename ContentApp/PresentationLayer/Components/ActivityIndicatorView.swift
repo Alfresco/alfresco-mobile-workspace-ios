@@ -24,10 +24,35 @@ enum ActivityIndicatorControllerState {
     case isIdle
 }
 
+enum ActivityIndicatorControllerType {
+    case login
+    case search
+}
+
+struct ActivityIndicatorConfiguration {
+    var title: String
+    var radius: CGFloat
+    var strokeWidth: CGFloat
+    var cycleColors: [UIColor]
+
+    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor]) {
+        self.title = title
+        self.radius = radius
+        self.strokeWidth = strokeWidth
+        self.cycleColors = cycleColors
+    }
+
+    static var defaultValue = ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
+                                                      radius: 40,
+                                                      strokeWidth: 7,
+                                                      cycleColors: [.black])
+}
+
 class ActivityIndicatorView: UIView {
     private var activityIndicator = MDCActivityIndicator()
     private var overlayView: UIView?
     private var label: UILabel = UILabel()
+    private var activityIndicatorConfiguration: ActivityIndicatorConfiguration
 
     var state: ActivityIndicatorControllerState? {
         didSet {
@@ -42,13 +67,15 @@ class ActivityIndicatorView: UIView {
 
     // MARK: - Init
 
-    init(themingService: MaterialDesignThemingService?) {
+    init(currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
+        self.activityIndicatorConfiguration = configuration
         super.init(frame: UIApplication.shared.windows[0].bounds)
         self.commonInit()
-        self.applyTheme(themingService)
+        self.applyTheme(currentTheme)
     }
 
     required init?(coder: NSCoder) {
+        self.activityIndicatorConfiguration = ActivityIndicatorConfiguration.defaultValue
         super.init(coder: coder)
         self.commonInit()
     }
@@ -67,22 +94,25 @@ class ActivityIndicatorView: UIView {
 
     // MARK: - Private Helpers
 
-    private func applyTheme(_ themingService: MaterialDesignThemingService?) {
-        activityIndicator.cycleColors = [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]
-        label.textColor = themingService?.activeTheme?.activityIndicatorLabelColor
-        label.font = themingService?.activeTheme?.activityIndicatorLabelFont
-        label.text = LocalizationConstants.Labels.conneting
+    private func applyTheme(_ currentTheme: PresentationTheme?) {
+        activityIndicator.cycleColors = activityIndicatorConfiguration.cycleColors
+        label.textColor = currentTheme?.activityIndicatorLabelColor
+        label.font = currentTheme?.activityIndicatorLabelFont
+        label.text = activityIndicatorConfiguration.title
     }
 
     private func commonInit() {
         self.isUserInteractionEnabled = false
+
         overlayView = UIView(frame: frame)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+
+        activityIndicator.radius = activityIndicatorConfiguration.radius
+        activityIndicator.strokeWidth = activityIndicatorConfiguration.strokeWidth
         activityIndicator.sizeToFit()
-        activityIndicator.radius = 40
-        activityIndicator.strokeWidth = 7
         activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
+
         if let overlayView = self.overlayView {
             if #available(iOS 13.0, *) {
                 overlayView.backgroundColor = .systemBackground

@@ -96,4 +96,10 @@ struct LocalizationConstants {
         static let appVersion = NSLocalizedString("appVersion", comment: "")
         static let signOutConfirmation = NSLocalizedString("signOutConfirmation", comment: "")
     }
+
+    struct Search {
+        static let title = NSLocalizedString("emptyListTitle", comment: "")
+        static let subtitle = NSLocalizedString("emptyListSubtitle", comment: "")
+        static let searching = NSLocalizedString("searching", comment: "")
+    }
 }

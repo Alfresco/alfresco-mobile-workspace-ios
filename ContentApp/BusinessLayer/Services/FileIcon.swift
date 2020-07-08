@@ -20,7 +20,7 @@ import Foundation
 import UIKit
 
 enum IconType: String {
-    case arhive = "ic-arhive"
+    case arhive = "ic-archive"
     case audio = "ic-audio"
     case book = "ic-book"
     case cadDrawings = "ic-cad-drawings"
@@ -43,7 +43,7 @@ enum IconType: String {
     case presentationsOther = "ic-presentations-other"
     case spreadsheetsOther = "ic-spreadsheets-other"
     case video = "ic-video"
-    case web = "googledrawings"
+    case web = "ic-web"
 }
 
 class FileIcon {
@@ -75,8 +75,12 @@ class FileIcon {
             "application/vnd.openxmlformats-officedocument.presentationml.presentation": .msPowerpoint,
             "application/vnd.openxmlformats-officedocument.presentationml.slideshow": .msPowerpoint,
             "application/vnd.openxmlformats-officedocument.presentationml.template": .msPowerpoint,
+            "application/vnd.ms-powerpoint.presentation.macroenabled.12": .msPowerpoint,
+            "application/vnd.ms-powerpoint.slideshow.macroenabled.12": .msPowerpoint,
+            "application/vnd.ms-powerpoint.template.macroenabled.12": .msPowerpoint,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": .msExcel,
             "application/vnd.openxmlformats-officedocument.spreadsheetml.template": .msExcel,
+            "application/vnd.ms-excel.sheet.macroenabled.12": .msExcel,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document": .msWord,
             "application/vnd.openxmlformats-officedocument.wordprocessingml.template": .msWord,
             "application/vnd.stardivision.calc": .spreadsheetsOther,
@@ -167,13 +171,19 @@ class FileIcon {
             "video/x-ms-wvx": .video,
             "video/x-msvideo": .video,
             "video/x-sgi-movie": .video,
-            "video/x-webex": .video
+            "video/x-webex": .video,
+            "cm:folder": .folder
         ]
     }
 
-    static func icon(for mimetype: String) -> UIImage? {
+    static func icon(for mimetype: String?) -> UIImage? {
+        guard let mimetype = mimetype else {
+            return UIImage(named: IconType.other.rawValue)
+        }
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
+        } else {
+            print(mimetype)
         }
         return UIImage(named: IconType.other.rawValue)
     }
