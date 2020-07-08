@@ -36,11 +36,18 @@ class SearchViewModel {
         accountService?.getSessionForCurrentAccount(completionHandler: {  [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: sSelf.searchRequest(string)) { (result, _) in
+            SearchAPI.search(queryBody: sSelf.searchRequest(string)) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.nodes = AlfrescoNode.nodes(entries)
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.search(results: sSelf.nodes)
+                    }
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.search(results: [])
                     }
                 }
             }
