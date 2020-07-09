@@ -222,18 +222,18 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
-//        if error.responseCode == 401 {
-//            applyThemingInTextField(errorTheme: true)
-//        }
-//        Snackbar.dimissAll()
-//        let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-//        if let theme = themingService?.activeTheme {
-//            snackbar.applyTheme(theme: theme)
-//        }
-//        snackbar.show(completion: { [weak self] () in
-//            guard let sSelf = self else { return }
-//            sSelf.applyThemingInTextField(errorTheme: false)
-//        })
+        if error.responseCode == 401 {
+            applyThemingInTextField(errorTheme: true)
+        }
+        Snackbar.dimissAll()
+        let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
+        if let theme = themingService?.activeTheme {
+            snackbar.applyTheme(theme: theme)
+        }
+        snackbar.show(completion: { [weak self] () in
+            guard let sSelf = self else { return }
+            sSelf.applyThemingInTextField(errorTheme: false)
+        })
     }
 
     func logInSuccessful() {
