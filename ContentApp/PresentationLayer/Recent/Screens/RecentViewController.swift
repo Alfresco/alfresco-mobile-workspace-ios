@@ -22,8 +22,6 @@ class RecentViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     var settingsButton = UIButton(type: .custom)
-    var searchController: UISearchController?
-    var resultViewController: ResultViewController?
 
     var themingService: MaterialDesignThemingService?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
@@ -94,12 +92,12 @@ class RecentViewController: UIViewController {
     }
 
     func addSearchController() {
-        resultViewController = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
-        resultViewController?.themingService = themingService
-        searchController = UISearchController(searchResultsController: resultViewController)
-        searchController?.obscuresBackgroundDuringPresentation = false
-        searchController?.searchBar.delegate = self
-        searchController?.searchResultsUpdater = self
+        let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
+        rvc?.themingService = themingService
+        let searchController = UISearchController(searchResultsController: rvc)
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
         navigationItem.searchController = searchController
     }
 
@@ -155,12 +153,12 @@ extension RecentViewController: RecentViewModelDelegate {
     }
 }
 
+// MARK: - Search ViewModel Delegate
+
 extension RecentViewController: SearchViewModelDelegate {
-    func search(results: [ListNode]) {
-        resultViewController?.resultsNodes = results
-        resultViewController?.emptyList = !results.isEmpty
-        resultViewController?.activityIndicator?.state = .isIdle
-        resultViewController?.recentSearch.isHidden = true
+    func search(results: [ListNode]?) {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.updateDataSource(results)
     }
 }
 
@@ -168,15 +166,9 @@ extension RecentViewController: SearchViewModelDelegate {
 
 extension RecentViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let stringSearch = searchBar.text?.trimmingCharacters(in: .whitespacesAndNewlines), stringSearch != "" {
-            searchViewModel?.performSearch(for: stringSearch)
-            resultViewController?.activityIndicator?.state = .isLoading
-        }
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        resultViewController?.resultsNodes = []
-        resultViewController?.emptyList = true
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.startLoading()
+        searchViewModel?.performSearch(for: searchBar.text)
     }
 }
 
@@ -184,12 +176,9 @@ extension RecentViewController: UISearchBarDelegate {
 
 extension RecentViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        searchController.searchResultsController?.view.isHidden = false
-        if searchController.searchBar.text == "" {
-            resultViewController?.resultsNodes = []
-            resultViewController?.emptyList = true
-            resultViewController?.recentSearch.isHidden = false
-        }
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.view.isHidden = false
+        searchViewModel?.performLiveSearch(for: searchController.searchBar.text)
     }
 }
 
