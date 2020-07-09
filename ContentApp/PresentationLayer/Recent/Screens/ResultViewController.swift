@@ -18,18 +18,32 @@
 
 import UIKit
 
+protocol ResultScreenDelegate: class {
+    func recentSearchTapped(string: String)
+    func nodeListTapped(nodeList: ListNode)
+}
+
 class ResultViewController: UIViewController {
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var resultNodescollectionView: UICollectionView!
+
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
-    @IBOutlet weak var recentSearch: UILabel!
 
+    @IBOutlet weak var recentSearchesView: UIView!
+    @IBOutlet weak var recentSearchesTitle: UILabel!
+    @IBOutlet weak var recentSearchCollectionView: UICollectionView!
+
+    weak var resultScreenDelegate: ResultScreenDelegate?
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
     var resultsNodes: [ListNode] = []
+    var recentSearches: [String] = []
+
+    var nodeHeighCell: CGFloat = 64.0
+    var recentSearchHeighCell: CGFloat = 48.0
 
     // MARK: - View Life Cycle
 
@@ -62,30 +76,38 @@ class ResultViewController: UIViewController {
         if let results = results {
             resultsNodes = results
             emptyListView.isHidden = !results.isEmpty
-            recentSearch.isHidden = true
+            recentSearchesView.isHidden = true
         } else {
             resultsNodes = []
             emptyListView.isHidden = true
-            recentSearch.isHidden = false
+            recentSearchesView.isHidden = false
         }
         activityIndicator?.state = .isIdle
-        collectionView.reloadData()
+        resultNodescollectionView.reloadData()
     }
 
     func startLoading() {
         activityIndicator?.state = .isLoading
     }
 
+    func updateRecentSearches(_ array: [String]) {
+        recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
+        recentSearches = array
+        activityIndicator?.state = .isIdle
+        recentSearchCollectionView.reloadData()
+    }
+
     // MARK: - Helpers
 
     func registerAlfrescoNodeCell() {
         let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
-        collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
+        resultNodescollectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
     }
 
     func addLocalization() {
         emptyListTitle.text = LocalizationConstants.Search.title
         emptyListSubtitle.text = LocalizationConstants.Search.subtitle
+        recentSearchesTitle.text = LocalizationConstants.Search.noRecentSearch
     }
 
     func addMaterialComponentsTheme() {
@@ -94,6 +116,8 @@ class ResultViewController: UIViewController {
         emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
         emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
         emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
+        recentSearchesTitle.font = currentTheme.recentSearcheTitleLabelFont
+        recentSearchesTitle.textColor = currentTheme.recentSearchesTitleLabelColor
     }
 }
 
@@ -101,19 +125,54 @@ class ResultViewController: UIViewController {
 
 extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return resultsNodes.count
+        switch collectionView {
+        case recentSearchCollectionView:
+            return recentSearches.count
+        case resultNodescollectionView:
+            return resultsNodes.count
+        default: return 0
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let node = resultsNodes[indexPath.row]
-        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? AlfrescoNodeCollectionViewCell
-        cell?.node = node
-        return cell ?? UICollectionViewCell()
+        switch collectionView {
+        case resultNodescollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AlfrescoNodeCollectionViewCell.self),
+                                                          for: indexPath) as? AlfrescoNodeCollectionViewCell
+            cell?.node = resultsNodes[indexPath.row]
+            cell?.applyThemingService(themingService?.activeTheme)
+            return cell ?? UICollectionViewCell()
+        case self.recentSearchCollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: RecentSearchCollectionViewCell.self),
+                                                          for: indexPath) as? RecentSearchCollectionViewCell
+            cell?.search = recentSearches[indexPath.row]
+            cell?.applyThemingService(themingService?.activeTheme)
+            return cell ?? UICollectionViewCell()
+        default:
+            return UICollectionViewCell()
+        }
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: 64.0)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch collectionView {
+        case recentSearchCollectionView:
+            resultScreenDelegate?.recentSearchTapped(string: recentSearches[indexPath.row])
+        case resultNodescollectionView:
+            resultScreenDelegate?.nodeListTapped(nodeList: resultsNodes[indexPath.row])
+        default: break
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        switch collectionView {
+        case recentSearchCollectionView:
+            return CGSize(width: self.view.bounds.width, height: recentSearchHeighCell)
+        case resultNodescollectionView:
+            return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+        default:
+            return CGSize(width: 0, height: 0)
+        }
     }
 }
 

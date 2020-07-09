@@ -42,6 +42,24 @@ class SearchViewModel {
 
     // MARK: - Public methods
 
+    func recentSearches() -> [String] {
+        return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
+    }
+
+    func save(recentSearch string: String?) {
+        guard let string = string else { return }
+        var recents = self.recentSearches()
+        if let indexItem = recents.lastIndex(of: string) {
+            recents.remove(at: indexItem)
+        }
+        recents.insert(string, at: 0)
+        if recents.count == kMaxElemetsInRecentSearchesArray + 1 {
+            recents.removeLast()
+        }
+        UserDefaults.standard.set(recents, forKey: kSaveRecentSearchesArray)
+        UserDefaults.standard.synchronize()
+    }
+
     func performSearch(for string: String?) {
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
             self.viewModelDelegate?.search(results: nil)

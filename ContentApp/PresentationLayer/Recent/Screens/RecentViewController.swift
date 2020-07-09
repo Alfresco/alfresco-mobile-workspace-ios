@@ -94,6 +94,7 @@ class RecentViewController: UIViewController {
     func addSearchController() {
         let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
         rvc?.themingService = themingService
+        rvc?.resultScreenDelegate = self
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -153,6 +154,18 @@ extension RecentViewController: RecentViewModelDelegate {
     }
 }
 
+// MARK: - Result Screen Delegate
+
+extension RecentViewController: ResultScreenDelegate {
+    func recentSearchTapped(string: String) {
+        navigationItem.searchController?.searchBar.text = string
+    }
+
+    func nodeListTapped(nodeList: ListNode) {
+        searchViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
+    }
+}
+
 // MARK: - Search ViewModel Delegate
 
 extension RecentViewController: SearchViewModelDelegate {
@@ -169,6 +182,7 @@ extension RecentViewController: UISearchBarDelegate {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.startLoading()
         searchViewModel?.performSearch(for: searchBar.text)
+        searchViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
     }
 }
 
@@ -179,7 +193,9 @@ extension RecentViewController: UISearchResultsUpdating {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
         searchViewModel?.performLiveSearch(for: searchController.searchBar.text)
+        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
     }
+
 }
 
 // MARK: - Storyboard Instantiable

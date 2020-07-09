@@ -38,8 +38,12 @@ protocol PresentationTheme {
     var activityIndicatorLabelFont: UIFont { get }
     var settingsTitleLabelFont: UIFont { get }
     var settingsSubtitleLabelFont: UIFont { get }
+    var listNodeCellTitleLabelFont: UIFont { get }
+    var listNodeCellSubtitleLabelFont: UIFont { get }
     var emptyListTitleLabelFont: UIFont { get }
     var emptyListSubtitleLabelFont: UIFont { get }
+    var recentSearchesTitleLabelFont: UIFont { get }
+    var recentSearcheTitleLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
     /// Textviews
@@ -67,8 +71,12 @@ protocol PresentationTheme {
     var activityIndicatorLabelColor: UIColor { get }
     var settingsTitleLabelColor: UIColor { get }
     var settingsSubtitleLabelColor: UIColor { get }
+    var listNodeCellTitleLabelColor: UIColor { get }
+    var listNodeCellSubtitleLabelColor: UIColor { get }
     var emptyListTitleLabelColor: UIColor { get }
     var emptyListSubtitleLabelColor: UIColor { get }
+    var recentSearchesTitleLabelColor: UIColor { get }
+    var recentSearcheTitleLabelColor: UIColor { get }
 
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
