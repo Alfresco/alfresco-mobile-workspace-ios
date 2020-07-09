@@ -1,5 +1,6 @@
 trigger:
 - master
+- develop
 
 pr: none
 
@@ -97,7 +98,7 @@ steps:
 
 - task: AppStoreRelease@1
   inputs:
-    serviceEndpoint: 'AppleStore Publisher'
+    serviceEndpoint: 'AppStore'
     appIdentifier: 'com.alfresco.contentapp'
     appType: 'iOS'
     ipaPath: '**/*.ipa'
