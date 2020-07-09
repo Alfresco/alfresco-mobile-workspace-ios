@@ -20,23 +20,38 @@ import Foundation
 import AlfrescoContentServices
 
 protocol SearchViewModelDelegate: class {
-    func search(results: [ListNode])
+    /**
+    Update data source with search results
+    - results: list of nodes from a search operation
+     - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
+    */
+    func search(results: [ListNode]?)
 }
 
 class SearchViewModel {
     var nodes: [ListNode] = []
     var accountService: AccountService?
     weak var viewModelDelegate: SearchViewModelDelegate?
+    var liveSearchTimer: Timer?
+
+    // MARK: - Init
 
     init(accountService: AccountService?) {
         self.accountService = accountService
     }
 
-    func performSearch(for string: String) {
-        accountService?.getSessionForCurrentAccount(completionHandler: {  [weak self] authenticationProvider in
+    // MARK: - Public methods
+
+    func performSearch(for string: String?) {
+        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
+            self.viewModelDelegate?.search(results: nil)
+            return
+        }
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: sSelf.searchRequest(string)) { (result, error) in
+            SearchAPI.search(queryBody: sSelf.searchRequest(searchString)) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.nodes = ListNode.nodes(entries)
                     DispatchQueue.main.async {
@@ -53,6 +68,21 @@ class SearchViewModel {
             }
         })
     }
+
+    func performLiveSearch(for string: String?) {
+        liveSearchTimer?.invalidate()
+        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "", searchString.count > 2 else {
+            self.viewModelDelegate?.search(results: nil)
+            return
+        }
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { [weak self] (timer) in
+            timer.invalidate()
+            guard let sSelf = self else { return }
+            sSelf.performSearch(for: searchString)
+        })
+    }
+
+    // MARK: - Private methods
 
     private func searchRequest(_ string: String) -> SearchRequest {
         let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string + "*")

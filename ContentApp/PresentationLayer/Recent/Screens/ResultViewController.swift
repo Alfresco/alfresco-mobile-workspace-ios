@@ -29,16 +29,7 @@ class ResultViewController: UIViewController {
 
     var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
-    var emptyList: Bool = true {
-        didSet {
-            emptyListView.isHidden = emptyList
-        }
-    }
-    var resultsNodes: [ListNode] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    var resultsNodes: [ListNode] = []
 
     // MARK: - View Life Cycle
 
@@ -65,6 +56,26 @@ class ResultViewController: UIViewController {
         view.isHidden = false
     }
 
+    // MARK: - Public Helpers
+
+    func updateDataSource(_ results: [ListNode]?) {
+        if let results = results {
+            resultsNodes = results
+            emptyListView.isHidden = !results.isEmpty
+            recentSearch.isHidden = true
+        } else {
+            resultsNodes = []
+            emptyListView.isHidden = true
+            recentSearch.isHidden = false
+        }
+        activityIndicator?.state = .isIdle
+        collectionView.reloadData()
+    }
+
+    func startLoading() {
+        activityIndicator?.state = .isLoading
+    }
+
     // MARK: - Helpers
 
     func registerAlfrescoNodeCell() {
@@ -78,9 +89,7 @@ class ResultViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let currentTheme = self.themingService?.activeTheme else {
-            return
-        }
+        guard let currentTheme = self.themingService?.activeTheme else { return }
         emptyListTitle.font = currentTheme.emptyListTitleLabelFont
         emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
         emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
