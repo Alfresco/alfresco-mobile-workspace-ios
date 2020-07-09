@@ -101,5 +101,7 @@ struct LocalizationConstants {
         static let title = NSLocalizedString("emptyListTitle", comment: "")
         static let subtitle = NSLocalizedString("emptyListSubtitle", comment: "")
         static let searching = NSLocalizedString("searching", comment: "")
+        static let noRecentSearch = NSLocalizedString("noRecentSearch", comment: "")
+        static let recentSearch = NSLocalizedString("recentSearch", comment: "")
     }
 }

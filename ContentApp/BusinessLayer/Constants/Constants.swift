@@ -19,27 +19,39 @@
 import Foundation
 import UIKit
 
+// MARK: - Save Objects Keys
 let kSaveAuthSettingsParameters = "kSaveAuthSettingsParameters"
 let kSaveThemeMode = "kSaveThemeMode"
-let kDefaultLoginUnsecuredPort = "80"
-let kDefaultLoginSecuredPort = "443"
-let kAIMSAccessTokenRefreshTimeBuffer = 20.0
 let kActiveAccountIdentifier = "kActiveAccountIdentifier"
 let kProfileAvatarImageFileName = "avatar"
 let kSaveDiplayProfileName = "kSaveDiplayProfileName"
 let kSaveEmailProfile = "kSaveEmailProfile"
+let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
-
-let kSessionExpirationTimeIntervalCheck = 20
-let kLoginAIMSCancelWebViewErrorCode = -3
-let kShowLoginScreenNotification = "kShowLoginScreenNotification"
-
-let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
+// MARK: - API Paths
 let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
 let kAPIPathGetAvatarProfile = "\(kAPIPathVersion)/people/-me-/avatar"
+
+// MARK: - Notification Keys
+let kShowLoginScreenNotification = "kShowLoginScreenNotification"
+let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
+
+// MARK: - Animations Time
+let kAnimationSplashScreenLogo = 2.0
+let kAnimationSplashScreenContainerViews = 1.5
+
+// MARK: - Timers
+let kAIMSAccessTokenRefreshTimeBuffer = 20.0
+let kSessionExpirationTimeIntervalCheck = 20
+
+// MARK: - Error codes
+let kLoginAIMSCancelWebViewErrorCode = -3
+
+// MARK: -
+let kDefaultLoginUnsecuredPort = "80"
+let kDefaultLoginSecuredPort = "443"
+let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
+let kMaxElemetsInRecentSearchesArray = 15

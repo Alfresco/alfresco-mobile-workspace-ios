@@ -54,16 +54,14 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
     }
 
     func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        guard let themingService = themingService else {
-            return
-        }
-        titleLabel.font = themingService.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService.activeTheme?.settingsTitleLabelColor
+        guard let themingService = themingService, let currentTheme = themingService.activeTheme else { return }
+        titleLabel.font = currentTheme.settingsTitleLabelFont
+        titleLabel.textColor = currentTheme.settingsTitleLabelColor
 
-        subtitleLabel.font = themingService.activeTheme?.settingsSubtitleLabelFont
-        subtitleLabel.textColor = themingService.activeTheme?.settingsSubtitleLabelColor
+        subtitleLabel.font = currentTheme.settingsSubtitleLabelFont
+        subtitleLabel.textColor = currentTheme.settingsSubtitleLabelColor
 
-        iconImageView.tintColor = themingService.activeTheme?.settingsIconColor
+        iconImageView.tintColor = currentTheme.settingsIconColor
 
         signOutButton.isUppercaseTitle = false
         signOutButton.setTitle(LocalizationConstants.Buttons.signOut, for: .normal)

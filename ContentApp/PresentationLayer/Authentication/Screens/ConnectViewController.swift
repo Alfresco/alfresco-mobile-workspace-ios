@@ -63,10 +63,11 @@ class ConnectViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme, configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
-                                                                                                                                           radius: 40,
-                                                                                                                                           strokeWidth: 7,
-                                                                                                                                           cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
+                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
+                                                                                                radius: 40,
+                                                                                                strokeWidth: 7,
+                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
         navigationBar(hide: true)
         self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
     }
@@ -141,23 +142,21 @@ class ConnectViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        connectButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        connectButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.textColor = themingService.activeTheme?.productLabelColor
-        productLabel.font = themingService.activeTheme?.productLabelFont
+        productLabel.textColor = currentTheme.productLabelColor
+        productLabel.font = currentTheme.productLabelFont
 
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
+        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
 
-        self.navigationController?.navigationBar.tintColor = themingService.activeTheme?.loginButtonColor
+        self.navigationController?.navigationBar.tintColor = currentTheme.loginButtonColor
     }
 
     func connectTextFieldAddMaterialComponents() {

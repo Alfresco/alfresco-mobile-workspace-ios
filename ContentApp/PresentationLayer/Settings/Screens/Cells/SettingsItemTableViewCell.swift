@@ -44,11 +44,12 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
     }
 
     func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        titleLabel.font = themingService?.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService?.activeTheme?.settingsTitleLabelColor
-        subtitleLabel.font = themingService?.activeTheme?.settingsSubtitleLabelFont
-        subtitleLabel.textColor = themingService?.activeTheme?.settingsSubtitleLabelColor
-        iconImageView.tintColor = themingService?.activeTheme?.settingsIconColor
+        guard let currentTheme = themingService?.activeTheme else { return }
+        titleLabel.font = currentTheme.settingsTitleLabelFont
+        titleLabel.textColor = currentTheme.settingsTitleLabelColor
+        subtitleLabel.font = currentTheme.settingsSubtitleLabelFont
+        subtitleLabel.textColor = currentTheme.settingsSubtitleLabelColor
+        iconImageView.tintColor = currentTheme.settingsIconColor
     }
 
     func shouldHideSeparator(hidden: Bool) {

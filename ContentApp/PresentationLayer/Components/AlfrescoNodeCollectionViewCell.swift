@@ -38,6 +38,13 @@ class AlfrescoNodeCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
+    func applyThemingService(_ currentTheme: PresentationTheme?) {
+        title.font = currentTheme?.listNodeCellTitleLabelFont
+        title.textColor = currentTheme?.listNodeCellTitleLabelColor
+        subtitle.font = currentTheme?.listNodeCellSubtitleLabelFont
+        subtitle.textColor = currentTheme?.listNodeCellSubtitleLabelColor
+    }
+
     @IBAction func moreButtonTapped(_ sender: UIButton) {
     }
 }
