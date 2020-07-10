@@ -47,10 +47,14 @@ class ConnectViewModel {
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
                 sSelf.authenticationService?.saveAuthParameters()
-                sSelf.delegate?.authServiceAvailable(for: authType)
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceAvailable(for: authType)
+                }
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
-                sSelf.delegate?.authServiceUnavailable(with: error)
+                DispatchQueue.main.async {
+                    sSelf.delegate?.authServiceUnavailable(with: error)
+                }
             }
         })
     }

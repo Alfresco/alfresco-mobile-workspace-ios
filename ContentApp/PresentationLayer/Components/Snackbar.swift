@@ -43,14 +43,14 @@ class Snackbar {
 
     // MARK: - Public methods
 
-    func applyTheme(theme: PresentationTheme) {
+    func applyTheme(theme: PresentationTheme?) {
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarErrorColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarErrorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarApproved
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarApproved
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme.snackbarWarning
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarWarning
         }
     }
 
@@ -81,9 +81,7 @@ class Snackbar {
     // MARK: - Private methods
 
     private func addButton() {
-        guard !hideButton  else {
-            return
-        }
+        guard !hideButton  else { return }
         let action = MDCSnackbarMessageAction()
         action.title = buttonTitle
         snackBar.action = action

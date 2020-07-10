@@ -188,9 +188,7 @@ class ConnectViewController: UIViewController {
     func showError(message: String) {
         Snackbar.dimissAll()
         let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
+        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.errorShowInProgress = false
@@ -230,30 +228,23 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceAvailable(for authType: AvailableAuthType) {
         activityIndicator?.state = .isIdle
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-            sSelf.errorShowInProgress = false
-            sSelf.connectTextFieldAddMaterialComponents()
-            Snackbar.dimissAll()
-            switch authType {
-            case .aimsAuth:
-                sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
-            case .basicAuth:
-                sSelf.connectScreenCoordinatorDelegate?.showBasicAuthScreen()
-            }
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+        errorShowInProgress = false
+        connectTextFieldAddMaterialComponents()
+        Snackbar.dimissAll()
+        switch authType {
+        case .aimsAuth:
+            connectScreenCoordinatorDelegate?.showAimsScreen()
+        case .basicAuth:
+            connectScreenCoordinatorDelegate?.showBasicAuthScreen()
         }
     }
 
     func authServiceUnavailable(with error: APIError) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.errorShowInProgress = true
-            sSelf.connectTextFieldAddMaterialComponents()
-
-            sSelf.showError(message: error.mapToMessage())
-        }
         activityIndicator?.state = .isIdle
+        errorShowInProgress = true
+        connectTextFieldAddMaterialComponents()
+        showError(message: error.mapToMessage())
     }
 }
 
