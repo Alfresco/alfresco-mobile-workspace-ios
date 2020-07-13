@@ -91,3 +91,5 @@
 "searching" = "Searching...";
 "noRecentSearch" = "There is no recent searches.";
 "recentSearch" = "Recent Searches";
+"chipFiles" = "Files";
+"chipFolders" = "Folders";

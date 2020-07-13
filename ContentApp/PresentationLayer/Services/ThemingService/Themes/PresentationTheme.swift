@@ -44,6 +44,7 @@ protocol PresentationTheme {
     var emptyListSubtitleLabelFont: UIFont { get }
     var recentSearchesTitleLabelFont: UIFont { get }
     var recentSearcheTitleLabelFont: UIFont { get }
+    var searchChipTitleLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
     /// Textviews
@@ -77,7 +78,6 @@ protocol PresentationTheme {
     var emptyListSubtitleLabelColor: UIColor { get }
     var recentSearchesTitleLabelColor: UIColor { get }
     var recentSearcheTitleLabelColor: UIColor { get }
-
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
     var loginTextFieldErrorColor: UIColor { get }
@@ -93,4 +93,6 @@ protocol PresentationTheme {
     var snackbarApproved: UIColor { get }
     var snackbarWarning: UIColor { get }
     var settingsIconColor: UIColor { get }
+    var searchChipSelectedColor: UIColor { get }
+    var searchChipUnselectedColor: UIColor { get }
 }

@@ -47,6 +47,8 @@
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
 		E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */; };
 		E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */; };
+		E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30E341B24B87B7500836629 /* SearchChipItem.swift */; };
+		E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30E341D24B8812600836629 /* SearchComponentsThemingServiceWorker.swift */; };
 		E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */; };
 		E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D5247BEC9B0044BE0D /* AimsViewController.swift */; };
 		E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */; };
@@ -173,6 +175,8 @@
 		E300204E24A0EC90004FB12D /* RecentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewModel.swift; sourceTree = "<group>"; };
 		E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollTo.swift"; sourceTree = "<group>"; };
 		E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskServices.swift; sourceTree = "<group>"; };
+		E30E341B24B87B7500836629 /* SearchChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipItem.swift; sourceTree = "<group>"; };
+		E30E341D24B8812600836629 /* SearchComponentsThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsThemingServiceWorker.swift; sourceTree = "<group>"; };
 		E31184D3247BB0600044BE0D /* BasicAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewController.swift; sourceTree = "<group>"; };
 		E31184D5247BEC9B0044BE0D /* AimsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewController.swift; sourceTree = "<group>"; };
 		E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Replacement.swift"; sourceTree = "<group>"; };
@@ -379,6 +383,7 @@
 				E348EDE02498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift */,
 				B959CCD92477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift */,
 				E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */,
+				E30E341D24B8812600836629 /* SearchComponentsThemingServiceWorker.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -767,6 +772,7 @@
 				E3D25C862493EF2E00FFD87F /* RecentViewController.swift */,
 				E32B642B24B358FD00085472 /* ResultViewController.swift */,
 				E32B642D24B35C2100085472 /* SearchViewModel.swift */,
+				E30E341B24B87B7500836629 /* SearchChipItem.swift */,
 				E32B642624B326EB00085472 /* ListNode.swift */,
 			);
 			path = Screens;
@@ -985,6 +991,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
@@ -1058,6 +1065,7 @@
 				B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskServices.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
+				E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,

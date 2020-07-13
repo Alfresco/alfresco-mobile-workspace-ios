@@ -99,6 +99,7 @@ class RecentViewController: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
+        searchController.delegate = self
         navigationItem.searchController = searchController
     }
 
@@ -157,8 +158,16 @@ extension RecentViewController: RecentViewModelDelegate {
 // MARK: - Result Screen Delegate
 
 extension RecentViewController: ResultScreenDelegate {
+    func chipTapped() {
+        searchViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+    }
+
     func recentSearchTapped(string: String) {
-        navigationItem.searchController?.searchBar.text = string
+        guard let searchBar = navigationItem.searchController?.searchBar,
+            let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        searchBar.text = string
+        searchViewModel?.performLiveSearch(for: string)
+        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
     }
 
     func nodeListTapped(nodeList: ListNode) {
@@ -184,18 +193,37 @@ extension RecentViewController: UISearchBarDelegate {
         searchViewModel?.performSearch(for: searchBar.text)
         searchViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
     }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.view.isHidden = false
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        searchViewModel?.performLiveSearch(for: searchText)
+        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
+    }
 }
 
 // MARK: - UISearch Results Updating
 
 extension RecentViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
-        searchViewModel?.performLiveSearch(for: searchController.searchBar.text)
-        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
     }
+}
 
+// MARK: - UISearchController Delegate
+
+extension RecentViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+        rvc.updateChips(searchViewModel?.defaultSearchChips() ?? [])
+        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
+        rvc.updateDataSource(nil)
+    }
 }
 
 // MARK: - Storyboard Instantiable

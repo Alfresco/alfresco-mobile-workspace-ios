@@ -44,6 +44,7 @@ struct DefaultTheme: PresentationTheme {
     var emptyListSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var recentSearchesTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
     var recentSearcheTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
+    var searchChipTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
     /// TextFields
     var loginTextFieldFont = UIFont.alfrescoRegularFont(ofSize: 16)
     /// TextViews
@@ -92,4 +93,6 @@ struct DefaultTheme: PresentationTheme {
     var snackbarApproved = #colorLiteral(red: 0.1921568627, green: 0.5490196078, blue: 0.1725490196, alpha: 1)
     var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)
     var settingsIconColor = #colorLiteral(red: 0.3254901961, green: 0.3254901961, blue: 0.3254901961, alpha: 1)
+    var searchChipSelectedColor = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
+    var searchChipUnselectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6)
 }
