@@ -73,6 +73,9 @@ class BasicAuthViewController: UIViewController {
                                                                                                 radius: 40,
                                                                                                 strokeWidth: 7,
                                                                                                 cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+        if let activityIndicator = activityIndicator {
+            kWindow.addSubview(activityIndicator)
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {

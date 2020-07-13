@@ -24,30 +24,23 @@ enum ActivityIndicatorControllerState {
     case isIdle
 }
 
-enum ActivityIndicatorControllerType {
-    case login
-    case search
-}
-
 struct ActivityIndicatorConfiguration {
     var title: String
     var radius: CGFloat
     var strokeWidth: CGFloat
     var cycleColors: [UIColor]
-    var superview: UIView
 
-    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor], superview: UIView = UIApplication.shared.windows[0]) {
+    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor]) {
         self.title = title
         self.radius = radius
         self.strokeWidth = strokeWidth
         self.cycleColors = cycleColors
-        self.superview = superview
     }
 
     static var defaultValue = ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
-                                                      radius: 40,
-                                                      strokeWidth: 7,
-                                                      cycleColors: [.black])
+                                                             radius: 40,
+                                                             strokeWidth: 7,
+                                                             cycleColors: [.black])
 }
 
 class ActivityIndicatorView: UIView {
@@ -60,9 +53,9 @@ class ActivityIndicatorView: UIView {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                let window = sSelf.activityIndicatorConfiguration.superview
-                window.isUserInteractionEnabled = (sSelf.state == .isIdle)
-                (sSelf.state == .isIdle) ? sSelf.removeFromSuperview() : window.addSubview(sSelf)
+                (sSelf.state == .isLoading) ? sSelf.activityIndicator.startAnimating() : sSelf.activityIndicator.stopAnimating()
+                sSelf.isHidden = (sSelf.state == .isIdle)
+                sSelf.superview?.isUserInteractionEnabled = (sSelf.state == .isIdle)
             }
         }
     }
@@ -71,7 +64,7 @@ class ActivityIndicatorView: UIView {
 
     init(currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
         self.activityIndicatorConfiguration = configuration
-        super.init(frame: UIApplication.shared.windows[0].bounds)
+        super.init(frame: kWindow.bounds)
         self.commonInit()
         self.applyTheme(currentTheme)
     }
@@ -125,7 +118,7 @@ class ActivityIndicatorView: UIView {
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
             self.addSubview(label)
-            activityIndicator.startAnimating()
+
             NSLayoutConstraint.activate([
                 label.widthAnchor.constraint(equalToConstant: 250),
                 label.heightAnchor.constraint(equalToConstant: 20),
@@ -133,5 +126,6 @@ class ActivityIndicatorView: UIView {
                 label.centerYAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 56.0)
             ])
         }
+        self.state = .isIdle
     }
 }

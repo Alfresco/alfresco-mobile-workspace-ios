@@ -64,10 +64,13 @@ class ConnectViewController: UIViewController {
         super.viewWillAppear(animated)
         addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
-                                                                                                radius: 40,
-                                                                                                strokeWidth: 7,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
+                                                                                                 radius: 40,
+                                                                                                 strokeWidth: 7,
+                                                                                                 cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+        if let activityIndicator = activityIndicator {
+            kWindow.addSubview(activityIndicator)
+        }
         navigationBar(hide: true)
         self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
     }

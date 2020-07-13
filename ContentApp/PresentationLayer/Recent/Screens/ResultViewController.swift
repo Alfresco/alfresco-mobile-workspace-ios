@@ -74,8 +74,10 @@ class ResultViewController: UIViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
                                                                                                 radius: 12,
                                                                                                 strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black],
-                                                                                                superview: self.view))
+                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+        if let activityIndicator = activityIndicator {
+            self.view.addSubview(activityIndicator)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
