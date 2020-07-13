@@ -98,7 +98,12 @@ steps:
 
 - task: AppStoreRelease@1
   inputs:
-    serviceEndpoint: 'AppStore'
+    authType: 'UserAndPass'
+    username: '$(FASTLANE_USER)'
+    password: '$(FASTLANE_PASSWORD)'
+    isTwoFactorAuth: true
+    appSpecificPassword: '$(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)'
+    fastlaneSession: '$(FASTLANE_SESSION)'
     appIdentifier: 'com.alfresco.contentapp'
     appType: 'iOS'
     ipaPath: '**/*.ipa'
