@@ -88,7 +88,7 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ThemeModeTableViewCell else {
             return UITableViewCell()
         }
-        cell.applyThemingService(themingService)
+        cell.applyThemingService(themingService?.activeTheme)
         cell.item = viewModel.items[indexPath.row]
         if viewModel.items[indexPath.row] == themingService?.getThemeMode() {
             cell.selectRadioButton()

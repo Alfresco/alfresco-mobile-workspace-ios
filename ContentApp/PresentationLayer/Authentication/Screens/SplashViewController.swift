@@ -117,9 +117,7 @@ class SplashViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let currentTheme = self.themingService?.activeTheme else {
-            return
-        }
+        guard let currentTheme = self.themingService?.activeTheme else { return }
         copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
         copyrightLabel.font = currentTheme.loginCopyrightLabelFont
         backButton.tintColor = currentTheme.loginButtonColor

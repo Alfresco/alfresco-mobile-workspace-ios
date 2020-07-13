@@ -113,32 +113,30 @@ class AimsViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
         repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        productLabel.textColor = themingService.activeTheme?.productLabelColor
-        productLabel.font = themingService.activeTheme?.productLabelFont
+        productLabel.textColor = currentTheme.productLabelColor
+        productLabel.font = currentTheme.productLabelFont
 
-        infoLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        infoLabel.font = themingService.activeTheme?.loginInfoLabelFont
+        infoLabel.textColor = currentTheme.loginInfoLabelColor
+        infoLabel.font = currentTheme.loginInfoLabelFont
 
-        hostnameLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        hostnameLabel.font = themingService.activeTheme?.loginInfoHostnameLabelFont
+        hostnameLabel.textColor = currentTheme.loginInfoLabelColor
+        hostnameLabel.font = currentTheme.loginInfoHostnameLabelFont
 
-        allowLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        allowLabel.font = themingService.activeTheme?.loginInfoHostnameLabelFont
+        allowLabel.textColor = currentTheme.loginFieldLabelColor
+        allowLabel.font = currentTheme.loginInfoHostnameLabelFont
 
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
+        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
     }
 }
 
@@ -172,11 +170,8 @@ extension AimsViewController: UITextFieldDelegate {
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
-            guard let themingService = themingService  else { return }
             let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            if let theme = themingService.activeTheme {
-                snackbar.applyTheme(theme: theme)
-            }
+            snackbar.applyTheme(theme: themingService?.activeTheme)
             snackbar.show(completion: nil)
         }
     }

@@ -89,3 +89,5 @@
 "emptyListTitle" = "Oops...";
 "emptyListSubtitle" = "We can’t find what\n you’re looking for";
 "searching" = "Searching...";
+"noRecentSearch" = "There is no recent searches.";
+"recentSearch" = "Recent Searches";

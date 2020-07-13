@@ -153,9 +153,7 @@ class AdvancedSettingsViewController: UIViewController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         portTextField.setFilledBackgroundColor(.clear, for: .normal)
@@ -173,30 +171,30 @@ class AdvancedSettingsViewController: UIViewController {
         realmTextField.setFilledBackgroundColor(.clear, for: .normal)
         realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        transportProtocolLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        transportProtocolLabel.font = themingService.activeTheme?.loginFieldLabelFont
+        transportProtocolLabel.textColor = currentTheme.loginFieldLabelColor
+        transportProtocolLabel.font = currentTheme.loginFieldLabelFont
 
-        httpsLabel.textColor = (viewModel.authParameters.https) ? themingService.activeTheme?.loginFieldLabelColor : themingService.activeTheme?.loginFieldDisableLabelColor
-        httpsLabel.font = themingService.activeTheme?.loginHTTPSLabelFont
+        httpsLabel.textColor = (viewModel.authParameters.https) ? currentTheme.loginFieldLabelColor : currentTheme.loginFieldDisableLabelColor
+        httpsLabel.font = currentTheme.loginHTTPSLabelFont
 
-        settingsLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        settingsLabel.font = themingService.activeTheme?.loginFieldLabelFont
+        settingsLabel.textColor = currentTheme.loginFieldLabelColor
+        settingsLabel.font = currentTheme.loginFieldLabelFont
 
-        authenticationLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        authenticationLabel.font = themingService.activeTheme?.loginFieldLabelFont
+        authenticationLabel.textColor = currentTheme.loginFieldLabelColor
+        authenticationLabel.font = currentTheme.loginFieldLabelFont
 
-        titlePadLabel.textColor = themingService.activeTheme?.applicationTitleColor
-        titlePadLabel.font = themingService.activeTheme?.loginTitleLabelFont
+        titlePadLabel.textColor = currentTheme.applicationTitleColor
+        titlePadLabel.font = currentTheme.loginTitleLabelFont
 
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
+        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        savePadButton.setTitleColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        savePadButton.setTitleColor(currentTheme.loginButtonDisableColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
-        saveButton.tintColor = themingService.activeTheme?.loginButtonColor
-        backPadButton.tintColor = themingService.activeTheme?.loginButtonColor
+        saveButton.tintColor = currentTheme.loginButtonColor
+        backPadButton.tintColor = currentTheme.loginButtonColor
     }
 
     func updateFields() {
@@ -218,9 +216,7 @@ class AdvancedSettingsViewController: UIViewController {
                          clientID: clientIDTextField.text)
 
         let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        if let theme = self.themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
+        snackbar.applyTheme(theme: self.themingService?.activeTheme)
         snackbar.hideButton(true)
         snackbar.show(completion: nil)
     }
