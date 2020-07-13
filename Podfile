@@ -20,7 +20,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/ActivityIndicator', :inhibit_warnings => true
   pod 'MaterialComponents/Snackbar', :inhibit_warnings => true
   pod 'MaterialComponents/Dialogs', :inhibit_warnings => true
-
+  pod 'MaterialComponents/BottomNavigation', :inhibit_warnings => true
 
   target 'ContentAppTests' do
     inherit! :search_paths

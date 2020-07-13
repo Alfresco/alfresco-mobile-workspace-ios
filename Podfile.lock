@@ -19,6 +19,17 @@ PODS:
     - MotionAnimator (~> 2.0)
   - MaterialComponents/AnimationTiming (109.8.0)
   - MaterialComponents/Availability (109.8.0)
+  - MaterialComponents/BottomNavigation (109.8.0):
+    - MaterialComponents/Availability
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Typography
+    - MDFInternationalization
   - MaterialComponents/BottomSheet (109.8.0):
     - MaterialComponents/Elevation
     - MaterialComponents/private/KeyboardWatcher
@@ -177,6 +188,7 @@ DEPENDENCIES:
   - AlfrescoContentServices
   - JWTDecode
   - MaterialComponents/ActivityIndicator
+  - MaterialComponents/BottomNavigation
   - MaterialComponents/BottomSheet
   - MaterialComponents/Buttons
   - "MaterialComponents/Buttons+Theming"
@@ -216,6 +228,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 4840769782f8b065d8d80783d4111e98b5b5fb64
+PODFILE CHECKSUM: 78c3fa6899fea72567bdf9a74f047197ba0231ab
 
 COCOAPODS: 1.9.1

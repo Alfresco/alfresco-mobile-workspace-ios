@@ -24,7 +24,7 @@ enum FadeAnimationType {
 }
 
 extension CALayer {
-    func fadeAnimation(with type: FadeAnimationType, duration: Float, completionHandler: (() -> Void)?) {
+    func fadeAnimation(with type: FadeAnimationType, duration: TimeInterval, completionHandler: (() -> Void)?) {
         CATransaction.begin()
         let animation = CABasicAnimation(keyPath: "opacity")
 
