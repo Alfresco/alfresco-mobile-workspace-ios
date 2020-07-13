@@ -25,7 +25,7 @@ import MaterialComponents.MDCChipView_MaterialTheming
 protocol ResultScreenDelegate: class {
     func recentSearchTapped(string: String)
     func nodeListTapped(nodeList: ListNode)
-    func chipTapped(cmd: String)
+    func chipTapped()
 }
 
 class ResultViewController: UIViewController {
@@ -183,8 +183,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let chip = chips[indexPath.row]
             cell?.chipView.titleLabel.text = chip.name
             cell?.chipView.isSelected = chip.selected
-            if chips[indexPath.row].selected {
+            if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+                cell?.isSelected = true
             }
             return cell ?? UICollectionViewCell()
         default:
@@ -199,9 +200,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case resultNodescollectionView:
             resultScreenDelegate?.nodeListTapped(nodeList: resultsNodes[indexPath.row])
         case chipsCollectionView:
-            var chip = chips[indexPath.row]
+            let chip = chips[indexPath.row]
             chip.selected = true
-            resultScreenDelegate?.chipTapped(cmd: chip.cmdType)
+            resultScreenDelegate?.chipTapped()
         default: break
         }
     }
@@ -209,9 +210,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch collectionView {
         case chipsCollectionView:
-            var chip = chips[indexPath.row]
+            let chip = chips[indexPath.row]
             chip.selected = false
-            resultScreenDelegate?.chipTapped(cmd: chip.cmdType)
+            resultScreenDelegate?.chipTapped()
         default: break
         }
     }

@@ -18,7 +18,7 @@
 
 import Foundation
 
-struct SearchChipItem {
+class SearchChipItem {
     var name: String
     var cmdType: String
     var selected: Bool

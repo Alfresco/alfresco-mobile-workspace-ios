@@ -39,8 +39,6 @@ class SearchViewModel {
 
     init(accountService: AccountService?) {
         self.accountService = accountService
-        searchChips = [SearchChipItem(name: LocalizationConstants.Search.chipFiles, cmdType: "'cm:content'", selected: true),
-                       SearchChipItem(name: LocalizationConstants.Search.chipFolders, cmdType: "'cm:folder'", selected: true)]
     }
 
     // MARK: - Public methods
@@ -49,7 +47,9 @@ class SearchViewModel {
         return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
     }
 
-    func chips() -> [SearchChipItem] {
+    func defaultSearchChips() -> [SearchChipItem] {
+        searchChips = [SearchChipItem(name: LocalizationConstants.Search.chipFiles, cmdType: "'cm:content'"),
+                       SearchChipItem(name: LocalizationConstants.Search.chipFolders, cmdType: "'cm:folder'")]
         return searchChips
     }
 
@@ -131,7 +131,6 @@ class SearchViewModel {
     private func chipsFilters() -> RequestFilterQueriesInner? {
         return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.cmdType }).joined(separator: " OR "),
                                          tags: nil)
-
     }
 
     private func defaultRequest() -> RequestDefaults {

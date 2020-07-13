@@ -158,7 +158,7 @@ extension RecentViewController: RecentViewModelDelegate {
 // MARK: - Result Screen Delegate
 
 extension RecentViewController: ResultScreenDelegate {
-    func chipTapped(cmd: String) {
+    func chipTapped() {
         searchViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 
@@ -220,7 +220,7 @@ extension RecentViewController: UISearchResultsUpdating {
 extension RecentViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-        rvc.updateChips(searchViewModel?.chips() ?? [])
+        rvc.updateChips(searchViewModel?.defaultSearchChips() ?? [])
         rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
         rvc.updateDataSource(nil)
     }
