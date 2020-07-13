@@ -110,6 +110,9 @@ class ResultViewController: UIViewController {
         recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         recentSearches = array
         activityIndicator?.state = .isIdle
+        if array.count > 0 {
+            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
         recentSearchCollectionView.reloadData()
     }
 
