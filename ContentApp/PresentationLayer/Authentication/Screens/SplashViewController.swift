@@ -142,7 +142,7 @@ class SplashViewController: UIViewController {
         self.containerViews(alpha: 0.0, hidden: false)
         self.wasRotatedInAnimationProgress = false
         self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity, radius: self.shadowLayerRadius)
-        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: Float(kAnimationSplashScreenContainerViews), completionHandler: {  [weak self] in
+        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: TimeInterval(kAnimationSplashScreenContainerViews), completionHandler: {  [weak self] in
             guard let sSelf = self, sSelf.wasRotatedInAnimationProgress == true else { return }
             sSelf.shadowLayer?.removeFromSuperlayer()
             sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)

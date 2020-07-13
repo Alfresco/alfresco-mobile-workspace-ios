@@ -41,7 +41,6 @@ class SettingsScreenCoordinator: Coordinator {
         viewModel.viewModelDelegate = viewController
         viewController.viewModel = viewModel
         viewController.settingsScreenCoordinatorDelegate = self
-        viewController.hidesBottomBarWhenPushed = true
         presenter.pushViewController(viewController, animated: true)
         settingsViewController = viewController
     }

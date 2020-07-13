@@ -98,6 +98,7 @@ class BasicAuthViewController: UIViewController {
         guard let username = usernameTextField.text, let password = passwordTextField.text else {
             return
         }
+        Snackbar.dimissAll()
         activityIndicator?.state = .isLoading
         viewModel?.authenticate(username: username, password: password)
     }
@@ -150,9 +151,11 @@ class BasicAuthViewController: UIViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
         if errorTheme {
             usernameTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.isSecureTextEntry = false
             passwordTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         } else {
             usernameTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.isSecureTextEntry = false
             passwordTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
 
@@ -225,11 +228,8 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         if error.responseCode == 401 {
             applyThemingInTextField(errorTheme: true)
         }
-        Snackbar.dimissAll()
         let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
+        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.applyThemingInTextField(errorTheme: false)
@@ -243,11 +243,8 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
-        Snackbar.dimissAll()
         let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
+        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: nil)
     }
 }

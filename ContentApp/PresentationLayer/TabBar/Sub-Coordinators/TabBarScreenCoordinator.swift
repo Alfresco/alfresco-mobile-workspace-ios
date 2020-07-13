@@ -37,6 +37,20 @@ class TabBarScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = TabBarMainViewController.instantiateViewController()
+
+        let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
+                                            image: UIImage(named: "recent-unselected"),
+                                            selectedImage: UIImage(named: "recent-selected"))
+        recentTabBarItem.tag = 0
+        let favoritesTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
+                                               image: UIImage(named: "favorite-unselected"),
+                                               selectedImage: UIImage(named: "favorite-selected"))
+        favoritesTabBarItem.tag = 1
+        let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
+                                            image: UIImage(named: "browse-unselected"),
+                                            selectedImage: UIImage(named: "browse-selected"))
+        viewController.tabs = [recentTabBarItem, favoritesTabBarItem, browseTabBarItem]
+
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         viewController.tabBarCoordinatorDelegate = self
         viewController.modalTransitionStyle = .crossDissolve
@@ -50,6 +64,7 @@ class TabBarScreenCoordinator: Coordinator {
 extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     func showSettingsScreen() {
         if let navigationController = tabBarMainViewController?.viewControllers?.first as? UINavigationController {
+            tabBarMainViewController?.tabBar.isHidden = true
             settingsCoordinator = SettingsScreenCoordinator(with: navigationController)
             settingsCoordinator?.start()
         }
