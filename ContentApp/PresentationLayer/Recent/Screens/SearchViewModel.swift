@@ -117,9 +117,11 @@ class SearchViewModel {
         let templates = RequestTemplates([defaultTemplate(name: defaultRequest.defaultFieldName)])
 
         var filterQueries = self.defaultNoFilters()
-        filterQueries.append(self.defaultFilesAndFolderFilter())
-        if let chipFilterQuerry = self.chipsFilters(), let query = chipFilterQuerry.query,
-            chipFilterQuerry.query != self.defaultFilesAndFolderFilter().query, !query.isEmpty {
+        let chipFilterQuerry = self.chipsFilters()
+
+        if let query = chipFilterQuerry.query, query.isEmpty {
+            filterQueries.append(defaultFilesAndFolderFilter())
+        } else {
             filterQueries.append(chipFilterQuerry)
         }
 
@@ -129,7 +131,7 @@ class SearchViewModel {
         return searchRequest
     }
 
-    private func chipsFilters() -> RequestFilterQueriesInner? {
+    private func chipsFilters() -> RequestFilterQueriesInner {
         return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.cmdType }).joined(separator: " OR "),
                                          tags: nil)
     }

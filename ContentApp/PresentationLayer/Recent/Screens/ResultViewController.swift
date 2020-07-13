@@ -93,6 +93,9 @@ class ResultViewController: UIViewController {
             resultsNodes = results
             emptyListView.isHidden = !results.isEmpty
             recentSearchesView.isHidden = true
+            if results.count > 0 && resultNodescollectionView.scrollsToTop {
+                resultNodescollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
         } else {
             resultsNodes = []
             emptyListView.isHidden = true
