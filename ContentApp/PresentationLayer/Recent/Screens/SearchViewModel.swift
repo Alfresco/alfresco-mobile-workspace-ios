@@ -118,7 +118,8 @@ class SearchViewModel {
 
         var filterQueries = self.defaultNoFilters()
         filterQueries.append(self.defaultFilesAndFolderFilter())
-        if let chipFilterQuerry = self.chipsFilters(), chipFilterQuerry.query != self.defaultFilesAndFolderFilter().query {
+        if let chipFilterQuerry = self.chipsFilters(), let query = chipFilterQuerry.query,
+            chipFilterQuerry.query != self.defaultFilesAndFolderFilter().query, !query.isEmpty {
             filterQueries.append(chipFilterQuerry)
         }
 

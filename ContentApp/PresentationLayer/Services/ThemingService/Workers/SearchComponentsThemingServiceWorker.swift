@@ -22,16 +22,25 @@ import MaterialComponents.MaterialContainerScheme
 class SearchComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
     func containerScheme(for scene: MaterialComponentsThemingScene, on theme: PresentationTheme) -> MDCContainerScheming? {
         switch scene {
-        case .searchChip:
-            return searchChipContainerScheme(for: theme)
+        case .searchChipSelected:
+            return searchChipSelectedContainerScheme(for: theme)
+        case .searchChipUnselected:
+            return searchChipUnselectedContainerScheme(for: theme)
         default: return nil
         }
     }
 
-    private func searchChipContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+    private func searchChipSelectedContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.onSurfaceColor = theme.searchChipSelectedColor
-//        containerScheme.colorScheme.onPrimaryColor = theme.signOutTextButtonColor
+        containerScheme.typographyScheme.body2 = theme.searchChipTitleLabelFont
+
+        return containerScheme
+    }
+
+    private func searchChipUnselectedContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
+        containerScheme.colorScheme.onSurfaceColor = theme.searchChipUnselectedColor
         containerScheme.typographyScheme.body2 = theme.searchChipTitleLabelFont
 
         return containerScheme

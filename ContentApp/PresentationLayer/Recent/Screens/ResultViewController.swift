@@ -187,6 +187,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
                 cell?.isSelected = true
             }
+            if let themeService = self.themingService {
+                cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: (chip.selected) ? .searchChipSelected : .searchChipUnselected))
+            }
             return cell ?? UICollectionViewCell()
         default:
             return UICollectionViewCell()
@@ -203,6 +206,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let chip = chips[indexPath.row]
             chip.selected = true
             resultScreenDelegate?.chipTapped()
+            collectionView.reloadItems(at: [indexPath])
         default: break
         }
     }
@@ -213,6 +217,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let chip = chips[indexPath.row]
             chip.selected = false
             resultScreenDelegate?.chipTapped()
+            collectionView.reloadItems(at: [indexPath])
         default: break
         }
     }

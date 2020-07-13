@@ -94,5 +94,5 @@ struct DarkTheme: PresentationTheme {
     var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)
     var settingsIconColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var searchChipSelectedColor = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
-    var searchChipUnselectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+    var searchChipUnselectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3)
 }

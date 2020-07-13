@@ -821,11 +821,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q9L-jX-ymC">
-                                <rect key="frame" x="0.0" y="61" width="414" height="0.0"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q9L-jX-ymC">
+                                <rect key="frame" x="0.0" y="61" width="414" height="55"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" id="67W-xI-NDf"/>
+                                    <constraint firstAttribute="height" constant="55" id="67W-xI-NDf"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eeS-G2-Nto">
                                     <size key="itemSize" width="128" height="128"/>
@@ -840,7 +840,7 @@
                                 </connections>
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zf2-Bm-0QO">
-                                <rect key="frame" x="0.0" y="71" width="414" height="791"/>
+                                <rect key="frame" x="0.0" y="126" width="414" height="736"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pRS-MO-nKL">
                                     <size key="itemSize" width="128" height="128"/>
@@ -855,7 +855,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRs-WI-Kol">
-                                <rect key="frame" x="0.0" y="71" width="414" height="448"/>
+                                <rect key="frame" x="0.0" y="126" width="414" height="448"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqx-vg-iEE">
                                         <rect key="frame" x="159.33333333333334" y="60" width="95.333333333333343" height="33.666666666666657"/>
@@ -872,7 +872,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emptyList" translatesAutoresizingMaskIntoConstraints="NO" id="vsu-rv-NVr">
-                                        <rect key="frame" x="137" y="171.33333333333334" width="140" height="130.00000000000003"/>
+                                        <rect key="frame" x="137" y="171.33333333333331" width="140" height="130"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="140" id="1yo-Vi-gIX"/>
                                             <constraint firstAttribute="height" constant="130" id="eCC-Fm-RnO"/>
@@ -890,7 +890,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aW3-Eu-ZXR">
-                                <rect key="frame" x="0.0" y="71" width="414" height="791"/>
+                                <rect key="frame" x="0.0" y="126" width="414" height="736"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6H-m0-aVG">
                                         <rect key="frame" x="24" y="10.000000000000002" width="366" height="28.666666666666671"/>
@@ -899,7 +899,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R2V-xg-rmY">
-                                        <rect key="frame" x="0.0" y="52.666666666666686" width="414" height="738.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="52.666666666666686" width="414" height="683.33333333333326"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eNq-aN-Qtm">
                                             <size key="itemSize" width="414" height="97"/>
