@@ -34,12 +34,14 @@ struct ActivityIndicatorConfiguration {
     var radius: CGFloat
     var strokeWidth: CGFloat
     var cycleColors: [UIColor]
+    var superview: UIView
 
-    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor]) {
+    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor], superview: UIView = UIApplication.shared.windows[0]) {
         self.title = title
         self.radius = radius
         self.strokeWidth = strokeWidth
         self.cycleColors = cycleColors
+        self.superview = superview
     }
 
     static var defaultValue = ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
@@ -58,7 +60,7 @@ class ActivityIndicatorView: UIView {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                let window = UIApplication.shared.windows[0]
+                let window = sSelf.activityIndicatorConfiguration.superview
                 window.isUserInteractionEnabled = (sSelf.state == .isIdle)
                 (sSelf.state == .isIdle) ? sSelf.removeFromSuperview() : window.addSubview(sSelf)
             }
