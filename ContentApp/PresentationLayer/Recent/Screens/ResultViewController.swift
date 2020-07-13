@@ -17,15 +17,22 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialChips
+import MaterialComponents.MaterialChips_Theming
+import MaterialComponents.MDCChipView
+import MaterialComponents.MDCChipView_MaterialTheming
 
 protocol ResultScreenDelegate: class {
     func recentSearchTapped(string: String)
     func nodeListTapped(nodeList: ListNode)
+    func chipTapped(cmd: String)
 }
 
 class ResultViewController: UIViewController {
 
     @IBOutlet weak var resultNodescollectionView: UICollectionView!
+
+    @IBOutlet weak var chipsCollectionView: UICollectionView!
 
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
@@ -41,18 +48,23 @@ class ResultViewController: UIViewController {
     var activityIndicator: ActivityIndicatorView?
     var resultsNodes: [ListNode] = []
     var recentSearches: [String] = []
+    var chips: [SearchChipItem] = []
 
     var nodeHeighCell: CGFloat = 64.0
     var recentSearchHeighCell: CGFloat = 48.0
+    var chipHeighCell: CGFloat = 30.0
+    var chipWidthCell: CGFloat = 70.0
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         emptyListView.isHidden = true
         resultsNodes = []
         registerAlfrescoNodeCell()
         addLocalization()
+        addChipsCollectionViewFlowLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +84,10 @@ class ResultViewController: UIViewController {
 
     // MARK: - Public Helpers
 
+    func startLoading() {
+        activityIndicator?.state = .isLoading
+    }
+
     func updateDataSource(_ results: [ListNode]?) {
         if let results = results {
             resultsNodes = results
@@ -86,15 +102,16 @@ class ResultViewController: UIViewController {
         resultNodescollectionView.reloadData()
     }
 
-    func startLoading() {
-        activityIndicator?.state = .isLoading
-    }
-
     func updateRecentSearches(_ array: [String]) {
         recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         recentSearches = array
         activityIndicator?.state = .isIdle
         recentSearchCollectionView.reloadData()
+    }
+
+    func updateChips(_ array: [SearchChipItem]) {
+        chips = array
+        chipsCollectionView.reloadData()
     }
 
     // MARK: - Helpers
@@ -119,6 +136,16 @@ class ResultViewController: UIViewController {
         recentSearchesTitle.font = currentTheme.recentSearcheTitleLabelFont
         recentSearchesTitle.textColor = currentTheme.recentSearchesTitleLabelColor
     }
+
+    func addChipsCollectionViewFlowLayout() {
+        let layout = MDCChipCollectionViewFlowLayout()
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        chipsCollectionView.collectionViewLayout = layout
+        chipsCollectionView.register(MDCChipCollectionViewCell.self, forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
+        chipsCollectionView.allowsMultipleSelection = true
+    }
 }
 
 // MARK: - UICollectionView DataSource & Delegate
@@ -130,6 +157,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return recentSearches.count
         case resultNodescollectionView:
             return resultsNodes.count
+        case chipsCollectionView:
+            return chips.count
         default: return 0
         }
     }
@@ -142,11 +171,21 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             cell?.node = resultsNodes[indexPath.row]
             cell?.applyThemingService(themingService?.activeTheme)
             return cell ?? UICollectionViewCell()
-        case self.recentSearchCollectionView:
+        case recentSearchCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: RecentSearchCollectionViewCell.self),
                                                           for: indexPath) as? RecentSearchCollectionViewCell
             cell?.search = recentSearches[indexPath.row]
             cell?.applyThemingService(themingService?.activeTheme)
+            return cell ?? UICollectionViewCell()
+        case chipsCollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MDCChipCollectionViewCell.self),
+                                                                     for: indexPath) as? MDCChipCollectionViewCell
+            let chip = chips[indexPath.row]
+            cell?.chipView.titleLabel.text = chip.name
+            cell?.chipView.isSelected = chip.selected
+            if chips[indexPath.row].selected {
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+            }
             return cell ?? UICollectionViewCell()
         default:
             return UICollectionViewCell()
@@ -159,6 +198,20 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             resultScreenDelegate?.recentSearchTapped(string: recentSearches[indexPath.row])
         case resultNodescollectionView:
             resultScreenDelegate?.nodeListTapped(nodeList: resultsNodes[indexPath.row])
+        case chipsCollectionView:
+            var chip = chips[indexPath.row]
+            chip.selected = true
+            resultScreenDelegate?.chipTapped(cmd: chip.cmdType)
+        default: break
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        switch collectionView {
+        case chipsCollectionView:
+            var chip = chips[indexPath.row]
+            chip.selected = false
+            resultScreenDelegate?.chipTapped(cmd: chip.cmdType)
         default: break
         }
     }
@@ -170,6 +223,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: self.view.bounds.width, height: recentSearchHeighCell)
         case resultNodescollectionView:
             return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+        case chipsCollectionView:
+            return CGSize(width: chipWidthCell, height: chipHeighCell)
         default:
             return CGSize(width: 0, height: 0)
         }

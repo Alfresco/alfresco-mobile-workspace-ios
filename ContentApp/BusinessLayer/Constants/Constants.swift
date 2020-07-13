@@ -46,6 +46,7 @@ let kAnimationSplashScreenContainerViews = 1.5
 // MARK: - Timers
 let kAIMSAccessTokenRefreshTimeBuffer = 20.0
 let kSessionExpirationTimeIntervalCheck = 20
+let kSearchTimerBuffer = 1.0
 
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
@@ -55,3 +56,4 @@ let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kMaxElemetsInRecentSearchesArray = 15
+let kMinCharactersForLiveSearch = 3

@@ -821,8 +821,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q9L-jX-ymC">
+                                <rect key="frame" x="0.0" y="61" width="414" height="0.0"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="67W-xI-NDf"/>
+                                </constraints>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eeS-G2-Nto">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                                <connections>
+                                    <outlet property="dataSource" destination="mAS-aS-Dfn" id="p53-Vf-g0b"/>
+                                    <outlet property="delegate" destination="mAS-aS-Dfn" id="7TO-WR-BEu"/>
+                                </connections>
+                            </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zf2-Bm-0QO">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="71" width="414" height="791"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pRS-MO-nKL">
                                     <size key="itemSize" width="128" height="128"/>
@@ -837,7 +855,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRs-WI-Kol">
-                                <rect key="frame" x="0.0" y="44" width="414" height="448"/>
+                                <rect key="frame" x="0.0" y="71" width="414" height="448"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqx-vg-iEE">
                                         <rect key="frame" x="159.33333333333334" y="60" width="95.333333333333343" height="33.666666666666657"/>
@@ -872,16 +890,16 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aW3-Eu-ZXR">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="71" width="414" height="791"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6H-m0-aVG">
-                                        <rect key="frame" x="24" y="20" width="366" height="27.666666666666671"/>
+                                        <rect key="frame" x="24" y="10.000000000000002" width="366" height="28.666666666666671"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R2V-xg-rmY">
-                                        <rect key="frame" x="0.0" y="61.666666666666686" width="414" height="756.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="52.666666666666686" width="414" height="738.33333333333326"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eNq-aN-Qtm">
                                             <size key="itemSize" width="414" height="97"/>
@@ -951,7 +969,7 @@
                                     <constraint firstAttribute="trailing" secondItem="G6H-m0-aVG" secondAttribute="trailing" constant="24" id="Jlq-QK-QCG"/>
                                     <constraint firstItem="R2V-xg-rmY" firstAttribute="top" secondItem="G6H-m0-aVG" secondAttribute="bottom" constant="14" id="Nm7-zz-JRm"/>
                                     <constraint firstAttribute="trailing" secondItem="R2V-xg-rmY" secondAttribute="trailing" id="OTb-8Q-kVI"/>
-                                    <constraint firstItem="G6H-m0-aVG" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" constant="20" id="p3i-2S-mTA"/>
+                                    <constraint firstItem="G6H-m0-aVG" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" constant="10" id="h7O-fl-l3a"/>
                                     <constraint firstItem="G6H-m0-aVG" firstAttribute="leading" secondItem="aW3-Eu-ZXR" secondAttribute="leading" constant="24" id="xRr-Wu-HEp"/>
                                 </constraints>
                             </view>
@@ -959,13 +977,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Zf2-Bm-0QO" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="2fR-eu-zmN"/>
+                            <constraint firstItem="q9L-jX-ymC" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="5Xr-l4-L9c"/>
+                            <constraint firstItem="q9L-jX-ymC" firstAttribute="trailing" secondItem="R3P-T3-czl" secondAttribute="trailing" id="649-FB-uKc"/>
+                            <constraint firstItem="qRs-WI-Kol" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" id="6Bt-Jj-xQm"/>
+                            <constraint firstItem="q9L-jX-ymC" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" constant="17" id="87N-rf-AKQ"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="bottom" secondItem="Zf2-Bm-0QO" secondAttribute="bottom" id="9o8-NR-2tP"/>
+                            <constraint firstItem="Zf2-Bm-0QO" firstAttribute="top" secondItem="q9L-jX-ymC" secondAttribute="bottom" constant="10" id="Ad2-fS-3ai"/>
+                            <constraint firstItem="Zf2-Bm-0QO" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" id="GBQ-ch-ebv"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="aW3-Eu-ZXR" secondAttribute="trailing" id="GpC-vH-GV5"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="IKw-E4-nkK"/>
-                            <constraint firstItem="Zf2-Bm-0QO" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" id="JaY-HV-TPW"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="qRs-WI-Kol" secondAttribute="trailing" id="Uxt-uj-gs2"/>
-                            <constraint firstItem="qRs-WI-Kol" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" id="WZR-MB-eON"/>
-                            <constraint firstItem="aW3-Eu-ZXR" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" id="dDF-h9-4pM"/>
                             <constraint firstItem="aW3-Eu-ZXR" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="gbf-PJ-iSf"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="height" secondItem="fEe-g3-7ko" secondAttribute="height" multiplier="1/2" id="qTo-Cf-Dt3"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="bottom" secondItem="aW3-Eu-ZXR" secondAttribute="bottom" id="qxC-MS-MiV"/>
@@ -974,6 +995,7 @@
                         <viewLayoutGuide key="safeArea" id="R3P-T3-czl"/>
                     </view>
                     <connections>
+                        <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
                         <outlet property="emptyListImageView" destination="vsu-rv-NVr" id="h8S-dx-S0Y"/>
                         <outlet property="emptyListSubtitle" destination="4mB-KN-La8" id="7s4-M0-g5C"/>
                         <outlet property="emptyListTitle" destination="kqx-vg-iEE" id="jvg-OG-v8a"/>

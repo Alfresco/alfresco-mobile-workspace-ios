@@ -33,17 +33,24 @@ class SearchViewModel {
     var accountService: AccountService?
     weak var viewModelDelegate: SearchViewModelDelegate?
     var liveSearchTimer: Timer?
+    var searchChips: [SearchChipItem] = []
 
     // MARK: - Init
 
     init(accountService: AccountService?) {
         self.accountService = accountService
+        searchChips = [SearchChipItem(name: LocalizationConstants.Search.chipFiles, cmdType: "'cm:content'", selected: true),
+                       SearchChipItem(name: LocalizationConstants.Search.chipFolders, cmdType: "'cm:folder'", selected: true)]
     }
 
     // MARK: - Public methods
 
     func recentSearches() -> [String] {
         return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
+    }
+
+    func chips() -> [SearchChipItem] {
+        return searchChips
     }
 
     func save(recentSearch string: String?) {
@@ -89,11 +96,12 @@ class SearchViewModel {
 
     func performLiveSearch(for string: String?) {
         liveSearchTimer?.invalidate()
-        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "", searchString.count > 2 else {
+        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "",
+            searchString.count >= kMinCharactersForLiveSearch else {
             self.viewModelDelegate?.search(results: nil)
             return
         }
-        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false, block: { [weak self] (timer) in
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)
@@ -104,19 +112,55 @@ class SearchViewModel {
 
     private func searchRequest(_ string: String) -> SearchRequest {
         let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string + "*")
-        let defaultRequest = RequestDefaults(textAttributes: nil, defaultFTSOperator: nil, defaultFTSFieldOperator: .and, namespace: nil, defaultFieldName: "keywords")
-        let templates = RequestTemplates([RequestTemplatesInner(name: defaultRequest.defaultFieldName, template: "%(cm:name cm:title cm:description TEXT TAG)")])
-        let filterQueries = RequestFilterQueries([RequestFilterQueriesInner(query: "+TYPE:'cm:folder' OR +TYPE:'cm:content'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-TYPE:'cm:thumbnail' AND -TYPE:'cm:failedThumbnail' AND -TYPE:'cm:rating'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-cm:creator:System AND -QNAME:comment", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-TYPE:'st:site' AND -ASPECT:'st:siteContainer' AND -ASPECT:'sys:hidden'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-TYPE:'dl:dataList' AND -TYPE:'dl:todoList' AND -TYPE:'dl:issue'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-TYPE:'fm:topic' AND -TYPE:'fm:post'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-TYPE:'lnk:link'", tags: nil),
-                                                  RequestFilterQueriesInner(query: "-PNAME:'0/wiki'", tags: nil)])
-        let sortRequest = RequestSortDefinition([RequestSortDefinitionInner(type: .field, field: "score", ascending: false)])
+        let defaultRequest = self.defaultRequest()
+
+        let templates = RequestTemplates([defaultTemplate(name: defaultRequest.defaultFieldName)])
+
+        var filterQueries = self.defaultNoFilters()
+        filterQueries.append(self.defaultFilesAndFolderFilter())
+        if let chipFilterQuerry = self.chipsFilters(), chipFilterQuerry.query != self.defaultFilesAndFolderFilter().query {
+            filterQueries.append(chipFilterQuerry)
+        }
+
+        let sortRequest = RequestSortDefinition([self.defaultSort()])
 
         let searchRequest = SearchRequest(query: requestQuery, paging: nil, include: ["path"], includeRequest: nil, fields: nil, sort: sortRequest, templates: templates, defaults: defaultRequest, localization: nil, filterQueries: filterQueries, facetQueries: nil, facetFields: nil, facetIntervals: nil, pivots: nil, stats: nil, spellcheck: nil, scope: nil, limits: nil, highlight: nil, ranges: nil)
         return searchRequest
+    }
+
+    private func chipsFilters() -> RequestFilterQueriesInner? {
+        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.cmdType }).joined(separator: " OR "),
+                                         tags: nil)
+
+    }
+
+    private func defaultRequest() -> RequestDefaults {
+        return RequestDefaults(textAttributes: nil,
+                               defaultFTSOperator: nil,
+                               defaultFTSFieldOperator: .and,
+                               namespace: nil,
+                               defaultFieldName: "keywords")
+    }
+
+    private func defaultTemplate(name: String?) -> RequestTemplatesInner {
+       return RequestTemplatesInner(name: name, template: "%(cm:name cm:title cm:description TEXT TAG)")
+    }
+
+    private func defaultFilesAndFolderFilter() -> RequestFilterQueriesInner {
+        return RequestFilterQueriesInner(query: "+TYPE:'cm:content' OR +TYPE:'cm:folder'", tags: nil)
+    }
+
+    private func defaultNoFilters() -> [RequestFilterQueriesInner] {
+        return [RequestFilterQueriesInner(query: "-TYPE:'cm:thumbnail' AND -TYPE:'cm:failedThumbnail' AND -TYPE:'cm:rating'", tags: nil),
+                RequestFilterQueriesInner(query: "-cm:creator:System AND -QNAME:comment", tags: nil),
+                RequestFilterQueriesInner(query: "-TYPE:'st:site' AND -ASPECT:'st:siteContainer' AND -ASPECT:'sys:hidden'", tags: nil),
+                RequestFilterQueriesInner(query: "-TYPE:'dl:dataList' AND -TYPE:'dl:todoList' AND -TYPE:'dl:issue'", tags: nil),
+                RequestFilterQueriesInner(query: "-TYPE:'fm:topic' AND -TYPE:'fm:post'", tags: nil),
+                RequestFilterQueriesInner(query: "-TYPE:'lnk:link'", tags: nil),
+                RequestFilterQueriesInner(query: "-PNAME:'0/wiki'", tags: nil)]
+    }
+
+    private func defaultSort() -> RequestSortDefinitionInner {
+        return RequestSortDefinitionInner(type: .field, field: "score", ascending: false)
     }
 }

@@ -18,20 +18,14 @@
 
 import Foundation
 
-/**
- The theming scenes enum structure is intended to be used as a component identifier in a particular UI
- setup.
- - Note: Basic convetion for creating a scene enum value is to referene a UI component from a scene
- or screen. Eg. a scene for the login button would be *loginButton*. If variations for that specific components
- are available you could construct it by specifyng the intent as well i.e. *identityServiceLoginButton*.
-*/
-enum MaterialComponentsThemingScene {
-    case loginTextField
-    case loginButton
-    case loginAdvancedSettingsButton
-    case loginNeedHelpButton
-    case loginResetButton
-    case loginSavePadButton
-    case signOutButton
-    case searchChip
+struct SearchChipItem {
+    var name: String
+    var cmdType: String
+    var selected: Bool
+
+    init(name: String, cmdType: String, selected: Bool = true) {
+        self.name = name
+        self.cmdType = cmdType
+        self.selected = selected
+    }
 }
