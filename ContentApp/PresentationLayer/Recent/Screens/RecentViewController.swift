@@ -159,6 +159,8 @@ extension RecentViewController: RecentViewModelDelegate {
 
 extension RecentViewController: ResultScreenDelegate {
     func chipTapped() {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.startLoading()
         searchViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 
