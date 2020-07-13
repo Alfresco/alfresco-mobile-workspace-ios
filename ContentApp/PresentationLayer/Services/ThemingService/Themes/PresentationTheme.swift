@@ -95,4 +95,7 @@ protocol PresentationTheme {
     var settingsIconColor: UIColor { get }
     var searchChipSelectedColor: UIColor { get }
     var searchChipUnselectedColor: UIColor { get }
+    var tabBarBackgroundColor: UIColor { get }
+    var tabBarUnselectedItemTinColor: UIColor { get }
+    var tabBarSelectedItemTintColor: UIColor { get }
 }

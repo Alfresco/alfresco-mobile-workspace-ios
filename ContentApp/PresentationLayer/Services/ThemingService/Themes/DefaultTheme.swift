@@ -95,4 +95,7 @@ struct DefaultTheme: PresentationTheme {
     var settingsIconColor = #colorLiteral(red: 0.3254901961, green: 0.3254901961, blue: 0.3254901961, alpha: 1)
     var searchChipSelectedColor = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
     var searchChipUnselectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6)
+    var tabBarBackgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var tabBarUnselectedItemTinColor = #colorLiteral(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
+    var tabBarSelectedItemTintColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
 }
