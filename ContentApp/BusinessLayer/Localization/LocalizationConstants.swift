@@ -66,6 +66,7 @@ struct LocalizationConstants {
         static let settings = NSLocalizedString("settings", comment: "")
         static let recent = NSLocalizedString("recent", comment: "")
         static let favorites = NSLocalizedString("favorites", comment: "")
+        static let browse = NSLocalizedString("browse", comment: "")
     }
 
     struct Textviews {

@@ -34,8 +34,7 @@ class RecentScreenCoordinator: Coordinator {
         viewController.recentViewModel = RecentViewModel(accountService: accountService)
         viewController.searchViewModel = SearchViewModel(accountService: accountService)
         viewController.tabBarScreenDelegate = presenter
-        viewController.tabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
-                                                 image: UIImage(named: "recent-unselected"), selectedImage: UIImage(named: "recent-selected"))
+
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
         self.navigationViewController = navigationViewController
