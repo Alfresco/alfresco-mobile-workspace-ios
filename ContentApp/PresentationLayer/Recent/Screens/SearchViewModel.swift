@@ -68,6 +68,7 @@ class SearchViewModel {
     }
 
     func performSearch(for string: String?) {
+        liveSearchTimer?.invalidate()
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
             self.viewModelDelegate?.search(results: nil)
             return
