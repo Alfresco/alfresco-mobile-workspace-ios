@@ -165,11 +165,9 @@ extension RecentViewController: ResultScreenDelegate {
     }
 
     func recentSearchTapped(string: String) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        guard let searchBar = navigationItem.searchController?.searchBar else { return }
         searchBar.text = string
         searchViewModel?.performLiveSearch(for: string)
-        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
     }
 
     func nodeListTapped(nodeList: ListNode) {

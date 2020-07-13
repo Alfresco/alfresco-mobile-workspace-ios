@@ -92,13 +92,13 @@ class ResultViewController: UIViewController {
     }
 
     func updateDataSource(_ results: [ListNode]?) {
+        if resultsNodes.count > 0 {
+            resultNodescollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
         if let results = results {
             resultsNodes = results
             emptyListView.isHidden = !results.isEmpty
             recentSearchesView.isHidden = true
-            if results.count > 0 && resultNodescollectionView.scrollsToTop {
-                resultNodescollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-            }
         } else {
             resultsNodes = []
             emptyListView.isHidden = true
@@ -109,12 +109,12 @@ class ResultViewController: UIViewController {
     }
 
     func updateRecentSearches(_ array: [String]) {
+        if recentSearches.count > 0 {
+            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+        }
         recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         recentSearches = array
         activityIndicator?.state = .isIdle
-        if array.count > 0 {
-            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-        }
         recentSearchCollectionView.reloadData()
     }
 
