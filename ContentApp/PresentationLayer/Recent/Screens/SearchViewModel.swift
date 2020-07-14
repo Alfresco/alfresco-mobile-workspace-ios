@@ -128,7 +128,7 @@ class SearchViewModel {
 
         let sortRequest = RequestSortDefinition([self.defaultSort()])
 
-        let searchRequest = SearchRequest(query: requestQuery, paging: self.defaultPagging(), include: ["path"], includeRequest: nil, fields: nil, sort: sortRequest, templates: templates, defaults: defaultRequest, localization: nil, filterQueries: filterQueries, facetQueries: nil, facetFields: nil, facetIntervals: nil, pivots: nil, stats: nil, spellcheck: nil, scope: nil, limits: nil, highlight: nil, ranges: nil)
+        let searchRequest = SearchRequest(query: requestQuery, paging: self.defaultPaging(), include: ["path"], includeRequest: nil, fields: nil, sort: sortRequest, templates: templates, defaults: defaultRequest, localization: nil, filterQueries: filterQueries, facetQueries: nil, facetFields: nil, facetIntervals: nil, pivots: nil, stats: nil, spellcheck: nil, scope: nil, limits: nil, highlight: nil, ranges: nil)
         return searchRequest
     }
 
@@ -167,7 +167,7 @@ class SearchViewModel {
         return RequestSortDefinitionInner(type: .field, field: "score", ascending: false)
     }
 
-    private func defaultPagging() -> RequestPagination {
+    private func defaultPaging() -> RequestPagination {
         return RequestPagination(maxItems: 25, skipCount: 0)
     }
 }
