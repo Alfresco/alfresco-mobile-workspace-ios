@@ -973,11 +973,16 @@
                                     <constraint firstItem="G6H-m0-aVG" firstAttribute="leading" secondItem="aW3-Eu-ZXR" secondAttribute="leading" constant="24" id="xRr-Wu-HEp"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l9w-nJ-V5L">
+                                <rect key="frame" x="0.0" y="94" width="414" height="802"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Zf2-Bm-0QO" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="2fR-eu-zmN"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="5Xr-l4-L9c"/>
+                            <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="l9w-nJ-V5L" secondAttribute="trailing" id="5ba-PH-bZl"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="trailing" secondItem="R3P-T3-czl" secondAttribute="trailing" id="649-FB-uKc"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" id="6Bt-Jj-xQm"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" constant="17" id="87N-rf-AKQ"/>
@@ -987,7 +992,10 @@
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="aW3-Eu-ZXR" secondAttribute="trailing" id="GpC-vH-GV5"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="IKw-E4-nkK"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="qRs-WI-Kol" secondAttribute="trailing" id="Uxt-uj-gs2"/>
+                            <constraint firstItem="l9w-nJ-V5L" firstAttribute="top" secondItem="q9L-jX-ymC" secondAttribute="bottom" id="WfF-OF-leV"/>
                             <constraint firstItem="aW3-Eu-ZXR" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="gbf-PJ-iSf"/>
+                            <constraint firstAttribute="bottom" secondItem="l9w-nJ-V5L" secondAttribute="bottom" id="loW-Ai-1VS"/>
+                            <constraint firstItem="l9w-nJ-V5L" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="mzF-2b-3kg"/>
                             <constraint firstItem="qRs-WI-Kol" firstAttribute="height" secondItem="fEe-g3-7ko" secondAttribute="height" multiplier="1/2" id="qTo-Cf-Dt3"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="bottom" secondItem="aW3-Eu-ZXR" secondAttribute="bottom" id="qxC-MS-MiV"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="Zf2-Bm-0QO" secondAttribute="trailing" id="zZs-DG-FnI"/>
@@ -995,6 +1003,7 @@
                         <viewLayoutGuide key="safeArea" id="R3P-T3-czl"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorSuperview" destination="l9w-nJ-V5L" id="tXe-CC-7yP"/>
                         <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
                         <outlet property="emptyListImageView" destination="vsu-rv-NVr" id="h8S-dx-S0Y"/>
                         <outlet property="emptyListSubtitle" destination="4mB-KN-La8" id="7s4-M0-g5C"/>

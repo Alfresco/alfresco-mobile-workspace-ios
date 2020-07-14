@@ -30,6 +30,7 @@ protocol ResultScreenDelegate: class {
 
 class ResultViewController: UIViewController {
 
+    @IBOutlet weak var activityIndicatorSuperview: UIView!
     @IBOutlet weak var resultNodescollectionView: UICollectionView!
 
     @IBOutlet weak var chipsCollectionView: UICollectionView!
@@ -76,7 +77,8 @@ class ResultViewController: UIViewController {
                                                                                                 strokeWidth: 2,
                                                                                                 cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
         if let activityIndicator = activityIndicator {
-            self.view.addSubview(activityIndicator)
+            activityIndicatorSuperview.addSubview(activityIndicator)
+            activityIndicatorSuperview.isHidden = true
         }
     }
 
@@ -85,10 +87,30 @@ class ResultViewController: UIViewController {
         view.isHidden = false
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        activityIndicator?.reload(from: size)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        themingService?.activateUserSelectedTheme()
+        addMaterialComponentsTheme()
+        resultNodescollectionView.reloadData()
+        chipsCollectionView.reloadData()
+        recentSearchCollectionView.reloadData()
+    }
+
     // MARK: - Public Helpers
 
     func startLoading() {
+        activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
+    }
+
+    func stopLoading() {
+        activityIndicatorSuperview.isHidden = true
+        activityIndicator?.state = .isIdle
     }
 
     func updateDataSource(_ results: [ListNode]?) {
@@ -104,7 +126,7 @@ class ResultViewController: UIViewController {
             emptyListView.isHidden = true
             recentSearchesView.isHidden = false
         }
-        activityIndicator?.state = .isIdle
+        stopLoading()
         resultNodescollectionView.reloadData()
     }
 
@@ -114,7 +136,7 @@ class ResultViewController: UIViewController {
         }
         recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         recentSearches = array
-        activityIndicator?.state = .isIdle
+        stopLoading()
         recentSearchCollectionView.reloadData()
     }
 
