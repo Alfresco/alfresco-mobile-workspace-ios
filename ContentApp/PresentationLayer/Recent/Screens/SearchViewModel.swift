@@ -112,7 +112,7 @@ class SearchViewModel {
     // MARK: - Private methods
 
     private func searchRequest(_ string: String) -> SearchRequest {
-        let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: "\"" + string + "*" + "\"")
+        let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string + "*")
         let defaultRequest = self.defaultRequest()
 
         let templates = RequestTemplates([defaultTemplate(name: defaultRequest.defaultFieldName)])
