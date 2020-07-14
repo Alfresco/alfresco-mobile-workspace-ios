@@ -215,7 +215,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             cell?.chipView.titleLabel.text = chip.name
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredHorizontally)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
                 cell?.isSelected = true
             }
             if let themeService = self.themingService {
@@ -237,7 +237,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let chip = chips[indexPath.row]
             chip.selected = true
             resultScreenDelegate?.chipTapped()
-            collectionView.reloadItems(at: [indexPath])
         default: break
         }
     }
@@ -248,7 +247,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let chip = chips[indexPath.row]
             chip.selected = false
             resultScreenDelegate?.chipTapped()
-            collectionView.reloadItems(at: [indexPath])
         default: break
         }
     }
