@@ -46,7 +46,7 @@ let kAnimationSplashScreenContainerViews = 1.5
 // MARK: - Timers
 let kAIMSAccessTokenRefreshTimeBuffer = 20.0
 let kSessionExpirationTimeIntervalCheck = 20
-let kSearchTimerBuffer = 1.0
+let kSearchTimerBuffer = 0.7
 
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
