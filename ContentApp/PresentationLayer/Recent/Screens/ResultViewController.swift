@@ -132,7 +132,7 @@ class ResultViewController: UIViewController {
 
     func updateRecentSearches(_ array: [String]) {
         if recentSearches.count > 0 {
-            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
         recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         recentSearches = array
