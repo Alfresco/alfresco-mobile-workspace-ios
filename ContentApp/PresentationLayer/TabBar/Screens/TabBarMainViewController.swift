@@ -17,7 +17,7 @@
 //
 
 import UIKit
-import MaterialComponents.MaterialBottomNavigation
+import MaterialComponents
 
 protocol TabBarScreenDelegate: class {
     func showSettingsScreen()
@@ -34,19 +34,15 @@ class TabBarMainViewController: UITabBarController {
     // MARK: - View Life Cycle
 
     deinit {
-        if let observer = observation {
-            self.removeObserver(observer, forKeyPath: "tabBar.isHidden")
-        }
+        observation?.invalidate()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        observation = observe(
-            \.tabBar.isHidden,
-            options: [.old, .new]
-        ) { [weak self] _, change in
+        observation =  observe(\.tabBar.isHidden, options: [.old, .new]) { [weak self] _, change in
             guard let sSelf = self else { return }
             sSelf.bottomNavigationBar.isHidden = change.newValue ?? false
+            sSelf.addMaterialComponentsTheme()
         }
     }
 
@@ -89,6 +85,13 @@ class TabBarMainViewController: UITabBarController {
     }
 
     func addMaterialComponentsTheme() {
+        if let tabBarScheme = themingService?.containerScheming(for: .applicationTabBar),
+            let selectedItemColor = themingService?.activeTheme?.tabBarSelectedItemTintColor,
+            let unselectedItemColor = themingService?.activeTheme?.tabBarUnselectedItemTinColor {
+            bottomNavigationBar.applyPrimaryTheme(withScheme: tabBarScheme)
+            bottomNavigationBar.selectedItemTintColor = selectedItemColor
+            bottomNavigationBar.unselectedItemTintColor = unselectedItemColor
+        }
         if #available(iOS 13.0, *) {
             navigationController?.navigationBar.tintColor = .label
         } else {
