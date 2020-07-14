@@ -236,6 +236,10 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let chip = chips[indexPath.row]
             chip.selected = true
+            if let themeService = self.themingService {
+                let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+                cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
+            }
             resultScreenDelegate?.chipTapped()
         default: break
         }
@@ -246,6 +250,10 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let chip = chips[indexPath.row]
             chip.selected = false
+            if let themeService = self.themingService {
+                let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+                cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
+            }
             resultScreenDelegate?.chipTapped()
         default: break
         }
