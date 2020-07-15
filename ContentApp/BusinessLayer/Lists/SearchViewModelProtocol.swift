@@ -23,6 +23,7 @@ protocol SearchViewModelProtocol {
     var viewModelDelegate: SearchViewModelDelegate? { get set }
     var searchChips: [SearchChipItem] { get set }
 
+    func defaultSearchChips() -> [SearchChipItem]
     func performSearch(for string: String?)
     func performLiveSearch(for string: String?)
     func save(recentSearch string: String?)

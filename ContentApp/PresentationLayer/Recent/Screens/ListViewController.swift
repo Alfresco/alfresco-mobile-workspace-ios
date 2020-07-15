@@ -203,9 +203,9 @@ extension ListViewController: UISearchResultsUpdating {
 
 extension ListViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-        rvc.updateChips(listViewModel?.searchChips ?? [])
-        rvc.updateRecentSearches(listViewModel?.recentSearches() ?? [])
+        guard let rvc = searchController.searchResultsController as? ResultViewController, let listViewModel = self.listViewModel else { return }
+        rvc.updateChips(listViewModel.defaultSearchChips())
+        rvc.updateRecentSearches(listViewModel.recentSearches())
         rvc.updateDataSource(nil)
     }
 }

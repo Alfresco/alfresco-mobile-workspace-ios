@@ -33,7 +33,7 @@ class RecentScreenCoordinator: Coordinator {
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         viewController.recentViewModel = RecentViewModel(with: accountService, listRequest: nil)
-        viewController.listViewModel = SearchViewModel(accountService: accountService)
+        viewController.listViewModel = GlobalSearchViewModel(accountService: accountService)
         viewController.tabBarScreenDelegate = presenter
 
         let navigationViewController = UINavigationController(rootViewController: viewController)

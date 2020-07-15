@@ -19,11 +19,11 @@
 import Foundation
 import AlfrescoContentServices
 
-class SearchViewModel: SearchViewModelProtocol {
+class GlobalSearchViewModel: SearchViewModelProtocol {
     var nodes: [ListNode] = []
     var accountService: AccountService?
-    var searchChips: [SearchChipItem] = [SearchChipItem(name: LocalizationConstants.Search.chipFiles, cmdType: "'cm:content'"),
-                                         SearchChipItem(name: LocalizationConstants.Search.chipFolders, cmdType: "'cm:folder'")]
+    var searchChips: [SearchChipItem] = []
+
     weak var viewModelDelegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
@@ -35,6 +35,12 @@ class SearchViewModel: SearchViewModelProtocol {
     }
 
     // MARK: - Public methods
+
+    func defaultSearchChips() -> [SearchChipItem] {
+        searchChips = [SearchChipItem(name: LocalizationConstants.Search.chipFiles, cmdType: "'cm:content'"),
+                       SearchChipItem(name: LocalizationConstants.Search.chipFolders, cmdType: "'cm:folder'")]
+        return searchChips
+    }
 
     func recentSearches() -> [String] {
         return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
