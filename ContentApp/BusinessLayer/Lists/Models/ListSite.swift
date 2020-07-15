@@ -19,22 +19,24 @@
 import Foundation
 import AlfrescoContentServices
 
-protocol SearchViewModelProtocol {
-    var viewModelDelegate: SearchViewModelDelegate? { get set }
-    var searchChips: [SearchChipItem] { get set }
+struct ListSite: ListElementProtocol {
+    var title: String
+    var icon: String
+    var path: String
+    var site: Site
 
-    func defaultSearchChips() -> [SearchChipItem]
-    func performSearch(for string: String?)
-    func performLiveSearch(for string: String?)
-    func save(recentSearch string: String?)
-    func recentSearches() -> [String]
-}
+    init(with site: Site) {
+        self.title = site.title
+        self.icon = "cm:site"
+        self.path = ""
+        self.site = site
+    }
 
-protocol SearchViewModelDelegate: class {
-    /**
-     Handle search results
-     - results: list of nodes from a search operation
-     - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
-     */
-    func handle(results: [ListNode]?)
+    static func sites(_ entries: [SiteEntry]) -> [ListSite] {
+        var sites: [ListSite] = []
+        for entry in entries {
+            sites.append(ListSite(with: entry.entry))
+        }
+        return sites
+    }
 }

@@ -42,7 +42,7 @@ struct SearchRequestBuilder {
     }
 
     private static func requestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.cmdType }).joined(separator: " OR "),
+        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
                                          tags: nil)
     }
 

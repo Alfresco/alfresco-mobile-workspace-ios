@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "library_books_24px.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

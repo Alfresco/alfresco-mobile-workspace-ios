@@ -21,7 +21,7 @@ import AlfrescoContentServices
 
 protocol ListViewModelProtocol {
     var listRequest: SearchRequest? { get }
-    var nodes: [ListNode] { get }
+    var resultsList: [ListElementProtocol] { get }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
