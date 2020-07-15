@@ -30,6 +30,7 @@ class SettingsViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
+
         navigationController?.setNavigationBarHidden(false, animated: true)
         addLocalization()
     }
@@ -88,7 +89,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell?.item = item
         cell?.delegate = self
-        cell?.applyThemingService(themingService)
+        cell?.applyTheme(with: themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)
         } else {

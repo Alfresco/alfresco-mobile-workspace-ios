@@ -20,7 +20,7 @@ import UIKit
 
 class RecentScreenCoordinator: Coordinator {
     private let presenter: TabBarMainViewController
-    private var recentViewController: RecentViewController?
+    private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
 
     init(with presenter: TabBarMainViewController) {
@@ -28,11 +28,12 @@ class RecentScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = RecentViewController.instantiateViewController()
+        let viewController = ListViewController.instantiateViewController()
+        viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        viewController.recentViewModel = RecentViewModel(accountService: accountService)
-        viewController.searchViewModel = SearchViewModel(accountService: accountService)
+        viewController.recentViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        viewController.listViewModel = SearchViewModel(accountService: accountService)
         viewController.tabBarScreenDelegate = presenter
 
         let navigationViewController = UINavigationController(rootViewController: viewController)

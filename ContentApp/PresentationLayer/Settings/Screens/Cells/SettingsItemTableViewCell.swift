@@ -43,8 +43,8 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
         super.setSelected(selected, animated: animated)
     }
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        guard let currentTheme = themingService?.activeTheme else { return }
+    func applyTheme(with service: MaterialDesignThemingService?) {
+        guard let currentTheme = service?.activeTheme else { return }
         titleLabel.font = currentTheme.settingsTitleLabelFont
         titleLabel.textColor = currentTheme.settingsTitleLabelColor
         subtitleLabel.font = currentTheme.settingsSubtitleLabelFont

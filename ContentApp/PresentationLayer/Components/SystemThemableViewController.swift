@@ -21,8 +21,18 @@ import UIKit
 class SystemThemableViewController: UIViewController {
     var themingService: MaterialDesignThemingService?
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        applyComponentsThemes()
+    }
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         themingService?.activateUserSelectedTheme()
+        applyComponentsThemes()
+    }
+
+    func applyComponentsThemes() {
+        // Override in subclass
     }
 }

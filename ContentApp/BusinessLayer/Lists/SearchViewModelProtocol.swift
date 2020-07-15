@@ -16,16 +16,24 @@
 //  limitations under the License.
 //
 
-import UIKit
 import Foundation
+import AlfrescoContentServices
 
-protocol SettingsTableViewCellDelegate: class {
-    func signOutButtonTapped(for item: SettingsItem)
+protocol SearchViewModelProtocol {
+    var viewModelDelegate: SearchViewModelDelegate? { get set }
+    var searchChips: [SearchChipItem] { get set }
+
+    func performSearch(for string: String?)
+    func performLiveSearch(for string: String?)
+    func save(recentSearch string: String?)
+    func recentSearches() -> [String]
 }
 
-protocol SettingsTablewViewCellProtocol: UITableViewCell {
-    var delegate: SettingsTableViewCellDelegate? { get set }
-    var item: SettingsItem? { get set }
-    func applyTheme(with service: MaterialDesignThemingService?)
-    func shouldHideSeparator(hidden: Bool)
+protocol SearchViewModelDelegate: class {
+    /**
+     Handle search results
+     - results: list of nodes from a search operation
+     - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
+     */
+    func handle(results: [ListNode]?)
 }
