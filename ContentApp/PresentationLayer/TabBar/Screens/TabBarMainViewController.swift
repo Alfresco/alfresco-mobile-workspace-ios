@@ -29,7 +29,9 @@ class TabBarMainViewController: UITabBarController {
 
     var themingService: MaterialDesignThemingService?
     weak var tabBarCoordinatorDelegate: TabBarScreenCoordinatorDelegate?
-    var observation: NSKeyValueObservation?
+
+    private var observation: NSKeyValueObservation?
+    private let itemsContentVerticalMargin: CGFloat = 5.0
 
     // MARK: - View Life Cycle
 
@@ -91,6 +93,7 @@ class TabBarMainViewController: UITabBarController {
             bottomNavigationBar.applyPrimaryTheme(withScheme: tabBarScheme)
             bottomNavigationBar.selectedItemTintColor = selectedItemColor
             bottomNavigationBar.unselectedItemTintColor = unselectedItemColor
+            bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
         }
         if #available(iOS 13.0, *) {
             navigationController?.navigationBar.tintColor = .label
