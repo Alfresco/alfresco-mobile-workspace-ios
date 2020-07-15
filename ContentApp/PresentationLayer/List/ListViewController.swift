@@ -18,44 +18,33 @@
 
 import UIKit
 
-class RecentViewController: UIViewController {
-
+class ListViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
-    var settingsButton = UIButton(type: .custom)
 
-    var themingService: MaterialDesignThemingService?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    var recentViewModel: RecentViewModel?
-    var searchViewModel: SearchViewModel?
+    var recentViewModel: ListViewModelProtocol?
+    var listViewModel: SearchViewModelProtocol?
 
-    var settingsButtonHeight: CGFloat = 30
-    var cellNodeHeight: CGFloat = 64
+    private var settingsButtonHeight: CGFloat = 30
+    private var cellNodeHeight: CGFloat = 64
+    private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        recentViewModel?.viewModelDelegate = self
-        searchViewModel?.viewModelDelegate = self
+        listViewModel?.viewModelDelegate = self
 
         configureNavigationBar()
         addSettingsButton()
         addSearchController()
 
-        addLocalization()
         registerAlfrescoNodeCell()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         addAvatarInSettingsButton()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -104,7 +93,14 @@ class RecentViewController: UIViewController {
     }
 
     func addAvatarInSettingsButton() {
-        settingsButton.setImage(self.recentViewModel?.getAvatar(), for: .normal)
+        let avatarImage = recentViewModel?.getAvatar(completionHandler: { [weak self] image in
+            guard let sSelf = self else { return }
+
+            if let fetchedImage = image {
+                sSelf.settingsButton.setImage(fetchedImage, for: .normal)
+            }
+        })
+        settingsButton.setImage(avatarImage, for: .normal)
     }
 
     func registerAlfrescoNodeCell() {
@@ -112,11 +108,7 @@ class RecentViewController: UIViewController {
         collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
     }
 
-    func addLocalization() {
-        self.title = LocalizationConstants.ScreenTitles.recent
-    }
-
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         if #available(iOS 13.0, *) {
             navigationController?.navigationBar.tintColor = .label
             navigationItem.leftBarButtonItem?.tintColor = .label
@@ -129,7 +121,7 @@ class RecentViewController: UIViewController {
 
 // MARK: - UICollectionView DataSource & Delegate
 
-extension RecentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return recentViewModel?.nodes.count ?? 0
     }
@@ -147,38 +139,30 @@ extension RecentViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
 }
 
-// MARK: - Recent ViewModel Delegate
-
-extension RecentViewController: RecentViewModelDelegate {
-    func didUpdateAvatarImage(image: UIImage) {
-        settingsButton.setImage(image, for: .normal)
-    }
-}
-
 // MARK: - Result Screen Delegate
 
-extension RecentViewController: ResultScreenDelegate {
+extension ListViewController: ResultScreenDelegate {
     func chipTapped() {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.startLoading()
-        searchViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+        listViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 
     func recentSearchTapped(string: String) {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         searchBar.text = string
-        searchViewModel?.performLiveSearch(for: string)
+        listViewModel?.performLiveSearch(for: string)
     }
 
     func nodeListTapped(nodeList: ListNode) {
-        searchViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
+        listViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
     }
 }
 
 // MARK: - Search ViewModel Delegate
 
-extension RecentViewController: SearchViewModelDelegate {
-    func search(results: [ListNode]?) {
+extension ListViewController: SearchViewModelDelegate {
+    func handle(results: [ListNode]?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.updateDataSource(results)
     }
@@ -186,12 +170,12 @@ extension RecentViewController: SearchViewModelDelegate {
 
 // MARK: - UISearchBar Delegate
 
-extension RecentViewController: UISearchBarDelegate {
+extension ListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.startLoading()
-        searchViewModel?.performSearch(for: searchBar.text)
-        searchViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
+        listViewModel?.performSearch(for: searchBar.text)
+        listViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -201,14 +185,14 @@ extension RecentViewController: UISearchBarDelegate {
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        searchViewModel?.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
+        listViewModel?.performLiveSearch(for: searchText)
+        rvc.updateRecentSearches(listViewModel?.recentSearches() ?? [])
     }
 }
 
 // MARK: - UISearch Results Updating
 
-extension RecentViewController: UISearchResultsUpdating {
+extension ListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
@@ -217,15 +201,15 @@ extension RecentViewController: UISearchResultsUpdating {
 
 // MARK: - UISearchController Delegate
 
-extension RecentViewController: UISearchControllerDelegate {
+extension ListViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-        rvc.updateChips(searchViewModel?.defaultSearchChips() ?? [])
-        rvc.updateRecentSearches(searchViewModel?.recentSearches() ?? [])
+        guard let rvc = searchController.searchResultsController as? ResultViewController, let listViewModel = self.listViewModel else { return }
+        rvc.updateChips(listViewModel.defaultSearchChips())
+        rvc.updateRecentSearches(listViewModel.recentSearches())
         rvc.updateDataSource(nil)
     }
 }
 
 // MARK: - Storyboard Instantiable
 
-extension RecentViewController: StoryboardInstantiable { }
+extension ListViewController: StoryboardInstantiable { }

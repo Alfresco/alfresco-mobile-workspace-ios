@@ -53,8 +53,8 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
         }
     }
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        guard let themingService = themingService, let currentTheme = themingService.activeTheme else { return }
+    func applyTheme(with service: MaterialDesignThemingService?) {
+        guard let themingService = service, let currentTheme = themingService.activeTheme else { return }
         titleLabel.font = currentTheme.settingsTitleLabelFont
         titleLabel.textColor = currentTheme.settingsTitleLabelColor
 

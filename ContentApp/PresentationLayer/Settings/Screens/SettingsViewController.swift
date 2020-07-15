@@ -18,35 +18,30 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
-
+class SettingsViewController: SystemThemableViewController {
     @IBOutlet weak var tableView: UITableView!
 
     weak var settingsScreenCoordinatorDelegate: SettingsScreenCoordinatorDelegate?
-    var themingService: MaterialDesignThemingService?
+
     var viewModel: SettingsViewModel?
-    var heightCell: CGFloat = 64
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = heightCell
+
         navigationController?.setNavigationBarHidden(false, animated: true)
         addLocalization()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         self.tabBarController?.tabBar.isHidden = true
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
         tableView.reloadData()
     }
 
@@ -60,9 +55,6 @@ class SettingsViewController: UIViewController {
 
     func addLocalization() {
         self.title = LocalizationConstants.ScreenTitles.settings
-    }
-
-    func addMaterialComponentsTheme() {
     }
 }
 
@@ -97,7 +89,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell?.item = item
         cell?.delegate = self
-        cell?.applyThemingService(themingService)
+        cell?.applyTheme(with: themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)
         } else {
@@ -157,7 +149,6 @@ extension SettingsViewController: SettingsTableViewCellDelegate {
 extension SettingsViewController: ThemesModeScrenDelegate {
     func changeThemeMode() {
         viewModel?.reloadDataSource()
-        addMaterialComponentsTheme()
     }
 }
 

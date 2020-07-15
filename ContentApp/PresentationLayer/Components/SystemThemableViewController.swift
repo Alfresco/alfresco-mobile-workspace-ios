@@ -17,15 +17,22 @@
 //
 
 import UIKit
-import Foundation
 
-protocol SettingsTableViewCellDelegate: class {
-    func signOutButtonTapped(for item: SettingsItem)
-}
+class SystemThemableViewController: UIViewController {
+    var themingService: MaterialDesignThemingService?
 
-protocol SettingsTablewViewCellProtocol: UITableViewCell {
-    var delegate: SettingsTableViewCellDelegate? { get set }
-    var item: SettingsItem? { get set }
-    func applyTheme(with service: MaterialDesignThemingService?)
-    func shouldHideSeparator(hidden: Bool)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        applyComponentsThemes()
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        themingService?.activateUserSelectedTheme()
+        applyComponentsThemes()
+    }
+
+    func applyComponentsThemes() {
+        // Override in subclass
+    }
 }

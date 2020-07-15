@@ -19,51 +19,45 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
+import AlfrescoContentServices
 
-protocol RecentViewModelDelegate: class {
-    func didUpdateAvatarImage(image: UIImage)
-}
+class RecentViewModel: ListViewModelProtocol {
+    var listRequest: SearchRequest?
 
-class RecentViewModel {
     var nodes: [ListNode] = []
     var accountService: AccountService?
-    weak var viewModelDelegate: RecentViewModelDelegate?
     var apiClient: APIClientProtocol?
 
     // MARK: - Init
 
-    init(accountService: AccountService?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
-        fetchAvatar()
+        self.listRequest = listRequest
     }
 
-    func getAvatar() -> UIImage? {
+    func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
         if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: accountService?.activeAccount?.identifier ?? "") {
             return avatar
+        } else {
+            accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+                guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
+                sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
+                _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
+                    switch result {
+                    case .success(let data):
+                        if let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                completionHandler(image)
+                                DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
+                            }
+                        }
+                    case .failure(let error):
+                        AlfrescoLog.error(error)
+                    }
+                })
+            })
         }
+
         return UIImage(named: "account-circle")
     }
-
-    // MARK: - Private methods
-
-    private func fetchAvatar() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                switch result {
-                case .success(let data):
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            sSelf.viewModelDelegate?.didUpdateAvatarImage(image: image)
-                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                        }
-                    }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                }
-            })
-        })
-    }
-
 }

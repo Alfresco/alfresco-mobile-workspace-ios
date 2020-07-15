@@ -28,8 +28,7 @@ protocol ResultScreenDelegate: class {
     func chipTapped()
 }
 
-class ResultViewController: UIViewController {
-
+class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var activityIndicatorSuperview: UIView!
     @IBOutlet weak var resultNodescollectionView: UICollectionView!
 
@@ -45,7 +44,6 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
 
     weak var resultScreenDelegate: ResultScreenDelegate?
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
     var resultsNodes: [ListNode] = []
     var recentSearches: [String] = []
@@ -70,7 +68,6 @@ class ResultViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
                                                                                                 radius: 12,
@@ -94,8 +91,6 @@ class ResultViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
         resultNodescollectionView.reloadData()
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
@@ -158,7 +153,7 @@ class ResultViewController: UIViewController {
         recentSearchesTitle.text = LocalizationConstants.Search.noRecentSearch
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
         emptyListTitle.font = currentTheme.emptyListTitleLabelFont
         emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
@@ -210,7 +205,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return cell ?? UICollectionViewCell()
         case chipsCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MDCChipCollectionViewCell.self),
-                                                                     for: indexPath) as? MDCChipCollectionViewCell
+                                                          for: indexPath) as? MDCChipCollectionViewCell
             let chip = chips[indexPath.row]
             cell?.chipView.titleLabel.text = chip.name
             cell?.chipView.isSelected = chip.selected

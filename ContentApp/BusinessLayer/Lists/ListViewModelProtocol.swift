@@ -17,21 +17,12 @@
 //
 
 import UIKit
+import AlfrescoContentServices
 
-class NodeCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var subtitle: UILabel!
-    @IBOutlet weak var moreButton: UIButton!
-    var node: ListNode? {
-        didSet {
-            if let node = node {
-                title.text = node.title
-                subtitle.text = node.path
-            }
-        }
-    }
+protocol ListViewModelProtocol {
+    var listRequest: SearchRequest? { get }
+    var nodes: [ListNode] { get }
 
-    @IBAction func moreButtonTapped(_ sender: UIButton) {
-    }
+    init(with accountService: AccountService?, listRequest: SearchRequest?)
+    func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
 }
