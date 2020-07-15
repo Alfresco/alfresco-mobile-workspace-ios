@@ -66,7 +66,7 @@
 		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
 		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
-		E32B642E24B35C2100085472 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* SearchViewModel.swift */; };
+		E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */; };
 		E32B643124B360F100085472 /* AlfrescoNodeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */; };
 		E32B643224B360F100085472 /* AlfrescoNodeCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E32B643024B360F100085472 /* AlfrescoNodeCollectionViewCell.xib */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
@@ -198,7 +198,7 @@
 		E324779E24AB4F0B006D4B6F /* FileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIcon.swift; sourceTree = "<group>"; };
 		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
-		E32B642D24B35C2100085472 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSearchViewModel.swift; sourceTree = "<group>"; };
 		E32B642F24B360F100085472 /* AlfrescoNodeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoNodeCollectionViewCell.swift; sourceTree = "<group>"; };
 		E32B643024B360F100085472 /* AlfrescoNodeCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlfrescoNodeCollectionViewCell.xib; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -322,7 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */,
-				E32B642D24B35C2100085472 /* SearchViewModel.swift */,
+				E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */,
 				E30E341B24B87B7500836629 /* SearchChipItem.swift */,
 			);
 			path = Search;
@@ -348,7 +348,7 @@
 				B96B9AEC2480F7A80035AE97 /* Authentication */,
 				E3C128062498EB2700AE832F /* Settings */,
 				E3C128132498ECAD00AE832F /* TabBar */,
-				E3C1280D2498EC5200AE832F /* Recent */,
+				B9CCA30D24BF3AE700F1AD5C /* List */,
 				E3C128102498EC7C00AE832F /* Favorites */,
 				B99E1C4D247FE58B00116F05 /* Components */,
 				E3A2A8F9247E7D230046582C /* Extensions */,
@@ -555,6 +555,15 @@
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B9CCA30D24BF3AE700F1AD5C /* List */ = {
+			isa = PBXGroup;
+			children = (
+				E3D25C862493EF2E00FFD87F /* ListViewController.swift */,
+				E32B642B24B358FD00085472 /* ResultViewController.swift */,
+			);
+			path = List;
 			sourceTree = "<group>";
 		};
 		B9E7D5FF249115BA0056292B /* Session */ = {
@@ -788,55 +797,12 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		E3C1280D2498EC5200AE832F /* Recent */ = {
-			isa = PBXGroup;
-			children = (
-				E3C1280F2498EC6600AE832F /* Sub-Coordinators */,
-				E3C1280E2498EC6100AE832F /* Screens */,
-			);
-			path = Recent;
-			sourceTree = "<group>";
-		};
-		E3C1280E2498EC6100AE832F /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				E3D25C862493EF2E00FFD87F /* ListViewController.swift */,
-				E32B642B24B358FD00085472 /* ResultViewController.swift */,
-			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
-		E3C1280F2498EC6600AE832F /* Sub-Coordinators */ = {
-			isa = PBXGroup;
-			children = (
-				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
-			);
-			path = "Sub-Coordinators";
-			sourceTree = "<group>";
-		};
 		E3C128102498EC7C00AE832F /* Favorites */ = {
-			isa = PBXGroup;
-			children = (
-				E3C128122498EC8B00AE832F /* Sub-Coordinators */,
-				E3C128112498EC8600AE832F /* Screens */,
-			);
-			path = Favorites;
-			sourceTree = "<group>";
-		};
-		E3C128112498EC8600AE832F /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				E3D25C882493EF6B00FFD87F /* FavoritesViewController.swift */,
 			);
-			path = Screens;
-			sourceTree = "<group>";
-		};
-		E3C128122498EC8B00AE832F /* Sub-Coordinators */ = {
-			isa = PBXGroup;
-			children = (
-				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
-			);
-			path = "Sub-Coordinators";
+			path = Favorites;
 			sourceTree = "<group>";
 		};
 		E3C128132498ECAD00AE832F /* TabBar */ = {
@@ -859,7 +825,9 @@
 		E3C128152498ECBD00AE832F /* Sub-Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
 				E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */,
+				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -1026,7 +994,7 @@
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
-				E32B642E24B35C2100085472 /* SearchViewModel.swift in Sources */,
+				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
