@@ -19,6 +19,7 @@
 import UIKit
 
 class ListViewController: SystemThemableViewController {
+
     @IBOutlet weak var collectionView: UICollectionView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
@@ -33,6 +34,7 @@ class ListViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        listViewModel?.viewModelDelegate = self
         searchViewModel?.viewModelDelegate = self
 
         configureNavigationBar()
@@ -172,8 +174,14 @@ extension ListViewController: ResultScreenDelegate {
 extension ListViewController: SearchViewModelDelegate {
     func handle(results: [ListElementProtocol]?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
+        
         rvc.updateDataSource(results)
+    }
+}
+
+extension ListViewController: ListViewModelDelegate {
+    func handleRecent(results: [ListElementProtocol]?) {
+        collectionView.reloadData()
     }
 }
 
