@@ -36,28 +36,35 @@ class TabBarScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = TabBarMainViewController.instantiateViewController()
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.mainTabBarScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
 
-        let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
-                                            image: UIImage(named: "recent-unselected"),
-                                            selectedImage: UIImage(named: "recent-selected"))
-        recentTabBarItem.tag = 0
-        let favoritesTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
-                                               image: UIImage(named: "favorite-unselected"),
-                                               selectedImage: UIImage(named: "favorite-selected"))
-        favoritesTabBarItem.tag = 1
-        let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
-                                            image: UIImage(named: "browse-unselected"),
-                                            selectedImage: UIImage(named: "browse-selected"))
-        viewController.tabs = [recentTabBarItem, favoritesTabBarItem, browseTabBarItem]
+            let viewController = TabBarMainViewController.instantiateViewController()
 
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.tabBarCoordinatorDelegate = self
-        viewController.modalTransitionStyle = .crossDissolve
-        viewController.modalPresentationStyle = .fullScreen
-        self.tabBarMainViewController = viewController
+            let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
+                                                image: UIImage(named: "recent-unselected"),
+                                                selectedImage: UIImage(named: "recent-selected"))
+            recentTabBarItem.tag = 0
+            let favoritesTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
+                                                   image: UIImage(named: "favorite-unselected"),
+                                                   selectedImage: UIImage(named: "favorite-selected"))
+            favoritesTabBarItem.tag = 1
+            let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
+                                                image: UIImage(named: "browse-unselected"),
+                                                selectedImage: UIImage(named: "browse-selected"))
+            viewController.tabs = [recentTabBarItem, favoritesTabBarItem, browseTabBarItem]
 
-        presenter.present(viewController, animated: true, completion: nil)
+            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            viewController.tabBarCoordinatorDelegate = sSelf
+            viewController.modalTransitionStyle = .crossDissolve
+            viewController.modalPresentationStyle = .fullScreen
+            sSelf.tabBarMainViewController = viewController
+
+            return viewController
+        })
+
+        router?.present(route: NavigationRoutes.mainTabBarScreen.path, from: presenter)
     }
 }
 

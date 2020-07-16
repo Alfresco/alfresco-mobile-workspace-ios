@@ -33,11 +33,19 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = AdvancedSettingsViewController.instantiateViewController()
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.advSettingsScreenCoordinatorDelegate = self
-        presenter.pushViewController(viewController, animated: true)
-        advancedSettingsViewController = viewController
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.advancedSettingsScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
+
+            let viewController = AdvancedSettingsViewController.instantiateViewController()
+            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            viewController.advSettingsScreenCoordinatorDelegate = sSelf
+            sSelf.advancedSettingsViewController = viewController
+
+            return viewController
+        })
+
+        router?.push(route: NavigationRoutes.advancedSettingsScreen.path, from: presenter)
     }
 }
 

@@ -32,6 +32,7 @@ class ApplicationBootstrap {
         self.serviceRepository.register(service: themingService())
         self.serviceRepository.register(service: authenticationService())
         self.serviceRepository.register(service: accountService())
+        self.serviceRepository.register(service: applicationRouter())
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -52,5 +53,9 @@ class ApplicationBootstrap {
 
     private func accountService() -> AccountService {
         return AccountService()
+    }
+
+    private func applicationRouter() -> Router {
+        return Router()
     }
 }

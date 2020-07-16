@@ -40,15 +40,24 @@ class SplashScreenCoordinator: Coordinator {
     }
 
     func start() {
-        // Set up the splash view controller
-        let splashScreenViewController = SplashViewController.instantiateViewController()
-        splashScreenViewController.coordinatorDelegate = self
-        splashScreenViewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        presenter.pushViewController(splashScreenViewController, animated: true)
-        self.splashScreenViewController = splashScreenViewController
-        // Set up the connect view controller
-        let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController, authenticationError: authenticationError)
-        self.connectScreenCoordinator = connectScreenCoordinator
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.splashScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
+
+            let splashScreenViewController = SplashViewController.instantiateViewController()
+            splashScreenViewController.coordinatorDelegate = sSelf
+            splashScreenViewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+
+            return splashScreenViewController
+        })
+
+        if let splashScreenViewController = router?.push(route: NavigationRoutes.splashScreen.path, from: presenter) as? SplashViewController {
+            self.splashScreenViewController = splashScreenViewController
+
+            // Set up the connect view controller
+            let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController, authenticationError: authenticationError)
+            self.connectScreenCoordinator = connectScreenCoordinator
+        }
     }
 }
 

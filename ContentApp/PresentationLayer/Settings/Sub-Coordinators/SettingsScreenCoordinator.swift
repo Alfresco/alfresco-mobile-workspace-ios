@@ -33,16 +33,26 @@ class SettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = SettingsViewController.instantiateViewController()
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        viewController.themingService = themingService
-        let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
-        viewModel.viewModelDelegate = viewController
-        viewController.viewModel = viewModel
-        viewController.settingsScreenCoordinatorDelegate = self
-        presenter.pushViewController(viewController, animated: true)
-        settingsViewController = viewController
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.settingsScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
+
+            let viewController = SettingsViewController.instantiateViewController()
+            let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+
+            viewController.themingService = themingService
+            let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
+            viewModel.viewModelDelegate = viewController
+
+            viewController.viewModel = viewModel
+            viewController.settingsScreenCoordinatorDelegate = sSelf
+            sSelf.settingsViewController = viewController
+
+            return viewController
+        })
+
+        router?.push(route: NavigationRoutes.settingsScreen.path, from: presenter)
     }
 }
 

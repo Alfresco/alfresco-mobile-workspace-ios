@@ -36,14 +36,22 @@ class AimsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = AimsViewController.instantiateViewController()
-        viewController.aimsScreenCoordinatorDelegate = self
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                 accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-        viewController.splashScreenDelegate = self.splashScreen
-        presenter.pushViewController(viewController, animated: kPushAnimation)
-        aimsViewController = viewController
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.aimsAuthScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
+
+            let viewController = AimsViewController.instantiateViewController()
+            viewController.aimsScreenCoordinatorDelegate = sSelf
+            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            viewController.viewModel = AimsViewModel(with: sSelf.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
+                                                     accountService: sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
+            viewController.splashScreenDelegate = sSelf.splashScreen
+            sSelf.aimsViewController = viewController
+
+            return viewController
+        })
+
+        router?.push(route: NavigationRoutes.aimsAuthScreen.path, from: presenter)
     }
 }
 
