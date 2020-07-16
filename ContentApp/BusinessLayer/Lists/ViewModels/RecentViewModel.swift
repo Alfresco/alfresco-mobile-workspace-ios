@@ -27,12 +27,36 @@ class RecentViewModel: ListViewModelProtocol {
     var resultsList: [ListElementProtocol] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
+    weak var viewModelDelegate: ListViewModelDelegate?
 
     // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
+        recentsList()
+    }
+
+    func recentsList() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest()) { (result, error) in
+                if let entries = result?.list?.entries {
+                    sSelf.resultsList = ListNode.nodes(entries)
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.handleRecent(results: sSelf.resultsList)
+                    }
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.handleRecent(results: [])
+                    }
+                }
+            }
+        })
     }
 
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
