@@ -31,9 +31,9 @@ class AIMSAccount: AccountProtocol, Equatable {
 
         do {
             let jwt = try decode(jwt: token)
-            let claim = jwt.claim(name: "email")
-            if let email = claim.string {
-                return email
+            let claim = jwt.claim(name: "preferred_username")
+            if let preferredusername = claim.string {
+                return preferredusername
             }
         } catch {
             AlfrescoLog.error("Unable to decode account token for extracting account identifier")

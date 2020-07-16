@@ -19,50 +19,100 @@
 import Foundation
 import AlfrescoContentServices
 
+let kRequestDefaultsFieldName = "keywords"
+
 struct SearchRequestBuilder {
     static func searchRequest(_ string: String, chipFilters: [SearchChipItem]) -> SearchRequest {
-        let requestQuery = RequestQuery(language: .afts, userQuery: nil, query: string + "*")
-        let defaultRequest = self.defaultRequest()
-
-        let templates = RequestTemplates([defaultTemplate(name: defaultRequest.defaultFieldName)])
-
-        var filterQueries = self.defaultNoFilters()
-        let chipFilterQuerry = self.requestFilter(for: chipFilters)
-
-        if let query = chipFilterQuerry.query, query.isEmpty {
-            filterQueries.append(defaultFilesAndFolderFilter())
-        } else {
-            filterQueries.append(chipFilterQuerry)
-        }
-
-        let sortRequest = RequestSortDefinition([self.defaultSort()])
-
-        let searchRequest = SearchRequest(query: requestQuery, paging: self.defaultPaging(), include: ["path"], includeRequest: nil, fields: nil, sort: sortRequest, templates: templates, defaults: defaultRequest, localization: nil, filterQueries: filterQueries, facetQueries: nil, facetFields: nil, facetIntervals: nil, pivots: nil, stats: nil, spellcheck: nil, scope: nil, limits: nil, highlight: nil, ranges: nil)
-        return searchRequest
+        return SearchRequest(query: self.requestQuery(string),
+                             paging: self.requestPagination(),
+                             include: self.requestInclude(),
+                             includeRequest: nil,
+                             fields: nil,
+                             sort: self.searchRequestSort(),
+                             templates: self.searchRequestTemplates(),
+                             defaults: self.searchRequestDefaults(),
+                             localization: nil,
+                             filterQueries: self.searchRequestFilter(chipFilters),
+                             facetQueries: nil,
+                             facetFields: nil,
+                             facetIntervals: nil,
+                             pivots: nil,
+                             stats: nil,
+                             spellcheck: nil,
+                             scope: nil,
+                             limits: nil,
+                             highlight: nil,
+                             ranges: nil)
     }
 
-    private static func requestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
-                                         tags: nil)
+    static func recentRequest(_ accountIdentifier: String) -> SearchRequest {
+        return SearchRequest(query: self.requestQuery(""),
+                             paging: self.requestPagination(),
+                             include: self.requestInclude(),
+                             includeRequest: nil,
+                             fields: nil, sort: self.recentRequestSort(),
+                             templates: nil,
+                             defaults: nil,
+                             localization: nil,
+                             filterQueries: self.recentRequestFilter(accountIdentifier),
+                             facetQueries: nil,
+                             facetFields: nil,
+                             facetIntervals: nil,
+                             pivots: nil,
+                             stats: nil,
+                             spellcheck: nil,
+                             scope: nil,
+                             limits: nil,
+                             highlight: nil,
+                             ranges: nil)
     }
 
-    private static func defaultRequest() -> RequestDefaults {
+    // MARK: - Common
+
+    private static func requestQuery(_ string: String) -> RequestQuery {
+        return RequestQuery(language: .afts, userQuery: nil, query: string + "*")
+    }
+
+    private static func requestPagination() -> RequestPagination {
+        return RequestPagination(maxItems: 25, skipCount: 0)
+    }
+
+    private static func requestInclude() -> RequestInclude {
+        return ["path"]
+    }
+
+    // MARK: - Search
+
+    private static func searchRequestSort() -> [RequestSortDefinitionInner] {
+        return [RequestSortDefinitionInner(type: .field, field: "score", ascending: false)]
+    }
+
+    static func searchRequestTemplates() -> RequestTemplates {
+        return [RequestTemplatesInner(name: kRequestDefaultsFieldName, template: "%(cm:name cm:title cm:description TEXT TAG)")]
+    }
+
+    private static func searchRequestDefaults() -> RequestDefaults {
         return RequestDefaults(textAttributes: nil,
                                defaultFTSOperator: .and,
                                defaultFTSFieldOperator: nil,
                                namespace: nil,
-                               defaultFieldName: "keywords")
+                               defaultFieldName: kRequestDefaultsFieldName)
     }
 
-    private static func defaultTemplate(name: String?) -> RequestTemplatesInner {
-        return RequestTemplatesInner(name: name, template: "%(cm:name cm:title cm:description TEXT TAG)")
+    private static func searchRequestFilter(_ chipFilters: [SearchChipItem]) -> [RequestFilterQueriesInner] {
+        var requestFilters = self.searchMinusRequestFilter()
+        let chipFilterQuerry = self.chipsRequestFilter(for: chipFilters)
+
+        if let query = chipFilterQuerry.query, query.isEmpty {
+            requestFilters.append(self.searchFilesAndFoldersRequestFilter())
+        } else {
+            requestFilters.append(chipFilterQuerry)
+        }
+
+        return requestFilters
     }
 
-    private static func defaultFilesAndFolderFilter() -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: "+TYPE:'cm:content' OR +TYPE:'cm:folder'", tags: nil)
-    }
-
-    private static func defaultNoFilters() -> [RequestFilterQueriesInner] {
+    private static func searchMinusRequestFilter() -> [RequestFilterQueriesInner] {
         return [RequestFilterQueriesInner(query: "-TYPE:'cm:thumbnail' AND -TYPE:'cm:failedThumbnail' AND -TYPE:'cm:rating'", tags: nil),
                 RequestFilterQueriesInner(query: "-cm:creator:System AND -QNAME:comment", tags: nil),
                 RequestFilterQueriesInner(query: "-TYPE:'st:site' AND -ASPECT:'st:siteContainer' AND -ASPECT:'sys:hidden'", tags: nil),
@@ -72,11 +122,26 @@ struct SearchRequestBuilder {
                 RequestFilterQueriesInner(query: "-PNAME:'0/wiki'", tags: nil)]
     }
 
-    private static func defaultSort() -> RequestSortDefinitionInner {
-        return RequestSortDefinitionInner(type: .field, field: "score", ascending: false)
+    private static func searchFilesAndFoldersRequestFilter() -> RequestFilterQueriesInner {
+        return RequestFilterQueriesInner(query: "+TYPE:'cm:content' OR +TYPE:'cm:folder'", tags: nil)
     }
 
-    private static func defaultPaging() -> RequestPagination {
-        return RequestPagination(maxItems: 25, skipCount: 0)
+    private static func chipsRequestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
+        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
+                                         tags: nil)
+    }
+
+    // MARK: - Recent
+
+    private static func recentRequestSort() -> [RequestSortDefinitionInner] {
+           return [RequestSortDefinitionInner(type: .field,
+                                              field: "cm:modified",
+                                              ascending: false)]
+       }
+
+    private static func recentRequestFilter(_ accountIdentifier: String) -> [RequestFilterQueriesInner] {
+        return [RequestFilterQueriesInner(query: "cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]", tags: nil),
+                RequestFilterQueriesInner(query: "cm:modifier:\(accountIdentifier) OR cm:creator:\(accountIdentifier)", tags: nil),
+                RequestFilterQueriesInner(query: "TYPE:\"content\" AND -PNAME:\"0/wiki\" AND -TYPE:\"app:filelink\" AND -TYPE:\"cm:thumbnail\" AND -TYPE:\"cm:failedThumbnail\" AND -TYPE:\"cm:rating\" AND -TYPE:\"dl:dataList\" AND -TYPE:\"dl:todoList\" AND -TYPE:\"dl:issue\" AND -TYPE:\"dl:contact\" AND -TYPE:\"dl:eventAgenda\" AND -TYPE:\"dl:event\" AND -TYPE:\"dl:task\" AND -TYPE:\"dl:simpletask\" AND -TYPE:\"dl:meetingAgenda\" AND -TYPE:\"dl:location\" AND -TYPE:\"fm:topic\" AND -TYPE:\"fm:post\" AND -TYPE:\"ia:calendarEvent\" AND -TYPE:\"lnk:link\"", tags: nil)]
     }
 }
