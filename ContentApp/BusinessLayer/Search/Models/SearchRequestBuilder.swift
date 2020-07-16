@@ -45,7 +45,7 @@ struct SearchRequestBuilder {
                              ranges: nil)
     }
 
-    static func recentRequest() -> SearchRequest {
+    static func recentRequest(_ accountIdentifier: String) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(""),
                              paging: self.requestPagination(),
                              include: self.requestInclude(),
@@ -54,7 +54,7 @@ struct SearchRequestBuilder {
                              templates: nil,
                              defaults: nil,
                              localization: nil,
-                             filterQueries: self.recentRequestFilter(),
+                             filterQueries: self.recentRequestFilter(accountIdentifier),
                              facetQueries: nil,
                              facetFields: nil,
                              facetIntervals: nil,
@@ -139,9 +139,9 @@ struct SearchRequestBuilder {
                                               ascending: false)]
        }
 
-    private static func recentRequestFilter() -> [RequestFilterQueriesInner] {
+    private static func recentRequestFilter(_ accountIdentifier: String) -> [RequestFilterQueriesInner] {
         return [RequestFilterQueriesInner(query: "cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]", tags: nil),
-                RequestFilterQueriesInner(query: "cm:modifier:fbaincescu OR cm:creator:fbaincescu", tags: nil),
+                RequestFilterQueriesInner(query: "cm:modifier:\(accountIdentifier) OR cm:creator:\(accountIdentifier)", tags: nil),
                 RequestFilterQueriesInner(query: "TYPE:\"content\" AND -PNAME:\"0/wiki\" AND -TYPE:\"app:filelink\" AND -TYPE:\"cm:thumbnail\" AND -TYPE:\"cm:failedThumbnail\" AND -TYPE:\"cm:rating\" AND -TYPE:\"dl:dataList\" AND -TYPE:\"dl:todoList\" AND -TYPE:\"dl:issue\" AND -TYPE:\"dl:contact\" AND -TYPE:\"dl:eventAgenda\" AND -TYPE:\"dl:event\" AND -TYPE:\"dl:task\" AND -TYPE:\"dl:simpletask\" AND -TYPE:\"dl:meetingAgenda\" AND -TYPE:\"dl:location\" AND -TYPE:\"fm:topic\" AND -TYPE:\"fm:post\" AND -TYPE:\"ia:calendarEvent\" AND -TYPE:\"lnk:link\"", tags: nil)]
     }
 }

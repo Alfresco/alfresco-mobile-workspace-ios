@@ -174,13 +174,13 @@ extension ListViewController: ResultScreenDelegate {
 extension ListViewController: SearchViewModelDelegate {
     func handle(results: [ListElementProtocol]?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        
+
         rvc.updateDataSource(results)
     }
 }
 
 extension ListViewController: ListViewModelDelegate {
-    func handleRecent(results: [ListElementProtocol]?) {
+    func handleList(results: [ListElementProtocol]?) {
         collectionView.reloadData()
     }
 }
