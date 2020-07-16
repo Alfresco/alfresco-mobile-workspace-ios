@@ -106,5 +106,6 @@ struct LocalizationConstants {
         static let recentSearch = NSLocalizedString("recentSearch", comment: "")
         static let chipFiles = NSLocalizedString("chipFiles", comment: "")
         static let chipFolders = NSLocalizedString("chipFolders", comment: "")
+        static let chipLibraries = NSLocalizedString("chipLibraries", comment: "")
     }
 }

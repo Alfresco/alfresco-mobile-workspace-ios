@@ -24,13 +24,14 @@ import MaterialComponents.MDCChipView_MaterialTheming
 
 protocol ResultScreenDelegate: class {
     func recentSearchTapped(string: String)
-    func nodeListTapped(nodeList: ListNode)
-    func chipTapped()
+    func elementListTapped(elementList: ListElementProtocol)
+    func chipTapped(chip: SearchChipItem)
 }
 
 class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var activityIndicatorSuperview: UIView!
-    @IBOutlet weak var resultNodescollectionView: UICollectionView!
+
+    @IBOutlet weak var resultsListCollectionView: UICollectionView!
 
     @IBOutlet weak var chipsCollectionView: UICollectionView!
 
@@ -45,11 +46,12 @@ class ResultViewController: SystemThemableViewController {
 
     weak var resultScreenDelegate: ResultScreenDelegate?
     var activityIndicator: ActivityIndicatorView?
-    var resultsNodes: [ListNode] = []
+    var resultsList: [ListElementProtocol] = []
     var recentSearches: [String] = []
-    var chips: [SearchChipItem] = []
+    var searchChips: [SearchChipItem] = []
 
     var nodeHeighCell: CGFloat = 64.0
+    var siteHeighCell: CGFloat = 48.0
     var recentSearchHeighCell: CGFloat = 48.0
     var chipHeighCell: CGFloat = 30.0
     var chipWidthCell: CGFloat = 70.0
@@ -60,8 +62,7 @@ class ResultViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         emptyListView.isHidden = true
-        resultsNodes = []
-        registerAlfrescoNodeCell()
+        registerListElementCell()
         addLocalization()
         addChipsCollectionViewFlowLayout()
     }
@@ -91,7 +92,7 @@ class ResultViewController: SystemThemableViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        resultNodescollectionView.reloadData()
+        resultsListCollectionView.reloadData()
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
     }
@@ -108,21 +109,21 @@ class ResultViewController: SystemThemableViewController {
         activityIndicator?.state = .isIdle
     }
 
-    func updateDataSource(_ results: [ListNode]?) {
-        if resultsNodes.count > 0 {
-            resultNodescollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+    func updateDataSource(_ results: [ListElementProtocol]?) {
+        if resultsList.count > 0 {
+            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
         if let results = results {
-            resultsNodes = results
+            resultsList = results
             emptyListView.isHidden = !results.isEmpty
             recentSearchesView.isHidden = true
         } else {
-            resultsNodes = []
+            resultsList = []
             emptyListView.isHidden = true
             recentSearchesView.isHidden = false
         }
         stopLoading()
-        resultNodescollectionView.reloadData()
+        resultsListCollectionView.reloadData()
     }
 
     func updateRecentSearches(_ array: [String]) {
@@ -136,15 +137,24 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func updateChips(_ array: [SearchChipItem]) {
-        chips = array
+        searchChips = array
         chipsCollectionView.reloadData()
+    }
+
+    func reloadChips(_ array: [Int]) {
+        guard array.count != 0 else { return }
+        var items: [IndexPath] = []
+        for indexChip in array {
+            items.append(IndexPath(row: indexChip, section: 0))
+        }
+        chipsCollectionView.reloadItems(at: items)
     }
 
     // MARK: - Helpers
 
-    func registerAlfrescoNodeCell() {
-        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
-        resultNodescollectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
+    func registerListElementCell() {
+        let identifier = String(describing: ListElementCollectionViewCell.self)
+        resultsListCollectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
     }
 
     func addLocalization() {
@@ -181,20 +191,20 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             return recentSearches.count
-        case resultNodescollectionView:
-            return resultsNodes.count
+        case resultsListCollectionView:
+            return resultsList.count
         case chipsCollectionView:
-            return chips.count
+            return searchChips.count
         default: return 0
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
-        case resultNodescollectionView:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: AlfrescoNodeCollectionViewCell.self),
-                                                          for: indexPath) as? AlfrescoNodeCollectionViewCell
-            cell?.node = resultsNodes[indexPath.row]
+        case resultsListCollectionView:
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ListElementCollectionViewCell.self),
+                                                          for: indexPath) as? ListElementCollectionViewCell
+            cell?.element = resultsList[indexPath.row]
             cell?.applyThemingService(themingService?.activeTheme)
             return cell ?? UICollectionViewCell()
         case recentSearchCollectionView:
@@ -206,7 +216,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: MDCChipCollectionViewCell.self),
                                                           for: indexPath) as? MDCChipCollectionViewCell
-            let chip = chips[indexPath.row]
+            let chip = searchChips[indexPath.row]
             cell?.chipView.titleLabel.text = chip.name
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
@@ -226,16 +236,16 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearches[indexPath.row])
-        case resultNodescollectionView:
-            resultScreenDelegate?.nodeListTapped(nodeList: resultsNodes[indexPath.row])
+        case resultsListCollectionView:
+            resultScreenDelegate?.elementListTapped(elementList: resultsList[indexPath.row])
         case chipsCollectionView:
-            let chip = chips[indexPath.row]
+            let chip = searchChips[indexPath.row]
             chip.selected = true
             if let themeService = self.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
             }
-            resultScreenDelegate?.chipTapped()
+            resultScreenDelegate?.chipTapped(chip: chip)
         default: break
         }
     }
@@ -243,13 +253,13 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         switch collectionView {
         case chipsCollectionView:
-            let chip = chips[indexPath.row]
+            let chip = searchChips[indexPath.row]
             chip.selected = false
             if let themeService = self.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
             }
-            resultScreenDelegate?.chipTapped()
+            resultScreenDelegate?.chipTapped(chip: chip)
         default: break
         }
     }
@@ -259,8 +269,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             return CGSize(width: self.view.bounds.width, height: recentSearchHeighCell)
-        case resultNodescollectionView:
-            return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+        case resultsListCollectionView:
+            let element = resultsList[indexPath.row]
+            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? siteHeighCell : nodeHeighCell)
         case chipsCollectionView:
             return CGSize(width: chipWidthCell, height: chipHeighCell)
         default:

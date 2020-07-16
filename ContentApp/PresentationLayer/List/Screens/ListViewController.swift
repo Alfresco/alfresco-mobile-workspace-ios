@@ -22,24 +22,24 @@ class ListViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    var recentViewModel: ListViewModelProtocol?
-    var listViewModel: SearchViewModelProtocol?
+    var listViewModel: ListViewModelProtocol?
+    var searchViewModel: SearchViewModelProtocol?
 
-    private var settingsButtonHeight: CGFloat = 30
-    private var cellNodeHeight: CGFloat = 64
+    private var settingsButtonHeight: CGFloat = 30.0
+    private var nodeHeighCell: CGFloat = 64.0
     private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        listViewModel?.viewModelDelegate = self
+        searchViewModel?.viewModelDelegate = self
 
         configureNavigationBar()
         addSettingsButton()
         addSearchController()
 
-        registerAlfrescoNodeCell()
+        registerListElementCell()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -93,7 +93,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addAvatarInSettingsButton() {
-        let avatarImage = recentViewModel?.getAvatar(completionHandler: { [weak self] image in
+        let avatarImage = listViewModel?.getAvatar(completionHandler: { [weak self] image in
             guard let sSelf = self else { return }
 
             if let fetchedImage = image {
@@ -103,8 +103,8 @@ class ListViewController: SystemThemableViewController {
         settingsButton.setImage(avatarImage, for: .normal)
     }
 
-    func registerAlfrescoNodeCell() {
-        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
+    func registerListElementCell() {
+        let identifier = String(describing: ListElementCollectionViewCell.self)
         collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
     }
 
@@ -123,47 +123,56 @@ class ListViewController: SystemThemableViewController {
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return recentViewModel?.nodes.count ?? 0
+        return listViewModel?.resultsList.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = recentViewModel?.nodes[indexPath.row] else { return UICollectionViewCell() }
-        let identifier = String(describing: AlfrescoNodeCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? AlfrescoNodeCollectionViewCell
-        cell?.node = node
+        guard let node = listViewModel?.resultsList[indexPath.row] else { return UICollectionViewCell() }
+        let identifier = String(describing: ListElementCollectionViewCell.self)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
+        cell?.element = node
         return cell ?? UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: cellNodeHeight)
+        return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
     }
 }
 
 // MARK: - Result Screen Delegate
 
 extension ListViewController: ResultScreenDelegate {
-    func chipTapped() {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+    func chipTapped(chip: SearchChipItem) {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
+            let searchViewModel = self.searchViewModel else { return }
+
         rvc.startLoading()
-        listViewModel?.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+        rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
+        searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 
     func recentSearchTapped(string: String) {
-        guard let searchBar = navigationItem.searchController?.searchBar else { return }
+        guard let searchBar = navigationItem.searchController?.searchBar,
+            let searchViewModel = self.searchViewModel else { return }
+
         searchBar.text = string
-        listViewModel?.performLiveSearch(for: string)
+        searchViewModel.performLiveSearch(for: string)
     }
 
-    func nodeListTapped(nodeList: ListNode) {
-        listViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
+    func elementListTapped(elementList: ListElementProtocol) {
+        guard let searchBar = navigationItem.searchController?.searchBar,
+            let searchViewModel = self.searchViewModel else { return }
+
+        searchViewModel.save(recentSearch: searchBar.text)
     }
 }
 
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListNode]?) {
+    func handle(results: [ListElementProtocol]?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+
         rvc.updateDataSource(results)
     }
 }
@@ -172,21 +181,26 @@ extension ListViewController: SearchViewModelDelegate {
 
 extension ListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
+            let searchViewModel = self.searchViewModel else { return }
+
         rvc.startLoading()
-        listViewModel?.performSearch(for: searchBar.text)
-        listViewModel?.save(recentSearch: navigationItem.searchController?.searchBar.text)
+        searchViewModel.performSearch(for: searchBar.text)
+        searchViewModel.save(recentSearch: navigationItem.searchController?.searchBar.text)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+
         rvc.view.isHidden = false
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        listViewModel?.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches(listViewModel?.recentSearches() ?? [])
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
+            let searchViewModel = self.searchViewModel else { return }
+
+        searchViewModel.performLiveSearch(for: searchText)
+        rvc.updateRecentSearches(searchViewModel.recentSearches())
     }
 }
 
@@ -195,6 +209,7 @@ extension ListViewController: UISearchBarDelegate {
 extension ListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+
         rvc.view.isHidden = false
     }
 }
@@ -203,9 +218,11 @@ extension ListViewController: UISearchResultsUpdating {
 
 extension ListViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController, let listViewModel = self.listViewModel else { return }
-        rvc.updateChips(listViewModel.defaultSearchChips())
-        rvc.updateRecentSearches(listViewModel.recentSearches())
+        guard let rvc = searchController.searchResultsController as? ResultViewController,
+            let searchViewModel = self.searchViewModel else { return }
+
+        rvc.updateChips(searchViewModel.defaultSearchChips())
+        rvc.updateRecentSearches(searchViewModel.recentSearches())
         rvc.updateDataSource(nil)
     }
 }

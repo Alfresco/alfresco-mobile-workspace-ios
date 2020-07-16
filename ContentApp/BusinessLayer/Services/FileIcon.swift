@@ -44,6 +44,7 @@ enum IconType: String {
     case spreadsheetsOther = "ic-spreadsheets-other"
     case video = "ic-video"
     case web = "ic-web"
+    case site = "ic-site"
 }
 
 class FileIcon {
@@ -172,7 +173,8 @@ class FileIcon {
             "video/x-msvideo": .video,
             "video/x-sgi-movie": .video,
             "video/x-webex": .video,
-            "cm:folder": .folder
+            "cm:folder": .folder,
+            "cm:site": .site
         ]
     }
 

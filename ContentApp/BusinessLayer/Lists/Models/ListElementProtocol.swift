@@ -18,14 +18,8 @@
 
 import Foundation
 
-class SearchChipItem {
-    var name: String
-    var cmdType: String
-    var selected: Bool
-
-    init(name: String, cmdType: String, selected: Bool = true) {
-        self.name = name
-        self.cmdType = cmdType
-        self.selected = selected
-    }
+protocol ListElementProtocol {
+    var title: String { get }
+    var icon: String { get }
+    var path: String { get }
 }

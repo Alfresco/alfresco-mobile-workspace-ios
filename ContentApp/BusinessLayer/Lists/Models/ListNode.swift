@@ -19,18 +19,18 @@
 import Foundation
 import AlfrescoContentServices
 
-struct ListNode {
-    var node: ResultNode
+struct ListNode: ListElementProtocol {
     var title: String
-    var path: String?
-    var mimeType: String?
+    var icon: String
+    var path: String
+    var node: ResultNode
 
-    init(node: ResultNode) {
+    init(with node: ResultNode) {
         self.node = node
         self.title = node.name
-        self.mimeType = node.content?.mimeType
+        self.icon = node.content?.mimeType ?? "ic-other"
         if node.isFolder {
-            self.mimeType = node.nodeType
+            self.icon = node.nodeType
         }
         self.path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
     }
@@ -38,7 +38,7 @@ struct ListNode {
     static func nodes(_ entries: [ResultSetRowEntry]) -> [ListNode] {
         var nodes: [ListNode] = []
         for entry in entries {
-            nodes.append(ListNode(node: entry.entry))
+            nodes.append(ListNode(with: entry.entry))
         }
         return nodes
     }

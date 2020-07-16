@@ -18,18 +18,19 @@
 
 import UIKit
 
-class AlfrescoNodeCollectionViewCell: UICollectionViewCell {
+class ListElementCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
-    var node: ListNode? {
+    var element: ListElementProtocol? {
         didSet {
-            if let node = node {
-                title.text = node.title
-                subtitle.text = node.path
-                iconImageView.image = FileIcon.icon(for: node.mimeType)
+            if let element = element {
+                title.text = element.title
+                subtitle.text = element.path
+                iconImageView.image = FileIcon.icon(for: element.icon)
+                moreButton.isHidden = element.path.isEmpty
             }
         }
     }
@@ -43,6 +44,7 @@ class AlfrescoNodeCollectionViewCell: UICollectionViewCell {
         title.textColor = currentTheme?.listNodeCellTitleLabelColor
         subtitle.font = currentTheme?.listNodeCellSubtitleLabelFont
         subtitle.textColor = currentTheme?.listNodeCellSubtitleLabelColor
+        iconImageView.tintColor = currentTheme?.listNodeCellIconColor
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
