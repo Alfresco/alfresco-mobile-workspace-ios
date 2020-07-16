@@ -351,7 +351,6 @@
 				E3C128062498EB2700AE832F /* Settings */,
 				E3C128132498ECAD00AE832F /* TabBar */,
 				B9CCA30D24BF3AE700F1AD5C /* List */,
-				E3C128102498EC7C00AE832F /* Favorites */,
 				B99E1C4D247FE58B00116F05 /* Components */,
 				E3A2A8F9247E7D230046582C /* Extensions */,
 				B959CCD02476B18D00811F15 /* Services */,
@@ -550,10 +549,7 @@
 				B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */,
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
-				E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */,
-				E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */,
 				B91FEB6524B75D63002878F1 /* TopLevelTransition.swift */,
-				E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 			);
 			path = Components;
@@ -562,8 +558,8 @@
 		B9CCA30D24BF3AE700F1AD5C /* List */ = {
 			isa = PBXGroup;
 			children = (
-				E3D25C862493EF2E00FFD87F /* ListViewController.swift */,
-				E32B642B24B358FD00085472 /* ResultViewController.swift */,
+				E3995AA624C02BD300FA60C0 /* Sub-Coordinators */,
+				E3995AA724C02BE700FA60C0 /* Screens */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -703,6 +699,36 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		E3995AA624C02BD300FA60C0 /* Sub-Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
+				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
+			);
+			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		E3995AA724C02BE700FA60C0 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				E3995AA824C02C0100FA60C0 /* Cells */,
+				E3D25C862493EF2E00FFD87F /* ListViewController.swift */,
+				E32B642B24B358FD00085472 /* ResultViewController.swift */,
+				E3D25C882493EF6B00FFD87F /* FavoritesViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		E3995AA824C02C0100FA60C0 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */,
+				E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */,
+				E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -819,14 +845,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		E3C128102498EC7C00AE832F /* Favorites */ = {
-			isa = PBXGroup;
-			children = (
-				E3D25C882493EF6B00FFD87F /* FavoritesViewController.swift */,
-			);
-			path = Favorites;
-			sourceTree = "<group>";
-		};
 		E3C128132498ECAD00AE832F /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -847,9 +865,7 @@
 		E3C128152498ECBD00AE832F /* Sub-Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
 				E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */,
-				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";

@@ -98,4 +98,5 @@ struct DarkTheme: PresentationTheme {
     var tabBarBackgroundColor = #colorLiteral(red: 0.07058823529, green: 0.07450980392, blue: 0.07058823529, alpha: 1)
     var tabBarUnselectedItemTinColor = #colorLiteral(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
     var tabBarSelectedItemTintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    var listNodeCellIconColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 }

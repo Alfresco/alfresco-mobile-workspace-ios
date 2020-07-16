@@ -98,4 +98,5 @@ protocol PresentationTheme {
     var tabBarBackgroundColor: UIColor { get }
     var tabBarUnselectedItemTinColor: UIColor { get }
     var tabBarSelectedItemTintColor: UIColor { get }
+    var listNodeCellIconColor: UIColor { get }
 }

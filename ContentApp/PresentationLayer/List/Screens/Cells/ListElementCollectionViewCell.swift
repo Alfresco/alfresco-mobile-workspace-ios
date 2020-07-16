@@ -44,6 +44,7 @@ class ListElementCollectionViewCell: UICollectionViewCell {
         title.textColor = currentTheme?.listNodeCellTitleLabelColor
         subtitle.font = currentTheme?.listNodeCellSubtitleLabelFont
         subtitle.textColor = currentTheme?.listNodeCellSubtitleLabelColor
+        iconImageView.tintColor = currentTheme?.listNodeCellIconColor
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
