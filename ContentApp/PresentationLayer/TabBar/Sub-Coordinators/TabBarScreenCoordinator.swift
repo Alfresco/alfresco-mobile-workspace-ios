@@ -22,8 +22,9 @@ protocol TabBarScreenCoordinatorDelegate: class {
     func showRecentScreen()
     func showFavoritesScreen()
     func showSettingsScreen()
-    func shouldReloadScreen(index: Int)
-    func shouldScroolToTopOrGoToRootScreen(index: Int)
+    func refreshList(forScreen item: Int)
+    func scrollToTop(forScreen item: Int)
+    func popToRoot(forSceen item: Int)
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -86,19 +87,28 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
         }
     }
 
-    func shouldReloadScreen(index: Int) {
-        switch index {
+    func refreshList(forScreen item: Int) {
+        switch item {
         case 0: //Recents
-            recentCoordinator?.reloadRequest()
+            recentCoordinator?.refreshList()
         default:
             break
         }
     }
 
-    func shouldScroolToTopOrGoToRootScreen(index: Int) {
-        switch index {
+    func scrollToTop(forScreen item: Int) {
+        switch item {
         case 0: //Recents
             recentCoordinator?.scrollToTop()
+        default:
+            break
+        }
+    }
+
+    func popToRoot(forSceen item: Int) {
+        switch item {
+        case 0: //Recents
+            recentCoordinator?.popToRoot()
         default:
             break
         }

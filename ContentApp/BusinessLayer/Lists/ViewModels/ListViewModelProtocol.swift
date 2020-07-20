@@ -27,6 +27,7 @@ protocol ListViewModelProtocol {
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
     func reloadRequest()
+    func shouldDisplaySections() -> Bool
 }
 
 protocol ListViewModelDelegate: class {

@@ -82,6 +82,21 @@ class ListViewController: SystemThemableViewController {
         tabBarScreenDelegate?.showSettingsScreen()
     }
 
+    // MARK: - Coordinator Public Methods
+
+    func popToRoot() {
+    }
+
+    func scrollToTop() {
+        self.scrollToSection(0)
+    }
+
+    func refreshList() {
+        self.startLoading()
+        self.listViewModel?.reloadRequest()
+        self.scrollToSection(0)
+    }
+
     // MARK: - Helpers
 
     func startLoading() {
@@ -206,7 +221,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             let identifier = String(describing: ListSectionCollectionReusableView.self)
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier,
                                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
-                                                                                    fatalError("Invalid view type") }
+                                                                                    fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listViewModel?.groupedLists[indexPath.section].titleGroup
             return headerView
         default:
@@ -215,10 +230,11 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if listViewModel?.groupedLists.count == 1 && listViewModel?.groupedLists[0].type == GroupedListType.none {
+        if let viewModel = listViewModel, viewModel.shouldDisplaySections() {
+            return CGSize(width: self.view.bounds.width, height: nodeHeightSection)
+        } else {
             return CGSize(width: self.view.bounds.width, height: 0)
         }
-        return CGSize(width: self.view.bounds.width, height: nodeHeightSection)
     }
 }
 

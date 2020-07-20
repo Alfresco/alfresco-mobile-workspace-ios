@@ -38,6 +38,8 @@ class RecentViewModel: ListViewModelProtocol {
         groupedLists = self.emptyGroupedLists()
     }
 
+    // MARK: - Public methods
+
     func recentsList() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let accountIdentifier = sSelf.accountService?.activeAccount?.identifier else { return }
@@ -90,6 +92,15 @@ class RecentViewModel: ListViewModelProtocol {
 
         return UIImage(named: "account-circle")
     }
+
+    func shouldDisplaySections() -> Bool {
+        if groupedLists.count == 1 && groupedLists[0].type == GroupedListType.none {
+            return false
+        }
+        return true
+    }
+
+    // MARK: - Private methods
 
     private func emptyGroupedLists() -> [GroupedList] {
         return []

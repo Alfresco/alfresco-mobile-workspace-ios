@@ -134,16 +134,17 @@ class TabBarMainViewController: UITabBarController {
         }
         if doubleTap == nil {
             doubleTap = item
-            self.tabBarCoordinatorDelegate?.shouldScroolToTopOrGoToRootScreen(index: item)
+            self.tabBarCoordinatorDelegate?.scrollToTop(forScreen: item)
             timerDoubleTap = Timer.scheduledTimer(withTimeInterval: kDoubleTapTabBarTimerBuffer,
                                                   repeats: false, block: { [weak self] (timer) in
-                timer.invalidate()
-                self?.doubleTap = nil
+                                                    guard let sSelf = self else { return }
+                                                    timer.invalidate()
+                                                    sSelf.doubleTap = nil
             })
         } else if doubleTap == item {
             timerDoubleTap?.invalidate()
             doubleTap = nil
-            self.tabBarCoordinatorDelegate?.shouldReloadScreen(index: item)
+            self.tabBarCoordinatorDelegate?.refreshList(forScreen: item)
         }
     }
 }

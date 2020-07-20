@@ -18,7 +18,7 @@
 
 import UIKit
 
-class RecentScreenCoordinator: Coordinator {
+class RecentScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
@@ -42,13 +42,15 @@ class RecentScreenCoordinator: Coordinator {
         self.recentViewController = viewController
     }
 
-    func reloadRequest() {
-        recentViewController?.startLoading()
-        recentViewController?.listViewModel?.reloadRequest()
-        recentViewController?.scrollToSection(0)
+    func scrollToTop() {
+        recentViewController?.scrollToTop()
     }
 
-    func scrollToTop() {
-        recentViewController?.scrollToSection(0)
+    func popToRoot() {
+
+    }
+
+    func refreshList() {
+        recentViewController?.refreshList()
     }
 }
