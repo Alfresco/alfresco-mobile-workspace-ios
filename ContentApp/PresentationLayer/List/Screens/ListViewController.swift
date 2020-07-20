@@ -223,6 +223,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
                                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
                                                                                     fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listViewModel?.groupedLists[indexPath.section].titleGroup
+            headerView.applyThemingService(themingService?.activeTheme)
             return headerView
         default:
             return UICollectionReusableView()
