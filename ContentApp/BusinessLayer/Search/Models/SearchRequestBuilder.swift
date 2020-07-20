@@ -23,7 +23,7 @@ let kRequestDefaultsFieldName = "keywords"
 
 struct SearchRequestBuilder {
     static func searchRequest(_ string: String, chipFilters: [SearchChipItem]) -> SearchRequest {
-        return SearchRequest(query: self.requestQuery(string),
+        return SearchRequest(query: self.requestQuery(string.replaceQuotesAndApostrophes()),
                              paging: self.requestPagination(),
                              include: self.requestInclude(),
                              includeRequest: nil,
