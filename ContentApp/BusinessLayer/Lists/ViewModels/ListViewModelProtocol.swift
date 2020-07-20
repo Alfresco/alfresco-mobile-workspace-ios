@@ -21,11 +21,12 @@ import AlfrescoContentServices
 
 protocol ListViewModelProtocol {
     var listRequest: SearchRequest? { get set }
-    var resultsList: [ListElementProtocol] { get set }
+    var groupedLists: [GroupedList] { get set }
     var viewModelDelegate: ListViewModelDelegate? { get set }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
+    func reloadRequest()
 }
 
 protocol ListViewModelDelegate: class {
@@ -34,5 +35,5 @@ protocol ListViewModelDelegate: class {
      - results: list of element from a search operation
      - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
      */
-    func handleList(results: [ListElementProtocol]?)
+    func handleList(results: [GroupedList]?)
 }

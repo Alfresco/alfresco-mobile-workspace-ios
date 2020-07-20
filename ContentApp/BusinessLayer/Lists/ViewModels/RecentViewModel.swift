@@ -24,7 +24,7 @@ import AlfrescoContentServices
 class RecentViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
 
-    var resultsList: [ListElementProtocol] = []
+    var groupedLists: [GroupedList] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
     weak var viewModelDelegate: ListViewModelDelegate?
@@ -35,6 +35,7 @@ class RecentViewModel: ListViewModelProtocol {
         self.accountService = accountService
         self.listRequest = listRequest
         recentsList()
+        groupedLists = self.emptyGroupedLists()
     }
 
     func recentsList() {
@@ -43,9 +44,9 @@ class RecentViewModel: ListViewModelProtocol {
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier)) { (result, error) in
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ListNode.nodes(entries)
+                    sSelf.addInGroupList(ListNode.nodes(entries))
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList(results: sSelf.resultsList)
+                        sSelf.viewModelDelegate?.handleList(results: sSelf.groupedLists)
                     }
                 } else {
                     if let error = error {
@@ -57,6 +58,11 @@ class RecentViewModel: ListViewModelProtocol {
                 }
             }
         })
+    }
+
+    func reloadRequest() {
+        groupedLists = self.emptyGroupedLists()
+        recentsList()
     }
 
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
@@ -83,5 +89,39 @@ class RecentViewModel: ListViewModelProtocol {
         }
 
         return UIImage(named: "account-circle")
+    }
+
+    private func emptyGroupedLists() -> [GroupedList] {
+        return []
+    }
+
+    private func add(element: ListElementProtocol, inGroupType type: GroupedListType) {
+        for groupedList in groupedLists where groupedList.type == type {
+            groupedList.list.append(element)
+            return
+        }
+        groupedLists.append(GroupedList(type: type, list: [element]))
+    }
+
+    private func addInGroupList(_ results: [ListElementProtocol]) {
+        for element in results {
+            if let date = element.modifiedAt {
+                var groupType: GroupedListType = .today
+                if date.isInToday {
+                    groupType = .today
+                } else if date.isInYesterday {
+                    groupType = .yesterday
+                } else if date.isInThisWeek {
+                    groupType = .thisWeek
+                } else if date.isInLastWeek {
+                    groupType = .lastWeek
+                } else {
+                    groupType = .older
+                }
+                self.add(element: element, inGroupType: groupType)
+            } else {
+                groupedLists.first?.list.append(element)
+            }
+        }
     }
 }

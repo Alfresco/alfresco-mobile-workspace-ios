@@ -22,6 +22,8 @@ protocol TabBarScreenCoordinatorDelegate: class {
     func showRecentScreen()
     func showFavoritesScreen()
     func showSettingsScreen()
+    func shouldReloadScreen(index: Int)
+    func shouldScroolToTopOrGoToRootScreen(index: Int)
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -81,6 +83,24 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
         if let tabBarMainViewController = self.tabBarMainViewController {
             favoritesCoordinator = FavoritesScreenCoordinator(with: tabBarMainViewController)
             favoritesCoordinator?.start()
+        }
+    }
+
+    func shouldReloadScreen(index: Int) {
+        switch index {
+        case 0: //Recents
+            recentCoordinator?.reloadRequest()
+        default:
+            break
+        }
+    }
+
+    func shouldScroolToTopOrGoToRootScreen(index: Int) {
+        switch index {
+        case 0: //Recents
+            recentCoordinator?.scrollToTop()
+        default:
+            break
         }
     }
 }

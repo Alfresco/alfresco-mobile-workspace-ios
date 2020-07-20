@@ -41,4 +41,14 @@ class RecentScreenCoordinator: Coordinator {
         self.navigationViewController = navigationViewController
         self.recentViewController = viewController
     }
+
+    func reloadRequest() {
+        recentViewController?.startLoading()
+        recentViewController?.listViewModel?.reloadRequest()
+        recentViewController?.scrollToSection(0)
+    }
+
+    func scrollToTop() {
+        recentViewController?.scrollToSection(0)
+    }
 }
