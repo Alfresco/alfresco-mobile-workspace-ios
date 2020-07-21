@@ -23,6 +23,7 @@ struct ListNode: ListElementProtocol {
     var title: String
     var icon: String
     var path: String
+    var modifiedAt: Date?
     var node: ResultNode
 
     init(with node: ResultNode) {
@@ -33,6 +34,7 @@ struct ListNode: ListElementProtocol {
             self.icon = node.nodeType
         }
         self.path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
+        self.modifiedAt = node.modifiedAt
     }
 
     static func nodes(_ entries: [ResultSetRowEntry]) -> [ListNode] {

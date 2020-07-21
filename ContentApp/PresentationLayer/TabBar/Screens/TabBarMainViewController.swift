@@ -33,6 +33,9 @@ class TabBarMainViewController: UITabBarController {
     private var observation: NSKeyValueObservation?
     private let itemsContentVerticalMargin: CGFloat = 5.0
 
+    private var doubleTap: Int?
+    private var timerDoubleTap: Timer?
+
     // MARK: - View Life Cycle
 
     deinit {
@@ -122,14 +125,36 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBarFrame.origin.y -= view.safeAreaInsets.bottom
         bottomNavigationBar.frame = bottomNavigationBarFrame
     }
+
+    func doubleTapLogic(for item: Int) {
+        guard self.selectedIndex == item else {
+            doubleTap = nil
+            timerDoubleTap?.invalidate()
+            return
+        }
+        if doubleTap == nil {
+            doubleTap = item
+            self.tabBarCoordinatorDelegate?.scrollToTop(forScreen: item)
+            timerDoubleTap = Timer.scheduledTimer(withTimeInterval: kDoubleTapTabBarTimerBuffer,
+                                                  repeats: false, block: { [weak self] (timer) in
+                                                    guard let sSelf = self else { return }
+                                                    timer.invalidate()
+                                                    sSelf.doubleTap = nil
+            })
+        } else if doubleTap == item {
+            timerDoubleTap?.invalidate()
+            doubleTap = nil
+            self.tabBarCoordinatorDelegate?.refreshList(forScreen: item)
+        }
+    }
 }
 
 // MARK: - MDCBottomNavigationBarDelegate
 
 extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
     func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar, shouldSelect item: UITabBarItem) -> Bool {
+        doubleTapLogic(for: item.tag)
         self.selectedIndex = item.tag
-
         return true
     }
 }

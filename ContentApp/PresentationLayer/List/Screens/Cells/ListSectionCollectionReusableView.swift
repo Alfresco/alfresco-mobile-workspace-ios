@@ -16,28 +16,13 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContentServices
+import UIKit
 
-struct ListSite: ListElementProtocol {
-    var title: String
-    var icon: String
-    var path: String
-    var modifiedAt: Date?
-    var site: Site
+class ListSectionCollectionReusableView: UICollectionReusableView {
+    @IBOutlet weak var titleLabel: UILabel!
 
-    init(with site: Site) {
-        self.title = site.title
-        self.icon = "cm:site"
-        self.path = ""
-        self.site = site
-    }
-
-    static func sites(_ entries: [SiteEntry]) -> [ListSite] {
-        var sites: [ListSite] = []
-        for entry in entries {
-            sites.append(ListSite(with: entry.entry))
-        }
-        return sites
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        titleLabel.font = currentTheme?.listNodeSectionTitleLabelFont
+        titleLabel.textColor = currentTheme?.listNodeSectionTitleLabelColor
     }
 }

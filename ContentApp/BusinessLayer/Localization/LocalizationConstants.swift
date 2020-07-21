@@ -108,4 +108,13 @@ struct LocalizationConstants {
         static let chipFolders = NSLocalizedString("chipFolders", comment: "")
         static let chipLibraries = NSLocalizedString("chipLibraries", comment: "")
     }
+
+    struct GroupListSection {
+        static let today = NSLocalizedString("today", comment: "")
+        static let yesterday = NSLocalizedString("yesterday", comment: "")
+        static let thisWeek = NSLocalizedString("thisWeek", comment: "")
+        static let lastWeek = NSLocalizedString("lastWeek", comment: "")
+        static let thisMonth = NSLocalizedString("thisMonth", comment: "")
+        static let older = NSLocalizedString("older", comment: "")
+    }
 }

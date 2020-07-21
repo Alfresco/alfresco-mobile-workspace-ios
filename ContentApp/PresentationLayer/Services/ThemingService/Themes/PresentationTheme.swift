@@ -45,6 +45,7 @@ protocol PresentationTheme {
     var recentSearchesTitleLabelFont: UIFont { get }
     var recentSearcheTitleLabelFont: UIFont { get }
     var searchChipTitleLabelFont: UIFont { get }
+    var listNodeSectionTitleLabelFont: UIFont { get }
     /// TextFields
     var loginTextFieldFont: UIFont { get }
     /// Textviews
@@ -78,6 +79,7 @@ protocol PresentationTheme {
     var emptyListSubtitleLabelColor: UIColor { get }
     var recentSearchesTitleLabelColor: UIColor { get }
     var recentSearcheTitleLabelColor: UIColor { get }
+    var listNodeSectionTitleLabelColor: UIColor { get }
     /// TextFields
     var loginTextFieldPrimaryColor: UIColor { get }
     var loginTextFieldErrorColor: UIColor { get }
