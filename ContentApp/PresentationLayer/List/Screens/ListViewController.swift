@@ -61,7 +61,7 @@ class ListViewController: SystemThemableViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: "" ,
                                                                                                 radius: 12,
                                                                                                 strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true

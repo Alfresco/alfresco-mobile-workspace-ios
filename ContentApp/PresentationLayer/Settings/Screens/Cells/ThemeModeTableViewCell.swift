@@ -51,8 +51,8 @@ class ThemeModeTableViewCell: UITableViewCell {
     }
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
-        titleLabel.font = currentTheme?.settingsTitleLabelFont
-        titleLabel.textColor = currentTheme?.settingsTitleLabelColor
-        radioImageView.tintColor = currentTheme?.settingsIconColor
+        guard let currentTheme = currentTheme else { return }
+        titleLabel.applyStyleSubtitle1(theme: currentTheme)
+        radioImageView.tintColor = currentTheme.surfaceOnColor.withAlphaComponent(0.6)
     }
 }
