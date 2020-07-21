@@ -16,23 +16,23 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
+import AlfrescoContentServices
 
-class RecentSearchCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var titleSearch: UILabel!
-    @IBOutlet weak var rightImageView: UIImageView!
+struct ResultsViewModel {
+    var results: [ListElementProtocol] = []
+    var shouldDisplayNextPageLoadingIndicator: Bool = true
 
-    var search: String? {
-        didSet {
-            if let search = search {
-                titleSearch.text = search
+    mutating func addNewResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+        guard let results = results else { return }
+        if results.count != 0 {
+            self.results.append(contentsOf: results)
+
+            if let pagination = pagination {
+                shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
             }
+        } else {
+            shouldDisplayNextPageLoadingIndicator = false
         }
-    }
-
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        titleSearch.font = currentTheme?.recentSearcheTitleLabelFont
-        titleSearch.textColor = currentTheme?.recentSearcheTitleLabelColor
     }
 }

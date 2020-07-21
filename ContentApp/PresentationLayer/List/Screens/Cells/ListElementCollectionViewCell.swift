@@ -39,7 +39,7 @@ class ListElementCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-    func applyThemingService(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?) {
         title.font = currentTheme?.listNodeCellTitleLabelFont
         title.textColor = currentTheme?.listNodeCellTitleLabelColor
         subtitle.font = currentTheme?.listNodeCellSubtitleLabelFont

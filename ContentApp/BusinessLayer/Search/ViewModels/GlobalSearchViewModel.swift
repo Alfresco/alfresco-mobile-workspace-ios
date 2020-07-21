@@ -27,6 +27,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
     weak var viewModelDelegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
+    private var currentPage: Int = 1
 
     // MARK: - Init
 
@@ -77,7 +78,11 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         UserDefaults.standard.synchronize()
     }
 
-    func performSearch(for string: String?) {
+    func performSearch(for string: String?, paginationRequest: RequestPagination?) {
+        if paginationRequest == nil {
+            currentPage = 1
+        }
+
         liveSearchTimer?.invalidate()
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
             self.viewModelDelegate?.handle(results: nil)
@@ -86,7 +91,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         if isSearchForLibraries() {
             performLibrariesSearch(searchString: searchString)
         } else {
-            performFileFolderSearch(searchString: searchString)
+            performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
         }
     }
 
@@ -102,6 +107,12 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)
         })
+    }
+
+    func fetchNextSearchResultsPage(for string: String?, index: IndexPath) {
+        let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: currentPage * kListPageSize)
+        currentPage += 1
+        performSearch(for: string, paginationRequest: nextPage)
     }
 
     // MARK: Private Methods
@@ -134,22 +145,22 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         })
     }
 
-    private func performFileFolderSearch(searchString: String) {
+    private func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips)) { (result, error) in
+            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.resultsList = ListNode.nodes(entries)
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: sSelf.resultsList)
+                        sSelf.viewModelDelegate?.handle(results: sSelf.resultsList, pagination: result?.list?.pagination)
                     }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: [])
+                        sSelf.viewModelDelegate?.handle(results: nil, pagination: result?.list?.pagination)
                     }
                 }
             }

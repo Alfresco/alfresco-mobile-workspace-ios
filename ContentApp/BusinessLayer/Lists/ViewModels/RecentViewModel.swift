@@ -23,7 +23,6 @@ import AlfrescoContentServices
 
 class RecentViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
-
     var resultsList: [ListElementProtocol] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?

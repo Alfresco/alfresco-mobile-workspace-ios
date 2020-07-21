@@ -18,21 +18,15 @@
 
 import UIKit
 
-class RecentSearchCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var titleSearch: UILabel!
-    @IBOutlet weak var rightImageView: UIImageView!
+public extension UICollectionView {
 
-    var search: String? {
-        didSet {
-            if let search = search {
-                titleSearch.text = search
-            }
-        }
-    }
+    func lastItemIndexPath() -> IndexPath? {
+        let lastSection = numberOfSections - 1
+        guard lastSection >= 0 else { return nil }
+        let lastItem = numberOfItems(inSection: lastSection) - 1
+        guard lastItem >= 0 else { return nil }
+        let lastItemIndexPath = IndexPath(item: lastItem, section: lastSection)
 
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        titleSearch.font = currentTheme?.recentSearcheTitleLabelFont
-        titleSearch.textColor = currentTheme?.recentSearcheTitleLabelColor
+        return lastItemIndexPath
     }
 }

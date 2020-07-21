@@ -17,10 +17,10 @@
 //
 
 import UIKit
+import AlfrescoContentServices
 
 class ListViewController: SystemThemableViewController {
-
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: PageFetchableCollectionView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     var listViewModel: ListViewModelProtocol?
@@ -167,15 +167,27 @@ extension ListViewController: ResultScreenDelegate {
 
         searchViewModel.save(recentSearch: searchBar.text)
     }
+
+    func fetchNextSearchResultsPage(for index: IndexPath) {
+        guard let searchBar = navigationItem.searchController?.searchBar,
+            let searchViewModel = self.searchViewModel else { return }
+
+        let searchString = searchBar.text
+        searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
+    }
 }
 
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListElementProtocol]?) {
+    func handle(results: [ListElementProtocol]?, pagination: Pagination?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
 
-        rvc.updateDataSource(results)
+        if results == nil && pagination == nil {
+            rvc.clearDataSource()
+        } else {
+            rvc.updateDataSource(results, pagination: pagination)
+        }
     }
 }
 
@@ -231,7 +243,15 @@ extension ListViewController: UISearchControllerDelegate {
 
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches(searchViewModel.recentSearches())
-        rvc.updateDataSource(nil)
+        rvc.clearDataSource()
+    }
+}
+
+// MARK: - PageFetchableDelegate
+
+extension ListViewController: PageFetchableDelegate {
+    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
+
     }
 }
 
