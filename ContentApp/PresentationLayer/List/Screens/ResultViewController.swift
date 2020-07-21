@@ -73,7 +73,7 @@ class ResultViewController: SystemThemableViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
                                                                                                 radius: 12,
                                                                                                 strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true

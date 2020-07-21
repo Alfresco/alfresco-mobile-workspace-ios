@@ -24,7 +24,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class ConnectViewController: UIViewController {
+class ConnectViewController: SystemThemableViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
     @IBOutlet weak var connectTextField: MDCFilledTextField!
@@ -40,7 +40,6 @@ class ConnectViewController: UIViewController {
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var errorShowInProgress: Bool = false
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
     var enableConnectButton: Bool = false {
@@ -62,12 +61,11 @@ class ConnectViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
                                                                                                  radius: 40,
                                                                                                  strokeWidth: 7,
-                                                                                                 cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+                                                                                                 cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
         }
@@ -98,11 +96,6 @@ class ConnectViewController: UIViewController {
         activityIndicator?.reload(from: size)
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
@@ -144,22 +137,22 @@ class ConnectViewController: UIViewController {
 
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        connectButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.textColor = currentTheme.productLabelColor
-        productLabel.font = currentTheme.productLabelFont
+        productLabel.textColor = currentTheme.surfaceOnColor
+        productLabel.font = currentTheme.headline5Font
 
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.surfaceOnColor
+        copyrightLabel.font = currentTheme.captionFont
 
-        self.navigationController?.navigationBar.tintColor = currentTheme.loginButtonColor
+        self.navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
     }
 
     func connectTextFieldAddMaterialComponents() {

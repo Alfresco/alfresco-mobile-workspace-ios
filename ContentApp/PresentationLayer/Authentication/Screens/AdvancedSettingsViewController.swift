@@ -23,7 +23,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class AdvancedSettingsViewController: UIViewController {
+class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBOutlet weak var backPadButton: UIButton!
     @IBOutlet weak var titlePadLabel: UILabel!
@@ -53,7 +53,6 @@ class AdvancedSettingsViewController: UIViewController {
     var viewModel = AdvancedSettingsViewModel()
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
 
     var enableSaveButton: Bool = false {
         didSet {
@@ -76,17 +75,6 @@ class AdvancedSettingsViewController: UIViewController {
         Snackbar.dimissAll()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
-
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
@@ -102,7 +90,7 @@ class AdvancedSettingsViewController: UIViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (httpsSwitch.isOn) ? themingService?.activeTheme?.loginFieldLabelColor : themingService?.activeTheme?.loginFieldDisableLabelColor
+        httpsLabel.textColor = (viewModel.authParameters.https) ? self.themingService?.activeTheme?.surfaceOnColor : self.themingService?.activeTheme?.dividerColor
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
     }
@@ -152,7 +140,7 @@ class AdvancedSettingsViewController: UIViewController {
         resetButton.setTitle(LocalizationConstants.Buttons.resetToDefault, for: .normal)
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
@@ -171,30 +159,30 @@ class AdvancedSettingsViewController: UIViewController {
         realmTextField.setFilledBackgroundColor(.clear, for: .normal)
         realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        transportProtocolLabel.textColor = currentTheme.loginFieldLabelColor
-        transportProtocolLabel.font = currentTheme.loginFieldLabelFont
+        transportProtocolLabel.textColor = currentTheme.surfaceOnColor
+        transportProtocolLabel.font = currentTheme.subtitle1Font
 
-        httpsLabel.textColor = (viewModel.authParameters.https) ? currentTheme.loginFieldLabelColor : currentTheme.loginFieldDisableLabelColor
-        httpsLabel.font = currentTheme.loginHTTPSLabelFont
+        httpsLabel.textColor = (viewModel.authParameters.https) ? currentTheme.surfaceOnColor : currentTheme.dividerColor
+        httpsLabel.font = currentTheme.subtitle1Font
 
-        settingsLabel.textColor = currentTheme.loginFieldLabelColor
-        settingsLabel.font = currentTheme.loginFieldLabelFont
+        settingsLabel.textColor = currentTheme.surfaceOnColor
+        settingsLabel.font = currentTheme.subtitle1Font
 
-        authenticationLabel.textColor = currentTheme.loginFieldLabelColor
-        authenticationLabel.font = currentTheme.loginFieldLabelFont
+        authenticationLabel.textColor = currentTheme.surfaceOnColor
+        authenticationLabel.font = currentTheme.subtitle1Font
 
-        titlePadLabel.textColor = currentTheme.applicationTitleColor
-        titlePadLabel.font = currentTheme.loginTitleLabelFont
+        titlePadLabel.textColor = currentTheme.surfaceOnColor
+        titlePadLabel.font = currentTheme.subtitle1Font
 
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.surfaceOnColor
+        copyrightLabel.font = currentTheme.captionFont
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        savePadButton.setTitleColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        savePadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
-        saveButton.tintColor = currentTheme.loginButtonColor
-        backPadButton.tintColor = currentTheme.loginButtonColor
+        saveButton.tintColor = currentTheme.primaryVariantColor
+        backPadButton.tintColor = currentTheme.primaryVariantColor
     }
 
     func updateFields() {

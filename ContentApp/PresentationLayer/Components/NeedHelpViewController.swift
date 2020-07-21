@@ -36,20 +36,7 @@ class NeedHelpViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        titleLabel.text = model?.titleText
-        if let needHelpTextViewFont = themingService?.activeTheme?.needHelpHintTextViewFont,
-            let titleLabelFont = themingService?.activeTheme?.needHelpTitleLabelFont {
-            textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
-                                                         font: needHelpTextViewFont)
-            titleLabel.font = titleLabelFont
-        }
-
-        if let needHelpTextViewColor = themingService?.activeTheme?.needHelpHintTextViewColor,
-            let titleLabelColor = themingService?.activeTheme?.needHelpTitleColor {
-            titleLabel.textColor = titleLabelColor
-            textView.textColor = needHelpTextViewColor
-        }
+        addMaterialComponentsTheme()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -70,11 +57,28 @@ class NeedHelpViewController: UIViewController {
         calculatePreferredSize(size)
     }
 
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        addMaterialComponentsTheme()
+    }
+
     // MARK: - Private Utils
 
     private func calculatePreferredSize(_ size: CGSize) {
         let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
+    }
+
+    private func addMaterialComponentsTheme() {
+        guard let currentTheme = themingService?.activeTheme else { return }
+
+        textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
+                                                     font: currentTheme.subtitle2Font)
+        textView.textColor = currentTheme.surfaceOnColor
+
+        titleLabel.text = model?.titleText
+        titleLabel.font = currentTheme.headline5Font
+        titleLabel.textColor = currentTheme.surfaceOnColor
     }
 
     // MARK: - Actions

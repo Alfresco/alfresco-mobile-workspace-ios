@@ -91,8 +91,8 @@ class ActivityIndicatorView: UIView {
 
     private func applyTheme(_ currentTheme: PresentationTheme?) {
         activityIndicator.cycleColors = activityIndicatorConfiguration.cycleColors
-        label.textColor = currentTheme?.activityIndicatorLabelColor
-        label.font = currentTheme?.activityIndicatorLabelFont
+        label.textColor = currentTheme?.dividerColor
+        label.font = currentTheme?.subtitle1Font
         label.text = activityIndicatorConfiguration.title
     }
 

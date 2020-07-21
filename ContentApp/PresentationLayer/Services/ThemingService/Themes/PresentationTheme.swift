@@ -19,23 +19,35 @@
 import UIKit
 
 protocol PresentationTheme {
-    // TYPOGRAPHY - LOGIN COMPONENTS
+    // TYPOGRAPHY
+    var headline3Font: UIFont { get }
+    var headline4Font: UIFont { get }
+    var headline5Font: UIFont { get }
+    var headline6Font: UIFont { get }
+    var subtitle1Font: UIFont { get }
+    var subtitle2Font: UIFont { get }
+    var buttonFont: UIFont { get }
+    var body1Font: UIFont { get }
+    var body2Font: UIFont { get }
+    var captionFont: UIFont { get }
+    var overlineFont: UIFont { get }
+
+    // COLORS
+    var primaryVariantColor: UIColor { get }
+    var primaryColor: UIColor { get }
+    var primaryOnColor: UIColor { get }
+    var surfaceColor: UIColor { get }
+    var surfaceOnColor: UIColor { get }
+    var backgroundColor: UIColor { get }
+    var backgroundOnColor: UIColor { get }
+    var errorColor: UIColor { get }
+    var errorOnColor: UIColor { get }
+    var dividerColor: UIColor { get }
+
+    // TYPOGRAPHY -
     /// Buttons
-    var loginButtonFont: UIFont { get }
-    var loginUtilitiesButtonFont: UIFont { get }
-    var loginSavePadButtonFont: UIFont { get }
     var signOutButtonFont: UIFont { get }
     /// Labels
-    var productLabelFont: UIFont { get }
-    var applicationTitleFont: UIFont { get }
-    var loginCopyrightLabelFont: UIFont { get }
-    var loginFieldLabelFont: UIFont { get }
-    var loginHTTPSLabelFont: UIFont { get }
-    var loginTitleLabelFont: UIFont { get }
-    var loginInfoLabelFont: UIFont { get }
-    var loginInfoHostnameLabelFont: UIFont { get }
-    var needHelpTitleLabelFont: UIFont { get }
-    var activityIndicatorLabelFont: UIFont { get }
     var settingsTitleLabelFont: UIFont { get }
     var settingsSubtitleLabelFont: UIFont { get }
     var listNodeCellTitleLabelFont: UIFont { get }
@@ -45,31 +57,12 @@ protocol PresentationTheme {
     var recentSearchesTitleLabelFont: UIFont { get }
     var recentSearcheTitleLabelFont: UIFont { get }
     var searchChipTitleLabelFont: UIFont { get }
-    /// TextFields
-    var loginTextFieldFont: UIFont { get }
-    /// Textviews
-    var needHelpHintTextViewFont: UIFont { get }
 
-    // COLORS - LOGIN COMPONENTS
+    // COLORS
     /// Buttons
-    var loginButtonColor: UIColor { get }
-    var loginTextButtonColor: UIColor { get }
-    var loginButtonDisableColor: UIColor { get }
-    var loginNeedHelpButtonColor: UIColor { get }
-    var loginAdvancedSettingsButtonColor: UIColor { get }
-    var loginSavePadButtonColor: UIColor { get }
     var signOutButtonColor: UIColor { get }
     var signOutTextButtonColor: UIColor { get }
     /// Labels
-    var productLabelColor: UIColor { get }
-    var applicationTitleColor: UIColor { get }
-    var loginCopyrightLabelColor: UIColor { get }
-    var loginFieldLabelColor: UIColor { get }
-    var loginInfoLabelColor: UIColor { get }
-    var loginFieldDisableLabelColor: UIColor { get }
-    var loginTitleLabelColor: UIColor { get }
-    var needHelpTitleColor: UIColor { get }
-    var activityIndicatorLabelColor: UIColor { get }
     var settingsTitleLabelColor: UIColor { get }
     var settingsSubtitleLabelColor: UIColor { get }
     var listNodeCellTitleLabelColor: UIColor { get }
@@ -78,17 +71,8 @@ protocol PresentationTheme {
     var emptyListSubtitleLabelColor: UIColor { get }
     var recentSearchesTitleLabelColor: UIColor { get }
     var recentSearcheTitleLabelColor: UIColor { get }
-    /// TextFields
-    var loginTextFieldPrimaryColor: UIColor { get }
-    var loginTextFieldErrorColor: UIColor { get }
-    var loginTextFieldOnSurfaceColor: UIColor { get }
-    var loginTextFieldIconColor: UIColor { get }
-    /// Textviews
-    var needHelpHintTextViewColor: UIColor { get }
     /// Views
-    var backgroundColor: UIColor { get }
-    var activityIndicatorViewColor: UIColor { get }
-    var activityIndicatorSearchViewColor: UIColor { get }
+//    var backgroundColor: UIColor { get }
     var snackbarErrorColor: UIColor { get }
     var snackbarApproved: UIColor { get }
     var snackbarWarning: UIColor { get }

@@ -24,7 +24,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class AimsViewController: UIViewController {
+class AimsViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -42,7 +42,6 @@ class AimsViewController: UIViewController {
     var viewModel: AimsViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -116,27 +115,27 @@ class AimsViewController: UIViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
         repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        productLabel.textColor = currentTheme.productLabelColor
-        productLabel.font = currentTheme.productLabelFont
+        productLabel.textColor = currentTheme.surfaceOnColor
+        productLabel.font = currentTheme.headline5Font
 
-        infoLabel.textColor = currentTheme.loginInfoLabelColor
-        infoLabel.font = currentTheme.loginInfoLabelFont
+        infoLabel.textColor = currentTheme.surfaceOnColor
+        infoLabel.font = currentTheme.captionFont
 
-        hostnameLabel.textColor = currentTheme.loginInfoLabelColor
-        hostnameLabel.font = currentTheme.loginInfoHostnameLabelFont
+        hostnameLabel.textColor = currentTheme.surfaceOnColor
+        hostnameLabel.font = currentTheme.subtitle2Font
 
-        allowLabel.textColor = currentTheme.loginFieldLabelColor
-        allowLabel.font = currentTheme.loginInfoHostnameLabelFont
+        allowLabel.textColor = currentTheme.surfaceOnColor
+        allowLabel.font = currentTheme.subtitle2Font
 
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.surfaceOnColor
+        copyrightLabel.font = currentTheme.captionFont
     }
 }
 

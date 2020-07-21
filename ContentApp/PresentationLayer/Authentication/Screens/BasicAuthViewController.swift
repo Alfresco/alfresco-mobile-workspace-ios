@@ -72,7 +72,7 @@ class BasicAuthViewController: UIViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
                                                                                                 radius: 40,
                                                                                                 strokeWidth: 7,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
         }
@@ -133,19 +133,19 @@ class BasicAuthViewController: UIViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
 
-        productLabel.textColor = currentTheme.productLabelColor
-        productLabel.font = currentTheme.productLabelFont
+        productLabel.textColor = currentTheme.surfaceOnColor
+        productLabel.font = currentTheme.headline5Font
 
-        infoLabel.textColor = currentTheme.loginInfoLabelColor
-        infoLabel.font = currentTheme.loginInfoLabelFont
+        infoLabel.textColor = currentTheme.surfaceOnColor
+        infoLabel.font = currentTheme.captionFont
 
-        hostnameLabel.textColor = currentTheme.loginInfoLabelColor
-        hostnameLabel.font = currentTheme.loginInfoHostnameLabelFont
+        hostnameLabel.textColor = currentTheme.surfaceOnColor
+        hostnameLabel.font = currentTheme.subtitle2Font
 
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        copyrightLabel.textColor = currentTheme.surfaceOnColor
+        copyrightLabel.font = currentTheme.captionFont
 
         applyThemingInTextField(errorTheme: false)
     }
@@ -164,7 +164,7 @@ class BasicAuthViewController: UIViewController {
 
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.trailingView?.tintColor = currentTheme.loginTextFieldIconColor
+        usernameTextField.trailingView?.tintColor = currentTheme.dividerColor
         usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
         usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
@@ -174,7 +174,7 @@ class BasicAuthViewController: UIViewController {
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
         passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
-        passwordTextField.trailingView?.tintColor = currentTheme.loginTextFieldIconColor
+        passwordTextField.trailingView?.tintColor = currentTheme.dividerColor
         passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
         passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
         passwordTextField.isSecureTextEntry = true
@@ -186,7 +186,7 @@ class BasicAuthViewController: UIViewController {
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldPrimaryColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.primaryVariantColor
         keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
@@ -215,7 +215,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldIconColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.dividerColor
         return true
     }
 
