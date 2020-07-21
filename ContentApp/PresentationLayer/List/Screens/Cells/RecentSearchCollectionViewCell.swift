@@ -32,7 +32,7 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
     }
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
-        titleSearch.font = currentTheme?.recentSearcheTitleLabelFont
-        titleSearch.textColor = currentTheme?.recentSearcheTitleLabelColor
+        guard let currentTheme = currentTheme else { return }
+        titleSearch.applyStyleSubtitle1(theme: currentTheme)
     }
 }

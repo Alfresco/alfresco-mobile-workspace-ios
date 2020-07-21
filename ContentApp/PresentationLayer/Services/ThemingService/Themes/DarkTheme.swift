@@ -43,46 +43,4 @@ struct DarkTheme: PresentationTheme {
     var errorColor = #colorLiteral(red: 0.8117647059, green: 0.4, blue: 0.4745098039, alpha: 1)
     var errorOnColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     var dividerColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.15)
-
-    // MARK: - TYPOGRAPHY
-    /// Buttons
-    var signOutButtonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    /// Labels
-    var settingsTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var settingsSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var listNodeCellTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var listNodeCellSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var emptyListTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 28)
-    var emptyListSubtitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var recentSearchesTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var recentSearcheTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
-    var searchChipTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var listNodeSectionTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
-
-    // MARK: - COLORS - LOGIN COMPONENTS
-    /// Buttons
-    var signOutButtonColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-    var signOutTextButtonColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
-    /// Labels
-    var settingsTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var settingsSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    var listNodeCellTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var listNodeCellSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    var emptyListTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var emptyListSubtitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    var recentSearchesTitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    var recentSearcheTitleLabelColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var listNodeSectionTitleLabelColor = #colorLiteral(red: 0.5284697413, green: 0.5335359573, blue: 0.5419467092, alpha: 1)
-    /// Views
-//    var backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-    var snackbarErrorColor = #colorLiteral(red: 0.8117647059, green: 0, blue: 0.1607843137, alpha: 1)
-    var snackbarApproved = #colorLiteral(red: 0.1921568627, green: 0.5490196078, blue: 0.1725490196, alpha: 1)
-    var snackbarWarning = #colorLiteral(red: 0.9333333333, green: 0.6078431373, blue: 0.1843137255, alpha: 1)
-    var settingsIconColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var searchChipSelectedColor = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
-    var searchChipUnselectedColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3)
-    var tabBarBackgroundColor = #colorLiteral(red: 0.07058823529, green: 0.07450980392, blue: 0.07058823529, alpha: 1)
-    var tabBarUnselectedItemTinColor = #colorLiteral(red: 0.4, green: 0.4, blue: 0.4, alpha: 1)
-    var tabBarSelectedItemTintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    var listNodeCellIconColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
 }

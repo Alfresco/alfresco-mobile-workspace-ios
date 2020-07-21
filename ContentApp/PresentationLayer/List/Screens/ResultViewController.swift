@@ -165,12 +165,14 @@ class ResultViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
-        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
-        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
-        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
-        recentSearchesTitle.font = currentTheme.recentSearcheTitleLabelFont
-        recentSearchesTitle.textColor = currentTheme.recentSearchesTitleLabelColor
+        emptyListSubtitle.applyeStyleHeadline5(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1(theme: currentTheme)
+        recentSearchesTitle.applyStyleSubtitle1(theme: currentTheme)
+
+        view.backgroundColor = currentTheme.backgroundColor
+        emptyListView.backgroundColor = currentTheme.backgroundColor
+        recentSearchesView.backgroundColor = currentTheme.backgroundColor
+        activityIndicatorSuperview.backgroundColor = currentTheme.backgroundColor
     }
 
     func addChipsCollectionViewFlowLayout() {
@@ -224,7 +226,12 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.isSelected = true
             }
             if let themeService = self.themingService {
-                cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: (chip.selected) ? .searchChipSelected : .searchChipUnselected))
+                if chip.selected {
+                    cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
+                } else {
+                    cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
+                    cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
+                }
             }
             return cell ?? UICollectionViewCell()
         default:
@@ -258,6 +265,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if let themeService = self.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
+                cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
             }
             resultScreenDelegate?.chipTapped(chip: chip)
         default: break

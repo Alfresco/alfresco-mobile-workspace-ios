@@ -22,7 +22,7 @@ class ListSectionCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
-        titleLabel.font = currentTheme?.listNodeSectionTitleLabelFont
-        titleLabel.textColor = currentTheme?.listNodeSectionTitleLabelColor
+        titleLabel.font = currentTheme?.body2Font
+        titleLabel.textColor = currentTheme?.surfaceOnColor.withAlphaComponent(0.6)
     }
 }

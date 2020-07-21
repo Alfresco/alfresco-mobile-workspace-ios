@@ -43,46 +43,4 @@ protocol PresentationTheme {
     var errorColor: UIColor { get }
     var errorOnColor: UIColor { get }
     var dividerColor: UIColor { get }
-
-    // TYPOGRAPHY -
-    /// Buttons
-    var signOutButtonFont: UIFont { get }
-    /// Labels
-    var settingsTitleLabelFont: UIFont { get }
-    var settingsSubtitleLabelFont: UIFont { get }
-    var listNodeCellTitleLabelFont: UIFont { get }
-    var listNodeCellSubtitleLabelFont: UIFont { get }
-    var emptyListTitleLabelFont: UIFont { get }
-    var emptyListSubtitleLabelFont: UIFont { get }
-    var recentSearchesTitleLabelFont: UIFont { get }
-    var recentSearcheTitleLabelFont: UIFont { get }
-    var searchChipTitleLabelFont: UIFont { get }
-    var listNodeSectionTitleLabelFont: UIFont { get }
-
-    // COLORS
-    /// Buttons
-    var signOutButtonColor: UIColor { get }
-    var signOutTextButtonColor: UIColor { get }
-    /// Labels
-    var settingsTitleLabelColor: UIColor { get }
-    var settingsSubtitleLabelColor: UIColor { get }
-    var listNodeCellTitleLabelColor: UIColor { get }
-    var listNodeCellSubtitleLabelColor: UIColor { get }
-    var emptyListTitleLabelColor: UIColor { get }
-    var emptyListSubtitleLabelColor: UIColor { get }
-    var recentSearchesTitleLabelColor: UIColor { get }
-    var recentSearcheTitleLabelColor: UIColor { get }
-    var listNodeSectionTitleLabelColor: UIColor { get }
-    /// Views
-//    var backgroundColor: UIColor { get }
-    var snackbarErrorColor: UIColor { get }
-    var snackbarApproved: UIColor { get }
-    var snackbarWarning: UIColor { get }
-    var settingsIconColor: UIColor { get }
-    var searchChipSelectedColor: UIColor { get }
-    var searchChipUnselectedColor: UIColor { get }
-    var tabBarBackgroundColor: UIColor { get }
-    var tabBarUnselectedItemTinColor: UIColor { get }
-    var tabBarSelectedItemTintColor: UIColor { get }
-    var listNodeCellIconColor: UIColor { get }
 }

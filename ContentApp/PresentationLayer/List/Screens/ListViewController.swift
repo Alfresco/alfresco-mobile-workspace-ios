@@ -69,6 +69,7 @@ class ListViewController: SystemThemableViewController {
         if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
             self.startLoading()
         }
+        collectionView.reloadData()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -163,18 +164,14 @@ class ListViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.tintColor = .label
-            navigationItem.leftBarButtonItem?.tintColor = .label
-        } else {
-            navigationController?.navigationBar.tintColor = .black
-            navigationItem.leftBarButtonItem?.tintColor = .black
-        }
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
-        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
-        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
-        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
+        emptyListSubtitle.applyeStyleHeadline5(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1(theme: currentTheme)
+
+        view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        emptyListView.backgroundColor = currentTheme.backgroundColor
+        activityIndicatorSuperview.backgroundColor = currentTheme.backgroundColor
     }
 
     func addLocalization() {
@@ -208,6 +205,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
+        cell?.applyThemingService(themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 

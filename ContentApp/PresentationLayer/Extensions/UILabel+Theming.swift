@@ -25,6 +25,11 @@ extension UILabel {
         self.font = theme.captionFont
     }
 
+    func applyStyleDisableCaption(theme: PresentationTheme) {
+        self.textColor = theme.surfaceOnColor.withAlphaComponent(0.6)
+        self.font = theme.captionFont
+    }
+
     func applyStyleSubtitle1(theme: PresentationTheme) {
         self.textColor = theme.surfaceOnColor
         self.font = theme.subtitle1Font
@@ -34,7 +39,7 @@ extension UILabel {
         self.textColor = theme.surfaceOnColor
         self.font = theme.subtitle2Font
     }
-    
+
     func applyStyleDisableSubtitle1(theme: PresentationTheme) {
         self.textColor = theme.dividerColor
         self.font = theme.subtitle1Font
