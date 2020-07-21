@@ -61,20 +61,9 @@ class AimsViewController: SystemThemableViewController {
         enableSignInButton = (repositoryTextField.text != "")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -111,7 +100,7 @@ class AimsViewController: SystemThemableViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
@@ -136,6 +125,8 @@ class AimsViewController: SystemThemableViewController {
 
         copyrightLabel.textColor = currentTheme.surfaceOnColor
         copyrightLabel.font = currentTheme.captionFont
+
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 }
 

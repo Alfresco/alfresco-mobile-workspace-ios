@@ -24,7 +24,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class BasicAuthViewController: UIViewController {
+class BasicAuthViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -44,7 +44,6 @@ class BasicAuthViewController: UIViewController {
     var viewModel: BasicAuthViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
@@ -67,7 +66,6 @@ class BasicAuthViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
                                                                                                 radius: 40,
@@ -88,11 +86,6 @@ class BasicAuthViewController: UIViewController {
        activityIndicator?.reload(from: size)
    }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
 
     // MARK: - IBActions
 
@@ -129,7 +122,7 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
@@ -148,6 +141,8 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.font = currentTheme.captionFont
 
         applyThemingInTextField(errorTheme: false)
+
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 
     func applyThemingInTextField(errorTheme: Bool) {

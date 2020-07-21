@@ -90,7 +90,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (viewModel.authParameters.https) ? self.themingService?.activeTheme?.surfaceOnColor : self.themingService?.activeTheme?.dividerColor
+        httpsLabel.textColor = (httpsSwitch.isOn) ? self.themingService?.activeTheme?.surfaceOnColor : self.themingService?.activeTheme?.dividerColor
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
     }
@@ -183,6 +183,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
         saveButton.tintColor = currentTheme.primaryVariantColor
         backPadButton.tintColor = currentTheme.primaryVariantColor
+
+        view.backgroundColor = currentTheme.backgroundColor
     }
 
     func updateFields() {

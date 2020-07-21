@@ -25,15 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
-        if #available(iOS 13.0, *) {
-            window.backgroundColor = .systemBackground
-        } else {
-            window.backgroundColor = .white
-        }
         let applicationCoordinator = ApplicationCoordinator(window: window)
 
         self.window = window
         self.applicationCoordinator = applicationCoordinator
+        if let themingService = applicationCoordinator.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
+            window.backgroundColor = themingService.activeTheme?.backgroundColor
+        }
+
 
         applicationCoordinator.start()
 
