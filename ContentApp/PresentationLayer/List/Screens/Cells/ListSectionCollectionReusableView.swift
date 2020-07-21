@@ -21,7 +21,7 @@ import UIKit
 class ListSectionCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
 
-    func applyThemingService(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?) {
         titleLabel.font = currentTheme?.listNodeSectionTitleLabelFont
         titleLabel.textColor = currentTheme?.listNodeSectionTitleLabelColor
     }

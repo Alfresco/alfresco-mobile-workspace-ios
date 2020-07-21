@@ -21,15 +21,15 @@ import Foundation
 extension Date {
     var calendar: Calendar { Calendar.current }
     var components: Set<Calendar.Component> { [.year, .month, .day, .weekOfYear] }
-    var todayDateComponent: DateComponents { calendar.dateComponents(components, from: Date()) }
-    var selfDateComponent: DateComponents { calendar.dateComponents(components, from: self) }
+    var todayDateComponents: DateComponents { calendar.dateComponents(components, from: Date()) }
+    var dateComponents: DateComponents { calendar.dateComponents(components, from: self) }
 
     var isInToday: Bool { calendar.isDateInToday(self) }
     var isInYesterday: Bool { calendar.isDateInYesterday(self) }
 
     var isInThisWeek: Bool {
-        guard let selfWeekOfYear = selfDateComponent.weekOfYear,
-            let todayWeekOfYear = todayDateComponent.weekOfYear else {
+        guard let selfWeekOfYear = dateComponents.weekOfYear,
+            let todayWeekOfYear = todayDateComponents.weekOfYear else {
                 return false
         }
         return selfWeekOfYear == todayWeekOfYear
@@ -49,10 +49,10 @@ extension Date {
     }
 
     var isInThisMonth: Bool {
-        guard let selfYear = selfDateComponent.year,
-            let todayYear = todayDateComponent.year,
-            let selfMonth = selfDateComponent.month,
-            let todayMonth = todayDateComponent.month  else {
+        guard let selfYear = dateComponents.year,
+            let todayYear = todayDateComponents.year,
+            let selfMonth = dateComponents.month,
+            let todayMonth = todayDateComponents.month  else {
                 return false
         }
         return selfYear == todayYear && selfMonth == todayMonth
