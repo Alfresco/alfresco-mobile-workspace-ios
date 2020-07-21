@@ -87,19 +87,13 @@ class TabBarMainViewController: UITabBarController {
     }
 
     func addMaterialComponentsTheme() {
-        if let tabBarScheme = themingService?.containerScheming(for: .applicationTabBar),
-            let selectedItemColor = themingService?.activeTheme?.tabBarSelectedItemTintColor,
-            let unselectedItemColor = themingService?.activeTheme?.tabBarUnselectedItemTinColor {
-            bottomNavigationBar.applyPrimaryTheme(withScheme: tabBarScheme)
-            bottomNavigationBar.selectedItemTintColor = selectedItemColor
-            bottomNavigationBar.unselectedItemTintColor = unselectedItemColor
-            bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
-        }
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.tintColor = .label
-        } else {
-            navigationController?.navigationBar.tintColor = .black
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+
+        bottomNavigationBar.applyPrimaryTheme(withScheme: themingService.containerScheming(for: .applicationTabBar))
+        bottomNavigationBar.selectedItemTintColor = currentTheme.surfaceOnColor
+        bottomNavigationBar.unselectedItemTintColor = currentTheme.surfaceOnColor.withAlphaComponent(0.6)
+        bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
     }
 
     func addBottomNavigationBar() {

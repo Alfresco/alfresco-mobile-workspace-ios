@@ -139,7 +139,7 @@ class ConnectViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
-        
+
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))

@@ -38,7 +38,7 @@ struct DefaultTheme: PresentationTheme {
     var primaryOnColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var surfaceColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var surfaceOnColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
-    var backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+    var backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var backgroundOnColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
     var errorColor = #colorLiteral(red: 0.6901960784, green: 0, blue: 0.1254901961, alpha: 1)
     var errorOnColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
