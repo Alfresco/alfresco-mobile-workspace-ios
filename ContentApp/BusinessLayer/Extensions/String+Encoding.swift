@@ -25,8 +25,4 @@ extension String {
         }
         return self
     }
-
-    func replaceQuotesAndApostrophes() -> String {
-        return self.replacingOccurrences(of: "”", with: "\"").replacingOccurrences(of: "’", with: "\'")
-    }
 }

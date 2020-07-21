@@ -143,6 +143,8 @@ class ListViewController: SystemThemableViewController {
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.smartQuotesType = .no
         navigationItem.searchController = searchController
     }
 
