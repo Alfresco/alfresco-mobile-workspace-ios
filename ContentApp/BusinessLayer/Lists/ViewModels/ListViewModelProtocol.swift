@@ -31,10 +31,5 @@ protocol ListViewModelProtocol {
 }
 
 protocol ListViewModelDelegate: class {
-    /**
-     Handle search results
-     - results: list of element from a search operation
-     - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
-     */
-    func handleList(results: [GroupedList]?)
+    func handleList()
 }

@@ -19,6 +19,7 @@
 import UIKit
 
 class RecentScreenCoordinator: ListCoordinatorProtocol {
+
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
@@ -48,9 +49,5 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
     func popToRoot() {
 
-    }
-
-    func refreshList() {
-        recentViewController?.refreshList()
     }
 }

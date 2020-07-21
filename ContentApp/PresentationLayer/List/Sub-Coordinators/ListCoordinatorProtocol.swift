@@ -21,5 +21,4 @@ import Foundation
 protocol ListCoordinatorProtocol: Coordinator {
     func popToRoot()
     func scrollToTop()
-    func refreshList()
 }

@@ -48,14 +48,14 @@ class RecentViewModel: ListViewModelProtocol {
                 if let entries = result?.list?.entries {
                     sSelf.addInGroupList(ListNode.nodes(entries))
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList(results: sSelf.groupedLists)
+                        sSelf.viewModelDelegate?.handleList()
                     }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList(results: [])
+                        sSelf.viewModelDelegate?.handleList()
                     }
                 }
             }
