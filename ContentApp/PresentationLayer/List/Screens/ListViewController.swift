@@ -33,7 +33,6 @@ class ListViewController: SystemThemableViewController {
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
-    var dataSource: [GroupedList] = []
 
     private var settingsButtonHeight: CGFloat = 30.0
     private var nodeHeighCell: CGFloat = 64.0
@@ -67,7 +66,7 @@ class ListViewController: SystemThemableViewController {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true
         }
-        if emptyListView.isHidden && dataSource.count == 0 {
+        if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
             self.startLoading()
         }
     }
@@ -93,9 +92,9 @@ class ListViewController: SystemThemableViewController {
     }
 
     func refreshList() {
-        self.scrollToSection(0)
         self.startLoading()
         self.listViewModel?.reloadRequest()
+        self.scrollToSection(0)
     }
 
     // MARK: - Helpers
@@ -186,7 +185,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     func scrollToSection(_ section: Int) {
-        guard !dataSource.isEmpty else { return }
+        guard let results = self.listViewModel?.groupedLists, !results.isEmpty else { return }
         let indexPath = IndexPath(item: 0, section: section)
         if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
             let topOfHeader = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
@@ -199,15 +198,15 @@ class ListViewController: SystemThemableViewController {
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource[section].list.count
+        return listViewModel?.groupedLists[section].list.count ?? 0
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return dataSource.count
+        return listViewModel?.groupedLists.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let node = dataSource[indexPath.section].list[indexPath.row]
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return UICollectionViewCell() }
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
@@ -225,7 +224,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier,
                                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
                                                                                     fatalError("Invalid ListSectionCollectionReusableView type") }
-            headerView.titleLabel.text = dataSource[indexPath.section].titleGroup
+            headerView.titleLabel.text = listViewModel?.groupedLists[indexPath.section].titleGroup
             headerView.applyTheme(themingService?.activeTheme)
             return headerView
         default:
@@ -283,10 +282,8 @@ extension ListViewController: SearchViewModelDelegate {
 
 extension ListViewController: ListViewModelDelegate {
     func handleList(results: [GroupedList]?) {
-        guard let results = results else { return }
         self.stopLoading()
-        dataSource = results
-        emptyListView.isHidden = !dataSource.isEmpty
+        emptyListView.isHidden = !(results?.isEmpty ?? false)
         collectionView.reloadData()
     }
 }
