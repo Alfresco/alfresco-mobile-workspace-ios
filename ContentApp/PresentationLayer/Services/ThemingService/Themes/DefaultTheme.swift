@@ -57,6 +57,7 @@ struct DefaultTheme: PresentationTheme {
     var recentSearchesTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
     var recentSearcheTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 16)
     var searchChipTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 12)
+    var listNodeSectionTitleLabelFont = UIFont.alfrescoRegularFont(ofSize: 14)
 
     // MARK: - COLORS
     /// Buttons
@@ -71,6 +72,7 @@ struct DefaultTheme: PresentationTheme {
     var emptyListSubtitleLabelColor = #colorLiteral(red: 0.3294117647, green: 0.3294117647, blue: 0.3294117647, alpha: 1)
     var recentSearchesTitleLabelColor = #colorLiteral(red: 0.3254901961, green: 0.3254901961, blue: 0.3254901961, alpha: 1)
     var recentSearcheTitleLabelColor = #colorLiteral(red: 0.09803921569, green: 0.1019607843, blue: 0.1176470588, alpha: 1)
+    var listNodeSectionTitleLabelColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6)
     /// Views
 //    var backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var snackbarErrorColor = #colorLiteral(red: 0.8117647059, green: 0, blue: 0.1607843137, alpha: 1)

@@ -94,3 +94,11 @@
 "chipFiles" = "Files";
 "chipFolders" = "Folders";
 "chipLibraries" = "Libraries";
+
+// MARK: - Group List Section
+"today" = "Today";
+"yesterday" = "Yesterday";
+"thisWeek" = "This Week";
+"lastWeek" = "Last Week";
+"thisMonth" = "This Month";
+"older" = "Older";

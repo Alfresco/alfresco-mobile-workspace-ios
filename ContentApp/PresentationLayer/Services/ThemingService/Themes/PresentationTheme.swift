@@ -57,6 +57,7 @@ protocol PresentationTheme {
     var recentSearchesTitleLabelFont: UIFont { get }
     var recentSearcheTitleLabelFont: UIFont { get }
     var searchChipTitleLabelFont: UIFont { get }
+    var listNodeSectionTitleLabelFont: UIFont { get }
 
     // COLORS
     /// Buttons
@@ -71,6 +72,7 @@ protocol PresentationTheme {
     var emptyListSubtitleLabelColor: UIColor { get }
     var recentSearchesTitleLabelColor: UIColor { get }
     var recentSearcheTitleLabelColor: UIColor { get }
+    var listNodeSectionTitleLabelColor: UIColor { get }
     /// Views
 //    var backgroundColor: UIColor { get }
     var snackbarErrorColor: UIColor { get }
