@@ -105,8 +105,7 @@ class SplashViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        copyrightLabel.textColor = currentTheme.surfaceOnColor
-        copyrightLabel.font = currentTheme.captionFont
+        copyrightLabel.applyStyleCaption(theme: currentTheme)
         backButton.tintColor = currentTheme.primaryVariantColor
         view.backgroundColor = currentTheme.backgroundColor
         whiteAlphaView.backgroundColor = currentTheme.backgroundColor

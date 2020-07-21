@@ -139,6 +139,7 @@ class ConnectViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
@@ -146,11 +147,8 @@ class ConnectViewController: SystemThemableViewController {
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.textColor = currentTheme.surfaceOnColor
-        productLabel.font = currentTheme.headline5Font
-
-        copyrightLabel.textColor = currentTheme.surfaceOnColor
-        copyrightLabel.font = currentTheme.captionFont
+        productLabel.applyeStyleHeadline5(theme: currentTheme)
+        copyrightLabel.applyStyleCaption(theme: currentTheme)
 
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor

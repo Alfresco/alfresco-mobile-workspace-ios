@@ -111,20 +111,11 @@ class AimsViewController: SystemThemableViewController {
         repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
         repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        productLabel.textColor = currentTheme.surfaceOnColor
-        productLabel.font = currentTheme.headline5Font
-
-        infoLabel.textColor = currentTheme.surfaceOnColor
-        infoLabel.font = currentTheme.captionFont
-
-        hostnameLabel.textColor = currentTheme.surfaceOnColor
-        hostnameLabel.font = currentTheme.subtitle2Font
-
-        allowLabel.textColor = currentTheme.surfaceOnColor
-        allowLabel.font = currentTheme.subtitle2Font
-
-        copyrightLabel.textColor = currentTheme.surfaceOnColor
-        copyrightLabel.font = currentTheme.captionFont
+        productLabel.applyeStyleHeadline5(theme: currentTheme)
+        infoLabel.applyStyleCaption(theme: currentTheme)
+        hostnameLabel.applyStyleSubtitle2(theme: currentTheme)
+        allowLabel.applyStyleSubtitle2(theme: currentTheme)
+        copyrightLabel.applyStyleCaption(theme: currentTheme)
 
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }

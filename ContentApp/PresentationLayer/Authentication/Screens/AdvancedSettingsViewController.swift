@@ -90,7 +90,12 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (httpsSwitch.isOn) ? self.themingService?.activeTheme?.surfaceOnColor : self.themingService?.activeTheme?.dividerColor
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        if httpsSwitch.isOn {
+            httpsLabel.applyStyleSubtitle1(theme: currentTheme)
+        } else {
+            httpsLabel.applyStyleDisableSubtitle1(theme: currentTheme)
+        }
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
     }
@@ -159,23 +164,16 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         realmTextField.setFilledBackgroundColor(.clear, for: .normal)
         realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        transportProtocolLabel.textColor = currentTheme.surfaceOnColor
-        transportProtocolLabel.font = currentTheme.subtitle1Font
-
-        httpsLabel.textColor = (viewModel.authParameters.https) ? currentTheme.surfaceOnColor : currentTheme.dividerColor
-        httpsLabel.font = currentTheme.subtitle1Font
-
-        settingsLabel.textColor = currentTheme.surfaceOnColor
-        settingsLabel.font = currentTheme.subtitle1Font
-
-        authenticationLabel.textColor = currentTheme.surfaceOnColor
-        authenticationLabel.font = currentTheme.subtitle1Font
-
-        titlePadLabel.textColor = currentTheme.surfaceOnColor
-        titlePadLabel.font = currentTheme.subtitle1Font
-
-        copyrightLabel.textColor = currentTheme.surfaceOnColor
-        copyrightLabel.font = currentTheme.captionFont
+        if viewModel.authParameters.https {
+            httpsLabel.applyStyleSubtitle1(theme: currentTheme)
+        } else {
+            httpsLabel.applyStyleDisableSubtitle1(theme: currentTheme)
+        }
+        transportProtocolLabel.applyStyleSubtitle1(theme: currentTheme)
+        settingsLabel.applyStyleSubtitle1(theme: currentTheme)
+        authenticationLabel.applyStyleSubtitle1(theme: currentTheme)
+        titlePadLabel.applyStyleSubtitle1(theme: currentTheme)
+        copyrightLabel.applyStyleCaption(theme: currentTheme)
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
