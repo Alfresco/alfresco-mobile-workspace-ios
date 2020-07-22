@@ -22,12 +22,21 @@ import AlfrescoContentServices
 class ListViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
 
+    @IBOutlet weak var activityIndicatorSuperview: UIView!
+    var activityIndicator: ActivityIndicatorView?
+
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
+    @IBOutlet weak var emptyListImageView: UIImageView!
+
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
 
     private var settingsButtonHeight: CGFloat = 30.0
     private var nodeHeighCell: CGFloat = 64.0
+    private var nodeHeightSection: CGFloat = 56.0
     private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
@@ -42,11 +51,29 @@ class ListViewController: SystemThemableViewController {
         addSearchController()
 
         registerListElementCell()
+        emptyListView.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
+                                                  configuration: ActivityIndicatorConfiguration(title: "" ,
+                                                                                                radius: 12,
+                                                                                                strokeWidth: 2,
+                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+        if let activityIndicator = activityIndicator {
+            activityIndicatorSuperview.addSubview(activityIndicator)
+            activityIndicatorSuperview.isHidden = true
+        }
+        if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
+            self.startLoading()
+        }
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        collectionView.reloadData()
     }
 
     // MARK: - IBActions
@@ -55,7 +82,26 @@ class ListViewController: SystemThemableViewController {
         tabBarScreenDelegate?.showSettingsScreen()
     }
 
+    // MARK: - Coordinator Public Methods
+
+    func popToRoot() {
+    }
+
+    func scrollToTop() {
+        self.scrollToSection(0)
+    }
+
     // MARK: - Helpers
+
+    func startLoading() {
+        activityIndicatorSuperview.isHidden = false
+        activityIndicator?.state = .isLoading
+    }
+
+    func stopLoading() {
+        activityIndicatorSuperview.isHidden = true
+        activityIndicator?.state = .isIdle
+    }
 
     func configureNavigationBar() {
         definesPresentationContext = true
@@ -91,6 +137,8 @@ class ListViewController: SystemThemableViewController {
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
         searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.smartQuotesType = .no
         navigationItem.searchController = searchController
     }
 
@@ -118,6 +166,25 @@ class ListViewController: SystemThemableViewController {
             navigationController?.navigationBar.tintColor = .black
             navigationItem.leftBarButtonItem?.tintColor = .black
         }
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
+        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
+        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
+        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
+    }
+
+    func addLocalization() {
+        emptyListTitle.text = LocalizationConstants.Search.title
+        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
+    }
+
+    func scrollToSection(_ section: Int) {
+        guard let results = self.listViewModel?.groupedLists, !results.isEmpty else { return }
+        let indexPath = IndexPath(item: 0, section: section)
+        if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
+            let topOfHeader = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+            collectionView.setContentOffset(topOfHeader, animated: true)
+        }
     }
 }
 
@@ -125,11 +192,15 @@ class ListViewController: SystemThemableViewController {
 
 extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listViewModel?.resultsList.count ?? 0
+        return listViewModel?.groupedLists[section].list.count ?? 0
+    }
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return listViewModel?.groupedLists.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listViewModel?.resultsList[indexPath.row] else { return UICollectionViewCell() }
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return UICollectionViewCell() }
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
@@ -138,6 +209,29 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            let identifier = String(describing: ListSectionCollectionReusableView.self)
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier,
+                                                                                   for: indexPath) as? ListSectionCollectionReusableView else {
+                                                                                    fatalError("Invalid ListSectionCollectionReusableView type") }
+            headerView.titleLabel.text = listViewModel?.groupedLists[indexPath.section].titleGroup
+            headerView.applyTheme(themingService?.activeTheme)
+            return headerView
+        default:
+            return UICollectionReusableView()
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if let viewModel = listViewModel, viewModel.shouldDisplaySections() {
+            return CGSize(width: self.view.bounds.width, height: nodeHeightSection)
+        } else {
+            return CGSize(width: self.view.bounds.width, height: 0)
+        }
     }
 }
 
@@ -191,8 +285,12 @@ extension ListViewController: SearchViewModelDelegate {
     }
 }
 
+// MARK: - List ViewModel Delegate
+
 extension ListViewController: ListViewModelDelegate {
-    func handleList(results: [ListElementProtocol]?) {
+    func handleList() {
+        self.stopLoading()
+        emptyListView.isHidden = !(listViewModel?.groupedLists.isEmpty ?? false)
         collectionView.reloadData()
     }
 }

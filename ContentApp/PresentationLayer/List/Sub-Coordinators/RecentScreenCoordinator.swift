@@ -18,7 +18,8 @@
 
 import UIKit
 
-class RecentScreenCoordinator: Coordinator {
+class RecentScreenCoordinator: ListCoordinatorProtocol {
+
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
@@ -40,5 +41,13 @@ class RecentScreenCoordinator: Coordinator {
         presenter.viewControllers = [navigationViewController]
         self.navigationViewController = navigationViewController
         self.recentViewController = viewController
+    }
+
+    func scrollToTop() {
+        recentViewController?.scrollToTop()
+    }
+
+    func popToRoot() {
+
     }
 }

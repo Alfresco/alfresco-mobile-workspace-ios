@@ -122,14 +122,19 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBarFrame.origin.y -= view.safeAreaInsets.bottom
         bottomNavigationBar.frame = bottomNavigationBarFrame
     }
+
+    func doubleTapLogic(for item: Int) {
+        guard self.selectedIndex == item else { return }
+        self.tabBarCoordinatorDelegate?.scrollToTop(forScreen: item)
+    }
 }
 
 // MARK: - MDCBottomNavigationBarDelegate
 
 extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
     func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar, shouldSelect item: UITabBarItem) -> Bool {
+        doubleTapLogic(for: item.tag)
         self.selectedIndex = item.tag
-
         return true
     }
 }

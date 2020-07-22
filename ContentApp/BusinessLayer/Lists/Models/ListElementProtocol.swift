@@ -22,4 +22,5 @@ protocol ListElementProtocol {
     var title: String { get }
     var icon: String { get }
     var path: String { get }
+    var modifiedAt: Date? { get }
 }
