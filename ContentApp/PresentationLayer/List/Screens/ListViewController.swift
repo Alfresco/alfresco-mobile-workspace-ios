@@ -91,12 +91,6 @@ class ListViewController: SystemThemableViewController {
         self.scrollToSection(0)
     }
 
-    func refreshList() {
-        self.startLoading()
-        self.listViewModel?.reloadRequest()
-        self.scrollToSection(0)
-    }
-
     // MARK: - Helpers
 
     func startLoading() {
@@ -281,9 +275,9 @@ extension ListViewController: SearchViewModelDelegate {
 // MARK: - List ViewModel Delegate
 
 extension ListViewController: ListViewModelDelegate {
-    func handleList(results: [GroupedList]?) {
+    func handleList() {
         self.stopLoading()
-        emptyListView.isHidden = !(results?.isEmpty ?? false)
+        emptyListView.isHidden = !(listViewModel?.groupedLists.isEmpty ?? false)
         collectionView.reloadData()
     }
 }
