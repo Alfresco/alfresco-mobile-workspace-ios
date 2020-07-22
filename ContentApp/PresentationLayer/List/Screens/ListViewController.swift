@@ -263,9 +263,7 @@ extension ListViewController: ResultScreenDelegate {
     }
 
     func fetchNextSearchResultsPage(for index: IndexPath) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
+        guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
         let searchString = searchBar.text
         searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
     }
@@ -276,12 +274,7 @@ extension ListViewController: ResultScreenDelegate {
 extension ListViewController: SearchViewModelDelegate {
     func handle(results: [ListElementProtocol]?, pagination: Pagination?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        if results == nil && pagination == nil {
-            rvc.clearDataSource()
-        } else {
-            rvc.updateDataSource(results, pagination: pagination)
-        }
+        rvc.updateDataSource(results, pagination: pagination)
     }
 }
 

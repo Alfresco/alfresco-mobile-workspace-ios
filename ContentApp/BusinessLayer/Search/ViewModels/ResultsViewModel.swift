@@ -20,7 +20,11 @@ import Foundation
 import AlfrescoContentServices
 
 struct ResultsViewModel {
-    var results: [ListElementProtocol] = []
+    var results: [ListElementProtocol] = [] {
+        didSet {
+            shouldDisplayNextPageLoadingIndicator = true
+        }
+    }
     var shouldDisplayNextPageLoadingIndicator: Bool = true
 
     mutating func addNewResults(results: [ListElementProtocol]?, pagination: Pagination?) {
@@ -31,8 +35,15 @@ struct ResultsViewModel {
             if let pagination = pagination {
                 shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
             }
-        } else {
-            shouldDisplayNextPageLoadingIndicator = false
+        }
+    }
+
+    mutating func addResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+        guard let results = results else { return }
+        if results.count != 0 {
+            self.results = results
+
+            shouldDisplayNextPageLoadingIndicator = (Int64(results.count) == pagination?.totalItems) ? false : true
         }
     }
 }

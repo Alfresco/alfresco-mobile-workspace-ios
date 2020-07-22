@@ -124,21 +124,30 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func updateDataSource(_ results: [ListElementProtocol]?, pagination: Pagination?) {
-        if pagination?.skipCount == 0 {
-            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        stopLoading()
 
-            if let results = results {
-                emptyListView.isHidden = !results.isEmpty
-                recentSearchesView.isHidden = true
-                resultsListCollectionView.isHidden = results.isEmpty
-            } else {
-                clearDataSource()
-            }
+        // If loading the first page or missing pagination scroll to top
+        if pagination?.skipCount == 0 || pagination == nil {
+            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
 
-        stopLoading()
-        resultsViewModel.addNewResults(results: results, pagination: pagination)
-        resultsListCollectionView.reloadData()
+        if let results = results {
+            emptyListView.isHidden = !results.isEmpty
+            recentSearchesView.isHidden = true
+            resultsListCollectionView.isHidden = results.isEmpty
+
+            if results.count > 0 {
+                if pagination?.skipCount != 0 {
+                    resultsViewModel.addNewResults(results: results, pagination: pagination)
+                } else {
+                    resultsViewModel.addResults(results: results, pagination: pagination)
+                }
+                resultsListCollectionView.reloadData()
+            }
+        } else {
+            clearDataSource()
+            resultsListCollectionView.reloadData()
+        }
     }
 
     func clearDataSource() {

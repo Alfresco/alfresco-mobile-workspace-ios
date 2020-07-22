@@ -28,6 +28,8 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
     private var liveSearchTimer: Timer?
     private var currentPage: Int = 1
+    private var searchGroup = DispatchGroup()
+    private var hasMoreItems = true
 
     // MARK: - Init
 
@@ -88,8 +90,11 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             self.viewModelDelegate?.handle(results: nil)
             return
         }
+
+        searchGroup.enter()
+
         if isSearchForLibraries() {
-            performLibrariesSearch(searchString: searchString)
+            performLibrariesSearch(searchString: searchString, paginationRequest: paginationRequest)
         } else {
             performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
         }
@@ -110,9 +115,14 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
     }
 
     func fetchNextSearchResultsPage(for string: String?, index: IndexPath) {
-        let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: currentPage * kListPageSize)
-        currentPage += 1
-        performSearch(for: string, paginationRequest: nextPage)
+        searchGroup.notify(queue: .global()) { [weak self] in
+            guard let sSelf = self else { return }
+
+            if sSelf.hasMoreItems {
+                let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: sSelf.currentPage * kListPageSize)
+                sSelf.performSearch(for: string, paginationRequest: nextPage)
+            }
+        }
     }
 
     // MARK: Private Methods
@@ -124,23 +134,26 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         return false
     }
 
-    private func performLibrariesSearch(searchString: String) {
+    private func incrementPage(for paginationRequest: RequestPagination?) {
+        if let pageSkipCount = paginationRequest?.skipCount {
+            currentPage = pageSkipCount / kListPageSize + 1
+        }
+    }
+
+    private func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            QueriesAPI.findSites(term: searchString) { (results, error) in
+            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
+                var listSites: [ListSite]?
                 if let entries = results?.list.entries {
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: ListSite.sites(entries))
-                    }
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: [])
-                    }
+                    listSites = ListSite.sites(entries)
                 }
+
+                sSelf.handle(results: listSites,
+                             error: error,
+                             paginationRequest: paginationRequest,
+                             pagination: results?.list.pagination)
             }
         })
     }
@@ -150,20 +163,39 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
+
                 if let entries = result?.list?.entries {
                     sSelf.resultsList = ListNode.nodes(entries)
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: sSelf.resultsList, pagination: result?.list?.pagination)
-                    }
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handle(results: nil, pagination: result?.list?.pagination)
-                    }
                 }
+
+                sSelf.handle(results: sSelf.resultsList,
+                             error: error,
+                             paginationRequest: paginationRequest,
+                             pagination: result?.list?.pagination)
             }
         })
+    }
+
+    func handle(results: [ListElementProtocol]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
+        if let error = error {
+            AlfrescoLog.error(error)
+
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.viewModelDelegate?.handle(results: nil, pagination: nil)
+            }
+        } else if let results = results, let skipCount = pagination?.skipCount {
+            self.hasMoreItems = (Int64(results.count) + skipCount) == pagination?.totalItems ? false : true
+
+            if paginationRequest != nil && hasMoreItems {
+                incrementPage(for: paginationRequest)
+            }
+
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.viewModelDelegate?.handle(results: results, pagination: pagination)
+            }
+        }
+        searchGroup.leave()
     }
 }
