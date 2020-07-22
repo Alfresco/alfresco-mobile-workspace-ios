@@ -34,9 +34,6 @@ class ListViewController: SystemThemableViewController {
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
 
-    private var settingsButtonHeight: CGFloat = 30.0
-    private var nodeHeighCell: CGFloat = 64.0
-    private var nodeHeightSection: CGFloat = 56.0
     private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
@@ -119,17 +116,17 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSettingsButton() {
-        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
+        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
-        settingsButton.layer.cornerRadius = settingsButtonHeight / 2
+        settingsButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         settingsButton.layer.masksToBounds = true
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonHeight)
+        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
         currWidth?.isActive = true
-        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonHeight)
+        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
         currHeight?.isActive = true
 
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem
@@ -165,8 +162,8 @@ class ListViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1(theme: currentTheme)
+        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
 
         view.backgroundColor = currentTheme.backgroundColor
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
@@ -210,7 +207,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+        return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -230,7 +227,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if let viewModel = listViewModel, viewModel.shouldDisplaySections() {
-            return CGSize(width: self.view.bounds.width, height: nodeHeightSection)
+            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
         } else {
             return CGSize(width: self.view.bounds.width, height: 0)
         }

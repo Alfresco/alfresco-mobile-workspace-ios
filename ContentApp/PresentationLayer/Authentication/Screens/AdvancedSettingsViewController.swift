@@ -92,9 +92,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         self.view.endEditing(true)
         guard let currentTheme = self.themingService?.activeTheme else { return }
         if httpsSwitch.isOn {
-            httpsLabel.applyStyleSubtitle1(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         } else {
-            httpsLabel.applyStyleDisableSubtitle1(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle1Divider(theme: currentTheme)
         }
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
@@ -165,15 +165,15 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
         if viewModel.authParameters.https {
-            httpsLabel.applyStyleSubtitle1(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         } else {
-            httpsLabel.applyStyleDisableSubtitle1(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle1Divider(theme: currentTheme)
         }
-        transportProtocolLabel.applyStyleSubtitle1(theme: currentTheme)
-        settingsLabel.applyStyleSubtitle1(theme: currentTheme)
-        authenticationLabel.applyStyleSubtitle1(theme: currentTheme)
-        titlePadLabel.applyStyleSubtitle1(theme: currentTheme)
-        copyrightLabel.applyStyleCaption(theme: currentTheme)
+        transportProtocolLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        settingsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        authenticationLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titlePadLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))

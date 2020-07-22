@@ -39,7 +39,7 @@ class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtoco
 
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
-        titleLabel.applyStyleSubtitle1(theme: currentTheme)
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
     }
 
     func shouldHideSeparator(hidden: Bool) {

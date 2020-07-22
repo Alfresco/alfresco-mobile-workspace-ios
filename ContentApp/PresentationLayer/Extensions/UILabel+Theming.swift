@@ -20,33 +20,38 @@ import Foundation
 import UIKit
 
 extension UILabel {
-    func applyStyleCaption(theme: PresentationTheme) {
-        self.textColor = theme.surfaceOnColor
+    func applyStyleCaptionOnSurface60(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
         self.font = theme.captionFont
     }
 
-    func applyStyleDisableCaption(theme: PresentationTheme) {
-        self.textColor = theme.surfaceOnColor.withAlphaComponent(0.6)
-        self.font = theme.captionFont
-    }
-
-    func applyStyleSubtitle1(theme: PresentationTheme) {
-        self.textColor = theme.surfaceOnColor
+    func applyStyleSubtitle1OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
         self.font = theme.subtitle1Font
     }
 
-    func applyStyleSubtitle2(theme: PresentationTheme) {
-        self.textColor = theme.surfaceOnColor
+    func applyStyleBody1OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
+        self.font = theme.body1Font
+    }
+
+    func applyStyleSubtitle2OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
         self.font = theme.subtitle2Font
     }
 
-    func applyStyleDisableSubtitle1(theme: PresentationTheme) {
+    func applyStyleSubtitle2OnSurface60(theme: PresentationTheme) {
+        self.font = theme.subtitle2Font
+        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+    }
+
+    func applyStyleSubtitle1Divider(theme: PresentationTheme) {
         self.textColor = theme.dividerColor
         self.font = theme.subtitle1Font
     }
 
-    func applyeStyleHeadline5(theme: PresentationTheme) {
-        self.textColor = theme.surfaceOnColor
+    func applyeStyleHeadline5OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
         self.font = theme.headline5Font
     }
 }

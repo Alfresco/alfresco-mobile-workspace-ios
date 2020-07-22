@@ -45,9 +45,9 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
 
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
-        titleLabel.applyStyleSubtitle1(theme: currentTheme)
-        subtitleLabel.applyStyleCaption(theme: currentTheme)
-        iconImageView.tintColor = currentTheme.surfaceOnColor.withAlphaComponent(0.6)
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     func shouldHideSeparator(hidden: Bool) {

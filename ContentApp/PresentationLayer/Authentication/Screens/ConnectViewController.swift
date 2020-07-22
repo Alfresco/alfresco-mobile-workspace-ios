@@ -147,8 +147,8 @@ class ConnectViewController: SystemThemableViewController {
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.applyeStyleHeadline5(theme: currentTheme)
-        copyrightLabel.applyStyleCaption(theme: currentTheme)
+        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor

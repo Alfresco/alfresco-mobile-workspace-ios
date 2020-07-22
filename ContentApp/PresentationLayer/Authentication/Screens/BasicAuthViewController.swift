@@ -128,10 +128,10 @@ class BasicAuthViewController: SystemThemableViewController {
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
 
-        productLabel.applyeStyleHeadline5(theme: currentTheme)
-        infoLabel.applyStyleCaption(theme: currentTheme)
-        hostnameLabel.applyStyleSubtitle2(theme: currentTheme)
-        copyrightLabel.applyStyleCaption(theme: currentTheme)
+        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        hostnameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         applyThemingInTextField(errorTheme: false)
 

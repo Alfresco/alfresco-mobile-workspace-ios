@@ -40,7 +40,7 @@ class SearchComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPr
 
     private func searchChipUnselectedContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.onSurfaceColor = theme.surfaceOnColor
+        containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
         containerScheme.typographyScheme.body2 = theme.captionFont
 
         return containerScheme

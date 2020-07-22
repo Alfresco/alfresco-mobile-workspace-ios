@@ -37,9 +37,9 @@ protocol PresentationTheme {
     var primaryColor: UIColor { get }
     var primaryOnColor: UIColor { get }
     var surfaceColor: UIColor { get }
-    var surfaceOnColor: UIColor { get }
+    var onSurfaceColor: UIColor { get }
     var backgroundColor: UIColor { get }
-    var backgroundOnColor: UIColor { get }
+    var onBackgroundColor: UIColor { get }
     var errorColor: UIColor { get }
     var errorOnColor: UIColor { get }
     var dividerColor: UIColor { get }

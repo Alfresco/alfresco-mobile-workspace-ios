@@ -52,6 +52,16 @@ let kDoubleTapTabBarTimerBuffer = 0.5
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
 
+// MARK: - Height&Widhts
+
+let accountSettingsButtonHeight: CGFloat = 30.0
+let listItemNodeCellHeight: CGFloat = 64.0
+let listSectionCellHeight: CGFloat = 56.0
+let listSiteCellHeight: CGFloat = 48.0
+let recentSearchCellHeight: CGFloat = 48.0
+let chipSearchCellMinimHeight: CGFloat = 30.0
+let chipSearchCellMinimWidth: CGFloat = 70.0
+
 // MARK: -
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"

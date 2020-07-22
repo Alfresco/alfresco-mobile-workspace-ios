@@ -41,9 +41,9 @@ class ListElementCollectionViewCell: UICollectionViewCell {
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        title.applyStyleSubtitle1(theme: currentTheme)
-        subtitle.applyStyleDisableCaption(theme: currentTheme)
-        iconImageView.tintColor = currentTheme.surfaceOnColor.withAlphaComponent(0.6)
+        title.applyStyleBody1OnSurface(theme: currentTheme)
+        subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
+        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {

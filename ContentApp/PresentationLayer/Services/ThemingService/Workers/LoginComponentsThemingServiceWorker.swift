@@ -85,7 +85,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
     private func loginTextFieldContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
-        containerScheme.colorScheme.onSurfaceColor = theme.surfaceOnColor
+        containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
         containerScheme.colorScheme.errorColor = theme.errorColor
         containerScheme.typographyScheme.subtitle1 = theme.body1Font
 

@@ -50,12 +50,6 @@ class ResultViewController: SystemThemableViewController {
     var recentSearches: [String] = []
     var searchChips: [SearchChipItem] = []
 
-    var nodeHeighCell: CGFloat = 64.0
-    var siteHeighCell: CGFloat = 48.0
-    var recentSearchHeighCell: CGFloat = 48.0
-    var chipHeighCell: CGFloat = 30.0
-    var chipWidthCell: CGFloat = 70.0
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -165,9 +159,10 @@ class ResultViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1(theme: currentTheme)
-        recentSearchesTitle.applyStyleSubtitle1(theme: currentTheme)
+        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+
+        recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
 
         view.backgroundColor = currentTheme.backgroundColor
         emptyListView.backgroundColor = currentTheme.backgroundColor
@@ -276,12 +271,12 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                         layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView {
         case recentSearchCollectionView:
-            return CGSize(width: self.view.bounds.width, height: recentSearchHeighCell)
+            return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
         case resultsListCollectionView:
             let element = resultsList[indexPath.row]
-            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? siteHeighCell : nodeHeighCell)
+            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
-            return CGSize(width: chipWidthCell, height: chipHeighCell)
+            return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)
         }

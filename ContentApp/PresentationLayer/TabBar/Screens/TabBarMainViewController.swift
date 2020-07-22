@@ -93,8 +93,8 @@ class TabBarMainViewController: UITabBarController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         bottomNavigationBar.applyPrimaryTheme(withScheme: themingService.containerScheming(for: .applicationTabBar))
-        bottomNavigationBar.selectedItemTintColor = currentTheme.surfaceOnColor
-        bottomNavigationBar.unselectedItemTintColor = currentTheme.surfaceOnColor.withAlphaComponent(0.6)
+        bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
+        bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
     }
