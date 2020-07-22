@@ -33,7 +33,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window.backgroundColor = themingService.activeTheme?.backgroundColor
         }
 
-
         applicationCoordinator.start()
 
         return true

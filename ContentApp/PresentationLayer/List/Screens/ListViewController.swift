@@ -165,10 +165,11 @@ class ListViewController: SystemThemableViewController {
         emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
 
+        emptyListView.backgroundColor = currentTheme.backgroundColor
         view.backgroundColor = currentTheme.backgroundColor
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
-        emptyListView.backgroundColor = currentTheme.backgroundColor
-        activityIndicatorSuperview.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 
     func addLocalization() {

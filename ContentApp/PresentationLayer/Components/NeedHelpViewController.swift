@@ -65,12 +65,11 @@ class NeedHelpViewController: SystemThemableViewController {
         guard let currentTheme = themingService?.activeTheme else { return }
 
         textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
-                                                     font: currentTheme.subtitle2Font)
+                                                     font: currentTheme.subtitle2TextStyle.font)
         textView.textColor = currentTheme.onSurfaceColor
 
         titleLabel.text = model?.titleText
-        titleLabel.font = currentTheme.headline5Font
-        titleLabel.textColor = currentTheme.onSurfaceColor
+        titleLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
 
         closeButton.setTitleColor(currentTheme.primaryVariantColor, for: .normal)
         view.backgroundColor = currentTheme.backgroundColor

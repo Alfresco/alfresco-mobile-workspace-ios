@@ -167,7 +167,6 @@ class ResultViewController: SystemThemableViewController {
         view.backgroundColor = currentTheme.backgroundColor
         emptyListView.backgroundColor = currentTheme.backgroundColor
         recentSearchesView.backgroundColor = currentTheme.backgroundColor
-        activityIndicatorSuperview.backgroundColor = currentTheme.backgroundColor
     }
 
     func addChipsCollectionViewFlowLayout() {

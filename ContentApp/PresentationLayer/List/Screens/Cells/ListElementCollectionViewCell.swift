@@ -41,8 +41,9 @@ class ListElementCollectionViewCell: UICollectionViewCell {
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        title.applyStyleBody1OnSurface(theme: currentTheme)
+        title.applyStyleSubtitle1OnSurface(theme: currentTheme)
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
+        subtitle.lineBreakMode = .byTruncatingTail
         iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 

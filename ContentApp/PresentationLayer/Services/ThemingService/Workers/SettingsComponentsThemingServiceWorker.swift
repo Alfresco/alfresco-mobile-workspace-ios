@@ -32,7 +32,7 @@ class SettingsComponentsThemingServiceWorker: MaterialDesignThemingServiceWorker
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.dividerColor
         containerScheme.colorScheme.onPrimaryColor = theme.onSurfaceColor
-        containerScheme.typographyScheme.button = theme.buttonFont
+        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
         return containerScheme
     }

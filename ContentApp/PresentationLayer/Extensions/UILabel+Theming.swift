@@ -20,38 +20,60 @@ import Foundation
 import UIKit
 
 extension UILabel {
+    func add(characterSpacing kernValue: Double, lineHeight: CGFloat) {
+        if let labelText = text, labelText.count > 0 {
+            let attributedString = NSMutableAttributedString(string: labelText)
+            let style = NSMutableParagraphStyle()
+            let range = NSRange(location: 0, length: labelText.count)
+
+            attributedString.addAttribute(NSAttributedString.Key.kern, value: kernValue, range: range)
+
+            style.lineSpacing = lineHeight
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: range)
+
+            attributedText = attributedString
+        }
+    }
+
     func applyStyleCaptionOnSurface60(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
-        self.font = theme.captionFont
+        self.font = theme.captionTextStyle.font
+        self.add(characterSpacing: theme.captionTextStyle.letterSpacing, lineHeight: theme.captionTextStyle.lineHeight)
     }
 
     func applyStyleSubtitle1OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
-        self.font = theme.subtitle1Font
+        self.font = theme.subtitle1TextStyle.font
+        self.add(characterSpacing: theme.subtitle1TextStyle.letterSpacing, lineHeight: theme.subtitle1TextStyle.lineHeight)
     }
 
     func applyStyleBody1OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
-        self.font = theme.body1Font
+        self.font = theme.body1TextStyle.font
+        self.add(characterSpacing: theme.body1TextStyle.letterSpacing, lineHeight: theme.body1TextStyle.lineHeight)
     }
 
     func applyStyleSubtitle2OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
-        self.font = theme.subtitle2Font
+        self.font = theme.subtitle2TextStyle.font
+        self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
     }
 
     func applyStyleSubtitle2OnSurface60(theme: PresentationTheme) {
-        self.font = theme.subtitle2Font
         self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.font = theme.subtitle2TextStyle.font
+        self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
     }
 
     func applyStyleSubtitle1Divider(theme: PresentationTheme) {
         self.textColor = theme.dividerColor
-        self.font = theme.subtitle1Font
+        self.font = theme.subtitle1TextStyle.font
+        self.add(characterSpacing: theme.subtitle1TextStyle.letterSpacing, lineHeight: theme.subtitle1TextStyle.lineHeight)
     }
 
     func applyeStyleHeadline5OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
-        self.font = theme.headline5Font
+        self.font = theme.headline5TextStyle.font
+        self.add(characterSpacing: theme.headline5TextStyle.letterSpacing, lineHeight: theme.headline5TextStyle.lineHeight)
     }
 }

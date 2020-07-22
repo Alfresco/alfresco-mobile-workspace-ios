@@ -33,6 +33,7 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        titleSearch.applyStyleBody1OnSurface(theme: currentTheme)
+        titleSearch.applyStyleSubtitle1OnSurface(theme: currentTheme)
     }
+
 }

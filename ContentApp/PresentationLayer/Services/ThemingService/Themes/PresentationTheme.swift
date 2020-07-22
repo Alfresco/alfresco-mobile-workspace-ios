@@ -17,20 +17,21 @@
 //
 
 import UIKit
+typealias TextStyle = (font: UIFont, lineHeight: CGFloat, letterSpacing: Double)
 
 protocol PresentationTheme {
     // TYPOGRAPHY
-    var headline3Font: UIFont { get }
-    var headline4Font: UIFont { get }
-    var headline5Font: UIFont { get }
-    var headline6Font: UIFont { get }
-    var subtitle1Font: UIFont { get }
-    var subtitle2Font: UIFont { get }
-    var buttonFont: UIFont { get }
-    var body1Font: UIFont { get }
-    var body2Font: UIFont { get }
-    var captionFont: UIFont { get }
-    var overlineFont: UIFont { get }
+    var headline3TextStyle: TextStyle { get }
+    var headline4TextStyle: TextStyle { get }
+    var headline5TextStyle: TextStyle { get }
+    var headline6TextStyle: TextStyle { get }
+    var subtitle1TextStyle: TextStyle { get }
+    var subtitle2TextStyle: TextStyle { get }
+    var buttonTextStyle: TextStyle { get }
+    var body1TextStyle: TextStyle { get }
+    var body2TextStyle: TextStyle { get }
+    var captionTextStyle: TextStyle { get }
+    var overlineTextStyle: TextStyle { get }
 
     // COLORS
     var primaryVariantColor: UIColor { get }

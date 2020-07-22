@@ -60,6 +60,8 @@ class SettingsViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 }
 

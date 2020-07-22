@@ -29,18 +29,21 @@ struct ActivityIndicatorConfiguration {
     var radius: CGFloat
     var strokeWidth: CGFloat
     var cycleColors: [UIColor]
+    var overlayViewColor: UIColor
 
-    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor]) {
+    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor], overlayColor: UIColor = .white) {
         self.title = title
         self.radius = radius
         self.strokeWidth = strokeWidth
         self.cycleColors = cycleColors
+        self.overlayViewColor = overlayColor
     }
 
     static var defaultValue = ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
                                                              radius: 40,
                                                              strokeWidth: 7,
-                                                             cycleColors: [.black])
+                                                             cycleColors: [.black],
+                                                             overlayColor: .white)
 }
 
 class ActivityIndicatorView: UIView {
@@ -64,6 +67,7 @@ class ActivityIndicatorView: UIView {
 
     init(currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
         self.activityIndicatorConfiguration = configuration
+        self.activityIndicatorConfiguration.overlayViewColor = currentTheme?.backgroundColor ?? .white
         super.init(frame: kWindow.bounds)
         self.commonInit()
         self.applyTheme(currentTheme)
@@ -90,10 +94,11 @@ class ActivityIndicatorView: UIView {
     // MARK: - Private Helpers
 
     private func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
         activityIndicator.cycleColors = activityIndicatorConfiguration.cycleColors
-        label.textColor = currentTheme?.dividerColor
-        label.font = currentTheme?.subtitle1Font
         label.text = activityIndicatorConfiguration.title
+        label.applyStyleSubtitle1Divider(theme: currentTheme)
+        label.textAlignment = .center
     }
 
     private func commonInit() {
@@ -109,7 +114,7 @@ class ActivityIndicatorView: UIView {
         activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
 
         if let overlayView = self.overlayView {
-            overlayView.backgroundColor = superview?.backgroundColor
+            overlayView.backgroundColor = activityIndicatorConfiguration.overlayViewColor
             overlayView.alpha = 0.87
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
@@ -119,7 +124,7 @@ class ActivityIndicatorView: UIView {
                 label.widthAnchor.constraint(equalToConstant: 250),
                 label.heightAnchor.constraint(equalToConstant: 20),
                 label.centerXAnchor.constraint(equalTo: activityIndicator.centerXAnchor),
-                label.centerYAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 56.0)
+                label.centerYAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 40.0)
             ])
         }
         self.state = .isIdle

@@ -64,7 +64,7 @@
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
 		E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */; };
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
-		E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */; };
+		E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+InterFont.swift */; };
 		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
 		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
@@ -96,6 +96,15 @@
 		E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB747247665C6004674FD /* AuthenticationParameters.swift */; };
 		E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB7492476693C004674FD /* String+Encoding.swift */; };
 		E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E35FB74B24766DFC004674FD /* ConnectViewModel.swift */; };
+		E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
+		E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
+		E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */; };
+		E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009224C84BD000F03D60 /* Inter-ExtraLight.ttf */; };
+		E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009024C84BD000F03D60 /* Inter-Light.ttf */; };
+		E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009124C84BD000F03D60 /* Inter-Medium.ttf */; };
+		E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009424C84BD100F03D60 /* Inter-Regular.ttf */; };
+		E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */; };
+		E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009524C84BD100F03D60 /* Inter-Thin.ttf */; };
 		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
 		E37618062476912000DA13ED /* Mirror+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Description.swift */; };
 		E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA02493E874006373FD /* TabBarMainViewController.swift */; };
@@ -203,7 +212,7 @@
 		E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeScreenCoordinator.swift; sourceTree = "<group>"; };
 		E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		E321380D24C6F2C60025A833 /* UILabel+Theming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Theming.swift"; sourceTree = "<group>"; };
-		E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+AlfrescoFont.swift"; sourceTree = "<group>"; };
+		E321BAD2248111F400BE938E /* UIFont+InterFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+InterFont.swift"; sourceTree = "<group>"; };
 		E324779E24AB4F0B006D4B6F /* FileIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileIcon.swift; sourceTree = "<group>"; };
 		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
@@ -241,6 +250,15 @@
 		E35FB747247665C6004674FD /* AuthenticationParameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthenticationParameters.swift; sourceTree = "<group>"; };
 		E35FB7492476693C004674FD /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 		E35FB74B24766DFC004674FD /* ConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewModel.swift; sourceTree = "<group>"; };
+		E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
+		E369008E24C84BD000F03D60 /* Inter-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.ttf"; sourceTree = "<group>"; };
+		E369008F24C84BD000F03D60 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		E369009024C84BD000F03D60 /* Inter-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Light.ttf"; sourceTree = "<group>"; };
+		E369009124C84BD000F03D60 /* Inter-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Medium.ttf"; sourceTree = "<group>"; };
+		E369009224C84BD000F03D60 /* Inter-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraLight.ttf"; sourceTree = "<group>"; };
+		E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		E369009424C84BD100F03D60 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		E369009524C84BD100F03D60 /* Inter-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Thin.ttf"; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
 		E37618052476912000DA13ED /* Mirror+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Description.swift"; sourceTree = "<group>"; };
 		E37D1CA02493E874006373FD /* TabBarMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainViewController.swift; sourceTree = "<group>"; };
@@ -658,6 +676,7 @@
 		E334C07124755E0000F74880 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E369008C24C84B7200F03D60 /* Inter Font Family */,
 				E334C04824755D9000F74880 /* Assets.xcassets */,
 				E334C04A24755D9000F74880 /* LaunchScreen.storyboard */,
 			);
@@ -711,6 +730,22 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		E369008C24C84B7200F03D60 /* Inter Font Family */ = {
+			isa = PBXGroup;
+			children = (
+				E369008E24C84BD000F03D60 /* Inter-Black.ttf */,
+				E369008F24C84BD000F03D60 /* Inter-Bold.ttf */,
+				E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */,
+				E369009224C84BD000F03D60 /* Inter-ExtraLight.ttf */,
+				E369009024C84BD000F03D60 /* Inter-Light.ttf */,
+				E369009124C84BD000F03D60 /* Inter-Medium.ttf */,
+				E369009424C84BD100F03D60 /* Inter-Regular.ttf */,
+				E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */,
+				E369009524C84BD100F03D60 /* Inter-Thin.ttf */,
+			);
+			path = "Inter Font Family";
+			sourceTree = "<group>";
+		};
 		E3995AA624C02BD300FA60C0 /* Sub-Coordinators */ = {
 			isa = PBXGroup;
 			children = (
@@ -750,7 +785,7 @@
 				E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */,
 				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
 				B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */,
-				E321BAD2248111F400BE938E /* UIFont+AlfrescoFont.swift */,
+				E321BAD2248111F400BE938E /* UIFont+InterFont.swift */,
 				E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */,
 				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
@@ -990,10 +1025,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
+				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
+				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
+				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
+				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
+				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
+				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
+				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
+				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1138,7 +1182,7 @@
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,
 				E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */,
-				E321BAD3248111F400BE938E /* UIFont+AlfrescoFont.swift in Sources */,
+				E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */,
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,

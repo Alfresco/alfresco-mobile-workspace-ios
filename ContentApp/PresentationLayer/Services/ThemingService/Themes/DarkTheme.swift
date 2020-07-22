@@ -20,17 +20,17 @@ import UIKit
 
 struct DarkTheme: PresentationTheme {
     // TYPOGRAPHY
-    var headline3Font = UIFont.alfrescoRegularFont(ofSize: 48)
-    var headline4Font = UIFont.alfrescoRegularFont(ofSize: 34)
-    var headline5Font = UIFont.alfrescoRegularFont(ofSize: 24)
-    var headline6Font = UIFont.alfrescoRegularFont(ofSize: 20)
-    var subtitle1Font = UIFont.alfrescoRegularFont(ofSize: 16)
-    var subtitle2Font = UIFont.alfrescoRegularFont(ofSize: 14)
-    var buttonFont = UIFont.alfrescoRegularFont(ofSize: 14)
-    var body1Font = UIFont.alfrescoRegularFont(ofSize: 16)
-    var body2Font = UIFont.alfrescoRegularFont(ofSize: 14)
-    var captionFont = UIFont.alfrescoRegularFont(ofSize: 12)
-    var overlineFont = UIFont.alfrescoRegularFont(ofSize: 10)
+    var headline3TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 48.0), lineHeight: 64.0, letterSpacing: 0.0)
+    var headline4TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 34.0), lineHeight: 48.0, letterSpacing: 0.25)
+    var headline5TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 24.0), lineHeight: 36.0, letterSpacing: 0.0)
+    var headline6TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 20.0), lineHeight: 28.0, letterSpacing: 0.15)
+    var subtitle1TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 16.0), lineHeight: 24.0, letterSpacing: 0.15)
+    var subtitle2TextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 14.0), lineHeight: 20.0, letterSpacing: 0.1)
+    var buttonTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 14.0), lineHeight: 24.0, letterSpacing: 0.1)
+    var body1TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 16.0), lineHeight: 24.0, letterSpacing: 0.444444)
+    var body2TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 14.0), lineHeight: 20.0, letterSpacing: 0.25)
+    var captionTextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 12.0), lineHeight: 16.0, letterSpacing: 0.5)
+    var overlineTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 10.0), lineHeight: 16.0, letterSpacing: 0.2)
 
     // COLORS
     var primaryVariantColor = #colorLiteral(red: 0.431372549, green: 0.6745098039, blue: 1, alpha: 1)
