@@ -34,14 +34,22 @@ class BasicAuthScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = BasicAuthViewController.instantiateViewController()
-        viewController.splashScreenDelegate = self.splashScreen
-        viewController.basicAuthCoordinatorDelegate = self
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                      accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-        presenter.pushViewController(viewController, animated: kPushAnimation)
-        basicAuthViewController = viewController
+        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
+        router?.register(route: NavigationRoutes.basicAuthScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+            guard let sSelf = self else { return nil }
+
+            let viewController = BasicAuthViewController.instantiateViewController()
+            viewController.splashScreenDelegate = sSelf.splashScreen
+            viewController.basicAuthCoordinatorDelegate = sSelf
+            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            viewController.viewModel = BasicAuthViewModel(with: sSelf.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
+                                                          accountService: sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
+            sSelf.basicAuthViewController = viewController
+
+            return viewController
+        })
+
+        router?.push(route: NavigationRoutes.basicAuthScreen.path, from: presenter)
     }
 }
 

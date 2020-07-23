@@ -16,24 +16,19 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class RecentSearchCollectionViewCell: UICollectionViewCell {
-    @IBOutlet weak var leftImageView: UIImageView!
-    @IBOutlet weak var titleSearch: UILabel!
-    @IBOutlet weak var rightImageView: UIImageView!
+enum NavigationRoutes: NavigationRoute {
+    typealias RawValue = NavigationRoute
 
-    var search: String? {
-        didSet {
-            if let search = search {
-                titleSearch.text = search
-            }
-        }
+    case splashScreen = "%@splashScreen"
+    case basicAuthScreen = "%@basicAuthScreen"
+    case aimsAuthScreen = "%@aimsAuthScreen"
+    case advancedSettingsScreen = "%@advancedSettingsScreen"
+    case settingsScreen = "%@settingsScreen"
+    case mainTabBarScreen = "%@mainTabBarScreen"
+
+    var path: NavigationRoute {
+        return String(format: self.rawValue, "contentapp://")
     }
-
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        guard let currentTheme = currentTheme else { return }
-        titleSearch.applyStyleSubtitle1OnSurface(theme: currentTheme)
-    }
-
 }

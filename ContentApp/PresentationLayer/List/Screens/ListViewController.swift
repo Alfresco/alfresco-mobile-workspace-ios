@@ -17,10 +17,10 @@
 //
 
 import UIKit
+import AlfrescoContentServices
 
 class ListViewController: SystemThemableViewController {
-
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: PageFetchableCollectionView!
 
     @IBOutlet weak var activityIndicatorSuperview: UIView!
     var activityIndicator: ActivityIndicatorView?
@@ -199,7 +199,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
-        cell?.applyThemingService(themingService?.activeTheme)
+        cell?.applyTheme(themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 
@@ -257,17 +257,23 @@ extension ListViewController: ResultScreenDelegate {
 
         searchViewModel.save(recentSearch: searchBar.text)
     }
+
+    func fetchNextSearchResultsPage(for index: IndexPath) {
+        guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
+        let searchString = searchBar.text
+        searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
+    }
 }
 
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListElementProtocol]?) {
+    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        rvc.updateDataSource(results)
+        rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
     }
 }
+
 // MARK: - List ViewModel Delegate
 
 extension ListViewController: ListViewModelDelegate {
@@ -324,7 +330,15 @@ extension ListViewController: UISearchControllerDelegate {
 
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches(searchViewModel.recentSearches())
-        rvc.updateDataSource(nil)
+        rvc.clearDataSource()
+    }
+}
+
+// MARK: - PageFetchableDelegate
+
+extension ListViewController: PageFetchableDelegate {
+    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
+
     }
 }
 

@@ -23,7 +23,6 @@ import AlfrescoContentServices
 
 class RecentViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
-
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
@@ -60,6 +59,9 @@ class RecentViewModel: ListViewModelProtocol {
                 }
             }
         })
+    }
+
+    func fetchNextRecentsResultPage(for index: IndexPath) {
     }
 
     func reloadRequest() {

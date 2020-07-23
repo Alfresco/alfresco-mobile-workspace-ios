@@ -66,5 +66,8 @@ let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
+
+// MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15
 let kMinCharactersForLiveSearch = 3
+let kListPageSize = 25

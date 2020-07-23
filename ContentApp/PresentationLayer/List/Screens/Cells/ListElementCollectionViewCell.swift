@@ -39,7 +39,7 @@ class ListElementCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-    func applyThemingService(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         title.applyStyleSubtitle1OnSurface(theme: currentTheme)
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
