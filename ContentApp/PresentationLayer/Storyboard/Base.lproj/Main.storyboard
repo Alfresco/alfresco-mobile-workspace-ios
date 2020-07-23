@@ -79,7 +79,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="1gE-re-QQi" secondAttribute="trailing" constant="20" id="0kb-eE-c30"/>
@@ -113,9 +113,6 @@
                             <constraint firstItem="1gE-re-QQi" firstAttribute="top" secondItem="bfR-nP-w23" secondAttribute="bottom" constant="40" id="zq3-Bn-Fzq"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="7s3-fL-cmE" appends="YES" id="s8f-07-Hwp"/>
                         </connections>
@@ -224,7 +221,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="VaN-5l-lsq" firstAttribute="trailing" secondItem="bcm-4S-gYH" secondAttribute="trailing" id="0Ia-5j-skm"/>
@@ -265,9 +262,6 @@
                             <constraint firstItem="T1n-xl-Uw9" firstAttribute="top" secondItem="bcm-4S-gYH" secondAttribute="bottom" id="yzS-gY-cz9"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="blY-7h-Q4d"/>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="KqX-ze-Te9" appends="YES" id="rl6-Cj-JcW"/>
                         </connections>
@@ -324,7 +318,7 @@
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWD-At-g4N">
                                 <rect key="frame" x="30" y="84.5" width="354" height="200"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="lk8-t4-AEY"/>
                                 </constraints>
@@ -334,7 +328,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="dWD-At-g4N" secondAttribute="bottom" priority="250" id="6kH-0m-1ug"/>
                             <constraint firstItem="dWD-At-g4N" firstAttribute="top" secondItem="N5j-bp-srx" secondAttribute="bottom" constant="20" id="Crb-Ek-5h3"/>
@@ -440,7 +434,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="AcC-Wa-pyu" firstAttribute="top" secondItem="lLy-Cm-YJ1" secondAttribute="bottom" id="094-4e-3wM"/>
@@ -479,9 +473,6 @@
                             <constraint firstItem="NLg-aj-Vph" firstAttribute="trailing" secondItem="VoK-kX-5gT" secondAttribute="trailing" constant="20" id="zpZ-Qt-EAj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="NLg-aj-Vph"/>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="Cou-3N-dgT" appends="YES" id="Myf-UE-CvP"/>
                         </connections>
@@ -517,6 +508,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GjT-VE-xG1">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingsItemTableViewCell" id="6bm-LK-Mdu" customClass="SettingsItemTableViewCell" customModule="ContentApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="62.5"/>
@@ -689,7 +681,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ugz-om-SFG" firstAttribute="trailing" secondItem="GjT-VE-xG1" secondAttribute="trailing" id="8qk-zP-l92"/>
                             <constraint firstItem="GjT-VE-xG1" firstAttribute="top" secondItem="ugz-om-SFG" secondAttribute="top" id="JCy-E9-6hJ"/>
@@ -770,7 +762,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="g7G-3d-26T" firstAttribute="leading" secondItem="mSN-cM-kpf" secondAttribute="leading" id="15U-fz-Fpz"/>
                             <constraint firstItem="mSN-cM-kpf" firstAttribute="top" secondItem="D3c-vp-Weu" secondAttribute="top" constant="16" id="B6t-Yg-DLh"/>
@@ -823,7 +815,7 @@
                         <subviews>
                             <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q9L-jX-ymC">
                                 <rect key="frame" x="0.0" y="61" width="414" height="33"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="33" id="67W-xI-NDf"/>
                                 </constraints>
@@ -841,7 +833,7 @@
                             </collectionView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Zf2-Bm-0QO">
                                 <rect key="frame" x="0.0" y="99" width="414" height="763"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pRS-MO-nKL">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -879,7 +871,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="4mB-KN-La8" firstAttribute="centerX" secondItem="qRs-WI-Kol" secondAttribute="centerX" id="04D-vV-m1n"/>
                                     <constraint firstItem="vsu-rv-NVr" firstAttribute="top" secondItem="4mB-KN-La8" secondAttribute="bottom" constant="32" id="1kH-wv-7Zp"/>
@@ -900,7 +892,7 @@
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R2V-xg-rmY">
                                         <rect key="frame" x="0.0" y="53" width="414" height="710"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="eNq-aN-Qtm">
                                             <size key="itemSize" width="414" height="97"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -924,17 +916,17 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bkg-JQ-MQK">
-                                                            <rect key="frame" x="70" y="14.5" width="278" height="19"/>
+                                                            <rect key="frame" x="70" y="14.5" width="282" height="19"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="recentsearches-arrow" translatesAutoresizingMaskIntoConstraints="NO" id="bNy-em-qpt">
-                                                            <rect key="frame" x="373" y="16" width="16" height="16"/>
+                                                            <rect key="frame" x="377" y="18" width="12" height="12"/>
                                                             <color key="tintColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="16" id="IBF-EP-dFE"/>
-                                                                <constraint firstAttribute="width" constant="16" id="uw8-e6-jNx"/>
+                                                                <constraint firstAttribute="height" constant="12" id="IBF-EP-dFE"/>
+                                                                <constraint firstAttribute="width" constant="12" id="uw8-e6-jNx"/>
                                                             </constraints>
                                                         </imageView>
                                                     </subviews>
@@ -962,7 +954,7 @@
                                         </connections>
                                     </collectionView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="R2V-xg-rmY" secondAttribute="bottom" id="2FF-TS-18M"/>
                                     <constraint firstItem="R2V-xg-rmY" firstAttribute="leading" secondItem="aW3-Eu-ZXR" secondAttribute="leading" id="GkF-vD-Nxd"/>
@@ -978,7 +970,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Zf2-Bm-0QO" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="2fR-eu-zmN"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="5Xr-l4-L9c"/>
@@ -1029,7 +1021,7 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ILy-Av-xzw">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="L5T-2N-aeV">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="50" height="50"/>
@@ -1088,7 +1080,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="ZKS-HG-zI6" firstAttribute="top" secondItem="Jj6-Bz-Z6B" secondAttribute="bottom" constant="32" id="HMe-mX-8qk"/>
                                     <constraint firstItem="ZKS-HG-zI6" firstAttribute="centerX" secondItem="HaD-bP-aSr" secondAttribute="centerX" id="Oky-3p-cnb"/>
@@ -1103,7 +1095,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ILy-Av-xzw" firstAttribute="leading" secondItem="T4f-FT-0jU" secondAttribute="leading" id="3zP-pp-rtp"/>
                             <constraint firstItem="HaD-bP-aSr" firstAttribute="leading" secondItem="T4f-FT-0jU" secondAttribute="leading" id="7Zs-9G-re4"/>
@@ -1337,7 +1329,7 @@
                                         <viewLayoutGuide key="frameLayoutGuide" id="un4-pR-I0n"/>
                                     </scrollView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="0Tf-4h-x8v" secondAttribute="bottom" id="5VP-OV-8e1"/>
                                     <constraint firstItem="0Tf-4h-x8v" firstAttribute="top" secondItem="6Sx-AB-1Dh" secondAttribute="top" id="arc-8X-h3T"/>
@@ -1401,7 +1393,7 @@
                                 <variation key="heightClass=regular-widthClass=regular" hidden="NO"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="feP-M4-o5O" firstAttribute="width" secondItem="mdu-F1-2kG" secondAttribute="width" id="Aht-4H-dB5"/>
                             <constraint firstItem="DIA-lY-PMD" firstAttribute="leading" secondItem="91C-8y-3px" secondAttribute="leading" id="Do4-pP-1p1"/>
@@ -1462,13 +1454,13 @@
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper" translatesAutoresizingMaskIntoConstraints="NO" id="nyO-q6-3sI">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="YES"/>
                             </imageView>
                             <imageView hidden="YES" clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash-wallpaper-phones" translatesAutoresizingMaskIntoConstraints="NO" id="Bwz-0U-oSs">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <variation key="heightClass=regular-widthClass=compact" hidden="NO"/>
                             </imageView>
@@ -1481,6 +1473,7 @@
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-sk-1EV">
                                 <rect key="frame" x="117" y="264.5" width="180" height="68"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="180" id="ZWN-eO-PoH">
                                         <variation key="heightClass=regular-widthClass=regular" constant="300"/>
@@ -1518,11 +1511,11 @@
                             </visualEffectView>
                             <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bMK-ga-uUN">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wzt-I1-tMz">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="ApE-7J-dyR"/>
                                     <constraint firstAttribute="height" constant="600" id="ezZ-Rj-9u9"/>
@@ -1534,7 +1527,6 @@
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <mask key="constraints">
                                         <include reference="ApE-7J-dyR"/>
                                         <include reference="ezZ-Rj-9u9"/>

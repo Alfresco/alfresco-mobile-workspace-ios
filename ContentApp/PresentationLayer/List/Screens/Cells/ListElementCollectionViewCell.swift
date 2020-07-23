@@ -40,11 +40,11 @@ class ListElementCollectionViewCell: UICollectionViewCell {
     }
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {
-        title.font = currentTheme?.listNodeCellTitleLabelFont
-        title.textColor = currentTheme?.listNodeCellTitleLabelColor
-        subtitle.font = currentTheme?.listNodeCellSubtitleLabelFont
-        subtitle.textColor = currentTheme?.listNodeCellSubtitleLabelColor
-        iconImageView.tintColor = currentTheme?.listNodeCellIconColor
+        guard let currentTheme = currentTheme else { return }
+        title.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
+        subtitle.lineBreakMode = .byTruncatingTail
+        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {

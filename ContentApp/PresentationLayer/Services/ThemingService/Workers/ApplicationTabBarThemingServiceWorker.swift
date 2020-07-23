@@ -30,7 +30,7 @@ class ApplicationTabBarThemingServiceWorker: MaterialDesignThemingServiceWorkerP
 
     private func applicationTabBarContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.tabBarBackgroundColor
+        containerScheme.colorScheme.primaryColor = theme.backgroundColor
 
         return containerScheme
     }

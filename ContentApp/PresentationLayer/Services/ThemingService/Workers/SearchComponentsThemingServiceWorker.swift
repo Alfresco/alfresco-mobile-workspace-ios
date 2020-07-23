@@ -32,16 +32,16 @@ class SearchComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPr
 
     private func searchChipSelectedContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.onSurfaceColor = theme.searchChipSelectedColor
-        containerScheme.typographyScheme.body2 = theme.searchChipTitleLabelFont
+        containerScheme.colorScheme.onSurfaceColor = theme.primaryVariantColor
+        containerScheme.typographyScheme.body2 = theme.captionTextStyle.font
 
         return containerScheme
     }
 
     private func searchChipUnselectedContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.onSurfaceColor = theme.searchChipUnselectedColor
-        containerScheme.typographyScheme.body2 = theme.searchChipTitleLabelFont
+        containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
+        containerScheme.typographyScheme.body2 = theme.captionTextStyle.font
 
         return containerScheme
     }

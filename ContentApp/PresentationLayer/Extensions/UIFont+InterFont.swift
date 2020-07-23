@@ -19,8 +19,17 @@
 import Foundation
 import UIKit
 
+enum InterFontStyleType: String {
+    case normal = "Inter-Regular"
+    case medium = "Inter-Medium"
+}
+
 extension UIFont {
-    class func alfrescoRegularFont(ofSize fontSize: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: fontSize)
+    class func inter(style: InterFontStyleType = .normal, size: CGFloat) -> UIFont {
+        if let font = UIFont(name: style.rawValue, size: size) {
+            return font
+        }
+        AlfrescoLog.error("Font \(style.rawValue) doesn't exists!")
+        return UIFont.systemFont(ofSize: size)
     }
 }

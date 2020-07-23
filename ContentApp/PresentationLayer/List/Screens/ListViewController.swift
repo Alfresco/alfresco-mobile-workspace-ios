@@ -34,9 +34,6 @@ class ListViewController: SystemThemableViewController {
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
 
-    private var settingsButtonHeight: CGFloat = 30.0
-    private var nodeHeighCell: CGFloat = 64.0
-    private var nodeHeightSection: CGFloat = 56.0
     private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
@@ -61,7 +58,7 @@ class ListViewController: SystemThemableViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: "" ,
                                                                                                 radius: 12,
                                                                                                 strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true
@@ -69,6 +66,7 @@ class ListViewController: SystemThemableViewController {
         if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
             self.startLoading()
         }
+        collectionView.reloadData()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -112,17 +110,17 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSettingsButton() {
-        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonHeight, height: settingsButtonHeight)
+        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
         settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
-        settingsButton.layer.cornerRadius = settingsButtonHeight / 2
+        settingsButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         settingsButton.layer.masksToBounds = true
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonHeight)
+        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
         currWidth?.isActive = true
-        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonHeight)
+        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
         currHeight?.isActive = true
 
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem
@@ -159,18 +157,15 @@ class ListViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.tintColor = .label
-            navigationItem.leftBarButtonItem?.tintColor = .label
-        } else {
-            navigationController?.navigationBar.tintColor = .black
-            navigationItem.leftBarButtonItem?.tintColor = .black
-        }
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
-        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
-        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
-        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
+        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+
+        emptyListView.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 
     func addLocalization() {
@@ -204,11 +199,12 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
+        cell?.applyThemingService(themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+        return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -228,7 +224,7 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         if let viewModel = listViewModel, viewModel.shouldDisplaySections() {
-            return CGSize(width: self.view.bounds.width, height: nodeHeightSection)
+            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
         } else {
             return CGSize(width: self.view.bounds.width, height: 0)
         }
