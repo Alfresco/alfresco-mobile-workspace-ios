@@ -24,7 +24,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class AimsViewController: UIViewController {
+class AimsViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -42,7 +42,6 @@ class AimsViewController: UIViewController {
     var viewModel: AimsViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -62,20 +61,9 @@ class AimsViewController: UIViewController {
         enableSignInButton = (repositoryTextField.text != "")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -112,31 +100,24 @@ class AimsViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
         repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        productLabel.textColor = currentTheme.productLabelColor
-        productLabel.font = currentTheme.productLabelFont
+        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        hostnameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        allowLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
-        infoLabel.textColor = currentTheme.loginInfoLabelColor
-        infoLabel.font = currentTheme.loginInfoLabelFont
-
-        hostnameLabel.textColor = currentTheme.loginInfoLabelColor
-        hostnameLabel.font = currentTheme.loginInfoHostnameLabelFont
-
-        allowLabel.textColor = currentTheme.loginFieldLabelColor
-        allowLabel.font = currentTheme.loginInfoHostnameLabelFont
-
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 }
 

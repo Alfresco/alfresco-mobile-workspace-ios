@@ -53,12 +53,6 @@ class ResultViewController: SystemThemableViewController {
     var recentSearchesViewModel = RecentSearchesViewModel()
     var searchChipsViewModel = SearchChipsViewModel()
 
-    var nodeHeighCell: CGFloat = 64.0
-    var siteHeighCell: CGFloat = 48.0
-    var recentSearchHeighCell: CGFloat = 48.0
-    var chipHeighCell: CGFloat = 30.0
-    var chipWidthCell: CGFloat = 70.0
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -89,7 +83,7 @@ class ResultViewController: SystemThemableViewController {
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
                                                                                                 radius: 12,
                                                                                                 strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorSearchViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true
@@ -170,12 +164,14 @@ class ResultViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListTitle.font = currentTheme.emptyListTitleLabelFont
-        emptyListTitle.textColor = currentTheme.emptyListTitleLabelColor
-        emptyListSubtitle.font = currentTheme.emptyListSubtitleLabelFont
-        emptyListSubtitle.textColor = currentTheme.emptyListSubtitleLabelColor
-        recentSearchesTitle.font = currentTheme.recentSearcheTitleLabelFont
-        recentSearchesTitle.textColor = currentTheme.recentSearchesTitleLabelColor
+        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+
+        recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
+
+        view.backgroundColor = currentTheme.backgroundColor
+        emptyListView.backgroundColor = currentTheme.backgroundColor
+        recentSearchesView.backgroundColor = currentTheme.backgroundColor
     }
 
     func addChipsCollectionViewFlowLayout() {
@@ -229,7 +225,12 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.isSelected = true
             }
             if let themeService = self.themingService {
-                cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: (chip.selected) ? .searchChipSelected : .searchChipUnselected))
+                if chip.selected {
+                    cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
+                } else {
+                    cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
+                    cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
+                }
             }
             return cell ?? UICollectionViewCell()
         default:
@@ -263,6 +264,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if let themeService = self.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
+                cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
             }
             resultScreenDelegate?.chipTapped(chip: chip)
         default: break
@@ -273,12 +275,12 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                         layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView {
         case recentSearchCollectionView:
-            return CGSize(width: self.view.bounds.width, height: recentSearchHeighCell)
+            return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
         case resultsListCollectionView:
             let element = resultsViewModel.results[indexPath.row]
-            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? siteHeighCell : nodeHeighCell)
+            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
-            return CGSize(width: chipWidthCell, height: chipHeighCell)
+            return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)
         }
@@ -302,7 +304,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         if collectionView == resultsListCollectionView {
             if resultsViewModel.shouldDisplayNextPageLoadingIndicator {
-                return CGSize(width: self.view.bounds.width, height: nodeHeighCell)
+                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
             }
         }
 

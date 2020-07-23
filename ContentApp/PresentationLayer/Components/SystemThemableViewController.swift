@@ -30,6 +30,7 @@ class SystemThemableViewController: UIViewController {
         super.willTransition(to: newCollection, with: coordinator)
         themingService?.activateUserSelectedTheme()
         applyComponentsThemes()
+        kWindow.backgroundColor = themingService?.activeTheme?.backgroundColor
     }
 
     func applyComponentsThemes() {

@@ -46,11 +46,11 @@ class Snackbar {
     func applyTheme(theme: PresentationTheme?) {
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarErrorColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarApproved
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.primaryColor
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.snackbarWarning
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorOnColor
         }
     }
 

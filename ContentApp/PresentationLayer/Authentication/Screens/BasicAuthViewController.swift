@@ -24,7 +24,7 @@ import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_FilledTextFields
 import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
 
-class BasicAuthViewController: UIViewController {
+class BasicAuthViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -44,7 +44,6 @@ class BasicAuthViewController: UIViewController {
     var viewModel: BasicAuthViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
@@ -67,12 +66,11 @@ class BasicAuthViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
         activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
                                                   configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
                                                                                                 radius: 40,
                                                                                                 strokeWidth: 7,
-                                                                                                cycleColors: [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]))
+                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
         }
@@ -88,11 +86,6 @@ class BasicAuthViewController: UIViewController {
        activityIndicator?.reload(from: size)
    }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
 
     // MARK: - IBActions
 
@@ -129,25 +122,20 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(currentTheme.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
 
-        productLabel.textColor = currentTheme.productLabelColor
-        productLabel.font = currentTheme.productLabelFont
-
-        infoLabel.textColor = currentTheme.loginInfoLabelColor
-        infoLabel.font = currentTheme.loginInfoLabelFont
-
-        hostnameLabel.textColor = currentTheme.loginInfoLabelColor
-        hostnameLabel.font = currentTheme.loginInfoHostnameLabelFont
-
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
+        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        hostnameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         applyThemingInTextField(errorTheme: false)
+
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 
     func applyThemingInTextField(errorTheme: Bool) {
@@ -164,7 +152,7 @@ class BasicAuthViewController: UIViewController {
 
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.trailingView?.tintColor = currentTheme.loginTextFieldIconColor
+        usernameTextField.trailingView?.tintColor = currentTheme.dividerColor
         usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
         usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
@@ -174,7 +162,7 @@ class BasicAuthViewController: UIViewController {
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
         passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
-        passwordTextField.trailingView?.tintColor = currentTheme.loginTextFieldIconColor
+        passwordTextField.trailingView?.tintColor = currentTheme.dividerColor
         passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
         passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
         passwordTextField.isSecureTextEntry = true
@@ -186,7 +174,7 @@ class BasicAuthViewController: UIViewController {
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldPrimaryColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.primaryVariantColor
         keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
@@ -215,7 +203,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldIconColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.dividerColor
         return true
     }
 

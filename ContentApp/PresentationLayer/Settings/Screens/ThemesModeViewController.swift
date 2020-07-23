@@ -22,13 +22,12 @@ protocol ThemesModeScrenDelegate: class {
     func changeThemeMode()
 }
 
-class ThemesModeViewController: UIViewController {
+class ThemesModeViewController: SystemThemableViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
     weak var delegate: ThemesModeScrenDelegate?
-    var themingService: MaterialDesignThemingService?
     var viewModel = ThemeModesViewModel()
     var heightCell: CGFloat = 44.0
 
@@ -36,7 +35,6 @@ class ThemesModeViewController: UIViewController {
         super.viewDidLoad()
         viewModel.themingService = themingService
         addLocalization()
-        addMaterialComponentsTheme()
     }
 
     override func viewDidLayoutSubviews() {
@@ -51,8 +49,6 @@ class ThemesModeViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
         tableView.reloadData()
     }
 
@@ -62,12 +58,10 @@ class ThemesModeViewController: UIViewController {
         titleLabel.text = LocalizationConstants.Theme.theme
     }
 
-    func addMaterialComponentsTheme() {
-        guard let currentTheme = self.themingService?.activeTheme else {
-            return
-        }
-        titleLabel.font = currentTheme.settingsTitleLabelFont
-        titleLabel.textColor = currentTheme.settingsTitleLabelColor
+    override func applyComponentsThemes() {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        titleLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        view.backgroundColor = currentTheme.backgroundColor
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
