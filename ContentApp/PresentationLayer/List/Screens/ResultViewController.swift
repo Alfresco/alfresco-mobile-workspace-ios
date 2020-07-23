@@ -299,6 +299,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         default:
             assert(false, "Unexpected element kind")
         }
+
+        return UICollectionReusableView()
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
