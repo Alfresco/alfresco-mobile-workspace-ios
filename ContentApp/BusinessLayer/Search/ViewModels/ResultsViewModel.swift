@@ -19,15 +19,40 @@
 import Foundation
 import AlfrescoContentServices
 
-struct ResultsViewModel {
+protocol ResultsViewModelDelegate: class {
+    func didUpdateResultsList(error: Error?, pagination: Pagination?)
+}
+
+class ResultsViewModel {
     var results: [ListElementProtocol] = [] {
-        didSet {
+        willSet {
             shouldDisplayNextPageLoadingIndicator = true
         }
     }
     var shouldDisplayNextPageLoadingIndicator: Bool = true
+    weak var delegate: ResultsViewModelDelegate?
 
-    mutating func addNewResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+    func updateResults(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
+        if let results = results {
+            if results.count > 0 {
+                if pagination?.skipCount != 0 {
+                    addNewResults(results: results, pagination: pagination)
+                } else {
+                    addResults(results: results, pagination: pagination)
+                }
+            } else if pagination?.skipCount == 0 {
+                self.results = []
+            }
+        } else {
+            if error == nil {
+                self.results = []
+            }
+        }
+
+        delegate?.didUpdateResultsList(error: error, pagination: pagination)
+    }
+
+    func addNewResults(results: [ListElementProtocol]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
             self.results.append(contentsOf: results)
@@ -38,7 +63,7 @@ struct ResultsViewModel {
         }
     }
 
-    mutating func addResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+    func addResults(results: [ListElementProtocol]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
             self.results = results

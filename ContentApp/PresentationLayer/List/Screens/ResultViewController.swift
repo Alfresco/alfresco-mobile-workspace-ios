@@ -65,6 +65,8 @@ class ResultViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         resultsListCollectionView.pageDelegate = self
+        resultsViewModel.delegate = self
+
         resultsListCollectionView.register(ActivityIndicatorFooterView.self,
                                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                            withReuseIdentifier: collectionViewFooterReuseIdentifier)
@@ -121,37 +123,6 @@ class ResultViewController: SystemThemableViewController {
     func stopLoading() {
         activityIndicatorSuperview.isHidden = true
         activityIndicator?.state = .isIdle
-    }
-
-    func updateDataSource(_ results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
-        stopLoading()
-
-        if let results = results {
-            emptyListView.isHidden = !results.isEmpty
-            recentSearchesView.isHidden = true
-            resultsListCollectionView.isHidden = results.isEmpty
-
-            if results.count > 0 {
-                if pagination?.skipCount != 0 {
-                    resultsViewModel.addNewResults(results: results, pagination: pagination)
-                } else {
-                    resultsViewModel.addResults(results: results, pagination: pagination)
-                }
-                resultsListCollectionView.reloadData()
-            }
-        } else {
-            if error == nil {
-                clearDataSource()
-                resultsListCollectionView.reloadData()
-            } else {
-                return
-            }
-        }
-
-        // If loading the first page or missing pagination scroll to top
-        if pagination?.skipCount == 0 || pagination == nil {
-            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
     }
 
     func clearDataSource() {
@@ -344,6 +315,25 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
 extension ResultViewController: PageFetchableDelegate {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
         self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndex)
+    }
+}
+
+extension ResultViewController: ResultsViewModelDelegate {
+    func didUpdateResultsList(error: Error?, pagination: Pagination?) {
+        stopLoading()
+
+        emptyListView.isHidden = !resultsViewModel.results.isEmpty
+        resultsListCollectionView.isHidden = resultsViewModel.results.isEmpty
+
+        if error == nil {
+            resultsListCollectionView.reloadData()
+            recentSearchesView.isHidden = (pagination == nil) ? false : true
+        }
+
+        // If loading the first page or missing pagination scroll to top
+        if (pagination?.skipCount == 0 || pagination == nil) && error == nil {
+            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
     }
 }
 
