@@ -123,13 +123,8 @@ class ResultViewController: SystemThemableViewController {
         activityIndicator?.state = .isIdle
     }
 
-    func updateDataSource(_ results: [ListElementProtocol]?, pagination: Pagination?) {
+    func updateDataSource(_ results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
         stopLoading()
-
-        // If loading the first page or missing pagination scroll to top
-        if pagination?.skipCount == 0 || pagination == nil {
-            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
 
         if let results = results {
             emptyListView.isHidden = !results.isEmpty
@@ -145,8 +140,17 @@ class ResultViewController: SystemThemableViewController {
                 resultsListCollectionView.reloadData()
             }
         } else {
-            clearDataSource()
-            resultsListCollectionView.reloadData()
+            if error == nil {
+                clearDataSource()
+                resultsListCollectionView.reloadData()
+            } else {
+                return
+            }
+        }
+
+        // If loading the first page or missing pagination scroll to top
+        if pagination?.skipCount == 0 || pagination == nil {
+            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }
 

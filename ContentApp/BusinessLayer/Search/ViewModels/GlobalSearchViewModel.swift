@@ -182,7 +182,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.viewModelDelegate?.handle(results: nil, pagination: nil)
+                sSelf.viewModelDelegate?.handle(results: nil, pagination: nil, error: error)
             }
         } else if let results = results, let skipCount = pagination?.skipCount {
             self.hasMoreItems = (Int64(results.count) + skipCount) == pagination?.totalItems ? false : true
@@ -193,7 +193,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.viewModelDelegate?.handle(results: results, pagination: pagination)
+                sSelf.viewModelDelegate?.handle(results: results, pagination: pagination, error: nil)
             }
         }
         searchGroup.leave()

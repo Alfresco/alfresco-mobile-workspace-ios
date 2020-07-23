@@ -272,9 +272,9 @@ extension ListViewController: ResultScreenDelegate {
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListElementProtocol]?, pagination: Pagination?) {
+    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        rvc.updateDataSource(results, pagination: pagination)
+        rvc.updateDataSource(results, pagination: pagination, error: error)
     }
 }
 

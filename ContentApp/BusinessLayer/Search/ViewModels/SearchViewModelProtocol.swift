@@ -43,13 +43,14 @@ protocol SearchViewModelDelegate: class {
      Handle search results
      - results: List of search results
      - pagination: Page information for the returned results
+     - error: Error object
      - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
      */
-    func handle(results: [ListElementProtocol]?, pagination: Pagination?)
+    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?)
 }
 
 extension SearchViewModelDelegate {
     func handle(results: [ListElementProtocol]?) {
-        handle(results: results, pagination: nil)
+        handle(results: results, pagination: nil, error: nil)
     }
 }
