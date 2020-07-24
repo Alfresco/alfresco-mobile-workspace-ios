@@ -58,24 +58,12 @@ class FavoritesViewModel: ListViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            TrashcanAPI.listDeletedNodes{ (result, error) in
-                print("Trash = \(result?.list?.entries?.count ?? 0)")
-            }
-            SharedLinksAPI.listSharedLinks { (result, error) in
-                print("Shared = \(result?.list.entries.count ?? 0)")
-            }
-            SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe) { (result, error) in
-                print("MyLibraries = \(result?.list.entries.count ?? 0)")
-            }
-            NodesAPI.listNodeChildren(nodeId: "-my-") { (result, error) in
-                print("PersonalFiles = \(result?.list?.entries?.count ?? 0)")
-            }
             FavoritesAPI.listFavorites(personId: kAPIPathMe, skipCount: 0, maxItems: 25, orderBy: nil,
                                        _where: sSelf.whereCondition,
                                        include: ["path"],
                                        fields: nil) { (result, error) in
                 if let entries = result?.list {
-                    sSelf.groupedLists.append(GroupedList(type: .none, list: ListNode.nodes(entries.entries)))
+                    sSelf.groupedLists.append(GroupedList(type: .none, list: FavoritesNodeMapper.map(entries.entries)))
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.handleList()
                     }

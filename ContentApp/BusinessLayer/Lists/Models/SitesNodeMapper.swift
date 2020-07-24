@@ -19,16 +19,16 @@
 import Foundation
 import AlfrescoContentServices
 
-enum ElementKindType {
-    case file
-    case folder
-    case site
-}
+struct SitesNodeMapper {
+    static func map(_ entries: [SiteEntry]) -> [ListNode] {
+        var nodes: [ListNode] = []
+        for entry in entries {
+            nodes.append(self.create(from: entry.entry))
+        }
+        return nodes
+    }
 
-struct ListNode {
-    var title: String
-    var icon: String
-    var path: String
-    var modifiedAt: Date?
-    var kind: ElementKindType
+    private static func create(from node: Site) -> ListNode {
+        return ListNode(title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
+    }
 }

@@ -145,13 +145,12 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
-                var listSites: [ListNode]?
+
                 if let entries = results?.list.entries {
-                    listSites = ListNode.nodes(entries)
-                        sSelf.viewModelDelegate?.handle(results: ListNode.nodes(entries))
+                    sSelf.resultsList = SitesNodeMapper.map(entries)
                 }
 
-                sSelf.handle(results: listSites,
+                sSelf.handle(results: sSelf.resultsList,
                              error: error,
                              paginationRequest: paginationRequest,
                              pagination: results?.list.pagination)
@@ -166,7 +165,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
 
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ListNode.nodes(entries)
+                    sSelf.resultsList = ResultsNodeMapper.map(entries)
                 }
 
                 sSelf.handle(results: sSelf.resultsList,

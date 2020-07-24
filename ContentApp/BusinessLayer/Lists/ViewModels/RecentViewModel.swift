@@ -43,7 +43,7 @@ class RecentViewModel: ListViewModelProtocol {
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier)) { (result, error) in
                 if let entries = result?.list?.entries {
-                    sSelf.addInGroupList(ListNode.nodes(entries))
+                    sSelf.addInGroupList(ResultsNodeMapper.map(entries))
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.handleList()
                     }
