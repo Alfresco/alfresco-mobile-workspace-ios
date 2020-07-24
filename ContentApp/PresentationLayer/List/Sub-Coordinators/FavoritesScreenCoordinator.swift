@@ -18,9 +18,10 @@
 
 import UIKit
 
-class FavoritesScreenCoordinator: Coordinator {
+class FavoritesScreenCoordinator: ListCoordinatorProtocol {
+
     private let presenter: TabBarMainViewController
-    private var favoritesViewController: FavoritesViewController?
+    private var favoritesViewController: ListViewController?
     private var navigationViewController: UINavigationController?
 
     init(with presenter: TabBarMainViewController) {
@@ -28,11 +29,27 @@ class FavoritesScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let viewController = FavoritesViewController.instantiateViewController()
+        let viewController = ListViewController.instantiateViewController()
+        viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
+//        favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
+        viewController.listViewModel = favoritesViewModel
+        viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
+        viewController.tabBarScreenDelegate = presenter
+
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         self.favoritesViewController = viewController
+    }
+
+    func scrollToTop() {
+        favoritesViewController?.scrollToTop()
+    }
+
+    func popToRoot() {
+
     }
 }

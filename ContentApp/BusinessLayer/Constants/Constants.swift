@@ -34,6 +34,8 @@ let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
 let kAPIPathGetAvatarProfile = "\(kAPIPathVersion)/people/-me-/avatar"
+let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"
+let kWhereFavoritesSiteCondition = "(EXISTS(target/site))"
 
 // MARK: - Notification Keys
 let kShowLoginScreenNotification = "kShowLoginScreenNotification"

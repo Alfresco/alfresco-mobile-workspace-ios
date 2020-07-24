@@ -31,9 +31,9 @@ enum GroupedListType {
 class GroupedList {
     var titleGroup: String
     var type: GroupedListType
-    var list: [ListElementProtocol]
+    var list: [ListNode]
 
-    init(type: GroupedListType, list: [ListElementProtocol]) {
+    init(type: GroupedListType, list: [ListNode]) {
         self.type = type
         self.list = list
         switch type {

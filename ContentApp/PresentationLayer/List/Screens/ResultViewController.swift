@@ -25,7 +25,7 @@ import AlfrescoContentServices
 
 protocol ResultScreenDelegate: class {
     func recentSearchTapped(string: String)
-    func elementListTapped(elementList: ListElementProtocol)
+    func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
     func fetchNextSearchResultsPage(for index: IndexPath)
 }
@@ -278,7 +278,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
         case resultsListCollectionView:
             let element = resultsViewModel.results[indexPath.row]
-            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? listSiteCellHeight : listItemNodeCellHeight)
+            return CGSize(width: self.view.bounds.width, height: (element.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
             return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:

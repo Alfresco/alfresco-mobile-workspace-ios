@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContentServices
 
 class GlobalSearchViewModel: SearchViewModelProtocol {
-    var resultsList: [ListElementProtocol] = []
+    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
 
@@ -145,9 +145,10 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
-                var listSites: [ListSite]?
+                var listSites: [ListNode]?
                 if let entries = results?.list.entries {
-                    listSites = ListSite.sites(entries)
+                    listSites = ListNode.nodes(entries)
+                        sSelf.viewModelDelegate?.handle(results: ListNode.nodes(entries))
                 }
 
                 sSelf.handle(results: listSites,
@@ -176,7 +177,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         })
     }
 
-    func handle(results: [ListElementProtocol]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
+    func handle(results: [ListNode]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
         if let error = error {
             AlfrescoLog.error(error)
 

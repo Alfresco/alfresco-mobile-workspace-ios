@@ -33,6 +33,7 @@ class ListViewController: SystemThemableViewController {
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
+    var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
 
@@ -63,8 +64,10 @@ class ListViewController: SystemThemableViewController {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true
         }
-        if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
-            self.startLoading()
+        if loadFirstRequest {
+            startLoading()
+            listViewModel?.reloadRequest()
+            loadFirstRequest = false
         }
         collectionView.reloadData()
     }
@@ -203,8 +206,12 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         return cell ?? UICollectionViewCell()
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row]
+            else { return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight) }
+        return CGSize(width: self.view.bounds.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -251,7 +258,7 @@ extension ListViewController: ResultScreenDelegate {
         searchViewModel.performLiveSearch(for: string)
     }
 
-    func elementListTapped(elementList: ListElementProtocol) {
+    func elementListTapped(elementList: ListNode) {
         guard let searchBar = navigationItem.searchController?.searchBar,
             let searchViewModel = self.searchViewModel else { return }
 
@@ -268,7 +275,7 @@ extension ListViewController: ResultScreenDelegate {
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
+    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
     }

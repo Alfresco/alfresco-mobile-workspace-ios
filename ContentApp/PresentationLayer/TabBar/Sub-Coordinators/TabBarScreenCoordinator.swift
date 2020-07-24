@@ -72,7 +72,9 @@ class TabBarScreenCoordinator: Coordinator {
 
 extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     func showSettingsScreen() {
-        if let navigationController = tabBarMainViewController?.viewControllers?.first as? UINavigationController {
+        if let viewControllers = tabBarMainViewController?.viewControllers,
+            let selectedIndex = tabBarMainViewController?.selectedIndex,
+            let navigationController = viewControllers[selectedIndex] as? UINavigationController {
             tabBarMainViewController?.tabBar.isHidden = true
             settingsCoordinator = SettingsScreenCoordinator(with: navigationController)
             settingsCoordinator?.start()
