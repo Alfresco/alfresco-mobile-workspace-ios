@@ -110,11 +110,13 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = false
         activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
     }
 
     func stopLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = true
         activityIndicatorSuperview.isHidden = true
         activityIndicator?.state = .isIdle
     }
