@@ -29,7 +29,7 @@ struct ListNode: ListElementProtocol {
     init(with node: ResultNode) {
         self.node = node
         self.title = node.name
-        self.icon = node.content?.mimeType ?? "ic-other"
+        self.icon = node.content?.mimeType ?? IconType.generic.rawValue
         if node.isFolder {
             self.icon = node.nodeType
         }
