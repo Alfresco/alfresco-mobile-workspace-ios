@@ -16,11 +16,17 @@
 //  limitations under the License.
 //
 
-import Foundation
 import UIKit
 
-extension UIFont {
-    class func alfrescoRegularFont(ofSize fontSize: CGFloat) -> UIFont {
-        return UIFont.systemFont(ofSize: fontSize)
+public extension UICollectionView {
+
+    func lastItemIndexPath() -> IndexPath? {
+        let lastSection = numberOfSections - 1
+        guard lastSection >= 0 else { return nil }
+        let lastItem = numberOfItems(inSection: lastSection) - 1
+        guard lastItem >= 0 else { return nil }
+        let lastItemIndexPath = IndexPath(item: lastItem, section: lastSection)
+
+        return lastItemIndexPath
     }
 }

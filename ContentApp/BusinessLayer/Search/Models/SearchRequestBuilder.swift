@@ -22,9 +22,9 @@ import AlfrescoContentServices
 let kRequestDefaultsFieldName = "keywords"
 
 struct SearchRequestBuilder {
-    static func searchRequest(_ string: String, chipFilters: [SearchChipItem]) -> SearchRequest {
+    static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(string),
-                             paging: self.requestPagination(),
+                             paging: pagination ?? self.requestPagination(),
                              include: self.requestInclude(),
                              includeRequest: nil,
                              fields: nil,
@@ -74,7 +74,7 @@ struct SearchRequestBuilder {
     }
 
     private static func requestPagination() -> RequestPagination {
-        return RequestPagination(maxItems: 25, skipCount: 0)
+        return RequestPagination(maxItems: kListPageSize, skipCount: 0)
     }
 
     private static func requestInclude() -> RequestInclude {

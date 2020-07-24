@@ -16,24 +16,20 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-class SystemThemableViewController: UIViewController {
-    var themingService: MaterialDesignThemingService?
+enum InterFontStyleType: String {
+    case normal = "Inter-Regular"
+    case medium = "Inter-Medium"
+}
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        applyComponentsThemes()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        applyComponentsThemes()
-        kWindow.backgroundColor = themingService?.activeTheme?.backgroundColor
-    }
-
-    func applyComponentsThemes() {
-        // Override in subclass
+extension UIFont {
+    class func inter(style: InterFontStyleType = .normal, size: CGFloat) -> UIFont {
+        if let font = UIFont(name: style.rawValue, size: size) {
+            return font
+        }
+        AlfrescoLog.error("Font \(style.rawValue) doesn't exists!")
+        return UIFont.systemFont(ofSize: size)
     }
 }

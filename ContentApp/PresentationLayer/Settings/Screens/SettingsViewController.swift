@@ -56,6 +56,13 @@ class SettingsViewController: SystemThemableViewController {
     func addLocalization() {
         self.title = LocalizationConstants.ScreenTitles.settings
     }
+
+    override func applyComponentsThemes() {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
+    }
 }
 
 // MARK: - UITableView Delegate and Data Source
@@ -71,9 +78,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = viewModel?.items[indexPath.section][indexPath.row] else {
-            return UITableViewCell()
-        }
+        guard let item = viewModel?.items[indexPath.section][indexPath.row] else { return UITableViewCell() }
 
         var cell: SettingsTablewViewCellProtocol?
         switch item.type {
@@ -148,6 +153,7 @@ extension SettingsViewController: SettingsTableViewCellDelegate {
 
 extension SettingsViewController: ThemesModeScrenDelegate {
     func changeThemeMode() {
+        applyComponentsThemes()
         viewModel?.reloadDataSource()
     }
 }

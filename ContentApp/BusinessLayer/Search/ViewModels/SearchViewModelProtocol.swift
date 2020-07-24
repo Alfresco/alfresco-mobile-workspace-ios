@@ -25,17 +25,32 @@ protocol SearchViewModelProtocol {
 
     func defaultSearchChips() -> [SearchChipItem]
     func logicSearchChips(chipTapped: SearchChipItem) -> [Int]
-    func performSearch(for string: String?)
+    func performSearch(for string: String?, paginationRequest: RequestPagination?)
     func performLiveSearch(for string: String?)
     func save(recentSearch string: String?)
     func recentSearches() -> [String]
+    func fetchNextSearchResultsPage(for string: String?, index: IndexPath)
+}
+
+extension SearchViewModelProtocol {
+    func performSearch(for string: String?) {
+        performSearch(for: string, paginationRequest: nil)
+    }
 }
 
 protocol SearchViewModelDelegate: class {
     /**
      Handle search results
-     - results: list of element from a search operation
+     - results: List of search results
+     - pagination: Page information for the returned results
+     - error: Error object
      - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
      */
-    func handle(results: [ListElementProtocol]?)
+    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?)
+}
+
+extension SearchViewModelDelegate {
+    func handle(results: [ListElementProtocol]?) {
+        handle(results: results, pagination: nil, error: nil)
+    }
 }

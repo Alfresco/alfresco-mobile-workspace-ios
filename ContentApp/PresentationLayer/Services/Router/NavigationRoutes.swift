@@ -16,24 +16,19 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class SystemThemableViewController: UIViewController {
-    var themingService: MaterialDesignThemingService?
+enum NavigationRoutes: NavigationRoute {
+    typealias RawValue = NavigationRoute
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        applyComponentsThemes()
-    }
+    case splashScreen = "%@splashScreen"
+    case basicAuthScreen = "%@basicAuthScreen"
+    case aimsAuthScreen = "%@aimsAuthScreen"
+    case advancedSettingsScreen = "%@advancedSettingsScreen"
+    case settingsScreen = "%@settingsScreen"
+    case mainTabBarScreen = "%@mainTabBarScreen"
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        applyComponentsThemes()
-        kWindow.backgroundColor = themingService?.activeTheme?.backgroundColor
-    }
-
-    func applyComponentsThemes() {
-        // Override in subclass
+    var path: NavigationRoute {
+        return String(format: self.rawValue, "contentapp://")
     }
 }

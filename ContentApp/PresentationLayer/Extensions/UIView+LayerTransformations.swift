@@ -20,7 +20,7 @@ import UIKit
 
 extension UIView {
     func dropShadow(opacity: Float, radius: Float) {
-        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
         self.layer.shadowOpacity = opacity
         self.layer.shadowOffset = .zero
         self.layer.shadowRadius = CGFloat(radius)
@@ -36,7 +36,7 @@ extension UIView {
         let shadowOpacity = opacity
         let shadowRadius = CGFloat(radius)
         let shadowPath = UIBezierPath(rect: self.frame).cgPath
-        let shadowColor = UIColor.black
+        let shadowColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
 
         let shadowLayer = CALayer()
         let mutablePath = CGMutablePath()

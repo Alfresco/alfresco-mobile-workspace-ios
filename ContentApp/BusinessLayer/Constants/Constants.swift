@@ -51,10 +51,23 @@ let kSearchTimerBuffer = 0.7
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
 
+// MARK: - Height&Widhts
+
+let accountSettingsButtonHeight: CGFloat = 30.0
+let listItemNodeCellHeight: CGFloat = 64.0
+let listSectionCellHeight: CGFloat = 56.0
+let listSiteCellHeight: CGFloat = 48.0
+let recentSearchCellHeight: CGFloat = 48.0
+let chipSearchCellMinimHeight: CGFloat = 32.0
+let chipSearchCellMinimWidth: CGFloat = 52.0
+
 // MARK: -
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
+
+// MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15
 let kMinCharactersForLiveSearch = 3
+let kListPageSize = 25

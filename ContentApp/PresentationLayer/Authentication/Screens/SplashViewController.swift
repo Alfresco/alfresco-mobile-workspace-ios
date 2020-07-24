@@ -24,7 +24,7 @@ protocol SplashScreenDelegate: class {
     func backPadButton(userInteraction: Bool)
 }
 
-class SplashViewController: UIViewController {
+class SplashViewController: SystemThemableViewController {
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var logoImageView: UIImageView!
 
@@ -45,8 +45,6 @@ class SplashViewController: UIViewController {
     let shadowLayerRadius: Float = 50
     let shadowLayerOpacity: Float = 0.4
 
-    var themingService: MaterialDesignThemingService?
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -61,11 +59,6 @@ class SplashViewController: UIViewController {
 
         containerViews(alpha: 0.0, hidden: true)
         self.backButton.isHidden = true
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -94,12 +87,6 @@ class SplashViewController: UIViewController {
         }
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
-
     // MARK: - IBActions
 
     @IBAction func backButtonTapped(_ sender: UIButton) {
@@ -116,11 +103,13 @@ class SplashViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        copyrightLabel.textColor = currentTheme.loginCopyrightLabelColor
-        copyrightLabel.font = currentTheme.loginCopyrightLabelFont
-        backButton.tintColor = currentTheme.loginButtonColor
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        backButton.tintColor = currentTheme.primaryVariantColor
+        view.backgroundColor = currentTheme.backgroundColor
+        whiteAlphaView.backgroundColor = currentTheme.backgroundColor
+        containerView.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 
     func animateLogo() {
