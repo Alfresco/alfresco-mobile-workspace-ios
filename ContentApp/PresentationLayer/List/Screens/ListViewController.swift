@@ -275,6 +275,7 @@ extension ListViewController: SearchViewModelDelegate {
 
         if didChangedChipFilter && pagination?.skipCount != 0 {
             didChangedChipFilter = false
+            rvc.stopLoading()
             return
         }
 
