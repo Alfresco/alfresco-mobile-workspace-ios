@@ -62,7 +62,7 @@ let listSectionCellHeight: CGFloat = 56.0
 let listSiteCellHeight: CGFloat = 48.0
 let recentSearchCellHeight: CGFloat = 48.0
 let listBrowseCellHeight: CGFloat = 48.0
-let listBrowseSectionCellHeight: CGFloat = 16.0
+let listBrowseSectionCellHeight: CGFloat = 1.0
 let chipSearchCellMinimHeight: CGFloat = 32.0
 let chipSearchCellMinimWidth: CGFloat = 52.0
 

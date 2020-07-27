@@ -849,7 +849,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgW-HM-F5o">
-                                            <rect key="frame" x="72" y="15" width="342" height="1"/>
+                                            <rect key="frame" x="77" y="15" width="337" height="1"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="bU7-ex-vRn"/>
@@ -859,7 +859,7 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="mgW-HM-F5o" secondAttribute="bottom" id="KVh-cM-rvp"/>
                                         <constraint firstAttribute="trailing" secondItem="mgW-HM-F5o" secondAttribute="trailing" id="MP5-Bm-NHz"/>
-                                        <constraint firstItem="mgW-HM-F5o" firstAttribute="leading" secondItem="eJw-yj-h42" secondAttribute="leading" constant="72" id="fVJ-7A-8Wr"/>
+                                        <constraint firstItem="mgW-HM-F5o" firstAttribute="leading" secondItem="eJw-yj-h42" secondAttribute="leading" constant="77" id="fVJ-7A-8Wr"/>
                                     </constraints>
                                     <connections>
                                         <outlet property="separator" destination="mgW-HM-F5o" id="EUN-nY-gww"/>
