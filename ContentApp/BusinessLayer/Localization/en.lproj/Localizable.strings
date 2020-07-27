@@ -102,3 +102,10 @@
 "lastWeek" = "Last Week";
 "thisMonth" = "This Month";
 "older" = "Older";
+
+// MARK: - Browse Static List
+
+"browse-personalFiles" = "Personal files";
+"browse-myLibraries" = "My libraries";
+"browse-shared" = "Shared";
+"browse-trash" = "Trash";
