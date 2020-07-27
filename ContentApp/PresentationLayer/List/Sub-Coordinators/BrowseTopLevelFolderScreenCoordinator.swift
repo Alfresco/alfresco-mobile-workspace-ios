@@ -31,7 +31,8 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
     func start() {
         let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.folderScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+        let routerPath = NavigationRoutes.folderScreen.path + browseNode.type.rawValue
+        router?.register(route: routerPath, factory: { [weak self] (_, _) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
             let viewController = ListViewController.instantiateViewController()
@@ -58,7 +59,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             return viewController
         })
 
-        router?.push(route: NavigationRoutes.folderScreen.path, from: presenter)
+        router?.push(route: routerPath, from: presenter)
     }
 }
 

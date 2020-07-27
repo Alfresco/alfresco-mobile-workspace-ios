@@ -26,7 +26,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
     private var listNode: ListNode
-    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -35,7 +35,8 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
     func start() {
         let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.folderScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
+        let routerPath = NavigationRoutes.folderScreen.path + listNode.guid
+        router?.register(route: routerPath, factory: { [weak self] (_, _) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
             let viewController = ListViewController.instantiateViewController()
@@ -52,7 +53,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
             return viewController
         })
 
-        router?.push(route: NavigationRoutes.folderScreen.path, from: presenter)
+        router?.push(route: routerPath, from: presenter)
     }
 }
 
@@ -60,6 +61,6 @@ extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoodrinatorDelega
     func showScreen(from node: ListNode) {
         let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
         folderDrillDownCoordinatorDelegate.start()
-        self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
+        self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
     }
 }

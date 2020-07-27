@@ -18,11 +18,11 @@
 
 import Foundation
 
-enum BrowseType {
-    case personalFiles
-    case myLibraries
-    case shared
-    case trash
+enum BrowseType: String {
+    case personalFiles = "PersonalFiles"
+    case myLibraries = "MyLibraries"
+    case shared = "Shared"
+    case trash = "Trash"
 }
 
 struct BrowseNode {
