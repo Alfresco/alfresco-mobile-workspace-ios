@@ -120,7 +120,7 @@ class TabBarMainViewController: UITabBarController {
 
     func doubleTapLogic(for item: Int) {
         guard self.selectedIndex == item else { return }
-        self.tabBarCoordinatorDelegate?.scrollToTop(forScreen: item)
+        self.tabBarCoordinatorDelegate?.scrollToTopOrPopToRoot(forScreen: item)
     }
 }
 

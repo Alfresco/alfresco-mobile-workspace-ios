@@ -85,10 +85,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     // MARK: - Coordinator Public Methods
-
-    func popToRoot() {
-    }
-
+    
     func scrollToTop() {
         self.scrollToSection(0)
     }

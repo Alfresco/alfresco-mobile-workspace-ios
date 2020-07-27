@@ -22,7 +22,7 @@ protocol BrowseScreenCoordinatorDelegate: class {
     func showScreen(from browseNode: BrowseNode)
 }
 
-class BrowseScreenCoordinator: Coordinator {
+class BrowseScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var browseViewController: BrowseViewController?
     private var navigationViewController: UINavigationController?
@@ -42,6 +42,10 @@ class BrowseScreenCoordinator: Coordinator {
         self.presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         self.browseViewController = viewController
+    }
+
+    func scrollToTopOrPopToRoot() {
+        navigationViewController?.popToRootViewController(animated: true)
     }
 }
 

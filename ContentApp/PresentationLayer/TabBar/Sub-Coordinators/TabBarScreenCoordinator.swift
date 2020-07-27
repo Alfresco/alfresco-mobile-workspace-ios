@@ -23,8 +23,7 @@ protocol TabBarScreenCoordinatorDelegate: class {
     func showFavoritesScreen()
     func showBrowseScreen()
     func showSettingsScreen()
-    func scrollToTop(forScreen item: Int)
-    func popToRoot(forSceen item: Int)
+    func scrollToTopOrPopToRoot(forScreen item: Int)
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -105,19 +104,14 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
         }
     }
 
-    func scrollToTop(forScreen item: Int) {
+    func scrollToTopOrPopToRoot(forScreen item: Int) {
         switch item {
         case 0: //Recents
-            recentCoordinator?.scrollToTop()
-        default:
-            break
-        }
-    }
-
-    func popToRoot(forSceen item: Int) {
-        switch item {
-        case 0: //Recents
-            recentCoordinator?.popToRoot()
+            recentCoordinator?.scrollToTopOrPopToRoot()
+        case 1: //Favorites
+            favoritesCoordinator?.scrollToTopOrPopToRoot()
+        case 2: //Browse
+            browseCoordinator?.scrollToTopOrPopToRoot()
         default:
             break
         }

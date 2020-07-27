@@ -47,12 +47,12 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         self.favoritesViewController = viewController
     }
 
-    func scrollToTop() {
-        favoritesViewController?.scrollToTop()
-    }
-
-    func popToRoot() {
-
+    func scrollToTopOrPopToRoot() {
+        if navigationViewController?.viewControllers.count == 1 {
+            favoritesViewController?.scrollToTop()
+        } else {
+            navigationViewController?.popToRootViewController(animated: true)
+        }
     }
 }
 

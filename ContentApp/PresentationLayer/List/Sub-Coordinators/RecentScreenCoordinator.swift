@@ -45,12 +45,12 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         self.recentViewController = viewController
     }
 
-    func scrollToTop() {
-        recentViewController?.scrollToTop()
-    }
-
-    func popToRoot() {
-
+    func scrollToTopOrPopToRoot() {
+        if navigationViewController?.viewControllers.count == 1 {
+            recentViewController?.scrollToTop()
+        } else {
+            navigationViewController?.popToRootViewController(animated: true)
+        }
     }
 }
 
