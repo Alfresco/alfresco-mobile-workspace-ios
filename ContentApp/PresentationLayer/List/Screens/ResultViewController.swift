@@ -112,11 +112,14 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = false
+        resultsListCollectionView.setContentOffset(resultsListCollectionView.contentOffset, animated: false)
         activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
     }
 
     func stopLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = true
         activityIndicatorSuperview.isHidden = true
         activityIndicator?.state = .isIdle
     }
@@ -330,18 +333,21 @@ extension ResultViewController: PageFetchableDelegate {
 
 extension ResultViewController: ResultsViewModelDelegate {
     func didUpdateResultsList(error: Error?, pagination: Pagination?) {
-        stopLoading()
-
         emptyListView.isHidden = !resultsViewModel.results.isEmpty
         resultsListCollectionView.isHidden = resultsViewModel.results.isEmpty
 
         if error == nil {
             resultsListCollectionView.reloadData()
+            resultsListCollectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.stopLoading()
+            })
+
             recentSearchesView.isHidden = (pagination == nil) ? false : true
         }
 
         // If loading the first page or missing pagination scroll to top
-        if (pagination?.skipCount == 0 || pagination == nil) && error == nil {
+        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !resultsViewModel.results.isEmpty {
             resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }

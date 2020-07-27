@@ -29,6 +29,6 @@ struct SharedLinkMapper {
     }
 
     private static func create(from node: SharedLink) -> ListNode {
-        return ListNode(guid: node._id ?? "", title: node.name ?? "", icon: node.content?.mimeType ?? "ic-other", path: "", modifiedAt: node.modifiedAt, kind: .file)
+        return ListNode(guid: node._id ?? "", title: node.name ?? "", icon: node.content?.mimeType, path: "", modifiedAt: node.modifiedAt, kind: .file)
     }
 }

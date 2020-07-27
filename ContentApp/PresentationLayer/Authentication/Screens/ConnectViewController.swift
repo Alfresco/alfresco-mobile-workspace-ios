@@ -21,13 +21,13 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class ConnectViewController: SystemThemableViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
-    @IBOutlet weak var connectTextField: MDCFilledTextField!
+    @IBOutlet weak var connectTextField: MDCOutlinedTextField!
     @IBOutlet weak var connectButton: MDCButton!
     @IBOutlet weak var advancedSettingsButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
@@ -142,13 +142,19 @@ class ConnectViewController: SystemThemableViewController {
 
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        connectButton.isUppercaseTitle = false
+
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        advancedSettingsButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.isUppercaseTitle = false
 
         connectTextFieldAddMaterialComponents()
 
         productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
 
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
@@ -164,8 +170,6 @@ class ConnectViewController: SystemThemableViewController {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
         }
-        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
-        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
     }
 
     func navigationBar(hide: Bool) {

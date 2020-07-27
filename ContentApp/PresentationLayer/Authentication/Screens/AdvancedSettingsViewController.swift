@@ -20,8 +20,8 @@ import UIKit
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class AdvancedSettingsViewController: SystemThemableViewController {
 
@@ -39,10 +39,10 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var httpsLabel: UILabel!
     @IBOutlet weak var httpsSwitch: UISwitch!
 
-    @IBOutlet weak var portTextField: MDCFilledTextField!
-    @IBOutlet weak var serviceDocumentsTextField: MDCFilledTextField!
-    @IBOutlet weak var realmTextField: MDCFilledTextField!
-    @IBOutlet weak var clientIDTextField: MDCFilledTextField!
+    @IBOutlet weak var portTextField: MDCOutlinedTextField!
+    @IBOutlet weak var serviceDocumentsTextField: MDCOutlinedTextField!
+    @IBOutlet weak var realmTextField: MDCOutlinedTextField!
+    @IBOutlet weak var clientIDTextField: MDCOutlinedTextField!
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var needHelpButton: MDCButton!
@@ -92,9 +92,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         self.view.endEditing(true)
         guard let currentTheme = self.themingService?.activeTheme else { return }
         if httpsSwitch.isOn {
-            httpsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         } else {
-            httpsLabel.applyStyleSubtitle1Divider(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
@@ -140,7 +140,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
-        saveButton.title = LocalizationConstants.Buttons.save.uppercased()
+        saveButton.title = LocalizationConstants.Buttons.save
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         resetButton.setTitle(LocalizationConstants.Buttons.resetToDefault, for: .normal)
     }
@@ -149,36 +149,32 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        portTextField.setFilledBackgroundColor(.clear, for: .normal)
-        portTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         serviceDocumentsTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        serviceDocumentsTextField.setFilledBackgroundColor(.clear, for: .normal)
-        serviceDocumentsTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         clientIDTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        clientIDTextField.setFilledBackgroundColor(.clear, for: .normal)
-        clientIDTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         realmTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        realmTextField.setFilledBackgroundColor(.clear, for: .normal)
-        realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
         if viewModel.authParameters.https {
-            httpsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         } else {
-            httpsLabel.applyStyleSubtitle1Divider(theme: currentTheme)
+            httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
-        transportProtocolLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        settingsLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        authenticationLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        titlePadLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        transportProtocolLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        settingsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        authenticationLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        titlePadLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
+        resetButton.isUppercaseTitle = false
+
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
         savePadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
+        savePadButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.isUppercaseTitle = false
+
         saveButton.tintColor = currentTheme.primaryVariantColor
         backPadButton.tintColor = currentTheme.primaryVariantColor
 

@@ -36,7 +36,7 @@ struct FavoritesNodeMapper {
 
     private static func create(from node: FavoriteTargetNode) -> ListNode {
         let path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
-        var icon = node.content?.mimeType ?? "ic-other"
+        var icon = node.content?.mimeType
         var kind = ElementKindType.file
         if node.isFolder {
             icon = "cm:folder"

@@ -21,8 +21,8 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class BasicAuthViewController: SystemThemableViewController {
 
@@ -32,8 +32,8 @@ class BasicAuthViewController: SystemThemableViewController {
     @IBOutlet weak var hostnameLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    @IBOutlet weak var usernameTextField: MDCFilledTextField!
-    @IBOutlet weak var passwordTextField: MDCFilledTextField!
+    @IBOutlet weak var usernameTextField: MDCOutlinedTextField!
+    @IBOutlet weak var passwordTextField: MDCOutlinedTextField!
     var showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
 
     @IBOutlet weak var signInButton: MDCButton!
@@ -86,7 +86,6 @@ class BasicAuthViewController: SystemThemableViewController {
        activityIndicator?.reload(from: size)
    }
 
-
     // MARK: - IBActions
 
     @IBAction func signInButtonTapped(_ sender: Any) {
@@ -127,11 +126,17 @@ class BasicAuthViewController: SystemThemableViewController {
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        signInButton.isUppercaseTitle = false
 
         productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
-        hostnameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+
+        hostnameLabel.textColor = currentTheme.onSurfaceColor
+        hostnameLabel.font = currentTheme.body1TextStyle.font
+        hostnameLabel.add(characterSpacing: currentTheme.body1TextStyle.letterSpacing, lineHeight: 1.0)
+
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
 
         applyThemingInTextField(errorTheme: false)
 
@@ -153,8 +158,6 @@ class BasicAuthViewController: SystemThemableViewController {
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
         usernameTextField.trailingView?.tintColor = currentTheme.dividerColor
-        usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
-        usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
 
         showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
         showPasswordImageView.contentMode = .scaleAspectFit
@@ -163,8 +166,6 @@ class BasicAuthViewController: SystemThemableViewController {
         passwordTextField.trailingView?.isUserInteractionEnabled = true
         passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
         passwordTextField.trailingView?.tintColor = currentTheme.dividerColor
-        passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
-        passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
         passwordTextField.isSecureTextEntry = true
     }
 }

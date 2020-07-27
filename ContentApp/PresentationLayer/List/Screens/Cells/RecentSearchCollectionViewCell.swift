@@ -33,7 +33,8 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        titleSearch.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleSearch.applyStyleBody1OnSurface(theme: currentTheme)
+        titleSearch.lineBreakMode = .byTruncatingTail
     }
 
 }

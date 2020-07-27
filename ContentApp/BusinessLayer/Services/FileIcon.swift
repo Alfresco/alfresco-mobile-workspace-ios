@@ -9,7 +9,7 @@
 //
 //  http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
+//  Unless required by applicable law or agreed: in writing, software
 //  distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
@@ -23,27 +23,27 @@ enum IconType: String {
     case arhive = "ic-archive"
     case audio = "ic-audio"
     case book = "ic-book"
-    case cadDrawings = "ic-cad-drawings"
+    case code = "ic-code"
     case database = "ic-database"
-    case docsOther = "ic-docs-other"
-    case folderEmpty = "ic-folder-empty"
-    case folderSmart = "ic-folder-Smart"
-    case folder = "ic-folder"
+    case document = "ic-document"
+    case email = "ic-email"
+    case folder = "ic-folder_full"
+    case folderShared = "ic-folder_shared"
+    case folderSmart = "ic-folder_smart"
     case forms = "ic-forms"
-    case googleDrawings = "ic-googledrawings"
-    case googleForms = "ic-googleforms"
-    case googleSheets = "ic-googlesheets"
-    case googleSlides = "ic-googleslides"
-    case image = "ic-image-no-preview"
-    case msExcel = "ic-ms-excel"
-    case msPowerpoint = "ic-ms-powerpoint"
-    case msWord = "ic-ms-word"
-    case other = "ic-other"
+    case generic = "ic-generic"
+    case graphics = "ic-graphics"
+    case image = "ic-image"
+    case msDocument = "ic-ms_document"
+    case msForm = "ic-ms_form"
+    case msPresentation = "ic-ms_presentation"
+    case msSpreadsheet = "ic-ms_spreadsheet"
     case pdf = "ic-pdf"
-    case presentationsOther = "ic-presentations-other"
-    case spreadsheetsOther = "ic-spreadsheets-other"
+    case presentation = "ic-presentation"
+    case process = "ic-process"
+    case spreadsheet = "ic-spreadsheet"
+    case task = "ic-task"
     case video = "ic-video"
-    case web = "ic-web"
     case site = "ic-site"
 }
 
@@ -51,128 +51,202 @@ class FileIcon {
 
     static private var map: [String: IconType] {
         return [
-            "application/gzip": .arhive,
-            "application/json": .docsOther,
-            "application/msaccess": .database,
-            "application/msword": .msWord,
+            "application/acp": .arhive,
+            "application/dita+xml": .code,
+            "application/eps": .image,
+            "application/framemaker": .document,
+            "application/illustrator": .image,
+            "application/java": .generic,
+            "application/java-archive": .arhive,
+            "application/json": .code,
+            "application/mac-binhex40": .generic,
+            "application/msword": .msDocument,
+            "application/octet-stream": .generic,
+            "application/oda": .document,
             "application/ogg": .audio,
+            "application/pagemaker": .document,
             "application/pdf": .pdf,
             "application/postscript": .image,
-            "application/rar": .arhive,
-            "application/vnd.apple.keynote": .presentationsOther,
-            "application/vnd.apple.numbers": .spreadsheetsOther,
-            "application/vnd.apple.pages": .docsOther,
-            "application/vnd.ms-excel": .msExcel,
-            "application/vnd.ms-powerpoint": .msPowerpoint,
+            "application/remote-printing": .document,
+            "application/rss+xml": .code,
+            "application/rtf": .document,
+            "application/sgml": .code,
+            "application/vnd.adobe.aftereffects.project": .generic,
+            "application/vnd.adobe.aftereffects.template": .generic,
+            "application/vnd.adobe.air-application-installer-package+zip": .arhive,
+            "application/vnd.adobe.xdp+xml": .generic,
+            "application/vnd.android.package-archive": .arhive,
+            "application/vnd.apple.keynote": .presentation,
+            "application/vnd.apple.numbers": .spreadsheet,
+            "application/vnd.apple.pages": .document,
+            "application/vnd.ms-excel": .msSpreadsheet,
+            "application/vnd.ms-excel.addin.macroenabled.12": .msSpreadsheet,
+            "application/vnd.ms-excel.sheet.binary.macroenabled.12": .msSpreadsheet,
+            "application/vnd.ms-excel.sheet.macroenabled.12": .msSpreadsheet,
+            "application/vnd.ms-excel.template.macroenabled.12": .msSpreadsheet,
+            "application/vnd.ms-outlook": .email,
+            "application/vnd.ms-powerpoint": .msPresentation,
+            "application/vnd.ms-powerpoint.addin.macroenabled.12": .msPresentation,
+            "application/vnd.ms-powerpoint.presentation.macroenabled.12": .msPresentation,
+            "application/vnd.ms-powerpoint.slide.macroenabled.12": .msPresentation,
+            "application/vnd.ms-powerpoint.slideshow.macroenabled.12": .msPresentation,
+            "application/vnd.ms-powerpoint.template.macroenabled.12": .msPresentation,
+            "application/vnd.ms-project": .process,
+            "application/vnd.ms-word.document.macroenabled.12": .msDocument,
+            "application/vnd.ms-word.template.macroenabled.12": .msDocument,
+            "application/vnd.oasis.opendocument.chart": .generic,
             "application/vnd.oasis.opendocument.database": .database,
+            "application/vnd.oasis.opendocument.formula": .generic,
             "application/vnd.oasis.opendocument.graphics": .image,
             "application/vnd.oasis.opendocument.graphics-template": .image,
             "application/vnd.oasis.opendocument.image": .image,
-            "application/vnd.oasis.opendocument.spreadsheet": .spreadsheetsOther,
-            "application/vnd.oasis.opendocument.spreadsheet-template": .spreadsheetsOther,
-            "application/vnd.oasis.opendocument.text": .docsOther,
-            "application/vnd.oasis.opendocument.text-master": .docsOther,
-            "application/vnd.oasis.opendocument.text-template": .docsOther,
-            "application/vnd.openxmlformats-officedocument.presentationml.presentation": .msPowerpoint,
-            "application/vnd.openxmlformats-officedocument.presentationml.slideshow": .msPowerpoint,
-            "application/vnd.openxmlformats-officedocument.presentationml.template": .msPowerpoint,
-            "application/vnd.ms-powerpoint.presentation.macroenabled.12": .msPowerpoint,
-            "application/vnd.ms-powerpoint.slideshow.macroenabled.12": .msPowerpoint,
-            "application/vnd.ms-powerpoint.template.macroenabled.12": .msPowerpoint,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": .msExcel,
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.template": .msExcel,
-            "application/vnd.ms-excel.sheet.macroenabled.12": .msExcel,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": .msWord,
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.template": .msWord,
-            "application/vnd.stardivision.calc": .spreadsheetsOther,
-            "application/vnd.stardivision.impress": .presentationsOther,
-            "application/vnd.stardivision.writer": .docsOther,
-            "application/vnd.stardivision.writer-global": .docsOther,
-            "application/vnd.sun.xml.calc": .spreadsheetsOther,
-            "application/vnd.sun.xml.calc.template": .spreadsheetsOther,
-            "application/vnd.sun.xml.impress": .presentationsOther,
-            "application/vnd.sun.xml.impress.template": .presentationsOther,
-            "application/vnd.sun.xml.writer": .docsOther,
-            "application/vnd.sun.xml.writer.global": .docsOther,
-            "application/vnd.sun.xml.writer.template": .docsOther,
-            "application/x-flac": .audio,
-            "application/xhtml+xml": .web,
+            "application/vnd.oasis.opendocument.presentation": .presentation,
+            "application/vnd.oasis.opendocument.presentation-template": .presentation,
+            "application/vnd.oasis.opendocument.spreadsheet": .spreadsheet,
+            "application/vnd.oasis.opendocument.spreadsheet-template": .spreadsheet,
+            "application/vnd.oasis.opendocument.text": .document,
+            "application/vnd.oasis.opendocument.text-master": .document,
+            "application/vnd.oasis.opendocument.text-template": .document,
+            "application/vnd.oasis.opendocument.text-web": .document,
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation": .presentation,
+            "application/vnd.openxmlformats-officedocument.presentationml.slide": .presentation,
+            "application/vnd.openxmlformats-officedocument.presentationml.slideshow": .presentation,
+            "application/vnd.openxmlformats-officedocument.presentationml.template": .presentation,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": .spreadsheet,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.template": .spreadsheet,
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document": .document,
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.template": .document,
+            "application/vnd.stardivision.calc": .spreadsheet,
+            "application/vnd.stardivision.chart": .generic,
+            "application/vnd.stardivision.draw": .image,
+            "application/vnd.stardivision.impress": .presentation,
+            "application/vnd.stardivision.impress-packed": .presentation,
+            "application/vnd.stardivision.math": .generic,
+            "application/vnd.stardivision.writer": .document,
+            "application/vnd.stardivision.writer-global": .document,
+            "application/vnd.sun.xml.calc": .spreadsheet,
+            "application/vnd.sun.xml.calc.template": .spreadsheet,
+            "application/vnd.sun.xml.draw": .image,
+            "application/vnd.sun.xml.impress": .presentation,
+            "application/vnd.sun.xml.impress.template": .presentation,
+            "application/vnd.sun.xml.writer": .document,
+            "application/vnd.sun.xml.writer.template": .document,
+            "application/vnd.visio": .process,
+            "application/vnd.visio2013": .process,
+            "application/wordperfect": .document,
+            "application/x-bcpio": .arhive,
+            "application/x-compress": .arhive,
+            "application/x-cpio": .arhive,
+            "application/x-csh": .image,
+            "application/x-dosexec": .generic,
+            "application/x-dvi": .document,
+            "application/x-fla": .video,
+            "application/x-gtar": .arhive,
+            "application/x-gzip": .arhive,
+            "application/x-hdf": .arhive,
+            "application/x-indesign": .image,
+            "application/x-javascript": .code,
+            "application/x-latex": .document,
+            "application/x-mif": .document,
+            "application/x-netcdf": .document,
+            "application/x-rar-compressed": .arhive,
+            "application/x-sh": .code,
+            "application/x-shar": .arhive,
+            "application/x-shockwave-flash": .video,
+            "application/x-sv4cpio": .arhive,
+            "application/x-sv4crc": .arhive,
+            "application/x-tar": .arhive,
+            "application/x-tcl": .code,
+            "application/x-tex": .document,
+            "application/x-texinfo": .document,
+            "application/x-troff": .generic,
+            "application/x-troff-man": .generic,
+            "application/x-troff-me": .generic,
+            "application/x-troff-mes": .generic,
+            "application/x-ustar": .arhive,
+            "application/x-wais-source": .code,
+            "application/x-x509-ca-cert": .generic,
+            "application/x-zip": .arhive,
+            "application/xhtml+xml": .code,
             "application/zip": .arhive,
-            "audio/3gpp": .audio,
-            "audio/amr": .audio,
             "audio/basic": .audio,
-            "audio/midi": .audio,
-            "audio/mobile-xmf": .audio,
+            "audio/mp4": .audio,
             "audio/mpeg": .audio,
-            "audio/mpegurl": .audio,
-            "audio/prs.sid": .audio,
+            "audio/ogg": .audio,
+            "audio/vnd.adobe.soundbooth": .audio,
+            "audio/vorbis": .audio,
             "audio/x-aiff": .audio,
-            "audio/x-gsm": .audio,
-            "audio/x-mpegurl": .audio,
-            "audio/x-ms-wax": .audio,
+            "audio/x-flac": .audio,
             "audio/x-ms-wma": .audio,
-            "audio/x-pn-realaudio": .audio,
-            "audio/x-realaudio": .audio,
-            "audio/x-scpls": .audio,
-            "audio/x-sd2": .audio,
             "audio/x-wav": .audio,
             "image/bmp": .image,
+            "image/cgm": .image,
             "image/gif": .image,
-            "image/ico": .image,
             "image/ief": .image,
+            "image/jp2": .image,
             "image/jpeg": .image,
-            "image/pcx": .image,
             "image/png": .image,
             "image/svg+xml": .image,
             "image/tiff": .image,
             "image/vnd.adobe.photoshop": .image,
-            "image/vnd.djvu": .image,
-            "image/vnd.wap.wbmp": .image,
+            "image/vnd.adobe.premiere": .video,
+            "image/vnd.dwg": .generic,
             "image/x-cmu-raster": .image,
-            "image/x-coreldraw": .image,
-            "image/x-coreldrawpattern": .image,
-            "image/x-coreldrawtemplate": .image,
-            "image/x-corelphotopaint": .image,
-            "image/x-icon": .image,
-            "image/x-jg": .image,
-            "image/x-jng": .image,
-            "image/x-ms-bmp": .image,
-            "image/x-photoshop": .image,
+            "image/x-dwt": .generic,
             "image/x-portable-anymap": .image,
             "image/x-portable-bitmap": .image,
             "image/x-portable-graymap": .image,
             "image/x-portable-pixmap": .image,
+            "image/x-raw-adobe": .image,
+            "image/x-raw-canon": .image,
+            "image/x-raw-fuji": .image,
+            "image/x-raw-hasselblad": .image,
+            "image/x-raw-kodak": .image,
+            "image/x-raw-leica": .image,
+            "image/x-raw-minolta": .image,
+            "image/x-raw-nikon": .image,
+            "image/x-raw-olympus": .image,
+            "image/x-raw-panasonic": .image,
+            "image/x-raw-pentax": .image,
+            "image/x-raw-red": .image,
+            "image/x-raw-sigma": .image,
+            "image/x-raw-sony": .image,
             "image/x-rgb": .image,
             "image/x-xbitmap": .image,
             "image/x-xpixmap": .image,
             "image/x-xwindowdump": .image,
-            "text/comma-separated-values": .docsOther,
-            "text/html": .web,
-            "text/plain": .docsOther,
-            "text/richtext": .docsOther,
-            "text/rtf": .docsOther,
-            "text/tab-separated-values": .docsOther,
-            "text/text": .docsOther,
-            "text/xml": .docsOther,
+            "message/rfc822": .email,
+            "text/calendar": .generic,
+            "text/css": .code,
+            "text/csv": .spreadsheet,
+            "text/html": .code,
+            "text/mediawiki": .code,
+            "text/plain": .document,
+            "text/richtext": .document,
+            "text/sgml": .code,
+            "text/tab-separated-values": .spreadsheet,
+            "text/x-java-source": .code,
+            "text/x-jsp": .code,
+            "text/x-markdown": .code,
+            "text/x-setext": .generic,
+            "text/xml": .code,
             "video/3gpp": .video,
-            "video/dl": .video,
-            "video/dv": .video,
-            "video/fli": .video,
-            "video/m4v": .video,
+            "video/3gpp2": .video,
+            "video/mp2t": .video,
             "video/mp4": .video,
             "video/mpeg": .video,
+            "video/mpeg2": .video,
+            "video/ogg": .video,
             "video/quicktime": .video,
-            "video/vnd.mpegurl": .video,
-            "video/x-la-asf": .video,
-            "video/x-mng": .video,
+            "video/webm": .video,
+            "video/x-flv": .video,
+            "video/x-m4v": .video,
             "video/x-ms-asf": .video,
-            "video/x-ms-wm": .video,
             "video/x-ms-wmv": .video,
-            "video/x-ms-wmx": .video,
-            "video/x-ms-wvx": .video,
             "video/x-msvideo": .video,
+            "video/x-rad-screenplay": .video,
             "video/x-sgi-movie": .video,
-            "video/x-webex": .video,
+            "x-world/x-vrml": .generic,
             "cm:folder": .folder,
             "cm:site": .site
         ]
@@ -180,13 +254,13 @@ class FileIcon {
 
     static func icon(for mimetype: String?) -> UIImage? {
         guard let mimetype = mimetype else {
-            return UIImage(named: IconType.other.rawValue)
+            return UIImage(named: IconType.generic.rawValue)
         }
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
         } else {
             print(mimetype)
         }
-        return UIImage(named: IconType.other.rawValue)
+        return UIImage(named: IconType.generic.rawValue)
     }
 }

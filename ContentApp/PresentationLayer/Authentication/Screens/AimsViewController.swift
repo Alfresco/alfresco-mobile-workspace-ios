@@ -21,8 +21,8 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class AimsViewController: SystemThemableViewController {
 
@@ -33,7 +33,7 @@ class AimsViewController: SystemThemableViewController {
     @IBOutlet weak var allowLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    @IBOutlet weak var repositoryTextField: MDCFilledTextField!
+    @IBOutlet weak var repositoryTextField: MDCOutlinedTextField!
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
@@ -105,17 +105,23 @@ class AimsViewController: SystemThemableViewController {
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        signInButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.isUppercaseTitle = false
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
-        repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
         productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
-        hostnameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
-        allowLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        allowLabel.applyStyleBody2OnSurface60(theme: currentTheme)
+
+        hostnameLabel.textColor = currentTheme.onSurfaceColor
+        hostnameLabel.font = currentTheme.body1TextStyle.font
+        hostnameLabel.add(characterSpacing: currentTheme.body1TextStyle.letterSpacing, lineHeight: 1.0)
+
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
 
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }

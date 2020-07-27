@@ -37,6 +37,7 @@ class ListViewController: SystemThemableViewController {
     var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
+    private var didChangedChipFilter = false
 
     // MARK: - View Life Cycle
 
@@ -255,6 +256,7 @@ extension ListViewController: ResultScreenDelegate {
         rvc.startLoading()
         rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
         searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+        didChangedChipFilter = true
     }
 
     func recentSearchTapped(string: String) {
@@ -284,6 +286,14 @@ extension ListViewController: ResultScreenDelegate {
 extension ListViewController: SearchViewModelDelegate {
     func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+
+        if didChangedChipFilter && pagination?.skipCount != 0 {
+            didChangedChipFilter = false
+            rvc.stopLoading()
+            return
+        }
+
+        didChangedChipFilter = false
         rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
     }
 }

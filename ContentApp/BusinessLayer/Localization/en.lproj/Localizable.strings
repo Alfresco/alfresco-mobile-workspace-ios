@@ -21,8 +21,8 @@
 
 // MARK: - Buttons
 "connectButton" = "Connect";
-"advancedSettingButton" = "Advanced Settings";
-"needHelpButton" = "Need Help";
+"advancedSettingButton" = "Advanced settings";
+"needHelpButton" = "Need help?";
 "resetToDefaultButton" = "Reset to Default";
 "saveButton" = "Save";
 "signin" = "Sign in";

@@ -126,6 +126,11 @@ PODS:
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
     - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle"
+  - "MaterialComponents/private/TextControlsPrivate+OutlinedStyle (110.2.0)":
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Availability
+    - MaterialComponents/private/Math
+    - "MaterialComponents/private/TextControlsPrivate+Shared"
   - "MaterialComponents/private/TextControlsPrivate+Shared (110.2.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/private/Math
@@ -195,6 +200,13 @@ PODS:
   - "MaterialComponents/TextControls+FilledTextFieldsTheming (110.2.0)":
     - MaterialComponents/schemes/Container
     - "MaterialComponents/TextControls+FilledTextFields"
+  - "MaterialComponents/TextControls+OutlinedTextFields (110.2.0)":
+    - MaterialComponents/Availability
+    - "MaterialComponents/private/TextControlsPrivate+OutlinedStyle"
+    - "MaterialComponents/TextControls+BaseTextFields"
+  - "MaterialComponents/TextControls+OutlinedTextFieldsTheming (110.2.0)":
+    - MaterialComponents/schemes/Container
+    - "MaterialComponents/TextControls+OutlinedTextFields"
   - MaterialComponents/TextFields (110.2.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Buttons
@@ -230,6 +242,8 @@ DEPENDENCIES:
   - MaterialComponents/Snackbar
   - "MaterialComponents/TextControls+FilledTextFields"
   - "MaterialComponents/TextControls+FilledTextFieldsTheming"
+  - "MaterialComponents/TextControls+OutlinedTextFields"
+  - "MaterialComponents/TextControls+OutlinedTextFieldsTheming"
   - SwiftLint
 
 SPEC REPOS:
@@ -262,6 +276,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 68eb5a6ca6c0899f3390b3696f39703ea267d3e7
+PODFILE CHECKSUM: 21e2f7903ba943bdb17e1b46925bffbb5e78a7c2
 
 COCOAPODS: 1.9.3
