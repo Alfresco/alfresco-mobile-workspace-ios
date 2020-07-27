@@ -45,7 +45,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
         containerScheme.colorScheme.onPrimaryColor = theme.primaryOnColor
-        containerScheme.typographyScheme.button = theme.headline5TextStyle.font
+        containerScheme.typographyScheme.button = theme.subtitle2TextStyle.font
 
         return containerScheme
     }
@@ -53,15 +53,15 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
     private func loginAdvancedSettingsButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
-        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
+        containerScheme.typographyScheme.button = theme.body2TextStyle.font
 
         return containerScheme
     }
 
     private func loginNeedHelpButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
-        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
+        containerScheme.colorScheme.primaryColor = theme.onBackgroundColor.withAlphaComponent(0.6)
+        containerScheme.typographyScheme.button = theme.body2TextStyle.font
 
         return containerScheme
     }
