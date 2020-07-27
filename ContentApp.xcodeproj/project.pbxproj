@@ -137,6 +137,8 @@
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
 		E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */; };
 		E3E2BDA024CC27F200D8A7EC /* MyLibrariesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */; };
+		E3E2BDA224CC280100D8A7EC /* SharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */; };
+		E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */; };
 		E3E9ED3924CB00D200F1A2C2 /* ResultsNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */; };
 		E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */; };
 		E3E9ED3D24CB056300F1A2C2 /* SitesNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED3C24CB056300F1A2C2 /* SitesNodeMapper.swift */; };
@@ -310,6 +312,8 @@
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibrariesViewModel.swift; sourceTree = "<group>"; };
+		E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViewModel.swift; sourceTree = "<group>"; };
+		E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedLinkMapper.swift; sourceTree = "<group>"; };
 		E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsNodeMapper.swift; sourceTree = "<group>"; };
 		E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesNodeMapper.swift; sourceTree = "<group>"; };
 		E3E9ED3C24CB056300F1A2C2 /* SitesNodeMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SitesNodeMapper.swift; sourceTree = "<group>"; };
@@ -742,6 +746,7 @@
 				E3E9ED4424CB25FF00F1A2C2 /* BrowseViewModel.swift */,
 				E3E9ED4C24CB3C6A00F1A2C2 /* PersonalFilesViewModel.swift */,
 				E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */,
+				E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -756,6 +761,7 @@
 				E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */,
 				E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */,
 				E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */,
+				E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1172,6 +1178,7 @@
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
 				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
 				B936A14424BDBE04003C9A95 /* ListViewModelProtocol.swift in Sources */,
+				E3E2BDA224CC280100D8A7EC /* SharedViewModel.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
 				E3E9ED3D24CB056300F1A2C2 /* SitesNodeMapper.swift in Sources */,
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
@@ -1192,6 +1199,7 @@
 				E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
+				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
 				B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */,
 				B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */,
