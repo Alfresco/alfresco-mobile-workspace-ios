@@ -18,11 +18,11 @@
 
 import UIKit
 
-class StaticFolderScreenCoordinator: Coordinator {
+class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
     private var browseNode: BrowseNode
-    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
+    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -62,10 +62,10 @@ class StaticFolderScreenCoordinator: Coordinator {
     }
 }
 
-extension StaticFolderScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
+extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
     func showScreen(from node: ListNode) {
-        let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: self.presenter, listNode: node)
-        folderChildrenScreenCoodrinator.start()
-        self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+        let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+        folderDrillDownCoordinatorDelegate.start()
+        self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
     }
 }

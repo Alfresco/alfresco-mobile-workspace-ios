@@ -804,25 +804,25 @@
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="50" height="16"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BrowseStaticNodeCollectionViewCell" id="U5u-B1-02v" customClass="BrowseStaticNodeCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="16" width="414" height="48"/>
+                                        <rect key="frame" x="0.0" y="26" width="414" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="n1g-Gc-ntq">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wgL-4H-rRu">
-                                                    <rect key="frame" x="26" y="11.5" width="25" height="25"/>
+                                                    <rect key="frame" x="24" y="12" width="24" height="24"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="25" id="DtA-zC-lf2"/>
-                                                        <constraint firstAttribute="height" constant="25" id="SyE-cz-q0L"/>
+                                                        <constraint firstAttribute="width" constant="24" id="DtA-zC-lf2"/>
+                                                        <constraint firstAttribute="height" constant="24" id="SyE-cz-q0L"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ajZ-Il-tUC">
-                                                    <rect key="frame" x="77" y="14" width="42" height="20.5"/>
+                                                    <rect key="frame" x="72" y="14" width="42" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -831,10 +831,10 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="wgL-4H-rRu" firstAttribute="centerY" secondItem="n1g-Gc-ntq" secondAttribute="centerY" id="EdD-8p-d8A"/>
-                                                <constraint firstItem="wgL-4H-rRu" firstAttribute="leading" secondItem="n1g-Gc-ntq" secondAttribute="leading" constant="26" id="GFQ-MH-ZMJ"/>
+                                                <constraint firstItem="wgL-4H-rRu" firstAttribute="leading" secondItem="n1g-Gc-ntq" secondAttribute="leading" constant="24" id="GFQ-MH-ZMJ"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ajZ-Il-tUC" secondAttribute="trailing" constant="20" symbolic="YES" id="Ne0-cf-r2h"/>
-                                                <constraint firstItem="ajZ-Il-tUC" firstAttribute="centerY" secondItem="n1g-Gc-ntq" secondAttribute="centerY" id="PIQ-EB-H3i"/>
-                                                <constraint firstItem="ajZ-Il-tUC" firstAttribute="leading" secondItem="wgL-4H-rRu" secondAttribute="trailing" constant="26" id="sKd-0w-095"/>
+                                                <constraint firstItem="ajZ-Il-tUC" firstAttribute="centerY" secondItem="wgL-4H-rRu" secondAttribute="centerY" id="rc2-tg-kLg"/>
+                                                <constraint firstItem="ajZ-Il-tUC" firstAttribute="leading" secondItem="wgL-4H-rRu" secondAttribute="trailing" constant="24" id="sKd-0w-095"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="414" height="48"/>
@@ -871,7 +871,7 @@
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="bhL-UI-qAR" firstAttribute="top" secondItem="M3n-ep-kjQ" secondAttribute="top" id="6zI-6u-flE"/>
                             <constraint firstItem="bhL-UI-qAR" firstAttribute="leading" secondItem="M3n-ep-kjQ" secondAttribute="leading" id="Bbp-sa-uAI"/>

@@ -26,7 +26,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var browseViewController: BrowseViewController?
     private var navigationViewController: UINavigationController?
-    private var staticFolderScreenCoordinator: StaticFolderScreenCoordinator?
+    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -52,9 +52,9 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
     func showScreen(from browseNode: BrowseNode) {
         if let navigationViewController = self.navigationViewController {
-            let staticFolderScreenCoordinator = StaticFolderScreenCoordinator(with: navigationViewController, browseNode: browseNode)
+            let staticFolderScreenCoordinator = BrowseTopLevelFolderScreenCoordinator(with: navigationViewController, browseNode: browseNode)
             staticFolderScreenCoordinator.start()
-            self.staticFolderScreenCoordinator = staticFolderScreenCoordinator
+            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
     }
 }

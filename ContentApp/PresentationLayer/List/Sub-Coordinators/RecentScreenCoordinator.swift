@@ -23,7 +23,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
-    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
+    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -57,9 +57,9 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 extension RecentScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
     func showScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
-            let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: navigationViewController, listNode: node)
-            folderChildrenScreenCoodrinator.start()
-            self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+            let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+            folderDrillDownCoordinatorDelegate.start()
+            self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
         }
     }
 }

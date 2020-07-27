@@ -128,7 +128,7 @@
 		E3ADD05C249279D8006DF519 /* SettingsItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */; };
 		E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05D24927A8E006DF519 /* SettingsItem.swift */; };
 		E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05F24927B35006DF519 /* SettingsViewModel.swift */; };
-		E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoodrinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoodrinator.swift */; };
+		E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */; };
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
@@ -150,7 +150,7 @@
 		E3E9ED4524CB25FF00F1A2C2 /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4424CB25FF00F1A2C2 /* BrowseViewModel.swift */; };
 		E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */; };
 		E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4824CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift */; };
-		E3E9ED4B24CB360B00F1A2C2 /* StaticFolderScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4A24CB360B00F1A2C2 /* StaticFolderScreenCoordinator.swift */; };
+		E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */; };
 		E3E9ED4D24CB3C6A00F1A2C2 /* PersonalFilesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4C24CB3C6A00F1A2C2 /* PersonalFilesViewModel.swift */; };
 		E3E9ED4F24CB3E4800F1A2C2 /* NodeChildMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */; };
 		E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
@@ -305,7 +305,7 @@
 		E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTableViewCell.swift; sourceTree = "<group>"; };
 		E3ADD05D24927A8E006DF519 /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		E3ADD05F24927B35006DF519 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoodrinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderChildrenScreenCoodrinator.swift; sourceTree = "<group>"; };
+		E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 		E3E9ED4424CB25FF00F1A2C2 /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
 		E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseNode.swift; sourceTree = "<group>"; };
 		E3E9ED4824CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseSectionCollectionReusableView.swift; sourceTree = "<group>"; };
-		E3E9ED4A24CB360B00F1A2C2 /* StaticFolderScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticFolderScreenCoordinator.swift; sourceTree = "<group>"; };
+		E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTopLevelFolderScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3E9ED4C24CB3C6A00F1A2C2 /* PersonalFilesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalFilesViewModel.swift; sourceTree = "<group>"; };
 		E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeChildMapper.swift; sourceTree = "<group>"; };
 		E3EC133724A4C7930068E3C7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -816,8 +816,8 @@
 				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
 				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 				E3E9ED3E24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift */,
-				E3E9ED4A24CB360B00F1A2C2 /* StaticFolderScreenCoordinator.swift */,
-				E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoodrinator.swift */,
+				E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */,
+				E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -1205,7 +1205,7 @@
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */,
-				E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoodrinator.swift in Sources */,
+				E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
 				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
@@ -1218,7 +1218,7 @@
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* PersonalFilesViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
-				E3E9ED4B24CB360B00F1A2C2 /* StaticFolderScreenCoordinator.swift in Sources */,
+				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
 				B9FC629D24C6C90600246606 /* UICollectionView+ItemIndex.swift in Sources */,
 				E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */,
 				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,

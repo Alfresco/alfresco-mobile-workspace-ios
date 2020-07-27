@@ -22,11 +22,11 @@ protocol FolderDrilDownScreenCoodrinatorDelegate: class {
     func showScreen(from node: ListNode)
 }
 
-class FolderChildrenScreenCoodrinator: Coordinator {
+class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
     private var listNode: ListNode
-    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
+    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -56,10 +56,10 @@ class FolderChildrenScreenCoodrinator: Coordinator {
     }
 }
 
-extension FolderChildrenScreenCoodrinator: FolderDrilDownScreenCoodrinatorDelegate {
+extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
     func showScreen(from node: ListNode) {
-        let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: self.presenter, listNode: node)
-        folderChildrenScreenCoodrinator.start()
-        self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+        let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+        folderDrillDownCoordinatorDelegate.start()
+        self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
     }
 }

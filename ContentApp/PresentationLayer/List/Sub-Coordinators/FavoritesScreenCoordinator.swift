@@ -23,7 +23,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var favoritesViewController: ListViewController?
     private var navigationViewController: UINavigationController?
-    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
+    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -59,9 +59,9 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 extension FavoritesScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
     func showScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
-            let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: navigationViewController, listNode: node)
-            folderChildrenScreenCoodrinator.start()
-            self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+            let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+            folderDrillDownCoordinatorDelegate.start()
+            self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
         }
     }
 }
