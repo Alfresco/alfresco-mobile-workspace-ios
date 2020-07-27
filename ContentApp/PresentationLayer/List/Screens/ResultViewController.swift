@@ -341,9 +341,8 @@ extension ResultViewController: ResultsViewModelDelegate {
         }
 
         // If loading the first page or missing pagination scroll to top
-        let indexPathZero = IndexPath(row: 0, section: 0)
-        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && resultsListCollectionView.cellForItem(at: indexPathZero) != nil {
-            resultsListCollectionView.scrollToItem(at: indexPathZero, at: .top, animated: false)
+        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !resultsViewModel.results.isEmpty {
+            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }
 }
