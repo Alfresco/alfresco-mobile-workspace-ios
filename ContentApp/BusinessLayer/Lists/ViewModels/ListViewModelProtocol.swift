@@ -32,6 +32,7 @@ protocol ListViewModelProtocol {
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
     func reloadRequest()
     func shouldDisplaySections() -> Bool
+    func shouldDisplaySettingsButton() -> Bool
 }
 
 protocol ListViewModelDelegate: class {
