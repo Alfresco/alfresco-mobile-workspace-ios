@@ -23,6 +23,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
+    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -32,6 +33,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.folderDrilDownScreenCoodrinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
         viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
@@ -49,5 +51,15 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
     func popToRoot() {
 
+    }
+}
+
+extension RecentScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
+    func showScreen(from node: ListNode) {
+        if let navigationViewController = self.navigationViewController {
+            let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: navigationViewController, listNode: node)
+            folderChildrenScreenCoodrinator.start()
+            self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+        }
     }
 }

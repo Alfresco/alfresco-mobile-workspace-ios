@@ -26,6 +26,7 @@ enum ElementKindType {
 }
 
 struct ListNode {
+    var guid: String
     var title: String
     var icon: String
     var path: String

@@ -31,6 +31,7 @@ class ListViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    weak var folderDrilDownScreenCoodrinatorDelegate: FolderDrilDownScreenCoodrinatorDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
     var loadFirstRequest: Bool = true
@@ -113,6 +114,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSettingsButton() {
+        guard listViewModel?.shouldDisplaySettingsButton() == true else { return }
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
@@ -133,6 +135,7 @@ class ListViewController: SystemThemableViewController {
         let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
         rvc?.themingService = themingService
         rvc?.resultScreenDelegate = self
+        rvc?.folderDrilDownScreenCoodrinatorDelegate = self.folderDrilDownScreenCoodrinatorDelegate
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -234,6 +237,13 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
         } else {
             return CGSize(width: self.view.bounds.width, height: 0)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return }
+        if node.kind == .folder || node.kind == .site {
+            folderDrilDownScreenCoodrinatorDelegate?.showScreen(from: node)
         }
     }
 }

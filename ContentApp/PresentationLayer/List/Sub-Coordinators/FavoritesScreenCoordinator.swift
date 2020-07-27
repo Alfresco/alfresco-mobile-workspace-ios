@@ -23,6 +23,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var favoritesViewController: ListViewController?
     private var navigationViewController: UINavigationController?
+    private var folderChildrenScreenCoodrinator: FolderChildrenScreenCoodrinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -32,6 +33,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.folderDrilDownScreenCoodrinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
 //        favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
@@ -51,5 +53,15 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
     func popToRoot() {
 
+    }
+}
+
+extension FavoritesScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
+    func showScreen(from node: ListNode) {
+        if let navigationViewController = self.navigationViewController {
+            let folderChildrenScreenCoodrinator = FolderChildrenScreenCoodrinator(with: navigationViewController, listNode: node)
+            folderChildrenScreenCoodrinator.start()
+            self.folderChildrenScreenCoodrinator = folderChildrenScreenCoodrinator
+        }
     }
 }
