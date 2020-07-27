@@ -28,7 +28,15 @@ struct SitesNodeMapper {
         return nodes
     }
 
+    static func map(_ entries: [SiteRoleEntry]) -> [ListNode] {
+        var nodes: [ListNode] = []
+        for entry in entries {
+            nodes.append(self.create(from: entry.entry.site))
+        }
+        return nodes
+    }
+
     private static func create(from node: Site) -> ListNode {
-        return ListNode(title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
+        return ListNode(guid: node.guid, title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
     }
 }
