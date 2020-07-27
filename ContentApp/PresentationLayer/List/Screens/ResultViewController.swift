@@ -111,6 +111,7 @@ class ResultViewController: SystemThemableViewController {
 
     func startLoading() {
         resultsListCollectionView.isUserInteractionEnabled = false
+        resultsListCollectionView.setContentOffset(resultsListCollectionView.contentOffset, animated: false)
         activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
     }
@@ -326,13 +327,16 @@ extension ResultViewController: PageFetchableDelegate {
 
 extension ResultViewController: ResultsViewModelDelegate {
     func didUpdateResultsList(error: Error?, pagination: Pagination?) {
-        stopLoading()
-
         emptyListView.isHidden = !resultsViewModel.results.isEmpty
         resultsListCollectionView.isHidden = resultsViewModel.results.isEmpty
 
         if error == nil {
             resultsListCollectionView.reloadData()
+            resultsListCollectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.stopLoading()
+            })
+
             recentSearchesView.isHidden = (pagination == nil) ? false : true
         }
 
