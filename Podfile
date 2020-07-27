@@ -16,6 +16,8 @@ target 'ContentApp' do
   pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', :inhibit_warnings => true
+  pod 'MaterialComponents/TextControls+OutlinedTextFields', :inhibit_warnings => true
+  pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming', :inhibit_warnings => true
   pod 'MaterialComponents/BottomSheet', :inhibit_warnings => true
   pod 'MaterialComponents/ActivityIndicator', :inhibit_warnings => true
   pod 'MaterialComponents/Snackbar', :inhibit_warnings => true
