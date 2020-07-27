@@ -27,7 +27,7 @@ class PersonalFileViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     weak var viewModelDelegate: ListViewModelDelegate?
-    var nodeID: String = kAPIPathMy
+    var node: ListNode?
 
     // MARK: - Init
 
@@ -57,9 +57,15 @@ class PersonalFileViewModel: ListViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            var nodeID = kAPIPathMy
+            var relativePath: String?
+            if let node = sSelf.node {
+                nodeID = node.guid
+                relativePath = (node.kind == .site) ? kAPIPathRelativeForSites : nil
+            }
 
-            NodesAPI.listNodeChildren(nodeId: sSelf.nodeID, skipCount: 0, maxItems: 25, orderBy: nil,
-                                      _where: nil, include: nil, relativePath: nil, includeSource: nil, fields: nil) { (result, error) in
+            NodesAPI.listNodeChildren(nodeId: nodeID, skipCount: 0, maxItems: 25, orderBy: nil,
+                                      _where: nil, include: nil, relativePath: relativePath, includeSource: nil, fields: nil) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.groupedLists.append(GroupedList(type: .none, list: NodeChildMapper.map(entries)))
                     DispatchQueue.main.async {

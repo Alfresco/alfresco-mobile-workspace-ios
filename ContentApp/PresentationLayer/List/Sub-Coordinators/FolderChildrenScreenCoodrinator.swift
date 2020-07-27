@@ -45,7 +45,7 @@ class FolderChildrenScreenCoodrinator: Coordinator {
 
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-            listViewModel.nodeID = sSelf.listNode.guid
+            listViewModel.node = sSelf.listNode
             viewController.listViewModel = listViewModel
             viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
             sSelf.listViewController = viewController
