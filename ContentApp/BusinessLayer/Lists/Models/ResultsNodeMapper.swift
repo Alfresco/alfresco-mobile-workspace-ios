@@ -36,7 +36,6 @@ struct ResultsNodeMapper {
             icon = node.nodeType
             kind = .folder
         }
-        return ListNode(title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
+        return ListNode(guid: node._id, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
     }
 }
-

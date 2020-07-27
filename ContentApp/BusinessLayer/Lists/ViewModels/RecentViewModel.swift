@@ -71,6 +71,10 @@ class RecentViewModel: ListViewModelProtocol {
         return true
     }
 
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
     // MARK: - Private methods
 
     private func emptyGroupedLists() -> [GroupedList] {
