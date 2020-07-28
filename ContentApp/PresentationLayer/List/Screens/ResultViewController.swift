@@ -319,7 +319,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             }
         }
 
-        return CGSize(width: self.view.bounds.width, height: 0)
+        return CGSize(width: 0, height: 0)
     }
 }
 
