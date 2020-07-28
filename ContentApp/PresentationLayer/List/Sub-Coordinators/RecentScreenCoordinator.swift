@@ -23,6 +23,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -32,6 +33,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        viewController.folderDrilDownScreenCoordinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
         viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
@@ -43,11 +45,21 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         self.recentViewController = viewController
     }
 
-    func scrollToTop() {
-        recentViewController?.scrollToTop()
+    func scrollToTopOrPopToRoot() {
+        if navigationViewController?.viewControllers.count == 1 {
+            recentViewController?.scrollToTop()
+        } else {
+            navigationViewController?.popToRootViewController(animated: true)
+        }
     }
+}
 
-    func popToRoot() {
-
+extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+    func showScreen(from node: ListNode) {
+        if let navigationViewController = self.navigationViewController {
+            let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+            folderDrillDownCoordinatorDelegate.start()
+            self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
+        }
     }
 }

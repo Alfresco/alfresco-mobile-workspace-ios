@@ -41,11 +41,15 @@ class FavoritesViewModel: ListViewModelProtocol {
 
     func reloadRequest() {
         groupedLists = emptyGroupedLists()
-        favoritesList()
+        favoritesRequest()
     }
 
     func shouldDisplaySections() -> Bool {
         return false
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
     }
 
     // MARK: - Private methods
@@ -54,7 +58,7 @@ class FavoritesViewModel: ListViewModelProtocol {
         return []
     }
 
-    private func favoritesList() {
+    private func favoritesRequest() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()

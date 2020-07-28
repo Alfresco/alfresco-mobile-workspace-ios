@@ -21,8 +21,8 @@
 
 // MARK: - Buttons
 "connectButton" = "Connect";
-"advancedSettingButton" = "Advanced Settings";
-"needHelpButton" = "Need Help";
+"advancedSettingButton" = "Advanced settings";
+"needHelpButton" = "Need help?";
 "resetToDefaultButton" = "Reset to Default";
 "saveButton" = "Save";
 "signin" = "Sign in";
@@ -102,3 +102,10 @@
 "lastWeek" = "Last Week";
 "thisMonth" = "This Month";
 "older" = "Older";
+
+// MARK: - Browse Static List
+
+"browse-personalFiles" = "Personal files";
+"browse-myLibraries" = "My libraries";
+"browse-shared" = "Shared";
+"browse-trash" = "Trash";

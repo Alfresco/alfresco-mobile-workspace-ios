@@ -55,7 +55,12 @@ class ResultsViewModel {
     func addNewResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
-            self.results.append(contentsOf: results)
+
+            if let skipCount = pagination?.skipCount {
+                if skipCount >= Int64(results.count) {
+                    self.results.append(contentsOf: results)
+                }
+            }
 
             if let pagination = pagination {
                 shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true

@@ -53,6 +53,18 @@ extension UILabel {
         self.add(characterSpacing: theme.body1TextStyle.letterSpacing, lineHeight: theme.body1TextStyle.lineHeight)
     }
 
+    func applyStyleBody2OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
+        self.font = theme.body2TextStyle.font
+        self.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
+    }
+
+    func applyStyleBody2OnSurface60(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.font = theme.body2TextStyle.font
+        self.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
+    }
+
     func applyStyleSubtitle2OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
         self.font = theme.subtitle2TextStyle.font

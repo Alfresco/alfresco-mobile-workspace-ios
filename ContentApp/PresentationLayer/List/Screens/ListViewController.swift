@@ -31,11 +31,13 @@ class ListViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
     var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
+    private var didChangedChipFilter = false
 
     // MARK: - View Life Cycle
 
@@ -85,9 +87,6 @@ class ListViewController: SystemThemableViewController {
 
     // MARK: - Coordinator Public Methods
 
-    func popToRoot() {
-    }
-
     func scrollToTop() {
         self.scrollToSection(0)
     }
@@ -113,6 +112,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSettingsButton() {
+        guard listViewModel?.shouldDisplaySettingsButton() == true else { return }
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
@@ -133,6 +133,7 @@ class ListViewController: SystemThemableViewController {
         let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
         rvc?.themingService = themingService
         rvc?.resultScreenDelegate = self
+        rvc?.folderDrilDownScreenCoordinatorDelegate = self.folderDrilDownScreenCoordinatorDelegate
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -236,6 +237,13 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return CGSize(width: self.view.bounds.width, height: 0)
         }
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return }
+        if node.kind == .folder || node.kind == .site {
+            folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
+        }
+    }
 }
 
 // MARK: - Result Screen Delegate
@@ -248,6 +256,7 @@ extension ListViewController: ResultScreenDelegate {
         rvc.startLoading()
         rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
         searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+        didChangedChipFilter = true
     }
 
     func recentSearchTapped(string: String) {
@@ -277,6 +286,14 @@ extension ListViewController: ResultScreenDelegate {
 extension ListViewController: SearchViewModelDelegate {
     func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+
+        if didChangedChipFilter && pagination?.skipCount != 0 {
+            didChangedChipFilter = false
+            rvc.stopLoading()
+            return
+        }
+
+        didChangedChipFilter = false
         rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
     }
 }

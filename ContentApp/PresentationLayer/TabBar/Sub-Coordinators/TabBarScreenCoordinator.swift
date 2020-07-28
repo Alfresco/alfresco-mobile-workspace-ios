@@ -21,9 +21,9 @@ import UIKit
 protocol TabBarScreenCoordinatorDelegate: class {
     func showRecentScreen()
     func showFavoritesScreen()
+    func showBrowseScreen()
     func showSettingsScreen()
-    func scrollToTop(forScreen item: Int)
-    func popToRoot(forSceen item: Int)
+    func scrollToTopOrPopToRoot(forScreen item: Int)
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -31,6 +31,7 @@ class TabBarScreenCoordinator: Coordinator {
     private var tabBarMainViewController: TabBarMainViewController?
     private var recentCoordinator: RecentScreenCoordinator?
     private var favoritesCoordinator: FavoritesScreenCoordinator?
+    private var browseCoordinator: BrowseScreenCoordinator?
     private var settingsCoordinator: SettingsScreenCoordinator?
 
     init(with presenter: UINavigationController) {
@@ -55,6 +56,7 @@ class TabBarScreenCoordinator: Coordinator {
             let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
                                                 image: UIImage(named: "browse-unselected"),
                                                 selectedImage: UIImage(named: "browse-selected"))
+            browseTabBarItem.tag = 2
             viewController.tabs = [recentTabBarItem, favoritesTabBarItem, browseTabBarItem]
 
             viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
@@ -95,19 +97,21 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
         }
     }
 
-    func scrollToTop(forScreen item: Int) {
-        switch item {
-        case 0: //Recents
-            recentCoordinator?.scrollToTop()
-        default:
-            break
+    func showBrowseScreen() {
+        if let tabBarMainViewController = self.tabBarMainViewController {
+            browseCoordinator = BrowseScreenCoordinator(with: tabBarMainViewController)
+            browseCoordinator?.start()
         }
     }
 
-    func popToRoot(forSceen item: Int) {
+    func scrollToTopOrPopToRoot(forScreen item: Int) {
         switch item {
         case 0: //Recents
-            recentCoordinator?.popToRoot()
+            recentCoordinator?.scrollToTopOrPopToRoot()
+        case 1: //Favorites
+            favoritesCoordinator?.scrollToTopOrPopToRoot()
+        case 2: //Browse
+            browseCoordinator?.scrollToTopOrPopToRoot()
         default:
             break
         }

@@ -117,4 +117,11 @@ struct LocalizationConstants {
         static let thisMonth = NSLocalizedString("thisMonth", comment: "")
         static let older = NSLocalizedString("older", comment: "")
     }
+
+    struct BrowseStaticList {
+        static let personalFiles = NSLocalizedString("browse-personalFiles", comment: "")
+        static let myLibraries = NSLocalizedString("browse-myLibraries", comment: "")
+        static let shared = NSLocalizedString("browse-shared", comment: "")
+        static let trash = NSLocalizedString("browse-trash", comment: "")
+    }
 }

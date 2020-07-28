@@ -36,16 +36,16 @@ struct FavoritesNodeMapper {
 
     private static func create(from node: FavoriteTargetNode) -> ListNode {
         let path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
-        var icon = node.content?.mimeType ?? "ic-other"
+        var icon = node.content?.mimeType
         var kind = ElementKindType.file
         if node.isFolder {
             icon = "cm:folder"
             kind = .folder
         }
-        return ListNode(title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
+        return ListNode(guid: node._id, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
     }
 
     private static func create(from node: Site) -> ListNode {
-        return ListNode(title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
+        return ListNode(guid: node.guid, title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
     }
 }

@@ -19,15 +19,16 @@
 import Foundation
 import AlfrescoContentServices
 
-enum ElementKindType {
-    case file
-    case folder
-    case site
+enum ElementKindType: String {
+    case file = "file"
+    case folder = "folder"
+    case site = "library"
 }
 
 struct ListNode {
+    var guid: String
     var title: String
-    var icon: String
+    var icon: String?
     var path: String
     var modifiedAt: Date?
     var kind: ElementKindType

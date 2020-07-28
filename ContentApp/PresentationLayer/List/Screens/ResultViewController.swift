@@ -47,6 +47,8 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
     weak var resultScreenDelegate: ResultScreenDelegate?
+    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+
     var activityIndicator: ActivityIndicatorView?
 
     var resultsViewModel = ResultsViewModel()
@@ -110,11 +112,14 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = false
+        resultsListCollectionView.setContentOffset(resultsListCollectionView.contentOffset, animated: false)
         activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
     }
 
     func stopLoading() {
+        resultsListCollectionView.isUserInteractionEnabled = true
         activityIndicatorSuperview.isHidden = true
         activityIndicator?.state = .isIdle
     }
@@ -243,7 +248,11 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
         case resultsListCollectionView:
-            resultScreenDelegate?.elementListTapped(elementList: resultsViewModel.results[indexPath.row])
+            let node = resultsViewModel.results[indexPath.row]
+            if node.kind == .folder || node.kind == .site {
+                folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
+            }
+            resultScreenDelegate?.elementListTapped(elementList: node)
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             chip.selected = true
@@ -324,18 +333,21 @@ extension ResultViewController: PageFetchableDelegate {
 
 extension ResultViewController: ResultsViewModelDelegate {
     func didUpdateResultsList(error: Error?, pagination: Pagination?) {
-        stopLoading()
-
         emptyListView.isHidden = !resultsViewModel.results.isEmpty
         resultsListCollectionView.isHidden = resultsViewModel.results.isEmpty
 
         if error == nil {
             resultsListCollectionView.reloadData()
+            resultsListCollectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.stopLoading()
+            })
+
             recentSearchesView.isHidden = (pagination == nil) ? false : true
         }
 
         // If loading the first page or missing pagination scroll to top
-        if (pagination?.skipCount == 0 || pagination == nil) && error == nil {
+        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !resultsViewModel.results.isEmpty {
             resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         }
     }

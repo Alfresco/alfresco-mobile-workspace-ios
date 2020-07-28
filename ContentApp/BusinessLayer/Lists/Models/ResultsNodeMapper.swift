@@ -30,13 +30,12 @@ struct ResultsNodeMapper {
 
     private static func create(from node: ResultNode) -> ListNode {
         let path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
-        var icon = node.content?.mimeType ?? "ic-other"
+        var icon = node.content?.mimeType
         var kind = ElementKindType.file
         if node.isFolder {
             icon = node.nodeType
             kind = .folder
         }
-        return ListNode(title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
+        return ListNode(guid: node._id, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
     }
 }
-
