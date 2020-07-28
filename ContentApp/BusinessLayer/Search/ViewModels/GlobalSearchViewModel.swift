@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContentServices
 
 class GlobalSearchViewModel: SearchViewModelProtocol {
-    var resultsList: [ListElementProtocol] = []
+    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
 
@@ -145,12 +145,12 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
-                var listSites: [ListSite]?
+
                 if let entries = results?.list.entries {
-                    listSites = ListSite.sites(entries)
+                    sSelf.resultsList = SitesNodeMapper.map(entries)
                 }
 
-                sSelf.handle(results: listSites,
+                sSelf.handle(results: sSelf.resultsList,
                              error: error,
                              paginationRequest: paginationRequest,
                              pagination: results?.list.pagination)
@@ -165,7 +165,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
 
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ListNode.nodes(entries)
+                    sSelf.resultsList = ResultsNodeMapper.map(entries)
                 }
 
                 sSelf.handle(results: sSelf.resultsList,
@@ -176,7 +176,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         })
     }
 
-    func handle(results: [ListElementProtocol]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
+    func handle(results: [ListNode]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
         if let error = error {
             AlfrescoLog.error(error)
 

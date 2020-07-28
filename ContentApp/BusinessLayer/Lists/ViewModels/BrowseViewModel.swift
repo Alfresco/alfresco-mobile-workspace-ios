@@ -17,19 +17,11 @@
 //
 
 import Foundation
-import AlfrescoContentServices
 
-enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
-}
+class BrowseViewModel {
+    var list: [[BrowseNode]]
 
-struct ListNode {
-    var guid: String
-    var title: String
-    var icon: String?
-    var path: String
-    var modifiedAt: Date?
-    var kind: ElementKindType
+    init() {
+        list = [[BrowseNode(type: .personalFiles), BrowseNode(type: .myLibraries)], [BrowseNode(type: .shared), BrowseNode(type: .trash)]]
+    }
 }

@@ -18,18 +18,11 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController {
+class BrowseSectionCollectionReusableView: UICollectionReusableView {
+    @IBOutlet weak var separator: UIView!
 
-    var themingService: MaterialDesignThemingService?
-
-    // MARK: - View Life Cycle
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.title = LocalizationConstants.ScreenTitles.favorites
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        separator.backgroundColor = currentTheme.dividerColor
     }
 }
-
-// MARK: - Storyboard Instantiable
-
-extension FavoritesViewController: StoryboardInstantiable { }

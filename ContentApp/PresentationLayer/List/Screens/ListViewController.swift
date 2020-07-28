@@ -31,8 +31,10 @@ class ListViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
     var listViewModel: ListViewModelProtocol?
     var searchViewModel: SearchViewModelProtocol?
+    var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
     private var didChangedChipFilter = false
@@ -64,8 +66,10 @@ class ListViewController: SystemThemableViewController {
             activityIndicatorSuperview.addSubview(activityIndicator)
             activityIndicatorSuperview.isHidden = true
         }
-        if emptyListView.isHidden && listViewModel?.groupedLists.count == 0 {
-            self.startLoading()
+        if loadFirstRequest {
+            startLoading()
+            listViewModel?.reloadRequest()
+            loadFirstRequest = false
         }
         collectionView.reloadData()
     }
@@ -82,9 +86,6 @@ class ListViewController: SystemThemableViewController {
     }
 
     // MARK: - Coordinator Public Methods
-
-    func popToRoot() {
-    }
 
     func scrollToTop() {
         self.scrollToSection(0)
@@ -111,6 +112,7 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSettingsButton() {
+        guard listViewModel?.shouldDisplaySettingsButton() == true else { return }
         settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
@@ -131,6 +133,7 @@ class ListViewController: SystemThemableViewController {
         let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
         rvc?.themingService = themingService
         rvc?.resultScreenDelegate = self
+        rvc?.folderDrilDownScreenCoordinatorDelegate = self.folderDrilDownScreenCoordinatorDelegate
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -204,8 +207,12 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
         return cell ?? UICollectionViewCell()
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row]
+            else { return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight) }
+        return CGSize(width: self.view.bounds.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
@@ -228,6 +235,13 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
             return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
         } else {
             return CGSize(width: self.view.bounds.width, height: 0)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return }
+        if node.kind == .folder || node.kind == .site {
+            folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
         }
     }
 }
@@ -253,7 +267,7 @@ extension ListViewController: ResultScreenDelegate {
         searchViewModel.performLiveSearch(for: string)
     }
 
-    func elementListTapped(elementList: ListElementProtocol) {
+    func elementListTapped(elementList: ListNode) {
         guard let searchBar = navigationItem.searchController?.searchBar,
             let searchViewModel = self.searchViewModel else { return }
 
@@ -270,7 +284,7 @@ extension ListViewController: ResultScreenDelegate {
 // MARK: - Search ViewModel Delegate
 
 extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
+    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
 
         if didChangedChipFilter && pagination?.skipCount != 0 {

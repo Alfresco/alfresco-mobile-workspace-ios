@@ -25,7 +25,7 @@ import AlfrescoContentServices
 
 protocol ResultScreenDelegate: class {
     func recentSearchTapped(string: String)
-    func elementListTapped(elementList: ListElementProtocol)
+    func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
     func fetchNextSearchResultsPage(for index: IndexPath)
 }
@@ -47,6 +47,8 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
     weak var resultScreenDelegate: ResultScreenDelegate?
+    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+
     var activityIndicator: ActivityIndicatorView?
 
     var resultsViewModel = ResultsViewModel()
@@ -246,7 +248,11 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
         case resultsListCollectionView:
-            resultScreenDelegate?.elementListTapped(elementList: resultsViewModel.results[indexPath.row])
+            let node = resultsViewModel.results[indexPath.row]
+            if node.kind == .folder || node.kind == .site {
+                folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
+            }
+            resultScreenDelegate?.elementListTapped(elementList: node)
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             chip.selected = true
@@ -281,7 +287,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
         case resultsListCollectionView:
             let element = resultsViewModel.results[indexPath.row]
-            return CGSize(width: self.view.bounds.width, height: (element.path.isEmpty) ? listSiteCellHeight : listItemNodeCellHeight)
+            return CGSize(width: self.view.bounds.width, height: (element.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
             return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:

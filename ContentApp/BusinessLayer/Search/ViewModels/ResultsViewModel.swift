@@ -24,7 +24,7 @@ protocol ResultsViewModelDelegate: class {
 }
 
 class ResultsViewModel {
-    var results: [ListElementProtocol] = [] {
+    var results: [ListNode] = [] {
         willSet {
             shouldDisplayNextPageLoadingIndicator = true
         }
@@ -32,7 +32,7 @@ class ResultsViewModel {
     var shouldDisplayNextPageLoadingIndicator: Bool = true
     weak var delegate: ResultsViewModelDelegate?
 
-    func updateResults(results: [ListElementProtocol]?, pagination: Pagination?, error: Error?) {
+    func updateResults(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         if let results = results {
             if results.count > 0 {
                 if pagination?.skipCount != 0 {
@@ -52,7 +52,7 @@ class ResultsViewModel {
         delegate?.didUpdateResultsList(error: error, pagination: pagination)
     }
 
-    func addNewResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+    func addNewResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
 
@@ -68,7 +68,7 @@ class ResultsViewModel {
         }
     }
 
-    func addResults(results: [ListElementProtocol]?, pagination: Pagination?) {
+    func addResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
             self.results = results

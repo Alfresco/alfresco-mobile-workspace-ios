@@ -32,8 +32,12 @@ let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
+let kAPIPathMy = "-my-"
+let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
 let kAPIPathGetAvatarProfile = "\(kAPIPathVersion)/people/-me-/avatar"
+let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"
+let kWhereFavoritesSiteCondition = "(EXISTS(target/site))"
 
 // MARK: - Notification Keys
 let kShowLoginScreenNotification = "kShowLoginScreenNotification"
@@ -58,6 +62,8 @@ let listItemNodeCellHeight: CGFloat = 64.0
 let listSectionCellHeight: CGFloat = 64.0
 let listSiteCellHeight: CGFloat = 48.0
 let recentSearchCellHeight: CGFloat = 48.0
+let listBrowseCellHeight: CGFloat = 48.0
+let listBrowseSectionCellHeight: CGFloat = 1.0
 let chipSearchCellMinimHeight: CGFloat = 32.0
 let chipSearchCellMinimWidth: CGFloat = 52.0
 

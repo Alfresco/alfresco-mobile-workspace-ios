@@ -33,8 +33,6 @@ class RecentViewModel: ListViewModelProtocol {
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
-        recentsList()
-        groupedLists = self.emptyGroupedLists()
     }
 
     // MARK: - Public methods
@@ -45,7 +43,7 @@ class RecentViewModel: ListViewModelProtocol {
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier)) { (result, error) in
                 if let entries = result?.list?.entries {
-                    sSelf.addInGroupList(ListNode.nodes(entries))
+                    sSelf.addInGroupList(ResultsNodeMapper.map(entries))
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.handleList()
                     }
@@ -69,36 +67,11 @@ class RecentViewModel: ListViewModelProtocol {
         recentsList()
     }
 
-    func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: accountService?.activeAccount?.identifier ?? "") {
-            return avatar
-        } else {
-            accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-                guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-                sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-                _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                    switch result {
-                    case .success(let data):
-                        if let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                completionHandler(image)
-                                DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                            }
-                        }
-                    case .failure(let error):
-                        AlfrescoLog.error(error)
-                    }
-                })
-            })
-        }
-
-        return UIImage(named: "account-circle")
+    func shouldDisplaySections() -> Bool {
+        return true
     }
 
-    func shouldDisplaySections() -> Bool {
-        if groupedLists.count == 1 && groupedLists[0].type == GroupedListType.none {
-            return false
-        }
+    func shouldDisplaySettingsButton() -> Bool {
         return true
     }
 
@@ -108,7 +81,7 @@ class RecentViewModel: ListViewModelProtocol {
         return []
     }
 
-    private func add(element: ListElementProtocol, inGroupType type: GroupedListType) {
+    private func add(element: ListNode, inGroupType type: GroupedListType) {
         for groupedList in groupedLists where groupedList.type == type {
             groupedList.list.append(element)
             return
@@ -116,7 +89,7 @@ class RecentViewModel: ListViewModelProtocol {
         groupedLists.append(GroupedList(type: type, list: [element]))
     }
 
-    private func addInGroupList(_ results: [ListElementProtocol]) {
+    private func addInGroupList(_ results: [ListNode]) {
         for element in results {
             if let date = element.modifiedAt {
                 var groupType: GroupedListType = .today

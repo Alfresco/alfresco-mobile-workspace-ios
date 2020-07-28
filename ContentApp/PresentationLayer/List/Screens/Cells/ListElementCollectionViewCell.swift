@@ -24,13 +24,13 @@ class ListElementCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
-    var element: ListElementProtocol? {
+    var element: ListNode? {
         didSet {
             if let element = element {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element.icon)
-                moreButton.isHidden = element.path.isEmpty
+                moreButton.isHidden = (element.kind == .site)
             }
         }
     }

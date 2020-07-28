@@ -16,28 +16,23 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContentServices
+import UIKit
 
-struct ListSite: ListElementProtocol {
-    var title: String
-    var icon: String
-    var path: String
-    var modifiedAt: Date?
-    var site: Site
-
-    init(with site: Site) {
-        self.title = site.title
-        self.icon = "cm:site"
-        self.path = ""
-        self.site = site
+class BrowseStaticNodeCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    var node: BrowseNode? {
+        didSet {
+            if let node = node {
+                iconImageView.image = UIImage(named: node.icon)
+                titleLabel.text = node.title
+            }
+        }
     }
 
-    static func sites(_ entries: [SiteEntry]) -> [ListSite] {
-        var sites: [ListSite] = []
-        for entry in entries {
-            sites.append(ListSite(with: entry.entry))
-        }
-        return sites
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 }

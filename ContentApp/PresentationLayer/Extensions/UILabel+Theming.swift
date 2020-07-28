@@ -28,7 +28,7 @@ extension UILabel {
 
             attributedString.addAttribute(NSAttributedString.Key.kern, value: kernValue, range: range)
 
-            style.lineHeightMultiple = lineHeight
+            style.lineSpacing = lineHeight
             attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: range)
 
             attributedText = attributedString

@@ -17,10 +17,18 @@
 //
 
 import Foundation
+import AlfrescoContentServices
 
-protocol ListElementProtocol {
-    var title: String { get }
-    var icon: String { get }
-    var path: String { get }
-    var modifiedAt: Date? { get }
+struct SharedLinkMapper {
+    static func map(_ entries: [SharedLinkEntry]) -> [ListNode] {
+        var nodes: [ListNode] = []
+        for entry in entries {
+            nodes.append(self.create(from: entry.entry))
+        }
+        return nodes
+    }
+
+    private static func create(from node: SharedLink) -> ListNode {
+        return ListNode(guid: node._id ?? "", title: node.name ?? "", icon: node.content?.mimeType, path: "", modifiedAt: node.modifiedAt, kind: .file)
+    }
 }
