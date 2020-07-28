@@ -47,8 +47,8 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
     weak var resultScreenDelegate: ResultScreenDelegate?
-    weak var folderDrilDownScreenCoodrinatorDelegate: FolderDrilDownScreenCoodrinatorDelegate?
-    
+    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+
     var activityIndicator: ActivityIndicatorView?
 
     var resultsViewModel = ResultsViewModel()
@@ -250,7 +250,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case resultsListCollectionView:
             let node = resultsViewModel.results[indexPath.row]
             if node.kind == .folder || node.kind == .site {
-                folderDrilDownScreenCoodrinatorDelegate?.showScreen(from: node)
+                folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
             }
             resultScreenDelegate?.elementListTapped(elementList: node)
         case chipsCollectionView:

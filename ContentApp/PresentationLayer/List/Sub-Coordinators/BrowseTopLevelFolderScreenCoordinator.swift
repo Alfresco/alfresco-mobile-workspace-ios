@@ -22,7 +22,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
     private var browseNode: BrowseNode
-    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -31,19 +31,19 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
     func start() {
         let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        let routerPath = NavigationRoutes.folderScreen.path + browseNode.type.rawValue
-        router?.register(route: routerPath, factory: { [weak self] (_, _) -> UIViewController? in
+        let routerPath = NavigationRoutes.browseScreen.path + "/<nodeTitle>" + "/<nodeID>"
+        router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
             let viewController = ListViewController.instantiateViewController()
-            viewController.title = sSelf.browseNode.title
+            viewController.title = parameters["nodeTitle"] as? String ?? ""
             viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.folderDrilDownScreenCoodrinatorDelegate = self
+            viewController.folderDrilDownScreenCoordinatorDelegate = self
 
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let listViewModel: ListViewModelProtocol
 
-            switch sSelf.browseNode.type {
+            switch BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles") {
             case .personalFiles:
                 listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
             case .myLibraries:
@@ -52,21 +52,23 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
                 listViewModel = SharedViewModel(with: accountService, listRequest: nil)
             case .trash:
                 listViewModel = TrashViewModel(with: accountService, listRequest: nil)
+            case .none:
+                listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
             }
             viewController.listViewModel = listViewModel
             viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
             sSelf.listViewController = viewController
             return viewController
         })
-
-        router?.push(route: routerPath, from: presenter)
+        let routerPathValues = NavigationRoutes.browseScreen.path + "/\(browseNode.title)" + "/\(browseNode.type.rawValue)"
+        router?.push(route: routerPathValues, from: presenter)
     }
 }
 
-extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
+extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
     func showScreen(from node: ListNode) {
         let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
         folderDrillDownCoordinatorDelegate.start()
-        self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
+        self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
     }
 }

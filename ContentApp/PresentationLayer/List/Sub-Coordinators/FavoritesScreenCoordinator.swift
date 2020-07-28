@@ -23,7 +23,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var favoritesViewController: ListViewController?
     private var navigationViewController: UINavigationController?
-    private var folderDrillDownCoordinatorDelegate: FolderChildrenScreenCoordinator?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -33,7 +33,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.folderDrilDownScreenCoodrinatorDelegate = self
+        viewController.folderDrilDownScreenCoordinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
 //        favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
@@ -56,12 +56,12 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     }
 }
 
-extension FavoritesScreenCoordinator: FolderDrilDownScreenCoodrinatorDelegate {
+extension FavoritesScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
     func showScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
             folderDrillDownCoordinatorDelegate.start()
-            self.folderDrillDownCoordinatorDelegate = folderDrillDownCoordinatorDelegate
+            self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
         }
     }
 }
