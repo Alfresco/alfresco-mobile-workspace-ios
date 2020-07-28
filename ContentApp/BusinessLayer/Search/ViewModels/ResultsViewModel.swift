@@ -55,11 +55,11 @@ class ResultsViewModel {
     func addNewResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
         if results.count != 0 {
-
-            if let skipCount = pagination?.skipCount {
-                if skipCount >= Int64(results.count) {
-                    self.results.append(contentsOf: results)
-                }
+            let olderElementsSet = Set(self.results)
+            let newElementsSet = Set(results)
+        
+            if !newElementsSet.isSubset(of: olderElementsSet) {
+                self.results.append(contentsOf: results)
             }
 
             if let pagination = pagination {
