@@ -19,26 +19,22 @@
 import UIKit
 import AlfrescoContentServices
 
-class ListViewController: SystemThemableViewController {
+class ListViewController: SystemSearchViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
 
     @IBOutlet weak var activityIndicatorSuperview: UIView!
     var activityIndicator: ActivityIndicatorView?
 
+    private var settingsButton = UIButton(type: .custom)
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
 
     var listViewModel: ListViewModelProtocol?
-    var resultViewModel: ResultsViewModel?
-    var searchViewModel: SearchViewModelProtocol?
     var loadFirstRequest: Bool = true
-
-    private var settingsButton = UIButton(type: .custom)
 
     // MARK: - View Life Cycle
 
@@ -46,11 +42,8 @@ class ListViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         listViewModel?.delegate = self
-
         configureNavigationBar()
         addSettingsButton()
-        addSearchController()
-
         registerListElementCell()
         emptyListView.isHidden = true
     }
@@ -130,24 +123,8 @@ class ListViewController: SystemThemableViewController {
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem
     }
 
-    func addSearchController() {
-        let rvc = ResultViewController.instantiateViewController()
-        rvc.themingService = themingService
-        rvc.resultScreenDelegate = self // TODO: To change to other viewmodel?
-        rvc.resultsViewModel = resultViewModel
-        rvc.resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
-        let searchController = UISearchController(searchResultsController: rvc)
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.smartQuotesType = .no
-        navigationItem.searchController = searchController
-    }
-
     func addAvatarInSettingsButton() {
-        let avatarImage = listViewModel?.getAvatar(completionHandler: { [weak self] image in
+        let avatarImage = ProfileService.getAvatar(completionHandler: { [weak self] image in
             guard let sSelf = self else { return }
 
             if let fetchedImage = image {
@@ -248,40 +225,6 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     }
 }
 
-// MARK: - Result Screen Delegate
-
-extension ListViewController: ResultViewControllerDelegate {
-    func chipTapped(chip: SearchChipItem) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.startLoading()
-        rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
-        searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
-    }
-
-    func recentSearchTapped(string: String) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchBar.text = string
-        searchViewModel.performLiveSearch(for: string)
-    }
-
-    func elementListTapped(elementList: ListNode) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchViewModel.save(recentSearch: searchBar.text)
-    }
-
-    func fetchNextSearchResultsPage(for index: IndexPath) {
-        guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
-        let searchString = searchBar.text
-        searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
-    }
-}
-
 // MARK: - List ViewModel Delegate
 
 extension ListViewController: ListViewModelDelegate {
@@ -289,56 +232,6 @@ extension ListViewController: ListViewModelDelegate {
         self.stopLoading()
         emptyListView.isHidden = !(listViewModel?.groupedLists.isEmpty ?? false)
         collectionView.reloadData()
-    }
-}
-
-// MARK: - UISearchBar Delegate
-
-extension ListViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.startLoading()
-        searchViewModel.performSearch(for: searchBar.text)
-        searchViewModel.save(recentSearch: navigationItem.searchController?.searchBar.text)
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        rvc.view.isHidden = false
-    }
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchViewModel.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
-    }
-}
-
-// MARK: - UISearch Results Updating
-
-extension ListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-
-        rvc.view.isHidden = false
-    }
-}
-
-// MARK: - UISearchController Delegate
-
-extension ListViewController: UISearchControllerDelegate {
-    func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.updateChips(searchViewModel.defaultSearchChips())
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
-        rvc.clearDataSource()
     }
 }
 

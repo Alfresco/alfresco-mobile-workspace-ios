@@ -23,7 +23,6 @@ import AlfrescoContentServices
 
 class SharedViewModel: ListViewModelProtocol {
     var accountService: AccountService?
-    var apiClient: APIClientProtocol?
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     weak var delegate: ListViewModelDelegate?

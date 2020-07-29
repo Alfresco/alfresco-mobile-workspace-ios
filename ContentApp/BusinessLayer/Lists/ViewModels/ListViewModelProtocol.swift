@@ -22,14 +22,11 @@ import AlfrescoAuth
 
 protocol ListViewModelProtocol {
     var accountService: AccountService? { get set }
-    var apiClient: APIClientProtocol? { get set }
-
     var listRequest: SearchRequest? { get set }
     var groupedLists: [GroupedList] { get set }
     var delegate: ListViewModelDelegate? { get set }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
-    func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?
     func reloadRequest()
     func shouldDisplaySections() -> Bool
     func shouldDisplaySettingsButton() -> Bool
@@ -37,33 +34,4 @@ protocol ListViewModelProtocol {
 
 protocol ListViewModelDelegate: class {
     func handleList()
-}
-
-extension ListViewModelProtocol {
-    func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: accountService?.activeAccount?.identifier ?? "") {
-            return avatar
-        } else {
-            accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-                var sSelf = self
-                guard let currentAccount = sSelf.accountService?.activeAccount else { return }
-                sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-                _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                    switch result {
-                    case .success(let data):
-                        if let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                completionHandler(image)
-                                DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                            }
-                        }
-                    case .failure(let error):
-                        AlfrescoLog.error(error)
-                    }
-                })
-            })
-        }
-
-        return UIImage(named: "account-circle")
-    }
 }

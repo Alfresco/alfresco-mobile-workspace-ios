@@ -33,7 +33,6 @@ class SettingsViewModel {
     var accountService: AccountService?
     var userProfile: PersonEntry?
     weak var viewModelDelegate: SettingsViewModelDelegate?
-    var apiClient: APIClientProtocol?
 
     // MARK: - Init
 
@@ -47,8 +46,8 @@ class SettingsViewModel {
     // MARK: - Public methods
 
     func reloadRequests() {
-        fetchProfileInformation()
         fetchAvatar()
+        fetchProfileInformation()
     }
 
     func reloadDataSource() {
@@ -153,40 +152,26 @@ class SettingsViewModel {
     }
 
     private func fetchAvatar() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                switch result {
-                case .success(let data):
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                            sSelf.reloadDataSource()
-                        }
-                    }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                }
-            })
-        })
+        ProfileService.featchAvatar { (_) in
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.reloadDataSource()
+            }
+        }
     }
 
     private func fetchProfileInformation() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
-                guard let sSelf = self else { return }
-                if let error = error {
-                    AlfrescoLog.error(error)
-                    sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
-                } else {
-                    sSelf.userProfile = personEntry
-                    DispatchQueue.main.async {
-                        sSelf.reloadDataSource()
-                    }
+        ProfileService.fetchProfileInformation { [weak self] (personEntry, error) in
+            guard let sSelf = self else { return }
+            if let error = error {
+                AlfrescoLog.error(error)
+                sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
+            } else {
+                sSelf.userProfile = personEntry
+                DispatchQueue.main.async {
+                    sSelf.reloadDataSource()
                 }
             }
-        })
+        }
     }
 }

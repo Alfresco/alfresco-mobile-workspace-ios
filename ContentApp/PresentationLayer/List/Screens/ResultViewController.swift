@@ -51,6 +51,7 @@ class ResultViewController: SystemThemableViewController {
     var resultsViewModel: ResultsViewModel?
     var recentSearchesViewModel = RecentSearchesViewModel()
     var searchChipsViewModel = SearchChipsViewModel()
+    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
 
     // MARK: - View Life Cycle
 
@@ -60,6 +61,7 @@ class ResultViewController: SystemThemableViewController {
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = resultsViewModel
+        listComponentViewController.themingService = self.themingService
         resultsViewModel?.delegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
@@ -72,6 +74,7 @@ class ResultViewController: SystemThemableViewController {
             listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         }
         resultsListController = listComponentViewController
+        resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
         emptyListView.isHidden = true
 
@@ -280,6 +283,7 @@ extension ResultViewController: ListComponentActionDelegate {
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
+        stopLoading()
         recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
     }
 

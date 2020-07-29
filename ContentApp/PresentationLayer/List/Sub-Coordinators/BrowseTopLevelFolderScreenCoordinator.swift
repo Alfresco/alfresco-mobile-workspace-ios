@@ -35,33 +35,40 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
-            let viewController = ListViewController.instantiateViewController()
-            viewController.title = parameters["nodeTitle"] as? String ?? ""
-            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.folderDrillDownScreenCoordinatorDelegate = self
-
+            let browseType = BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles")
+            let title = parameters["nodeTitle"] as? String ?? ""
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let listViewModel: ListViewModelProtocol
+            let themingService =  sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            let listViewModel = sSelf.listViewModel(from: browseType, with: accountService)
+            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+            let viewController = ListViewController.instantiateViewController()
 
-            switch BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles") {
-            case .personalFiles:
-                listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-            case .myLibraries:
-                listViewModel = MyLibrariesViewModel(with: accountService, listRequest: nil)
-            case .shared:
-                listViewModel = SharedViewModel(with: accountService, listRequest: nil)
-            case .trash:
-                listViewModel = TrashViewModel(with: accountService, listRequest: nil)
-            case .none:
-                listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-            }
+            viewController.title = title
+            viewController.themingService = themingService
+            viewController.folderDrillDownScreenCoordinatorDelegate = self
             viewController.listViewModel = listViewModel
-            viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
+            viewController.searchViewModel = globalSearchViewModel
             sSelf.listViewController = viewController
+
             return viewController
         })
         let routerPathValues = NavigationRoutes.browseScreen.path + "/\(browseNode.title)" + "/\(browseNode.type.rawValue)"
         router?.push(route: routerPathValues, from: presenter)
+    }
+
+    private func listViewModel(from type: BrowseType?, with accountService: AccountService?) -> ListViewModelProtocol {
+        switch type {
+        case .personalFiles:
+            return PersonalFileViewModel(with: accountService, listRequest: nil)
+        case .myLibraries:
+            return MyLibrariesViewModel(with: accountService, listRequest: nil)
+        case .shared:
+            return SharedViewModel(with: accountService, listRequest: nil)
+        case .trash:
+            return TrashViewModel(with: accountService, listRequest: nil)
+        case .none:
+            return PersonalFileViewModel(with: accountService, listRequest: nil)
+        }
     }
 }
 

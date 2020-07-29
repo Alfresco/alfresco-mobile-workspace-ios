@@ -23,10 +23,8 @@ import AlfrescoContentServices
 
 class FavoritesViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
-
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var apiClient: APIClientProtocol?
     weak var delegate: ListViewModelDelegate?
     var whereCondition: String = kWhereFavoritesFileFolderCondition
 

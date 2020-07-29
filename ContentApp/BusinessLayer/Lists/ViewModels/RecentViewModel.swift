@@ -25,7 +25,6 @@ class RecentViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var apiClient: APIClientProtocol?
     weak var delegate: ListViewModelDelegate?
 
     // MARK: - Init

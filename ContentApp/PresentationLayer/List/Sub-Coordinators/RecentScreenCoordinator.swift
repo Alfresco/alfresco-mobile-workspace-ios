@@ -30,20 +30,21 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let viewController = ListViewController.instantiateViewController()
-        viewController.title = LocalizationConstants.ScreenTitles.recent
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = ListViewController.instantiateViewController()
 
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
         globalSearchViewModel.delegate = resultViewModel
+
+        viewController.title = LocalizationConstants.ScreenTitles.recent
+        viewController.themingService = themingService
+        viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
         viewController.tabBarScreenDelegate = presenter
         viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.searchViewModel = globalSearchViewModel
+        viewController.resultViewModel = resultViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]

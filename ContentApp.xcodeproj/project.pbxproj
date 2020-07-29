@@ -118,6 +118,7 @@
 		E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA02493E874006373FD /* TabBarMainViewController.swift */; };
 		E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */; };
 		E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */; };
+		E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E387387B24D1D1820028F76B /* SystemSearchViewController.swift */; };
 		E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */; };
 		E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */; };
 		E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */; };
@@ -157,6 +158,7 @@
 		E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
 		E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */; };
 		E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB26248F99BE00635521 /* Snackbar.swift */; };
+		E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */; };
 		E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625B2476D6440091896D /* KeyboardHandling.swift */; };
 		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
 /* End PBXBuildFile section */
@@ -296,6 +298,7 @@
 		E37D1CA02493E874006373FD /* TabBarMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainViewController.swift; sourceTree = "<group>"; };
 		E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarScreenCoordinator.swift; sourceTree = "<group>"; };
 		E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		E387387B24D1D1820028F76B /* SystemSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSearchViewController.swift; sourceTree = "<group>"; };
 		E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountTableViewCell.swift; sourceTree = "<group>"; };
 		E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LayerTransformations.swift"; sourceTree = "<group>"; };
@@ -335,6 +338,7 @@
 		E3EC133724A4C7930068E3C7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Mapper.swift"; sourceTree = "<group>"; };
 		E3EFAB26248F99BE00635521 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
+		E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		E3F5625B2476D6440091896D /* KeyboardHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
 		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -589,6 +593,7 @@
 				E35FB745247664A9004674FD /* LoginService.swift */,
 				B9E7D60824911F190056292B /* AccountService.swift */,
 				E324779E24AB4F0B006D4B6F /* FileIcon.swift */,
+				E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -629,6 +634,7 @@
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
 				B91FEB6524B75D63002878F1 /* TopLevelTransition.swift */,
+				E387387B24D1D1820028F76B /* SystemSearchViewController.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
@@ -1173,6 +1179,7 @@
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
 				E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */,
+				E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */,
 				B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */,
 				E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
@@ -1232,6 +1239,7 @@
 				E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */,
 				B9AE0BB924C03D170001289C /* NavigationRoutes.swift in Sources */,
 				B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
+				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
