@@ -56,7 +56,7 @@ let kSearchTimerBuffer = 0.7
 let kLoginAIMSCancelWebViewErrorCode = -3
 
 // MARK: - Height&Widhts
-
+let settingsThemeCellHeight: CGFloat = 44.0
 let accountSettingsButtonHeight: CGFloat = 30.0
 let listItemNodeCellHeight: CGFloat = 64.0
 let listSectionCellHeight: CGFloat = 64.0

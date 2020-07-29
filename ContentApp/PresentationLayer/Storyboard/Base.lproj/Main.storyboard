@@ -174,7 +174,7 @@
                                 <attributedString key="attributedText">
                                     <fragment content="To allow successful single sign on access, please provide the location of your Process Services environment.">
                                         <attributes>
-                                            <font key="NSFont" metaFont="menu" size="14"/>
+                                            <font key="NSFont" metaFont="menuBar"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -718,7 +718,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="g7G-3d-26T">
-                                <rect key="frame" x="24" y="110.5" width="366" height="150"/>
+                                <rect key="frame" x="24" y="100.5" width="366" height="150"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="vzE-pT-L7M"/>
@@ -771,7 +771,7 @@
                         <constraints>
                             <constraint firstItem="g7G-3d-26T" firstAttribute="leading" secondItem="mSN-cM-kpf" secondAttribute="leading" id="15U-fz-Fpz"/>
                             <constraint firstItem="mSN-cM-kpf" firstAttribute="top" secondItem="D3c-vp-Weu" secondAttribute="top" constant="16" id="B6t-Yg-DLh"/>
-                            <constraint firstItem="g7G-3d-26T" firstAttribute="top" secondItem="mSN-cM-kpf" secondAttribute="bottom" constant="30" id="Ixh-O2-FSC"/>
+                            <constraint firstItem="g7G-3d-26T" firstAttribute="top" secondItem="mSN-cM-kpf" secondAttribute="bottom" constant="20" id="Ixh-O2-FSC"/>
                             <constraint firstItem="mSN-cM-kpf" firstAttribute="leading" secondItem="D3c-vp-Weu" secondAttribute="leading" constant="24" id="Kh0-lT-b8C"/>
                             <constraint firstItem="D3c-vp-Weu" firstAttribute="trailing" secondItem="mSN-cM-kpf" secondAttribute="trailing" constant="24" id="Krm-um-C9a"/>
                             <constraint firstItem="D3c-vp-Weu" firstAttribute="bottom" secondItem="g7G-3d-26T" secondAttribute="bottom" priority="250" id="Lhk-ZI-xux"/>

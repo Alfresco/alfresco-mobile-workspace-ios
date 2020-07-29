@@ -181,7 +181,7 @@ class ResultViewController: SystemThemableViewController {
 
     func addChipsCollectionViewFlowLayout() {
         let layout = MDCChipCollectionViewFlowLayout()
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         chipsCollectionView.collectionViewLayout = layout
@@ -289,6 +289,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let element = resultsViewModel.results[indexPath.row]
             return CGSize(width: self.view.bounds.width, height: (element.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
+            if let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
+                return CGSize(width: cell.chipView.frame.size.width, height: chipSearchCellMinimHeight)
+            }
             return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)

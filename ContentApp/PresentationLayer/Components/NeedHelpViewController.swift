@@ -61,6 +61,7 @@ class NeedHelpViewController: SystemThemableViewController {
         let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
+
     override func applyComponentsThemes() {
         guard let currentTheme = themingService?.activeTheme else { return }
 
@@ -69,7 +70,7 @@ class NeedHelpViewController: SystemThemableViewController {
         textView.textColor = currentTheme.onSurfaceColor
 
         titleLabel.text = model?.titleText
-        titleLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
 
         closeButton.setTitleColor(currentTheme.primaryVariantColor, for: .normal)
         view.backgroundColor = currentTheme.backgroundColor
