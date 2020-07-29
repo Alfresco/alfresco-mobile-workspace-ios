@@ -29,7 +29,6 @@ class ThemesModeViewController: SystemThemableViewController {
 
     weak var delegate: ThemesModeScrenDelegate?
     var viewModel = ThemeModesViewModel()
-    var heightCell: CGFloat = 44.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,7 +59,7 @@ class ThemesModeViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        titleLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.backgroundColor
     }
 
@@ -98,7 +97,7 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return heightCell
+        return settingsThemeCellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

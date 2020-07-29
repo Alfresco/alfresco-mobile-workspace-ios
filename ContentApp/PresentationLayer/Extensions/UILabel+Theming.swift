@@ -88,4 +88,10 @@ extension UILabel {
         self.font = theme.headline5TextStyle.font
         self.add(characterSpacing: theme.headline5TextStyle.letterSpacing, lineHeight: theme.headline5TextStyle.lineHeight)
     }
+
+    func applyeStyleHeadline6OnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
+        self.font = theme.headline6TextStyle.font
+        self.add(characterSpacing: theme.headline6TextStyle.letterSpacing, lineHeight: theme.headline6TextStyle.lineHeight)
+    }
 }
