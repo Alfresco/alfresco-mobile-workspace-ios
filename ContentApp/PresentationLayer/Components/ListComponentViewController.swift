@@ -33,6 +33,7 @@ protocol ListComponentDataSourceProtocol: class {
 protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
     func didUpdateList(error: Error?, pagination: Pagination?)
+    func fetchNextListPage(for itemAtIndexPath: IndexPath)
 }
 
 protocol ListComponentPaginationDelegate: class {
@@ -55,6 +56,13 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Configure collectionview data source and delegate
+        collectionView.dataSource = self
+        collectionView.delegate = self
+
+        emptyListView.isHidden = true
+
+        // Set up generic and pull to refresh activity indicators
         let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
                                                           configuration: ActivityIndicatorConfiguration(title: "" ,
                                                                                                         radius: 12,
@@ -70,6 +78,7 @@ class ListComponentViewController: SystemThemableViewController {
         activityIndicatorView.isHidden = true
         activityIndicator = activityIndicatorView
 
+        // Set up pull to refresh control
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .clear
         refreshIndicatorView.center = refreshControl.center
@@ -78,8 +87,7 @@ class ListComponentViewController: SystemThemableViewController {
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
 
-        emptyListView.isHidden = true
-
+        // Register collection view footer and cell
         collectionView.register(ActivityIndicatorFooterView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                 withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier)

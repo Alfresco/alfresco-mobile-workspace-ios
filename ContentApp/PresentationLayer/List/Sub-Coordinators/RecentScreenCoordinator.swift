@@ -38,10 +38,10 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        globalSearchViewModel.delegate = resultViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
+        globalSearchViewModel.delegate = resultViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.folderDrillDownScreenCoordinatorDelegate = self
 

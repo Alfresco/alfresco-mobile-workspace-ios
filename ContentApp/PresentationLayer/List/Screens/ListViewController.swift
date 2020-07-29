@@ -133,7 +133,7 @@ class ListViewController: SystemThemableViewController {
     func addSearchController() {
         let rvc = ResultViewController.instantiateViewController()
         rvc.themingService = themingService
-        rvc.resultScreenDelegate = self
+        rvc.resultScreenDelegate = self // TODO: To change to other viewmodel?
         rvc.resultsViewModel = resultViewModel
         rvc.resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
         let searchController = UISearchController(searchResultsController: rvc)

@@ -272,13 +272,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     }
 }
 
-// MARK: - PageFetchableDelegate
-
-extension ResultViewController: PageFetchableDelegate {
-    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
-        self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndex)
-    }
-}
+// MARK: - ListComponentActionDelegate
 
 extension ResultViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
@@ -287,6 +281,10 @@ extension ResultViewController: ListComponentActionDelegate {
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
         recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
+    }
+
+    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
+        self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndexPath)
     }
 }
 
