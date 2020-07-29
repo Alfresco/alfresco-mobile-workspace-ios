@@ -27,7 +27,7 @@ class FavoritesViewModel: ListViewModelProtocol {
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
-    weak var viewModelDelegate: ListViewModelDelegate?
+    weak var delegate: ListViewModelDelegate?
     var whereCondition: String = kWhereFavoritesFileFolderCondition
 
     // MARK: - Init
@@ -69,14 +69,14 @@ class FavoritesViewModel: ListViewModelProtocol {
                 if let entries = result?.list {
                     sSelf.groupedLists.append(GroupedList(type: .none, list: FavoritesNodeMapper.map(entries.entries)))
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 }
             }

@@ -31,20 +31,21 @@ class ListViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+
     var listViewModel: ListViewModelProtocol?
+    var resultViewModel: ResultsViewModel?
     var searchViewModel: SearchViewModelProtocol?
     var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
-    private var didChangedChipFilter = false
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        listViewModel?.viewModelDelegate = self
-        searchViewModel?.viewModelDelegate = self
+
+        listViewModel?.delegate = self
 
         configureNavigationBar()
         addSettingsButton()
@@ -130,10 +131,11 @@ class ListViewController: SystemThemableViewController {
     }
 
     func addSearchController() {
-        let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
-        rvc?.themingService = themingService
-        rvc?.resultScreenDelegate = self
-        rvc?.folderDrilDownScreenCoordinatorDelegate = self.folderDrilDownScreenCoordinatorDelegate
+        let rvc = ResultViewController.instantiateViewController()
+        rvc.themingService = themingService
+        rvc.resultScreenDelegate = self
+        rvc.resultsViewModel = resultViewModel
+        rvc.resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
@@ -241,14 +243,14 @@ extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return }
         if node.kind == .folder || node.kind == .site {
-            folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
+            folderDrillDownScreenCoordinatorDelegate?.showScreen(from: node)
         }
     }
 }
 
 // MARK: - Result Screen Delegate
 
-extension ListViewController: ResultScreenDelegate {
+extension ListViewController: ResultViewControllerDelegate {
     func chipTapped(chip: SearchChipItem) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
             let searchViewModel = self.searchViewModel else { return }
@@ -256,7 +258,6 @@ extension ListViewController: ResultScreenDelegate {
         rvc.startLoading()
         rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
         searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
-        didChangedChipFilter = true
     }
 
     func recentSearchTapped(string: String) {
@@ -278,23 +279,6 @@ extension ListViewController: ResultScreenDelegate {
         guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
         let searchString = searchBar.text
         searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
-    }
-}
-
-// MARK: - Search ViewModel Delegate
-
-extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        if didChangedChipFilter && pagination?.skipCount != 0 {
-            didChangedChipFilter = false
-            rvc.stopLoading()
-            return
-        }
-
-        didChangedChipFilter = false
-        rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
     }
 }
 

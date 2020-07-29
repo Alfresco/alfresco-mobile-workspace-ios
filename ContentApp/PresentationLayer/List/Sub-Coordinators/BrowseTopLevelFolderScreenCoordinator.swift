@@ -38,7 +38,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             let viewController = ListViewController.instantiateViewController()
             viewController.title = parameters["nodeTitle"] as? String ?? ""
             viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.folderDrilDownScreenCoordinatorDelegate = self
+            viewController.folderDrillDownScreenCoordinatorDelegate = self
 
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let listViewModel: ListViewModelProtocol

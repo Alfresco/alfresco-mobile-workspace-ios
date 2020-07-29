@@ -26,7 +26,7 @@ class TrashViewModel: ListViewModelProtocol {
     var apiClient: APIClientProtocol?
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
-    weak var viewModelDelegate: ListViewModelDelegate?
+    weak var delegate: ListViewModelDelegate?
 
     // MARK: - Init
 
@@ -60,14 +60,14 @@ class TrashViewModel: ListViewModelProtocol {
                 if let entries = result?.list?.entries {
                     sSelf.groupedLists.append(GroupedList(type: .none, list: DeleteNodeMapper.map(entries)))
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 }
             }

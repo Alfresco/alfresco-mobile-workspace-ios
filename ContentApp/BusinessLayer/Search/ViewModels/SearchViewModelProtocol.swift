@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContentServices
 
 protocol SearchViewModelProtocol {
-    var viewModelDelegate: SearchViewModelDelegate? { get set }
+    var delegate: SearchViewModelDelegate? { get set }
     var searchChips: [SearchChipItem] { get set }
 
     func defaultSearchChips() -> [SearchChipItem]

@@ -33,7 +33,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.folderDrilDownScreenCoordinatorDelegate = self
+        viewController.folderDrillDownScreenCoordinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
 //        favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition

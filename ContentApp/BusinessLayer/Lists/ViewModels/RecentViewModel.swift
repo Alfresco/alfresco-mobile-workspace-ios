@@ -26,7 +26,7 @@ class RecentViewModel: ListViewModelProtocol {
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
-    weak var viewModelDelegate: ListViewModelDelegate?
+    weak var delegate: ListViewModelDelegate?
 
     // MARK: - Init
 
@@ -45,14 +45,14 @@ class RecentViewModel: ListViewModelProtocol {
                 if let entries = result?.list?.entries {
                     sSelf.addInGroupList(ResultsNodeMapper.map(entries))
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                     DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
+                        sSelf.delegate?.handleList()
                     }
                 }
             }

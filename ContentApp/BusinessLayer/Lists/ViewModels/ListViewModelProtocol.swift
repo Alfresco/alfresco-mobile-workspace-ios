@@ -26,7 +26,7 @@ protocol ListViewModelProtocol {
 
     var listRequest: SearchRequest? { get set }
     var groupedLists: [GroupedList] { get set }
-    var viewModelDelegate: ListViewModelDelegate? { get set }
+    var delegate: ListViewModelDelegate? { get set }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage?

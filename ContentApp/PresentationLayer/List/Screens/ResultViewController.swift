@@ -23,17 +23,15 @@ import MaterialComponents.MDCChipView
 import MaterialComponents.MDCChipView_MaterialTheming
 import AlfrescoContentServices
 
-protocol ResultScreenDelegate: class {
+protocol ResultViewControllerDelegate: class {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
     func fetchNextSearchResultsPage(for index: IndexPath)
 }
 
-let collectionViewFooterReuseIdentifier = "ActivityIndicatorView"
-
 class ResultViewController: SystemThemableViewController {
-    @IBOutlet weak var resultsListCollectionView: PageFetchableCollectionView!
+    var resultsListController: ListComponentViewController?
     @IBOutlet weak var chipsCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
 
@@ -46,12 +44,11 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
-    weak var resultScreenDelegate: ResultScreenDelegate?
-    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var resultScreenDelegate: ResultViewControllerDelegate?
 
     var activityIndicator: ActivityIndicatorView?
 
-    var resultsViewModel = ResultsViewModel()
+    var resultsViewModel: ResultsViewModel?
     var recentSearchesViewModel = RecentSearchesViewModel()
     var searchChipsViewModel = SearchChipsViewModel()
 
@@ -60,21 +57,24 @@ class ResultViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        resultsListCollectionView.pageDelegate = self
-        resultsViewModel.delegate = self
+        let listComponentViewController = ListComponentViewController.instantiateViewController()
+        listComponentViewController.listActionDelegate = self
+        listComponentViewController.listDataSource = resultsViewModel
+        resultsViewModel?.delegate = listComponentViewController
 
-        resultsListCollectionView.register(ActivityIndicatorFooterView.self,
-                                           forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                           withReuseIdentifier: collectionViewFooterReuseIdentifier)
-        recentSearchCollectionView.register(ActivityIndicatorFooterView.self,
-                                            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                            withReuseIdentifier: collectionViewFooterReuseIdentifier)
-        chipsCollectionView.register(ActivityIndicatorFooterView.self,
-                                     forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                     withReuseIdentifier: collectionViewFooterReuseIdentifier)
+        if let listComponentView = listComponentViewController.view {
+            listComponentView.translatesAutoresizingMaskIntoConstraints = false
+
+            view.insertSubview(listComponentView, aboveSubview: chipsCollectionView)
+            listComponentView.topAnchor.constraint(equalTo: chipsCollectionView.bottomAnchor, constant: 5).isActive = true
+            listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0).isActive = true
+            listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0).isActive = true
+            listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
+        }
+        resultsListController = listComponentViewController
 
         emptyListView.isHidden = true
-        registerListElementCell()
+
         addLocalization()
         addChipsCollectionViewFlowLayout()
     }
@@ -104,7 +104,6 @@ class ResultViewController: SystemThemableViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        resultsListCollectionView.reloadData()
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
     }
@@ -112,20 +111,19 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
-        resultsListCollectionView.isUserInteractionEnabled = false
-        resultsListCollectionView.setContentOffset(resultsListCollectionView.contentOffset, animated: false)
+        resultsListController?.startLoading()
         activityIndicatorSuperview.isHidden = false
         activityIndicator?.state = .isLoading
     }
 
     func stopLoading() {
-        resultsListCollectionView.isUserInteractionEnabled = true
+        resultsListController?.stopLoading()
         activityIndicatorSuperview.isHidden = true
         activityIndicator?.state = .isIdle
     }
 
     func clearDataSource() {
-        resultsViewModel.results = []
+        resultsViewModel?.clearResults()
         emptyListView.isHidden = true
         recentSearchesView.isHidden = false
     }
@@ -155,11 +153,6 @@ class ResultViewController: SystemThemableViewController {
     }
 
     // MARK: - Helpers
-
-    func registerListElementCell() {
-        let identifier = String(describing: ListElementCollectionViewCell.self)
-        resultsListCollectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
-    }
 
     func addLocalization() {
         emptyListTitle.text = LocalizationConstants.Search.title
@@ -197,8 +190,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             return recentSearchesViewModel.searches.count
-        case resultsListCollectionView:
-            return resultsViewModel.results.count
         case chipsCollectionView:
             return searchChipsViewModel.chips.count
         default: return 0
@@ -207,12 +198,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
-        case resultsListCollectionView:
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ListElementCollectionViewCell.self),
-                                                          for: indexPath) as? ListElementCollectionViewCell
-            cell?.element = resultsViewModel.results[indexPath.row]
-            cell?.applyTheme(themingService?.activeTheme)
-            return cell ?? UICollectionViewCell()
         case recentSearchCollectionView:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: RecentSearchCollectionViewCell.self),
                                                           for: indexPath) as? RecentSearchCollectionViewCell
@@ -247,12 +232,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
-        case resultsListCollectionView:
-            let node = resultsViewModel.results[indexPath.row]
-            if node.kind == .folder || node.kind == .site {
-                folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
-            }
-            resultScreenDelegate?.elementListTapped(elementList: node)
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             chip.selected = true
@@ -285,41 +264,11 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case recentSearchCollectionView:
             return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
-        case resultsListCollectionView:
-            let element = resultsViewModel.results[indexPath.row]
-            return CGSize(width: self.view.bounds.width, height: (element.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
         case chipsCollectionView:
             return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)
         }
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionFooter:
-            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: collectionViewFooterReuseIdentifier,
-                                                                             for: indexPath)
-            return footerView
-
-        default:
-            assert(false, "Unexpected element kind")
-        }
-
-        return UICollectionReusableView()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        if collectionView == resultsListCollectionView {
-            if resultsViewModel.shouldDisplayNextPageLoadingIndicator {
-                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
-            }
-        }
-
-        return CGSize(width: 0, height: 0)
     }
 }
 
@@ -331,25 +280,13 @@ extension ResultViewController: PageFetchableDelegate {
     }
 }
 
-extension ResultViewController: ResultsViewModelDelegate {
-    func didUpdateResultsList(error: Error?, pagination: Pagination?) {
-        emptyListView.isHidden = !resultsViewModel.results.isEmpty
-        resultsListCollectionView.isHidden = resultsViewModel.results.isEmpty
+extension ResultViewController: ListComponentActionDelegate {
+    func elementTapped(node: ListNode) {
+        resultScreenDelegate?.elementListTapped(elementList: node)
+    }
 
-        if error == nil {
-            resultsListCollectionView.reloadData()
-            resultsListCollectionView.performBatchUpdates(nil, completion: { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.stopLoading()
-            })
-
-            recentSearchesView.isHidden = (pagination == nil) ? false : true
-        }
-
-        // If loading the first page or missing pagination scroll to top
-        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !resultsViewModel.results.isEmpty {
-            resultsListCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
+    func didUpdateList(error: Error?, pagination: Pagination?) {
+        recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
     }
 }
 

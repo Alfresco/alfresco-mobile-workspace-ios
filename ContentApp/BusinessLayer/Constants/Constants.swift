@@ -77,3 +77,6 @@ let kWindow =  UIApplication.shared.windows[0]
 let kMaxElemetsInRecentSearchesArray = 15
 let kMinCharactersForLiveSearch = 3
 let kListPageSize = 25
+
+// MARK: - Identifiers
+let kCVLoadingIndicatorReuseIdentifier = "kCollectionViewLoadingIndicatorReuseIdentifier"

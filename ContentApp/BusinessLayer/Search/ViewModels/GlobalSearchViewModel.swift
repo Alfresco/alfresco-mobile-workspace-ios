@@ -24,7 +24,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
 
-    weak var viewModelDelegate: SearchViewModelDelegate?
+    weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
     private var currentPage: Int = 1
@@ -87,7 +87,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
         liveSearchTimer?.invalidate()
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
-            self.viewModelDelegate?.handle(results: nil)
+            self.delegate?.handle(results: nil)
             return
         }
 
@@ -104,7 +104,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
         liveSearchTimer?.invalidate()
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "",
             searchString.count >= kMinCharactersForLiveSearch else {
-                self.viewModelDelegate?.handle(results: nil)
+                self.delegate?.handle(results: nil)
                 return
         }
         liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
@@ -182,7 +182,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.viewModelDelegate?.handle(results: nil, pagination: nil, error: error)
+                sSelf.delegate?.handle(results: nil, pagination: nil, error: error)
             }
         } else if let results = results, let skipCount = pagination?.skipCount {
             self.hasMoreItems = (Int64(results.count) + skipCount) == pagination?.totalItems ? false : true
@@ -193,7 +193,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.viewModelDelegate?.handle(results: results, pagination: pagination, error: nil)
+                sSelf.delegate?.handle(results: results, pagination: pagination, error: nil)
             }
         }
         searchGroup.leave()
