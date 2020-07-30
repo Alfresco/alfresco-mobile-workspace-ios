@@ -44,6 +44,11 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.smartQuotesType = .no
         navigationItem.searchController = searchController
     }
+
+    func cancelSearchMode() {
+        self.navigationItem.searchController?.searchBar.text = ""
+        self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
+    }
 }
 
 // MARK: - Result Screen Delegate

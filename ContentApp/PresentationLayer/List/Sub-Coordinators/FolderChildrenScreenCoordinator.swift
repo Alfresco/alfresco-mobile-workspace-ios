@@ -44,15 +44,19 @@ class FolderChildrenScreenCoordinator: Coordinator {
             let nodeKind = parameters["nodeKind"] as? String
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-//            let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
-            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-//            let viewController = ListViewController.instantiateViewController()
 
+//            let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
+//            let resultViewModel = ResultsViewModel()
+//            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+//            globalSearchViewModel.delegate = resultViewModel
+//            let viewController = ListViewController.instantiateViewController()
+//
 //            viewController.title = title
 //            viewController.themingService = themingService
 //            viewController.folderDrillDownScreenCoordinatorDelegate = self
 //            viewController.listViewModel = listViewModel
 //            viewController.searchViewModel = globalSearchViewModel
+//            viewController.resultViewModel = resultViewModel
 //            sSelf.listViewController = viewController
         
 //            return viewController

@@ -58,6 +58,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
+        recentViewController?.cancelSearchMode()
     }
 }
 

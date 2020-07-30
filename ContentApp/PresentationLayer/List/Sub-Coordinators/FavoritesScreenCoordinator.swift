@@ -30,25 +30,28 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let viewController = ListViewController()
-
+//        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+//        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+//        let viewController = ListViewController()
+//
+//        let resultViewModel = ResultsViewModel()
 //        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
-        // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-
-        viewController.title = LocalizationConstants.ScreenTitles.favorites
-        viewController.themingService = themingService
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
-        viewController.tabBarScreenDelegate = presenter
-//        viewController.listViewModel = favoritesViewModel
-        viewController.searchViewModel = globalSearchViewModel
-
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        presenter.viewControllers?.append(navigationViewController)
-        self.navigationViewController = navigationViewController
-        self.favoritesViewController = viewController
+//        // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
+//        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+//        globalSearchViewModel.delegate = resultViewModel
+//
+//        viewController.title = LocalizationConstants.ScreenTitles.favorites
+//        viewController.themingService = themingService
+//        viewController.folderDrillDownScreenCoordinatorDelegate = self
+//        viewController.tabBarScreenDelegate = presenter
+////        viewController.listViewModel = favoritesViewModel
+//        viewController.searchViewModel = globalSearchViewModel
+//        viewController.resultViewModel = resultViewModel
+//
+//        let navigationViewController = UINavigationController(rootViewController: viewController)
+//        presenter.viewControllers?.append(navigationViewController)
+//        self.navigationViewController = navigationViewController
+//        self.favoritesViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
@@ -57,6 +60,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
+        favoritesViewController?.cancelSearchMode()
     }
 }
 

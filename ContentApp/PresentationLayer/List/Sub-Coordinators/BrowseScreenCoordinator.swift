@@ -40,6 +40,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        globalSearchViewModel.delegate = resultViewModel
         let browseViewModel = BrowseViewModel()
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
@@ -50,7 +51,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         viewController.listViewModel = browseViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
-        globalSearchViewModel.delegate = resultViewModel
+
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
@@ -60,6 +61,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
     func scrollToTopOrPopToRoot() {
         navigationViewController?.popToRootViewController(animated: true)
+        browseViewController?.cancelSearchMode()
     }
 }
 
