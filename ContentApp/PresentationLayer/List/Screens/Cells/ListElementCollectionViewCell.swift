@@ -44,7 +44,7 @@ class ListElementCollectionViewCell: UICollectionViewCell {
         title.applyStyleSubtitle1OnSurface(theme: currentTheme)
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
-        subtitle.lineBreakMode = .byTruncatingTail
+        subtitle.lineBreakMode = .byTruncatingHead
         iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 
