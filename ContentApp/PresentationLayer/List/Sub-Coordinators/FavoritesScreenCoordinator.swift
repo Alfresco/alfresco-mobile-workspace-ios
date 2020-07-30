@@ -34,10 +34,11 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = ListViewController.instantiateViewController()
 
+        let resultViewModel = ResultsViewModel()
         let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
         // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        globalSearchViewModel.delegate = favoritesViewModel
+        globalSearchViewModel.delegate = resultViewModel
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
@@ -45,6 +46,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         viewController.tabBarScreenDelegate = presenter
         viewController.listViewModel = favoritesViewModel
         viewController.searchViewModel = globalSearchViewModel
+        viewController.resultViewModel = resultViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
