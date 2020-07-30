@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoContentServices
 
-class GlobalSearchViewModel: SearchViewModelProtocol {
+class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
@@ -27,14 +27,13 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
     weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
-    private var currentPage: Int = 1
-    private var searchGroup = DispatchGroup()
-    private var hasMoreItems = true
 
     // MARK: - Init
 
     init(accountService: AccountService?) {
+        super.init()
         self.accountService = accountService
+        pageFetchingDelegate = self
     }
 
     // MARK: - Public methods
@@ -91,7 +90,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             return
         }
 
-        searchGroup.enter()
+        pageFetchingGroup.enter()
 
         if isSearchForLibraries() {
             performLibrariesSearch(searchString: searchString, paginationRequest: paginationRequest)
@@ -115,14 +114,7 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
     }
 
     func fetchNextSearchResultsPage(for string: String?, index: IndexPath) {
-        searchGroup.notify(queue: .global()) { [weak self] in
-            guard let sSelf = self else { return }
-
-            if sSelf.hasMoreItems {
-                let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: sSelf.currentPage * kListPageSize)
-                sSelf.performSearch(for: string, paginationRequest: nextPage)
-            }
-        }
+        fetchNextListPage(index: index, userInfo: string ?? "")
     }
 
     // MARK: Private Methods
@@ -132,12 +124,6 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
             return chip.selected
         }
         return false
-    }
-
-    private func incrementPage(for paginationRequest: RequestPagination?) {
-        if let pageSkipCount = paginationRequest?.skipCount {
-            currentPage = pageSkipCount / kListPageSize + 1
-        }
     }
 
     private func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
@@ -150,10 +136,11 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
                     sSelf.resultsList = SitesNodeMapper.map(entries)
                 }
 
-                sSelf.handle(results: sSelf.resultsList,
-                             error: error,
-                             paginationRequest: paginationRequest,
-                             pagination: results?.list.pagination)
+                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: results?.list.pagination)
+                sSelf.handle(paginatedResponse: paginatedResponse)
             }
         })
     }
@@ -168,34 +155,25 @@ class GlobalSearchViewModel: SearchViewModelProtocol {
                     sSelf.resultsList = ResultsNodeMapper.map(entries)
                 }
 
-                sSelf.handle(results: sSelf.resultsList,
-                             error: error,
-                             paginationRequest: paginationRequest,
-                             pagination: result?.list?.pagination)
+                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+
+                sSelf.handle(paginatedResponse: paginatedResponse)
             }
         })
     }
+}
 
-    func handle(results: [ListNode]?, error: Error?, paginationRequest: RequestPagination?, pagination: Pagination?) {
-        if let error = error {
-            AlfrescoLog.error(error)
-
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                sSelf.delegate?.handle(results: nil, pagination: nil, error: error)
-            }
-        } else if let results = results, let skipCount = pagination?.skipCount {
-            self.hasMoreItems = (Int64(results.count) + skipCount) == pagination?.totalItems ? false : true
-
-            if paginationRequest != nil && hasMoreItems {
-                incrementPage(for: paginationRequest)
-            }
-
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
-                sSelf.delegate?.handle(results: results, pagination: pagination, error: nil)
-            }
+extension GlobalSearchViewModel: PageFetchingViewModelDelegate {
+    func fetchItems(with requestPagination: RequestPagination, userInfo: Any, completionHandler: @escaping PagedResponseCompletionHandler) {
+        if let searchTerm = userInfo as? String {
+            self.performSearch(for: searchTerm, paginationRequest: requestPagination)
         }
-        searchGroup.leave()
+    }
+
+    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 }

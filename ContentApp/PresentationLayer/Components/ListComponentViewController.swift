@@ -94,6 +94,8 @@ class ListComponentViewController: SystemThemableViewController {
                                 withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier)
         let identifier = String(describing: ListElementCollectionViewCell.self)
         collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
+
+        addLocalization()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,6 +106,21 @@ class ListComponentViewController: SystemThemableViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
+    }
+
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+
+        emptyListView.backgroundColor = currentTheme.backgroundColor
+    }
+
+    func addLocalization() {
+        emptyListTitle.text = LocalizationConstants.Search.title
+        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
     }
 
     // MARK: - Public interface

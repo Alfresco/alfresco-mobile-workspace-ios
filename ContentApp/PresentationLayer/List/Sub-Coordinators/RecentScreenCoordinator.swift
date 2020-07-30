@@ -32,7 +32,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let viewController = ListViewController.instantiateViewController()
+        let viewController = ListViewController()
 
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)

@@ -20,18 +20,9 @@ import UIKit
 import AlfrescoContentServices
 import AlfrescoAuth
 
-protocol ListViewModelProtocol {
-    var accountService: AccountService? { get set }
-    var listRequest: SearchRequest? { get set }
-    var groupedLists: [GroupedList] { get set }
-    var delegate: ListViewModelDelegate? { get set }
+protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
+    var delegate: ListComponentPaginationDelegate? { get set }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
-    func reloadRequest()
-    func shouldDisplaySections() -> Bool
     func shouldDisplaySettingsButton() -> Bool
-}
-
-protocol ListViewModelDelegate: class {
-    func handleList()
 }

@@ -32,9 +32,9 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let viewController = ListViewController.instantiateViewController()
+        let viewController = ListViewController()
 
-        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
+//        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
         // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
 
@@ -42,7 +42,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         viewController.themingService = themingService
         viewController.folderDrillDownScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.listViewModel = favoritesViewModel
+//        viewController.listViewModel = favoritesViewModel
         viewController.searchViewModel = globalSearchViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)

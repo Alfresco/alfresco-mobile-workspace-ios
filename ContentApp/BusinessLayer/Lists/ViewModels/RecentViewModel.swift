@@ -25,7 +25,8 @@ class RecentViewModel: ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    weak var delegate: ListViewModelDelegate?
+
+    weak var delegate: ListComponentPaginationDelegate?
 
     // MARK: - Init
 
@@ -43,42 +44,59 @@ class RecentViewModel: ListViewModelProtocol {
             SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier)) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.addInGroupList(ResultsNodeMapper.map(entries))
-                    DispatchQueue.main.async {
-                        sSelf.delegate?.handleList()
-                    }
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
-                    DispatchQueue.main.async {
-                        sSelf.delegate?.handleList()
-                    }
+                }
+
+                DispatchQueue.main.async {
+                    sSelf.delegate?.didUpdateList(error: error, pagination: result?.list?.pagination)
                 }
             }
         })
-    }
-
-    func fetchNextRecentsResultPage(for index: IndexPath) {
-    }
-
-    func reloadRequest() {
-        groupedLists = self.emptyGroupedLists()
-        recentsList()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return true
     }
 
     func shouldDisplaySettingsButton() -> Bool {
         return true
     }
 
-    // MARK: - Private methods
+    // MARK: - ListViewModelProtocol
 
-    private func emptyGroupedLists() -> [GroupedList] {
-        return []
+    func isEmpty() -> Bool {
+        return groupedLists.isEmpty
     }
+
+    func shouldDisplaySections() -> Bool {
+        return true
+    }
+
+    func numberOfSections() -> Int {
+        return groupedLists.count
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return groupedLists[section].list.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return groupedLists[indexPath.section].list[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return groupedLists[indexPath.section].titleGroup
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return true
+    }
+
+    func refreshList() {
+        groupedLists = []
+        recentsList()
+    }
+
+    // MARK: - Private methods
 
     private func add(element: ListNode, inGroupType type: GroupedListType) {
         for groupedList in groupedLists where groupedList.type == type {
