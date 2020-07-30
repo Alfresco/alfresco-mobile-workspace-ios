@@ -37,6 +37,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
         // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        globalSearchViewModel.delegate = favoritesViewModel
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
@@ -57,6 +58,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
+        favoritesViewController?.cancelSearchMode()
     }
 }
 

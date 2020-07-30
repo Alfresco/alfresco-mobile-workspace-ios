@@ -60,6 +60,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
     func scrollToTopOrPopToRoot() {
         navigationViewController?.popToRootViewController(animated: true)
+        browseViewController?.cancelSearchMode()
     }
 }
 
