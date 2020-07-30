@@ -81,11 +81,6 @@ class BasicAuthViewController: SystemThemableViewController {
         Snackbar.dimissAll()
     }
 
-   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-       super.viewWillTransition(to: size, with: coordinator)
-       activityIndicator?.reload(from: size)
-   }
-
     // MARK: - IBActions
 
     @IBAction func signInButtonTapped(_ sender: Any) {

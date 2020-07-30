@@ -19,7 +19,7 @@
 import UIKit
 
 protocol PageFetchableDelegate: class {
-    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath)
+    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath)
 }
 
 class PageFetchableCollectionView: UICollectionView {
@@ -42,7 +42,7 @@ class PageFetchableCollectionView: UICollectionView {
 extension PageFetchableCollectionView: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         for indexPath in indexPaths where indexPath == lastItemIndexPath {
-            pageDelegate?.fetchNextContentPage(for: self, itemAtIndex: indexPath)
+            pageDelegate?.fetchNextContentPage(for: self, itemAtIndexPath: indexPath)
         }
     }
 }

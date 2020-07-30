@@ -39,14 +39,11 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
-    @IBOutlet weak var activityIndicatorSuperview: UIView!
 
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
     weak var resultScreenDelegate: ResultViewControllerDelegate?
-
-    var activityIndicator: ActivityIndicatorView?
 
     var resultsViewModel: ResultsViewModel?
     var recentSearchesViewModel = RecentSearchesViewModel()
@@ -82,27 +79,9 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                                                radius: 12,
-                                                                                                strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
-        if let activityIndicator = activityIndicator {
-            activityIndicatorSuperview.addSubview(activityIndicator)
-            activityIndicatorSuperview.isHidden = true
-        }
-    }
-
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.isHidden = false
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        activityIndicator?.reload(from: size)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -115,14 +94,10 @@ class ResultViewController: SystemThemableViewController {
 
     func startLoading() {
         resultsListController?.startLoading()
-        activityIndicatorSuperview.isHidden = false
-        activityIndicator?.state = .isLoading
     }
 
     func stopLoading() {
         resultsListController?.stopLoading()
-        activityIndicatorSuperview.isHidden = true
-        activityIndicator?.state = .isIdle
     }
 
     func clearDataSource() {

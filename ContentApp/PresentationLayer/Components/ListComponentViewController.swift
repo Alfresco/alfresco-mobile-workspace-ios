@@ -59,12 +59,13 @@ class ListComponentViewController: SystemThemableViewController {
         // Configure collectionview data source and delegate
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.pageDelegate = self
 
         emptyListView.isHidden = true
 
         // Set up generic and pull to refresh activity indicators
         let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                          configuration: ActivityIndicatorConfiguration(title: "" ,
+                                                          configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
                                                                                                         radius: 12,
                                                                                                         strokeWidth: 2,
                                                                                                         cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
@@ -224,8 +225,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 // MARK: - PageFetchableDelegate
 
 extension ListComponentViewController: PageFetchableDelegate {
-    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
-
+    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath) {
+        listActionDelegate?.fetchNextListPage(for: itemAtIndexPath)
     }
 }
 

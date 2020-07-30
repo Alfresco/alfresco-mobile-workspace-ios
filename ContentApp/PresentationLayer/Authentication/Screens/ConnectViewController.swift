@@ -91,11 +91,6 @@ class ConnectViewController: SystemThemableViewController {
         navigationBar(hide: false)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        activityIndicator?.reload(from: size)
-    }
-
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {

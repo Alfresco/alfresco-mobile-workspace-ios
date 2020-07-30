@@ -238,7 +238,7 @@ extension ListViewController: ListViewModelDelegate {
 // MARK: - PageFetchableDelegate
 
 extension ListViewController: PageFetchableDelegate {
-    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
+    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath) {
 
     }
 }
