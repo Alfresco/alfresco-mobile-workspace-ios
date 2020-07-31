@@ -57,7 +57,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
             viewController.listViewModel = listViewModel
             viewController.searchViewModel = globalSearchViewModel
             viewController.resultViewModel = resultViewModel
-            sSelf.listViewController = viewController    
+            sSelf.listViewController = viewController
             return viewController
         })
         let routerPathValues = NavigationRoutes.folderScreen.path + "/\(listNode.title)" + "/\(listNode.kind.rawValue)" + "/\(listNode.guid)"

@@ -107,4 +107,3 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         updateResults(results: results, pagination: pagination, error: error)
     }
 }
-

@@ -97,12 +97,12 @@ class ResultViewController: SystemThemableViewController {
         recentSearchesView.isHidden = false
     }
 
-    func updateRecentSearches(_ array: [String]) {
-        if recentSearchesViewModel.searches.count > 0 {
-            recentSearchCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+    func updateRecentSearches() {
+        recentSearchesViewModel.reloadRecentSearch()
+        if recentSearchesViewModel.searches.count > 0 && (recentSearchCollectionView.cellForItem(at: kIndexPathZero) != nil) {
+            recentSearchCollectionView.scrollToItem(at: kIndexPathZero, at: .top, animated: false)
         }
-        recentSearchesTitle.text = (array.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
-        recentSearchesViewModel.searches = array
+        recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         stopLoading()
         recentSearchCollectionView.reloadData()
     }

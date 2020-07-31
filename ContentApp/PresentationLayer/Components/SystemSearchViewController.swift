@@ -72,10 +72,9 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
     }
 
     func elementListTapped(elementList: ListNode) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchViewModel.save(recentSearch: searchBar.text)
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
+            let searchBar = navigationItem.searchController?.searchBar else { return }
+        rvc.recentSearchesViewModel.save(recentSearch: searchBar.text)
     }
 
     func fetchNextSearchResultsPage(for index: IndexPath) {
@@ -93,7 +92,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
             let searchViewModel = self.searchViewModel else { return }
 
         rvc.updateChips(searchViewModel.defaultSearchChips())
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
+        rvc.updateRecentSearches()
         rvc.clearDataSource()
     }
 }
@@ -105,9 +104,9 @@ extension SystemSearchViewController: UISearchBarDelegate {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
             let searchViewModel = self.searchViewModel else { return }
 
-        rvc.startLoading()
         searchViewModel.performSearch(for: searchBar.text)
-        searchViewModel.save(recentSearch: navigationItem.searchController?.searchBar.text)
+        rvc.recentSearchesViewModel.save(recentSearch: searchBar.text)
+        rvc.startLoading()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -121,7 +120,7 @@ extension SystemSearchViewController: UISearchBarDelegate {
             let searchViewModel = self.searchViewModel else { return }
 
         searchViewModel.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
+        rvc.updateRecentSearches()
     }
 }
 

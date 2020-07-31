@@ -48,7 +48,6 @@ enum IconType: String {
 }
 
 class FileIcon {
-
     static private var map: [String: IconType] {
         return [
             "application/acp": .arhive,

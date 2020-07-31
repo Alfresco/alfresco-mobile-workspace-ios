@@ -107,4 +107,3 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
         updateResults(results: results, pagination: pagination, error: error)
     }
 }
-
