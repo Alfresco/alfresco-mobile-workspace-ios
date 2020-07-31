@@ -56,13 +56,14 @@ class ListViewController: SystemSearchViewController {
 
         configureNavigationBar()
         addSettingsButton()
+
+        listController.startLoading()
+        listViewModel?.refreshList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
-        listController.startLoading()
-        listViewModel?.refreshList()
     }
 
     // MARK: - IBActions
