@@ -275,7 +275,7 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
 
         // If loading the first page or missing pagination scroll to top
         if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !isDataSourceEmpty {
-            collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            scrollToSection(0)
         }
     }
 }
