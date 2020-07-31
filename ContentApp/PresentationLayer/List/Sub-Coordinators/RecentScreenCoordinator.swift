@@ -34,13 +34,14 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = ListViewController()
 
+        let listViewModel = RecentViewModel(with: accountService, listRequest: nil)
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
-        viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.folderDrillDownScreenCoordinatorDelegate = self
         viewController.searchViewModel = globalSearchViewModel
@@ -63,7 +64,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showScreen(from node: ListNode) {
+    func showFolderScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
             folderDrillDownCoordinatorDelegate.start()

@@ -19,7 +19,7 @@
 import UIKit
 
 protocol FolderDrilDownScreenCoordinatorDelegate: class {
-    func showScreen(from node: ListNode)
+    func showFolderScreen(from node: ListNode)
 }
 
 class FolderChildrenScreenCoordinator: Coordinator {
@@ -44,41 +44,38 @@ class FolderChildrenScreenCoordinator: Coordinator {
             let nodeKind = parameters["nodeKind"] as? String
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            let viewController = ListViewController()
 
-//            let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
-//            let resultViewModel = ResultsViewModel()
-//            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-//            globalSearchViewModel.delegate = resultViewModel
-//            let viewController = ListViewController.instantiateViewController()
-//
-//            viewController.title = title
-//            viewController.themingService = themingService
-//            viewController.folderDrillDownScreenCoordinatorDelegate = self
-//            viewController.listViewModel = listViewModel
-//            viewController.searchViewModel = globalSearchViewModel
-//            viewController.resultViewModel = resultViewModel
-//            sSelf.listViewController = viewController
-        
-//            return viewController
+            let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
+            let resultViewModel = ResultsViewModel()
+            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+            globalSearchViewModel.delegate = resultViewModel
 
-            return nil
+            viewController.title = title
+            viewController.themingService = themingService
+            viewController.folderDrillDownScreenCoordinatorDelegate = self
+            viewController.listViewModel = listViewModel
+            viewController.searchViewModel = globalSearchViewModel
+            viewController.resultViewModel = resultViewModel
+            sSelf.listViewController = viewController    
+            return viewController
         })
         let routerPathValues = NavigationRoutes.folderScreen.path + "/\(listNode.title)" + "/\(listNode.kind.rawValue)" + "/\(listNode.guid)"
         router?.push(route: routerPathValues, from: presenter)
     }
 
-//    private func listViewModel(with nodeID: String?, and nodeKind: String?, and accountService: AccountService?) -> ListViewModelProtocol {
-//        let listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-//        if let nodeID = nodeID, let nodeKind = nodeKind {
-//            listViewModel.listNodeGuid = nodeID
-//            listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
-//        }
-//        return listViewModel
-//    }
+    private func listViewModel(with nodeID: String?, and nodeKind: String?, and accountService: AccountService?) -> ListViewModelProtocol {
+        let listViewModel = FolderDrillViewModel(with: accountService, listRequest: nil)
+        if let nodeID = nodeID, let nodeKind = nodeKind {
+            listViewModel.listNodeGuid = nodeID
+            listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
+        }
+        return listViewModel
+    }
 }
 
 extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showScreen(from node: ListNode) {
+    func showFolderScreen(from node: ListNode) {
         let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
         folderDrillDownCoordinatorDelegate.start()
         self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate

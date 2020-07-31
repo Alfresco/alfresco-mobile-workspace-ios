@@ -131,9 +131,6 @@ class ListViewController: SystemSearchViewController {
 
 extension ListViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
-        if node.kind == .folder || node.kind == .site {
-            folderDrillDownScreenCoordinatorDelegate?.showScreen(from: node)
-        }
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
