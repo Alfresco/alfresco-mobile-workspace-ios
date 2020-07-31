@@ -191,9 +191,12 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
 
-        if listDataSource?.shouldDisplayListLoadingIndicator() ?? false {
-            return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
+        if dataSource.numberOfSections() - 1 == section {
+            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false {
+                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
+            }
         }
 
         return CGSize(width: 0, height: 0)
