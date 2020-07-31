@@ -28,52 +28,91 @@ struct PaginatedResponse {
 
 typealias PagedResponseCompletionHandler = ((PaginatedResponse) -> Void)
 
-protocol PageFetchingViewModelDelegate: class {
-    func fetchItems(with requestPagination: RequestPagination, userInfo: Any, completionHandler: @escaping PagedResponseCompletionHandler)
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?)
-}
-
 class PageFetchingViewModel {
-    weak var pageFetchingDelegate: PageFetchingViewModelDelegate?
+    weak var pageUpdatingDelegate: ListComponentPageUpdatingDelegate?
 
     var pageFetchingGroup = DispatchGroup()
     var currentPage: Int = 1
     var hasMoreItems = true
 
-    final func fetchNextListPage(index: IndexPath, userInfo: Any) {
+    var shouldDisplayNextPageLoadingIndicator: Bool = true
+    var results: [ListNode] = [] {
+        willSet {
+            shouldDisplayNextPageLoadingIndicator = true
+        }
+        didSet {
+            updatedResults(results: results)
+        }
+    }
+
+    final func fetchNextListPage(index: IndexPath, userInfo: Any?) {
         pageFetchingGroup.notify(queue: .global()) { [weak self] in
             guard let sSelf = self else { return }
 
             if sSelf.hasMoreItems {
                 let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: sSelf.currentPage * kListPageSize)
-                sSelf.pageFetchingDelegate?.fetchItems(with: nextPage, userInfo: userInfo, completionHandler: { (paginatedResponse) in
-                    sSelf.handle(paginatedResponse: paginatedResponse)
+                sSelf.fetchItems(with: nextPage, userInfo: userInfo, completionHandler: { (paginatedResponse) in
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
                 })
             }
         }
     }
 
-    final func handle(paginatedResponse: PaginatedResponse) {
-        if let error = paginatedResponse.error {
+    final func handlePaginatedResponse(response: PaginatedResponse) {
+        if let error = response.error {
             AlfrescoLog.error(error)
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.pageFetchingDelegate?.handle(results: nil, pagination: nil, error: error)
+                sSelf.handlePage(results: nil, pagination: nil, error: error)
             }
-        } else if let results = paginatedResponse.results, let skipCount = paginatedResponse.responsePagination?.skipCount {
-            self.hasMoreItems = (Int64(results.count) + skipCount) == paginatedResponse.responsePagination?.totalItems ? false : true
+        } else if let results = response.results, let skipCount = response.responsePagination?.skipCount {
+            self.hasMoreItems = (Int64(results.count) + skipCount) == response.responsePagination?.totalItems ? false : true
 
-            if paginatedResponse.requestPagination != nil && hasMoreItems {
-                incrementPage(for: paginatedResponse.requestPagination)
+            if response.requestPagination != nil && hasMoreItems {
+                incrementPage(for: response.requestPagination)
             }
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.pageFetchingDelegate?.handle(results: results, pagination: paginatedResponse.responsePagination, error: nil)
+                sSelf.handlePage(results: results, pagination: response.responsePagination, error: nil)
             }
         }
         pageFetchingGroup.leave()
+    }
+
+    func updateResults(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        if let results = results {
+            if results.count > 0 {
+                if pagination?.skipCount != 0 {
+                    addNewResults(results: results, pagination: pagination)
+                } else {
+                    addResults(results: results, pagination: pagination)
+                }
+            } else if pagination?.skipCount == 0 {
+                self.results = []
+            }
+        } else {
+            if error == nil {
+                self.results = []
+            }
+        }
+
+        pageUpdatingDelegate?.didUpdateList(error: error, pagination: pagination)
+    }
+
+    func clear() {
+        results = []
+    }
+
+    func updatedResults(results: [ListNode]) {}
+
+    func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        // Override in subclass to provide items for a page
+    }
+
+    func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        // Override in subclass to handle results for a page
     }
 
     // MARK: - Private interface
@@ -81,6 +120,31 @@ class PageFetchingViewModel {
     private final func incrementPage(for paginationRequest: RequestPagination?) {
         if let pageSkipCount = paginationRequest?.skipCount {
             currentPage = pageSkipCount / kListPageSize + 1
+        }
+    }
+
+    private func addNewResults(results: [ListNode]?, pagination: Pagination?) {
+        guard let results = results else { return }
+        if results.count != 0 {
+            let olderElementsSet = Set(self.results)
+            let newElementsSet = Set(results)
+
+            if !newElementsSet.isSubset(of: olderElementsSet) {
+                self.results.append(contentsOf: results)
+            }
+
+            if let pagination = pagination {
+                shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
+            }
+        }
+    }
+
+    private func addResults(results: [ListNode]?, pagination: Pagination?) {
+        guard let results = results else { return }
+        if results.count != 0 {
+            self.results = results
+
+            shouldDisplayNextPageLoadingIndicator = (Int64(results.count) == pagination?.totalItems) ? false : true
         }
     }
 }

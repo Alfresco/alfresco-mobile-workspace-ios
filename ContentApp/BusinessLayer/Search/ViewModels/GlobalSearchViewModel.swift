@@ -33,7 +33,6 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     init(accountService: AccountService?) {
         super.init()
         self.accountService = accountService
-        pageFetchingDelegate = self
     }
 
     // MARK: - Public methods
@@ -117,6 +116,16 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         fetchNextListPage(index: index, userInfo: string ?? "")
     }
 
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        if let searchTerm = userInfo as? String {
+            self.performSearch(for: searchTerm, paginationRequest: requestPagination)
+        }
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        self.delegate?.handle(results: results, pagination: pagination, error: error)
+    }
+
     // MARK: Private Methods
 
     private func isSearchForLibraries() -> Bool {
@@ -140,7 +149,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
-                sSelf.handle(paginatedResponse: paginatedResponse)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
     }
@@ -160,20 +169,8 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
 
-                sSelf.handle(paginatedResponse: paginatedResponse)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
-    }
-}
-
-extension GlobalSearchViewModel: PageFetchingViewModelDelegate {
-    func fetchItems(with requestPagination: RequestPagination, userInfo: Any, completionHandler: @escaping PagedResponseCompletionHandler) {
-        if let searchTerm = userInfo as? String {
-            self.performSearch(for: searchTerm, paginationRequest: requestPagination)
-        }
-    }
-
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 }

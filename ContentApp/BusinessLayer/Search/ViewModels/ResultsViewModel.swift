@@ -19,65 +19,7 @@
 import Foundation
 import AlfrescoContentServices
 
-class ResultsViewModel {
-    weak var delegate: ListComponentPaginationDelegate?
-
-    private var shouldDisplayNextPageLoadingIndicator: Bool = true
-    private var results: [ListNode] = [] {
-        willSet {
-            shouldDisplayNextPageLoadingIndicator = true
-        }
-    }
-
-    func updateResults(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        if let results = results {
-            if results.count > 0 {
-                if pagination?.skipCount != 0 {
-                    addNewResults(results: results, pagination: pagination)
-                } else {
-                    addResults(results: results, pagination: pagination)
-                }
-            } else if pagination?.skipCount == 0 {
-                self.results = []
-            }
-        } else {
-            if error == nil {
-                self.results = []
-            }
-        }
-
-        delegate?.didUpdateList(error: error, pagination: pagination)
-    }
-
-    func addNewResults(results: [ListNode]?, pagination: Pagination?) {
-        guard let results = results else { return }
-        if results.count != 0 {
-            let olderElementsSet = Set(self.results)
-            let newElementsSet = Set(results)
-
-            if !newElementsSet.isSubset(of: olderElementsSet) {
-                self.results.append(contentsOf: results)
-            }
-
-            if let pagination = pagination {
-                shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
-            }
-        }
-    }
-
-    func addResults(results: [ListNode]?, pagination: Pagination?) {
-        guard let results = results else { return }
-        if results.count != 0 {
-            self.results = results
-
-            shouldDisplayNextPageLoadingIndicator = (Int64(results.count) == pagination?.totalItems) ? false : true
-        }
-    }
-
-    func clearResults() {
-        results = []
-    }
-}
+class ResultsViewModel: PageFetchingViewModel {}
 
 // MARK: - SearchViewModelDelegate
 

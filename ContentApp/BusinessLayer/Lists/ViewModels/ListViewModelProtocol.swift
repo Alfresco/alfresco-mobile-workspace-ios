@@ -21,8 +21,9 @@ import AlfrescoContentServices
 import AlfrescoAuth
 
 protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
-    var delegate: ListComponentPaginationDelegate? { get set }
+    var pageUpdatingDelegate: ListComponentPageUpdatingDelegate? { get set }
 
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func shouldDisplaySettingsButton() -> Bool
+    func fetchNextListPage(index: IndexPath, userInfo: Any?)
 }

@@ -45,9 +45,9 @@ struct SearchRequestBuilder {
                              ranges: nil)
     }
 
-    static func recentRequest(_ accountIdentifier: String) -> SearchRequest {
+    static func recentRequest(_ accountIdentifier: String, pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(""),
-                             paging: self.requestPagination(),
+                             paging: pagination ?? self.requestPagination(),
                              include: self.requestInclude(),
                              includeRequest: nil,
                              fields: nil, sort: self.recentRequestSort(),

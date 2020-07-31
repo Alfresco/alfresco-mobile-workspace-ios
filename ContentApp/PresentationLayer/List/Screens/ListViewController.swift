@@ -36,7 +36,7 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
         listComponentViewController.themingService = self.themingService
-        listViewModel?.delegate = listComponentViewController
+        listViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
@@ -137,9 +137,10 @@ extension ListViewController: ListComponentActionDelegate {
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
+        listController.stopLoading()
     }
 
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
-        
+        listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
     }
 }

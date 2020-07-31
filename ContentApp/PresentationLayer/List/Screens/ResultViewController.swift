@@ -59,7 +59,7 @@ class ResultViewController: SystemThemableViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = resultsViewModel
         listComponentViewController.themingService = self.themingService
-        resultsViewModel?.delegate = listComponentViewController
+        resultsViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +101,7 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func clearDataSource() {
-        resultsViewModel?.clearResults()
+        resultsViewModel?.clear()
         emptyListView.isHidden = true
         recentSearchesView.isHidden = false
     }

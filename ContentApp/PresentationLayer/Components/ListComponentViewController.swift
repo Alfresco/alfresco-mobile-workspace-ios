@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoContentServices
+import MaterialComponents.MaterialActivityIndicator
 
 protocol ListComponentDataSourceProtocol: class {
     func isEmpty() -> Bool
@@ -36,7 +37,7 @@ protocol ListComponentActionDelegate: class {
     func fetchNextListPage(for itemAtIndexPath: IndexPath)
 }
 
-protocol ListComponentPaginationDelegate: class {
+protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?, pagination: Pagination?)
 }
 
@@ -69,11 +70,8 @@ class ListComponentViewController: SystemThemableViewController {
                                                                                                         radius: 12,
                                                                                                         strokeWidth: 2,
                                                                                                         cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
-        let refreshIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                         configuration: ActivityIndicatorConfiguration(title: "" ,
-                                                                                                       radius: 12,
-                                                                                                       strokeWidth: 2,
-                                                                                                       cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
+        let refreshIndicatorView = MDCActivityIndicator()
+        refreshIndicatorView.sizeToFit()
 
         self.view.addSubview(activityIndicatorView)
         activityIndicatorView.isHidden = true
@@ -82,9 +80,16 @@ class ListComponentViewController: SystemThemableViewController {
         // Set up pull to refresh control
         let refreshControl = UIRefreshControl()
         refreshControl.tintColor = .clear
-        refreshIndicatorView.center = refreshControl.center
+
+        refreshIndicatorView.center = CGPoint(x: refreshControl.center.x + refreshIndicatorView.frame.size.width, y: refreshControl.center.y)
+        refreshIndicatorView.strokeWidth = 2
+        refreshIndicatorView.radius = 12
+        refreshIndicatorView.cycleColors = [themingService?.activeTheme?.primaryVariantColor ?? .black]
+        refreshIndicatorView.startAnimating()
+
         refreshControl.addSubview(refreshIndicatorView)
         collectionView.addSubview(refreshControl)
+
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
 
@@ -134,6 +139,7 @@ class ListComponentViewController: SystemThemableViewController {
     func stopLoading() {
         activityIndicator?.state = .isIdle
         collectionView.isUserInteractionEnabled = true
+        refreshControl?.endRefreshing()
     }
 
     func scrollToSection(_ section: Int) {
@@ -247,7 +253,7 @@ extension ListComponentViewController: PageFetchableDelegate {
     }
 }
 
-extension ListComponentViewController: ListComponentPaginationDelegate {
+extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?, pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
