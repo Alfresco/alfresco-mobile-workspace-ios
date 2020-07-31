@@ -119,8 +119,6 @@ class ListComponentViewController: SystemThemableViewController {
         guard let currentTheme = self.themingService?.activeTheme else { return }
         emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
-
-        emptyListView.backgroundColor = currentTheme.backgroundColor
     }
 
     func addLocalization() {
@@ -242,7 +240,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
         if node.kind == .folder || node.kind == .site {
-            folderDrillDownScreenCoordinatorDelegate?.showScreen(from: node)
+            folderDrillDownScreenCoordinatorDelegate?.showFolderScreen(from: node)
         }
         listActionDelegate?.elementTapped(node: node)
     }
@@ -261,7 +259,6 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
-        collectionView.isHidden = isDataSourceEmpty
 
         if error == nil {
             collectionView.reloadData()

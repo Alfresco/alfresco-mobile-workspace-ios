@@ -60,8 +60,6 @@ class PageFetchingViewModel {
 
     final func handlePaginatedResponse(response: PaginatedResponse) {
         if let error = response.error {
-            AlfrescoLog.error(error)
-
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.handlePage(results: nil, pagination: nil, error: error)

@@ -34,12 +34,6 @@ class ResultViewController: SystemThemableViewController {
     var resultsListController: ListComponentViewController?
     @IBOutlet weak var chipsCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
-
-    @IBOutlet weak var emptyListView: UIView!
-    @IBOutlet weak var emptyListTitle: UILabel!
-    @IBOutlet weak var emptyListSubtitle: UILabel!
-    @IBOutlet weak var emptyListImageView: UIImageView!
-
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
 
@@ -73,8 +67,6 @@ class ResultViewController: SystemThemableViewController {
         resultsListController = listComponentViewController
         resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
-        emptyListView.isHidden = true
-
         addLocalization()
         addChipsCollectionViewFlowLayout()
     }
@@ -102,7 +94,6 @@ class ResultViewController: SystemThemableViewController {
 
     func clearDataSource() {
         resultsViewModel?.clear()
-        emptyListView.isHidden = true
         recentSearchesView.isHidden = false
     }
 
@@ -133,20 +124,14 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.Search.title
-        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
         recentSearchesTitle.text = LocalizationConstants.Search.noRecentSearch
     }
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
 
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
-
         view.backgroundColor = currentTheme.backgroundColor
-        emptyListView.backgroundColor = currentTheme.backgroundColor
         recentSearchesView.backgroundColor = currentTheme.backgroundColor
     }
 

@@ -32,7 +32,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     func start() {
 //        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 //        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-//        let viewController = ListViewController()
+        let viewController = ListViewController()
 //
 //        let resultViewModel = ResultsViewModel()
 //        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
@@ -48,10 +48,10 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 //        viewController.searchViewModel = globalSearchViewModel
 //        viewController.resultViewModel = resultViewModel
 //
-//        let navigationViewController = UINavigationController(rootViewController: viewController)
-//        presenter.viewControllers?.append(navigationViewController)
-//        self.navigationViewController = navigationViewController
-//        self.favoritesViewController = viewController
+        let navigationViewController = UINavigationController(rootViewController: viewController)
+        presenter.viewControllers?.append(navigationViewController)
+        self.navigationViewController = navigationViewController
+        self.favoritesViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
@@ -65,7 +65,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension FavoritesScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showScreen(from node: ListNode) {
+    func showFolderScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
             folderDrillDownCoordinatorDelegate.start()

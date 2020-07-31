@@ -45,18 +45,15 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
-
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
                 }
-
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
-
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -919,41 +919,6 @@
                                     <outlet property="delegate" destination="mAS-aS-Dfn" id="7TO-WR-BEu"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qRs-WI-Kol">
-                                <rect key="frame" x="0.0" y="99" width="414" height="448"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqx-vg-iEE">
-                                        <rect key="frame" x="159.5" y="60" width="95" height="33.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4mB-KN-La8">
-                                        <rect key="frame" x="136" y="98.5" width="142.5" height="41"/>
-                                        <string key="text">We can’t find what
- you’re looking for</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="emptyList" translatesAutoresizingMaskIntoConstraints="NO" id="vsu-rv-NVr">
-                                        <rect key="frame" x="137" y="171.5" width="140" height="130"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="140" id="1yo-Vi-gIX"/>
-                                            <constraint firstAttribute="height" constant="130" id="eCC-Fm-RnO"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="4mB-KN-La8" firstAttribute="centerX" secondItem="qRs-WI-Kol" secondAttribute="centerX" id="04D-vV-m1n"/>
-                                    <constraint firstItem="vsu-rv-NVr" firstAttribute="top" secondItem="4mB-KN-La8" secondAttribute="bottom" constant="32" id="1kH-wv-7Zp"/>
-                                    <constraint firstItem="kqx-vg-iEE" firstAttribute="top" secondItem="qRs-WI-Kol" secondAttribute="top" constant="60" id="Jl5-mC-nS5"/>
-                                    <constraint firstItem="kqx-vg-iEE" firstAttribute="centerX" secondItem="qRs-WI-Kol" secondAttribute="centerX" id="NOR-BL-NdA"/>
-                                    <constraint firstItem="4mB-KN-La8" firstAttribute="top" secondItem="kqx-vg-iEE" secondAttribute="bottom" constant="5" id="lS6-tD-qgY"/>
-                                    <constraint firstItem="vsu-rv-NVr" firstAttribute="centerX" secondItem="qRs-WI-Kol" secondAttribute="centerX" id="wBM-aE-2rC"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aW3-Eu-ZXR">
                                 <rect key="frame" x="0.0" y="99" width="414" height="763"/>
                                 <subviews>
@@ -1043,13 +1008,9 @@
                         <constraints>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="5Xr-l4-L9c"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="trailing" secondItem="R3P-T3-czl" secondAttribute="trailing" id="649-FB-uKc"/>
-                            <constraint firstItem="qRs-WI-Kol" firstAttribute="top" secondItem="aW3-Eu-ZXR" secondAttribute="top" id="6Bt-Jj-xQm"/>
                             <constraint firstItem="q9L-jX-ymC" firstAttribute="top" secondItem="R3P-T3-czl" secondAttribute="top" constant="17" id="87N-rf-AKQ"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="aW3-Eu-ZXR" secondAttribute="trailing" id="GpC-vH-GV5"/>
-                            <constraint firstItem="qRs-WI-Kol" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="IKw-E4-nkK"/>
-                            <constraint firstItem="R3P-T3-czl" firstAttribute="trailing" secondItem="qRs-WI-Kol" secondAttribute="trailing" id="Uxt-uj-gs2"/>
                             <constraint firstItem="aW3-Eu-ZXR" firstAttribute="leading" secondItem="R3P-T3-czl" secondAttribute="leading" id="gbf-PJ-iSf"/>
-                            <constraint firstItem="qRs-WI-Kol" firstAttribute="height" secondItem="fEe-g3-7ko" secondAttribute="height" multiplier="1/2" id="qTo-Cf-Dt3"/>
                             <constraint firstItem="R3P-T3-czl" firstAttribute="bottom" secondItem="aW3-Eu-ZXR" secondAttribute="bottom" id="qxC-MS-MiV"/>
                             <constraint firstItem="aW3-Eu-ZXR" firstAttribute="top" secondItem="q9L-jX-ymC" secondAttribute="bottom" constant="5" id="ujQ-Kg-vMC"/>
                         </constraints>
@@ -1057,10 +1018,6 @@
                     </view>
                     <connections>
                         <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
-                        <outlet property="emptyListImageView" destination="vsu-rv-NVr" id="h8S-dx-S0Y"/>
-                        <outlet property="emptyListSubtitle" destination="4mB-KN-La8" id="7s4-M0-g5C"/>
-                        <outlet property="emptyListTitle" destination="kqx-vg-iEE" id="jvg-OG-v8a"/>
-                        <outlet property="emptyListView" destination="qRs-WI-Kol" id="hgc-gx-9xd"/>
                         <outlet property="recentSearchCollectionView" destination="R2V-xg-rmY" id="GL9-vH-gM0"/>
                         <outlet property="recentSearchesTitle" destination="G6H-m0-aVG" id="yDH-bn-Rcb"/>
                         <outlet property="recentSearchesView" destination="aW3-Eu-ZXR" id="eMM-yM-ZJu"/>
@@ -1604,7 +1561,7 @@
                                     </connections>
                                 </collectionReusableView>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddo-cc-nfp">
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ddo-cc-nfp">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbf-LQ-gvV">

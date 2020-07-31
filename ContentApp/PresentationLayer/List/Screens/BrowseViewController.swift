@@ -128,7 +128,7 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listViewModel?.list[indexPath.section][indexPath.row] else { return }
-        browseScreenCoordinatorDelegate?.showScreen(from: node)
+        browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

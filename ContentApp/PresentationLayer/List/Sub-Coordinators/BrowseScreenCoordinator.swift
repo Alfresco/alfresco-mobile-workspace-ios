@@ -19,7 +19,7 @@
 import UIKit
 
 protocol BrowseScreenCoordinatorDelegate: class {
-    func showScreen(from browseNode: BrowseNode)
+    func showTopLevelFolderScreen(from browseNode: BrowseNode)
 }
 
 class BrowseScreenCoordinator: ListCoordinatorProtocol {
@@ -52,7 +52,6 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
@@ -66,7 +65,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
-    func showScreen(from browseNode: BrowseNode) {
+    func showTopLevelFolderScreen(from browseNode: BrowseNode) {
         if let navigationViewController = self.navigationViewController {
             let staticFolderScreenCoordinator = BrowseTopLevelFolderScreenCoordinator(with: navigationViewController, browseNode: browseNode)
             staticFolderScreenCoordinator.start()
@@ -76,7 +75,7 @@ extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
 }
 
 extension BrowseScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showScreen(from node: ListNode) {
+    func showFolderScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
             folderDrillDownCoordinatorDelegate.start()
