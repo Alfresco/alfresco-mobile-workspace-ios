@@ -41,6 +41,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
+        resultViewModel.delegate = globalSearchViewModel
         let browseViewModel = BrowseViewModel()
 
         viewController.title = LocalizationConstants.ScreenTitles.browse

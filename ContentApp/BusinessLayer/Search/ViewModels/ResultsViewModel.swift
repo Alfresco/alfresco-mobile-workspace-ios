@@ -19,7 +19,13 @@
 import Foundation
 import AlfrescoContentServices
 
-class ResultsViewModel: PageFetchingViewModel {}
+protocol ResultsViewModelDelegate: class {
+    func refreshResults()
+}
+
+class ResultsViewModel: PageFetchingViewModel {
+    weak var delegate: ResultsViewModelDelegate?
+}
 
 // MARK: - SearchViewModelDelegate
 
@@ -40,7 +46,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     }
 
     func numberOfSections() -> Int {
-        return 1
+        return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -60,6 +66,6 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     }
 
     func refreshList() {
-        // TODO: request refresh
+        delegate?.refreshResults()
     }
 }
