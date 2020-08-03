@@ -75,7 +75,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return 1
+        return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {

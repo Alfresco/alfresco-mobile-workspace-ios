@@ -174,7 +174,7 @@
                                 <attributedString key="attributedText">
                                     <fragment content="To allow successful single sign on access, please provide the location of your Process Services environment.">
                                         <attributes>
-                                            <font key="NSFont" metaFont="menuBar"/>
+                                            <font key="NSFont" metaFont="menu" size="14"/>
                                         </attributes>
                                     </fragment>
                                 </attributedString>
@@ -809,11 +809,11 @@
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="50" height="16"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="0.0" minY="10" maxX="0.0" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="5" maxX="0.0" maxY="5"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BrowseStaticNodeCollectionViewCell" id="U5u-B1-02v" customClass="BrowseStaticNodeCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="26" width="414" height="48"/>
+                                        <rect key="frame" x="0.0" y="21" width="414" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="n1g-Gc-ntq">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="48"/>
@@ -854,7 +854,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mgW-HM-F5o">
-                                            <rect key="frame" x="72" y="15" width="342" height="1"/>
+                                            <rect key="frame" x="72" y="7.5" width="342" height="1"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="bU7-ex-vRn"/>
@@ -862,8 +862,8 @@
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="mgW-HM-F5o" secondAttribute="bottom" id="KVh-cM-rvp"/>
                                         <constraint firstAttribute="trailing" secondItem="mgW-HM-F5o" secondAttribute="trailing" id="MP5-Bm-NHz"/>
+                                        <constraint firstItem="mgW-HM-F5o" firstAttribute="centerY" secondItem="eJw-yj-h42" secondAttribute="centerY" id="WTf-TX-UKv"/>
                                         <constraint firstItem="mgW-HM-F5o" firstAttribute="leading" secondItem="eJw-yj-h42" secondAttribute="leading" constant="72" id="fVJ-7A-8Wr"/>
                                     </constraints>
                                     <connections>
