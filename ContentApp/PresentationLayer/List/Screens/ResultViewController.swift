@@ -76,10 +76,16 @@ class ResultViewController: SystemThemableViewController {
         view.isHidden = false
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resultsListController?.viewWillAppear(animated)
+    }
+
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
+        resultsListController?.willTransition(to: newCollection, with: coordinator)
     }
 
     // MARK: - Public Helpers
@@ -203,6 +209,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
             }
             resultScreenDelegate?.chipTapped(chip: chip)
+            resultsListController?.scrollToSection(0)
         default: break
         }
     }
@@ -218,6 +225,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
             }
             resultScreenDelegate?.chipTapped(chip: chip)
+            resultsListController?.scrollToSection(0)
         default: break
         }
     }

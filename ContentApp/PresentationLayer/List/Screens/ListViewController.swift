@@ -63,14 +63,13 @@ class ListViewController: SystemSearchViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        listController?.applyComponentsThemes()
+        listController?.viewWillAppear(animated)
         addAvatarInSettingsButton()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        listController?.applyComponentsThemes()
-        listController?.collectionView.reloadData()
+        listController?.willTransition(to: newCollection, with: coordinator)
     }
 
     // MARK: - IBActions

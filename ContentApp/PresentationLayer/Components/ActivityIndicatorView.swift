@@ -70,7 +70,7 @@ class ActivityIndicatorView: UIView {
         self.activityIndicatorConfiguration.overlayViewColor = currentTheme?.backgroundColor ?? .white
         super.init(frame: kWindow.bounds)
         self.commonInit()
-        self.applyTheme(currentTheme)
+        self.applyTheme(currentTheme, configuration: configuration)
     }
 
     required init?(coder: NSCoder) {
@@ -85,15 +85,16 @@ class ActivityIndicatorView: UIView {
         label.text = text
     }
 
-    // MARK: - Private Helpers
-
-    private func applyTheme(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
         guard let currentTheme = currentTheme else { return }
-        activityIndicator.cycleColors = activityIndicatorConfiguration.cycleColors
-        label.text = activityIndicatorConfiguration.title
+        activityIndicator.cycleColors = configuration.cycleColors
+        label.text = configuration.title
         label.applyStyleBody2OnSurface60(theme: currentTheme)
         label.textAlignment = .center
+        overlayView?.backgroundColor = configuration.overlayViewColor
     }
+
+    // MARK: - Private Helpers
 
     private func commonInit() {
         self.isUserInteractionEnabled = false

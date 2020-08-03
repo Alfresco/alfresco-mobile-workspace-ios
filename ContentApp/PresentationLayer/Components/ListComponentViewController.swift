@@ -48,6 +48,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     var activityIndicator: ActivityIndicatorView?
+    var configurationActiviyIndicatorView = ActivityIndicatorConfiguration.defaultValue
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
@@ -65,11 +66,13 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
 
         // Set up generic and pull to refresh activity indicators
+        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
+                                                                           radius: 12,
+                                                                           strokeWidth: 2,
+                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
+                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
         let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                          configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                                                        radius: 12,
-                                                                                                        strokeWidth: 2,
-                                                                                                        cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
+                                                          configuration: configurationActiviyIndicatorView)
         let refreshIndicatorView = MDCActivityIndicator()
         refreshIndicatorView.sizeToFit()
 
@@ -105,12 +108,26 @@ class ListComponentViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        applyComponentsThemes()
+        scrollToSection(0)
         collectionView.reloadData()
+        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
+                                                                           radius: 12,
+                                                                           strokeWidth: 2,
+                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
+                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
+        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
+        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
+                                                                           radius: 12,
+                                                                           strokeWidth: 2,
+                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
+                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
+        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
     }
 
     override func applyComponentsThemes() {
@@ -142,10 +159,13 @@ class ListComponentViewController: SystemThemableViewController {
 
     func scrollToSection(_ section: Int) {
         let indexPath = IndexPath(item: 0, section: section)
-        if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
-            let topOfHeader = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
-            collectionView.setContentOffset(topOfHeader, animated: true)
+        var pointToScroll = CGPoint.zero
+        if collectionView.cellForItem(at: indexPath) != nil {
+            if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
+                pointToScroll = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+            }
         }
+        collectionView.setContentOffset(pointToScroll, animated: true)
     }
 
     // MARK: - Private Interface
