@@ -20,7 +20,7 @@ import UIKit
 import AlfrescoContentServices
 
 class ListViewController: SystemSearchViewController {
-    var listController: ListComponentViewController!
+    var listController: ListComponentViewController?
     var listViewModel: ListViewModelProtocol?
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
@@ -57,13 +57,20 @@ class ListViewController: SystemSearchViewController {
         configureNavigationBar()
         addSettingsButton()
 
-        listController.startLoading()
+        listController?.startLoading()
         listViewModel?.refreshList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        listController?.applyComponentsThemes()
         addAvatarInSettingsButton()
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        listController?.applyComponentsThemes()
+        listController?.collectionView.reloadData()
     }
 
     // MARK: - IBActions
@@ -75,7 +82,7 @@ class ListViewController: SystemSearchViewController {
     // MARK: - Coordinator Public Methods
 
     func scrollToTop() {
-        listController.scrollToSection(0)
+        listController?.scrollToSection(0)
     }
 
     // MARK: - Helpers
@@ -135,7 +142,7 @@ extension ListViewController: ListComponentActionDelegate {
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
-        listController.stopLoading()
+        listController?.stopLoading()
     }
 
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
