@@ -18,7 +18,7 @@
 
 import UIKit
 
-class BrowseStaticNodeCollectionViewCell: UICollectionViewCell {
+class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     var node: BrowseNode? {

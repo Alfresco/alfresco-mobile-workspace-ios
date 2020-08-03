@@ -19,7 +19,7 @@
 import UIKit
 
 protocol BrowseScreenCoordinatorDelegate: class {
-    func showScreen(from browseNode: BrowseNode)
+    func showTopLevelFolderScreen(from browseNode: BrowseNode)
 }
 
 class BrowseScreenCoordinator: ListCoordinatorProtocol {
@@ -27,17 +27,32 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     private var browseViewController: BrowseViewController?
     private var navigationViewController: UINavigationController?
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
+    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
     }
 
     func start() {
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = BrowseViewController.instantiateViewController()
+
+        let resultViewModel = ResultsViewModel()
+        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        globalSearchViewModel.delegate = resultViewModel
+        resultViewModel.delegate = globalSearchViewModel
+        let browseViewModel = BrowseViewModel()
+
         viewController.title = LocalizationConstants.ScreenTitles.browse
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.listViewModel = BrowseViewModel()
+        viewController.themingService = themingService
+        viewController.folderDrillDownScreenCoordinatorDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
+        viewController.tabBarScreenDelegate = presenter
+        viewController.listViewModel = browseViewModel
+        viewController.searchViewModel = globalSearchViewModel
+        viewController.resultViewModel = resultViewModel
+
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
@@ -46,15 +61,26 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
     func scrollToTopOrPopToRoot() {
         navigationViewController?.popToRootViewController(animated: true)
+        browseViewController?.cancelSearchMode()
     }
 }
 
 extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
-    func showScreen(from browseNode: BrowseNode) {
+    func showTopLevelFolderScreen(from browseNode: BrowseNode) {
         if let navigationViewController = self.navigationViewController {
             let staticFolderScreenCoordinator = BrowseTopLevelFolderScreenCoordinator(with: navigationViewController, browseNode: browseNode)
             staticFolderScreenCoordinator.start()
             self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
+        }
+    }
+}
+
+extension BrowseScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+    func showFolderScreen(from node: ListNode) {
+        if let navigationViewController = self.navigationViewController {
+            let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+            folderDrillDownCoordinatorDelegate.start()
+            self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
         }
     }
 }

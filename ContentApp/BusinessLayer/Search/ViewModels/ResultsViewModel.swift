@@ -20,60 +20,52 @@ import Foundation
 import AlfrescoContentServices
 
 protocol ResultsViewModelDelegate: class {
-    func didUpdateResultsList(error: Error?, pagination: Pagination?)
+    func refreshResults()
 }
 
-class ResultsViewModel {
-    var results: [ListNode] = [] {
-        willSet {
-            shouldDisplayNextPageLoadingIndicator = true
-        }
-    }
-    var shouldDisplayNextPageLoadingIndicator: Bool = true
+class ResultsViewModel: PageFetchingViewModel {
     weak var delegate: ResultsViewModelDelegate?
+}
 
-    func updateResults(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        if let results = results {
-            if results.count > 0 {
-                if pagination?.skipCount != 0 {
-                    addNewResults(results: results, pagination: pagination)
-                } else {
-                    addResults(results: results, pagination: pagination)
-                }
-            } else if pagination?.skipCount == 0 {
-                self.results = []
-            }
-        } else {
-            if error == nil {
-                self.results = []
-            }
-        }
+// MARK: - SearchViewModelDelegate
 
-        delegate?.didUpdateResultsList(error: error, pagination: pagination)
+extension ResultsViewModel: SearchViewModelDelegate {
+    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+}
+
+// MARK: - ListCcomponentDataSourceProtocol
+extension ResultsViewModel: ListComponentDataSourceProtocol {
+    func isEmpty() -> Bool {
+        return results.isEmpty
     }
 
-    func addNewResults(results: [ListNode]?, pagination: Pagination?) {
-        guard let results = results else { return }
-        if results.count != 0 {
-            let olderElementsSet = Set(self.results)
-            let newElementsSet = Set(results)
-        
-            if !newElementsSet.isSubset(of: olderElementsSet) {
-                self.results.append(contentsOf: results)
-            }
-
-            if let pagination = pagination {
-                shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
-            }
-        }
+    func shouldDisplaySections() -> Bool {
+        return false
     }
 
-    func addResults(results: [ListNode]?, pagination: Pagination?) {
-        guard let results = results else { return }
-        if results.count != 0 {
-            self.results = results
+    func numberOfSections() -> Int {
+        return (results.count == 0) ? 0 : 1
+    }
 
-            shouldDisplayNextPageLoadingIndicator = (Int64(results.count) == pagination?.totalItems) ? false : true
-        }
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func refreshList() {
+        delegate?.refreshResults()
     }
 }

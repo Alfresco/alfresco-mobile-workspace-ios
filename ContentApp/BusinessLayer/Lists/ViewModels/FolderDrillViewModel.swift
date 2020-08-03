@@ -21,9 +21,12 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContentServices
 
-class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+
+    var listNodeGuid: String = kAPIPathMy
+    var listNodeIsFolder: Bool = true
 
     // MARK: - Init
 
@@ -40,12 +43,14 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let relativePath = (sSelf.listNodeIsFolder) ? nil : kAPIPathRelativeForSites
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe, skipCount: skipCount, maxItems: maxItems, orderBy: nil, relations: nil, fields: nil, _where: nil) { (result, error) in
+            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid, skipCount: skipCount, maxItems: maxItems, orderBy: nil, _where: nil,
+                                      include: nil, relativePath: relativePath, includeSource: nil, fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
-                if let entries = result?.list.entries {
-                    listNodes = SitesNodeMapper.map(entries)
+                if let entries = result?.list?.entries {
+                    listNodes = NodeChildMapper.map(entries)
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
@@ -54,7 +59,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
-                                                          responsePagination: result?.list.pagination)
+                                                          responsePagination: result?.list?.pagination)
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
@@ -75,7 +80,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return 1
+        return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {

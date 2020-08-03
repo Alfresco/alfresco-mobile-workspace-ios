@@ -19,64 +19,57 @@
 import UIKit
 import AlfrescoContentServices
 
-class ListViewController: SystemThemableViewController {
-    @IBOutlet weak var collectionView: PageFetchableCollectionView!
-
-    @IBOutlet weak var activityIndicatorSuperview: UIView!
-    var activityIndicator: ActivityIndicatorView?
-
-    @IBOutlet weak var emptyListView: UIView!
-    @IBOutlet weak var emptyListTitle: UILabel!
-    @IBOutlet weak var emptyListSubtitle: UILabel!
-    @IBOutlet weak var emptyListImageView: UIImageView!
+class ListViewController: SystemSearchViewController {
+    var listController: ListComponentViewController?
+    var listViewModel: ListViewModelProtocol?
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    weak var folderDrilDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
-    var listViewModel: ListViewModelProtocol?
-    var searchViewModel: SearchViewModelProtocol?
-    var loadFirstRequest: Bool = true
 
     private var settingsButton = UIButton(type: .custom)
-    private var didChangedChipFilter = false
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        listViewModel?.viewModelDelegate = self
-        searchViewModel?.viewModelDelegate = self
+
+        let listComponentViewController = ListComponentViewController.instantiateViewController()
+        listComponentViewController.listActionDelegate = self
+        listComponentViewController.listDataSource = listViewModel
+        listComponentViewController.themingService = self.themingService
+        listViewModel?.pageUpdatingDelegate = listComponentViewController
+
+        if let listComponentView = listComponentViewController.view {
+            listComponentView.translatesAutoresizingMaskIntoConstraints = false
+
+            view.addSubview(listComponentView)
+
+            NSLayoutConstraint.activate([
+                listComponentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+                listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 0),
+                listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+                listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            ])
+
+        }
+        listController = listComponentViewController
+        listController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
         configureNavigationBar()
         addSettingsButton()
-        addSearchController()
 
-        registerListElementCell()
-        emptyListView.isHidden = true
+        listController?.startLoading()
+        listViewModel?.refreshList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        listController?.viewWillAppear(animated)
         addAvatarInSettingsButton()
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                  configuration: ActivityIndicatorConfiguration(title: "" ,
-                                                                                                radius: 12,
-                                                                                                strokeWidth: 2,
-                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
-        if let activityIndicator = activityIndicator {
-            activityIndicatorSuperview.addSubview(activityIndicator)
-            activityIndicatorSuperview.isHidden = true
-        }
-        if loadFirstRequest {
-            startLoading()
-            listViewModel?.reloadRequest()
-            loadFirstRequest = false
-        }
-        collectionView.reloadData()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        collectionView.reloadData()
+        listController?.willTransition(to: newCollection, with: coordinator)
     }
 
     // MARK: - IBActions
@@ -88,20 +81,10 @@ class ListViewController: SystemThemableViewController {
     // MARK: - Coordinator Public Methods
 
     func scrollToTop() {
-        self.scrollToSection(0)
+        listController?.scrollToSection(0)
     }
 
     // MARK: - Helpers
-
-    func startLoading() {
-        activityIndicatorSuperview.isHidden = false
-        activityIndicator?.state = .isLoading
-    }
-
-    func stopLoading() {
-        activityIndicatorSuperview.isHidden = true
-        activityIndicator?.state = .isIdle
-    }
 
     func configureNavigationBar() {
         definesPresentationContext = true
@@ -129,23 +112,8 @@ class ListViewController: SystemThemableViewController {
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem
     }
 
-    func addSearchController() {
-        let rvc = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ResultViewController.self)) as? ResultViewController
-        rvc?.themingService = themingService
-        rvc?.resultScreenDelegate = self
-        rvc?.folderDrilDownScreenCoordinatorDelegate = self.folderDrilDownScreenCoordinatorDelegate
-        let searchController = UISearchController(searchResultsController: rvc)
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.smartQuotesType = .no
-        navigationItem.searchController = searchController
-    }
-
     func addAvatarInSettingsButton() {
-        let avatarImage = listViewModel?.getAvatar(completionHandler: { [weak self] image in
+        let avatarImage = ProfileService.getAvatar(completionHandler: { [weak self] image in
             guard let sSelf = self else { return }
 
             if let fetchedImage = image {
@@ -155,217 +123,28 @@ class ListViewController: SystemThemableViewController {
         settingsButton.setImage(avatarImage, for: .normal)
     }
 
-    func registerListElementCell() {
-        let identifier = String(describing: ListElementCollectionViewCell.self)
-        collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
-    }
-
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
 
-        emptyListView.backgroundColor = currentTheme.backgroundColor
         view.backgroundColor = currentTheme.backgroundColor
         navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
-
-    func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.Search.title
-        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
-    }
-
-    func scrollToSection(_ section: Int) {
-        guard let results = self.listViewModel?.groupedLists, !results.isEmpty else { return }
-        let indexPath = IndexPath(item: 0, section: section)
-        if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
-            let topOfHeader = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
-            collectionView.setContentOffset(topOfHeader, animated: true)
-        }
-    }
 }
 
-// MARK: - UICollectionView DataSource & Delegate
+// MARK: - ListComponentActionDelegate
 
-extension ListViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listViewModel?.groupedLists[section].list.count ?? 0
+extension ListViewController: ListComponentActionDelegate {
+    func elementTapped(node: ListNode) {
     }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return listViewModel?.groupedLists.count ?? 0
+    func didUpdateList(error: Error?, pagination: Pagination?) {
+        listController?.stopLoading()
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return UICollectionViewCell() }
-        let identifier = String(describing: ListElementCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
-        cell?.element = node
-        cell?.applyTheme(themingService?.activeTheme)
-        return cell ?? UICollectionViewCell()
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row]
-            else { return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight) }
-        return CGSize(width: self.view.bounds.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier,
-                                                                                   for: indexPath) as? ListSectionCollectionReusableView else {
-                                                                                    fatalError("Invalid ListSectionCollectionReusableView type") }
-            headerView.titleLabel.text = listViewModel?.groupedLists[indexPath.section].titleGroup
-            headerView.applyTheme(themingService?.activeTheme)
-            return headerView
-        default:
-            return UICollectionReusableView()
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if let viewModel = listViewModel, viewModel.shouldDisplaySections() {
-            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
-        } else {
-            return CGSize(width: self.view.bounds.width, height: 0)
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let node = listViewModel?.groupedLists[indexPath.section].list[indexPath.row] else { return }
-        if node.kind == .folder || node.kind == .site {
-            folderDrilDownScreenCoordinatorDelegate?.showScreen(from: node)
-        }
+    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
+        listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
     }
 }
-
-// MARK: - Result Screen Delegate
-
-extension ListViewController: ResultScreenDelegate {
-    func chipTapped(chip: SearchChipItem) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.startLoading()
-        rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
-        searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
-        didChangedChipFilter = true
-    }
-
-    func recentSearchTapped(string: String) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchBar.text = string
-        searchViewModel.performLiveSearch(for: string)
-    }
-
-    func elementListTapped(elementList: ListNode) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchViewModel.save(recentSearch: searchBar.text)
-    }
-
-    func fetchNextSearchResultsPage(for index: IndexPath) {
-        guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
-        let searchString = searchBar.text
-        searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
-    }
-}
-
-// MARK: - Search ViewModel Delegate
-
-extension ListViewController: SearchViewModelDelegate {
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        if didChangedChipFilter && pagination?.skipCount != 0 {
-            didChangedChipFilter = false
-            rvc.stopLoading()
-            return
-        }
-
-        didChangedChipFilter = false
-        rvc.resultsViewModel.updateResults(results: results, pagination: pagination, error: error)
-    }
-}
-
-// MARK: - List ViewModel Delegate
-
-extension ListViewController: ListViewModelDelegate {
-    func handleList() {
-        self.stopLoading()
-        emptyListView.isHidden = !(listViewModel?.groupedLists.isEmpty ?? false)
-        collectionView.reloadData()
-    }
-}
-
-// MARK: - UISearchBar Delegate
-
-extension ListViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.startLoading()
-        searchViewModel.performSearch(for: searchBar.text)
-        searchViewModel.save(recentSearch: navigationItem.searchController?.searchBar.text)
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
-        rvc.view.isHidden = false
-    }
-
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        searchViewModel.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
-    }
-}
-
-// MARK: - UISearch Results Updating
-
-extension ListViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-
-        rvc.view.isHidden = false
-    }
-}
-
-// MARK: - UISearchController Delegate
-
-extension ListViewController: UISearchControllerDelegate {
-    func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
-        rvc.updateChips(searchViewModel.defaultSearchChips())
-        rvc.updateRecentSearches(searchViewModel.recentSearches())
-        rvc.clearDataSource()
-    }
-}
-
-// MARK: - PageFetchableDelegate
-
-extension ListViewController: PageFetchableDelegate {
-    func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndex: IndexPath) {
-
-    }
-}
-
-// MARK: - Storyboard Instantiable
-
-extension ListViewController: StoryboardInstantiable { }

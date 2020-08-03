@@ -16,70 +16,69 @@
 //  limitations under the License.
 //
 
-import Foundation
-import UIKit
-import AlfrescoAuth
-import AlfrescoContentServices
-
-class FavoritesViewModel: ListViewModelProtocol {
-    var listRequest: SearchRequest?
-
-    var groupedLists: [GroupedList] = []
-    var accountService: AccountService?
-    var apiClient: APIClientProtocol?
-    weak var viewModelDelegate: ListViewModelDelegate?
-    var whereCondition: String = kWhereFavoritesFileFolderCondition
-
-    // MARK: - Init
-
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
-        self.listRequest = listRequest
-    }
-
-    // MARK: - Public Methods
-
-    func reloadRequest() {
-        groupedLists = emptyGroupedLists()
-        favoritesRequest()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
-    // MARK: - Private methods
-
-    private func emptyGroupedLists() -> [GroupedList] {
-        return []
-    }
-
-    private func favoritesRequest() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            FavoritesAPI.listFavorites(personId: kAPIPathMe, skipCount: 0, maxItems: 25, orderBy: nil,
-                                       _where: sSelf.whereCondition,
-                                       include: ["path"],
-                                       fields: nil) { (result, error) in
-                if let entries = result?.list {
-                    sSelf.groupedLists.append(GroupedList(type: .none, list: FavoritesNodeMapper.map(entries.entries)))
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
-                }
-            }
-        })
-    }
-}
+//
+//import Foundation
+//import UIKit
+//import AlfrescoAuth
+//import AlfrescoContentServices
+//
+//class FavoritesViewModel: ListViewModelProtocol {
+//    var listRequest: SearchRequest?
+//    var groupedLists: [GroupedList] = []
+//    var accountService: AccountService?
+//    weak var delegate: ListViewModelDelegate?
+//    var whereCondition: String = kWhereFavoritesFileFolderCondition
+//
+//    // MARK: - Init
+//
+//    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+//        self.accountService = accountService
+//        self.listRequest = listRequest
+//    }
+//
+//    // MARK: - Public Methods
+//
+//    func reloadRequest() {
+//        groupedLists = emptyGroupedLists()
+//        favoritesRequest()
+//    }
+//
+//    func shouldDisplaySections() -> Bool {
+//        return false
+//    }
+//
+//    func shouldDisplaySettingsButton() -> Bool {
+//        return true
+//    }
+//
+//    // MARK: - Private methods
+//
+//    private func emptyGroupedLists() -> [GroupedList] {
+//        return []
+//    }
+//
+//    private func favoritesRequest() {
+//        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+//            guard let sSelf = self else { return }
+//            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+//            FavoritesAPI.listFavorites(personId: kAPIPathMe, skipCount: 0, maxItems: 25, orderBy: nil,
+//                                       _where: sSelf.whereCondition,
+//                                       include: ["path"],
+//                                       fields: nil) { (result, error) in
+//                if let entries = result?.list {
+//                    sSelf.groupedLists.append(GroupedList(type: .none, list: FavoritesNodeMapper.map(entries.entries)))
+//                    DispatchQueue.main.async {
+//                        sSelf.delegate?.handleList()
+//                    }
+//                } else {
+//                    if let error = error {
+//                        AlfrescoLog.error(error)
+//                    }
+//                    DispatchQueue.main.async {
+//                        sSelf.delegate?.handleList()
+//                    }
+//                }
+//            }
+//        })
+//    }
+//}

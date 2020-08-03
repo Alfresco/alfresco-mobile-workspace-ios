@@ -70,7 +70,7 @@ class ActivityIndicatorView: UIView {
         self.activityIndicatorConfiguration.overlayViewColor = currentTheme?.backgroundColor ?? .white
         super.init(frame: kWindow.bounds)
         self.commonInit()
-        self.applyTheme(currentTheme)
+        self.applyTheme(currentTheme, configuration: configuration)
     }
 
     required init?(coder: NSCoder) {
@@ -85,21 +85,16 @@ class ActivityIndicatorView: UIView {
         label.text = text
     }
 
-    func reload(from size: CGSize) {
-        self.frame.size = size
-        overlayView?.frame.size = size
-        activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
+    func applyTheme(_ currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
+        guard let currentTheme = currentTheme else { return }
+        activityIndicator.cycleColors = configuration.cycleColors
+        label.text = configuration.title
+        label.applyStyleBody2OnSurface60(theme: currentTheme)
+        label.textAlignment = .center
+        overlayView?.backgroundColor = configuration.overlayViewColor
     }
 
     // MARK: - Private Helpers
-
-    private func applyTheme(_ currentTheme: PresentationTheme?) {
-        guard let currentTheme = currentTheme else { return }
-        activityIndicator.cycleColors = activityIndicatorConfiguration.cycleColors
-        label.text = activityIndicatorConfiguration.title
-        label.applyStyleSubtitle1Divider(theme: currentTheme)
-        label.textAlignment = .center
-    }
 
     private func commonInit() {
         self.isUserInteractionEnabled = false
@@ -110,17 +105,18 @@ class ActivityIndicatorView: UIView {
 
         activityIndicator.radius = activityIndicatorConfiguration.radius
         activityIndicator.strokeWidth = activityIndicatorConfiguration.strokeWidth
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.sizeToFit()
-        activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
 
         if let overlayView = self.overlayView {
             overlayView.backgroundColor = activityIndicatorConfiguration.overlayViewColor
-            overlayView.alpha = 0.87
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
             self.addSubview(label)
 
             NSLayoutConstraint.activate([
+                activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -self.frame.size.height / 6),
+                activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
                 label.widthAnchor.constraint(equalToConstant: 250),
                 label.heightAnchor.constraint(equalToConstant: 20),
                 label.centerXAnchor.constraint(equalTo: activityIndicator.centerXAnchor),

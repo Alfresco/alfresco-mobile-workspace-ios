@@ -20,4 +20,30 @@ import Foundation
 
 struct RecentSearchesViewModel {
     var searches: [String] = []
+
+    init() {
+        searches = self.recentSearch()
+    }
+
+    mutating func reloadRecentSearch() {
+        self.searches = self.recentSearch()
+    }
+
+    func save(recentSearch string: String?) {
+        guard let string = string else { return }
+        var recents = self.recentSearch()
+        if let indexItem = recents.lastIndex(of: string) {
+            recents.remove(at: indexItem)
+        }
+        recents.insert(string, at: 0)
+        if recents.count == kMaxElemetsInRecentSearchesArray + 1 {
+            recents.removeLast()
+        }
+        UserDefaults.standard.set(recents, forKey: kSaveRecentSearchesArray)
+        UserDefaults.standard.synchronize()
+    }
+
+    private func recentSearch() -> [String] {
+        return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
+    }
 }

@@ -21,12 +21,9 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContentServices
 
-class TrashViewModel: ListViewModelProtocol {
-    var accountService: AccountService?
-    var apiClient: APIClientProtocol?
+class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var groupedLists: [GroupedList] = []
-    weak var viewModelDelegate: ListViewModelDelegate?
+    var accountService: AccountService?
 
     // MARK: - Init
 
@@ -35,42 +32,78 @@ class TrashViewModel: ListViewModelProtocol {
         self.listRequest = listRequest
     }
 
-    // MARK: Public Methods
+    // MARK: - Public methods
 
-    func reloadRequest() {
-        groupedLists = []
-        personalFilesRequest()
-    }
+    func request(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
 
-    func shouldDisplaySections() -> Bool {
-        return false
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let skipCount = paginationRequest?.skipCount
+            let maxItems = paginationRequest?.maxItems ?? kListPageSize
+            TrashcanAPI.listDeletedNodes(skipCount: skipCount, maxItems: maxItems, include: ["path"]) { (result, error) in
+                var listNodes: [ListNode]?
+                if let entries = result?.list?.entries {
+                    listNodes = DeleteNodeMapper.map(entries)
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        })
     }
 
     func shouldDisplaySettingsButton() -> Bool {
         return false
     }
 
-    // MARK: Private Methods
+    // MARK: - ListViewModelProtocol
 
-    func personalFilesRequest() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            TrashcanAPI.listDeletedNodes(skipCount: 0, maxItems: 25, include: ["path"]) { (result, error) in
-                if let entries = result?.list?.entries {
-                    sSelf.groupedLists.append(GroupedList(type: .none, list: DeleteNodeMapper.map(entries)))
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
-                }
-            }
-        })
+    func isEmpty() -> Bool {
+        return results.isEmpty
+    }
+
+    func shouldDisplaySections() -> Bool {
+        return false
+    }
+
+    func numberOfSections() -> Int {
+        return 1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        request(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
     }
 }

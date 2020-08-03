@@ -21,12 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContentServices
 
-class RecentViewModel: ListViewModelProtocol {
+class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var apiClient: APIClientProtocol?
-    weak var viewModelDelegate: ListViewModelDelegate?
 
     // MARK: - Init
 
@@ -37,49 +35,82 @@ class RecentViewModel: ListViewModelProtocol {
 
     // MARK: - Public methods
 
-    func recentsList() {
+    func recentsList(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let accountIdentifier = sSelf.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier)) { (result, error) in
+            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier, pagination: paginationRequest)) { (result, error) in
+                var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
-                    sSelf.addInGroupList(ResultsNodeMapper.map(entries))
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
+                    listNodes = ResultsNodeMapper.map(entries)
                 } else {
                     if let error = error {
                         AlfrescoLog.error(error)
                     }
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.handleList()
-                    }
                 }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
-    }
-
-    func fetchNextRecentsResultPage(for index: IndexPath) {
-    }
-
-    func reloadRequest() {
-        groupedLists = self.emptyGroupedLists()
-        recentsList()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return true
     }
 
     func shouldDisplaySettingsButton() -> Bool {
         return true
     }
 
-    // MARK: - Private methods
+    // MARK: - ListViewModelProtocol
 
-    private func emptyGroupedLists() -> [GroupedList] {
-        return []
+    func isEmpty() -> Bool {
+        return groupedLists.isEmpty
     }
+
+    func shouldDisplaySections() -> Bool {
+        return true
+    }
+
+    func numberOfSections() -> Int {
+        return groupedLists.count
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return groupedLists[section].list.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return groupedLists[indexPath.section].list[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return groupedLists[indexPath.section].titleGroup
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func refreshList() {
+        recentsList(with: nil)
+    }
+
+    override func updatedResults(results: [ListNode]) {
+        groupedLists = []
+        addInGroupList(self.results)
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        recentsList(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    // MARK: - Private methods
 
     private func add(element: ListNode, inGroupType type: GroupedListType) {
         for groupedList in groupedLists where groupedList.type == type {

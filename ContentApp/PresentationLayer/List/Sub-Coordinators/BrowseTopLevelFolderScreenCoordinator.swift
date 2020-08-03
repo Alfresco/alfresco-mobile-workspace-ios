@@ -35,38 +35,49 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
-            let viewController = ListViewController.instantiateViewController()
-            viewController.title = parameters["nodeTitle"] as? String ?? ""
-            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.folderDrilDownScreenCoordinatorDelegate = self
-
+            let browseType = BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles")
+            let title = parameters["nodeTitle"] as? String ?? ""
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let listViewModel: ListViewModelProtocol
+            let themingService =  sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+            let viewController = ListViewController()
 
-            switch BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles") {
-            case .personalFiles:
-                listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-            case .myLibraries:
-                listViewModel = MyLibrariesViewModel(with: accountService, listRequest: nil)
-            case .shared:
-                listViewModel = SharedViewModel(with: accountService, listRequest: nil)
-            case .trash:
-                listViewModel = TrashViewModel(with: accountService, listRequest: nil)
-            case .none:
-                listViewModel = PersonalFileViewModel(with: accountService, listRequest: nil)
-            }
+            let listViewModel = sSelf.listViewModel(from: browseType, with: accountService)
+            let resultViewModel = ResultsViewModel()
+            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+            globalSearchViewModel.delegate = resultViewModel
+            resultViewModel.delegate = globalSearchViewModel
+
+            viewController.title = title
+            viewController.themingService = themingService
+            viewController.folderDrillDownScreenCoordinatorDelegate = self
             viewController.listViewModel = listViewModel
-            viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
+            viewController.searchViewModel = globalSearchViewModel
+            viewController.resultViewModel = resultViewModel
             sSelf.listViewController = viewController
+
             return viewController
         })
         let routerPathValues = NavigationRoutes.browseScreen.path + "/\(browseNode.title)" + "/\(browseNode.type.rawValue)"
         router?.push(route: routerPathValues, from: presenter)
     }
+
+    private func listViewModel(from type: BrowseType?, with accountService: AccountService?) -> ListViewModelProtocol {
+        switch type {
+        case .personalFiles:
+            return FolderDrillViewModel(with: accountService, listRequest: nil)
+        case .myLibraries:
+            return MyLibrariesViewModel(with: accountService, listRequest: nil)
+        case .shared:
+            return SharedViewModel(with: accountService, listRequest: nil)
+        case .trash:
+            return TrashViewModel(with: accountService, listRequest: nil)
+        default: return FolderDrillViewModel(with: accountService, listRequest: nil)
+        }
+    }
 }
 
 extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showScreen(from node: ListNode) {
+    func showFolderScreen(from node: ListNode) {
         let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
         folderDrillDownCoordinatorDelegate.start()
         self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate

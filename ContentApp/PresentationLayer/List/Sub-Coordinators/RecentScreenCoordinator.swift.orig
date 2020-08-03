@@ -21,7 +21,7 @@ import UIKit
 class RecentScreenCoordinator: ListCoordinatorProtocol {
 
     private let presenter: TabBarMainViewController
-    private var recentViewController: ListViewController?
+    private var recentViewController: ListComponentViewController?
     private var navigationViewController: UINavigationController?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
@@ -30,23 +30,24 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
+//        let viewController = ListViewController.instantiateViewController()
+//        viewController.title = LocalizationConstants.ScreenTitles.recent
+//        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+//        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+//        viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+//        viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
+//        viewController.tabBarScreenDelegate = presenter
+
+        let viewController = ListComponentViewController.instantiateViewController()
+        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+<<<<<<< Updated upstream
+        viewController.folderDrilDownScreenCoordinatorDelegate = self
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let viewController = ListViewController()
-
-        let listViewModel = RecentViewModel(with: accountService, listRequest: nil)
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
-        viewController.title = LocalizationConstants.ScreenTitles.recent
-        viewController.themingService = themingService
-        viewController.listViewModel = listViewModel
+        viewController.listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        viewController.searchViewModel = GlobalSearchViewModel(accountService: accountService)
         viewController.tabBarScreenDelegate = presenter
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
+=======
+>>>>>>> Stashed changes
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -54,18 +55,22 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         self.recentViewController = viewController
     }
 
+<<<<<<< Updated upstream
     func scrollToTopOrPopToRoot() {
         if navigationViewController?.viewControllers.count == 1 {
             recentViewController?.scrollToTop()
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
-        recentViewController?.cancelSearchMode()
+=======
+    func scrollToTop() {
+//        recentViewController?.scrollToTop()
+>>>>>>> Stashed changes
     }
 }
 
 extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showFolderScreen(from node: ListNode) {
+    func showScreen(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
             folderDrillDownCoordinatorDelegate.start()

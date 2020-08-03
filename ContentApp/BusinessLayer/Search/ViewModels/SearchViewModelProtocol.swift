@@ -20,15 +20,13 @@ import Foundation
 import AlfrescoContentServices
 
 protocol SearchViewModelProtocol {
-    var viewModelDelegate: SearchViewModelDelegate? { get set }
+    var delegate: SearchViewModelDelegate? { get set }
     var searchChips: [SearchChipItem] { get set }
 
     func defaultSearchChips() -> [SearchChipItem]
     func logicSearchChips(chipTapped: SearchChipItem) -> [Int]
     func performSearch(for string: String?, paginationRequest: RequestPagination?)
     func performLiveSearch(for string: String?)
-    func save(recentSearch string: String?)
-    func recentSearches() -> [String]
     func fetchNextSearchResultsPage(for string: String?, index: IndexPath)
 }
 
