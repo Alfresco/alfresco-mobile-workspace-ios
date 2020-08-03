@@ -18,7 +18,7 @@
 
 import UIKit
 
-class ListElementCollectionViewCell: UICollectionViewCell {
+class ListElementCollectionViewCell: ListSelectableCell {
 
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
