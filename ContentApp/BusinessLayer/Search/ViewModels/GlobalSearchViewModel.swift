@@ -27,6 +27,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
+    private var lastSearchedString: String?
 
     // MARK: - Init
 
@@ -61,6 +62,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 
     func performSearch(for string: String?, paginationRequest: RequestPagination?) {
+        lastSearchedString = string
         if paginationRequest == nil {
             currentPage = 1
         }
@@ -154,5 +156,11 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
+    }
+}
+
+extension GlobalSearchViewModel: ResultsViewModelDelegate {
+    func refreshResults() {
+        performSearch(for: lastSearchedString, paginationRequest: nil)
     }
 }

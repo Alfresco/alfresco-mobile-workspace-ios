@@ -45,6 +45,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             let resultViewModel = ResultsViewModel()
             let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
             globalSearchViewModel.delegate = resultViewModel
+            resultViewModel.delegate = globalSearchViewModel
 
             viewController.title = title
             viewController.themingService = themingService

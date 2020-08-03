@@ -38,6 +38,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
+        resultViewModel.delegate = globalSearchViewModel
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
