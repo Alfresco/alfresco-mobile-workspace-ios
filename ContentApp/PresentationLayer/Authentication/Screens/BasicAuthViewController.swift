@@ -62,23 +62,27 @@ class BasicAuthViewController: SystemThemableViewController {
 
         addLocalization()
         enableSignInButton = false
-    }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
-                                                                                                radius: 40,
-                                                                                                strokeWidth: 7,
-                                                                                                cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     // MARK: - IBActions

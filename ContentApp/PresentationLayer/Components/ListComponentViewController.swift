@@ -48,7 +48,6 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     var activityIndicator: ActivityIndicatorView?
-    var configurationActiviyIndicatorView = ActivityIndicatorConfiguration.defaultValue
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
@@ -66,13 +65,8 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
 
         // Set up generic and pull to refresh activity indicators
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                          configuration: configurationActiviyIndicatorView)
+        let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicatorView.label(text: LocalizationConstants.Search.searching)
         let refreshIndicatorView = MDCActivityIndicator()
         refreshIndicatorView.sizeToFit()
 
@@ -111,23 +105,13 @@ class ListComponentViewController: SystemThemableViewController {
         applyComponentsThemes()
         scrollToSection(0)
         collectionView.reloadData()
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     override func applyComponentsThemes() {

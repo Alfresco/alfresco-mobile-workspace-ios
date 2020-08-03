@@ -57,20 +57,18 @@ class ConnectViewController: SystemThemableViewController {
 
         addLocalization()
         enableConnectButton = (connectTextField.text != "")
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
+        if let activityIndicator = activityIndicator {
+            kWindow.addSubview(activityIndicator)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                  configuration: ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.signingIn,
-                                                                                                 radius: 40,
-                                                                                                 strokeWidth: 7,
-                                                                                                 cycleColors: [themingService?.activeTheme?.primaryVariantColor ?? .black]))
-        if let activityIndicator = activityIndicator {
-            kWindow.addSubview(activityIndicator)
-        }
         navigationBar(hide: true)
-        self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -89,6 +87,11 @@ class ConnectViewController: SystemThemableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationBar(hide: false)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     // MARK: - IBActions
