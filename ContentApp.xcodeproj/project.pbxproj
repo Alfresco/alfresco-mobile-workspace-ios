@@ -139,6 +139,7 @@
 		E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C862493EF2E00FFD87F /* ListViewController.swift */; };
 		E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */; };
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
+		E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */; };
 		E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */; };
 		E3E2BDA024CC27F200D8A7EC /* MyLibrariesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */; };
 		E3E2BDA224CC280100D8A7EC /* SharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */; };
@@ -321,6 +322,7 @@
 		E3D25C862493EF2E00FFD87F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
+		E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshIndicatorView.swift; sourceTree = "<group>"; };
 		E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibrariesViewModel.swift; sourceTree = "<group>"; };
 		E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViewModel.swift; sourceTree = "<group>"; };
@@ -634,6 +636,7 @@
 			children = (
 				E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */,
 				B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */,
+				E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */,
 				B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */,
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
@@ -1191,6 +1194,7 @@
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9FC62A124C71C4E00246606 /* ResultsViewModel.swift in Sources */,
+				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
 				B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E3E9ED4324CB24E100F1A2C2 /* BrowseStaticNodeCollectionViewCell.swift in Sources */,

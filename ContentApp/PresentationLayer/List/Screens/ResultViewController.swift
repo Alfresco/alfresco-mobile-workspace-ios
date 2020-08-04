@@ -36,6 +36,7 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
+    @IBOutlet weak var progressView: MDCProgressView!
 
     weak var resultScreenDelegate: ResultViewControllerDelegate?
 
@@ -67,6 +68,10 @@ class ResultViewController: SystemThemableViewController {
         resultsListController = listComponentViewController
         resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
+        // Set up progress view
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+
         addLocalization()
         addChipsCollectionViewFlowLayout()
     }
@@ -79,6 +84,8 @@ class ResultViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         resultsListController?.viewWillAppear(animated)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -86,16 +93,21 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
         resultsListController?.willTransition(to: newCollection, with: coordinator)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     // MARK: - Public Helpers
 
     func startLoading() {
-        resultsListController?.startLoading()
+        progressView.startAnimating()
+        progressView.setHidden(false, animated: false)
     }
 
     func stopLoading() {
-        resultsListController?.stopLoading()
+        progressView.stopAnimating()
+        progressView.setHidden(true, animated: false)
+        resultsListController?.refreshControl?.endRefreshing()
     }
 
     func clearDataSource() {

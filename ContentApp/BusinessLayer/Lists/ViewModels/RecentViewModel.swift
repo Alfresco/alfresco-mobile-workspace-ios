@@ -94,6 +94,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func refreshList() {
+        currentPage = 1
         recentsList(with: nil)
     }
 

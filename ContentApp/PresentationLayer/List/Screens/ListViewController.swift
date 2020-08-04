@@ -32,6 +32,9 @@ class ListViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureNavigationBar()
+        addSettingsButton()
+
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
@@ -53,9 +56,6 @@ class ListViewController: SystemSearchViewController {
         }
         listController = listComponentViewController
         listController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
-
-        configureNavigationBar()
-        addSettingsButton()
 
         listController?.startLoading()
         listViewModel?.refreshList()
