@@ -143,6 +143,10 @@ PODS:
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
+  - MaterialComponents/ProgressView (110.2.0):
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MDFInternationalization
   - MaterialComponents/Ripple (110.2.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
@@ -239,6 +243,7 @@ DEPENDENCIES:
   - MaterialComponents/Chips
   - "MaterialComponents/Chips+Theming"
   - MaterialComponents/Dialogs
+  - MaterialComponents/ProgressView
   - MaterialComponents/Snackbar
   - "MaterialComponents/TextControls+FilledTextFields"
   - "MaterialComponents/TextControls+FilledTextFieldsTheming"
@@ -276,6 +281,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 21e2f7903ba943bdb17e1b46925bffbb5e78a7c2
+PODFILE CHECKSUM: 3b97c59db250f3e6b905ee1f46cb4590d62a74db
 
 COCOAPODS: 1.9.3
