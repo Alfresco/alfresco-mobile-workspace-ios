@@ -97,6 +97,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func refreshList() {
+        currentPage = 1
         favoritesList(with: nil)
     }
 
