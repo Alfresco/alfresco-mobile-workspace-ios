@@ -36,6 +36,7 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
+    @IBOutlet weak var progressView: MDCProgressView!
 
     weak var resultScreenDelegate: ResultViewControllerDelegate?
 
@@ -67,6 +68,10 @@ class ResultViewController: SystemThemableViewController {
         resultsListController = listComponentViewController
         resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
+        // Set up progress view
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+
         addLocalization()
         addChipsCollectionViewFlowLayout()
     }
@@ -79,6 +84,8 @@ class ResultViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         resultsListController?.viewWillAppear(animated)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -86,16 +93,21 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.reloadData()
         recentSearchCollectionView.reloadData()
         resultsListController?.willTransition(to: newCollection, with: coordinator)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     // MARK: - Public Helpers
 
     func startLoading() {
-        resultsListController?.startLoading()
+        progressView.startAnimating()
+        progressView.setHidden(false, animated: false)
     }
 
     func stopLoading() {
-        resultsListController?.stopLoading()
+        progressView.stopAnimating()
+        progressView.setHidden(true, animated: false)
+        resultsListController?.refreshControl?.endRefreshing()
     }
 
     func clearDataSource() {
@@ -143,7 +155,7 @@ class ResultViewController: SystemThemableViewController {
 
     func addChipsCollectionViewFlowLayout() {
         let layout = MDCChipCollectionViewFlowLayout()
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
         chipsCollectionView.collectionViewLayout = layout
@@ -236,6 +248,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case recentSearchCollectionView:
             return CGSize(width: self.view.bounds.width, height: recentSearchCellHeight)
         case chipsCollectionView:
+            if let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
+                return CGSize(width: cell.chipView.frame.size.width, height: chipSearchCellMinimHeight)
+            }
             return CGSize(width: chipSearchCellMinimWidth, height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)

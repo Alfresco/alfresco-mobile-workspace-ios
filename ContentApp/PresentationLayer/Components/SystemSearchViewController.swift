@@ -82,9 +82,11 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
     }
 
     func recentSearchTapped(string: String) {
-        guard let searchBar = navigationItem.searchController?.searchBar,
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
+            let searchBar = navigationItem.searchController?.searchBar,
             let searchViewModel = self.searchViewModel else { return }
 
+        rvc.startLoading()
         searchBar.text = string
         searchViewModel.performLiveSearch(for: string)
     }
@@ -139,6 +141,7 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
+        rvc.startLoading()
     }
 }
 

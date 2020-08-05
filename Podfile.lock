@@ -143,6 +143,10 @@ PODS:
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
+  - MaterialComponents/ProgressView (110.2.0):
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MDFInternationalization
   - MaterialComponents/Ripple (110.2.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
@@ -257,6 +261,7 @@ DEPENDENCIES:
   - MaterialComponents/Chips
   - "MaterialComponents/Chips+Theming"
   - MaterialComponents/Dialogs
+  - MaterialComponents/ProgressView
   - MaterialComponents/Snackbar
   - MaterialComponents/Tabs
   - "MaterialComponents/Tabs+Theming"

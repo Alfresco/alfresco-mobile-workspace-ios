@@ -55,7 +55,7 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
 
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let themingService = service, let currentTheme = themingService.activeTheme else { return }
-        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)

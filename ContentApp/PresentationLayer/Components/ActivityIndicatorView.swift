@@ -24,33 +24,10 @@ enum ActivityIndicatorControllerState {
     case isIdle
 }
 
-struct ActivityIndicatorConfiguration {
-    var title: String
-    var radius: CGFloat
-    var strokeWidth: CGFloat
-    var cycleColors: [UIColor]
-    var overlayViewColor: UIColor
-
-    init(title: String, radius: CGFloat, strokeWidth: CGFloat, cycleColors: [UIColor], overlayColor: UIColor = .white) {
-        self.title = title
-        self.radius = radius
-        self.strokeWidth = strokeWidth
-        self.cycleColors = cycleColors
-        self.overlayViewColor = overlayColor
-    }
-
-    static var defaultValue = ActivityIndicatorConfiguration(title: LocalizationConstants.Labels.conneting,
-                                                             radius: 40,
-                                                             strokeWidth: 7,
-                                                             cycleColors: [.black],
-                                                             overlayColor: .white)
-}
-
 class ActivityIndicatorView: UIView {
     private var activityIndicator = MDCActivityIndicator()
     private var overlayView: UIView?
     private var label: UILabel = UILabel()
-    private var activityIndicatorConfiguration: ActivityIndicatorConfiguration
 
     var state: ActivityIndicatorControllerState? {
         didSet {
@@ -65,16 +42,13 @@ class ActivityIndicatorView: UIView {
 
     // MARK: - Init
 
-    init(currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
-        self.activityIndicatorConfiguration = configuration
-        self.activityIndicatorConfiguration.overlayViewColor = currentTheme?.backgroundColor ?? .white
+    init(currentTheme: PresentationTheme?) {
         super.init(frame: kWindow.bounds)
         self.commonInit()
-        self.applyTheme(currentTheme, configuration: configuration)
+        self.applyTheme(currentTheme)
     }
 
     required init?(coder: NSCoder) {
-        self.activityIndicatorConfiguration = ActivityIndicatorConfiguration.defaultValue
         super.init(coder: coder)
         self.commonInit()
     }
@@ -85,13 +59,12 @@ class ActivityIndicatorView: UIView {
         label.text = text
     }
 
-    func applyTheme(_ currentTheme: PresentationTheme?, configuration: ActivityIndicatorConfiguration) {
+    func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        activityIndicator.cycleColors = configuration.cycleColors
-        label.text = configuration.title
+        activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
         label.applyStyleBody2OnSurface60(theme: currentTheme)
         label.textAlignment = .center
-        overlayView?.backgroundColor = configuration.overlayViewColor
+        overlayView?.backgroundColor = currentTheme.backgroundColor
     }
 
     // MARK: - Private Helpers
@@ -103,13 +76,13 @@ class ActivityIndicatorView: UIView {
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        activityIndicator.radius = activityIndicatorConfiguration.radius
-        activityIndicator.strokeWidth = activityIndicatorConfiguration.strokeWidth
+        activityIndicator.radius = 12.0
+        activityIndicator.strokeWidth = 2.0
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.sizeToFit()
 
         if let overlayView = self.overlayView {
-            overlayView.backgroundColor = activityIndicatorConfiguration.overlayViewColor
+            overlayView.backgroundColor = .white
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
             self.addSubview(label)

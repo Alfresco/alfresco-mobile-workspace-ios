@@ -19,6 +19,7 @@
 import UIKit
 import AlfrescoContentServices
 import MaterialComponents.MaterialActivityIndicator
+import MaterialComponents.MaterialProgressView
 
 protocol ListComponentDataSourceProtocol: class {
     func isEmpty() -> Bool
@@ -47,9 +48,8 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
-    var activityIndicator: ActivityIndicatorView?
-    var configurationActiviyIndicatorView = ActivityIndicatorConfiguration.defaultValue
-    var refreshControl: UIRefreshControl?
+    @IBOutlet weak var progressView: MDCProgressView!
+    var refreshControl: RefreshIndicatorView?
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
@@ -65,34 +65,13 @@ class ListComponentViewController: SystemThemableViewController {
 
         emptyListView.isHidden = true
 
-        // Set up generic and pull to refresh activity indicators
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        let activityIndicatorView = ActivityIndicatorView(currentTheme: themingService?.activeTheme,
-                                                          configuration: configurationActiviyIndicatorView)
-        let refreshIndicatorView = MDCActivityIndicator()
-        refreshIndicatorView.sizeToFit()
-
-        self.view.addSubview(activityIndicatorView)
-        activityIndicatorView.isHidden = true
-        activityIndicator = activityIndicatorView
+        // Set up progress view
+        progressView.progress = 0
+        progressView.mode = .indeterminate
 
         // Set up pull to refresh control
-        let refreshControl = UIRefreshControl()
-        refreshControl.tintColor = .clear
-
-        refreshIndicatorView.center = CGPoint(x: refreshControl.center.x + refreshIndicatorView.frame.size.width, y: refreshControl.center.y)
-        refreshIndicatorView.strokeWidth = 2
-        refreshIndicatorView.radius = 12
-        refreshIndicatorView.cycleColors = [themingService?.activeTheme?.primaryVariantColor ?? .black]
-        refreshIndicatorView.startAnimating()
-
-        refreshControl.addSubview(refreshIndicatorView)
+        let refreshControl = RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
-
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
 
@@ -109,25 +88,18 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyComponentsThemes()
-        scrollToSection(0)
         collectionView.reloadData()
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
+        refreshControl?.applyTheme(themingService?.activeTheme)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        configurationActiviyIndicatorView = ActivityIndicatorConfiguration(title: LocalizationConstants.Search.searching,
-                                                                           radius: 12,
-                                                                           strokeWidth: 2,
-                                                                           cycleColors: [self.themingService?.activeTheme?.primaryVariantColor ?? .black],
-                                                                           overlayColor: self.themingService?.activeTheme?.backgroundColor ?? .white)
-        activityIndicator?.applyTheme(themingService?.activeTheme, configuration: configurationActiviyIndicatorView)
+        refreshControl?.applyTheme(themingService?.activeTheme)
+        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func applyComponentsThemes() {
@@ -146,14 +118,13 @@ class ListComponentViewController: SystemThemableViewController {
     // MARK: - Public interface
 
     func startLoading() {
-        activityIndicator?.state = .isLoading
-        collectionView.isUserInteractionEnabled = false
-        collectionView.setContentOffset(collectionView.contentOffset, animated: false)
+        progressView.startAnimating()
+        progressView.setHidden(false, animated: true)
     }
 
     func stopLoading() {
-        activityIndicator?.state = .isIdle
-        collectionView.isUserInteractionEnabled = true
+        progressView.stopAnimating()
+        progressView.setHidden(true, animated: false)
         refreshControl?.endRefreshing()
     }
 

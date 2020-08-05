@@ -35,7 +35,7 @@ class PageFetchingViewModel {
     var currentPage: Int = 1
     var hasMoreItems = true
 
-    var shouldDisplayNextPageLoadingIndicator: Bool = true
+    var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
         willSet {
             shouldDisplayNextPageLoadingIndicator = true
