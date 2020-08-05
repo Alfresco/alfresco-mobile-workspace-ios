@@ -30,6 +30,9 @@
 		B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */; };
 		B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */; };
 		B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */; };
+		B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0724D852590058BCE1 /* FavoritesViewController.swift */; };
+		B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */; };
+		B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */; };
 		B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99B5BE824BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift */; };
 		B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */; };
 		B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BBC2486724D00FBFC9B /* AuthenticationProviderProtocol.swift */; };
@@ -207,6 +210,9 @@
 		B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestBuilder.swift; sourceTree = "<group>"; };
 		B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSelectableCell.swift; sourceTree = "<group>"; };
+		B9958E0724D852590058BCE1 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Settings.swift"; sourceTree = "<group>"; };
+		B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewPageController.swift; sourceTree = "<group>"; };
 		B99B5BE824BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTabBarThemingServiceWorker.swift; sourceTree = "<group>"; };
 		B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServicesProfile.swift; sourceTree = "<group>"; };
 		B99D9BBC2486724D00FBFC9B /* AuthenticationProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProviderProtocol.swift; sourceTree = "<group>"; };
@@ -645,6 +651,7 @@
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
+				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -846,6 +853,7 @@
 				E3D25C862493EF2E00FFD87F /* ListViewController.swift */,
 				E32B642B24B358FD00085472 /* ResultViewController.swift */,
 				E3E9ED4024CB22EF00F1A2C2 /* BrowseViewController.swift */,
+				B9958E0724D852590058BCE1 /* FavoritesViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -880,6 +888,7 @@
 				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
 				B9FC629C24C6C90600246606 /* UICollectionView+ItemIndex.swift */,
 				E321380D24C6F2C60025A833 /* UILabel+Theming.swift */,
+				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1174,6 +1183,7 @@
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
+				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
@@ -1183,6 +1193,7 @@
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
 				E3E9ED3924CB00D200F1A2C2 /* ResultsNodeMapper.swift in Sources */,
+				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
@@ -1236,6 +1247,7 @@
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
+				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,

@@ -91,9 +91,10 @@
 "searching" = "Searching...";
 "noRecentSearch" = "There is no recent searches.";
 "recentSearch" = "Recent Searches";
-"chipFiles" = "Files";
-"chipFolders" = "Folders";
-"chipLibraries" = "Libraries";
+"filterFiles" = "Files";
+"filterFolders" = "Folders";
+"filterLibraries" = "Libraries";
+"filterfoldersAndFiles" = "Folders and files";
 
 // MARK: - Group List Section
 "today" = "Today";
@@ -104,7 +105,6 @@
 "older" = "Older";
 
 // MARK: - Browse Static List
-
 "browse-personalFiles" = "Personal files";
 "browse-myLibraries" = "My libraries";
 "browse-shared" = "Shared";

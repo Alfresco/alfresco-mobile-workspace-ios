@@ -26,7 +26,31 @@ class SystemSearchViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Remove navigation bar underline separator
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+
         addSearchController()
+        configureNavigationBar()
+    }
+
+    func configureNavigationBar() {
+        definesPresentationContext = true
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.isTranslucent = true
+        navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+
+    override func applyComponentsThemes() {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+
+        view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 
     func addSearchController() {

@@ -16,69 +16,104 @@
 //  limitations under the License.
 //
 
-//
-//import Foundation
-//import UIKit
-//import AlfrescoAuth
-//import AlfrescoContentServices
-//
-//class FavoritesViewModel: ListViewModelProtocol {
-//    var listRequest: SearchRequest?
-//    var groupedLists: [GroupedList] = []
-//    var accountService: AccountService?
-//    weak var delegate: ListViewModelDelegate?
-//    var whereCondition: String = kWhereFavoritesFileFolderCondition
-//
-//    // MARK: - Init
-//
-//    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-//        self.accountService = accountService
-//        self.listRequest = listRequest
-//    }
-//
-//    // MARK: - Public Methods
-//
-//    func reloadRequest() {
-//        groupedLists = emptyGroupedLists()
-//        favoritesRequest()
-//    }
-//
-//    func shouldDisplaySections() -> Bool {
-//        return false
-//    }
-//
-//    func shouldDisplaySettingsButton() -> Bool {
-//        return true
-//    }
-//
-//    // MARK: - Private methods
-//
-//    private func emptyGroupedLists() -> [GroupedList] {
-//        return []
-//    }
-//
-//    private func favoritesRequest() {
-//        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-//            guard let sSelf = self else { return }
-//            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-//            FavoritesAPI.listFavorites(personId: kAPIPathMe, skipCount: 0, maxItems: 25, orderBy: nil,
-//                                       _where: sSelf.whereCondition,
-//                                       include: ["path"],
-//                                       fields: nil) { (result, error) in
-//                if let entries = result?.list {
-//                    sSelf.groupedLists.append(GroupedList(type: .none, list: FavoritesNodeMapper.map(entries.entries)))
-//                    DispatchQueue.main.async {
-//                        sSelf.delegate?.handleList()
-//                    }
-//                } else {
-//                    if let error = error {
-//                        AlfrescoLog.error(error)
-//                    }
-//                    DispatchQueue.main.async {
-//                        sSelf.delegate?.handleList()
-//                    }
-//                }
-//            }
-//        })
-//    }
-//}
+import Foundation
+import UIKit
+import AlfrescoAuth
+import AlfrescoContentServices
+
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+    var listRequest: SearchRequest?
+    var accountService: AccountService?
+
+    var listCondition: String = kWhereFavoritesFileFolderCondition
+
+    // MARK: - Init
+
+    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+        self.accountService = accountService
+        self.listRequest = listRequest
+    }
+
+    // MARK: - Public interface
+
+    func favoritesList(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            FavoritesAPI.listFavorites(personId: kAPIPathMe,
+                                       skipCount: paginationRequest?.skipCount,
+                                       maxItems: kListPageSize,
+                                       orderBy: nil,
+                                       _where: sSelf.listCondition,
+                                       include: ["path"],
+                                       fields: nil) { [weak self] (result, error) in
+                                        guard let sSelf = self else { return }
+
+                                        var listNodes: [ListNode]?
+                                        if let entries = result?.list {
+                                            listNodes = FavoritesNodeMapper.map(entries.entries)
+                                        } else {
+                                            if let error = error {
+                                                AlfrescoLog.error(error)
+                                            }
+                                        }
+
+                                        let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                                                  error: error,
+                                                                                  requestPagination: paginationRequest,
+                                                                                  responsePagination: result?.list.pagination)
+
+                                        sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        })
+    }
+
+    // MARK: - ListViewModelProtocol Methods
+
+    func isEmpty() -> Bool {
+        return results.isEmpty
+    }
+
+    func numberOfSections() -> Int {
+        return (results.count == 0) ? 0 : 1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func refreshList() {
+        currentPage = 1
+        favoritesList(with: nil)
+    }
+
+    func shouldDisplaySections() -> Bool {
+        return false
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        favoritesList(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+}

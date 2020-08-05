@@ -26,6 +26,8 @@ class SearchComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPr
             return searchChipSelectedContainerScheme(for: theme)
         case .searchChipUnselected:
             return searchChipUnselectedContainerScheme(for: theme)
+        case .favoritesTabBar:
+            return favoritesTabBarContainerScheme(for: theme)
         default: return nil
         }
     }
@@ -42,6 +44,15 @@ class SearchComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPr
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
         containerScheme.typographyScheme.body2 = theme.captionTextStyle.font
+
+        return containerScheme
+    }
+
+    private func favoritesTabBarContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
+        containerScheme.colorScheme.primaryColor = theme.onSurfaceColor
+        containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
+        containerScheme.typographyScheme.body2 = theme.body2TextStyle.font
 
         return containerScheme
     }
