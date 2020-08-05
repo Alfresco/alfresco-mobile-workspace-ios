@@ -26,6 +26,12 @@ class SystemSearchViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Remove navigation bar underline separator
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+
         addSearchController()
         configureNavigationBar()
     }

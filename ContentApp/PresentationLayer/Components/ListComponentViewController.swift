@@ -259,6 +259,11 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             })
 
             listActionDelegate?.didUpdateList(error: error, pagination: pagination)
+        } else {
+            collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.stopLoading()
+            })
         }
 
         // If loading the first page or missing pagination scroll to top

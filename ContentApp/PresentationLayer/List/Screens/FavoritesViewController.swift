@@ -22,6 +22,7 @@ import MaterialComponents.MaterialTabs_Theming
 import MaterialComponents.MaterialTypographyScheme
 import AlfrescoContentServices
 
+
 class FavoritesViewController: SystemSearchViewController {
     var folderAndFilesViewController: ListComponentViewController?
     var librariesViewController: ListComponentViewController?
@@ -36,12 +37,6 @@ class FavoritesViewController: SystemSearchViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Remove navigation bar underline separator
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
 
         if folderAndFilesListViewModel?.shouldDisplaySettingsButton() ?? false {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
@@ -111,7 +106,8 @@ class FavoritesViewController: SystemSearchViewController {
                         UITabBarItem(title: LocalizationConstants.Search.filterLibraries, image: nil, tag: 1)]
 
         tabBar.itemAppearance = .titles
-        tabBar.setAlignment(.center, animated: false)
+        tabBar.setAlignment(.justified, animated: false)
+        tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
         tabBar.displaysUppercaseTitles = false
         tabBar.translatesAutoresizingMaskIntoConstraints = false
 
@@ -237,5 +233,16 @@ extension FavoritesViewController: ListComponentActionDelegate {
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
         folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
         librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+    }
+}
+
+class FavoritesTabBarIndicator: NSObject, MDCTabBarIndicatorTemplate {
+    func indicatorAttributes(for context: MDCTabBarIndicatorContext) -> MDCTabBarIndicatorAttributes {
+        let bounds = context.contentFrame
+        let attr = MDCTabBarIndicatorAttributes()
+        let overflow: CGFloat = 30
+        let frame = CGRect(x: bounds.minX - overflow / 2, y: context.bounds.maxY - 2, width: bounds.width + overflow, height: 2)
+        attr.path = UIBezierPath(rect: frame)
+        return attr
     }
 }
