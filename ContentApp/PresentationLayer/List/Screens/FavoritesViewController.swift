@@ -81,8 +81,11 @@ class FavoritesViewController: SystemSearchViewController {
     // MARK: - Coordinator Public Methods
 
     func scrollToTop() {
-        folderAndFilesViewController?.scrollToSection(0)
-        librariesViewController?.scrollToSection(0)
+        if tabBar.selectedItem?.tag == 0 {
+            folderAndFilesViewController?.scrollToSection(0)
+        } else if tabBar.selectedItem?.tag == 1 {
+            librariesViewController?.scrollToSection(0)
+        }
     }
 
     // MARK: - Private interface
