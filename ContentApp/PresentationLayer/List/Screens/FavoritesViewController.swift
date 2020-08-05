@@ -229,13 +229,19 @@ extension FavoritesViewController: ListComponentActionDelegate {
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
-        folderAndFilesViewController?.stopLoading()
-        librariesViewController?.stopLoading()
+        if tabBar.selectedItem?.tag == 0 {
+            folderAndFilesViewController?.stopLoading()
+        } else if tabBar.selectedItem?.tag == 1 {
+            librariesViewController?.stopLoading()
+        }
     }
 
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
-        folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
-        librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+        if tabBar.selectedItem?.tag == 0 {
+            folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+        } else if tabBar.selectedItem?.tag == 1 {
+            librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+        }
     }
 }
 
