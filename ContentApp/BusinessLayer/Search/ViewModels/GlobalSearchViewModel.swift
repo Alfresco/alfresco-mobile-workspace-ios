@@ -39,9 +39,9 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     // MARK: - Public methods
 
     func defaultSearchChips() -> [SearchChipItem] {
-        searchChips = [ SearchChipItem(name: LocalizationConstants.Search.chipFiles, type: .file),
-                        SearchChipItem(name: LocalizationConstants.Search.chipFolders, type: .folder),
-                        SearchChipItem(name: LocalizationConstants.Search.chipLibraries, type: .library, selected: false)]
+        searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file),
+                        SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder),
+                        SearchChipItem(name: LocalizationConstants.Search.filterLibraries, type: .library, selected: false)]
         return searchChips
     }
 

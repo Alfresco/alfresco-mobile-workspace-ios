@@ -26,6 +26,9 @@ target 'ContentApp' do
   pod 'MaterialComponents/BottomNavigation+Theming', :inhibit_warnings => true
   pod 'MaterialComponents/Chips', :inhibit_warnings => true
   pod 'MaterialComponents/Chips+Theming', :inhibit_warnings => true
+  pod 'MaterialComponents/Tabs', :inhibit_warnings => true
+  pod 'MaterialComponents/Tabs+TypographyThemer', :inhibit_warnings => true
+  pod 'MaterialComponents/Tabs+Theming', :inhibit_warnings => true
 
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -25,8 +25,6 @@ class ListViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
-    private var settingsButton = UIButton(type: .custom)
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -54,8 +52,9 @@ class ListViewController: SystemSearchViewController {
         listController = listComponentViewController
         listController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
 
-        configureNavigationBar()
-        addSettingsButton()
+        if listViewModel?.shouldDisplaySettingsButton() ?? false {
+            addSettingsButton(action: #selector(settingsButtonTapped), target: self)
+        }
 
         listController?.startLoading()
         listViewModel?.refreshList()
@@ -82,55 +81,6 @@ class ListViewController: SystemSearchViewController {
 
     func scrollToTop() {
         listController?.scrollToSection(0)
-    }
-
-    // MARK: - Helpers
-
-    func configureNavigationBar() {
-        definesPresentationContext = true
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isTranslucent = true
-        navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.hidesSearchBarWhenScrolling = false
-    }
-
-    func addSettingsButton() {
-        guard listViewModel?.shouldDisplaySettingsButton() == true else { return }
-        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
-        addAvatarInSettingsButton()
-        settingsButton.imageView?.contentMode = .scaleAspectFill
-        settingsButton.addTarget(self, action: #selector(settingsButtonTapped), for: UIControl.Event.touchUpInside)
-        settingsButton.layer.cornerRadius = accountSettingsButtonHeight / 2
-        settingsButton.layer.masksToBounds = true
-
-        let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
-        currWidth?.isActive = true
-        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
-        currHeight?.isActive = true
-
-        self.navigationItem.leftBarButtonItem = settingsBarButtonItem
-    }
-
-    func addAvatarInSettingsButton() {
-        let avatarImage = ProfileService.getAvatar(completionHandler: { [weak self] image in
-            guard let sSelf = self else { return }
-
-            if let fetchedImage = image {
-                sSelf.settingsButton.setImage(fetchedImage, for: .normal)
-            }
-        })
-        settingsButton.setImage(avatarImage, for: .normal)
-    }
-
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        guard let currentTheme = self.themingService?.activeTheme else { return }
-
-        view.backgroundColor = currentTheme.backgroundColor
-        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 }
 

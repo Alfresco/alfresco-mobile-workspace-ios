@@ -35,5 +35,6 @@ enum MaterialComponentsThemingScene {
     case signOutButton
     case searchChipSelected
     case searchChipUnselected
+    case favoritesTabBar
     case applicationTabBar
 }

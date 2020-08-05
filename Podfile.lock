@@ -187,6 +187,24 @@ PODS:
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
+  - MaterialComponents/Tabs (110.2.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Typography
+    - MDFInternationalization
+  - "MaterialComponents/Tabs+Theming (110.2.0)":
+    - MaterialComponents/schemes/Container
+    - MaterialComponents/Tabs
+    - "MaterialComponents/Tabs+TypographyThemer"
+  - "MaterialComponents/Tabs+TypographyThemer (110.2.0)":
+    - MaterialComponents/schemes/Typography
+    - MaterialComponents/Tabs
   - "MaterialComponents/TextControls+BaseTextFields (110.2.0)":
     - "MaterialComponents/private/TextControlsPrivate+BaseStyle"
     - "MaterialComponents/private/TextControlsPrivate+Shared"
@@ -240,6 +258,9 @@ DEPENDENCIES:
   - "MaterialComponents/Chips+Theming"
   - MaterialComponents/Dialogs
   - MaterialComponents/Snackbar
+  - MaterialComponents/Tabs
+  - "MaterialComponents/Tabs+Theming"
+  - "MaterialComponents/Tabs+TypographyThemer"
   - "MaterialComponents/TextControls+FilledTextFields"
   - "MaterialComponents/TextControls+FilledTextFieldsTheming"
   - "MaterialComponents/TextControls+OutlinedTextFields"
@@ -276,6 +297,6 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 21e2f7903ba943bdb17e1b46925bffbb5e78a7c2
+PODFILE CHECKSUM: 1d6278b5f70549c9f691e6ebaaba0a6513cd9b47
 
 COCOAPODS: 1.9.3

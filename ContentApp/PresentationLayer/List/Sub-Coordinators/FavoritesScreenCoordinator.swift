@@ -21,7 +21,7 @@ import UIKit
 class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
     private let presenter: TabBarMainViewController
-    private var favoritesViewController: ListViewController?
+    private var favoritesViewController: FavoritesViewController?
     private var navigationViewController: UINavigationController?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
@@ -30,24 +30,28 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-//        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-//        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let viewController = ListViewController()
-//
-//        let resultViewModel = ResultsViewModel()
-//        let favoritesViewModel = FavoritesViewModel(with: accountService, listRequest: nil)
-//        // favoritesViewModel.whereCondition = kWhereFavoritesSiteCondition
-//        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-//        globalSearchViewModel.delegate = resultViewModel
-//
-//        viewController.title = LocalizationConstants.ScreenTitles.favorites
-//        viewController.themingService = themingService
-//        viewController.folderDrillDownScreenCoordinatorDelegate = self
-//        viewController.tabBarScreenDelegate = presenter
-////        viewController.listViewModel = favoritesViewModel
-//        viewController.searchViewModel = globalSearchViewModel
-//        viewController.resultViewModel = resultViewModel
-//
+        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = FavoritesViewController()
+
+        let resultViewModel = ResultsViewModel()
+        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
+        foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
+        let librariesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
+        librariesViewModel.listCondition = kWhereFavoritesSiteCondition
+        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        globalSearchViewModel.delegate = resultViewModel
+        resultViewModel.delegate = globalSearchViewModel
+
+        viewController.title = LocalizationConstants.ScreenTitles.favorites
+        viewController.themingService = themingService
+        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.tabBarScreenDelegate = presenter
+        viewController.folderAndFilesListViewModel = foldersAndFilesViewModel
+        viewController.librariesListViewModel = librariesViewModel
+        viewController.searchViewModel = globalSearchViewModel
+        viewController.resultViewModel = resultViewModel
+
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController

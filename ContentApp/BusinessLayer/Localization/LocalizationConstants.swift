@@ -104,9 +104,10 @@ struct LocalizationConstants {
         static let searching = NSLocalizedString("searching", comment: "")
         static let noRecentSearch = NSLocalizedString("noRecentSearch", comment: "")
         static let recentSearch = NSLocalizedString("recentSearch", comment: "")
-        static let chipFiles = NSLocalizedString("chipFiles", comment: "")
-        static let chipFolders = NSLocalizedString("chipFolders", comment: "")
-        static let chipLibraries = NSLocalizedString("chipLibraries", comment: "")
+        static let filterFiles = NSLocalizedString("filterFiles", comment: "")
+        static let filterFolders = NSLocalizedString("filterFolders", comment: "")
+        static let filterLibraries = NSLocalizedString("filterLibraries", comment: "")
+        static let filterFoldersAndFiles = NSLocalizedString("filterfoldersAndFiles", comment: "")
     }
 
     struct GroupListSection {
