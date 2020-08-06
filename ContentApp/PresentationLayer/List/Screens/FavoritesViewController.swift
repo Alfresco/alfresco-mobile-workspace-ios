@@ -22,7 +22,6 @@ import MaterialComponents.MaterialTabs_Theming
 import MaterialComponents.MaterialTypographyScheme
 import AlfrescoContent
 
-
 class FavoritesViewController: SystemSearchViewController {
     var folderAndFilesViewController: ListComponentViewController?
     var librariesViewController: ListComponentViewController?
@@ -93,12 +92,12 @@ class FavoritesViewController: SystemSearchViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let currentTheme = self.themingService?.activeTheme else { return }
-        if let theme = self.themingService?.containerScheming(for: .favoritesTabBar) {
-            tabBar.applySurfaceTheme(withScheme: theme)
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        tabBar.applySurfaceTheme(withScheme: themingService.containerScheming(for: .favoritesTabBar))
         tabBar.backgroundColor = currentTheme.backgroundColor
         tabBar.bottomDividerColor = currentTheme.dividerColor
+        tabBar.enableRippleBehavior = true
+        tabBar.rippleColor = currentTheme.backgroundColor
     }
 
     func setupTabBarView() -> MDCTabBar {
@@ -113,11 +112,6 @@ class FavoritesViewController: SystemSearchViewController {
         tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
         tabBar.displaysUppercaseTitles = false
         tabBar.translatesAutoresizingMaskIntoConstraints = false
-
-        if let theme = self.themingService?.containerScheming(for: .favoritesTabBar) {
-            tabBar.applySurfaceTheme(withScheme: theme)
-        }
-        tabBar.bottomDividerColor = self.themingService?.activeTheme?.dividerColor ?? .gray
 
         return tabBar
     }
