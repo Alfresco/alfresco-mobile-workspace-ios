@@ -65,6 +65,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         lastSearchedString = string
         if paginationRequest == nil {
             currentPage = 1
+            results = []
         }
 
         liveSearchTimer?.invalidate()
@@ -74,7 +75,6 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         }
 
         pageFetchingGroup.enter()
-
         if isSearchForLibraries() {
             performLibrariesSearch(searchString: searchString, paginationRequest: paginationRequest)
         } else {
@@ -84,8 +84,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
 
     func performLiveSearch(for string: String?) {
         liveSearchTimer?.invalidate()
-        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "",
-            searchString.count >= kMinCharactersForLiveSearch else {
+        guard let searchString = string, searchString.canPerformLiveSearch() else {
                 self.delegate?.handle(results: nil)
                 return
         }

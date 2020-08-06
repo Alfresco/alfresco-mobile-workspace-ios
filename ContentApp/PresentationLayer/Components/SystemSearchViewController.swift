@@ -147,7 +147,9 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
-        rvc.startLoading()
+        if searchText.canPerformLiveSearch() {
+            rvc.startLoading()
+        }
     }
 }
 
