@@ -85,8 +85,8 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     func performLiveSearch(for string: String?) {
         liveSearchTimer?.invalidate()
         guard let searchString = string, searchString.canPerformLiveSearch() else {
-                self.delegate?.handle(results: nil)
-                return
+            self.delegate?.handle(results: nil)
+            return
         }
         liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
@@ -122,6 +122,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let searchChipsState = sSelf.searchChipsState()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
 
                 if let entries = results?.list.entries {
@@ -132,7 +133,12 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
+
+                if sSelf.changedSearchChipsState(with: searchChipsState) == false {
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
+                } else {
+                    sSelf.pageFetchingGroup.leave()
+                }
             }
         })
     }
@@ -141,6 +147,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let searchChipsState = sSelf.searchChipsState()
             SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
 
                 if let entries = result?.list?.entries {
@@ -152,9 +159,29 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
 
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
+                if sSelf.changedSearchChipsState(with: searchChipsState) == false {
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
+                } else {
+                    sSelf.pageFetchingGroup.leave()
+                }
             }
         })
+    }
+
+    private func searchChipsState() -> String {
+        var state = ""
+        for chip in searchChips where chip.selected == true {
+            state += chip.type.rawValue
+        }
+        return state
+    }
+
+    private func changedSearchChipsState(with oldState: String) -> Bool {
+        let state = self.searchChipsState()
+        if oldState == state {
+            return false
+        }
+        return true
     }
 }
 
