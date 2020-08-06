@@ -177,6 +177,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 
     private func changedSearchChipsState(with oldState: String) -> Bool {
+        // Mixed items displayed in search results list when server is responding slow and user changes the filter
         let state = self.searchChipsState()
         if oldState == state {
             return false
