@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 class UserProfile {
     static func persistUserProfile(person: Person, withAccountIdentifier identifier: String) {

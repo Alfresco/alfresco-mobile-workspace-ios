@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct SitesNodeMapper {
     static func map(_ entries: [SiteEntry]) -> [ListNode] {

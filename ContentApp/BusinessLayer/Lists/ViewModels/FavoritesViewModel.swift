@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
@@ -41,7 +41,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             FavoritesAPI.listFavorites(personId: kAPIPathMe,
                                        skipCount: paginationRequest?.skipCount,
                                        maxItems: kListPageSize,

@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct ResultsNodeMapper {
     static func map(_ entries: [ResultSetRowEntry]) -> [ListNode] {

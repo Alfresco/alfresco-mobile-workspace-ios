@@ -51,7 +51,7 @@ struct LocalizationConstants {
     struct Labels {
         static let transportProtocol = NSLocalizedString("loginTransportProtocolLabel", comment: "")
         static let https = NSLocalizedString("https", comment: "")
-        static let alfrescoContentServicesSettings = NSLocalizedString("alfrescoContentServicesSettings", comment: "")
+        static let AlfrescoContentSettings = NSLocalizedString("AlfrescoContentSettings", comment: "")
         static let authentication = NSLocalizedString("authentication", comment: "")
         static let infoBasicAuthConnectTo = NSLocalizedString("infoBasicAuthConnectTo", comment: "")
         static let infoAimsConnectTo = NSLocalizedString("infoAimsConnectTo", comment: "")

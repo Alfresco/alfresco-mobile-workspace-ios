@@ -18,7 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 class ProfileService {
     static var apiClient: APIClientProtocol?
@@ -57,7 +57,7 @@ class ProfileService {
 
     static func fetchProfileInformation(completion: @escaping ((PersonEntry?, Error?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { (personEntry, error) in
                 completion(personEntry, error)
             }

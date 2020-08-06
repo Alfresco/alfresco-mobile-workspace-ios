@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
@@ -39,7 +39,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
             SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe, skipCount: skipCount, maxItems: maxItems, orderBy: nil, relations: nil, fields: nil, _where: nil) { (result, error) in

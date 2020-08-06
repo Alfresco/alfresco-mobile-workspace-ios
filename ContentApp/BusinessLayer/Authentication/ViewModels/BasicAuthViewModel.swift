@@ -18,7 +18,7 @@
 
 import Foundation
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol BasicAuthViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -51,7 +51,7 @@ class BasicAuthViewModel {
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account
 
-                    AlfrescoContentServicesAPI.basePath = account.apiBasePath
+                    AlfrescoContentAPI.basePath = account.apiBasePath
                 }
 
                 sSelf.fetchProfileInformation()
@@ -70,7 +70,7 @@ class BasicAuthViewModel {
 
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {

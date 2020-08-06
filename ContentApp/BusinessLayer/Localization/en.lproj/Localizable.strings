@@ -46,7 +46,7 @@
 // MARK: - Labels
 "loginTransportProtocolLabel" = "Transport Protocol";
 "https" = "HTTPS";
-"alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
+"AlfrescoContentSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
 "infoBasicAuthConnectTo" = "Connected to: ";
 "infoAimsConnectTo" = "Signing in to: ";

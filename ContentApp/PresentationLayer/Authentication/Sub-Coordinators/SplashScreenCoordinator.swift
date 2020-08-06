@@ -18,7 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol SplashScreenCoordinatorDelegate: class {
     func showLoginContainerView()
@@ -113,7 +113,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
         accountService?.register(account: account)
         accountService?.activeAccount = account
 
-        AlfrescoContentServicesAPI.basePath = account.apiBasePath
+        AlfrescoContentAPI.basePath = account.apiBasePath
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()

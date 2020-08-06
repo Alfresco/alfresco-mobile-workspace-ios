@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct NodeChildMapper {
     static func map(_ entries: [NodeChildAssociationEntry]) -> [ListNode] {
