@@ -17,7 +17,7 @@
 //
 
 import UIKit
-import AlfrescoContentServices
+import AlfrescoContent
 import AlfrescoAuth
 
 protocol ListViewModelProtocol: ListComponentDataSourceProtocol {

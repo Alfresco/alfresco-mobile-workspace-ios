@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var resultsList: [ListNode] = []
@@ -122,7 +122,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     private func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
 
                 if let entries = results?.list.entries {
@@ -141,7 +141,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     private func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
 
                 if let entries = result?.list?.entries {

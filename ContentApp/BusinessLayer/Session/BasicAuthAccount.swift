@@ -17,7 +17,7 @@
 //
 
 import UIKit
-import AlfrescoContentServices
+import AlfrescoContent
 
 class BasicAuthAccount: AccountProtocol, Equatable {
 

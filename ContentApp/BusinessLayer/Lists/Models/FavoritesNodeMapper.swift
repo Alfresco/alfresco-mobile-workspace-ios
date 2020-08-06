@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct FavoritesNodeMapper {
     static func map(_ entries: [FavoriteEntry]) -> [ListNode] {

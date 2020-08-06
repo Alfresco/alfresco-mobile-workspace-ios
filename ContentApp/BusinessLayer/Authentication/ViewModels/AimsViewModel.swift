@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol AimsViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -49,7 +49,7 @@ class AimsViewModel {
 
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {
@@ -86,7 +86,7 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
 
-                AlfrescoContentServicesAPI.basePath = account.apiBasePath
+                AlfrescoContentAPI.basePath = account.apiBasePath
                 self.fetchProfileInformation()
             }
         case .failure(let error):

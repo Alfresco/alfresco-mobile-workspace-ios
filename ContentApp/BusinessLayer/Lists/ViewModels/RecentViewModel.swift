@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
@@ -40,7 +40,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let accountIdentifier = sSelf.accountService?.activeAccount?.identifier else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier, pagination: paginationRequest)) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {

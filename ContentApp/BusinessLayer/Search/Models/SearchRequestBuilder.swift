@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 let kRequestDefaultsFieldName = "keywords"
 

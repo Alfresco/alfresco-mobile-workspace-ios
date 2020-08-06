@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol SearchViewModelProtocol {
     var delegate: SearchViewModelDelegate? { get set }

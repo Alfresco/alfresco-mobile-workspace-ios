@@ -20,7 +20,7 @@ import UIKit
 import MaterialComponents.MaterialTabs
 import MaterialComponents.MaterialTabs_Theming
 import MaterialComponents.MaterialTypographyScheme
-import AlfrescoContentServices
+import AlfrescoContent
 
 
 class FavoritesViewController: SystemSearchViewController {

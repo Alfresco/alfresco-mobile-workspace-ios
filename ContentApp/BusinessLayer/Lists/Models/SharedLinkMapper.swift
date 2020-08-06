@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct SharedLinkMapper {
     static func map(_ entries: [SharedLinkEntry]) -> [ListNode] {

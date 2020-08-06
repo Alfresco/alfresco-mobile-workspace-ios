@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
@@ -39,7 +39,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
             SharedLinksAPI.listSharedLinks(skipCount: skipCount, maxItems: maxItems, _where: nil, include: nil, fields: nil) { (result, error) in

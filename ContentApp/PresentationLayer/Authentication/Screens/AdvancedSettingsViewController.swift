@@ -130,7 +130,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         self.title = LocalizationConstants.ScreenTitles.advancedSettings
 
         transportProtocolLabel.text = LocalizationConstants.Labels.transportProtocol
-        settingsLabel.text = LocalizationConstants.Labels.alfrescoContentServicesSettings
+        settingsLabel.text = LocalizationConstants.Labels.AlfrescoContentSettings
         authenticationLabel.text = LocalizationConstants.Labels.authentication
         httpsLabel.text = LocalizationConstants.Labels.https
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))

@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 import AlfrescoAuth
 import MaterialComponents.MaterialDialogs
 

@@ -6,7 +6,7 @@ use_frameworks!
 
 target 'ContentApp' do
   pod 'AlfrescoAuth', :inhibit_warnings => true
-  pod 'AlfrescoContentServices', :inhibit_warnings => true
+  pod 'AlfrescoContent', :inhibit_warnings => true
   pod 'SwiftLint', :inhibit_warnings => true
   pod 'JWTDecode', :inhibit_warnings => true
 

@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 
 struct DeleteNodeMapper {
     static func map(_ entries: [DeletedNodeEntry]) -> [ListNode] {

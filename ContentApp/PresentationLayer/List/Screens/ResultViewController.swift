@@ -21,7 +21,7 @@ import MaterialComponents.MaterialChips
 import MaterialComponents.MaterialChips_Theming
 import MaterialComponents.MDCChipView
 import MaterialComponents.MDCChipView_MaterialTheming
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol ResultViewControllerDelegate: class {
     func recentSearchTapped(string: String)

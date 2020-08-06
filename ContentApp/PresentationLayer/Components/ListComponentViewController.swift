@@ -17,7 +17,7 @@
 //
 
 import UIKit
-import AlfrescoContentServices
+import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
