@@ -39,6 +39,14 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
 
     // MARK: - Public methods
 
+    func shouldDisplaySearchBar() -> Bool {
+        return false
+    }
+
+    func shouldDisplaySearchButton() -> Bool {
+        return true
+    }
+
     func defaultSearchChips() -> [SearchChipItem] {
         searchChips = []
         if let searchChipNode = self.searchChipNode {

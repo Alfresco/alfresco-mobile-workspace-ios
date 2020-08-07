@@ -22,18 +22,28 @@ class SystemSearchViewController: SystemThemableViewController {
     var searchViewModel: SearchViewModelProtocol?
     var resultViewModel: ResultsViewModel?
     weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    var tagSearchController: UISearchController?
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Remove navigation bar underline separator
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-
-        addSearchController()
         configureNavigationBar()
+        tagSearchController = createSearchController()
+
+        if searchViewModel?.shouldDisplaySearchBar() ?? false {
+            navigationItem.searchController = tagSearchController
+        }
+        if searchViewModel?.shouldDisplaySearchButton() ?? false {
+            addSearchButton()
+        }
+    }
+
+    // MARK: - Public Methods
+
+    func cancelSearchMode() {
+        self.navigationItem.searchController?.searchBar.text = ""
+        self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
     }
 
     func configureNavigationBar() {
@@ -42,7 +52,27 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationController?.navigationBar.isTranslucent = true
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.hidesSearchBarWhenScrolling = false
+
+        // Remove navigation bar underline separator
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
+
+    // MARK: - IBActions
+
+    @objc func searchButtonTapped() {
+        tagSearchController?.searchBar.isHidden = true
+        navigationItem.searchController = tagSearchController
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.tagSearchController?.isActive = true
+            sSelf.tagSearchController?.searchBar.becomeFirstResponder()
+        }
+    }
+
+    // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
@@ -53,7 +83,25 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
     }
 
-    func addSearchController() {
+    private func addSearchButton() {
+        let searchButton = UIButton(type: .custom)
+        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
+        searchButton.imageView?.contentMode = .scaleAspectFill
+        searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
+        searchButton.layer.masksToBounds = true
+        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
+        searchButton.setImage(UIImage(named: "search-icon"), for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        currHeight?.isActive = true
+
+        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+
+    private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
         rvc.themingService = themingService
         rvc.resultScreenDelegate = self
@@ -66,12 +114,8 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.smartQuotesType = .no
-        navigationItem.searchController = searchController
-    }
-
-    func cancelSearchMode() {
-        self.navigationItem.searchController?.searchBar.text = ""
-        self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
+        searchController.searchBar.isHidden = false
+        return searchController
     }
 }
 
@@ -116,10 +160,22 @@ extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController,
             let searchViewModel = self.searchViewModel else { return }
-
+        searchController.searchBar.isHidden = false
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches()
         rvc.clearDataSource()
+    }
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        searchController.searchBar.isHidden = false
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        if searchViewModel?.shouldDisplaySearchBar() == false {
+            navigationItem.searchController = nil
+            navigationController?.view.setNeedsLayout()
+            navigationController?.view.layoutIfNeeded()
+        }
     }
 }
 

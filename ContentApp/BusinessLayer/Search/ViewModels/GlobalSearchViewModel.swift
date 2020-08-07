@@ -38,6 +38,14 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
 
     // MARK: - Public methods
 
+    func shouldDisplaySearchBar() -> Bool {
+        return true
+    }
+
+    func shouldDisplaySearchButton() -> Bool {
+        return false
+    }
+
     func defaultSearchChips() -> [SearchChipItem] {
         searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file),
                         SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder),

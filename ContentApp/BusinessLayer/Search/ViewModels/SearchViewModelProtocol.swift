@@ -28,6 +28,8 @@ protocol SearchViewModelProtocol {
     func performSearch(for string: String?, paginationRequest: RequestPagination?)
     func performLiveSearch(for string: String?)
     func fetchNextSearchResultsPage(for string: String?, index: IndexPath)
+    func shouldDisplaySearchBar() -> Bool
+    func shouldDisplaySearchButton() -> Bool
 }
 
 extension SearchViewModelProtocol {
