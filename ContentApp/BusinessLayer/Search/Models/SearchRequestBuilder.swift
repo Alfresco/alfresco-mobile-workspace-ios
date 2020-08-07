@@ -22,7 +22,7 @@ import AlfrescoContent
 let kRequestDefaultsFieldName = "keywords"
 
 struct SearchRequestBuilder {
-    static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?) -> SearchRequest {
+    static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?, accountIdentifier: String) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(string),
                              paging: pagination ?? self.requestPagination(),
                              include: self.requestInclude(),
@@ -32,14 +32,14 @@ struct SearchRequestBuilder {
                              templates: self.searchRequestTemplates(),
                              defaults: self.searchRequestDefaults(),
                              localization: nil,
-                             filterQueries: self.searchRequestFilter(chipFilters),
+                             filterQueries: self.searchRequestFilter(chipFilters, accountIdentifier),
                              facetQueries: nil,
                              facetFields: nil,
                              facetIntervals: nil,
                              pivots: nil,
                              stats: nil,
                              spellcheck: nil,
-                             scope: nil,
+                             scope: self.searchRequestScope(chipFilters),
                              limits: nil,
                              highlight: nil,
                              ranges: nil)
@@ -83,6 +83,13 @@ struct SearchRequestBuilder {
 
     // MARK: - Search
 
+    private static func searchRequestScope(_ chipFilters: [SearchChipItem]) -> RequestScope? {
+        for chip in chipFilters where chip.type == .trash && chip.selected {
+            return RequestScope(locations: .deletedNodes)
+        }
+        return nil
+    }
+
     private static func searchRequestSort() -> [RequestSortDefinitionInner] {
         return [RequestSortDefinitionInner(type: .field, field: "score", ascending: false)]
     }
@@ -99,7 +106,7 @@ struct SearchRequestBuilder {
                                defaultFieldName: kRequestDefaultsFieldName)
     }
 
-    private static func searchRequestFilter(_ chipFilters: [SearchChipItem]) -> [RequestFilterQueriesInner] {
+    private static func searchRequestFilter(_ chipFilters: [SearchChipItem], _ accountIdentifier: String) -> [RequestFilterQueriesInner] {
         var requestFilters = self.searchMinusRequestFilter()
         let chipFilterQuerry = self.chipsRequestFilter(for: chipFilters)
 
@@ -107,6 +114,12 @@ struct SearchRequestBuilder {
             requestFilters.append(self.searchFilesAndFoldersRequestFilter())
         } else {
             requestFilters.append(chipFilterQuerry)
+        }
+        if let nodeChipFilterQuerry = self.chipsRequestNodeFilter(for: chipFilters) {
+            requestFilters.append(nodeChipFilterQuerry)
+        }
+        if let personalFilesChipFilterQuerry = self.chipsRequestPersonalFilesFilter(for: chipFilters, accountIdentifier: accountIdentifier) {
+            requestFilters.append(personalFilesChipFilterQuerry)
         }
 
         return requestFilters
@@ -127,9 +140,24 @@ struct SearchRequestBuilder {
     }
 
     private static func chipsRequestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
+        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected && ($0.type == .file || $0.type == .folder) }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
                                          tags: nil)
     }
+
+    private static func chipsRequestNodeFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner? {
+        for chip in searchChips where chip.type == .node && chip.selected {
+            return RequestFilterQueriesInner(query: chip.nodeSearch, tags: nil)
+        }
+        return nil
+    }
+
+    private static func chipsRequestPersonalFilesFilter(for searchChips: [SearchChipItem], accountIdentifier: String) -> RequestFilterQueriesInner? {
+        for chip in searchChips where chip.type == .personalFiles && chip.selected {
+            return RequestFilterQueriesInner(query: "cm:creator:\(accountIdentifier)", tags: nil)
+        }
+        return nil
+    }
+
 
     // MARK: - Recent
 

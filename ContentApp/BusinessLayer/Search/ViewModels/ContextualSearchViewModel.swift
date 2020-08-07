@@ -19,10 +19,11 @@
 import Foundation
 import AlfrescoContent
 
-class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
+class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
+    var searchChipNode: SearchChipItem?
 
     weak var delegate: SearchViewModelDelegate?
 
@@ -39,26 +40,18 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     // MARK: - Public methods
 
     func defaultSearchChips() -> [SearchChipItem] {
-        searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file),
-                        SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder),
-                        SearchChipItem(name: LocalizationConstants.Search.filterLibraries, type: .library, selected: false)]
+        searchChips = []
+        if let searchChipNode = self.searchChipNode {
+            searchChipNode.selected = true
+            searchChips.append(searchChipNode)
+        }
+        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file))
+        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder))
         return searchChips
     }
 
     func logicSearchChips(chipTapped: SearchChipItem) -> [Int] {
-        var indexChipsReload: [Int] = []
-        if chipTapped.type == .library {
-            for chip in searchChips where chip.type != .library && chip.selected {
-                chip.selected = false
-                indexChipsReload.append(searchChips.firstIndex(where: { $0 == chip }) ?? 0)
-            }
-        } else {
-            for chip in searchChips where chip.type == .library && chip.selected {
-                chip.selected = false
-                indexChipsReload.append(searchChips.firstIndex(where: { $0 == chip }) ?? 0)
-            }
-        }
-        return indexChipsReload
+        return []
     }
 
     func performSearch(for string: String?, paginationRequest: RequestPagination?) {
@@ -73,13 +66,8 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             self.delegate?.handle(results: nil)
             return
         }
-
         pageFetchingGroup.enter()
-        if isSearchForLibraries() {
-            performLibrariesSearch(searchString: searchString, paginationRequest: paginationRequest)
-        } else {
-            performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
-        }
+        performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
     }
 
     func performLiveSearch(for string: String?) {
@@ -110,38 +98,6 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 
     // MARK: Private Methods
-
-    private func isSearchForLibraries() -> Bool {
-        for chip in searchChips where chip.type == .library {
-            return chip.selected
-        }
-        return false
-    }
-
-    private func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let searchChipsState = sSelf.searchChipsState()
-            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
-
-                if let entries = results?.list.entries {
-                    sSelf.resultsList = SitesNodeMapper.map(entries)
-                }
-
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: results?.list.pagination)
-
-                if sSelf.changedSearchChipsState(with: searchChipsState) == false {
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                } else {
-                    sSelf.pageFetchingGroup.leave()
-                }
-            }
-        })
-    }
 
     private func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
@@ -186,7 +142,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 }
 
-extension GlobalSearchViewModel: ResultsViewModelDelegate {
+extension ContextualSearchViewModel: ResultsViewModelDelegate {
     func refreshResults() {
         performSearch(for: lastSearchedString, paginationRequest: nil)
     }

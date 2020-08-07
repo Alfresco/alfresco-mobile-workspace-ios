@@ -22,17 +22,22 @@ enum CMType: String {
     case file = "'cm:content'"
     case folder = "'cm:folder'"
     case library = "'cm:library'"
+    case node = "'cm:node'"
+    case personalFiles = "personalFiles"
+    case trash = "deleted-nodes"
 }
 
 class SearchChipItem: Equatable {
     var name: String
     var type: CMType
     var selected: Bool
+    var nodeSearch: String
 
-    init(name: String, type: CMType, selected: Bool = true) {
+    init(name: String, type: CMType, selected: Bool = true, nodeSearch: String = "") {
         self.name = name
         self.type = type
         self.selected = selected
+        self.nodeSearch = nodeSearch
     }
 
     static func == (lhs: SearchChipItem, rhs: SearchChipItem) -> Bool {
