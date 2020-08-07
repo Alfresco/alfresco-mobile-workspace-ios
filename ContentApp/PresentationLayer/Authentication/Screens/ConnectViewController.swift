@@ -154,8 +154,10 @@ class ConnectViewController: SystemThemableViewController {
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
-        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     func connectTextFieldAddMaterialComponents() {

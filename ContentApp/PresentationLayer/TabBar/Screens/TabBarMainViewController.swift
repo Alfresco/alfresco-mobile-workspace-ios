@@ -94,7 +94,6 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
         bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
-        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
     }
 
     func addBottomNavigationBar() {
