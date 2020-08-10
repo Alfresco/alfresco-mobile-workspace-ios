@@ -27,6 +27,7 @@ let kProfileAvatarImageFileName = "avatar"
 let kSaveDiplayProfileName = "kSaveDiplayProfileName"
 let kSaveEmailProfile = "kSaveEmailProfile"
 let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
+let kSavePersonalFilesID = "kSavePersonalFilesID"
 
 // MARK: - API Paths
 let kAPIPathVersion = "alfresco/versions/1"

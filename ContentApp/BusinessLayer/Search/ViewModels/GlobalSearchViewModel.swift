@@ -25,6 +25,8 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var searchChips: [SearchChipItem] = []
 
     weak var delegate: SearchViewModelDelegate?
+    var displaySearchBar: Bool = true
+    var displaySearchButton: Bool = false
 
     private var liveSearchTimer: Timer?
     private var lastSearchedString: String?
@@ -39,11 +41,11 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     // MARK: - Public methods
 
     func shouldDisplaySearchBar() -> Bool {
-        return true
+        return displaySearchBar
     }
 
     func shouldDisplaySearchButton() -> Bool {
-        return false
+        return displaySearchButton
     }
 
     func defaultSearchChips() -> [SearchChipItem] {

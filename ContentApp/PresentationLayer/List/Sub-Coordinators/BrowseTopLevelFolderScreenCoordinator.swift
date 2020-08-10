@@ -47,7 +47,9 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
             viewController.title = title
             viewController.themingService = themingService
-            viewController.folderDrillDownScreenCoordinatorDelegate = self
+            if browseType != BrowseType.trash {
+                viewController.folderDrillDownScreenCoordinatorDelegate = self
+            }
             viewController.listViewModel = listViewModel
             viewController.searchViewModel = globalSearchViewModel
             viewController.resultViewModel = resultViewModel
@@ -77,15 +79,16 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         var searchChip: SearchChipItem?
         switch type {
         case .personalFiles:
-            searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .personalFiles, selected: true)
-        case .trash:
-            searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .trash, selected: true)
-        case .shared:
-            searchChip = nil
+            if let personalFilesId = UserProfile.getPersonalFilesID() {
+                let nodeSearch = "ANCESTOR:\"workspace://SpacesStore/\(personalFilesId)\""
+                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeSearch: nodeSearch)
+            }
         default:
             let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
             resultViewModel.delegate = globalSearchViewModel
             globalSearchViewModel.delegate = resultViewModel
+            globalSearchViewModel.displaySearchBar = false
+            globalSearchViewModel.displaySearchButton = false
             return globalSearchViewModel
         }
 

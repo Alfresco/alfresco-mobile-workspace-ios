@@ -20,7 +20,11 @@ import Foundation
 import AlfrescoContent
 
 class UserProfile {
-    static func persistUserProfile(person: Person, withAccountIdentifier identifier: String) {
+    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
+    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+    static var identifier = accountService?.activeAccount?.identifier ?? ""
+
+    static func persistUserProfile(person: Person) {
         var profileName = person.firstName
         if let lastName = person.lastName {
             profileName = "\(profileName) \(lastName)"
@@ -35,16 +39,27 @@ class UserProfile {
         defaults.synchronize()
     }
 
+    static func persistPersonalFilesID(nodeID: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(nodeID, forKey: "\(identifier)-\(kSavePersonalFilesID)")
+        defaults.synchronize()
+    }
+
     static func removeUserProfile(withAccountIdentifier identifier: String) {
         UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
         UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
+        UserDefaults.standard.removeObject(forKey: "\(identifier)-\(kSavePersonalFilesID)")
     }
 
-    static func getProfileName(withAccountIdentifier identifier: String) -> String {
-        return  UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveDiplayProfileName)") as? String ?? ""
+    static func getPersonalFilesID() -> String? {
+        return UserDefaults.standard.object(forKey: "\(identifier)-\(kSavePersonalFilesID)") as? String
     }
 
-    static func getEmail(withAccountIdentifier identifier: String) -> String {
-        return  UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveEmailProfile)") as? String ?? ""
+    static func getProfileName() -> String {
+        return UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveDiplayProfileName)") as? String ?? ""
+    }
+
+    static func getEmail() -> String {
+        return UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveEmailProfile)") as? String ?? ""
     }
 }

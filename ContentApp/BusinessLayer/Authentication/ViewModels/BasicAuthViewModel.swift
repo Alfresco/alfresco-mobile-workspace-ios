@@ -83,8 +83,9 @@ class BasicAuthViewModel {
                         sSelf.accountService?.unregister(account: activeAccount)
                     }
                 } else {
-                    if let person = personEntry?.entry, let activeAccount = sSelf.accountService?.activeAccount {
-                        UserProfile.persistUserProfile(person: person, withAccountIdentifier: activeAccount.identifier)
+                    if let person = personEntry?.entry {
+                        UserProfile.persistUserProfile(person: person)
+                        ProfileService.featchPersonalFilesID()
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }

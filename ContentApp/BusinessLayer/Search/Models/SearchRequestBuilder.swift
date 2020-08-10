@@ -158,7 +158,6 @@ struct SearchRequestBuilder {
         return nil
     }
 
-
     // MARK: - Recent
 
     private static func recentRequestSort() -> [RequestSortDefinitionInner] {

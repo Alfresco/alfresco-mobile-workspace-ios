@@ -247,7 +247,7 @@ class FileIcon {
             "video/x-sgi-movie": .video,
             "x-world/x-vrml": .generic,
             "cm:folder": .folder,
-            "cm:site": .site
+            "st:site": .site
         ]
     }
 

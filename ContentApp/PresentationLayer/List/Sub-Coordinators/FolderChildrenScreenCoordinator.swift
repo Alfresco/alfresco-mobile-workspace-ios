@@ -52,7 +52,8 @@ class FolderChildrenScreenCoordinator: Coordinator {
             contextualSearchViewModel.delegate = resultViewModel
             if let nodeID = nodeID {
                 let nodeSearch = "ANCESTOR:\"workspace://SpacesStore/\(nodeID)\""
-                contextualSearchViewModel.searchChipNode = SearchChipItem(name: "in: " + title, type: .node, selected: true, nodeSearch: nodeSearch)
+                let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + title, type: .node, selected: true, nodeSearch: nodeSearch)
+                contextualSearchViewModel.searchChipNode = chipNode
             }
             resultViewModel.delegate = contextualSearchViewModel
 
