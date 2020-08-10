@@ -53,6 +53,11 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationItem.largeTitleDisplayMode = .automatic
         navigationItem.hidesSearchBarWhenScrolling = false
 
+        // Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "back-icon")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "back-icon")
+
         // Remove navigation bar underline separator
         navigationController?.navigationBar.barTintColor = .clear
         navigationController?.navigationBar.isTranslucent = false
@@ -63,8 +68,8 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func searchButtonTapped() {
-        tagSearchController?.searchBar.isHidden = true
         navigationItem.searchController = tagSearchController
+        tagSearchController?.searchBar.alpha = 0.0
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.tagSearchController?.isActive = true
@@ -78,9 +83,11 @@ class SystemSearchViewController: SystemThemableViewController {
         guard let currentTheme = self.themingService?.activeTheme else { return }
 
         view.backgroundColor = currentTheme.backgroundColor
-        navigationController?.navigationBar.tintColor = currentTheme.primaryVariantColor
+        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     private func addSearchButton() {
@@ -114,7 +121,6 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.smartQuotesType = .no
-        searchController.searchBar.isHidden = false
         return searchController
     }
 }
@@ -160,21 +166,23 @@ extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController,
             let searchViewModel = self.searchViewModel else { return }
-        searchController.searchBar.isHidden = false
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches()
         rvc.clearDataSource()
-    }
 
-    func didPresentSearchController(_ searchController: UISearchController) {
-        searchController.searchBar.isHidden = false
+        UIView.animate(withDuration: 0.2) {
+            searchController.searchBar.alpha = 1.0
+        }
     }
 
     func didDismissSearchController(_ searchController: UISearchController) {
         if searchViewModel?.shouldDisplaySearchBar() == false {
             navigationItem.searchController = nil
-            navigationController?.view.setNeedsLayout()
-            navigationController?.view.layoutIfNeeded()
+            UIView.animate(withDuration: 0.1) { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.navigationController?.view.setNeedsLayout()
+                sSelf.navigationController?.view.layoutIfNeeded()
+            }
         }
     }
 }
@@ -193,7 +201,6 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-
         rvc.view.isHidden = false
     }
 
@@ -214,7 +221,6 @@ extension SystemSearchViewController: UISearchBarDelegate {
 extension SystemSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-
         rvc.view.isHidden = false
     }
 }
