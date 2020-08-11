@@ -47,9 +47,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
             viewController.title = title
             viewController.themingService = themingService
-            if browseType != BrowseType.trash {
-                viewController.folderDrillDownScreenCoordinatorDelegate = self
-            }
+            viewController.folderDrillDownScreenCoordinatorDelegate = self
             viewController.listViewModel = listViewModel
             viewController.searchViewModel = globalSearchViewModel
             viewController.resultViewModel = resultViewModel

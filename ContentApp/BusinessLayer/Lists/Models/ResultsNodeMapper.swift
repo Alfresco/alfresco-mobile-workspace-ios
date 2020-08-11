@@ -35,6 +35,9 @@ struct ResultsNodeMapper {
         if node.isFolder {
             icon = node.nodeType
             kind = .folder
+            if node.nodeType == "st:site" {
+                kind = .site
+            }
         }
         return ListNode(guid: node._id, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
     }

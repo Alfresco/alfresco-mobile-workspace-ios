@@ -25,7 +25,7 @@ struct SearchRequestBuilder {
     static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?, accountIdentifier: String) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(string),
                              paging: pagination ?? self.requestPagination(),
-                             include: self.requestInclude(),
+                             include: self.requestInclude(chipFilters),
                              includeRequest: nil,
                              fields: nil,
                              sort: self.searchRequestSort(),
@@ -39,7 +39,7 @@ struct SearchRequestBuilder {
                              pivots: nil,
                              stats: nil,
                              spellcheck: nil,
-                             scope: self.searchRequestScope(chipFilters),
+                             scope: nil,
                              limits: nil,
                              highlight: nil,
                              ranges: nil)
@@ -48,7 +48,7 @@ struct SearchRequestBuilder {
     static func recentRequest(_ accountIdentifier: String, pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(""),
                              paging: pagination ?? self.requestPagination(),
-                             include: self.requestInclude(),
+                             include: self.requestInclude(nil),
                              includeRequest: nil,
                              fields: nil, sort: self.recentRequestSort(),
                              templates: nil,
@@ -77,18 +77,11 @@ struct SearchRequestBuilder {
         return RequestPagination(maxItems: kListPageSize, skipCount: 0)
     }
 
-    private static func requestInclude() -> RequestInclude {
+    private static func requestInclude(_ chipFilters: [SearchChipItem]?) -> RequestInclude? {
         return ["path"]
     }
 
     // MARK: - Search
-
-    private static func searchRequestScope(_ chipFilters: [SearchChipItem]) -> RequestScope? {
-        for chip in chipFilters where chip.type == .trash && chip.selected {
-            return RequestScope(locations: .deletedNodes)
-        }
-        return nil
-    }
 
     private static func searchRequestSort() -> [RequestSortDefinitionInner] {
         return [RequestSortDefinitionInner(type: .field, field: "score", ascending: false)]
@@ -118,9 +111,6 @@ struct SearchRequestBuilder {
         if let nodeChipFilterQuerry = self.chipsRequestNodeFilter(for: chipFilters) {
             requestFilters.append(nodeChipFilterQuerry)
         }
-        if let personalFilesChipFilterQuerry = self.chipsRequestPersonalFilesFilter(for: chipFilters, accountIdentifier: accountIdentifier) {
-            requestFilters.append(personalFilesChipFilterQuerry)
-        }
 
         return requestFilters
     }
@@ -140,7 +130,7 @@ struct SearchRequestBuilder {
     }
 
     private static func chipsRequestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected && ($0.type == .file || $0.type == .folder) }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
+        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected /*&& ($0.type == .file || $0.type == .folder)*/ }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
                                          tags: nil)
     }
 
@@ -151,20 +141,13 @@ struct SearchRequestBuilder {
         return nil
     }
 
-    private static func chipsRequestPersonalFilesFilter(for searchChips: [SearchChipItem], accountIdentifier: String) -> RequestFilterQueriesInner? {
-        for chip in searchChips where chip.type == .personalFiles && chip.selected {
-            return RequestFilterQueriesInner(query: "cm:creator:\(accountIdentifier)", tags: nil)
-        }
-        return nil
-    }
-
     // MARK: - Recent
 
     private static func recentRequestSort() -> [RequestSortDefinitionInner] {
-           return [RequestSortDefinitionInner(type: .field,
-                                              field: "cm:modified",
-                                              ascending: false)]
-       }
+        return [RequestSortDefinitionInner(type: .field,
+                                           field: "cm:modified",
+                                           ascending: false)]
+    }
 
     private static func recentRequestFilter(_ accountIdentifier: String) -> [RequestFilterQueriesInner] {
         return [RequestFilterQueriesInner(query: "cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]", tags: nil),

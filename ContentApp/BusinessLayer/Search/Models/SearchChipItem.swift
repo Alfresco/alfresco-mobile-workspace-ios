@@ -21,10 +21,8 @@ import Foundation
 enum CMType: String {
     case file = "'cm:content'"
     case folder = "'cm:folder'"
-    case library = "'cm:library'"
+    case library = "'st:site'"
     case node = "'cm:node'"
-    case personalFiles = "personalFiles"
-    case trash = "deleted-nodes"
 }
 
 class SearchChipItem: Equatable {

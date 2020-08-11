@@ -55,6 +55,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
         }
         searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file))
         searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder))
+
         return searchChips
     }
 

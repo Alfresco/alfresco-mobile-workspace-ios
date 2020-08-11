@@ -198,9 +198,11 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if let themeService = self.themingService {
                 if chip.selected {
                     cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
+                    cell?.chipView.setBackgroundColor(themeService.activeTheme?.primaryColor.withAlphaComponent(0.12), for: .selected)
                 } else {
                     cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
                     cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
+                    cell?.chipView.setBorderColor(themeService.activeTheme?.onSurfaceColor.withAlphaComponent(0.12), for: .normal)
                 }
             }
             return cell ?? UICollectionViewCell()
@@ -219,6 +221,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if let themeService = self.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipSelected))
+                cell?.chipView.setBackgroundColor(themeService.activeTheme?.primaryColor.withAlphaComponent(0.12), for: .selected)
             }
             resultScreenDelegate?.chipTapped(chip: chip)
             resultsListController?.scrollToSection(0)
@@ -235,6 +238,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
                 cell?.chipView.applyOutlinedTheme(withScheme: themeService.containerScheming(for: .searchChipUnselected))
                 cell?.chipView.setBackgroundColor(themeService.activeTheme?.surfaceColor, for: .normal)
+                cell?.chipView.setBorderColor(themeService.activeTheme?.onSurfaceColor.withAlphaComponent(0.12), for: .normal)
             }
             resultScreenDelegate?.chipTapped(chip: chip)
             resultsListController?.scrollToSection(0)
