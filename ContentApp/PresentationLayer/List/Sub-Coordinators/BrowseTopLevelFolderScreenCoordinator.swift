@@ -43,9 +43,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
             let listViewModel = sSelf.listViewModel(from: browseType, with: accountService)
             let resultViewModel = ResultsViewModel()
-            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-            globalSearchViewModel.delegate = resultViewModel
-            resultViewModel.delegate = globalSearchViewModel
+            let globalSearchViewModel = sSelf.searchViewModel(from: browseType, with: title, with: accountService, with: resultViewModel)
 
             viewController.title = title
             viewController.themingService = themingService
@@ -73,6 +71,32 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             return TrashViewModel(with: accountService, listRequest: nil)
         default: return FolderDrillViewModel(with: accountService, listRequest: nil)
         }
+    }
+
+    private func searchViewModel(from type: BrowseType?, with title: String?, with accountService: AccountService?, with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
+        var searchChip: SearchChipItem?
+        switch type {
+        case .personalFiles:
+            if let nodeID = UserProfile.getPersonalFilesID() {
+                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeID: nodeID)
+            } else {
+                ProfileService.featchPersonalFilesID()
+            }
+        default:
+            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+            resultViewModel.delegate = globalSearchViewModel
+            globalSearchViewModel.delegate = resultViewModel
+            globalSearchViewModel.displaySearchBar = false
+            globalSearchViewModel.displaySearchButton = false
+            return globalSearchViewModel
+        }
+
+        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
+
+        contextualSearchViewModel.searchChipNode = searchChip
+        resultViewModel.delegate = contextualSearchViewModel
+        contextualSearchViewModel.delegate = resultViewModel
+        return contextualSearchViewModel
     }
 }
 

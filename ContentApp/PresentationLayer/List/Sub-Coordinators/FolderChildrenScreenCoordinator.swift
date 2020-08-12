@@ -48,15 +48,19 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
             let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
             let resultViewModel = ResultsViewModel()
-            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-            globalSearchViewModel.delegate = resultViewModel
-            resultViewModel.delegate = globalSearchViewModel
+            let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
+            contextualSearchViewModel.delegate = resultViewModel
+            if let nodeID = nodeID {
+                let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + title, type: .node, selected: true, nodeID: nodeID)
+                contextualSearchViewModel.searchChipNode = chipNode
+            }
+            resultViewModel.delegate = contextualSearchViewModel
 
             viewController.title = title
             viewController.themingService = themingService
             viewController.folderDrillDownScreenCoordinatorDelegate = self
             viewController.listViewModel = listViewModel
-            viewController.searchViewModel = globalSearchViewModel
+            viewController.searchViewModel = contextualSearchViewModel
             viewController.resultViewModel = resultViewModel
             sSelf.listViewController = viewController
             return viewController

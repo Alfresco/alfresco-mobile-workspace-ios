@@ -95,6 +95,7 @@
 "filterFolders" = "Folders";
 "filterLibraries" = "Libraries";
 "filterfoldersAndFiles" = "Folders and files";
+"searchIn" = "in: ";
 
 // MARK: - Group List Section
 "today" = "Today";

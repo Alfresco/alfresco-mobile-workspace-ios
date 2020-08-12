@@ -26,12 +26,19 @@ class ProfileService {
     static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName, from: accountService?.activeAccount?.identifier ?? "") {
+        if let avatar = DiskServices.getAvatar() {
             return avatar
         } else {
             featchAvatar(completionHandler: completionHandler)
         }
         return UIImage(named: "account-circle")
+    }
+
+    static func getPersonalFilesID() -> String? {
+        if let personalFilesId = UserProfile.getPersonalFilesID() {
+            return personalFilesId
+        }
+        return nil
     }
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
@@ -45,7 +52,7 @@ class ProfileService {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             completionHandler(image)
-                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
+                            DiskServices.saveAvatar(image)
                         }
                     }
                 case .failure(let error):
@@ -60,6 +67,19 @@ class ProfileService {
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { (personEntry, error) in
                 completion(personEntry, error)
+            }
+        })
+    }
+
+    static func featchPersonalFilesID() {
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.getNode(nodeId: kAPIPathMy) { (entry, error) in
+                if let node = entry {
+                    UserProfile.persistPersonalFilesID(nodeID: node.entry._id)
+                } else if let error = error {
+                    AlfrescoLog.error(error)
+                }
             }
         })
     }

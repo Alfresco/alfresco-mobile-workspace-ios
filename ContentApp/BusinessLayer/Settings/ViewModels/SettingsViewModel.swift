@@ -110,25 +110,20 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        if let currentAccount = self.accountService?.activeAccount {
-            UserProfile.persistUserProfile(person: userProfile, withAccountIdentifier: currentAccount.identifier)
-        }
+        UserProfile.persistUserProfile(person: userProfile)
         return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
     }
 
     private func getLocalProfileItem() -> SettingsItem? {
-        guard let identifier = accountService?.activeAccount?.identifier else { return nil }
-
-        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        return SettingsItem(type: .account, title: UserProfile.getProfileName(withAccountIdentifier: identifier),
-                            subtitle: UserProfile.getEmail(withAccountIdentifier: identifier), icon: avatar)
+        return SettingsItem(type: .account, title: UserProfile.getProfileName(), subtitle: UserProfile.getEmail(), icon: avatar)
     }
 
     private func getThemeItem() -> SettingsItem {

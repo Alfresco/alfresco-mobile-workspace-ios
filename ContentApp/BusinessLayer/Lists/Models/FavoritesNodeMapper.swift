@@ -46,6 +46,6 @@ struct FavoritesNodeMapper {
     }
 
     private static func create(from node: Site) -> ListNode {
-        return ListNode(guid: node.guid, title: node.title, icon: "cm:site", path: "", modifiedAt: nil, kind: .site)
+        return ListNode(guid: node.guid, title: node.title, icon: "st:site", path: "", modifiedAt: nil, kind: .site)
     }
 }
