@@ -110,7 +110,7 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = DiskServices.get(image: "avatar")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
@@ -119,7 +119,7 @@ class SettingsViewModel {
     }
 
     private func getLocalProfileItem() -> SettingsItem? {
-        var avatar = DiskServices.get(image: "avatar")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }

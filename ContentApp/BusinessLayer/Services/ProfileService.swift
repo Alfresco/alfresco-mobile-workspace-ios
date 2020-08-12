@@ -26,7 +26,7 @@ class ProfileService {
     static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.get(image: kProfileAvatarImageFileName) {
+        if let avatar = DiskServices.getAvatar() {
             return avatar
         } else {
             featchAvatar(completionHandler: completionHandler)
@@ -52,7 +52,7 @@ class ProfileService {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             completionHandler(image)
-                            DiskServices.save(image: image, named: kProfileAvatarImageFileName)
+                            DiskServices.saveAvatar(image)
                         }
                     }
                 case .failure(let error):

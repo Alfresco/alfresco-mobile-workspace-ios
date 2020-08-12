@@ -22,12 +22,12 @@ import UIKit
 class DiskServices {
     static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
     static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-    static var identifier = accountService?.activeAccount?.identifier ?? ""
 
-    static func save(image: UIImage, named imageNamed: String) {
+    static func saveAvatar(_ image: UIImage) {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         let fileManager = FileManager.default
         if let newDirectoryPath = create(directory: identifier) {
-            fileManager.createFile(atPath: "\(newDirectoryPath)/\(imageNamed)",
+            fileManager.createFile(atPath: "\(newDirectoryPath)/\(kProfileAvatarImageFileName)",
                 contents: image.pngData(), attributes: nil)
         }
     }
@@ -38,9 +38,10 @@ class DiskServices {
         return documentsDirectory
     }
 
-    static func get(image imageNamed: String) -> UIImage? {
+    static func getAvatar() -> UIImage? {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         let fileManager = FileManager.default
-        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(identifier) + "/" + imageNamed
+        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(identifier) + "/" + kProfileAvatarImageFileName
         if fileManager.fileExists(atPath: imagePAth) {
             return UIImage(contentsOfFile: imagePAth)
         }

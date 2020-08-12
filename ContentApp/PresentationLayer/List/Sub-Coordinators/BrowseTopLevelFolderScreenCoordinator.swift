@@ -77,9 +77,10 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         var searchChip: SearchChipItem?
         switch type {
         case .personalFiles:
-            if let personalFilesId = UserProfile.getPersonalFilesID() {
-                let nodeSearch = "ANCESTOR:\"workspace://SpacesStore/\(personalFilesId)\""
-                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeSearch: nodeSearch)
+            if let nodeID = UserProfile.getPersonalFilesID() {
+                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeID: nodeID)
+            } else {
+                ProfileService.featchPersonalFilesID()
             }
         default:
             let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)

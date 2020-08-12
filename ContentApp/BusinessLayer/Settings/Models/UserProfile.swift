@@ -22,9 +22,9 @@ import AlfrescoContent
 class UserProfile {
     static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
     static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-    static var identifier = accountService?.activeAccount?.identifier ?? ""
 
     static func persistUserProfile(person: Person) {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         var profileName = person.firstName
         if let lastName = person.lastName {
             profileName = "\(profileName) \(lastName)"
@@ -40,6 +40,7 @@ class UserProfile {
     }
 
     static func persistPersonalFilesID(nodeID: String) {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         let defaults = UserDefaults.standard
         defaults.set(nodeID, forKey: "\(identifier)-\(kSavePersonalFilesID)")
         defaults.synchronize()
@@ -52,14 +53,17 @@ class UserProfile {
     }
 
     static func getPersonalFilesID() -> String? {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         return UserDefaults.standard.object(forKey: "\(identifier)-\(kSavePersonalFilesID)") as? String
     }
 
     static func getProfileName() -> String {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         return UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveDiplayProfileName)") as? String ?? ""
     }
 
     static func getEmail() -> String {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         return UserDefaults.standard.object(forKey: "\(identifier)-\(kSaveEmailProfile)") as? String ?? ""
     }
 }

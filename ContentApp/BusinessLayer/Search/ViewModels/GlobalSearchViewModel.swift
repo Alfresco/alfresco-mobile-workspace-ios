@@ -155,10 +155,10 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
 
     private func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let accountIdentifier = sSelf.accountService?.activeAccount?.identifier else { return }
+            guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest, accountIdentifier: accountIdentifier)) { (result, error) in
+            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
 
                 if let entries = result?.list?.entries {
                     sSelf.resultsList = ResultsNodeMapper.map(entries)

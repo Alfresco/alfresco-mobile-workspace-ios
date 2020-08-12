@@ -29,13 +29,13 @@ class SearchChipItem: Equatable {
     var name: String
     var type: CMType
     var selected: Bool
-    var nodeSearch: String
+    var searchInNodeID: String
 
-    init(name: String, type: CMType, selected: Bool = true, nodeSearch: String = "") {
+    init(name: String, type: CMType, selected: Bool = true, nodeID: String = "") {
         self.name = name
         self.type = type
         self.selected = selected
-        self.nodeSearch = nodeSearch
+        self.searchInNodeID = nodeID
     }
 
     static func == (lhs: SearchChipItem, rhs: SearchChipItem) -> Bool {

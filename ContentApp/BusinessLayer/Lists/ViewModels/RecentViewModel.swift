@@ -39,9 +39,9 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         pageFetchingGroup.enter()
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let accountIdentifier = sSelf.accountService?.activeAccount?.identifier else { return }
+            guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(accountIdentifier, pagination: paginationRequest)) { (result, error) in
+            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(pagination: paginationRequest)) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)

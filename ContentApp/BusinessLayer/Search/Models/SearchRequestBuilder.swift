@@ -22,7 +22,10 @@ import AlfrescoContent
 let kRequestDefaultsFieldName = "keywords"
 
 struct SearchRequestBuilder {
-    static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?, accountIdentifier: String) -> SearchRequest {
+    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
+    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+
+    static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(string),
                              paging: pagination ?? self.requestPagination(),
                              include: self.requestInclude(chipFilters),
@@ -32,7 +35,7 @@ struct SearchRequestBuilder {
                              templates: self.searchRequestTemplates(),
                              defaults: self.searchRequestDefaults(),
                              localization: nil,
-                             filterQueries: self.searchRequestFilter(chipFilters, accountIdentifier),
+                             filterQueries: self.searchRequestFilter(chipFilters),
                              facetQueries: nil,
                              facetFields: nil,
                              facetIntervals: nil,
@@ -45,7 +48,7 @@ struct SearchRequestBuilder {
                              ranges: nil)
     }
 
-    static func recentRequest(_ accountIdentifier: String, pagination: RequestPagination?) -> SearchRequest {
+    static func recentRequest(pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(""),
                              paging: pagination ?? self.requestPagination(),
                              include: self.requestInclude(nil),
@@ -54,7 +57,7 @@ struct SearchRequestBuilder {
                              templates: nil,
                              defaults: nil,
                              localization: nil,
-                             filterQueries: self.recentRequestFilter(accountIdentifier),
+                             filterQueries: self.recentRequestFilter(),
                              facetQueries: nil,
                              facetFields: nil,
                              facetIntervals: nil,
@@ -99,15 +102,10 @@ struct SearchRequestBuilder {
                                defaultFieldName: kRequestDefaultsFieldName)
     }
 
-    private static func searchRequestFilter(_ chipFilters: [SearchChipItem], _ accountIdentifier: String) -> [RequestFilterQueriesInner] {
+    private static func searchRequestFilter(_ chipFilters: [SearchChipItem]) -> [RequestFilterQueriesInner] {
         var requestFilters = self.searchMinusRequestFilter()
-        let chipFilterQuerry = self.chipsRequestFilter(for: chipFilters)
+        requestFilters.append(self.chipsRequestFilter(for: chipFilters))
 
-        if let query = chipFilterQuerry.query, query.isEmpty {
-            requestFilters.append(self.searchFilesAndFoldersRequestFilter())
-        } else {
-            requestFilters.append(chipFilterQuerry)
-        }
         if let nodeChipFilterQuerry = self.chipsRequestNodeFilter(for: chipFilters) {
             requestFilters.append(nodeChipFilterQuerry)
         }
@@ -125,18 +123,17 @@ struct SearchRequestBuilder {
                 RequestFilterQueriesInner(query: "-PNAME:'0/wiki'", tags: nil)]
     }
 
-    private static func searchFilesAndFoldersRequestFilter() -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: "+TYPE:'cm:content' OR +TYPE:'cm:folder'", tags: nil)
-    }
-
     private static func chipsRequestFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner {
-        return RequestFilterQueriesInner(query: searchChips.filter({ $0.selected /*&& ($0.type == .file || $0.type == .folder)*/ }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "),
-                                         tags: nil)
+        let chipFilterQuerry =  RequestFilterQueriesInner(query: searchChips.filter({ $0.selected && ($0.type == .file || $0.type == .folder) }).compactMap({ "+TYPE:" + $0.type.rawValue }).joined(separator: " OR "), tags: nil)
+        if let query = chipFilterQuerry.query, query.isEmpty {
+            return RequestFilterQueriesInner(query: "+TYPE:'cm:content' OR +TYPE:'cm:folder'", tags: nil)
+        }
+        return chipFilterQuerry
     }
 
     private static func chipsRequestNodeFilter(for searchChips: [SearchChipItem]) -> RequestFilterQueriesInner? {
         for chip in searchChips where chip.type == .node && chip.selected {
-            return RequestFilterQueriesInner(query: chip.nodeSearch, tags: nil)
+            return RequestFilterQueriesInner(query: "ANCESTOR:\"workspace://SpacesStore/\(chip.searchInNodeID)\"", tags: nil)
         }
         return nil
     }
@@ -149,9 +146,10 @@ struct SearchRequestBuilder {
                                            ascending: false)]
     }
 
-    private static func recentRequestFilter(_ accountIdentifier: String) -> [RequestFilterQueriesInner] {
+    private static func recentRequestFilter() -> [RequestFilterQueriesInner] {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         return [RequestFilterQueriesInner(query: "cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]", tags: nil),
-                RequestFilterQueriesInner(query: "cm:modifier:\(accountIdentifier) OR cm:creator:\(accountIdentifier)", tags: nil),
+                RequestFilterQueriesInner(query: "cm:modifier:\(identifier) OR cm:creator:\(identifier)", tags: nil),
                 RequestFilterQueriesInner(query: "TYPE:\"content\" AND -PNAME:\"0/wiki\" AND -TYPE:\"app:filelink\" AND -TYPE:\"cm:thumbnail\" AND -TYPE:\"cm:failedThumbnail\" AND -TYPE:\"cm:rating\" AND -TYPE:\"dl:dataList\" AND -TYPE:\"dl:todoList\" AND -TYPE:\"dl:issue\" AND -TYPE:\"dl:contact\" AND -TYPE:\"dl:eventAgenda\" AND -TYPE:\"dl:event\" AND -TYPE:\"dl:task\" AND -TYPE:\"dl:simpletask\" AND -TYPE:\"dl:meetingAgenda\" AND -TYPE:\"dl:location\" AND -TYPE:\"fm:topic\" AND -TYPE:\"fm:post\" AND -TYPE:\"ia:calendarEvent\" AND -TYPE:\"lnk:link\"", tags: nil)]
     }
 }
