@@ -29,6 +29,7 @@ enum NavigationRoutes: NavigationRoute {
     case mainTabBarScreen = "%@mainTabBarScreen"
     case browseScreen = "%@browseScreen"
     case folderScreen = "%@folderScreen"
+    case filePreviewScreen = "%@filePreviewScreen"
 
     var path: NavigationRoute {
         return String(format: self.rawValue, "contentapp://")

@@ -23,6 +23,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private var listViewController: ListViewController?
     private var browseNode: BrowseNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
+    private var previewFileCoordinator: PreviewFileScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -101,9 +102,16 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 }
 
 extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showFolderScreen(from node: ListNode) {
-        let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
-        folderDrillDownCoordinatorDelegate.start()
-        self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
+    func showPreview(from node: ListNode) {
+        switch node.kind {
+        case .folder, .site:
+            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+            folderDrillDownCoordinator.start()
+            self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        case .file:
+            let previewFileCoordinator = PreviewFileScreenCoordinator(with: self.presenter, listNode: node)
+            previewFileCoordinator.start()
+            self.previewFileCoordinator = previewFileCoordinator
+        }
     }
 }

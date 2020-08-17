@@ -19,7 +19,7 @@
 import UIKit
 
 protocol FolderDrilDownScreenCoordinatorDelegate: class {
-    func showFolderScreen(from node: ListNode)
+    func showPreview(from node: ListNode)
 }
 
 class FolderChildrenScreenCoordinator: Coordinator {
@@ -27,6 +27,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private var listViewController: ListViewController?
     private var listNode: ListNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
+    private var previewFileCoordinator: PreviewFileScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -35,7 +36,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
     func start() {
         let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        let routerPath = NavigationRoutes.folderScreen.path + "/<nodeTitle>" + "/<nodeKind>" + "/<nodeID>"
+        let routerPath = NavigationRoutes.folderScreen.path + "/<nodeID>" + "/<nodeKind>" + "/<nodeTitle>"
         router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
             guard let sSelf = self else { return nil }
 
@@ -65,7 +66,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
             sSelf.listViewController = viewController
             return viewController
         })
-        let routerPathValues = NavigationRoutes.folderScreen.path + "/\(listNode.title)" + "/\(listNode.kind.rawValue)" + "/\(listNode.guid)"
+        let routerPathValues = NavigationRoutes.folderScreen.path + "/\(listNode.guid)" + "/\(listNode.kind.rawValue)" + "/\(listNode.title)"
         router?.push(route: routerPathValues, from: presenter)
     }
 
@@ -80,9 +81,16 @@ class FolderChildrenScreenCoordinator: Coordinator {
 }
 
 extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showFolderScreen(from node: ListNode) {
-        let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
-        folderDrillDownCoordinatorDelegate.start()
-        self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
+    func showPreview(from node: ListNode) {
+        switch node.kind {
+        case .folder, .site:
+            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+            folderDrillDownCoordinator.start()
+            self.folderDrillDownCoordinator = folderDrillDownCoordinator
+        case .file:
+            let previewFileCoordinator = PreviewFileScreenCoordinator(with: self.presenter, listNode: node)
+            previewFileCoordinator.start()
+            self.previewFileCoordinator = previewFileCoordinator
+        }
     }
 }

@@ -229,6 +229,7 @@ class FileIcon {
             "text/x-markdown": .code,
             "text/x-setext": .generic,
             "text/xml": .code,
+            "text/x-csrc": .code,
             "video/3gpp": .video,
             "video/3gpp2": .video,
             "video/mp2t": .video,

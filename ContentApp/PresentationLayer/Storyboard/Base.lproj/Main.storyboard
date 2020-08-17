@@ -1038,6 +1038,48 @@
             </objects>
             <point key="canvasLocation" x="1198.5507246376812" y="2424.7767857142858"/>
         </scene>
+        <!--Preview File View Controller-->
+        <scene sceneID="u4d-TT-dQm">
+            <objects>
+                <viewController storyboardIdentifier="PreviewFileViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="N3a-Jy-sJP" customClass="PreviewFileViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="FKD-KB-WFW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pCa-oq-KHf" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="4np-Ld-gom"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="Zx7-qK-8zz"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No preview for this file" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M68-1s-aYW">
+                                <rect key="frame" x="121.5" y="437.5" width="171" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="M68-1s-aYW" firstAttribute="centerY" secondItem="FKD-KB-WFW" secondAttribute="centerY" id="2a4-WD-D02"/>
+                            <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
+                            <constraint firstItem="pCa-oq-KHf" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="anM-WD-1xe"/>
+                            <constraint firstItem="M68-1s-aYW" firstAttribute="centerX" secondItem="FKD-KB-WFW" secondAttribute="centerX" id="lmH-xd-j7Z"/>
+                            <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Nm8-k5-tkg"/>
+                    </view>
+                    <connections>
+                        <outlet property="noPreviewLabel" destination="M68-1s-aYW" id="scP-gx-ZFM"/>
+                        <outlet property="progressView" destination="pCa-oq-KHf" id="oZk-qk-eDn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fRJ-WK-LdC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1212" y="3193"/>
+        </scene>
         <!--Tab Bar Main View Controller-->
         <scene sceneID="da4-wW-oHr">
             <objects>

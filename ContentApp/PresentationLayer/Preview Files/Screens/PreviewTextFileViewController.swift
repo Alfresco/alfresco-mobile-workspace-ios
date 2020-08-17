@@ -16,19 +16,33 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContent
+import UIKit
 
-struct SharedLinkMapper {
-    static func map(_ entries: [SharedLinkEntry]) -> [ListNode] {
-        var nodes: [ListNode] = []
-        for entry in entries {
-            nodes.append(self.create(from: entry.entry))
-        }
-        return nodes
-    }
+class PreviewTextFileViewController: SystemThemableViewController {
+    @IBOutlet weak var textView: UITextView!
+    var previewFileViewModel: PreviewFileViewModel?
 
-    private static func create(from node: SharedLink) -> ListNode {
-        return ListNode(guid: node._id ?? "", mimeType: node.content?.mimeType, title: node.name ?? "", icon: node.content?.mimeType, path: "", modifiedAt: node.modifiedAt, kind: .file)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        previewFileViewModel?.requestTextContent()
     }
 }
+
+// MARK: - PreviewFile ViewModel Delegate
+
+extension PreviewTextFileViewController: PreviewFileViewModelDelegate {
+    func display(text: String) {
+        textView.text = text
+    }
+
+    func display(pdf data: Data) {
+    }
+
+    func display(error: Error) {
+
+    }
+}
+
+// MARK: - Storyboard Instantiable
+
+extension PreviewTextFileViewController: StoryboardInstantiable { }

@@ -141,6 +141,10 @@
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
+		E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862324E698F0001C86B5 /* FilePreview.swift */; };
+		E3CF862924E69B4C001C86B5 /* PreviewFileScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862824E69B4C001C86B5 /* PreviewFileScreenCoordinator.swift */; };
+		E3CF862B24E69DC7001C86B5 /* PreviewFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862A24E69DC7001C86B5 /* PreviewFileViewController.swift */; };
+		E3CF862D24E69EDF001C86B5 /* PreviewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */; };
 		E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C862493EF2E00FFD87F /* ListViewController.swift */; };
 		E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */; };
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
@@ -329,6 +333,10 @@
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
+		E3CF862324E698F0001C86B5 /* FilePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreview.swift; sourceTree = "<group>"; };
+		E3CF862824E69B4C001C86B5 /* PreviewFileScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFileScreenCoordinator.swift; sourceTree = "<group>"; };
+		E3CF862A24E69DC7001C86B5 /* PreviewFileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFileViewController.swift; sourceTree = "<group>"; };
+		E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFileViewModel.swift; sourceTree = "<group>"; };
 		E3D25C862493EF2E00FFD87F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
@@ -447,6 +455,7 @@
 				E3C128062498EB2700AE832F /* Settings */,
 				E3C128132498ECAD00AE832F /* TabBar */,
 				B9CCA30D24BF3AE700F1AD5C /* List */,
+				E3CF862524E69B13001C86B5 /* Preview Files */,
 				B99E1C4D247FE58B00116F05 /* Components */,
 				E3A2A8F9247E7D230046582C /* Extensions */,
 				B959CCD02476B18D00811F15 /* Services */,
@@ -609,6 +618,7 @@
 			children = (
 				E35FB745247664A9004674FD /* LoginService.swift */,
 				B9E7D60824911F190056292B /* AccountService.swift */,
+				E3CF862324E698F0001C86B5 /* FilePreview.swift */,
 				E324779E24AB4F0B006D4B6F /* FileIcon.swift */,
 				E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */,
 			);
@@ -1022,6 +1032,32 @@
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
 		};
+		E3CF862524E69B13001C86B5 /* Preview Files */ = {
+			isa = PBXGroup;
+			children = (
+				E3CF862624E69B27001C86B5 /* Sub-Coordinators */,
+				E3CF862724E69B31001C86B5 /* Screens */,
+			);
+			path = "Preview Files";
+			sourceTree = "<group>";
+		};
+		E3CF862624E69B27001C86B5 /* Sub-Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				E3CF862824E69B4C001C86B5 /* PreviewFileScreenCoordinator.swift */,
+			);
+			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		E3CF862724E69B31001C86B5 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				E3CF862A24E69DC7001C86B5 /* PreviewFileViewController.swift */,
+				E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1219,6 +1255,7 @@
 				E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */,
 				E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
+				E3CF862924E69B4C001C86B5 /* PreviewFileScreenCoordinator.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
 				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
@@ -1230,6 +1267,7 @@
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
 				B92E13EB24AE01FC00D607D4 /* NavigationURL.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
+				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
 				E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
@@ -1261,6 +1299,7 @@
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
 				B9FC629D24C6C90600246606 /* UICollectionView+ItemIndex.swift in Sources */,
 				E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */,
+				E3CF862D24E69EDF001C86B5 /* PreviewFileViewModel.swift in Sources */,
 				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,
 				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
@@ -1285,6 +1324,7 @@
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */,
 				E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */,
+				E3CF862B24E69DC7001C86B5 /* PreviewFileViewController.swift in Sources */,
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,

@@ -27,6 +27,7 @@ enum ElementKindType: String {
 
 struct ListNode: Hashable {
     var guid: String
+    var mimeType: String?
     var title: String
     var icon: String?
     var path: String
@@ -39,6 +40,7 @@ struct ListNode: Hashable {
             lhs.icon == rhs.icon &&
             lhs.path == rhs.path &&
             lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind
+            lhs.kind == rhs.kind &&
+            lhs.mimeType == rhs.mimeType
     }
 }

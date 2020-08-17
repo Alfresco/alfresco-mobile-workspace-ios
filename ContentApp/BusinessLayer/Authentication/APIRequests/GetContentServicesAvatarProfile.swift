@@ -42,3 +42,55 @@ struct GetContentServicesAvatarProfile: APIRequest {
         self.customHeader = customHeader
     }
 }
+
+struct GetContentPDF: APIRequest {
+    typealias Response = Data
+    let customHeader: [String: String]
+    var nodeID: String
+
+    var path: String {
+        return String(format: kAPIPathGetContentNode, nodeID)
+    }
+
+    var method: HttpMethod {
+        return .get
+    }
+    var headers: [String: String] {
+        return customHeader
+    }
+
+    var parameters: [String: String] {
+        return [:]
+    }
+
+    init(with customHeader: [String: String], nodeID: String) {
+        self.customHeader = customHeader
+        self.nodeID = nodeID
+    }
+}
+
+struct GetContentRenditionPDF: APIRequest {
+    typealias Response = Data
+    let customHeader: [String: String]
+    var nodeID: String
+
+    var path: String {
+        return String(format: kAPIPathGetRenditionContentNode, nodeID)
+    }
+
+    var method: HttpMethod {
+        return .get
+    }
+    var headers: [String: String] {
+        return customHeader
+    }
+
+    var parameters: [String: String] {
+        return [:]
+    }
+
+    init(with customHeader: [String: String], nodeID: String) {
+        self.customHeader = customHeader
+        self.nodeID = nodeID
+    }
+}

@@ -32,12 +32,6 @@ class DiskServices {
         }
     }
 
-    static func getDirectoryPath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
-
     static func getAvatar() -> UIImage? {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         let fileManager = FileManager.default
@@ -46,6 +40,28 @@ class DiskServices {
             return UIImage(contentsOfFile: imagePAth)
         }
         return nil
+    }
+
+    static func saveVideo(named: String, data: Data) -> URL? {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
+        if let newDirectoryPath = create(directory: identifier) {
+            do {
+                let urlString = "file:///" + newDirectoryPath + "/" + named.filter { !$0.isWhitespace }
+                if let url = URL(string: urlString) {
+                    try data.write(to: url)
+                    return url
+                }
+            } catch {
+                AlfrescoLog.error("Problem saving video.")
+            }
+        }
+        return nil
+    }
+
+    static func getDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
 
     static func create(directory: String) -> String? {

@@ -36,6 +36,6 @@ struct NodeChildMapper {
             icon = node.nodeType
             kind = .folder
         }
-        return ListNode(guid: node._id, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
+        return ListNode(guid: node._id, mimeType: node.content?.mimeType, title: node.name, icon: icon, path: path, modifiedAt: node.modifiedAt, kind: kind)
     }
 }
