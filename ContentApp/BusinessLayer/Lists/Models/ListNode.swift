@@ -29,7 +29,6 @@ struct ListNode: Hashable {
     var guid: String
     var mimeType: String?
     var title: String
-    var icon: String?
     var path: String
     var modifiedAt: Date?
     var kind: ElementKindType
@@ -37,7 +36,6 @@ struct ListNode: Hashable {
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid &&
             lhs.title == rhs.title &&
-            lhs.icon == rhs.icon &&
             lhs.path == rhs.path &&
             lhs.modifiedAt == rhs.modifiedAt &&
             lhs.kind == rhs.kind &&
