@@ -3,7 +3,7 @@ PODS:
   - AlfrescoAuth (2.1.1):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (1.0.0):
+  - AlfrescoContent (1.0.1):
     - Alamofire (~> 4.9.0)
   - AlfrescoCore (2.0.2)
   - AppAuth (1.4.0):
@@ -291,7 +291,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: daa4c9858d37170aa88c17ae3368f585e8f7a020
-  AlfrescoContent: 9b9497f6147ff248d9867ef4485e0f14dae67aba
+  AlfrescoContent: 66440ac315c6bbe08d02fa66d9990fd3d0d4f9e3
   AlfrescoCore: b8dfdbc7ab2a0cdee95cf397cf999a0ef006864c
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   JWTDecode: 4bd4da0cdf0f8154fd467fa48499f34ec057fb88

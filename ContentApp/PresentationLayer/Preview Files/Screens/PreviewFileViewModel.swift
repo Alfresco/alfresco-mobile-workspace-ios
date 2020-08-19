@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
+import AlfrescoContent
 
 protocol PreviewFileViewModelDelegate: class {
     func display(pdf data: Data)
@@ -57,73 +58,78 @@ class PreviewFileViewModel {
 
     func requestVideoContent() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentPDF(with: authenticationProvider.authorizationHeader(), nodeID: sSelf.node.guid), completion: { (result) in
-                switch result {
-                case .success(let data):
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            NodesAPI.getNodeContent(nodeId: sSelf.node.guid) { (data, error) in
+                if let error = error {
+                    AlfrescoLog.error(error)
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.display(error: error)
+                    }
+                } else if let data = data {
                     if let url = DiskServices.saveVideo(named: sSelf.node.guid + "_" + sSelf.node.title, data: data) {
                         DispatchQueue.main.async {
                             sSelf.viewModelDelegate?.display(video: url)
                         }
                     }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.display(error: error)
-                    }
                 }
-            })
+            }
         })
     }
 
     func requestPDFContent() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentPDF(with: authenticationProvider.authorizationHeader(), nodeID: sSelf.node.guid), completion: { (result) in
-                switch result {
-                case .success(let data):
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.display(pdf: data)
-                    }
-                case .failure(let error):
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            NodesAPI.getNodeContent(nodeId: sSelf.node.guid) { (data, error) in
+                if let error = error {
                     AlfrescoLog.error(error)
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.display(error: error)
                     }
+                } else if let data = data {
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.display(pdf: data)
+                    }
                 }
-            })
+            }
         })
     }
 
     func requestRenditionPDFContent() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentRenditionPDF(with: authenticationProvider.authorizationHeader(), nodeID: sSelf.node.guid), completion: { (result) in
-                switch result {
-                case .success(let data):
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.display(pdf: data)
-                    }
-                case .failure(let error):
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            RenditionsAPI.getRenditionContent(nodeId: sSelf.node.guid, renditionId: "pdf") { (data, error) in
+                if let error = error {
                     AlfrescoLog.error(error)
                     DispatchQueue.main.async {
                         sSelf.viewModelDelegate?.display(error: error)
                     }
+                } else if let data = data {
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.display(pdf: data)
+                    }
                 }
-            })
+            }
         })
     }
 
     func requestTextContent() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentPDF(with: authenticationProvider.authorizationHeader(), nodeID: sSelf.node.guid), completion: { (result) in
-                switch result {
-                case .success(let data):
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            NodesAPI.getNodeContent(nodeId: sSelf.node.guid) { (data, error) in
+                if let error = error {
+                    AlfrescoLog.error(error)
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.display(error: error)
+                    }
+                } else if let data = data {
                     if let text = String(data: data, encoding: .utf8) {
                         DispatchQueue.main.async {
                             sSelf.viewModelDelegate?.display(text: text)
@@ -131,23 +137,23 @@ class PreviewFileViewModel {
                     } else {
                         AlfrescoLog.error("String(data: data, encoding: .utf8)")
                     }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.display(error: error)
-                    }
                 }
-            })
+            }
         })
     }
 
     func requestImageContent() {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentPDF(with: authenticationProvider.authorizationHeader(), nodeID: sSelf.node.guid), completion: { (result) in
-                switch result {
-                case .success(let data):
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            NodesAPI.getNodeContent(nodeId: sSelf.node.guid) { (data, error) in
+                if let error = error {
+                    AlfrescoLog.error(error)
+                    DispatchQueue.main.async {
+                        sSelf.viewModelDelegate?.display(error: error)
+                    }
+                } else if let data = data {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             sSelf.viewModelDelegate?.display(image: image)
@@ -155,13 +161,8 @@ class PreviewFileViewModel {
                     } else {
                         AlfrescoLog.error("UIImage(data: data)")
                     }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                    DispatchQueue.main.async {
-                        sSelf.viewModelDelegate?.display(error: error)
-                    }
                 }
-            })
+            }
         })
     }
 }
