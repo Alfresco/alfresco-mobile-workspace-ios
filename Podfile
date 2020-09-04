@@ -5,13 +5,16 @@ platform :ios, '12.0'
 use_frameworks!
 
 target 'ContentApp' do
-  pod 'AlfrescoAuth', :inhibit_warnings => true
-  pod 'AlfrescoContent', :inhibit_warnings => true
+
   pod 'SwiftLint', :inhibit_warnings => true
   pod 'JWTDecode', :inhibit_warnings => true
+  pod 'Nuke', :inhibit_warnings => true
+
+  # Alfresco iOS Swift API
+  pod 'AlfrescoAuth', :inhibit_warnings => true
+  pod 'AlfrescoContent', :inhibit_warnings => true
 
   # Material Components
-#  pod 'MaterialComponents'
   pod 'MaterialComponents/Buttons', :inhibit_warnings => true
   pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
   pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1054,6 +1054,25 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="Zx7-qK-8zz"/>
                                 </constraints>
                             </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="10" translatesAutoresizingMaskIntoConstraints="NO" id="Fv0-DR-CZF">
+                                <rect key="frame" x="0.0" y="46" width="414" height="816"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zAR-VQ-H6S">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="816"/>
+                                    </imageView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="zAR-VQ-H6S" firstAttribute="leading" secondItem="Fv0-DR-CZF" secondAttribute="leading" id="09f-Wv-8N5"/>
+                                    <constraint firstAttribute="trailing" secondItem="zAR-VQ-H6S" secondAttribute="trailing" id="AbT-IZ-32H"/>
+                                    <constraint firstItem="zAR-VQ-H6S" firstAttribute="top" secondItem="Fv0-DR-CZF" secondAttribute="top" id="JBA-Wp-Ptt"/>
+                                    <constraint firstAttribute="bottom" secondItem="zAR-VQ-H6S" secondAttribute="bottom" id="cfM-3D-sGk"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="3yn-q8-J8R"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="a6B-Wj-I9J"/>
+                                <connections>
+                                    <outlet property="delegate" destination="N3a-Jy-sJP" id="fA5-m1-aGd"/>
+                                </connections>
+                            </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No preview for this file" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M68-1s-aYW">
                                 <rect key="frame" x="121.5" y="437.5" width="171" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -1063,22 +1082,29 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
+                            <constraint firstItem="Nm8-k5-tkg" firstAttribute="trailing" secondItem="Fv0-DR-CZF" secondAttribute="trailing" id="0Of-T9-Ht1"/>
                             <constraint firstItem="M68-1s-aYW" firstAttribute="centerY" secondItem="FKD-KB-WFW" secondAttribute="centerY" id="2a4-WD-D02"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
+                            <constraint firstItem="Fv0-DR-CZF" firstAttribute="leading" secondItem="Nm8-k5-tkg" secondAttribute="leading" id="HEq-ta-s7o"/>
+                            <constraint firstItem="Nm8-k5-tkg" firstAttribute="bottom" secondItem="Fv0-DR-CZF" secondAttribute="bottom" id="Pvx-Cj-dSW"/>
+                            <constraint firstItem="zAR-VQ-H6S" firstAttribute="height" secondItem="FKD-KB-WFW" secondAttribute="height" multiplier="0.910714" id="TO0-UW-aQa"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="anM-WD-1xe"/>
                             <constraint firstItem="M68-1s-aYW" firstAttribute="centerX" secondItem="FKD-KB-WFW" secondAttribute="centerX" id="lmH-xd-j7Z"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
+                            <constraint firstItem="Fv0-DR-CZF" firstAttribute="top" secondItem="pCa-oq-KHf" secondAttribute="bottom" id="oV5-QI-vRc"/>
+                            <constraint firstItem="zAR-VQ-H6S" firstAttribute="width" secondItem="FKD-KB-WFW" secondAttribute="width" id="zXD-pi-aFe"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Nm8-k5-tkg"/>
                     </view>
                     <connections>
+                        <outlet property="imagePreview" destination="zAR-VQ-H6S" id="OF7-Dd-8fQ"/>
                         <outlet property="noPreviewLabel" destination="M68-1s-aYW" id="scP-gx-ZFM"/>
                         <outlet property="progressView" destination="pCa-oq-KHf" id="oZk-qk-eDn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fRJ-WK-LdC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1212" y="3193"/>
+            <point key="canvasLocation" x="1211.5942028985507" y="3192.8571428571427"/>
         </scene>
         <!--Tab Bar Main View Controller-->
         <scene sceneID="da4-wW-oHr">

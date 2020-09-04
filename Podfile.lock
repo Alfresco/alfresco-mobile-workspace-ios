@@ -246,6 +246,7 @@ PODS:
   - MotionAnimator (2.8.1):
     - MotionInterchange (~> 1.6)
   - MotionInterchange (1.6.0)
+  - Nuke (9.1.1)
   - SwiftLint (0.39.2)
 
 DEPENDENCIES:
@@ -270,6 +271,7 @@ DEPENDENCIES:
   - "MaterialComponents/TextControls+FilledTextFieldsTheming"
   - "MaterialComponents/TextControls+OutlinedTextFields"
   - "MaterialComponents/TextControls+OutlinedTextFieldsTheming"
+  - Nuke
   - SwiftLint
 
 SPEC REPOS:
@@ -286,6 +288,7 @@ SPEC REPOS:
     - MDFTextAccessibility
     - MotionAnimator
     - MotionInterchange
+    - Nuke
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -300,8 +303,9 @@ SPEC CHECKSUMS:
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
+  Nuke: af4301b154d3afd8a3b045a5194a9a773a00b7a8
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 5f8e08fd64adb07b2f646635c96a955d2b1001cf
+PODFILE CHECKSUM: 77eb7f2b24b440edc5df56edd58304c1e5941a97
 
 COCOAPODS: 1.9.3
