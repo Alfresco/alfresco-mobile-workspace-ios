@@ -18,6 +18,16 @@
 		B92E13EB24AE01FC00D607D4 /* NavigationURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E13EA24AE01FC00D607D4 /* NavigationURL.swift */; };
 		B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */; };
 		B936A14424BDBE04003C9A95 /* ListViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */; };
+		B95604F925011FE000D955BA /* pdf_viewer.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F125011FDF00D955BA /* pdf_viewer.js */; };
+		B95604FA25011FE000D955BA /* mobile.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F225011FDF00D955BA /* mobile.js */; };
+		B95604FB25011FE000D955BA /* viewer.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F325011FDF00D955BA /* viewer.js */; };
+		B95604FC25011FE000D955BA /* viewer.css in Resources */ = {isa = PBXBuildFile; fileRef = B95604F425011FDF00D955BA /* viewer.css */; };
+		B95604FD25011FE000D955BA /* viewer.html in Resources */ = {isa = PBXBuildFile; fileRef = B95604F525011FDF00D955BA /* viewer.html */; };
+		B95604FE25011FE000D955BA /* pdf_viewer.css in Resources */ = {isa = PBXBuildFile; fileRef = B95604F625011FDF00D955BA /* pdf_viewer.css */; };
+		B95604FF25011FE000D955BA /* pdf.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F725011FE000D955BA /* pdf.js */; };
+		B956050025011FE000D955BA /* pdf.worker.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F825011FE000D955BA /* pdf.worker.js */; };
+		B95605022501208600D955BA /* PDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95605012501208600D955BA /* PDFRenderer.swift */; };
+		B956050425026A5B00D955BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050325026A5B00D955BA /* GoogleService-Info.plist */; };
 		B956715C24BDD86A009E1B23 /* SearchViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956715B24BDD86A009E1B23 /* SearchViewModelProtocol.swift */; };
 		B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957FE6B24A8EFBB007F13C0 /* Router.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
@@ -61,7 +71,6 @@
 		B9FC62A124C71C4E00246606 /* ResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A024C71C4E00246606 /* ResultsViewModel.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
-		E300204924A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204824A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift */; };
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
 		E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E303CE2024C876DF00E0BF5F /* FavoritesViewModel.swift */; };
 		E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */; };
@@ -204,6 +213,17 @@
 		B92E13EA24AE01FC00D607D4 /* NavigationURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURL.swift; sourceTree = "<group>"; };
 		B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLMatchResult.swift; sourceTree = "<group>"; };
 		B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModelProtocol.swift; sourceTree = "<group>"; };
+		B95604F125011FDF00D955BA /* pdf_viewer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pdf_viewer.js; sourceTree = "<group>"; };
+		B95604F225011FDF00D955BA /* mobile.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = mobile.js; sourceTree = "<group>"; };
+		B95604F325011FDF00D955BA /* viewer.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = viewer.js; sourceTree = "<group>"; };
+		B95604F425011FDF00D955BA /* viewer.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = viewer.css; sourceTree = "<group>"; };
+		B95604F525011FDF00D955BA /* viewer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = viewer.html; sourceTree = "<group>"; };
+		B95604F625011FDF00D955BA /* pdf_viewer.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = pdf_viewer.css; sourceTree = "<group>"; };
+		B95604F725011FE000D955BA /* pdf.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pdf.js; sourceTree = "<group>"; };
+		B95604F825011FE000D955BA /* pdf.worker.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pdf.worker.js; sourceTree = "<group>"; };
+		B95605012501208600D955BA /* PDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFRenderer.swift; sourceTree = "<group>"; };
+		B956050325026A5B00D955BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B956050525026A6000D955BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B956715B24BDD86A009E1B23 /* SearchViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelProtocol.swift; sourceTree = "<group>"; };
 		B957FE6B24A8EFBB007F13C0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		B959CCD32476C91D00811F15 /* ThemingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
@@ -247,7 +267,6 @@
 		B9FC62A024C71C4E00246606 /* ResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
-		E300204824A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServicesAvatarProfile.swift; sourceTree = "<group>"; };
 		E300204E24A0EC90004FB12D /* RecentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewModel.swift; sourceTree = "<group>"; };
 		E303CE2024C876DF00E0BF5F /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
 		E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollTo.swift"; sourceTree = "<group>"; };
@@ -423,6 +442,30 @@
 				E35583F224BF40AD007011EF /* Models */,
 			);
 			path = Lists;
+			sourceTree = "<group>";
+		};
+		B95604EF25011F3300D955BA /* PDFRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				B95604F025011FAC00D955BA /* pdfjs-library */,
+				B95605012501208600D955BA /* PDFRenderer.swift */,
+			);
+			path = PDFRenderer;
+			sourceTree = "<group>";
+		};
+		B95604F025011FAC00D955BA /* pdfjs-library */ = {
+			isa = PBXGroup;
+			children = (
+				B95604F225011FDF00D955BA /* mobile.js */,
+				B95604F625011FDF00D955BA /* pdf_viewer.css */,
+				B95604F125011FDF00D955BA /* pdf_viewer.js */,
+				B95604F725011FE000D955BA /* pdf.js */,
+				B95604F825011FE000D955BA /* pdf.worker.js */,
+				B95604F425011FDF00D955BA /* viewer.css */,
+				B95604F525011FDF00D955BA /* viewer.html */,
+				B95604F325011FDF00D955BA /* viewer.js */,
+			);
+			path = "pdfjs-library";
 			sourceTree = "<group>";
 		};
 		B956715D24BDD891009E1B23 /* Search */ = {
@@ -637,7 +680,6 @@
 			isa = PBXGroup;
 			children = (
 				B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */,
-				E300204824A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift */,
 			);
 			path = APIRequests;
 			sourceTree = "<group>";
@@ -655,6 +697,7 @@
 		B99E1C4D247FE58B00116F05 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B95604EF25011F3300D955BA /* PDFRenderer */,
 				E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */,
 				B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */,
 				E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */,
@@ -755,6 +798,7 @@
 			isa = PBXGroup;
 			children = (
 				E334C07124755E0000F74880 /* Resources */,
+				B956050525026A6000D955BA /* GoogleService-Info.plist */,
 				E334C04D24755D9000F74880 /* Info.plist */,
 			);
 			path = "Supporting Files";
@@ -763,6 +807,7 @@
 		E334C07124755E0000F74880 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				B956050325026A5B00D955BA /* GoogleService-Info.plist */,
 				E369008C24C84B7200F03D60 /* Inter Font Family */,
 				E334C04824755D9000F74880 /* Assets.xcassets */,
 				E334C04A24755D9000F74880 /* LaunchScreen.storyboard */,
@@ -1069,6 +1114,7 @@
 				E334C03924755D8E00F74880 /* Frameworks */,
 				E334C03A24755D8E00F74880 /* Resources */,
 				B959CCC92476698900811F15 /* Linter */,
+				B95605062502721200D955BA /* Upload Symbols */,
 			);
 			buildRules = (
 			);
@@ -1163,17 +1209,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B956050025011FE000D955BA /* pdf.worker.js in Resources */,
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
 				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
+				B95604FB25011FE000D955BA /* viewer.js in Resources */,
 				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
+				B95604FF25011FE000D955BA /* pdf.js in Resources */,
 				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
+				B95604FD25011FE000D955BA /* viewer.html in Resources */,
+				B95604F925011FE000D955BA /* pdf_viewer.js in Resources */,
+				B95604FC25011FE000D955BA /* viewer.css in Resources */,
+				B95604FA25011FE000D955BA /* mobile.js in Resources */,
+				B95604FE25011FE000D955BA /* pdf_viewer.css in Resources */,
+				B956050425026A5B00D955BA /* GoogleService-Info.plist in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
@@ -1197,6 +1252,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		B95605062502721200D955BA /* Upload Symbols */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Upload Symbols";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find $HOME/Library/Developer/Xcode/DerivedData/ContentApp-*/Build/Products/Debug-iphoneos -name \"*.dSYM\" | xargs -I \\{\\} $PODS_ROOT/FirebaseCrashlytics/upload-symbols -gsp ${PROJECT_DIR}/ContentApp/\"Supporting Files\"/GoogleService-Info.plist -p ios \\{\\}\n";
+		};
 		B959CCC92476698900811F15 /* Linter */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1319,8 +1392,8 @@
 				B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */,
 				E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */,
 				B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */,
-				E300204924A0C4D5004FB12D /* GetContentServicesAvatarProfile.swift in Sources */,
 				E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */,
+				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */,
 				E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */,
@@ -1555,6 +1628,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2.0;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
