@@ -1061,6 +1061,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="816"/>
                                     </imageView>
                                 </subviews>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstItem="zAR-VQ-H6S" firstAttribute="leading" secondItem="Fv0-DR-CZF" secondAttribute="leading" id="09f-Wv-8N5"/>
                                     <constraint firstAttribute="trailing" secondItem="zAR-VQ-H6S" secondAttribute="trailing" id="AbT-IZ-32H"/>
@@ -1070,7 +1071,8 @@
                                 <viewLayoutGuide key="contentLayoutGuide" id="3yn-q8-J8R"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="a6B-Wj-I9J"/>
                                 <connections>
-                                    <outlet property="delegate" destination="N3a-Jy-sJP" id="fA5-m1-aGd"/>
+                                    <outlet property="delegate" destination="N3a-Jy-sJP" id="kMB-2C-eaQ"/>
+                                    <outletCollection property="gestureRecognizers" destination="U4c-qY-EvK" appends="YES" id="40q-Bq-1jY"/>
                                 </connections>
                             </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No preview for this file" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M68-1s-aYW">
@@ -1100,9 +1102,15 @@
                         <outlet property="imagePreview" destination="zAR-VQ-H6S" id="OF7-Dd-8fQ"/>
                         <outlet property="noPreviewLabel" destination="M68-1s-aYW" id="scP-gx-ZFM"/>
                         <outlet property="progressView" destination="pCa-oq-KHf" id="oZk-qk-eDn"/>
+                        <outlet property="scrollView" destination="Fv0-DR-CZF" id="cRg-iS-iPW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fRJ-WK-LdC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="U4c-qY-EvK">
+                    <connections>
+                        <action selector="userDoubleTappedScrollview:" destination="N3a-Jy-sJP" id="7Wp-Gf-Scl"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1211.5942028985507" y="3192.8571428571427"/>
         </scene>

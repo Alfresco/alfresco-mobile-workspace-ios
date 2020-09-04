@@ -23,13 +23,15 @@ import MaterialComponents.MaterialProgressView
 
 class PreviewFileViewController: SystemThemableViewController {
     @IBOutlet weak var noPreviewLabel: UILabel!
+
     @IBOutlet weak var progressView: MDCProgressView!
     var previewFileViewModel: PreviewFileViewModel?
+
     @IBOutlet weak var imagePreview: UIImageView!
+    @IBOutlet weak var scrollView: UIScrollView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         noPreviewLabel.isHidden = true
 
         progressView.progress = 0
@@ -50,7 +52,30 @@ class PreviewFileViewController: SystemThemableViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
+    // MARK: - IBActions
+
+    @IBAction func userDoubleTappedScrollview(_ sender: UITapGestureRecognizer) {
+        if scrollView.zoomScale > scrollView.minimumZoomScale {
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        } else {
+            //(I divide by 3.0 since I don't wan't to zoom to the max upon the double tap)
+            scrollView.zoom(to: zoomRect(scale: scrollView.maximumZoomScale / 3.0, center: sender.location(in: sender.view)), animated: true)
+        }
+    }
+
     // MARK: - Private Helpers
+
+    private func zoomRect(scale: CGFloat, center: CGPoint) -> CGRect {
+        var zoomRect = CGRect.zero
+        if let imageV = imagePreview {
+            zoomRect.size.height = imageV.frame.size.height / scale
+            zoomRect.size.width  = imageV.frame.size.width  / scale
+            let newCenter = imageV.convert(center, from: scrollView)
+            zoomRect.origin.x = newCenter.x - ((zoomRect.size.width / 2.0))
+            zoomRect.origin.y = newCenter.y - ((zoomRect.size.height / 2.0))
+        }
+        return zoomRect
+    }
 
     private func startLoading() {
         progressView.startAnimating()

@@ -34,6 +34,7 @@ let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
 let kAPIPathMy = "-my-"
+let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
 let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetContentNode = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
 
