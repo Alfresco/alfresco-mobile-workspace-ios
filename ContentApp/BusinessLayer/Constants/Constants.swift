@@ -76,6 +76,7 @@ let kDefaultLoginSecuredPort = "443"
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 // MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15

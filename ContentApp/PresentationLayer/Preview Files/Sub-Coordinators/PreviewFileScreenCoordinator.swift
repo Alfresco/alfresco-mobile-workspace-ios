@@ -29,6 +29,7 @@ class PreviewFileScreenCoordinator: Coordinator {
     }
 
     func start() {
+        appDelegate?.restrictRotation = .all
         let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
         let routerPath = NavigationRoutes.filePreviewScreen.path + "/<nodeID>"
         router?.register(route: routerPath, factory: { [weak self] (_, _) -> UIViewController? in

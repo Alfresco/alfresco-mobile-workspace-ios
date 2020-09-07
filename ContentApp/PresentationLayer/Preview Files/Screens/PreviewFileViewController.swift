@@ -27,11 +27,11 @@ class PreviewFileViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     var previewFileViewModel: PreviewFileViewModel?
 
-    @IBOutlet weak var imagePreview: UIImageView!
-    @IBOutlet weak var scrollView: UIScrollView!
+    var previewImageView: PreviewImageView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         noPreviewLabel.isHidden = true
 
         progressView.progress = 0
@@ -40,6 +40,8 @@ class PreviewFileViewController: SystemThemableViewController {
 
         startLoading()
         previewFileViewModel?.requestFilePreview()
+
+        appDelegate?.restrictRotation = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -50,32 +52,12 @@ class PreviewFileViewController: SystemThemableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
-    }
 
-    // MARK: - IBActions
-
-    @IBAction func userDoubleTappedScrollview(_ sender: UITapGestureRecognizer) {
-        if scrollView.zoomScale > scrollView.minimumZoomScale {
-            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-        } else {
-            //(I divide by 3.0 since I don't wan't to zoom to the max upon the double tap)
-            scrollView.zoom(to: zoomRect(scale: scrollView.maximumZoomScale / 3.0, center: sender.location(in: sender.view)), animated: true)
-        }
+        appDelegate?.restrictRotation = .portrait
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
 
     // MARK: - Private Helpers
-
-    private func zoomRect(scale: CGFloat, center: CGPoint) -> CGRect {
-        var zoomRect = CGRect.zero
-        if let imageV = imagePreview {
-            zoomRect.size.height = imageV.frame.size.height / scale
-            zoomRect.size.width  = imageV.frame.size.width  / scale
-            let newCenter = imageV.convert(center, from: scrollView)
-            zoomRect.origin.x = newCenter.x - ((zoomRect.size.width / 2.0))
-            zoomRect.origin.y = newCenter.y - ((zoomRect.size.height / 2.0))
-        }
-        return zoomRect
-    }
 
     private func startLoading() {
         progressView.startAnimating()
@@ -105,21 +87,19 @@ extension PreviewFileViewController: PreviewFileViewModelDelegate {
     }
 
     func displayImage(from url: URL) {
-        loadImage(with: ImageRequest(url: url, processors: [ImageProcessors.Resize(size: imagePreview.bounds.size)]),
-                  options: ImageLoadingOptions(),
-                  into: imagePreview,
-                  progress: { [weak self] (_, completed, total) in
-                    guard let sSelf = self else { return }
-                    if completed == total {
-                        sSelf.stopLoading()
-                    }
-        }) { [weak self] (result) in
+        let viewHeight: CGFloat = self.view.bounds.size.height
+        let viewWidth: CGFloat = self.view.bounds.size.width
+        let previewImageView = PreviewImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight), and: self)
+        self.previewImageView = previewImageView
+        view.addSubview(previewImageView)
+
+        previewImageView.displayImage(from: url) { [weak self] (_, completed, total, error) in
             guard let sSelf = self else { return }
-            switch result {
-            case .failure(let error):
+            if let error = error {
                 sSelf.showNoPreview()
                 AlfrescoLog.error(error)
-            case .success(_):
+            }
+            if completed == total {
                 sSelf.stopLoading()
             }
         }
@@ -134,14 +114,17 @@ extension PreviewFileViewController: PreviewFileViewModelDelegate {
     }
 }
 
-// MARK: - UIScrollViewDelegate
-
-extension PreviewFileViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imagePreview
-    }
-}
-
 // MARK: - Storyboard Instantiable
 
 extension PreviewFileViewController: StoryboardInstantiable { }
+
+// MARK: - ZoomImageView Delegate
+
+extension PreviewFileViewController: ZoomImageViewDelegate {
+    func imageScrollViewDidChangeOrientation(imageViewZoom: ZoomImageView) {
+        let viewHeight: CGFloat = self.view.bounds.size.height
+        let viewWidth: CGFloat = self.view.bounds.size.width
+        previewImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+        previewImageView?.reloadImageViewZoomFrame()
+    }
+}

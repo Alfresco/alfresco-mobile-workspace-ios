@@ -40,7 +40,7 @@ class PreviewFileViewModel {
 
     func requestFilePreview() {
         let previewFileType = FilePreview.preview(mimetype: node.mimeType)
-        let ticket = "TICKET_611f66fd17a19e382e859d646dcc4df66ac19639"
+        let ticket = "TICKET_f24956df3d7e0a508c034e1db4cb8efee27f0f1a"
         // get/create auth TICKET
         guard let baseStringURL = accountService?.activeAccount?.apiBasePath,
             let urlPreview = URL(string: baseStringURL + "/" + String(format: kAPIPathGetContentNode, node.guid, ticket)) else {

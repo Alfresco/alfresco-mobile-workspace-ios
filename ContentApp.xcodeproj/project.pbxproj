@@ -137,6 +137,8 @@
 		E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05D24927A8E006DF519 /* SettingsItem.swift */; };
 		E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05F24927B35006DF519 /* SettingsViewModel.swift */; };
 		E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */; };
+		E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */; };
+		E3AE4EA1250675870095C76E /* PreviewImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4EA0250675870095C76E /* PreviewImageView.swift */; };
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
@@ -328,6 +330,8 @@
 		E3ADD05D24927A8E006DF519 /* SettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItem.swift; sourceTree = "<group>"; };
 		E3ADD05F24927B35006DF519 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
+		E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomImageView.swift; sourceTree = "<group>"; };
+		E3AE4EA0250675870095C76E /* PreviewImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewImageView.swift; sourceTree = "<group>"; };
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -1049,6 +1053,8 @@
 		E3CF862724E69B31001C86B5 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */,
+				E3AE4EA0250675870095C76E /* PreviewImageView.swift */,
 				E3CF862A24E69DC7001C86B5 /* PreviewFileViewController.swift */,
 				E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */,
 			);
@@ -1288,6 +1294,7 @@
 				B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */,
 				B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */,
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
+				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
@@ -1314,6 +1321,7 @@
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
 				E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */,
 				B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */,
+				E3AE4EA1250675870095C76E /* PreviewImageView.swift in Sources */,
 				E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */,
 				B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */,
 				E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */,
