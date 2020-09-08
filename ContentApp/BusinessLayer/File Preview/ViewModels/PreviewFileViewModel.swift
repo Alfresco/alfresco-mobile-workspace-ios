@@ -21,10 +21,8 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol PreviewFileViewModelDelegate: class {
-    func displayPDF(from url: URL)
-    func displayImage(from url: URL)
+    func display(view: UIView)
     func display(error: Error)
-    func displayNoPreview()
 }
 
 class PreviewFileViewModel {
@@ -38,19 +36,15 @@ class PreviewFileViewModel {
         self.accountService = accountService
     }
 
-    func requestFilePreview() {
-        let previewFileType = FilePreview.preview(mimetype: node.mimeType)
+    func requestFilePreview(with size: CGSize?) {
+        let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
         accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
-            guard let sSelf = self else { return }
-            if let urlPreview = sSelf.getURLPreview(with: ticket) {
-                switch previewFileType {
-                case .pdf:
-                    sSelf.viewModelDelegate?.displayPDF(from: urlPreview)
-                case .image:
-                    sSelf.viewModelDelegate?.displayImage(from: urlPreview)
-                default:
-                    sSelf.viewModelDelegate?.displayNoPreview()
+            guard let sSelf = self, let urlPreview = sSelf.getURLPreview(with: ticket), let size = size else { return }
+            FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (view, error) in
+                if let error = error {
+                    sSelf.viewModelDelegate?.display(error: error)
                 }
+                sSelf.viewModelDelegate?.display(view: view)
             }
         })
     }

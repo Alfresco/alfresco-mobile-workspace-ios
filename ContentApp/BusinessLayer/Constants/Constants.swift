@@ -78,6 +78,9 @@ let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
+// MARK: - Preview Files
+let kMultiplerPreviewSizeImage: CGFloat = 3.0
+
 // MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15
 let kMinCharactersForLiveSearch = 3

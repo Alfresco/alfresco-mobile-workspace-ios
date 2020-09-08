@@ -110,3 +110,6 @@
 "browse-myLibraries" = "My libraries";
 "browse-shared" = "Shared";
 "browse-trash" = "Trash";
+
+// MARK: - File Preview
+"noPreview" = "No preview for this file.";

@@ -28,7 +28,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     private var navigationViewController: UINavigationController?
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var previewFileCoordinator: PreviewFileScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -85,9 +85,9 @@ extension BrowseScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let previewFileCoordinator = PreviewFileScreenCoordinator(with: navigationViewController, listNode: node)
-                previewFileCoordinator.start()
-                self.previewFileCoordinator = previewFileCoordinator
+                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                filePreviewCoordinator.start()
+                self.filePreviewCoordinator = filePreviewCoordinator
             }
         }
     }

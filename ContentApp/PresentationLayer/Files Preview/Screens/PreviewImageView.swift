@@ -20,13 +20,13 @@ import Foundation
 import UIKit
 import Nuke
 
-class PreviewImageView: UIView {
+class ImagePreview: UIView {
      private var imageViewZoom: ZoomImageView?
      private var scrooViewZoom: UIScrollView?
 
     // MARK: - Init
 
-    init(frame: CGRect, and previewImageViewDelegate: ZoomImageViewDelegate) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
@@ -37,7 +37,7 @@ class PreviewImageView: UIView {
         imageViewZoom.setup()
         imageViewZoom.imageContentMode = .aspectFit
         imageViewZoom.initialOffset = .center
-        imageViewZoom.imageScrollViewDelegate = previewImageViewDelegate
+        imageViewZoom.imageScrollViewDelegate = self
         if let image = UIImage(named: "emptyList") {
             imageViewZoom.display(image: image)
         }
@@ -59,7 +59,10 @@ class PreviewImageView: UIView {
     func displayImage(from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
         guard let imageView = self.imageViewZoom?.zoomView else { return }
 
-        loadImage(with: ImageRequest(url: url, processors: [ImageProcessors.Resize(size: imageView.bounds.size)]),
+        let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
+                                 height: imageView.bounds.height * kMultiplerPreviewSizeImage)
+        let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
+        loadImage(with: imageRequest,
                   options: ImageLoadingOptions(),
                   into: imageView,
                   progress: { [weak self] (response, completed, total) in
@@ -79,12 +82,16 @@ class PreviewImageView: UIView {
             }
         })
     }
+}
 
-    func reloadImageViewZoomFrame() {
+// MARK: - ZoomImageView Delegate
+
+extension ImagePreview: ZoomImageViewDelegate {
+    func imageScrollViewDidChangeOrientation(imageViewZoom: ZoomImageView) {
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
         scrooViewZoom?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
-        imageViewZoom?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+        imageViewZoom.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
         scrooViewZoom?.contentSize = CGSize(width: 0, height: viewHeight)
     }
 }

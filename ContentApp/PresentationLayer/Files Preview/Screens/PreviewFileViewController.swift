@@ -17,31 +17,31 @@
 //
 
 import UIKit
-import Nuke
-import AVFoundation
 import MaterialComponents.MaterialProgressView
 
-class PreviewFileViewController: SystemThemableViewController {
-    @IBOutlet weak var noPreviewLabel: UILabel!
-
+class FilePreviewViewController: SystemThemableViewController {
+    @IBOutlet weak var preview: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
     var previewFileViewModel: PreviewFileViewModel?
 
-    var previewImageView: PreviewImageView?
+    var subViewPreview: UIView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        noPreviewLabel.isHidden = true
 
         progressView.progress = 0
         progressView.mode = .indeterminate
         view.bringSubviewToFront(progressView)
 
         startLoading()
-        previewFileViewModel?.requestFilePreview()
+        previewFileViewModel?.requestFilePreview(with: preview.bounds.size)
 
         appDelegate?.restrictRotation = .all
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(orientationChangedNotification),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +57,10 @@ class PreviewFileViewController: SystemThemableViewController {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     // MARK: - Private Helpers
 
     private func startLoading() {
@@ -69,62 +73,26 @@ class PreviewFileViewController: SystemThemableViewController {
         progressView.setHidden(true, animated: false)
     }
 
-    private func showNoPreview() {
-        stopLoading()
-        view.bringSubviewToFront(noPreviewLabel)
-        noPreviewLabel.isHidden = false
+    @objc private func orientationChangedNotification() {
+        subViewPreview?.frame = CGRect(origin: .zero, size: preview.bounds.size)
     }
 }
 
 // MARK: - PreviewFile ViewModel Delegate
 
-extension PreviewFileViewController: PreviewFileViewModelDelegate {
+extension FilePreviewViewController: PreviewFileViewModelDelegate {
 
-    func displayPDF(from url: URL) {
+    func display(view: UIView) {
         stopLoading()
-        view.bringSubviewToFront(noPreviewLabel)
-        noPreviewLabel.isHidden = false
-    }
-
-    func displayImage(from url: URL) {
-        let viewHeight: CGFloat = self.view.bounds.size.height
-        let viewWidth: CGFloat = self.view.bounds.size.width
-        let previewImageView = PreviewImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight), and: self)
-        self.previewImageView = previewImageView
-        view.addSubview(previewImageView)
-
-        previewImageView.displayImage(from: url) { [weak self] (_, completed, total, error) in
-            guard let sSelf = self else { return }
-            if let error = error {
-                sSelf.showNoPreview()
-                AlfrescoLog.error(error)
-            }
-            if completed == total {
-                sSelf.stopLoading()
-            }
-        }
+        preview.addSubview(view)
+        subViewPreview = view
     }
 
     func display(error: Error) {
-        self.showNoPreview()
-    }
-
-    func displayNoPreview() {
-        self.showNoPreview()
+        stopLoading()
     }
 }
 
 // MARK: - Storyboard Instantiable
 
-extension PreviewFileViewController: StoryboardInstantiable { }
-
-// MARK: - ZoomImageView Delegate
-
-extension PreviewFileViewController: ZoomImageViewDelegate {
-    func imageScrollViewDidChangeOrientation(imageViewZoom: ZoomImageView) {
-        let viewHeight: CGFloat = self.view.bounds.size.height
-        let viewWidth: CGFloat = self.view.bounds.size.width
-        previewImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
-        previewImageView?.reloadImageViewZoomFrame()
-    }
-}
+extension FilePreviewViewController: StoryboardInstantiable { }
