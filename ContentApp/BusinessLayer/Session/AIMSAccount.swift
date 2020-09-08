@@ -106,6 +106,18 @@ class AIMSAccount: AccountProtocol, Equatable {
         }
     }
 
+    func getTicket(completionHandler: @escaping (String?, Error?) -> Void) {
+        // Validate ticket with existing credentials
+        getSession { authenticationprovider in
+            let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()
+            ticketValidationRequestBuilder.addHeaders(authenticationprovider.authorizationHeader())
+
+            ticketValidationRequestBuilder.execute { (response, error) in
+                completionHandler(response?.body?.entry._id, error)
+            }
+        }
+    }
+
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         guard let viewController = onViewController else { return }
         session.logOut(onViewController: viewController, completionHandler: completionHandler)

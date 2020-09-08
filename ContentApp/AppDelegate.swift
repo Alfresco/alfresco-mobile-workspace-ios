@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -35,6 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         applicationCoordinator.start()
+
+        FirebaseApp.configure()
 
         return true
     }
