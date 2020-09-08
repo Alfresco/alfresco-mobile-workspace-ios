@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol PreviewFileViewModelDelegate: class {
-    func display(view: UIView)
+    func display(view: FilePreviewProtocol)
     func display(error: Error)
 }
 

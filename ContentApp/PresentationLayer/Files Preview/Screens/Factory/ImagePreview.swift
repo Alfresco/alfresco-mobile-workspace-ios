@@ -20,9 +20,9 @@ import Foundation
 import UIKit
 import Nuke
 
-class ImagePreview: UIView {
-     private var zoomImageView: ZoomImageView?
-     private var scrooViewZoom: UIScrollView?
+class ImagePreview: UIView, FilePreviewProtocol {
+    private var zoomImageView: ZoomImageView?
+    private var scrooViewZoom: UIScrollView?
 
     // MARK: - Init
 
@@ -37,7 +37,6 @@ class ImagePreview: UIView {
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
-        zoomImageView.imageScrollViewDelegate = self
         if let image = UIImage(named: "emptyList") {
             zoomImageView.display(image: image)
         }
@@ -85,12 +84,12 @@ class ImagePreview: UIView {
             }
         })
     }
-}
 
-// MARK: - ZoomImageView Delegate
+    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
+    }
 
-extension ImagePreview: ZoomImageViewDelegate {
-    func imageScrollViewDidChangeOrientation(imageViewZoom: ZoomImageView) {
+    func recalculateFrame(from size: CGSize) {
+        frame = CGRect(origin: .zero, size: size)
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
         scrooViewZoom?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
