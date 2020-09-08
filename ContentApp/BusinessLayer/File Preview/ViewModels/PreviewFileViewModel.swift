@@ -21,10 +21,8 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol PreviewFileViewModelDelegate: class {
-    func displayPDF(from url: URL)
-    func displayImage(from url: URL)
+    func display(view: UIView)
     func display(error: Error)
-    func displayNoPreview()
 }
 
 class PreviewFileViewModel {
@@ -38,21 +36,25 @@ class PreviewFileViewModel {
         self.accountService = accountService
     }
 
-    func requestFilePreview() {
-        let previewFileType = FilePreview.preview(mimetype: node.mimeType)
-        let ticket = "TICKET_f24956df3d7e0a508c034e1db4cb8efee27f0f1a"
-        // get/create auth TICKET
-        guard let baseStringURL = accountService?.activeAccount?.apiBasePath,
-            let urlPreview = URL(string: baseStringURL + "/" + String(format: kAPIPathGetContentNode, node.guid, ticket)) else {
-            return
+    func requestFilePreview(with size: CGSize?) {
+        let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
+        accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
+            guard let sSelf = self, let urlPreview = sSelf.getURLPreview(with: ticket), let size = size else { return }
+            FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (view, error) in
+                if let error = error {
+                    sSelf.viewModelDelegate?.display(error: error)
+                }
+                sSelf.viewModelDelegate?.display(view: view)
+            }
+        })
+    }
+
+    private func getURLPreview(with ticket: String?) -> URL? {
+        guard let ticket = ticket, let baseStringURL = accountService?.activeAccount?.apiBasePath,
+            let urlPreview = URL(string: baseStringURL + "/" + String(format: kAPIPathGetContentNode, node.guid, ticket))
+            else {
+                return nil
         }
-        switch previewFileType {
-        case .pdf:
-            self.viewModelDelegate?.displayPDF(from: urlPreview)
-        case .image:
-            self.viewModelDelegate?.displayImage(from: urlPreview)
-        default:
-            self.viewModelDelegate?.displayNoPreview()
-        }
+        return urlPreview
     }
 }

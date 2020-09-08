@@ -27,7 +27,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private var listViewController: ListViewController?
     private var listNode: ListNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var previewFileCoordinator: PreviewFileScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -88,9 +88,9 @@ extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoordinatorDelega
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
-            let previewFileCoordinator = PreviewFileScreenCoordinator(with: self.presenter, listNode: node)
-            previewFileCoordinator.start()
-            self.previewFileCoordinator = previewFileCoordinator
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter, listNode: node)
+            filePreviewCoordinator.start()
+            self.filePreviewCoordinator = filePreviewCoordinator
         }
     }
 }

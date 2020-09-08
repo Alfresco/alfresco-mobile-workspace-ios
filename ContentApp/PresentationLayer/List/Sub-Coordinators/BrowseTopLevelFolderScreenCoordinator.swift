@@ -23,7 +23,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private var listViewController: ListViewController?
     private var browseNode: BrowseNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var previewFileCoordinator: PreviewFileScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -109,9 +109,9 @@ extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinator
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
-            let previewFileCoordinator = PreviewFileScreenCoordinator(with: self.presenter, listNode: node)
-            previewFileCoordinator.start()
-            self.previewFileCoordinator = previewFileCoordinator
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter, listNode: node)
+            filePreviewCoordinator.start()
+            self.filePreviewCoordinator = filePreviewCoordinator
         }
     }
 }
