@@ -27,15 +27,21 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = LocalizationConstants.FilePreview.noPreview
         label.sizeToFit()
-        label.center = center
         noPreviewLabel = label
 
         addSubview(label)
+
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
+            label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+        ])
     }
 
     required init?(coder: NSCoder) {

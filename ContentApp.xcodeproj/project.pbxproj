@@ -27,7 +27,6 @@
 		B95604FF25011FE000D955BA /* pdf.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F725011FE000D955BA /* pdf.js */; };
 		B956050025011FE000D955BA /* pdf.worker.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F825011FE000D955BA /* pdf.worker.js */; };
 		B95605022501208600D955BA /* PDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95605012501208600D955BA /* PDFRenderer.swift */; };
-		B956050725076E9D00D955BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
 		B956715C24BDD86A009E1B23 /* SearchViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956715B24BDD86A009E1B23 /* SearchViewModelProtocol.swift */; };
 		B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957FE6B24A8EFBB007F13C0 /* Router.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
@@ -1255,7 +1254,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B956050725076E9D00D955BA /* GoogleService-Info.plist in Resources */,
 				B956050025011FE000D955BA /* pdf.worker.js in Resources */,
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
