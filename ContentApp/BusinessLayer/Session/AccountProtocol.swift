@@ -51,6 +51,10 @@ protocol AccountProtocol: class {
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
 
+    /// Returns a valid authentication ticket or recreates one.
+    /// - Parameter completionHandler: Closure providing ticket value or an error
+    func getTicket(completionHandler: @escaping (String?, Error?) -> Void)
+
     /// Logs out of the current account session.
     /// - Parameters:
     ///   - onViewController: Optional view controller to show the log out context for some authentication types.
