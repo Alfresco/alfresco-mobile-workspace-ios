@@ -27,7 +27,6 @@
 		B95604FF25011FE000D955BA /* pdf.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F725011FE000D955BA /* pdf.js */; };
 		B956050025011FE000D955BA /* pdf.worker.js in Resources */ = {isa = PBXBuildFile; fileRef = B95604F825011FE000D955BA /* pdf.worker.js */; };
 		B95605022501208600D955BA /* PDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95605012501208600D955BA /* PDFRenderer.swift */; };
-		B956050425026A5B00D955BA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050325026A5B00D955BA /* GoogleService-Info.plist */; };
 		B956715C24BDD86A009E1B23 /* SearchViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B956715B24BDD86A009E1B23 /* SearchViewModelProtocol.swift */; };
 		B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B957FE6B24A8EFBB007F13C0 /* Router.swift */; };
 		B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD32476C91D00811F15 /* ThemingService.swift */; };
@@ -85,6 +84,7 @@
 		E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */; };
 		E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */; };
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
+		E319AA7225076EC50072DFFE /* GoogleService-Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
 		E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */; };
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
 		E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+InterFont.swift */; };
@@ -224,7 +224,6 @@
 		B95604F725011FE000D955BA /* pdf.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pdf.js; sourceTree = "<group>"; };
 		B95604F825011FE000D955BA /* pdf.worker.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = pdf.worker.js; sourceTree = "<group>"; };
 		B95605012501208600D955BA /* PDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFRenderer.swift; sourceTree = "<group>"; };
-		B956050325026A5B00D955BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B956050525026A6000D955BA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B956715B24BDD86A009E1B23 /* SearchViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelProtocol.swift; sourceTree = "<group>"; };
 		B957FE6B24A8EFBB007F13C0 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
@@ -811,7 +810,6 @@
 		E334C07124755E0000F74880 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B956050325026A5B00D955BA /* GoogleService-Info.plist */,
 				E369008C24C84B7200F03D60 /* Inter Font Family */,
 				E334C04824755D9000F74880 /* Assets.xcassets */,
 				E334C04A24755D9000F74880 /* LaunchScreen.storyboard */,
@@ -1234,7 +1232,6 @@
 				B95604FC25011FE000D955BA /* viewer.css in Resources */,
 				B95604FA25011FE000D955BA /* mobile.js in Resources */,
 				B95604FE25011FE000D955BA /* pdf_viewer.css in Resources */,
-				B956050425026A5B00D955BA /* GoogleService-Info.plist in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
@@ -1301,6 +1298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E319AA7225076EC50072DFFE /* GoogleService-Info.plist in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,

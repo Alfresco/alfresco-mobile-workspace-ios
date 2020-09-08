@@ -40,19 +40,27 @@ class PreviewFileViewModel {
 
     func requestFilePreview() {
         let previewFileType = FilePreview.preview(mimetype: node.mimeType)
-        let ticket = "TICKET_f24956df3d7e0a508c034e1db4cb8efee27f0f1a"
-        // get/create auth TICKET
-        guard let baseStringURL = accountService?.activeAccount?.apiBasePath,
-            let urlPreview = URL(string: baseStringURL + "/" + String(format: kAPIPathGetContentNode, node.guid, ticket)) else {
-            return
+        accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
+            guard let sSelf = self else { return }
+            if let urlPreview = sSelf.getURLPreview(with: ticket) {
+                switch previewFileType {
+                case .pdf:
+                    sSelf.viewModelDelegate?.displayPDF(from: urlPreview)
+                case .image:
+                    sSelf.viewModelDelegate?.displayImage(from: urlPreview)
+                default:
+                    sSelf.viewModelDelegate?.displayNoPreview()
+                }
+            }
+        })
+    }
+
+    private func getURLPreview(with ticket: String?) -> URL? {
+        guard let ticket = ticket, let baseStringURL = accountService?.activeAccount?.apiBasePath,
+            let urlPreview = URL(string: baseStringURL + "/" + String(format: kAPIPathGetContentNode, node.guid, ticket))
+            else {
+                return nil
         }
-        switch previewFileType {
-        case .pdf:
-            self.viewModelDelegate?.displayPDF(from: urlPreview)
-        case .image:
-            self.viewModelDelegate?.displayImage(from: urlPreview)
-        default:
-            self.viewModelDelegate?.displayNoPreview()
-        }
+        return urlPreview
     }
 }
