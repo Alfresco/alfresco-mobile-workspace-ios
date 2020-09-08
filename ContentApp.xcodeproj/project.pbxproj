@@ -154,6 +154,8 @@
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
+		E3C7FB9B2507C1B200A228FC /* FilePreviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */; };
+		E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */; };
 		E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862324E698F0001C86B5 /* FilePreview.swift */; };
 		E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862824E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift */; };
 		E3CF862B24E69DC7001C86B5 /* FilePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862A24E69DC7001C86B5 /* FilePreviewViewController.swift */; };
@@ -358,6 +360,8 @@
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
+		E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewProtocol.swift; sourceTree = "<group>"; };
+		E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWithoutPreview.swift; sourceTree = "<group>"; };
 		E3CF862324E698F0001C86B5 /* FilePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreview.swift; sourceTree = "<group>"; };
 		E3CF862824E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3CF862A24E69DC7001C86B5 /* FilePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewViewController.swift; sourceTree = "<group>"; };
@@ -857,8 +861,10 @@
 		E3522E252507BC3E0040AE3F /* Factory */ = {
 			isa = PBXGroup;
 			children = (
+				E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */,
 				E319AA73250782F00072DFFE /* FilePreviewFactory.swift */,
 				E3AE4EA0250675870095C76E /* ImagePreview.swift */,
+				E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -1344,6 +1350,7 @@
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
+				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
@@ -1489,6 +1496,7 @@
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
 				E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */,
 				E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */,
+				E3C7FB9B2507C1B200A228FC /* FilePreviewProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

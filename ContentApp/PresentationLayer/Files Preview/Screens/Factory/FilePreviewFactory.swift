@@ -21,7 +21,7 @@ import UIKit
 
 class FilePreviewFactory {
     static func getPreview(for previewType: FilePreviewType, and url: URL, on size: CGSize,
-                           completion: @escaping(_ view: UIView, _ error: Error?) -> Void) {
+                           completion: @escaping(_ view: FilePreviewProtocol, _ error: Error?) -> Void) {
         switch previewType {
         case .image:
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
@@ -39,24 +39,11 @@ class FilePreviewFactory {
         }
     }
 
-    private static func getNoPreview(size: CGSize) -> UIView {
-        let serviceRepository = ApplicationBootstrap.shared().serviceRepository
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-
-        let view = UIView(frame: CGRect(origin: .zero, size: size))
-        view.backgroundColor = .clear
-
-        let label = UILabel()
-        if let currentTheme = themingService?.activeTheme {
-            label.applyStyleBody2OnSurface(theme: currentTheme)
+    private static func getNoPreview(size: CGSize) -> FilePreviewProtocol {
+        let fileWithoutPreview = FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
+        if let themingService = ApplicationBootstrap.shared().serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
+            fileWithoutPreview.applyComponentsThemes(themingService: themingService)
         }
-        label.textAlignment = .center
-        label.text = LocalizationConstants.FilePreview.noPreview
-        label.sizeToFit()
-        label.center = view.center
-
-        view.addSubview(label)
-
-        return view
+        return fileWithoutPreview
     }
 }

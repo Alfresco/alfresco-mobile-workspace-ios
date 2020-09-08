@@ -22,9 +22,9 @@ import MaterialComponents.MaterialProgressView
 class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
-    var filePreviewViewModel: PreviewFileViewModel?
 
-    var subViewPreview: UIView?
+    var filePreviewViewModel: PreviewFileViewModel?
+    var filePreview: FilePreviewProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,12 +74,13 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     @objc private func orientationChangedNotification() {
-        subViewPreview?.frame = CGRect(origin: .zero, size: preview.bounds.size)
+        filePreview?.recalculateFrame(from: preview.bounds.size)
     }
 
     override func applyComponentsThemes() {
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
+        filePreview?.applyComponentsThemes(themingService: themingService)
     }
 }
 
@@ -87,10 +88,10 @@ class FilePreviewViewController: SystemThemableViewController {
 
 extension FilePreviewViewController: PreviewFileViewModelDelegate {
 
-    func display(view: UIView) {
+    func display(view: FilePreviewProtocol) {
         stopLoading()
         preview.addSubview(view)
-        subViewPreview = view
+        filePreview = view
     }
 
     func display(error: Error) {
