@@ -23,6 +23,7 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private var applicationCoordinator: ApplicationCoordinator?
+    var restrictRotation: UIInterfaceOrientationMask = .portrait
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -49,5 +50,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let authenticationService = self.applicationCoordinator?.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
         return authenticationService?.resumeExternalUserAgentFlow(with: url) ?? false
+    }
+
+    func application(_ application: UIApplication,
+                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return self.restrictRotation
     }
 }

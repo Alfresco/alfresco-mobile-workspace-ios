@@ -17,33 +17,31 @@
 //
 
 import UIKit
-import PDFKit
-import AVKit
+import Nuke
 import AVFoundation
 import MaterialComponents.MaterialProgressView
 
 class PreviewFileViewController: SystemThemableViewController {
     @IBOutlet weak var noPreviewLabel: UILabel!
+
     @IBOutlet weak var progressView: MDCProgressView!
     var previewFileViewModel: PreviewFileViewModel?
-    var pdfView: PDFView?
-    var textView: UITextView?
-    var imageView: UIImageView?
-    var playerLayer: AVPlayerLayer?
+
+    var previewImageView: PreviewImageView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         noPreviewLabel.isHidden = true
 
-        logicViews()
-
         progressView.progress = 0
         progressView.mode = .indeterminate
         view.bringSubviewToFront(progressView)
-        startLoading()
 
-        previewFileViewModel?.request()
+        startLoading()
+        previewFileViewModel?.requestFilePreview()
+
+        appDelegate?.restrictRotation = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,10 +51,10 @@ class PreviewFileViewController: SystemThemableViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        playerLayer?.player = nil
-        playerLayer?.player?.replaceCurrentItem(with: nil)
-        playerLayer = nil
         self.tabBarController?.tabBar.isHidden = false
+
+        appDelegate?.restrictRotation = .portrait
+        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
 
     // MARK: - Private Helpers
@@ -71,106 +69,62 @@ class PreviewFileViewController: SystemThemableViewController {
         progressView.setHidden(true, animated: false)
     }
 
-    private func logicViews() {
-        switch FilePreview.preview(mimetype: previewFileViewModel?.node.mimeType) {
-        case .pdf, .renditionPdf:
-            addPDFView()
-        case .text:
-            addTextView()
-        case .image:
-            addImageView()
-        case .video, .audio:
-            addPlayerLayerView()
-        default:
-            noPreviewLabel.isHidden = false
-        }
-    }
-
-    private func addPDFView() {
-        pdfView = PDFView()
-        if let pdfView = pdfView {
-            view.addSubview(pdfView)
-
-            pdfView.translatesAutoresizingMaskIntoConstraints = false
-            pdfView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-            pdfView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-            pdfView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            pdfView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        }
-    }
-
-    private func addTextView() {
-        textView = UITextView()
-        if let textView = textView {
-            view.addSubview(textView)
-
-            textView.translatesAutoresizingMaskIntoConstraints = false
-            textView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-            textView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-            textView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-            textView.isEditable = false
-            textView.isSelectable = true
-            textView.text = ""
-        }
-    }
-
-    private func addImageView() {
-        imageView = UIImageView()
-        if let imageView = imageView {
-            view.addSubview(imageView)
-
-            imageView.translatesAutoresizingMaskIntoConstraints = false
-            imageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-            imageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-            imageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-            imageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-            imageView.contentMode = .scaleAspectFit
-        }
-    }
-
-    private func addPlayerLayerView() {
-        playerLayer = AVPlayerLayer()
-        if let playerLayer = playerLayer {
-            playerLayer.frame = view.bounds
-            view.layer.addSublayer(playerLayer)
-        }
-    }
-}
-
-// MARK: - PreviewFile ViewModel Delegate
-
-extension PreviewFileViewController: PreviewFileViewModelDelegate {
-    func display(video: URL) {
-        stopLoading()
-        playerLayer?.player = AVPlayer(url: video)
-        playerLayer?.player?.play()
-    }
-
-    func display(image: UIImage) {
-        stopLoading()
-        imageView?.image = image
-    }
-
-    func display(text: String) {
-        stopLoading()
-        textView?.text = text
-    }
-
-    func display(pdf data: Data) {
-        stopLoading()
-        pdfView?.document = PDFDocument(data: data)
-    }
-
-    func display(error: Error) {
+    private func showNoPreview() {
         stopLoading()
         view.bringSubviewToFront(noPreviewLabel)
         noPreviewLabel.isHidden = false
     }
 }
 
+// MARK: - PreviewFile ViewModel Delegate
+
+extension PreviewFileViewController: PreviewFileViewModelDelegate {
+
+    func displayPDF(from url: URL) {
+        stopLoading()
+        view.bringSubviewToFront(noPreviewLabel)
+        noPreviewLabel.isHidden = false
+    }
+
+    func displayImage(from url: URL) {
+        let viewHeight: CGFloat = self.view.bounds.size.height
+        let viewWidth: CGFloat = self.view.bounds.size.width
+        let previewImageView = PreviewImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight), and: self)
+        self.previewImageView = previewImageView
+        view.addSubview(previewImageView)
+
+        previewImageView.displayImage(from: url) { [weak self] (_, completed, total, error) in
+            guard let sSelf = self else { return }
+            if let error = error {
+                sSelf.showNoPreview()
+                AlfrescoLog.error(error)
+            }
+            if completed == total {
+                sSelf.stopLoading()
+            }
+        }
+    }
+
+    func display(error: Error) {
+        self.showNoPreview()
+    }
+
+    func displayNoPreview() {
+        self.showNoPreview()
+    }
+}
+
 // MARK: - Storyboard Instantiable
 
 extension PreviewFileViewController: StoryboardInstantiable { }
+
+// MARK: - ZoomImageView Delegate
+
+extension PreviewFileViewController: ZoomImageViewDelegate {
+    func imageScrollViewDidChangeOrientation(imageViewZoom: ZoomImageView) {
+        let viewHeight: CGFloat = self.view.bounds.size.height
+        let viewWidth: CGFloat = self.view.bounds.size.width
+        previewImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+        previewImageView?.reloadImageViewZoomFrame()
+    }
+}

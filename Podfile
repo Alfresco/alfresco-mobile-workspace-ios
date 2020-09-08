@@ -13,9 +13,13 @@ target 'ContentApp' do
   pod 'GCDWebServer'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
+  pod 'Nuke'
+
+  # Alfresco iOS Swift API
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
 
   # Material Components
-#  pod 'MaterialComponents'
   pod 'MaterialComponents/Buttons'
   pod 'MaterialComponents/Buttons+Theming'
   pod 'MaterialComponents/TextControls+FilledTextFields'
