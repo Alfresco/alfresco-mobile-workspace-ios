@@ -1080,6 +1080,21 @@
             </objects>
             <point key="canvasLocation" x="1211.5942028985507" y="3192.8571428571427"/>
         </scene>
+        <!--Demo Preview Image View Controller-->
+        <scene sceneID="J8a-dh-tXl">
+            <objects>
+                <viewController storyboardIdentifier="DemoPreviewImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="v89-9c-Vu6" customClass="DemoPreviewImageViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="awO-3b-0KG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="lU7-tX-IOy"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nl4-jn-AEb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2187" y="3292"/>
+        </scene>
         <!--Tab Bar Main View Controller-->
         <scene sceneID="da4-wW-oHr">
             <objects>

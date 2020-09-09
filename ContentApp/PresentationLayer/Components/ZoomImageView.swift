@@ -42,7 +42,7 @@ open class ZoomImageView: UIScrollView {
     open var imageContentMode: ScaleMode = .widthFill
     open var initialOffset: Offset = .begining
 
-    public private(set) var zoomView: UIImageView?
+    public var zoomView: UIImageView?
 
     open weak var imageScrollViewDelegate: ZoomImageViewDelegate?
 
@@ -96,6 +96,10 @@ open class ZoomImageView: UIScrollView {
                                                selector: #selector(ZoomImageView.changeOrientationNotification),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        zoomView = UIImageView(frame: frame)
+        zoomView?.contentMode = .scaleAspectFit
+        zoomView?.isUserInteractionEnabled = true
+        addSubview(zoomView!)
     }
 
     public func adjustFrameToCenter() {

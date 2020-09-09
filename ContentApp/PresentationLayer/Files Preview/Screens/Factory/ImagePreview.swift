@@ -22,7 +22,6 @@ import Nuke
 
 class ImagePreview: UIView, FilePreviewProtocol {
     private var zoomImageView: ZoomImageView?
-    private var scrooViewZoom: UIScrollView?
 
     // MARK: - Init
 
@@ -31,25 +30,14 @@ class ImagePreview: UIView, FilePreviewProtocol {
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
 
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
-        let zoomImageView = ZoomImageView(frame: scrollView.frame)
-
+        let zoomImageView = ZoomImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
-        if let image = UIImage(named: "emptyList") {
-            zoomImageView.display(image: image)
-        }
-
-        scrollView.contentSize = CGSize(width: 0, height: viewHeight)
-        scrollView.addSubview(zoomImageView)
-        addSubview(scrollView)
-
-        scrollView.backgroundColor = .clear
         zoomImageView.backgroundColor = .clear
+        addSubview(zoomImageView)
 
         self.zoomImageView = zoomImageView
-        self.scrooViewZoom = scrollView
     }
 
     required init?(coder: NSCoder) {
@@ -95,8 +83,6 @@ class ImagePreview: UIView, FilePreviewProtocol {
         frame = CGRect(origin: .zero, size: size)
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
-        scrooViewZoom?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
         zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
-        scrooViewZoom?.contentSize = CGSize(width: 0, height: viewHeight)
     }
 }

@@ -21,24 +21,24 @@ import UIKit
 
 class FilePreviewFactory {
     static func getPreview(for previewType: FilePreviewType, and url: URL, on size: CGSize,
-                           completion: @escaping(_ view: FilePreviewProtocol, _ error: Error?) -> Void) {
+                           completion: @escaping(_ done: Bool, _ error: Error?) -> Void) -> FilePreviewProtocol {
         switch previewType {
         case .image:
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
             imagePreview.displayImage(from: url) { (_, completed, total, error) in
                 if let error = error {
-                    completion(getNoPreview(size: size), error)
+                    completion(false, error)
                     AlfrescoLog.error(error)
                 }
-                if completed == total {
-                    completion(imagePreview, nil)
-                }
+                completion(completed == total, nil)
             }
+            return imagePreview
         case .pdf, .renditionPdf:
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
-            completion(pdfRendered, nil)
+            completion(false, nil)
+            return pdfRendered
         default:
-            completion(getNoPreview(size: size), nil)
+            return getNoPreview(size: size)
         }
     }
 

@@ -23,6 +23,7 @@ import AlfrescoContent
 protocol PreviewFileViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
     func display(error: Error)
+    func display(doneRequesting: Bool)
 }
 
 class PreviewFileViewModel {
@@ -40,12 +41,13 @@ class PreviewFileViewModel {
         let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
         accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
             guard let sSelf = self, let urlPreview = sSelf.getURLPreview(with: ticket), let size = size else { return }
-            FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (view, error) in
+            let preview = FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (done, error) in
                 if let error = error {
                     sSelf.viewModelDelegate?.display(error: error)
                 }
-                sSelf.viewModelDelegate?.display(view: view)
+                sSelf.viewModelDelegate?.display(doneRequesting: done)
             }
+            sSelf.viewModelDelegate?.display(view: preview)
         })
     }
 
