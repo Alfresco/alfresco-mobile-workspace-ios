@@ -27,6 +27,10 @@ class PDFRenderer: UIView {
 
     // MARK: - Public interface
 
+    deinit {
+        webServer.stop()
+    }
+
     override init(frame: CGRect) {
          super.init(frame: frame)
          commonInit()
@@ -39,6 +43,7 @@ class PDFRenderer: UIView {
 
     convenience init(with frame: CGRect, pdfURL: URL) {
         self.init(frame: frame)
+        webView.translatesAutoresizingMaskIntoConstraints = false
         webView.frame = frame
         self.pdfURL = pdfURL
     }

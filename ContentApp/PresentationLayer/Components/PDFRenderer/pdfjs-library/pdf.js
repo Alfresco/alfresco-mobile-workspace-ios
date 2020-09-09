@@ -25246,7 +25246,7 @@ function validateRangeRequestCapabilities(_ref) {
     allowRangeRequests: false,
     suggestedLength: undefined
   };
-  var length = parseInt(getResponseHeader("Content-Length"), 10);
+  var length = parseInt(getResponseHeader("Content-Length")/*.split(',')[1]*/, 10);
 
   if (!Number.isInteger(length)) {
     return returnValues;
