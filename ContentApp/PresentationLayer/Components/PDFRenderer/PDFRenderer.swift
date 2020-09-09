@@ -20,59 +20,27 @@ import Foundation
 import WebKit
 import GCDWebServer
 
-class PDFRenderer: NSObject {
+class PDFRenderer: UIView {
     let webView = WKWebView()
     let webServer = GCDWebServer()
     var pdfURL: URL?
 
     // MARK: - Public interface
 
-    init(with pdfURL: URL) {
-        super.init()
+    override init(frame: CGRect) {
+         super.init(frame: frame)
+         commonInit()
+    }
 
+    required init?(coder aDecoder: NSCoder) {
+         super.init(coder: aDecoder)
+         commonInit()
+    }
+
+    convenience init(with frame: CGRect, pdfURL: URL) {
+        self.init(frame: frame)
+        webView.frame = frame
         self.pdfURL = pdfURL
-        let pdfjsPath = Bundle.main.path(forResource: "pdfjs-library", ofType: nil)
-
-        // Register request handlers to route all requests to the PDF.js viewer file
-        webServer.addGETHandler(forBasePath: "/", directoryPath: pdfjsPath!, indexFilename: nil, cacheAge: 3600, allowRangeRequests: true)
-        webServer.addHandler(forMethod: "GET", path: "/", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
-            return GCDWebServerResponse(redirect: URL(string: "viewer.html", relativeTo: request.url)!, permanent: false)
-        }
-
-        // Register request handler to route all PDF file requests to server content
-        webServer.addHandler(forMethod: "GET", pathRegex: "placeholder.pdf", request: GCDWebServerRequest.self) { [weak self] _ -> GCDWebServerResponse? in
-            guard let sSelf = self else { return nil }
-
-            if let pdfURL = sSelf.pdfURL {
-                // If loading a local PDF, stream the file using a GCDWebServer file response type
-                if "file" == pdfURL.scheme {
-                    let response = GCDWebServerFileResponse(file: pdfURL.absoluteString)
-                    response?.setValue("bytes", forAdditionalHeader: "Accept-Ranges")
-                    return response
-                } else {
-                    do {
-                        let pdfData = try Data(contentsOf: pdfURL)
-                        let response = GCDWebServerDataResponse(data: pdfData, contentType: "application/pdf")
-                        response.setValue(sSelf.webServer.bonjourServerURL?.absoluteString,
-                                          forAdditionalHeader: "Access-Control-Allow-Origin")
-                        response.setValue("GET, POST, DELETE, PUT, OPTIONS, HEAD",
-                                          forAdditionalHeader: "Access-Control-Allow-Methods")
-                        response.setValue("Accept, Content-Type, Access-Control-Allow-Origin",
-                                          forAdditionalHeader: "Access-Control-Allow-Headers")
-                        response.setValue("bytes",
-                                          forAdditionalHeader: "Accept-Ranges")
-                    } catch {
-                        AlfrescoLog.error("Unable to fetch content for PDF at URL: \(pdfURL)")
-                    }
-                }
-            }
-
-            return nil
-        }
-
-        if let serverName = Bundle.main.infoDictionary!["CFBundleDisplayName"] as? String {
-            webServer.start(withPort: 8080, bonjourName: "\(serverName)-PDFService")
-        }
     }
 
     func enableLogging() {
@@ -87,6 +55,58 @@ class PDFRenderer: NSObject {
 
     // MARK: - Private interface
 
+    private func commonInit() {
+        self.translatesAutoresizingMaskIntoConstraints = false
+
+        webServer.delegate = self
+
+        // Register request handlers to route all requests to the PDF.js viewer file
+        if let pdfjsPath = Bundle.main.path(forResource: "pdfjs-library", ofType: nil) {
+            webServer.addGETHandler(forBasePath: "/", directoryPath: pdfjsPath, indexFilename: nil, cacheAge: 3600, allowRangeRequests: true)
+        }
+        webServer.addHandler(forMethod: "GET", path: "/", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
+            return GCDWebServerResponse(redirect: URL(string: "viewer.html", relativeTo: request.url)!, permanent: false)
+        }
+
+        // Register request handler to route all PDF file requests to server content
+        webServer.addHandler(forMethod: "GET", pathRegex: "placeholder.pdf", request: GCDWebServerRequest.self) { [weak self] _ -> GCDWebServerResponse? in
+            guard let sSelf = self else { return nil }
+
+            if let pdfURL = sSelf.pdfURL {
+                // If loading a local PDF, stream the file using a GCDWebServer file response type
+                if "file" == pdfURL.scheme {
+                    let response = GCDWebServerFileResponse(file: pdfURL.absoluteString)
+                    response?.setValue("bytes", forAdditionalHeader: "Accept-Ranges")
+
+                    return response
+                } else {
+                    do {
+                        let pdfData = try Data(contentsOf: pdfURL)
+                        let response = GCDWebServerDataResponse(data: pdfData, contentType: "application/pdf")
+                        response.setValue(sSelf.webServer.bonjourServerURL?.absoluteString,
+                                          forAdditionalHeader: "Access-Control-Allow-Origin")
+                        response.setValue("GET, POST, DELETE, PUT, OPTIONS, HEAD",
+                                          forAdditionalHeader: "Access-Control-Allow-Methods")
+                        response.setValue("Accept, Content-Type, Access-Control-Allow-Origin",
+                                          forAdditionalHeader: "Access-Control-Allow-Headers")
+                        response.setValue("bytes",
+                                          forAdditionalHeader: "Accept-Ranges")
+
+                        return response
+                    } catch {
+                        AlfrescoLog.error("Unable to fetch content for PDF at URL: \(pdfURL)")
+                    }
+                }
+            }
+
+            return nil
+        }
+
+        if let serverName = Bundle.main.infoDictionary!["CFBundleName"] as? String {
+            webServer.start(withPort: 8080, bonjourName: "\(serverName)-PDFService")
+        }
+    }
+
     private func loadPDF(on server: GCDWebServer) {
         if let bonjourServiceURL = server.bonjourServerURL {
             let request = URLRequest(url: bonjourServiceURL)
@@ -97,6 +117,15 @@ class PDFRenderer: NSObject {
 
 extension PDFRenderer: GCDWebServerDelegate {
     func webServerDidCompleteBonjourRegistration(_ server: GCDWebServer) {
+        self.addSubview(webView)
+
+        NSLayoutConstraint.activate([
+            webView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            webView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            webView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        ])
+
         loadPDF(on: server)
     }
 }
