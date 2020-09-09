@@ -79,7 +79,7 @@ let kIndexPathZero = IndexPath(row: 0, section: 0)
 let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
 // MARK: - Preview Files
-let kMultiplerPreviewSizeImage: CGFloat = 3.0
+let kMultiplerPreviewSizeImage: CGFloat = 1.0
 
 // MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15
