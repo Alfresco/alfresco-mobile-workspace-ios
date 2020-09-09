@@ -61,17 +61,20 @@ class ImagePreview: UIView, FilePreviewProtocol {
     func displayImage(from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
         guard let imageView = self.zoomImageView?.zoomView else { return }
 
+        var options = ImageLoadingOptions()
+        options.pipeline = ImagePipeline {
+            $0.isDeduplicationEnabled = false
+            $0.isProgressiveDecodingEnabled = true
+        }
+
         let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
                                  height: imageView.bounds.height * kMultiplerPreviewSizeImage)
         let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
+
         loadImage(with: imageRequest,
-                  options: ImageLoadingOptions(),
+                  options: options,
                   into: imageView,
-                  progress: { [weak self] (response, completed, total) in
-                    guard let sSelf = self else { return }
-                    if let image = response?.image {
-                        sSelf.zoomImageView?.display(image: image)
-                    }
+                  progress: { (response, completed, total) in
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
