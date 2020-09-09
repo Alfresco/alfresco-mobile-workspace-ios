@@ -184,6 +184,10 @@ open class ZoomImageView: UIScrollView {
         addSubview(imageView)
         zoomView = imageView
 
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
+        tapGesture.numberOfTapsRequired = 2
+        imageView.addGestureRecognizer(tapGesture)
+
         configureImageForSize(image.size)
     }
 

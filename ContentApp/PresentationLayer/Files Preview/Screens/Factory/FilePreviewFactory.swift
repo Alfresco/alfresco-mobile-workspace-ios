@@ -27,7 +27,7 @@ class FilePreviewFactory {
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
             imagePreview.displayImage(from: url) { (_, completed, total, error) in
                 if let error = error {
-                    completion(false, error)
+                    completion(true, error)
                     AlfrescoLog.error(error)
                 }
                 completion(completed == total, nil)
@@ -35,9 +35,10 @@ class FilePreviewFactory {
             return imagePreview
         case .pdf, .renditionPdf:
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
-            completion(false, nil)
+            completion(true, nil)
             return pdfRendered
         default:
+            completion(true, nil)
             return getNoPreview(size: size)
         }
     }
