@@ -92,6 +92,13 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         stopLoading()
         preview.addSubview(view)
         filePreview = view
+
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            view.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
+            view.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
+            view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+        ])
     }
 
     func display(error: Error) {

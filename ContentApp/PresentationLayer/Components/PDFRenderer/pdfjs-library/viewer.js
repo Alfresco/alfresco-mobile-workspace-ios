@@ -20,17 +20,14 @@ if (!pdfjsLib.getDocument || !pdfjsViewer.PDFViewer) {
 }
 
 var USE_ONLY_CSS_ZOOM = true;
-var TEXT_LAYER_MODE = 2; // ENABLE ENHANCED
+var TEXT_LAYER_MODE = 1; // ENABLED
 var MAX_IMAGE_SIZE = 1048 * 1048;
-var CMAP_URL = "../../node_modules/pdfjs-dist/cmaps/";
-var CMAP_PACKED = true;
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
 
 var DEFAULT_URL = "placeholder.pdf";
 var DEFAULT_SCALE_DELTA = 1;
-var MIN_SCALE = 1.0;
-var MAX_SCALE = 10.0;
+var MAX_SCALE = 3.0;
 var DEFAULT_SCALE_VALUE = "auto";
 
 var PDFViewerApplication = {
@@ -40,6 +37,9 @@ var PDFViewerApplication = {
   pdfHistory: null,
   pdfLinkService: null,
   eventBus: null,
+  findController: null,
+  initialScale: 1.0,
+  maxScale: MAX_SCALE,
 
   /**
    * Opens PDF document specified by URL.
@@ -64,9 +64,7 @@ var PDFViewerApplication = {
     // Loading document.
     var loadingTask = pdfjsLib.getDocument({
       url: url,
-      maxImageSize: MAX_IMAGE_SIZE,
-      cMapUrl: CMAP_URL,
-      cMapPacked: CMAP_PACKED,
+      maxImageSize: MAX_IMAGE_SIZE
     });
     this.pdfLoadingTask = loadingTask;
 
@@ -319,26 +317,6 @@ var PDFViewerApplication = {
     this.pdfViewer.currentPageNumber = val;
   },
 
-  zoomIn: function pdfViewZoomIn(ticks) {
-    var newScale = this.pdfViewer.currentScale;
-    do {
-      newScale = (newScale * DEFAULT_SCALE_DELTA).toFixed(2);
-      newScale = Math.ceil(newScale * 10) / 10;
-      newScale = Math.min(MAX_SCALE, newScale);
-    } while (--ticks && newScale < MAX_SCALE);
-    this.pdfViewer.currentScaleValue = newScale;
-  },
-
-  zoomOut: function pdfViewZoomOut(ticks) {
-    var newScale = this.pdfViewer.currentScale;
-    do {
-      newScale = (newScale / DEFAULT_SCALE_DELTA).toFixed(2);
-      newScale = Math.floor(newScale * 10) / 10;
-      newScale = Math.max(MIN_SCALE, newScale);
-    } while (--ticks && newScale > MIN_SCALE);
-    this.pdfViewer.currentScaleValue = newScale;
-  },
-
   initUI: function pdfViewInitUI() {
     var eventBus = new pdfjsViewer.EventBus();
     this.eventBus = eventBus;
@@ -350,6 +328,11 @@ var PDFViewerApplication = {
 
     this.l10n = pdfjsViewer.NullL10n;
 
+    this.findController = new pdfjsViewer.PDFFindController({
+      linkService: linkService,
+      eventBus: eventBus,
+    });
+
     var container = document.getElementById("viewerContainer");
     var pdfViewer = new pdfjsViewer.PDFViewer({
       container: container,
@@ -358,6 +341,7 @@ var PDFViewerApplication = {
       l10n: this.l10n,
       useOnlyCssZoom: USE_ONLY_CSS_ZOOM,
       textLayerMode: TEXT_LAYER_MODE,
+      findController: this.findController,
     });
     this.pdfViewer = pdfViewer;
     linkService.setViewer(pdfViewer);
@@ -371,6 +355,15 @@ var PDFViewerApplication = {
     eventBus.on("pagesinit", function () {
       // We can use pdfViewer now, e.g. let's change default scale.
       pdfViewer.currentScaleValue = DEFAULT_SCALE_VALUE;
+      PDFViewerApplication.initialScale = pdfViewer.currentScale;
+
+//      pdfViewer.findController.executeCommand("find", {
+//        caseSensitive: false,
+//        findPrevious: undefined,
+//        highlightAll: true,
+//        phraseSearch: true,
+//        query: "earth"
+//      });
     });
   },
 };
