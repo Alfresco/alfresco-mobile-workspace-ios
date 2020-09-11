@@ -47,7 +47,9 @@ class PreviewFileViewModel {
                 }
                 sSelf.viewModelDelegate?.display(doneRequesting: done)
             }
-            sSelf.viewModelDelegate?.display(view: preview)
+            if let preview = preview {
+                sSelf.viewModelDelegate?.display(view: preview)
+            }
         })
     }
 

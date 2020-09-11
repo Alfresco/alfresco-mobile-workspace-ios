@@ -16,13 +16,11 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-extension PDFRenderer: FilePreviewProtocol {
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-    }
-    func recalculateFrame(from size: CGSize) {
-    }
-    func cancel() {
+extension UIView {
+    class func fromNib<T: UIView>() -> T? {
+        return Bundle(for: T.self).loadNibNamed(String(describing: T.self), owner: nil, options: nil)?[0] as? T
     }
 }

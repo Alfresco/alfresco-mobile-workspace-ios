@@ -16,13 +16,10 @@
 //  limitations under the License.
 //
 
-import UIKit
+import AVFoundation
 
-extension PDFRenderer: FilePreviewProtocol {
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-    }
-    func recalculateFrame(from size: CGSize) {
-    }
-    func cancel() {
+extension AVPlayer {
+    var isPlaying: Bool {
+        return rate != 0 && error == nil
     }
 }

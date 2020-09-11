@@ -21,7 +21,7 @@ import UIKit
 
 class FilePreviewFactory {
     static func getPreview(for previewType: FilePreviewType, and url: URL, on size: CGSize,
-                           completion: @escaping(_ done: Bool, _ error: Error?) -> Void) -> FilePreviewProtocol {
+                           completion: @escaping(_ done: Bool, _ error: Error?) -> Void) -> FilePreviewProtocol? {
         switch previewType {
         case .image:
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
@@ -37,6 +37,15 @@ class FilePreviewFactory {
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
             completion(true, nil)
             return pdfRendered
+        case .video, .audio:
+            if let mediaPreview: MediaPreview = .fromNib() {
+                mediaPreview.frame = CGRect(origin: .zero, size: size)
+                mediaPreview.play(from: url, isAudioFile: (previewType == .audio))
+                completion(true, nil)
+                return mediaPreview
+            }
+            completion(true, nil)
+            return nil
         default:
             completion(true, nil)
             return getNoPreview(size: size)

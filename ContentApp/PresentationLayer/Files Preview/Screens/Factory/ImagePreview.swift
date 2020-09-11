@@ -85,4 +85,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         let viewWidth: CGFloat = self.bounds.size.width
         zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
     }
+
+    func cancel() {
+    }
 }

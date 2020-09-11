@@ -58,4 +58,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         frame = CGRect(origin: .zero, size: size)
         noPreviewLabel?.center = center
     }
+
+    func cancel() {
+    }
 }
