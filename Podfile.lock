@@ -50,9 +50,6 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
-  - GCDWebServer (3.5.4):
-    - GCDWebServer/Core (= 3.5.4)
-  - GCDWebServer/Core (3.5.4)
   - GoogleAppMeasurement (6.7.2):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
     - GoogleUtilities/MethodSwizzler (~> 6.7)
@@ -329,7 +326,6 @@ DEPENDENCIES:
   - AlfrescoContent
   - Firebase/Analytics
   - Firebase/Crashlytics
-  - GCDWebServer
   - JWTDecode
   - MaterialComponents/ActivityIndicator
   - MaterialComponents/BottomNavigation
@@ -366,7 +362,6 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseInstallations
-    - GCDWebServer
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -393,7 +388,6 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
   FirebaseCrashlytics: 859918905322e8816d2b5ab7fe54bf5a0c84d21c
   FirebaseInstallations: 45f9d44d3a8d6f780fa337ee8987dad87210fcbc
-  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   GoogleAppMeasurement: 3def7652b1f5b5a576178dc332e2a36a260fbef6
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
@@ -408,6 +402,6 @@ SPEC CHECKSUMS:
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: d993c9ed396e3fd9930b3ddca0136d5992594fd7
+PODFILE CHECKSUM: 528aace60ba42c54f6b6bf84ddd5beddc926fcff
 
 COCOAPODS: 1.9.3

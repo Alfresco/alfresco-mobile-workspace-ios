@@ -10,7 +10,6 @@ target 'ContentApp' do
   pod 'AlfrescoContent'
   pod 'SwiftLint'
   pod 'JWTDecode'
-  pod 'GCDWebServer'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
   pod 'Nuke'
