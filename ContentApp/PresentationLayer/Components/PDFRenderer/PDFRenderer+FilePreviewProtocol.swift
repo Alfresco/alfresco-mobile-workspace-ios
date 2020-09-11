@@ -23,4 +23,6 @@ extension PDFRenderer: FilePreviewProtocol {
     }
     func recalculateFrame(from size: CGSize) {
     }
+    func cancel() {
+    }
 }

@@ -59,6 +59,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
         appDelegate?.restrictRotation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        filePreview?.cancel()
     }
 
     deinit {

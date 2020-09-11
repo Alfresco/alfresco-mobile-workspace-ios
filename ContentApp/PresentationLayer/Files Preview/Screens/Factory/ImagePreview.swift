@@ -76,6 +76,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         })
     }
 
+    // MARK: - FilePreviewProtocol
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
     }
 
@@ -84,5 +86,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
         zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+    }
+
+    func cancel() {
     }
 }

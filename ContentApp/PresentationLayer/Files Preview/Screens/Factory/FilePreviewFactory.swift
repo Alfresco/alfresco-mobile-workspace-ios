@@ -33,6 +33,11 @@ class FilePreviewFactory {
                 completion(completed == total, nil)
             }
             return imagePreview
+        case .gif:
+            let gifPreview = GifPreview(frame: CGRect(origin: .zero, size: size))
+            gifPreview.setGIF(from: url)
+            completion(true, nil)
+            return gifPreview
         case .pdf, .renditionPdf:
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
             completion(true, nil)

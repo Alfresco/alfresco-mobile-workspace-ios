@@ -22,4 +22,5 @@ import UIKit
 protocol FilePreviewProtocol: UIView {
     func applyComponentsThemes(themingService: MaterialDesignThemingService)
     func recalculateFrame(from size: CGSize)
+    func cancel()
 }
