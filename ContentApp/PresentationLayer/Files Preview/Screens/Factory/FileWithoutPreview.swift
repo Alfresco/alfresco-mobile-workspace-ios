@@ -48,6 +48,8 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - FilePreviewProtocol
+    
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
         if let currentTheme = themingService.activeTheme {
             noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
@@ -57,6 +59,9 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         noPreviewLabel?.center = center
+    }
+    
+    func cancel() {
     }
 
     func cancel() {

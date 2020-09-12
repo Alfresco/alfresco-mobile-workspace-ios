@@ -76,6 +76,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         })
     }
 
+    // MARK: - FilePreviewProtocol
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
     }
 
