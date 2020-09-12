@@ -34,9 +34,13 @@ class FilePreviewFactory {
             }
             return imagePreview
         case .gif:
-            let gifPreview = GifPreview(frame: CGRect(origin: .zero, size: size))
-            gifPreview.setGIF(from: url)
-            completion(true, nil)
+            let gifPreview = GIFPreview(frame: CGRect(origin: .zero, size: size))
+            gifPreview.displayGIF(from: url) { (_, error) in
+                if let error = error {
+                    completion(true, error)
+                }
+                completion(true, error)
+            }
             return gifPreview
         case .pdf, .renditionPdf:
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)

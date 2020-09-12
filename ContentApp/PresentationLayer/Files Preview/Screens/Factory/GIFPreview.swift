@@ -21,7 +21,7 @@ import UIKit
 import Nuke
 import Gifu
 
-class GifPreview: UIView, FilePreviewProtocol {
+class GIFPreview: UIView, FilePreviewProtocol {
     private var task: ImageTask?
     private var imageView: GIFImageView?
 
@@ -43,19 +43,26 @@ class GifPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Helpers
 
-    func setGIF(from url: URL) {
+    func displayGIF(from url: URL, handler: @escaping(_ image: UIImage?, _ error: Error?) -> Void) {
+        let resizeImage = CGSize(width: imageView?.bounds.width ?? 0 * kMultiplerPreviewSizeImage,
+                                 height: imageView?.bounds.height ?? 0 * kMultiplerPreviewSizeImage)
+        let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
         let pipeline = ImagePipeline.shared
-        let request = ImageRequest(url: url)
 
-        if let image = pipeline.cachedImage(for: request) {
+        if let image = pipeline.cachedImage(for: imageRequest) {
+            handler(image.image, nil)
             return display(image)
         }
 
-        task = pipeline.loadImage(with: request) { [weak self] result in
+        task = pipeline.loadImage(with: imageRequest) { [weak self] result in
             guard let sSelf = self else { return }
-            if case let .success(response) = result {
+            switch result {
+            case .success(let response):
+                handler(response.image, nil)
                 sSelf.display(response.container)
                 sSelf.animateFadeIn()
+            case .failure(let error):
+                handler(nil, error)
             }
         }
     }
