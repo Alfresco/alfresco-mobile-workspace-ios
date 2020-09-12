@@ -29,10 +29,12 @@ class GIFPreview: UIView, FilePreviewProtocol {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .clear
         let imageView = GIFImageView()
         imageView.frame = frame
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.backgroundColor = .clear
         addSubview(imageView)
         self.imageView = imageView
     }

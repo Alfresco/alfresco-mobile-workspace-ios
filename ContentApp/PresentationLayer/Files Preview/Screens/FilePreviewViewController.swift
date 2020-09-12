@@ -94,8 +94,10 @@ class FilePreviewViewController: SystemThemableViewController {
 extension FilePreviewViewController: PreviewFileViewModelDelegate {
 
     func display(view: FilePreviewProtocol) {
+        guard let themingService = self.themingService else { return }
         preview.addSubview(view)
         filePreview = view
+        filePreview?.applyComponentsThemes(themingService: themingService)
 
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: self.preview.topAnchor, constant: 0),

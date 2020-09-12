@@ -26,7 +26,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
         let label = UILabel()
@@ -49,19 +49,15 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
     }
 
     // MARK: - FilePreviewProtocol
-    
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-        if let currentTheme = themingService.activeTheme {
-            noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
-        }
+        guard let currentTheme = themingService.activeTheme else { return }
+        noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
     }
 
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         noPreviewLabel?.center = center
-    }
-    
-    func cancel() {
     }
 
     func cancel() {

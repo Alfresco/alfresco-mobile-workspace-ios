@@ -846,10 +846,10 @@
 			children = (
 				E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */,
 				E319AA73250782F00072DFFE /* FilePreviewFactory.swift */,
+				E3AE4EA0250675870095C76E /* ImagePreview.swift */,
 				E342ADA0250BB3DF005B025F /* GIFPreview.swift */,
 				E3436F85250B8C4900634C62 /* MediaPreview.swift */,
 				E3436F87250B8C4A00634C62 /* MediaPreview.xib */,
-				E3AE4EA0250675870095C76E /* ImagePreview.swift */,
 				E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */,
 			);
 			path = Factory;

@@ -29,7 +29,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var bigPlayPauseButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
     @IBOutlet weak var currentTimeLabel: UILabel!
-    @IBOutlet weak var remainingTimeLabel: UILabel!
+    @IBOutlet weak var totalTimeLabel: UILabel!
 
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
@@ -37,6 +37,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var url: URL?
     private var animationFade: TimeInterval = 1.0
     private var finishPlaying: Bool = false
+    private var sliderIsMoving: Bool = false
     private var isAudioFile: Bool = false {
         didSet {
             if isAudioFile {
@@ -48,6 +49,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     override func awakeFromNib() {
         actionsView.alpha = 0.0
+        progressSlider.addTarget(self,
+                                 action: #selector(onSliderValChanged(slider:event:)),
+                                 for: .valueChanged)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - IBActions
@@ -65,8 +73,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
 
         player.isPlaying ? player.pause() : player.play()
-        playPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
-        bigPlayPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
+        changeIconPlayPauseButton()
         apply(fade: true, to: bigPlayPauseButton)
         apply(fade: false, to: actionsView)
     }
@@ -75,9 +82,32 @@ class MediaPreview: UIView, FilePreviewProtocol {
         guard let duration = player?.currentItem?.duration else { return }
         let value = Float64(progressSlider.value) * CMTimeGetSeconds(duration)
         player?.seek(to: CMTime(value: CMTimeValue(value), timescale: 1))
+
         if player?.rate == 0 {
             finishPlaying = false
             playPauseTapped(playPauseButton)
+        }
+    }
+
+    @objc func onSliderValChanged(slider: UISlider, event: UIEvent) {
+        if let touchEvent = event.allTouches?.first {
+            switch touchEvent.phase {
+            case .began:
+                sliderIsMoving = true
+                player?.pause()
+                changeIconPlayPauseButton()
+            case .moved:
+                guard let currentItem = player?.currentItem else { return }
+                let currentTimeInSeconds = Float(CMTimeGetSeconds(currentItem.duration)) * progressSlider.value
+                currentTimeLabel.text = timeFormatter(from: Float64(currentTimeInSeconds))
+            case .ended:
+                playbackSliderValueChanged(slider)
+                sliderIsMoving = false
+                player?.play()
+                changeIconPlayPauseButton()
+            default:
+                break
+            }
         }
     }
 
@@ -91,24 +121,96 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
         player = AVPlayer(url: url)
         let playerLayer = AVPlayerLayer(player: player)
-        playerLayer.frame = videoPlayerView.bounds
-        videoPlayerView.layer.addSublayer(playerLayer)
+        playerLayer.frame = frame
         self.playerLayer = playerLayer
+        videoPlayerView.layer.addSublayer(playerLayer)
 
         let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserver = player?.addPeriodicTimeObserver(forInterval: interval,
-                                                       queue: DispatchQueue.main,
+                                                       queue: .main,
                                                        using: { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.updateVideoPlayerState()
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.updateVideoPlayerState()
         })
+
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerDidFinishPlaying(_:)),
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                object: player?.currentItem)
+        player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions(rawValue: 0), context: nil)
     }
 
+    // MARK: - Private Helpers
+
+    @objc private func playerDidFinishPlaying(_ notification: NSNotification) {
+        changeIconPlayPauseButton()
+        bigPlayPauseButton.alpha = 1.0
+        finishPlaying = true
+    }
+
+    override func observeValue(forKeyPath keyPath: String?,
+                               of object: Any?, change: [NSKeyValueChangeKey: Any]?,
+                               context: UnsafeMutableRawPointer?) {
+        if keyPath == "rate" {
+            changeIconPlayPauseButton()
+        }
+    }
+
+    private func apply(fade: Bool, to object: UIView) {
+        guard !isAudioFile else { return }
+        let fadeTo: CGFloat = (fade) ? 0.0 : 1.0
+        UIView.animate(withDuration: animationFade) {
+            object.alpha = fadeTo
+        }
+    }
+
+    private func changeIconPlayPauseButton() {
+        guard let player = player else { return }
+        playPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
+        bigPlayPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
+    }
+
+    private func updateVideoPlayerState() {
+        guard let currentTime = player?.currentTime(), let currentItem = player?.currentItem else { return }
+        let currentTimeInSeconds = CMTimeGetSeconds(currentTime)
+        let durationTimeInSeconds = CMTimeGetSeconds(currentItem.duration)
+        currentTimeLabel.text = timeFormatter(from: currentTimeInSeconds)
+        totalTimeLabel.text = timeFormatter(from: durationTimeInSeconds)
+        if !self.sliderIsMoving {
+            progressSlider.value = Float(CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(currentItem.duration))
+        }
+    }
+
+    private func timeFormatter(from seconds: Float64) -> String {
+        let mins = seconds / 60
+        let secs = seconds.truncatingRemainder(dividingBy: 60)
+        let timeformatter = NumberFormatter()
+        timeformatter.minimumIntegerDigits = 2
+        timeformatter.minimumFractionDigits = 0
+        timeformatter.roundingMode = .down
+        guard let minsStr = timeformatter.string(from: NSNumber(value: mins)),
+            let secsStr = timeformatter.string(from: NSNumber(value: secs))
+            else { return "00:00" }
+        let time = "\(minsStr):\(secsStr)".replacingOccurrences(of: "-", with: "")
+        if time.contains("NaN") {
+            return "00:00"
+        }
+        return time
+    }
+
+    // MARK: - FilePreviewProtocol
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
+        guard let currentTheme = themingService.activeTheme else { return }
+        totalTimeLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeLabel.textAlignment = .center
+        currentTimeLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeLabel.textAlignment = .center
+        actionsView.backgroundColor = currentTheme.onSurfaceColor
+        playPauseButton.tintColor = currentTheme.surfaceColor
+        bigPlayPauseButton.tintColor = currentTheme.surfaceColor
+        progressSlider.tintColor = currentTheme.primaryColor
+        progressSlider.thumbTintColor = currentTheme.primaryVariantColor
     }
 
     func recalculateFrame(from size: CGSize) {
@@ -120,54 +222,9 @@ class MediaPreview: UIView, FilePreviewProtocol {
         player?.pause()
         player = nil
         playerLayer?.removeFromSuperlayer()
-        timeObserver = nil
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    // MARK: - Private Helperspo
-
-    @objc private func playerDidFinishPlaying(_ notification: NSNotification) {
-        playPauseButton.setImage(UIImage(named: "play"), for: .normal)
-        bigPlayPauseButton.setImage(UIImage(named: "play"), for: .normal)
-        bigPlayPauseButton.alpha = 1.0
-        finishPlaying = true
-    }
-
-    private func apply(fade: Bool, to object: UIView) {
-        guard !isAudioFile else { return }
-        let fadeTo: CGFloat = (fade) ? 0.0 : 1.0
-        UIView.animate(withDuration: animationFade) {
-            object.alpha = fadeTo
+        if let timeObserver = timeObserver {
+            player?.removeTimeObserver(timeObserver)
+            self.timeObserver = nil
         }
-    }
-
-    private func updateVideoPlayerState() {
-        guard let currentTime = player?.currentTime() else { return }
-        let currentTimeInSeconds = CMTimeGetSeconds(currentTime)
-//        progressSlider.value = Float(currentTimeInSeconds)
-        if let currentItem = player?.currentItem {
-            let duration = currentItem.duration
-            guard !CMTIME_IS_INVALID(duration) else { return }
-            let currentTime = currentItem.currentTime()
-            progressSlider.value = Float(CMTimeGetSeconds(currentTime) / CMTimeGetSeconds(duration))
-            updateTime(from: duration, and: currentTimeInSeconds)
-        }
-    }
-
-    private func updateTime(from duration: CMTime, and currentTimeInSeconds: Float64) {
-        currentTimeLabel.text = timeFormatter(from: currentTimeInSeconds)
-        remainingTimeLabel.text = timeFormatter(from: CMTimeGetSeconds(duration))
-    }
-
-    private func timeFormatter(from seconds: Float64) -> String {
-        let mins = seconds / 60
-        let secs = seconds.truncatingRemainder(dividingBy: 60)
-        let timeformatter = NumberFormatter()
-        timeformatter.minimumIntegerDigits = 2
-        timeformatter.minimumFractionDigits = 0
-        timeformatter.roundingMode = .down
-        guard let minsStr = timeformatter.string(from: NSNumber(value: mins)),
-            let secsStr = timeformatter.string(from: NSNumber(value: secs)) else { return "" }
-        return "\(minsStr):\(secsStr)".replacingOccurrences(of: "-", with: "")
     }
 }

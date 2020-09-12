@@ -27,10 +27,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let viewHeight: CGFloat = self.bounds.size.height
-        let viewWidth: CGFloat = self.bounds.size.width
-
-        let zoomImageView = ZoomImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
+        backgroundColor = .clear
+        let zoomImageView = ZoomImageView(frame: frame)
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
@@ -83,9 +81,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
-        let viewHeight: CGFloat = self.bounds.size.height
-        let viewWidth: CGFloat = self.bounds.size.width
-        zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+        zoomImageView?.frame = frame
     }
 
     func cancel() {
