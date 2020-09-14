@@ -27,14 +27,14 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let viewHeight: CGFloat = self.bounds.size.height
-        let viewWidth: CGFloat = self.bounds.size.width
+        translatesAutoresizingMaskIntoConstraints = false
 
-        let zoomImageView = ZoomImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
+        let zoomImageView = ZoomImageView(frame: frame)
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
         zoomImageView.backgroundColor = .clear
+        zoomImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(zoomImageView)
 
         self.zoomImageView = zoomImageView

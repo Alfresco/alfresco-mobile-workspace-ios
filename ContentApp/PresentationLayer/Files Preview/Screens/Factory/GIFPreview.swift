@@ -29,6 +29,8 @@ class GIFPreview: UIView, FilePreviewProtocol {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        translatesAutoresizingMaskIntoConstraints = false
+
         let imageView = GIFImageView()
         imageView.frame = frame
         imageView.contentMode = .scaleAspectFit
