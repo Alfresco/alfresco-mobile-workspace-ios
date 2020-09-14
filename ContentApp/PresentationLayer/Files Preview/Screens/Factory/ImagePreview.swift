@@ -19,9 +19,15 @@
 import Foundation
 import UIKit
 import Nuke
+import Gifu
 
 class ImagePreview: UIView, FilePreviewProtocol {
     private var zoomImageView: ZoomImageView?
+    private var task: ImageTask?
+    private var gifImageView: GIFImageView?
+
+    private var isRendaring: Bool = false
+    private var imageRequest: ImageRequest?
 
     // MARK: - Init
 
@@ -46,19 +52,47 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Utils
 
-    func displayImage(from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
-        guard let imageView = self.zoomImageView?.zoomView else { return }
+    func display(for imagePreview: FilePreviewType, from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
+
+        guard let imageView = self.zoomImageView?.zoomView as? UIImageView else { return }
+
+        let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
+                                 height: imageView.bounds.height * kMultiplerPreviewSizeImage)
+        let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
+        self.imageRequest = imageRequest
+        if let imageContainer = ImagePipeline.shared.cachedImage(for: imageRequest) {
+            if imagePreview == .gif {
+                display(imageContainer)
+            } else {
+                zoomImageView?.display(image: imageContainer.image)
+            }
+            handler(imageContainer.image, 0, 0, nil)
+            return
+        }
+
+        switch imagePreview {
+        case .gif:
+            displayGIF { (image, error) in
+                handler(image, 0, 0, error)
+            }
+        default:
+            displayImage { (image, completedUnitCount, totalUnitCount, error) in
+                handler(image, completedUnitCount, totalUnitCount, error)
+            }
+        }
+    }
+
+    private func displayImage(handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
+        guard let imageView = self.zoomImageView?.zoomView as? UIImageView,
+            let imageRequest = self.imageRequest else { return }
+        isRendaring = true
 
         var options = ImageLoadingOptions()
         options.pipeline = ImagePipeline {
             $0.isDeduplicationEnabled = false
             $0.isProgressiveDecodingEnabled = true
         }
-
-        let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
-                                 height: imageView.bounds.height * kMultiplerPreviewSizeImage)
-        let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
-
+        ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
         loadImage(with: imageRequest,
                   options: options,
                   into: imageView,
@@ -66,6 +100,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
+            sSelf.isRendaring = false
             switch result {
             case .failure(let error):
                 handler(nil, 0, 0, error)
@@ -76,6 +111,50 @@ class ImagePreview: UIView, FilePreviewProtocol {
         })
     }
 
+    private func displayGIF(handler: @escaping(_ image: UIImage?, _ error: Error?) -> Void) {
+        guard let imageRequest = self.imageRequest else { return }
+
+        ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
+        task = ImagePipeline.shared.loadImage(with: imageRequest) { [weak self] result in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let response):
+                handler(response.image, nil)
+                sSelf.display(response.container)
+                sSelf.animateFadeIn()
+            case .failure(let error):
+                handler(nil, error)
+            }
+        }
+    }
+
+    private func displaySVG(handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
+    }
+
+    // MARK: - Private Helpers
+
+    private func display(_ container: Nuke.ImageContainer) {
+        if let data = container.data {
+            let imageView = GIFImageView()
+            imageView.frame = frame
+            imageView.contentMode = .scaleAspectFit
+            imageView.clipsToBounds = true
+            imageView.animate(withGIFData: data)
+            zoomImageView?.display(image: imageView)
+            gifImageView = imageView
+        } else {
+            zoomImageView?.display(image: container.image)
+        }
+    }
+
+    private func animateFadeIn() {
+        zoomImageView?.alpha = 0
+        UIView.animate(withDuration: 0.33) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.zoomImageView?.alpha = 1
+        }
+    }
+
     // MARK: - FilePreviewProtocol
 
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
@@ -83,11 +162,14 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
-        let viewHeight: CGFloat = self.bounds.size.height
-        let viewWidth: CGFloat = self.bounds.size.width
-        zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
+        zoomImageView?.frame = frame
+        if isRendaring {
+            zoomImageView?.zoomView?.frame = frame
+        }
+        gifImageView?.frame = frame
     }
 
     func cancel() {
+        task?.cancel()
     }
 }
