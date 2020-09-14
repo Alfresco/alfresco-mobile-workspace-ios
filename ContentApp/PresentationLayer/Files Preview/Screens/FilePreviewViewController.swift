@@ -26,6 +26,8 @@ class FilePreviewViewController: SystemThemableViewController {
     var filePreviewViewModel: PreviewFileViewModel?
     var filePreview: FilePreviewProtocol?
 
+    weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -92,7 +94,6 @@ class FilePreviewViewController: SystemThemableViewController {
 // MARK: - PreviewFile ViewModel Delegate
 
 extension FilePreviewViewController: PreviewFileViewModelDelegate {
-
     func display(view: FilePreviewProtocol) {
         preview.addSubview(view)
         filePreview = view
@@ -113,6 +114,36 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         if doneRequesting {
             stopLoading()
         }
+    }
+
+    func requestFileUnlock(retry: Bool) {
+        let passwordField = MDCFilledTextField()
+        passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
+        passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
+        passwordField.isSecureTextEntry = true
+
+        let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
+        let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
+
+        let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
+        let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
+            guard let sSelf = self else { return }
+
+            alertController.dismiss(animated: true, completion: nil)
+            sSelf.filePreviewCoordinatorDelegate?.navigateBack()
+        }
+        alertController.addAction(submitAction)
+        alertController.addAction(cancelAction)
+
+        alertController.accessoryView = passwordField
+
+        present(alertController, animated: true, completion: {
+            passwordField.becomeFirstResponder()
+        })
     }
 }
 

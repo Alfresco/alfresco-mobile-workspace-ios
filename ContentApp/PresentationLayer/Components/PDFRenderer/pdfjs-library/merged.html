@@ -96104,6 +96104,19 @@ var PDFViewerApplication = {
       self.progress(progressData.loaded / progressData.total);
     };
 
+    loadingTask.onPassword = function (callback, reason) {
+      self.onPassword = callback;
+      try {
+          if (reason == 1) {
+            webkit.messageHandlers.pdfAction.postMessage("showPasswordPrompt");
+          } else {
+            webkit.messageHandlers.pdfAction.postMessage("invalidPasswordPrompt");
+          }
+      } catch(err) {
+       console.log('The native context does not exist yet');
+     }
+    };
+
     return loadingTask.promise.then(
       function (pdfDocument) {
         // Document loaded, specifying document for the viewer.

@@ -18,6 +18,10 @@
 
 import UIKit
 
+protocol FilePreviewScreenCoordinatorDelegate: class {
+    func navigateBack()
+}
+
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listNode: ListNode
@@ -38,6 +42,7 @@ class FilePreviewScreenCoordinator: Coordinator {
             let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
             let filePreviewViewModel = PreviewFileViewModel(node: sSelf.listNode, with: accountService)
             let viewController = FilePreviewViewController.instantiateViewController()
+            viewController.filePreviewCoordinatorDelegate = self
 
             filePreviewViewModel.viewModelDelegate = viewController
             viewController.themingService = themingService
@@ -48,5 +53,11 @@ class FilePreviewScreenCoordinator: Coordinator {
         })
         let routerPathValues = NavigationRoutes.filePreviewScreen.path + "/\(listNode.guid)"
         router?.push(route: routerPathValues, from: presenter)
+    }
+}
+
+extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
+    func navigateBack() {
+        presenter.popViewController(animated: true)
     }
 }

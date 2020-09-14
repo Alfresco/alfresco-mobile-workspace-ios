@@ -49,7 +49,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
     }
 
     // MARK: - FilePreviewProtocol
-    
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
         if let currentTheme = themingService.activeTheme {
             noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
@@ -60,7 +60,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         frame = CGRect(origin: .zero, size: size)
         noPreviewLabel?.center = center
     }
-    
+
     func cancel() {
     }
 }

@@ -129,5 +129,10 @@ struct LocalizationConstants {
 
     struct FilePreview {
         static let noPreview = NSLocalizedString("noPreview", comment: "")
+        static let passwordPromptTitle = NSLocalizedString("passwordPromptTitle", comment: "")
+        static let passwordPromptMessage = NSLocalizedString("passwordPromptMessage", comment: "")
+        static let passwordPromptFailTitle = NSLocalizedString("passwordPromptFailTitle", comment: "")
+        static let passwordPromptFailMessage = NSLocalizedString("passwordPromptFailMessage", comment: "")
+        static let passwordPromptSubmit = NSLocalizedString("passwordPromptSubmit", comment: "")
     }
 }

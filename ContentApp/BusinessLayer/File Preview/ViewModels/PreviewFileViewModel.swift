@@ -19,11 +19,13 @@
 import UIKit
 import AlfrescoAuth
 import AlfrescoContent
+import MaterialComponents.MDCAlertController
 
 protocol PreviewFileViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
     func display(error: Error)
     func display(doneRequesting: Bool)
+    func requestFileUnlock(retry: Bool)
 }
 
 class PreviewFileViewModel {
@@ -31,6 +33,7 @@ class PreviewFileViewModel {
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
     weak var viewModelDelegate: PreviewFileViewModelDelegate?
+    var pdfRenderer: PDFRenderer?
 
     init(node: ListNode, with accountService: AccountService?) {
         self.node = node
@@ -48,7 +51,17 @@ class PreviewFileViewModel {
                 sSelf.viewModelDelegate?.display(doneRequesting: done)
             }
             sSelf.viewModelDelegate?.display(view: preview)
+
+            // Set delegate for password requesting PDF renditions
+            if let filePreview = preview as? PDFRenderer {
+                filePreview.delegate = self
+                sSelf.pdfRenderer = filePreview
+            }
         })
+    }
+
+    func unlockFile(with password: String) {
+        pdfRenderer?.unlockPDF(password: password)
     }
 
     private func getURLPreview(with ticket: String?) -> URL? {
@@ -58,5 +71,17 @@ class PreviewFileViewModel {
                 return nil
         }
         return urlPreview
+    }
+}
+
+// MARK: - PDFRendererPasswordDelegate
+
+extension PreviewFileViewModel: PDFRendererPasswordDelegate {
+    func providePDFPassword(for pdf: URL) {
+        viewModelDelegate?.requestFileUnlock(retry: false)
+    }
+
+    func invalidPasswordProvided(for pdf: URL) {
+        viewModelDelegate?.requestFileUnlock(retry: true)
     }
 }
