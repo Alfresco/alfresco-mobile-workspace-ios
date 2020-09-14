@@ -42,9 +42,9 @@ class ProfileService {
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
-            PeopleAPI.getAvatarImage(personId: kAPIPathMe) { (data, error) in
+            PeopleAPI.getAvatarImage(personId: identifier) { (data, error) in
                 if let error = error {
                     AlfrescoLog.error(error)
                 } else if let data = data {
@@ -61,8 +61,9 @@ class ProfileService {
 
     static func fetchProfileInformation(completion: @escaping ((PersonEntry?, Error?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { (personEntry, error) in
+            PeopleAPI.getPerson(personId: identifier) { (personEntry, error) in
                 completion(personEntry, error)
             }
         })

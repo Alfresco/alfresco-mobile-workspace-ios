@@ -21,6 +21,7 @@ import UIKit
 
 enum FilePreviewType {
     case image
+    case gif
     case video
     case audio
     case text
@@ -162,7 +163,7 @@ class FilePreview {
             "audio/x-wav": .audio,
             "image/bmp": .image,
             "image/cgm": .image,
-            "image/gif": .image,
+            "image/gif": .gif,
             "image/ief": .image,
             "image/jp2": .image,
             "image/jpeg": .image,

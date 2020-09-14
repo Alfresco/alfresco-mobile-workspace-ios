@@ -22,7 +22,6 @@ import Nuke
 
 class ImagePreview: UIView, FilePreviewProtocol {
     private var zoomImageView: ZoomImageView?
-    private var scrooViewZoom: UIScrollView?
 
     // MARK: - Init
 
@@ -31,25 +30,14 @@ class ImagePreview: UIView, FilePreviewProtocol {
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
 
-        let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
-        let zoomImageView = ZoomImageView(frame: scrollView.frame)
-
+        let zoomImageView = ZoomImageView(frame: CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight))
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
-        if let image = UIImage(named: "emptyList") {
-            zoomImageView.display(image: image)
-        }
-
-        scrollView.contentSize = CGSize(width: 0, height: viewHeight)
-        scrollView.addSubview(zoomImageView)
-        addSubview(scrollView)
-
-        scrollView.backgroundColor = .clear
         zoomImageView.backgroundColor = .clear
+        addSubview(zoomImageView)
 
         self.zoomImageView = zoomImageView
-        self.scrooViewZoom = scrollView
     }
 
     required init?(coder: NSCoder) {
@@ -61,17 +49,20 @@ class ImagePreview: UIView, FilePreviewProtocol {
     func displayImage(from url: URL, handler: @escaping(_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void) {
         guard let imageView = self.zoomImageView?.zoomView else { return }
 
+        var options = ImageLoadingOptions()
+        options.pipeline = ImagePipeline {
+            $0.isDeduplicationEnabled = false
+            $0.isProgressiveDecodingEnabled = true
+        }
+
         let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
                                  height: imageView.bounds.height * kMultiplerPreviewSizeImage)
         let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
+
         loadImage(with: imageRequest,
-                  options: ImageLoadingOptions(),
+                  options: options,
                   into: imageView,
-                  progress: { [weak self] (response, completed, total) in
-                    guard let sSelf = self else { return }
-                    if let image = response?.image {
-                        sSelf.zoomImageView?.display(image: image)
-                    }
+                  progress: { (response, completed, total) in
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
@@ -85,6 +76,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         })
     }
 
+    // MARK: - FilePreviewProtocol
+
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
     }
 
@@ -92,8 +85,9 @@ class ImagePreview: UIView, FilePreviewProtocol {
         frame = CGRect(origin: .zero, size: size)
         let viewHeight: CGFloat = self.bounds.size.height
         let viewWidth: CGFloat = self.bounds.size.width
-        scrooViewZoom?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
         zoomImageView?.frame = CGRect(x: 0, y: 0, width: viewWidth, height: viewHeight)
-        scrooViewZoom?.contentSize = CGSize(width: 0, height: viewHeight)
+    }
+
+    func cancel() {
     }
 }

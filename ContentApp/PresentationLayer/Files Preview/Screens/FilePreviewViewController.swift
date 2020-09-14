@@ -34,7 +34,6 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
-        filePreviewViewModel?.requestFilePreview(with: preview.bounds.size)
 
         appDelegate?.restrictRotation = .all
 
@@ -49,12 +48,18 @@ class FilePreviewViewController: SystemThemableViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        filePreviewViewModel?.requestFilePreview(with: preview.bounds.size)
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
 
         appDelegate?.restrictRotation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+        filePreview?.cancel()
     }
 
     deinit {
@@ -89,20 +94,25 @@ class FilePreviewViewController: SystemThemableViewController {
 extension FilePreviewViewController: PreviewFileViewModelDelegate {
 
     func display(view: FilePreviewProtocol) {
-        stopLoading()
         preview.addSubview(view)
         filePreview = view
 
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            view.leftAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leftAnchor, constant: 0),
-            view.rightAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.rightAnchor, constant: 0),
-            view.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            view.topAnchor.constraint(equalTo: self.preview.topAnchor, constant: 0),
+            view.leftAnchor.constraint(equalTo: self.preview.leftAnchor, constant: 0),
+            view.rightAnchor.constraint(equalTo: self.preview.rightAnchor, constant: 0),
+            view.bottomAnchor.constraint(equalTo: self.preview.bottomAnchor, constant: 0)
         ])
     }
 
     func display(error: Error) {
         stopLoading()
+    }
+
+    func display(doneRequesting: Bool) {
+        if doneRequesting {
+            stopLoading()
+        }
     }
 }
 

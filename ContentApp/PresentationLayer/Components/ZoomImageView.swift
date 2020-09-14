@@ -42,7 +42,7 @@ open class ZoomImageView: UIScrollView {
     open var imageContentMode: ScaleMode = .widthFill
     open var initialOffset: Offset = .begining
 
-    public private(set) var zoomView: UIImageView?
+    public var zoomView: UIImageView?
 
     open weak var imageScrollViewDelegate: ZoomImageViewDelegate?
 
@@ -96,6 +96,17 @@ open class ZoomImageView: UIScrollView {
                                                selector: #selector(ZoomImageView.changeOrientationNotification),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        let imageView = UIImageView(frame: frame)
+        imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+        addSubview(imageView)
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
+        tapGesture.numberOfTapsRequired = 2
+        imageView.addGestureRecognizer(tapGesture)
+
+        zoomView = imageView
+        setMaxMinZoomScalesForCurrentBounds()
     }
 
     public func adjustFrameToCenter() {
@@ -167,13 +178,15 @@ open class ZoomImageView: UIScrollView {
             zoomView.removeFromSuperview()
         }
 
-        zoomView = UIImageView(image: image)
-        zoomView!.isUserInteractionEnabled = true
-        addSubview(zoomView!)
+        let imageView = UIImageView(image: image)
+        imageView.isUserInteractionEnabled = true
+        imageView.image = image
+        addSubview(imageView)
+        zoomView = imageView
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
         tapGesture.numberOfTapsRequired = 2
-        zoomView!.addGestureRecognizer(tapGesture)
+        imageView.addGestureRecognizer(tapGesture)
 
         configureImageForSize(image.size)
     }
