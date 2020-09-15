@@ -42,7 +42,7 @@ open class ZoomImageView: UIScrollView {
     open var imageContentMode: ScaleMode = .widthFill
     open var initialOffset: Offset = .begining
 
-    public var zoomView: UIImageView?
+    public var zoomView: UIView?
 
     open weak var imageScrollViewDelegate: ZoomImageViewDelegate?
 
@@ -107,6 +107,7 @@ open class ZoomImageView: UIScrollView {
 
         zoomView = imageView
         setMaxMinZoomScalesForCurrentBounds()
+        configureImageForSize(imageView.bounds.size)
     }
 
     public func adjustFrameToCenter() {
@@ -191,6 +192,23 @@ open class ZoomImageView: UIScrollView {
         configureImageForSize(image.size)
     }
 
+    open func display(image: UIView) {
+        if let zoomView = zoomView {
+            zoomView.removeFromSuperview()
+        }
+
+        let imageView = image
+        imageView.isUserInteractionEnabled = true
+        addSubview(imageView)
+        zoomView = imageView
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
+        tapGesture.numberOfTapsRequired = 2
+        imageView.addGestureRecognizer(tapGesture)
+
+        configureImageForSize(image.bounds.size)
+    }
+
     private func configureImageForSize(_ size: CGSize) {
         imageSize = size
         contentSize = imageSize
@@ -259,12 +277,6 @@ open class ZoomImageView: UIScrollView {
         zoomRect.origin.x    = center.x - (zoomRect.size.width  / 2.0)
         zoomRect.origin.y    = center.y - (zoomRect.size.height / 2.0)
         return zoomRect
-    }
-
-    open func refresh() {
-        if let image = zoomView?.image {
-            display(image: image)
-        }
     }
 
     // MARK: - Actions

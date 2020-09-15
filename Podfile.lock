@@ -11,6 +11,9 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - CocoaLumberjack (3.6.2):
+    - CocoaLumberjack/Core (= 3.6.2)
+  - CocoaLumberjack/Core (3.6.2)
   - Firebase/Analytics (6.30.0):
     - Firebase/Core
   - Firebase/Core (6.30.0):
@@ -50,9 +53,6 @@ PODS:
     - GoogleUtilities/Environment (~> 6.7)
     - GoogleUtilities/UserDefaults (~> 6.7)
     - PromisesObjC (~> 1.2)
-  - GCDWebServer (3.5.4):
-    - GCDWebServer/Core (= 3.5.4)
-  - GCDWebServer/Core (3.5.4)
   - Gifu (3.3)
   - GoogleAppMeasurement (6.7.2):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.7)
@@ -323,6 +323,8 @@ PODS:
   - nanopb/encode (1.30905.0)
   - Nuke (9.1.1)
   - PromisesObjC (1.2.10)
+  - SVGKit (2.1.1):
+    - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.39.2)
 
 DEPENDENCIES:
@@ -330,7 +332,6 @@ DEPENDENCIES:
   - AlfrescoContent
   - Firebase/Analytics
   - Firebase/Crashlytics
-  - GCDWebServer
   - Gifu
   - JWTDecode
   - MaterialComponents/ActivityIndicator
@@ -352,6 +353,7 @@ DEPENDENCIES:
   - "MaterialComponents/TextControls+OutlinedTextFields"
   - "MaterialComponents/TextControls+OutlinedTextFieldsTheming"
   - Nuke
+  - SVGKit
   - SwiftLint
 
 SPEC REPOS:
@@ -362,13 +364,13 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AppAuth
+    - CocoaLumberjack
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseInstallations
-    - GCDWebServer
     - Gifu
     - GoogleAppMeasurement
     - GoogleDataTransport
@@ -382,6 +384,7 @@ SPEC REPOS:
     - nanopb
     - Nuke
     - PromisesObjC
+    - SVGKit
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -390,13 +393,13 @@ SPEC CHECKSUMS:
   AlfrescoContent: 66440ac315c6bbe08d02fa66d9990fd3d0d4f9e3
   AlfrescoCore: b8dfdbc7ab2a0cdee95cf397cf999a0ef006864c
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
   Firebase: 210f41ca352067d83b1ba4fd2e7fb49a0c017397
   FirebaseAnalytics: a299a86ef70fcc6aa011418bc65a7e101fb9636c
   FirebaseCore: 9a41e2de78fef10f63cee30ab10e2945266bc1fc
   FirebaseCoreDiagnostics: 7535fe695737f8c5b350584292a70b7f8ff0357b
   FirebaseCrashlytics: 859918905322e8816d2b5ab7fe54bf5a0c84d21c
   FirebaseInstallations: 45f9d44d3a8d6f780fa337ee8987dad87210fcbc
-  GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
   Gifu: 97c2a3c3865fbc834ab13f797e2e8e7729a1853c
   GoogleAppMeasurement: 3def7652b1f5b5a576178dc332e2a36a260fbef6
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
@@ -410,8 +413,9 @@ SPEC CHECKSUMS:
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   Nuke: af4301b154d3afd8a3b045a5194a9a773a00b7a8
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
+  SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 442e24f746383c44e923d8228e29137051e9bd2b
+PODFILE CHECKSUM: a5c3463b68626fca52f5872129c24924e7f115d1
 
 COCOAPODS: 1.9.3

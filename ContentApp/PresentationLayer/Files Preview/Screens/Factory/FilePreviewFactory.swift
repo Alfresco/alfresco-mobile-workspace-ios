@@ -20,43 +20,38 @@ import Foundation
 import UIKit
 
 class FilePreviewFactory {
-    static func getPreview(for previewType: FilePreviewType, and url: URL, on size: CGSize,
-                           completion: @escaping(_ done: Bool, _ error: Error?) -> Void) -> FilePreviewProtocol? {
+    static func getPreview(for previewType: FilePreviewType, and url: URL? = nil, on size: CGSize,
+                           completion: ((_ done: Bool, _ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
+        guard let url = url else {
+            completion?(true, nil)
+            return getNoPreview(size: size)
+        }
         switch previewType {
-        case .image:
+        case .image, .svg, .gif:
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
-            imagePreview.displayImage(from: url) { (_, completed, total, error) in
+            imagePreview.display(for: previewType, from: url) { (_, completed, total, error) in
                 if let error = error {
-                    completion(true, error)
+                    completion?(true, error)
                     AlfrescoLog.error(error)
                 }
-                completion(completed == total, nil)
+                completion?(completed == total, nil)
             }
             return imagePreview
-        case .gif:
-            let gifPreview = GIFPreview(frame: CGRect(origin: .zero, size: size))
-            gifPreview.displayGIF(from: url) { (_, error) in
-                if let error = error {
-                    completion(true, error)
-                }
-                completion(true, error)
-            }
-            return gifPreview
         case .pdf, .renditionPdf:
             let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
-            completion(true, nil)
+            completion?(true, nil)
             return pdfRendered
         case .video, .audio:
             if let mediaPreview: MediaPreview = .fromNib() {
                 mediaPreview.frame = CGRect(origin: .zero, size: size)
                 mediaPreview.play(from: url, isAudioFile: (previewType == .audio))
-                completion(true, nil)
+                completion?(true, nil)
                 return mediaPreview
             }
-            completion(true, nil)
-            return nil
+            completion?(true, nil)
+            return getNoPreview(size: size)
         default:
-            completion(true, nil)
+            completion?(true, nil)
             return getNoPreview(size: size)
         }
     }
