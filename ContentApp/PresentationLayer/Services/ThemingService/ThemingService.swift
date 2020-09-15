@@ -135,7 +135,8 @@ class MaterialDesignThemingService: ThemingService, MaterialDesignThemingService
     private var themingWorkers: [MaterialDesignThemingServiceWorkerProtocol] = [LoginComponentsThemingServiceWorker(),
                                                                                 SettingsComponentsThemingServiceWorker(),
                                                                                 SearchComponentsThemingServiceWorker(),
-                                                                                ApplicationTabBarThemingServiceWorker()]
+                                                                                ApplicationTabBarThemingServiceWorker(),
+                                                                                DialogsThemingServiceWorker()]
 
     func containerScheming(for scene: MaterialComponentsThemingScene) -> MDCContainerScheming {
         guard let theme = activeTheme else { return MDCContainerScheme() }

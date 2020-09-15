@@ -18,6 +18,7 @@
 
 import UIKit
 import MaterialComponents.MaterialProgressView
+import MaterialComponents.MaterialDialogs
 
 class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var preview: UIView!
@@ -27,6 +28,13 @@ class FilePreviewViewController: SystemThemableViewController {
     var filePreview: FilePreviewProtocol?
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
+
+    private var filePreviewPasswordDialog: MDCAlertController?
+    private var filePreviewPasswordField: MDCOutlinedTextField?
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,10 +72,6 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreview?.cancel()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Private Helpers
 
     private func startLoading() {
@@ -88,6 +92,24 @@ class FilePreviewViewController: SystemThemableViewController {
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
         filePreview?.applyComponentsThemes(themingService: themingService)
+        if let passwordDialog = filePreviewPasswordDialog, let passwordField = filePreviewPasswordField {
+            applyTheme(for: passwordDialog)
+            applyTheme(for: passwordField)
+        }
+    }
+
+    private func applyTheme(for dialog: MDCAlertController) {
+        if let themingService = self.themingService {
+            dialog.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
+            dialog.titleColor = themingService.activeTheme?.onSurfaceColor
+            dialog.messageColor = themingService.activeTheme?.onBackgroundColor
+        }
+    }
+
+    private func applyTheme(for passwordField: MDCOutlinedTextField) {
+        if let themingService = themingService {
+            passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        }
     }
 }
 
@@ -117,10 +139,12 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
     }
 
     func requestFileUnlock(retry: Bool) {
-        let passwordField = MDCFilledTextField()
+        let passwordField = MDCOutlinedTextField()
         passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
         passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
         passwordField.isSecureTextEntry = true
+        applyTheme(for: passwordField)
+        filePreviewPasswordField = passwordField
 
         let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
         let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
@@ -140,6 +164,8 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         alertController.addAction(cancelAction)
 
         alertController.accessoryView = passwordField
+        applyTheme(for: alertController)
+        filePreviewPasswordDialog = alertController
 
         present(alertController, animated: true, completion: {
             passwordField.becomeFirstResponder()

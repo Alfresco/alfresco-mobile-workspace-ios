@@ -164,6 +164,21 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
+  - "MaterialComponents/Dialogs+ColorThemer (110.2.0)":
+    - "MaterialComponents/Buttons+ColorThemer"
+    - MaterialComponents/Dialogs
+    - MaterialComponents/Themes
+  - "MaterialComponents/Dialogs+Theming (110.2.0)":
+    - "MaterialComponents/Buttons+Theming"
+    - MaterialComponents/Dialogs
+    - "MaterialComponents/Dialogs+ColorThemer"
+    - "MaterialComponents/Dialogs+TypographyThemer"
+    - MaterialComponents/schemes/Container
+    - MaterialComponents/ShadowElevations
+  - "MaterialComponents/Dialogs+TypographyThemer (110.2.0)":
+    - "MaterialComponents/Buttons+TypographyThemer"
+    - MaterialComponents/Dialogs
+    - MaterialComponents/schemes/Typography
   - MaterialComponents/Elevation (110.2.0):
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
@@ -304,6 +319,9 @@ PODS:
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
+  - MaterialComponents/Themes (110.2.0):
+    - MaterialComponents/schemes/Color
+    - MaterialComponents/schemes/Typography
   - MaterialComponents/Typography (110.2.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
@@ -338,6 +356,7 @@ DEPENDENCIES:
   - MaterialComponents/Chips
   - "MaterialComponents/Chips+Theming"
   - MaterialComponents/Dialogs
+  - "MaterialComponents/Dialogs+Theming"
   - MaterialComponents/ProgressView
   - MaterialComponents/Snackbar
   - MaterialComponents/Tabs
@@ -406,6 +425,6 @@ SPEC CHECKSUMS:
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 2ae768402810b816f7178c253b4ccac34a0123e4
+PODFILE CHECKSUM: 34a2c65c78c6582fd1bcaf908c4f59ca0e1b1d77
 
 COCOAPODS: 1.9.3

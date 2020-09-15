@@ -26,6 +26,7 @@
 		B959CCD62476C96E00811F15 /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
 		B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD72476CB0D00811F15 /* ThemingScene.swift */; };
 		B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD92477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift */; };
+		B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96988302510CA6D005A2B6A /* DialogsThemingServiceWorker.swift */; };
 		B96B09B624BD8FDB0063D3C6 /* SystemThemableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */; };
 		B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9ADF247FE9BE0035AE97 /* NeedHelpCoordinator.swift */; };
 		B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */; };
@@ -233,6 +234,7 @@
 		B959CCD52476C96E00811F15 /* PresentationTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationTheme.swift; sourceTree = "<group>"; };
 		B959CCD72476CB0D00811F15 /* ThemingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemingScene.swift; sourceTree = "<group>"; };
 		B959CCD92477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginComponentsThemingServiceWorker.swift; sourceTree = "<group>"; };
+		B96988302510CA6D005A2B6A /* DialogsThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogsThemingServiceWorker.swift; sourceTree = "<group>"; };
 		B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemThemableViewController.swift; sourceTree = "<group>"; };
 		B96B9ADF247FE9BE0035AE97 /* NeedHelpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpCoordinator.swift; sourceTree = "<group>"; };
 		B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+LocalizedHTML.swift"; sourceTree = "<group>"; };
@@ -579,6 +581,7 @@
 				E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */,
 				E30E341D24B8812600836629 /* SearchComponentsThemingServiceWorker.swift */,
 				B99B5BE824BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift */,
+				B96988302510CA6D005A2B6A /* DialogsThemingServiceWorker.swift */,
 			);
 			path = Workers;
 			sourceTree = "<group>";
@@ -1450,6 +1453,7 @@
 				E319AA7225076EC50072DFFE /* GoogleService-Info.plist in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
+				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,

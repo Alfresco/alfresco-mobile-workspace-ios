@@ -37,4 +37,5 @@ enum MaterialComponentsThemingScene {
     case searchChipUnselected
     case favoritesTabBar
     case applicationTabBar
+    case pdfPasswordDialog
 }
