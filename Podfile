@@ -14,6 +14,7 @@ target 'ContentApp' do
   pod 'Firebase/Analytics'
   pod 'Nuke'
   pod 'Gifu'
+  pod 'SVGKit'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'

@@ -25,7 +25,11 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
 
     var filePreviewViewModel: PreviewFileViewModel?
-    var filePreview: FilePreviewProtocol?
+    var filePreview: FilePreviewProtocol? {
+        didSet {
+            appDelegate?.restrictRotation = .all
+        }
+    }
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
 
@@ -44,8 +48,6 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
-
-        appDelegate?.restrictRotation = .all
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(orientationChangedNotification),
@@ -70,6 +72,7 @@ class FilePreviewViewController: SystemThemableViewController {
         appDelegate?.restrictRotation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         filePreview?.cancel()
+        filePreview?.removeFromSuperview()
     }
 
     // MARK: - Private Helpers

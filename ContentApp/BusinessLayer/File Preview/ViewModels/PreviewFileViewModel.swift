@@ -47,6 +47,8 @@ class PreviewFileViewModel {
             let preview = FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (done, error) in
                 if let error = error {
                     sSelf.viewModelDelegate?.display(error: error)
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                    sSelf.viewModelDelegate?.display(view: noPreview)
                 }
                 sSelf.viewModelDelegate?.display(doneRequesting: done)
             }
