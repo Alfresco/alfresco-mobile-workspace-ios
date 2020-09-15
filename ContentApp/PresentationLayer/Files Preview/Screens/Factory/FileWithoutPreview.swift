@@ -20,6 +20,7 @@ import Foundation
 import UIKit
 
 class FileWithoutPreview: UIView, FilePreviewProtocol {
+    weak var delegate: FilePreviewDelegate?
     private var noPreviewLabel: UILabel?
 
     // MARK: - Init

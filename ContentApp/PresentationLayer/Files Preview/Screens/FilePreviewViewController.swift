@@ -24,6 +24,7 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
 
     var filePreviewViewModel: PreviewFileViewModel?
+    var fullScreen = false
     var filePreview: FilePreviewProtocol? {
         didSet {
             appDelegate?.restrictRotation = .all
@@ -65,6 +66,10 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreview?.removeFromSuperview()
     }
 
+    override var prefersStatusBarHidden: Bool {
+        return fullScreen
+    }
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -100,6 +105,7 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         guard let themingService = self.themingService else { return }
         preview.addSubview(view)
         filePreview = view
+        filePreview?.delegate = self
         filePreview?.applyComponentsThemes(themingService: themingService)
 
         NSLayoutConstraint.activate([
@@ -118,6 +124,16 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         if doneRequesting {
             stopLoading()
         }
+    }
+}
+
+// MARK: - FilePreview Delegate
+
+extension FilePreviewViewController: FilePreviewDelegate {
+    func applyFullScreen(_ enable: Bool) {
+//        navigationController?.setNavigationBarHidden(enable, animated: true)
+//        fullScreen = enable
+//        setNeedsStatusBarAppearanceUpdate()
     }
 }
 

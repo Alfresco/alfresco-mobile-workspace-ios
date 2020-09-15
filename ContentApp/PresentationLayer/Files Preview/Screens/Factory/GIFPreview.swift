@@ -22,6 +22,8 @@ import Nuke
 import Gifu
 
 class GIFPreview: UIView, FilePreviewProtocol {
+    weak var delegate: FilePreviewDelegate?
+
     private var task: ImageTask?
     private var imageView: GIFImageView?
 

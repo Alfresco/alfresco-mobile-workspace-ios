@@ -20,7 +20,12 @@ import Foundation
 import UIKit
 
 protocol FilePreviewProtocol: UIView {
+    var delegate: FilePreviewDelegate? { get set }
     func applyComponentsThemes(themingService: MaterialDesignThemingService)
     func recalculateFrame(from size: CGSize)
     func cancel()
+}
+
+protocol FilePreviewDelegate: class {
+    func applyFullScreen(_ enable: Bool)
 }

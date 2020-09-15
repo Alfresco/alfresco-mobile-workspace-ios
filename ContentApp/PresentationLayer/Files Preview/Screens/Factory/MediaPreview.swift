@@ -21,6 +21,9 @@ import UIKit
 import AVFoundation
 
 class MediaPreview: UIView, FilePreviewProtocol {
+
+    weak var delegate: FilePreviewDelegate?
+
     @IBOutlet weak var videoPlayerView: UIView!
     @IBOutlet weak var actionsView: UIView!
     @IBOutlet weak var audioImageView: UIImageView!
@@ -38,17 +41,27 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var animationFade: TimeInterval = 1.0
     private var finishPlaying: Bool = false
     private var sliderIsMoving: Bool = false
+    private var isFullScreen: Bool = false {
+        didSet {
+            if !isAudioFile {
+                delegate?.applyFullScreen(isFullScreen)
+                apply(fade: isFullScreen, to: actionsView)
+            }
+        }
+    }
     private var isAudioFile: Bool = false {
         didSet {
             if isAudioFile {
+                actionsView.isHidden = false
                 actionsView.alpha = 1.0
                 bigPlayPauseButton.alpha = 0.0
+                appDelegate?.restrictRotation = .portrait
             }
         }
     }
 
     override func awakeFromNib() {
-        actionsView.alpha = 0.0
+        actionsView.isHidden = true
         progressSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
@@ -61,7 +74,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     // MARK: - IBActions
 
     @IBAction func videoPlayerTapGesture(_ sender: UITapGestureRecognizer) {
-        apply(fade: (actionsView.alpha == 1), to: actionsView)
+        isFullScreen = !isFullScreen
     }
 
     @IBAction func playPauseTapped(_ sender: UIButton) {
@@ -74,6 +87,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
         player.isPlaying ? player.pause() : player.play()
         changeIconPlayPauseButton()
+        actionsView.isHidden = false
         apply(fade: true, to: bigPlayPauseButton)
         apply(fade: false, to: actionsView)
     }
@@ -122,17 +136,20 @@ class MediaPreview: UIView, FilePreviewProtocol {
         player = AVPlayer(url: url)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = frame
+        playerLayer.videoGravity = .resizeAspect
+        playerLayer.contentsGravity = .center
         self.playerLayer = playerLayer
+
+        videoPlayerView.layer.frame = frame
         videoPlayerView.layer.addSublayer(playerLayer)
 
         let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserver = player?.addPeriodicTimeObserver(forInterval: interval,
                                                        queue: .main,
                                                        using: { [weak self] _ in
-                                                        guard let sSelf = self else { return }
-                                                        sSelf.updateVideoPlayerState()
+                guard let sSelf = self else { return }
+                sSelf.updateVideoPlayerState()
         })
-
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerDidFinishPlaying(_:)),
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
@@ -167,7 +184,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private func changeIconPlayPauseButton() {
         guard let player = player else { return }
         playPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
-        bigPlayPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "play"), for: .normal)
+        bigPlayPauseButton.setImage(UIImage(named: player.isPlaying ? "pause" : "bigPlay"), for: .normal)
     }
 
     private func updateVideoPlayerState() {
@@ -211,11 +228,12 @@ class MediaPreview: UIView, FilePreviewProtocol {
         bigPlayPauseButton.tintColor = currentTheme.surfaceColor
         progressSlider.tintColor = currentTheme.primaryColor
         progressSlider.thumbTintColor = currentTheme.primaryVariantColor
+        audioImageView.tintColor = currentTheme.onSurfaceColor
     }
 
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
-        playerLayer?.frame = videoPlayerView.bounds
+        playerLayer?.frame = frame
     }
 
     func cancel() {

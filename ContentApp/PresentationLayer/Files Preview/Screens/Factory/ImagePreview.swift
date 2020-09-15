@@ -25,6 +25,7 @@ import SVGKit
 public typealias ImagePreviewHandler = (_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void
 
 class ImagePreview: UIView, FilePreviewProtocol {
+    weak var delegate: FilePreviewDelegate?
     private var zoomImageView: ZoomImageView?
     private var imageRequest: ImageRequest?
     private var imagePreviewHandler: ImagePreviewHandler?

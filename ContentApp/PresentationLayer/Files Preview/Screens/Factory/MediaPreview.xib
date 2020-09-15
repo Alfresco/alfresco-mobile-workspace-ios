@@ -23,7 +23,7 @@
                     </connections>
                 </view>
                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbail-audio" translatesAutoresizingMaskIntoConstraints="NO" id="BhC-7B-chu">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <rect key="frame" x="100" y="44" width="214" height="818"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBb-jW-jVI">
                     <rect key="frame" x="20" y="778" width="374" height="44"/>
@@ -87,7 +87,7 @@
                         <constraint firstAttribute="height" constant="50" id="aei-5s-hFU"/>
                         <constraint firstAttribute="width" constant="50" id="knH-E3-0cH"/>
                     </constraints>
-                    <state key="normal" image="play"/>
+                    <state key="normal" image="bigPlay"/>
                     <connections>
                         <action selector="playPauseTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="kIf-ND-jn9"/>
                     </connections>
@@ -97,11 +97,11 @@
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="KUS-L8-7iW" secondAttribute="bottom" id="4lm-va-gcH"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="BhC-7B-chu" secondAttribute="bottom" id="5pj-7b-W5h"/>
-                <constraint firstItem="BhC-7B-chu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="6Gj-Wp-FXi"/>
+                <constraint firstItem="BhC-7B-chu" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="100" id="6Gj-Wp-FXi"/>
                 <constraint firstItem="KUS-L8-7iW" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="8d0-oZ-OQR"/>
                 <constraint firstItem="TVg-ly-IFj" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="EqC-8R-Mtj"/>
                 <constraint firstItem="TVg-ly-IFj" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Gml-ii-BWk"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BhC-7B-chu" secondAttribute="trailing" id="L2s-nD-hF3"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="BhC-7B-chu" secondAttribute="trailing" constant="100" id="L2s-nD-hF3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bBb-jW-jVI" secondAttribute="trailing" constant="20" id="VwL-CV-rt8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="KUS-L8-7iW" secondAttribute="trailing" id="ZHA-Jn-Kuz"/>
                 <constraint firstItem="BhC-7B-chu" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="i6f-1U-vB6"/>
@@ -129,6 +129,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="bigPlay" width="80" height="80"/>
         <image name="play" width="512" height="512"/>
         <image name="thumbail-audio" width="1213" height="1577"/>
     </resources>
