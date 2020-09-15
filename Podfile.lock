@@ -11,6 +11,9 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - CocoaLumberjack (3.6.2):
+    - CocoaLumberjack/Core (= 3.6.2)
+  - CocoaLumberjack/Core (3.6.2)
   - Firebase/Analytics (6.30.0):
     - Firebase/Core
   - Firebase/Core (6.30.0):
@@ -320,6 +323,8 @@ PODS:
   - nanopb/encode (1.30905.0)
   - Nuke (9.1.1)
   - PromisesObjC (1.2.10)
+  - SVGKit (2.1.1):
+    - CocoaLumberjack (~> 3.0)
   - SwiftLint (0.39.2)
 
 DEPENDENCIES:
@@ -348,6 +353,7 @@ DEPENDENCIES:
   - "MaterialComponents/TextControls+OutlinedTextFields"
   - "MaterialComponents/TextControls+OutlinedTextFieldsTheming"
   - Nuke
+  - SVGKit
   - SwiftLint
 
 SPEC REPOS:
@@ -358,6 +364,7 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AppAuth
+    - CocoaLumberjack
     - Firebase
     - FirebaseAnalytics
     - FirebaseCore
@@ -377,6 +384,7 @@ SPEC REPOS:
     - nanopb
     - Nuke
     - PromisesObjC
+    - SVGKit
     - SwiftLint
 
 SPEC CHECKSUMS:
@@ -385,6 +393,7 @@ SPEC CHECKSUMS:
   AlfrescoContent: 66440ac315c6bbe08d02fa66d9990fd3d0d4f9e3
   AlfrescoCore: b8dfdbc7ab2a0cdee95cf397cf999a0ef006864c
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
   Firebase: 210f41ca352067d83b1ba4fd2e7fb49a0c017397
   FirebaseAnalytics: a299a86ef70fcc6aa011418bc65a7e101fb9636c
   FirebaseCore: 9a41e2de78fef10f63cee30ab10e2945266bc1fc
@@ -404,8 +413,9 @@ SPEC CHECKSUMS:
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   Nuke: af4301b154d3afd8a3b045a5194a9a773a00b7a8
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
+  SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
 
-PODFILE CHECKSUM: 2ae768402810b816f7178c253b4ccac34a0123e4
+PODFILE CHECKSUM: a5c3463b68626fca52f5872129c24924e7f115d1
 
 COCOAPODS: 1.9.3
