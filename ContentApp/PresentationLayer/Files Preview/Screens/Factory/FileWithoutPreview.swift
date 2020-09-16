@@ -24,9 +24,12 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Init
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+
+    init() {
+        super.init(frame: CGRect(origin: .zero, size: .zero))
         self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
 
@@ -42,10 +45,6 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
             label.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
             label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
         ])
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
 
     // MARK: - FilePreviewProtocol

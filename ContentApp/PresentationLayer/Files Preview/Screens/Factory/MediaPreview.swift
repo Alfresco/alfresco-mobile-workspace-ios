@@ -39,6 +39,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var timeObserver: Any?
     private var url: URL?
     private var animationFade: TimeInterval = 1.0
+
     private var finishPlaying: Bool = false
     private var sliderIsMoving: Bool = false
     private var isFullScreen: Bool = false {
@@ -51,6 +52,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
     private var isAudioFile: Bool = false {
         didSet {
+            audioImageView.isHidden = !isAudioFile
             if isAudioFile {
                 actionsView.isHidden = false
                 actionsView.alpha = 1.0
@@ -61,6 +63,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     override func awakeFromNib() {
+        translatesAutoresizingMaskIntoConstraints = false
         actionsView.isHidden = true
         progressSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
@@ -131,20 +134,16 @@ class MediaPreview: UIView, FilePreviewProtocol {
         self.url = url
         self.isAudioFile = isAudioFile
 
-        audioImageView.isHidden = !isAudioFile
-
-        player = AVPlayer(url: url)
+        let player = AVPlayer(url: url)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.frame = frame
-        playerLayer.videoGravity = .resizeAspect
-        playerLayer.contentsGravity = .center
-        self.playerLayer = playerLayer
-
-        videoPlayerView.layer.frame = frame
         videoPlayerView.layer.addSublayer(playerLayer)
 
-        let interval = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
-        timeObserver = player?.addPeriodicTimeObserver(forInterval: interval,
+        self.playerLayer = playerLayer
+        self.player = player
+
+        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01,
+                                                                          preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
                                                        queue: .main,
                                                        using: { [weak self] _ in
                 guard let sSelf = self else { return }
@@ -153,8 +152,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(playerDidFinishPlaying(_:)),
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
-                                               object: player?.currentItem)
-        player?.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions(rawValue: 0), context: nil)
+                                               object: player.currentItem)
+        player.addObserver(self, forKeyPath: "rate", options: NSKeyValueObservingOptions(rawValue: 0), context: nil)
     }
 
     // MARK: - Private Helpers

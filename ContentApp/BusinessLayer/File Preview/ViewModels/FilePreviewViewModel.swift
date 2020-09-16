@@ -23,6 +23,7 @@ import AlfrescoContent
 protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
     func display(doneRequesting: Bool, error: Error?)
+    func calculateViewForFullscreen()
 }
 
 class FilePreviewViewModel {
@@ -40,6 +41,9 @@ class FilePreviewViewModel {
         let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
         accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
             guard let sSelf = self, let urlPreview = sSelf.getURLPreview(with: ticket), let size = size else { return }
+            if filePreviewType == .video {
+                sSelf.viewModelDelegate?.calculateViewForFullscreen()
+            }
             let preview = FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (done, error) in
                 if error != nil {
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
