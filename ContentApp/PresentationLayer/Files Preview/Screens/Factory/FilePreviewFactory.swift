@@ -24,7 +24,7 @@ class FilePreviewFactory {
                            completion: ((_ done: Bool, _ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
         guard let url = url else {
             completion?(true, nil)
-            return getNoPreview(size: size)
+            return FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
         }
         switch previewType {
         case .image, .svg, .gif:
@@ -49,18 +49,10 @@ class FilePreviewFactory {
                 return mediaPreview
             }
             completion?(true, nil)
-            return getNoPreview(size: size)
+            return FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
         default:
             completion?(true, nil)
-            return getNoPreview(size: size)
+            return FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
         }
-    }
-
-    private static func getNoPreview(size: CGSize) -> FilePreviewProtocol {
-        let fileWithoutPreview = FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
-        if let themingService = ApplicationBootstrap.shared().serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
-            fileWithoutPreview.applyComponentsThemes(themingService: themingService)
-        }
-        return fileWithoutPreview
     }
 }

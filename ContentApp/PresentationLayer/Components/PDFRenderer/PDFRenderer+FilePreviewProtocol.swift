@@ -19,16 +19,4 @@
 import UIKit
 
 extension PDFRenderer: FilePreviewProtocol {
-    var delegate: FilePreviewDelegate? {
-        get {
-            return nil
-        }
-        set {
-            delegate = nil
-        }
-    }
-
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) { }
-    func recalculateFrame(from size: CGSize) { }
-    func cancel() { }
 }

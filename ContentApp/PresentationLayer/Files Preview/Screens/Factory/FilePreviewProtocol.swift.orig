@@ -26,18 +26,13 @@ protocol FilePreviewProtocol: UIView {
     func cancel()
 }
 
+<<<<<<< HEAD
 protocol FilePreviewDelegate: class {
     func applyFullScreen(_ enable: Bool)
-}
-
+=======
 extension FilePreviewProtocol {
-    var delegate: FilePreviewDelegate? {
-        get {
-            return delegate
-        }
-        set { }
-    }
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {}
     func recalculateFrame(from size: CGSize) {}
     func cancel() {}
+>>>>>>> MOBILEAPPS-512
 }

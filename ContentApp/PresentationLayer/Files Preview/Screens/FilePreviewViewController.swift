@@ -23,11 +23,11 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var preview: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
 
-    var filePreviewViewModel: PreviewFileViewModel?
+    var filePreviewViewModel: FilePreviewViewModel?
     var fullScreen = false
     var filePreview: FilePreviewProtocol? {
         didSet {
-            appDelegate?.restrictRotation = .all
+            appDelegate?.allowedOrientation = .all
         }
     }
 
@@ -60,7 +60,7 @@ class FilePreviewViewController: SystemThemableViewController {
         super.viewWillDisappear(animated)
         self.tabBarController?.tabBar.isHidden = false
 
-        appDelegate?.restrictRotation = .portrait
+        appDelegate?.allowedOrientation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
@@ -99,7 +99,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
 // MARK: - PreviewFile ViewModel Delegate
 
-extension FilePreviewViewController: PreviewFileViewModelDelegate {
+extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func display(view: FilePreviewProtocol) {
         guard let themingService = self.themingService else { return }
@@ -116,11 +116,7 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         ])
     }
 
-    func display(error: Error) {
-        stopLoading()
-    }
-
-    func display(doneRequesting: Bool) {
+    func display(doneRequesting: Bool, error: Error?) {
         if doneRequesting {
             stopLoading()
         }
