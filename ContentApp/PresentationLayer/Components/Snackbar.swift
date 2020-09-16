@@ -46,11 +46,11 @@ class Snackbar {
     func applyTheme(theme: PresentationTheme?) {
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = theme?.errorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.primaryColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = theme?.primaryColor
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorOnColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = theme?.errorOnColor
         }
     }
 
@@ -62,7 +62,7 @@ class Snackbar {
                 }
             }
         }
-        MDCSnackbarManager.show(snackBar)
+        MDCSnackbarManager.default.show(snackBar)
     }
 
     func hideButton(_ hidden: Bool) {
@@ -71,11 +71,11 @@ class Snackbar {
     }
 
     func dismiss() {
-        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
+        MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
     }
 
     class func dimissAll() {
-         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: nil)
+        MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: nil)
     }
 
     // MARK: - Private methods

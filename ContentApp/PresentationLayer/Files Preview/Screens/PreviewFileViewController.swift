@@ -57,10 +57,6 @@ class FilePreviewViewController: SystemThemableViewController {
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Private Helpers
 
     private func startLoading() {

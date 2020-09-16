@@ -36,10 +36,6 @@ class FilePreviewViewController: SystemThemableViewController {
     private var filePreviewPasswordDialog: MDCAlertController?
     private var filePreviewPasswordField: MDCOutlinedTextField?
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -145,14 +141,17 @@ extension FilePreviewViewController: PreviewFileViewModelDelegate {
         let passwordField = MDCOutlinedTextField()
         passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
         passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
-        passwordField.isSecureTextEntry = true
+        passwordField.isSecureTextEntry = false
+        passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
         applyTheme(for: passwordField)
+        passwordField.isSecureTextEntry = true
         filePreviewPasswordField = passwordField
 
         let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
         let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
 
         let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
+        alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
         let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
