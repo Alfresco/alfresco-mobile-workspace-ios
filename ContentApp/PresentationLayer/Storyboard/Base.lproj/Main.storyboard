@@ -1055,14 +1055,14 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Q-0N-hv3">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
-                            <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" constant="-44" id="O19-eL-B9B"/>
+                            <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="O19-eL-B9B"/>
                             <constraint firstItem="Nm8-k5-tkg" firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="P4Q-uf-vVr"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="Nm8-k5-tkg" secondAttribute="leading" id="W6J-Ue-6kc"/>
                             <constraint firstItem="Nm8-k5-tkg" firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="XQL-cq-uKo"/>
@@ -1079,6 +1079,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fRJ-WK-LdC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1211.5942028985507" y="3192.8571428571427"/>
+        </scene>
+        <!--Demo Preview Image View Controller-->
+        <scene sceneID="J8a-dh-tXl">
+            <objects>
+                <viewController storyboardIdentifier="DemoPreviewImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="v89-9c-Vu6" customClass="DemoPreviewImageViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="awO-3b-0KG">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="lU7-tX-IOy"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nl4-jn-AEb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2187" y="3292"/>
         </scene>
         <!--Tab Bar Main View Controller-->
         <scene sceneID="da4-wW-oHr">
