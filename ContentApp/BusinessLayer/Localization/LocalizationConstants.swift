@@ -126,4 +126,8 @@ struct LocalizationConstants {
         static let shared = NSLocalizedString("browse-shared", comment: "")
         static let trash = NSLocalizedString("browse-trash", comment: "")
     }
+
+    struct FilePreview {
+        static let noPreview = NSLocalizedString("noPreview", comment: "")
+    }
 }

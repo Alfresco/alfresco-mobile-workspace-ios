@@ -3,33 +3,42 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '12.0'
 use_frameworks!
+inhibit_all_warnings!
 
 target 'ContentApp' do
-  pod 'AlfrescoAuth', :inhibit_warnings => true
-  pod 'AlfrescoContent', :inhibit_warnings => true
-  pod 'SwiftLint', :inhibit_warnings => true
-  pod 'JWTDecode', :inhibit_warnings => true
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
+  pod 'SwiftLint'
+  pod 'JWTDecode'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
+  pod 'Nuke'
+  pod 'Gifu'
+  pod 'SVGKit'
+
+  # Alfresco iOS Swift API
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
 
   # Material Components
-#  pod 'MaterialComponents'
-  pod 'MaterialComponents/Buttons', :inhibit_warnings => true
-  pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+OutlinedTextFields', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming', :inhibit_warnings => true
-  pod 'MaterialComponents/BottomSheet', :inhibit_warnings => true
-  pod 'MaterialComponents/ActivityIndicator', :inhibit_warnings => true
-  pod 'MaterialComponents/Snackbar', :inhibit_warnings => true
-  pod 'MaterialComponents/Dialogs', :inhibit_warnings => true
-  pod 'MaterialComponents/BottomNavigation', :inhibit_warnings => true
-  pod 'MaterialComponents/BottomNavigation+Theming', :inhibit_warnings => true
-  pod 'MaterialComponents/Chips', :inhibit_warnings => true
-  pod 'MaterialComponents/Chips+Theming', :inhibit_warnings => true
-  pod 'MaterialComponents/Tabs', :inhibit_warnings => true
-  pod 'MaterialComponents/ProgressView', :inhibit_warnings => true
-  pod 'MaterialComponents/Tabs+TypographyThemer', :inhibit_warnings => true
-  pod 'MaterialComponents/Tabs+Theming', :inhibit_warnings => true
+  pod 'MaterialComponents/Buttons'
+  pod 'MaterialComponents/Buttons+Theming'
+  pod 'MaterialComponents/TextControls+FilledTextFields'
+  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming'
+  pod 'MaterialComponents/TextControls+OutlinedTextFields'
+  pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming'
+  pod 'MaterialComponents/BottomSheet'
+  pod 'MaterialComponents/ActivityIndicator'
+  pod 'MaterialComponents/Snackbar'
+  pod 'MaterialComponents/Dialogs'
+  pod 'MaterialComponents/BottomNavigation'
+  pod 'MaterialComponents/BottomNavigation+Theming'
+  pod 'MaterialComponents/Chips'
+  pod 'MaterialComponents/Chips+Theming'
+  pod 'MaterialComponents/Tabs'
+  pod 'MaterialComponents/ProgressView'
+  pod 'MaterialComponents/Tabs+TypographyThemer'
+  pod 'MaterialComponents/Tabs+Theming'
 
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -18,10 +18,10 @@
 
 import UIKit
 
-class PreviewFileScreenCoordinator: Coordinator {
+class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listNode: ListNode
-    private var previewViewController: PreviewFileViewController?
+    private var previewViewController: FilePreviewViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -36,12 +36,12 @@ class PreviewFileScreenCoordinator: Coordinator {
 
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let previewFileViewModel = PreviewFileViewModel(node: sSelf.listNode, with: accountService)
-            let viewController = PreviewFileViewController.instantiateViewController()
+            let filePreviewViewModel = FilePreviewViewModel(node: sSelf.listNode, with: accountService)
+            let viewController = FilePreviewViewController.instantiateViewController()
 
-            previewFileViewModel.viewModelDelegate = viewController
+            filePreviewViewModel.viewModelDelegate = viewController
             viewController.themingService = themingService
-            viewController.previewFileViewModel = previewFileViewModel
+            viewController.filePreviewViewModel = filePreviewViewModel
             viewController.title = sSelf.listNode.title
             sSelf.previewViewController = viewController
             return viewController
