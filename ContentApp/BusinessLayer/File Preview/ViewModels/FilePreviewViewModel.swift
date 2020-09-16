@@ -20,17 +20,16 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-protocol PreviewFileViewModelDelegate: class {
+protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
-    func display(error: Error)
-    func display(doneRequesting: Bool)
+    func display(doneRequesting: Bool, error: Error?)
 }
 
-class PreviewFileViewModel {
+class FilePreviewViewModel {
     var node: ListNode
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
-    weak var viewModelDelegate: PreviewFileViewModelDelegate?
+    weak var viewModelDelegate: FilePreviewViewModelDelegate?
 
     init(node: ListNode, with accountService: AccountService?) {
         self.node = node
@@ -42,12 +41,11 @@ class PreviewFileViewModel {
         accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
             guard let sSelf = self, let urlPreview = sSelf.getURLPreview(with: ticket), let size = size else { return }
             let preview = FilePreviewFactory.getPreview(for: filePreviewType, and: urlPreview, on: size) { (done, error) in
-                if let error = error {
-                    sSelf.viewModelDelegate?.display(error: error)
+                if error != nil {
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                     sSelf.viewModelDelegate?.display(view: noPreview)
                 }
-                sSelf.viewModelDelegate?.display(doneRequesting: done)
+                sSelf.viewModelDelegate?.display(doneRequesting: done, error: error)
             }
             sSelf.viewModelDelegate?.display(view: preview)
         })

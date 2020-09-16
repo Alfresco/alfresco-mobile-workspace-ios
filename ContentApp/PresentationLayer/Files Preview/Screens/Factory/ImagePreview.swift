@@ -35,7 +35,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var svgImageView: SVGKImage?
     private var svgImageSize: CGSize?
 
-    private var isRendaring: Bool = false
+    private var isRendering: Bool = false
 
     // MARK: - Init
 
@@ -54,8 +54,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         self.zoomImageView = zoomImageView
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 
     // MARK: - Public Utils
@@ -96,7 +96,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView,
             let imageRequest = self.imageRequest,
             let handler = imagePreviewHandler else { return }
-        isRendaring = true
+        isRendering = true
 
         var options = ImageLoadingOptions()
         options.pipeline = ImagePipeline {
@@ -111,7 +111,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
-            sSelf.isRendaring = false
+            sSelf.isRendering = false
             switch result {
             case .failure(let error):
                 handler(nil, 0, 0, error)
@@ -203,7 +203,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         frame = CGRect(origin: .zero, size: size)
         zoomImageView?.frame = frame
         gifImageView?.frame = frame
-        if isRendaring {
+        if isRendering {
             zoomImageView?.zoomView?.frame = frame
         }
         if svgImageView != nil {

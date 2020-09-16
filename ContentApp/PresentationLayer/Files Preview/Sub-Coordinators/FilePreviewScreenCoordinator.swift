@@ -36,7 +36,7 @@ class FilePreviewScreenCoordinator: Coordinator {
 
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let filePreviewViewModel = PreviewFileViewModel(node: sSelf.listNode, with: accountService)
+            let filePreviewViewModel = FilePreviewViewModel(node: sSelf.listNode, with: accountService)
             let viewController = FilePreviewViewController.instantiateViewController()
 
             filePreviewViewModel.viewModelDelegate = viewController
