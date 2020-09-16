@@ -199,9 +199,6 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-    }
-
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         zoomImageView?.frame = frame

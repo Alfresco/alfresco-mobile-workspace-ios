@@ -29,13 +29,13 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
         self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
+
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = LocalizationConstants.FilePreview.noPreview
         label.sizeToFit()
         noPreviewLabel = label
-
         addSubview(label)
 
         NSLayoutConstraint.activate([
@@ -54,13 +54,5 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         if let currentTheme = themingService.activeTheme {
             noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
         }
-    }
-
-    func recalculateFrame(from size: CGSize) {
-        frame = CGRect(origin: .zero, size: size)
-        noPreviewLabel?.center = center
-    }
-
-    func cancel() {
     }
 }

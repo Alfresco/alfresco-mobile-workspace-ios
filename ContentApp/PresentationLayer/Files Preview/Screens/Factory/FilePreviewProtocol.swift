@@ -24,3 +24,9 @@ protocol FilePreviewProtocol: UIView {
     func recalculateFrame(from size: CGSize)
     func cancel()
 }
+
+extension FilePreviewProtocol {
+    func applyComponentsThemes(themingService: MaterialDesignThemingService) {}
+    func recalculateFrame(from size: CGSize) {}
+    func cancel() {}
+}
