@@ -38,7 +38,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var totalTimeMinutesLabel: UILabel!
     @IBOutlet weak var totalTimeSecondsLabel: UILabel!
     @IBOutlet weak var totalTimeClockLabel: UILabel!
-    
+
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var timeObserver: Any?

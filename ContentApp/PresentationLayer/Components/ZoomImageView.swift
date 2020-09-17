@@ -101,10 +101,6 @@ open class ZoomImageView: UIScrollView {
         imageView.isUserInteractionEnabled = true
         addSubview(imageView)
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
-
         zoomView = imageView
         setMaxMinZoomScalesForCurrentBounds()
         configureImageForSize(imageView.bounds.size)
@@ -186,10 +182,6 @@ open class ZoomImageView: UIScrollView {
         addSubview(imageView)
         zoomView = imageView
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
-
         configureImageForSize(image.size)
     }
 
@@ -202,10 +194,6 @@ open class ZoomImageView: UIScrollView {
         imageView.isUserInteractionEnabled = true
         addSubview(imageView)
         zoomView = imageView
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
 
         configureImageForSize(image.bounds.size)
     }
@@ -261,7 +249,7 @@ open class ZoomImageView: UIScrollView {
 
     // MARK: - Gesture
 
-    @objc func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+    func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         if zoomScale >= maximumZoomScale / 2.0 {
             setZoomScale(minimumZoomScale, animated: true)
         } else {

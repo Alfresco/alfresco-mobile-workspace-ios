@@ -34,8 +34,6 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        activateContraintsToSuperview()
-
         progressView.progress = 0
         progressView.mode = .indeterminate
         view.bringSubviewToFront(progressView)
@@ -94,6 +92,7 @@ class FilePreviewViewController: SystemThemableViewController {
         NSLayoutConstraint.deactivate(previewContraintsToSafeArea)
         NSLayoutConstraint.activate(previewContraintsToSuperview)
         view.layoutIfNeeded()
+        containerFilePreview.layoutIfNeeded()
     }
 
     private func startLoading() {
