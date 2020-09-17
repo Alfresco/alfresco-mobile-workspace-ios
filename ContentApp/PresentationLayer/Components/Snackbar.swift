@@ -39,18 +39,22 @@ class Snackbar {
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses
         self.addButton()
+        self.applyTheme(theme: nil)
     }
 
     // MARK: - Public methods
 
     func applyTheme(theme: PresentationTheme?) {
+        let serviceRepository = ApplicationBootstrap.shared().serviceRepository
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let currentTheme = themingService?.activeTheme
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = currentTheme?.errorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.primaryColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = currentTheme?.primaryColor
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorOnColor
+            MDCSnackbarManager.snackbarMessageViewBackgroundColor = currentTheme?.errorOnColor
         }
     }
 

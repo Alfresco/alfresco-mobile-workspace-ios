@@ -77,6 +77,7 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
 
+        Snackbar.dimissAll()
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -158,8 +159,9 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
 extension FilePreviewViewController: FilePreviewDelegate {
     func applyFullScreen(_ enable: Bool) {
-        navigationController?.setNavigationBarHidden(enable, animated: true)
         isFullScreen = enable
+        containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
+        navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
         setNeedsStatusBarAppearanceUpdate()
     }
 }

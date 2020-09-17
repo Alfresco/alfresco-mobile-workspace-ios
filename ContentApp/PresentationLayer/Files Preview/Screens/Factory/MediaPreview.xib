@@ -42,7 +42,7 @@
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="eL1-58-t8M">
                             <rect key="frame" x="115" y="7" width="190" height="31"/>
                         </slider>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sp9-AM-XwY">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sp9-AM-XwY">
                             <rect key="frame" x="54" y="11.5" width="55" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="55" id="JxX-kk-fdj"/>
@@ -51,7 +51,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dug-ZM-sdT">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dug-ZM-sdT">
                             <rect key="frame" x="311" y="12" width="55" height="20.5"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="55" id="Qx2-qk-RLS"/>
@@ -118,13 +118,14 @@
                 <outlet property="playPauseButton" destination="vb7-0h-3My" id="6OQ-cm-zPA"/>
                 <outlet property="progressSlider" destination="eL1-58-t8M" id="KoU-9L-5eF"/>
                 <outlet property="totalTimeLabel" destination="dug-ZM-sdT" id="hZW-yD-fe1"/>
+                <outlet property="videoPlayerTapGesture" destination="muY-ee-MGQ" id="XpV-DQ-qnZ"/>
                 <outlet property="videoPlayerView" destination="KUS-L8-7iW" id="UiO-yo-Ztb"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="116.51785714285714"/>
         </view>
         <tapGestureRecognizer id="muY-ee-MGQ">
             <connections>
-                <action selector="videoPlayerTapGesture:" destination="iN0-l3-epB" id="aWS-eT-8Et"/>
+                <action selector="videoPlayerTapped:" destination="iN0-l3-epB" id="aWS-eT-8Et"/>
             </connections>
         </tapGestureRecognizer>
     </objects>

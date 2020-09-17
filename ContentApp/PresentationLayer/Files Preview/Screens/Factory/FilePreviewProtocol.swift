@@ -35,7 +35,9 @@ extension FilePreviewProtocol {
         get {
             return delegate
         }
-        set { }
+        set {
+            delegate = newValue
+        }
     }
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {}
     func recalculateFrame(from size: CGSize) {}

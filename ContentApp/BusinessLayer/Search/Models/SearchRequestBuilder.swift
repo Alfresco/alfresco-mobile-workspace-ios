@@ -145,11 +145,12 @@ struct SearchRequestBuilder {
                                            field: "cm:modified",
                                            ascending: false)]
     }
-
+    // swiftlint:disable line_length
     private static func recentRequestFilter() -> [RequestFilterQueriesInner] {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         return [RequestFilterQueriesInner(query: "cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]", tags: nil),
                 RequestFilterQueriesInner(query: "cm:modifier:\(identifier) OR cm:creator:\(identifier)", tags: nil),
                 RequestFilterQueriesInner(query: "TYPE:\"content\" AND -PNAME:\"0/wiki\" AND -TYPE:\"app:filelink\" AND -TYPE:\"cm:thumbnail\" AND -TYPE:\"cm:failedThumbnail\" AND -TYPE:\"cm:rating\" AND -TYPE:\"dl:dataList\" AND -TYPE:\"dl:todoList\" AND -TYPE:\"dl:issue\" AND -TYPE:\"dl:contact\" AND -TYPE:\"dl:eventAgenda\" AND -TYPE:\"dl:event\" AND -TYPE:\"dl:task\" AND -TYPE:\"dl:simpletask\" AND -TYPE:\"dl:meetingAgenda\" AND -TYPE:\"dl:location\" AND -TYPE:\"fm:topic\" AND -TYPE:\"fm:post\" AND -TYPE:\"ia:calendarEvent\" AND -TYPE:\"lnk:link\"", tags: nil)]
     }
+    // swiftlint:enable line_length
 }
