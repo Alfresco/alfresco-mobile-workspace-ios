@@ -32,9 +32,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var bigPlayPauseButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
-    @IBOutlet weak var currentTimeLabel: UILabel!
-    @IBOutlet weak var totalTimeLabel: UILabel!
-
+    @IBOutlet weak var currentTimeMinutesLabel: UILabel!
+    @IBOutlet weak var currentTimeSecondsLabel: UILabel!
+    @IBOutlet weak var currentTimeClockLabel: UILabel!
+    @IBOutlet weak var totalTimeMinutesLabel: UILabel!
+    @IBOutlet weak var totalTimeSecondsLabel: UILabel!
+    @IBOutlet weak var totalTimeClockLabel: UILabel!
+    
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
     private var timeObserver: Any?
@@ -125,8 +129,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
             case .moved:
                 guard let currentItem = player?.currentItem else { return }
                 let currentTimeInSeconds = currentItem.duration.seconds * Double(progressSlider.value)
-                currentTimeLabel.text = timeFormatter(from: currentTimeInSeconds)
-                totalTimeLabel.text = timeFormatter(from: currentTimeInSeconds - currentItem.duration.seconds)
+                updateCurrentTime(from: timeFormatter(from: currentTimeInSeconds))
+                updateTotalTime(from: timeFormatter(from: currentTimeInSeconds - currentItem.duration.seconds))
             case .ended:
                 playbackSliderValueChanged(slider)
                 sliderIsMoving = false
@@ -167,7 +171,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             guard let sSelf = self else { return }
             switch playerItem.status {
             case .readyToPlay:
-                sSelf.totalTimeLabel.text = sSelf.timeFormatter(from: playerItem.duration.seconds)
+                sSelf.updateTotalTime(from: sSelf.timeFormatter(from: playerItem.duration.seconds))
             case .failed:
                 sSelf.showError(playerItem.error)
             default: break
@@ -210,8 +214,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = currentItem.error {
             showError(error)
         }
-        currentTimeLabel.text = timeFormatter(from: currentTime.seconds)
-        totalTimeLabel.text = timeFormatter(from: currentTime.seconds - currentItem.duration.seconds)
+        updateCurrentTime(from: timeFormatter(from: currentTime.seconds))
+        updateTotalTime(from: timeFormatter(from: currentTime.seconds - currentItem.duration.seconds))
 
         if !self.sliderIsMoving {
             progressSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
@@ -220,6 +224,22 @@ class MediaPreview: UIView, FilePreviewProtocol {
             changeIconPlayPauseButton()
             bigPlayPauseButton.alpha = 1.0
             finishPlaying = true
+        }
+    }
+
+    private func updateCurrentTime(from text: String) {
+        let array = text.split(separator: ":")
+        if array.count == 2 {
+            currentTimeMinutesLabel.text = String(array[0])
+            currentTimeSecondsLabel.text = String(array[1])
+        }
+    }
+
+    private func updateTotalTime(from text: String) {
+        let array = text.split(separator: ":")
+        if array.count == 2 {
+            totalTimeMinutesLabel.text = String(array[0])
+            totalTimeSecondsLabel.text = String(array[1])
         }
     }
 
@@ -244,10 +264,19 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {
         guard let currentTheme = themingService.activeTheme else { return }
-        totalTimeLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        totalTimeLabel.textAlignment = .center
-        currentTimeLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        currentTimeLabel.textAlignment = .center
+
+        currentTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeMinutesLabel.textAlignment = .right
+        currentTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeSecondsLabel.textAlignment = .left
+
+        totalTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeMinutesLabel.textAlignment = .right
+        totalTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeSecondsLabel.textAlignment = .left
+
         actionsView.backgroundColor = currentTheme.onSurfaceColor
         playPauseButton.tintColor = currentTheme.surfaceColor
         bigPlayPauseButton.tintColor = currentTheme.surfaceColor

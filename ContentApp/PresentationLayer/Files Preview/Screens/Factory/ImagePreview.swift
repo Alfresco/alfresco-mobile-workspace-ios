@@ -126,7 +126,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let imageRequest = self.imageRequest, let handler = imagePreviewHandler else { return }
 
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
-        task = ImagePipeline.shared.loadImage(with: imageRequest) { [weak self] result in
+        ImagePipeline.shared.loadImage(with: imageRequest, completion:  { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .success(let response):
@@ -136,7 +136,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
             case .failure(let error):
                 handler(nil, 0, 0, error)
             }
-        }
+        })
     }
 
     private func resizeSVG() -> CGSize {
@@ -155,7 +155,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let url = self.imageRequest?.urlRequest.url,
             let handler = imagePreviewHandler else { return }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
-        task = ImagePipeline.shared.loadImage(with: url) { [weak self] result in
+        ImagePipeline.shared.loadImage(with: url, completion:  { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .failure(let error):
@@ -172,7 +172,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
                 }
                 handler(nil, 0, 0, nil)
             }
-        }
+        })
     }
 
     private func display(_ container: Nuke.ImageContainer) {

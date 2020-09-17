@@ -36,7 +36,6 @@ extension FilePreviewProtocol {
             return delegate
         }
         set {
-            delegate = newValue
         }
     }
     func applyComponentsThemes(themingService: MaterialDesignThemingService) {}
