@@ -39,8 +39,8 @@ open class ZoomImageView: UIScrollView {
 
     static let kZoomInFactorFromMinWhenDoubleTap: CGFloat = 3
 
-    open var imageContentMode: ScaleMode = .widthFill
-    open var initialOffset: Offset = .begining
+    open var imageContentMode: ScaleMode = .aspectFit
+    open var initialOffset: Offset = .center
 
     public var zoomView: UIView?
 
@@ -181,6 +181,7 @@ open class ZoomImageView: UIScrollView {
 
         let imageView = UIImageView(image: image)
         imageView.isUserInteractionEnabled = true
+        imageView.contentMode = .scaleAspectFit
         imageView.image = image
         addSubview(imageView)
         zoomView = imageView
@@ -224,7 +225,7 @@ open class ZoomImageView: UIScrollView {
 
             switch imageContentMode {
             case .aspectFit:
-                contentOffset =  CGPoint.zero
+                contentOffset = CGPoint.zero
             case .aspectFill:
                 contentOffset = CGPoint(x: xOffset, y: yOffset)
             case .heightFill:
