@@ -181,6 +181,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
             imageView.frame = frame
             imageView.contentMode = .scaleAspectFit
             imageView.clipsToBounds = true
+            imageView.image = container.image
             imageView.animate(withGIFData: data)
             zoomImageView?.display(image: imageView)
             gifImageView = imageView
