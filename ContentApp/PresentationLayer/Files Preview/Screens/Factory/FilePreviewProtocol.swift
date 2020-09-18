@@ -35,7 +35,9 @@ extension FilePreviewProtocol {
         get {
             return filePreviewDelegate
         }
-        set {}
+        set {
+            filePreviewDelegate = newValue
+        }
     }
 
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}

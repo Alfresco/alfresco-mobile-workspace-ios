@@ -67,13 +67,7 @@ class FilePreviewViewModel {
             fetchRenditionURL(for: node.guid) { [weak self] url, isImageRendition in
                 guard let sSelf = self else { return }
 
-                if let renditionURL = url {
-                    sSelf.previewFile(type: (isImageRendition ? .image : .renditionPdf), at: renditionURL, with: size)
-                } else {
-                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
-                    sSelf.viewModelDelegate?.display(view: noPreview)
-                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
-                }
+                sSelf.previewFile(type: (isImageRendition ? .image : .renditionPdf), at: url, with: size)
             }
 
         } else { // Show the actual content
@@ -190,8 +184,16 @@ class FilePreviewViewModel {
         }
     }
 
-    private func previewFile(type: FilePreviewType, at url: URL, with size: CGSize) {
-        let preview = FilePreviewFactory.getPreview(for: type, and: url, on: size) { [weak self] (done, error) in
+    private func previewFile(type: FilePreviewType, at url: URL?, with size: CGSize) {
+        guard let renditionURL = url else {
+            let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+            viewModelDelegate?.display(view: noPreview)
+            viewModelDelegate?.display(doneRequesting: true, error: nil)
+
+            return
+        }
+
+        let preview = FilePreviewFactory.getPreview(for: type, and: renditionURL, on: size) { [weak self] (done, error) in
             guard let sSelf = self else { return }
 
             if let error = error {
@@ -199,7 +201,6 @@ class FilePreviewViewModel {
 
                 let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                 sSelf.viewModelDelegate?.display(view: noPreview)
-                sSelf.filePreview = noPreview
             }
 
             sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
