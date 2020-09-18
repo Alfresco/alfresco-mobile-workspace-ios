@@ -26,7 +26,7 @@ public typealias ImagePreviewHandler = (_ image: UIImage?, _ completedUnitCount:
 
 class ImagePreview: UIView, FilePreviewProtocol {
 
-    weak var delegate: FilePreviewDelegate?
+    weak var filePreviewDelegate: FilePreviewDelegate?
     private var zoomImageView: ZoomImageView?
     private var imageRequest: ImageRequest?
     private var imagePreviewHandler: ImagePreviewHandler?
@@ -42,7 +42,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var fullScreenTimer: Timer?
     private var isFullScreen: Bool = false {
         didSet {
-            delegate?.applyFullScreen(isFullScreen)
+            filePreviewDelegate?.applyFullScreen(isFullScreen)
         }
     }
 
