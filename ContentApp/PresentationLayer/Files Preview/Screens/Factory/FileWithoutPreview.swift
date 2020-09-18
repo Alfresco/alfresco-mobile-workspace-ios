@@ -24,9 +24,12 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Init
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
+    init() {
+        super.init(frame: CGRect(origin: .zero, size: .zero))
         self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
 
@@ -44,15 +47,10 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         ])
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-        if let currentTheme = themingService.activeTheme {
-            noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
-        }
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
     }
 }

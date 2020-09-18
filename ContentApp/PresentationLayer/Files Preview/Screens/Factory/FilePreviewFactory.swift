@@ -24,7 +24,7 @@ class FilePreviewFactory {
                            completion: ((_ done: Bool, _ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
         guard let url = url else {
             completion?(true, nil)
-            return getNoPreview(size: size)
+            return FileWithoutPreview()
         }
         switch previewType {
         case .image, .svg, .gif:
@@ -38,20 +38,21 @@ class FilePreviewFactory {
             }
             return imagePreview
         case .pdf, .renditionPdf:
-            let pdfRendered = PDFRenderer(with: CGRect(x: 0, y: 0, width: size.width, height: size.height), pdfURL: url)
+            let pdfRendered = PDFRenderer(with: CGRect(origin: .zero, size: size), pdfURL: url)
             completion?(true, nil)
             return pdfRendered
+        case .video, .audio:
+            if let mediaPreview: MediaPreview = .fromNib() {
+                mediaPreview.frame = CGRect(origin: .zero, size: size)
+                mediaPreview.play(from: url, isAudioFile: (previewType == .audio))
+                completion?(true, nil)
+                return mediaPreview
+            }
+            completion?(true, nil)
+            return FileWithoutPreview()
         default:
             completion?(true, nil)
-            return getNoPreview(size: size)
+            return FileWithoutPreview()
         }
-    }
-
-    private static func getNoPreview(size: CGSize) -> FilePreviewProtocol {
-        let fileWithoutPreview = FileWithoutPreview(frame: CGRect(origin: .zero, size: size))
-        if let themingService = ApplicationBootstrap.shared().serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
-            fileWithoutPreview.applyComponentsThemes(themingService: themingService)
-        }
-        return fileWithoutPreview
     }
 }

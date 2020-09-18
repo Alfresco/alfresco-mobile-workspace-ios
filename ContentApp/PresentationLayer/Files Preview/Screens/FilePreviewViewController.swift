@@ -20,15 +20,16 @@ import UIKit
 import MaterialComponents.MaterialProgressView
 
 class FilePreviewViewController: SystemThemableViewController {
-    @IBOutlet weak var preview: UIView!
+    @IBOutlet weak var containerFilePreview: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
 
+    @IBOutlet var previewContraintsToSafeArea: [NSLayoutConstraint]!
+    @IBOutlet var previewContraintsToSuperview: [NSLayoutConstraint]!
+
     var filePreviewViewModel: FilePreviewViewModel?
-    var filePreview: FilePreviewProtocol? {
-        didSet {
-            appDelegate?.allowedOrientation = .all
-        }
-    }
+    var isFullScreen = false
+    var needsContraintsForFullScreen = false
+    var filePreview: FilePreviewProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class FilePreviewViewController: SystemThemableViewController {
                                                selector: #selector(orientationChangedNotification),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        appDelegate?.allowedOrientation = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -52,24 +54,42 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        filePreviewViewModel?.requestFilePreview(with: preview.bounds.size)
+        filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
+
+        // Remove navigation bar underline separator
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        tabBarController?.tabBar.isHidden = false
 
         appDelegate?.allowedOrientation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
+
+        Snackbar.dimissAll()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
+    override var prefersStatusBarHidden: Bool {
+        return isFullScreen
     }
 
     // MARK: - Private Helpers
+
+    private func activateContraintsToSuperview() {
+        NSLayoutConstraint.deactivate(previewContraintsToSafeArea)
+        NSLayoutConstraint.activate(previewContraintsToSuperview)
+        view.layoutIfNeeded()
+        containerFilePreview.layoutIfNeeded()
+    }
 
     private func startLoading() {
         progressView.startAnimating()
@@ -82,13 +102,20 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     @objc private func orientationChangedNotification() {
-        filePreview?.recalculateFrame(from: preview.bounds.size)
+        if needsContraintsForFullScreen {
+            activateContraintsToSuperview()
+        }
+        filePreview?.recalculateFrame(from: containerFilePreview.bounds.size)
     }
 
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
-        filePreview?.applyComponentsThemes(themingService: themingService)
+        filePreview?.applyComponentsThemes(themingService.activeTheme)
+
+        navigationController?.navigationBar.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController?.navigationBar.shadowImage = nil
     }
 }
 
@@ -97,14 +124,16 @@ class FilePreviewViewController: SystemThemableViewController {
 extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func display(view: FilePreviewProtocol) {
-        preview.addSubview(view)
+        containerFilePreview.addSubview(view)
         filePreview = view
+        filePreview?.delegate = self
+        filePreview?.applyComponentsThemes(themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.preview.topAnchor, constant: 0),
-            view.leftAnchor.constraint(equalTo: self.preview.leftAnchor, constant: 0),
-            view.rightAnchor.constraint(equalTo: self.preview.rightAnchor, constant: 0),
-            view.bottomAnchor.constraint(equalTo: self.preview.bottomAnchor, constant: 0)
+            view.topAnchor.constraint(equalTo: containerFilePreview.topAnchor, constant: 0),
+            view.leftAnchor.constraint(equalTo: containerFilePreview.leftAnchor, constant: 0),
+            view.rightAnchor.constraint(equalTo: containerFilePreview.rightAnchor, constant: 0),
+            view.bottomAnchor.constraint(equalTo: containerFilePreview.bottomAnchor, constant: 0)
         ])
     }
 
@@ -112,6 +141,22 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         if doneRequesting {
             stopLoading()
         }
+    }
+
+    func calculateViewForFullscreen() {
+        needsContraintsForFullScreen = true
+        activateContraintsToSuperview()
+    }
+}
+
+// MARK: - FilePreview Delegate
+
+extension FilePreviewViewController: FilePreviewDelegate {
+    func applyFullScreen(_ enable: Bool) {
+        isFullScreen = enable
+        containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
+        navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 

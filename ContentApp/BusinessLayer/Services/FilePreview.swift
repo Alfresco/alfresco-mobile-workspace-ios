@@ -31,6 +31,7 @@ enum FilePreviewType {
     case noPreview
 }
 
+// swiftlint:disable type_body_length
 class FilePreview {
     static private var map: [String: FilePreviewType] {
         return [
@@ -230,9 +231,11 @@ class FilePreview {
             "video/x-msvideo": .video,
             "video/x-rad-screenplay": .video,
             "video/x-sgi-movie": .video,
+            "video/x-matroska": .video,
             "x-world/x-vrml": .renditionPdf
         ]
     }
+// swiftlint:enable type_body_length
 
     static func preview(mimetype: String?) -> FilePreviewType {
         guard let mimetype = mimetype else {

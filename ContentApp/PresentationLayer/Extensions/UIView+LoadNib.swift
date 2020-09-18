@@ -19,26 +19,8 @@
 import Foundation
 import UIKit
 
-protocol FilePreviewProtocol: UIView {
-    var delegate: FilePreviewDelegate? { get set }
-    func applyComponentsThemes(_ currentTheme: PresentationTheme?)
-    func recalculateFrame(from size: CGSize)
-    func cancel()
-}
-
-protocol FilePreviewDelegate: class {
-    func applyFullScreen(_ enable: Bool)
-}
-
-extension FilePreviewProtocol {
-    var delegate: FilePreviewDelegate? {
-        get {
-            return delegate
-        }
-        set {
-        }
+extension UIView {
+    class func fromNib<T: UIView>() -> T? {
+        return Bundle(for: T.self).loadNibNamed(String(describing: T.self), owner: nil, options: nil)?[0] as? T
     }
-    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}
-    func recalculateFrame(from size: CGSize) {}
-    func cancel() {}
 }
