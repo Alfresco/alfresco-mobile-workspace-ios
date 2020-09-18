@@ -23,6 +23,7 @@ import AlfrescoContent
 protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
     func display(doneRequesting: Bool, error: Error?)
+    func calculateViewForFullscreen()
     func requestFileUnlock(retry: Bool)
 }
 
@@ -59,8 +60,15 @@ class FilePreviewViewModel {
     }
 
     func requestFilePreview(with size: CGSize?) {
-        guard let size = size else { return }
+        guard var size = size else { return }
         let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
+
+        switch filePreviewType {
+        case .video, .image, .gif:
+            viewModelDelegate?.calculateViewForFullscreen()
+            size = kWindow.bounds.size
+        default: break
+        }
 
         // Fetch or generate a rendition preview
         if filePreviewType == .renditionPdf {
@@ -205,8 +213,8 @@ class FilePreviewViewModel {
             sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
         }
 
-        viewModelDelegate?.display(view: preview)
         filePreview = preview
+        viewModelDelegate?.display(view: preview)
 
         // Set delegate for password requesting PDF renditions
         if let filePreview = preview as? PDFRenderer {

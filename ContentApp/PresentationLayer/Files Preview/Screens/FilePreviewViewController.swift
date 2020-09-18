@@ -163,40 +163,40 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     }
 
     func requestFileUnlock(retry: Bool) {
-            let passwordField = MDCOutlinedTextField()
-            passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
-            passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
-            passwordField.isSecureTextEntry = false
-            passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
-            applyTheme(for: passwordField)
-            passwordField.isSecureTextEntry = true
-            filePreviewPasswordField = passwordField
+        let passwordField = MDCOutlinedTextField()
+        passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
+        passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
+        passwordField.isSecureTextEntry = false
+        passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
+        applyTheme(for: passwordField)
+        passwordField.isSecureTextEntry = true
+        filePreviewPasswordField = passwordField
 
-            let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
-            let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
+        let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
+        let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
 
-            let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
-            alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
-            let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
-            }
-            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
-                guard let sSelf = self else { return }
+        let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
+        alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
+            guard let sSelf = self else { return }
 
-                alertController.dismiss(animated: true, completion: nil)
-                sSelf.filePreviewCoordinatorDelegate?.navigateBack()
-            }
-            alertController.addAction(submitAction)
-            alertController.addAction(cancelAction)
+            alertController.dismiss(animated: true, completion: nil)
+            sSelf.filePreviewCoordinatorDelegate?.navigateBack()
+        }
+        alertController.addAction(submitAction)
+        alertController.addAction(cancelAction)
 
-            alertController.accessoryView = passwordField
-            applyTheme(for: alertController)
-            filePreviewPasswordDialog = alertController
+        alertController.accessoryView = passwordField
+        applyTheme(for: alertController)
+        filePreviewPasswordDialog = alertController
 
-            present(alertController, animated: true, completion: {
-                passwordField.becomeFirstResponder()
-            })
+        present(alertController, animated: true, completion: {
+            passwordField.becomeFirstResponder()
+        })
     }
 
     func calculateViewForFullscreen() {
