@@ -307,15 +307,12 @@ limitations under the License.
   direction: ltr;
   width: 816px;
   height: 1056px;
-  margin: 4px auto 4px auto;
+  margin: 8px auto 8px auto;
   position: relative;
   overflow: visible;
-  _border: 9px solid transparent;
   background-clip: content-box;
-  _-o-border-image: url(images/shadow.png) 9 9 repeat;
-     _border-image: url(images/shadow.png) 9 9 repeat;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
   background-color: rgba(255, 255, 255, 1);
+  filter: drop-shadow(0px 0.85px 1px rgba(0, 0, 0, 0.39));
 }
 
 .pdfViewer.removePageBorders .page {
@@ -471,8 +468,7 @@ header h1 {
 }
 
 body {
-  _background: url(images/document_bg.png);
-  background-color: #EFEFEB
+  background: #f5f5f5;
   color: rgba(255, 255, 255, 1);
   font-family: sans-serif;
   font-size: 10px;
@@ -592,33 +588,46 @@ canvas {
   display: block;
 }
 
-.pdfViewer .page .loadingIcon {
-  width: 2.9rem;
-  height: 2.9rem;
-  background: url("images/spinner.png") no-repeat left top / 38rem ;
-  border: medium none;
-  animation: 1s steps(10, end) 0s normal none infinite moveDefault;
-  display: block;
-  position: absolute;
-  top: calc((100% - 2.9rem) / 2);
-  left: calc((100% - 2.9rem) / 2);
+.pdfViewer .page .loadingIcon,
+.pdfViewer .page .loadingIcon:before {
+  height: .2rem;
+  width: 100%;
+  margin: 0;
 }
 
-@keyframes moveDefault {
-  from {
-    background-position: 0 top;
-  }
+.pdfViewer .page .loadingIcon {
+  background: #F5F5F5;
+  display: -webkit-flex;
+  display: flex;
+}
 
-  to {
-    background-position: -39rem top;
-  }
+.pdfViewer .page .loadingIcon:before {
+  background: #2A7DE1;
+  content: '';
+  -webkit-animation: running-progress 2s linear infinite;
+  animation: running-progress 2s linear infinite;
+}
+
+@-webkit-keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  25% { margin-left: 0px; margin-right: 50%; }
+  50% { margin-left: 25%; margin-right: 25%; }
+  75% { margin-left: 50%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0; }
+}
+
+@keyframes running-progress {
+  0% { margin-left: 0px; margin-right: 100%; }
+  25% { margin-left: 0px; margin-right: 50%; }
+  50% { margin-left: 25%; margin-right: 25%; }
+  75% { margin-left: 50%; margin-right: 0%; }
+  100% { margin-left: 100%; margin-right: 0; }
 }
 
 #loadingBar {
   position: relative;
-  height: .6rem;
-  background-color: rgba(51, 51, 51, 1);
-  border-bottom: 1px solid rgba(51, 51, 51, 1);
+  height: .4rem;
+  background-color: #F5F5F5;
   margin-top: 0rem;
 }
 
@@ -627,7 +636,7 @@ canvas {
   left: 0;
   width: 0;
   height: 100%;
-  background-color: rgba(221, 221, 221, 1);
+  background-color: #2A7DE1;
   overflow: hidden;
   transition: width 200ms;
 }
@@ -658,6 +667,23 @@ canvas {
   animation: progressIndeterminate 2s linear infinite;
 }
 
+#pageIndicator {
+  position: absolute;
+  left: 1.4rem;
+  bottom: 6rem;
+  border-radius: 0.3rem;
+  padding: 0.6rem;
+  color: #ffffff;
+  background-color: #212328;
+  opacity: 0;
+  transition:opacity 1s ease-out;
+}
+
+#pageIndicator.fadeIn {
+  opacity: 1;
+  transition:opacity .3s ease-in;
+}
+
 #errorWrapper {
   background: none repeat scroll 0 0 rgba(255, 85, 85, 1);
   color: rgba(255, 255, 255, 1);
@@ -685,6 +711,7 @@ canvas {
   margin: 0.3rem;
   width: 98%;
 }
+
 </style>
 
     <script>/**
@@ -35102,6 +35129,8 @@ exports.PDFViewer = PDFViewer;
     <div id="viewerContainer">
       <div id="viewer" class="pdfViewer"></div>
     </div>
+
+    <div id="pageIndicator"></div>
 
     <div id="loadingBar">
       <div class="progress"></div>
@@ -96104,6 +96133,19 @@ var PDFViewerApplication = {
       self.progress(progressData.loaded / progressData.total);
     };
 
+    loadingTask.onPassword = function (callback, reason) {
+      self.onPassword = callback;
+      try {
+          if (reason == 1) {
+            webkit.messageHandlers.pdfAction.postMessage("showPasswordPrompt");
+          } else {
+            webkit.messageHandlers.pdfAction.postMessage("invalidPasswordPrompt");
+          }
+      } catch(err) {
+       console.log('The native context does not exist yet');
+     }
+    };
+
     return loadingTask.promise.then(
       function (pdfDocument) {
         // Document loaded, specifying document for the viewer.
@@ -96396,6 +96438,24 @@ var PDFViewerApplication = {
 //        phraseSearch: true,
 //        query: "earth"
 //      });
+    });
+
+    var self = this;
+    var pageIndicator = document.getElementById("pageIndicator");
+    var padeIndicatorTimeout;
+    eventBus.on("pagechanging", function (evt) {
+      const page = evt.pageNumber;
+      const total = self.pdfDocument.numPages;
+      pageIndicator.textContent = `${page} of ${total}`;
+
+      if (!pageIndicator.classList.contains('fadeIn')) {
+        pageIndicator.classList.add('fadeIn');
+      }
+
+      clearTimeout(padeIndicatorTimeout);
+      padeIndicatorTimeout = setTimeout(function() {
+        pageIndicator.classList.remove('fadeIn');
+      }, 2000);
     });
   },
 };

@@ -20,7 +20,7 @@ import Foundation
 import UIKit
 
 protocol FilePreviewProtocol: UIView {
-    var delegate: FilePreviewDelegate? { get set }
+    var filePreviewDelegate: FilePreviewDelegate? { get set }
     func applyComponentsThemes(_ currentTheme: PresentationTheme?)
     func recalculateFrame(from size: CGSize)
     func cancel()
@@ -31,13 +31,13 @@ protocol FilePreviewDelegate: class {
 }
 
 extension FilePreviewProtocol {
-    var delegate: FilePreviewDelegate? {
+    var filePreviewDelegate: FilePreviewDelegate? {
         get {
-            return delegate
+            return filePreviewDelegate
         }
-        set {
-        }
+        set {}
     }
+
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}
     func recalculateFrame(from size: CGSize) {}
     func cancel() {}

@@ -36,7 +36,8 @@ let kAPIPathMe = "-me-"
 let kAPIPathMy = "-my-"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
 let kAPIPathRelativeForSites = "documentLibrary"
-let kAPIPathGetContentNode = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
+let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
+let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
 
 // MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"

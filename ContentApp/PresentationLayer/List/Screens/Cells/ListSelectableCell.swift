@@ -19,15 +19,14 @@
 import MaterialComponents.MaterialInk
 
 class ListSelectableCell: UICollectionViewCell {
-    private var inkView: MDCInkView?
+    private var rippleView: MDCRippleView?
     private var lastTouch: CGPoint?
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        let inkView = MDCInkView(frame: bounds)
-        inkView.usesLegacyInkRipple = false
-        addSubview(inkView)
-        self.inkView = inkView
+        let rippleView = MDCRippleView(frame: bounds)
+        addSubview(rippleView)
+        self.rippleView = rippleView
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -39,23 +38,23 @@ class ListSelectableCell: UICollectionViewCell {
     }
 
     override var isHighlighted: Bool {
+        get {
+            return true
+        }
+
         set {
             super.isHighlighted = newValue
             guard let lastTouch = self.lastTouch else { return }
             if newValue {
-                inkView?.startTouchBeganAnimation(at: lastTouch, completion: nil)
+                rippleView?.beginRippleTouchDown(at: lastTouch, animated: true, completion: nil)
             } else {
-                inkView?.startTouchEndedAnimation(at: lastTouch, completion: nil)
+                rippleView?.beginRippleTouchUp(animated: true, completion: nil)
             }
-        }
-
-        get {
-            return true
         }
     }
 
     override func prepareForReuse() {
-        inkView?.cancelAllAnimations(animated: false)
+        rippleView?.cancelAllRipples(animated: false, completion: nil)
         super.prepareForReuse()
     }
 }

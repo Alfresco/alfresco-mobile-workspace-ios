@@ -220,7 +220,6 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
             applyThemingInTextField(errorTheme: true)
         }
         let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.applyThemingInTextField(errorTheme: false)
@@ -235,7 +234,6 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
     func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
         let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: nil)
     }
 }

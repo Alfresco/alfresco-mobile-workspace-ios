@@ -31,6 +31,7 @@ target 'ContentApp' do
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/Snackbar'
   pod 'MaterialComponents/Dialogs'
+  pod 'MaterialComponents/Dialogs+Theming'
   pod 'MaterialComponents/BottomNavigation'
   pod 'MaterialComponents/BottomNavigation+Theming'
   pod 'MaterialComponents/Chips'

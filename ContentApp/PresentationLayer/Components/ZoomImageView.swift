@@ -80,10 +80,6 @@ open class ZoomImageView: UIScrollView {
         initialize()
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Private Utils
 
     private func initialize() {

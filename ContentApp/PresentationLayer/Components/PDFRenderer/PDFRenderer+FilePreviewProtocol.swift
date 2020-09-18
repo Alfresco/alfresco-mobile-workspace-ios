@@ -18,5 +18,4 @@
 
 import UIKit
 
-extension PDFRenderer: FilePreviewProtocol {
-}
+extension PDFRenderer: FilePreviewProtocol {}

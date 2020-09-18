@@ -33,10 +33,6 @@ class ApplicationCoordinator: Coordinator {
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadSplashScreenCoordinator(notification:)), name: Notification.Name(kShowLoginScreenNotification), object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func start() {
         window.rootViewController = rootViewController
 

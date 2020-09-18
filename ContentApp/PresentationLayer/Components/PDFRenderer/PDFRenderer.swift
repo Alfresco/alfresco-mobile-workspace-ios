@@ -19,9 +19,15 @@
 import Foundation
 import WebKit
 
+protocol PDFRendererPasswordDelegate: class {
+    func providePDFPassword(for pdf: URL)
+    func invalidPasswordProvided(for pdf: URL)
+}
+
 class PDFRenderer: UIView {
     var webView: WKWebView?
     var pdfURL: URL?
+    weak var passwordDelegate: PDFRendererPasswordDelegate?
 
     // MARK: - Public interface
 
@@ -49,6 +55,7 @@ class PDFRenderer: UIView {
             forMainFrameOnly: true
         )
         contentController.addUserScript(userScript)
+        contentController.add(self, name: "pdfAction")
         config.userContentController = contentController
 
         webView = WKWebView(frame: frame, configuration: config)
@@ -86,6 +93,28 @@ class PDFRenderer: UIView {
             }
         } catch {
             AlfrescoLog.error(("Unexpected error while loading PDF.js library: \(error)."))
+        }
+    }
+
+    func unlockPDF(password: String) {
+        webView?.evaluateJavaScript("PDFViewerApplication.onPassword(\"\(password)\")", completionHandler: { (_, error) in
+            AlfrescoLog.error("Unexpected error while unlocking PDF document")
+        })
+    }
+}
+
+extension PDFRenderer: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "pdfAction" {
+            if (message.body as? String) == "showPasswordPrompt" {
+                if let url = pdfURL {
+                    passwordDelegate?.providePDFPassword(for: url)
+                }
+            } else if (message.body as? String) == "invalidPasswordPrompt" {
+                if let url = pdfURL {
+                    passwordDelegate?.invalidPasswordProvided(for: url)
+                }
+            }
         }
     }
 }

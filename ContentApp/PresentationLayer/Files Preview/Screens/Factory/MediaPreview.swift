@@ -22,7 +22,7 @@ import AVFoundation
 
 class MediaPreview: UIView, FilePreviewProtocol {
 
-    weak var delegate: FilePreviewDelegate?
+    weak var filePreviewDelegate: FilePreviewDelegate?
     @IBOutlet weak var videoPlayerTapGesture: UITapGestureRecognizer!
 
     @IBOutlet weak var videoPlayerView: UIView!
@@ -51,7 +51,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var isFullScreen: Bool = false {
         didSet {
             if !isAudioFile {
-                delegate?.applyFullScreen(isFullScreen)
+                filePreviewDelegate?.applyFullScreen(isFullScreen)
                 apply(fade: isFullScreen, to: actionsView)
             }
         }
