@@ -25,11 +25,6 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
 
     var filePreviewViewModel: PreviewFileViewModel?
-    var filePreview: FilePreviewProtocol? {
-        didSet {
-            appDelegate?.restrictRotation = .all
-        }
-    }
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
 
@@ -67,8 +62,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
         appDelegate?.restrictRotation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-        filePreview?.cancel()
-        filePreview?.removeFromSuperview()
+        filePreviewViewModel?.cancelOngoingOperations()
     }
 
     // MARK: - Private Helpers
@@ -84,13 +78,13 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     @objc private func orientationChangedNotification() {
-        filePreview?.recalculateFrame(from: preview.bounds.size)
+        filePreviewViewModel?.filePreview?.recalculateFrame(from: preview.bounds.size)
     }
 
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
-        filePreview?.applyComponentsThemes(themingService: themingService)
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService: themingService)
         if let passwordDialog = filePreviewPasswordDialog, let passwordField = filePreviewPasswordField {
             applyTheme(for: passwordDialog)
             applyTheme(for: passwordField)
@@ -117,7 +111,6 @@ class FilePreviewViewController: SystemThemableViewController {
 extension FilePreviewViewController: PreviewFileViewModelDelegate {
     func display(view: FilePreviewProtocol) {
         preview.addSubview(view)
-        filePreview = view
 
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: self.preview.topAnchor, constant: 0),

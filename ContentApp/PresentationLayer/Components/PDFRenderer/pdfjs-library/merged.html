@@ -307,15 +307,12 @@ limitations under the License.
   direction: ltr;
   width: 816px;
   height: 1056px;
-  margin: 4px auto 4px auto;
+  margin: 8px auto 8px auto;
   position: relative;
   overflow: visible;
-  _border: 9px solid transparent;
   background-clip: content-box;
-  _-o-border-image: url(images/shadow.png) 9 9 repeat;
-     _border-image: url(images/shadow.png) 9 9 repeat;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.4);
   background-color: rgba(255, 255, 255, 1);
+  filter: drop-shadow(0px 0.85px 1px rgba(0, 0, 0, 0.39));
 }
 
 .pdfViewer.removePageBorders .page {
@@ -471,8 +468,7 @@ header h1 {
 }
 
 body {
-  _background: url(images/document_bg.png);
-  background-color: #EFEFEB
+  background: #f5f5f5;
   color: rgba(255, 255, 255, 1);
   font-family: sans-serif;
   font-size: 10px;
@@ -600,13 +596,13 @@ canvas {
 }
 
 .pdfViewer .page .loadingIcon {
-  background-color: #F5F5F5;
+  background: #F5F5F5;
   display: -webkit-flex;
   display: flex;
 }
 
 .pdfViewer .page .loadingIcon:before {
-  background-color: #2A7DE1;
+  background: #2A7DE1;
   content: '';
   -webkit-animation: running-progress 2s linear infinite;
   animation: running-progress 2s linear infinite;
@@ -669,6 +665,23 @@ canvas {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   animation: progressIndeterminate 2s linear infinite;
+}
+
+#pageIndicator {
+  position: absolute;
+  left: 1.4rem;
+  bottom: 6rem;
+  border-radius: 0.3rem;
+  padding: 0.6rem;
+  color: #ffffff;
+  background-color: #212328;
+  opacity: 0;
+  transition:opacity 1s ease-out;
+}
+
+#pageIndicator.fadeIn {
+  opacity: 1;
+  transition:opacity .3s ease-in;
 }
 
 #errorWrapper {
@@ -35116,6 +35129,8 @@ exports.PDFViewer = PDFViewer;
     <div id="viewerContainer">
       <div id="viewer" class="pdfViewer"></div>
     </div>
+
+    <div id="pageIndicator"></div>
 
     <div id="loadingBar">
       <div class="progress"></div>
@@ -96423,6 +96438,24 @@ var PDFViewerApplication = {
 //        phraseSearch: true,
 //        query: "earth"
 //      });
+    });
+
+    var self = this;
+    var pageIndicator = document.getElementById("pageIndicator");
+    var padeIndicatorTimeout;
+    eventBus.on("pagechanging", function (evt) {
+      const page = evt.pageNumber;
+      const total = self.pdfDocument.numPages;
+      pageIndicator.textContent = `${page} of ${total}`;
+
+      if (!pageIndicator.classList.contains('fadeIn')) {
+        pageIndicator.classList.add('fadeIn');
+      }
+
+      clearTimeout(padeIndicatorTimeout);
+      padeIndicatorTimeout = setTimeout(function() {
+        pageIndicator.classList.remove('fadeIn');
+      }, 2000);
     });
   },
 };
