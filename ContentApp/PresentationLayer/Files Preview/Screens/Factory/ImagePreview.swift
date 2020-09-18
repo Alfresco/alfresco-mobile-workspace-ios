@@ -38,8 +38,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var svgImageSize: CGSize?
 
     private var isRendering: Bool = false
-    private var numberOfTapps: Int = 0
-    private var timerFullScreen: Timer?
+    private var numberOfTaps: Int = 0
+    private var fullScreenTimer: Timer?
     private var isFullScreen: Bool = false {
         didSet {
             delegate?.applyFullScreen(isFullScreen)
@@ -105,15 +105,15 @@ class ImagePreview: UIView, FilePreviewProtocol {
     // MARK: - Private Helpers
 
     @objc private func zoomImageTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
-        numberOfTapps += 1
-        timerFullScreen = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] (_) in
-            guard let sSelf = self, sSelf.numberOfTapps == 1 else { return }
+        numberOfTaps += 1
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] (_) in
+            guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }
             sSelf.isFullScreen = !sSelf.isFullScreen
-            sSelf.numberOfTapps = 0
+            sSelf.numberOfTaps = 0
         })
-        if numberOfTapps == 2 {
-            numberOfTapps = 0
-            timerFullScreen?.invalidate()
+        if numberOfTaps == 2 {
+            numberOfTaps = 0
+            fullScreenTimer?.invalidate()
             if gifImageView == nil {
                 zoomImageView?.doubleTapGestureRecognizer(gestureRecognizer)
             }
@@ -245,6 +245,6 @@ class ImagePreview: UIView, FilePreviewProtocol {
         task?.cancel()
         task = nil
         zoomImageView?.removeFromSuperview()
-        timerFullScreen?.invalidate()
+        fullScreenTimer?.invalidate()
     }
 }

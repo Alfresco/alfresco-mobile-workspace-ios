@@ -82,10 +82,6 @@ class FilePreviewViewController: SystemThemableViewController {
         return isFullScreen
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     // MARK: - Private Helpers
 
     private func activateContraintsToSuperview() {
@@ -115,7 +111,7 @@ class FilePreviewViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
-        filePreview?.applyComponentsThemes(themingService: themingService)
+        filePreview?.applyComponentsThemes(themingService.activeTheme)
 
         navigationController?.navigationBar.backgroundColor = currentTheme.backgroundColor
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
@@ -128,11 +124,10 @@ class FilePreviewViewController: SystemThemableViewController {
 extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func display(view: FilePreviewProtocol) {
-        guard let themingService = self.themingService else { return }
         containerFilePreview.addSubview(view)
         filePreview = view
         filePreview?.delegate = self
-        filePreview?.applyComponentsThemes(themingService: themingService)
+        filePreview?.applyComponentsThemes(themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: containerFilePreview.topAnchor, constant: 0),

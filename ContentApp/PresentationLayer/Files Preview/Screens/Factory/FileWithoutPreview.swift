@@ -49,8 +49,8 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-        guard let currentTheme = themingService.activeTheme else { return }
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
         noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
     }
 }

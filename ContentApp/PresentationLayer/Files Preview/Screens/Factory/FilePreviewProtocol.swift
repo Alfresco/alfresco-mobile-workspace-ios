@@ -21,7 +21,7 @@ import UIKit
 
 protocol FilePreviewProtocol: UIView {
     var delegate: FilePreviewDelegate? { get set }
-    func applyComponentsThemes(themingService: MaterialDesignThemingService)
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?)
     func recalculateFrame(from size: CGSize)
     func cancel()
 }
@@ -38,7 +38,7 @@ extension FilePreviewProtocol {
         set {
         }
     }
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {}
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}
     func recalculateFrame(from size: CGSize) {}
     func cancel() {}
 }

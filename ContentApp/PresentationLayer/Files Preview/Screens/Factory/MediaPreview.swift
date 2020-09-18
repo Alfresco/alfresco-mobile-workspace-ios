@@ -77,7 +77,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self)
         cancel()
     }
 
@@ -101,7 +100,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             showError(error)
         } else {
             videoPlayerTapGesture.isEnabled = true
-            changeIconPlayPauseButton()
+            updatePlayerControls()
             actionsView.isHidden = false
             apply(fade: true, to: bigPlayPauseButton)
             apply(fade: false, to: actionsView)
@@ -125,7 +124,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             case .began:
                 sliderIsMoving = true
                 player?.pause()
-                changeIconPlayPauseButton()
+                updatePlayerControls()
             case .moved:
                 guard let currentItem = player?.currentItem else { return }
                 let currentTimeInSeconds = currentItem.duration.seconds * Double(progressSlider.value)
@@ -135,7 +134,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 playbackSliderValueChanged(slider)
                 sliderIsMoving = false
                 player?.play()
-                changeIconPlayPauseButton()
+                updatePlayerControls()
             default:
                 break
             }
@@ -165,7 +164,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         })
         rateObserver = player.observe(\AVPlayer.rate, changeHandler: { [weak self] _, _ in
             guard let sSelf = self else { return }
-            sSelf.changeIconPlayPauseButton()
+            sSelf.updatePlayerControls()
         })
         statusObserver = playerItem.observe(\AVPlayerItem.status, changeHandler: { [weak self] playerItem, _ in
             guard let sSelf = self else { return }
@@ -199,7 +198,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
     }
 
-    private func changeIconPlayPauseButton() {
+    private func updatePlayerControls() {
         guard let player = player else { return }
         var stringImage = player.isPlaying ? "pause" : "play"
         if player.currentItem?.error != nil {
@@ -221,7 +220,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             progressSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
         }
         if currentTime.seconds == currentItem.duration.seconds {
-            changeIconPlayPauseButton()
+            updatePlayerControls()
             bigPlayPauseButton.alpha = 1.0
             finishPlaying = true
         }
@@ -262,8 +261,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-        guard let currentTheme = themingService.activeTheme else { return }
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
 
         currentTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
         currentTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
