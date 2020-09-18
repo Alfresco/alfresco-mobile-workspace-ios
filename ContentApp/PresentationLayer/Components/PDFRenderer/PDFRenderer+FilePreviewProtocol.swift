@@ -18,11 +18,4 @@
 
 import UIKit
 
-extension PDFRenderer: FilePreviewProtocol {
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-    }
-    func recalculateFrame(from size: CGSize) {
-    }
-    func cancel() {
-    }
-}
+extension PDFRenderer: FilePreviewProtocol {}

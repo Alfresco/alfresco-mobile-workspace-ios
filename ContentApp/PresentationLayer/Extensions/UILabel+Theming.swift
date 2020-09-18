@@ -41,6 +41,12 @@ extension UILabel {
         self.add(characterSpacing: theme.captionTextStyle.letterSpacing, lineHeight: theme.captionTextStyle.lineHeight)
     }
 
+    func applyStyleCaptionSurface60(theme: PresentationTheme) {
+        self.textColor = theme.surfaceColor.withAlphaComponent(0.6)
+        self.font = theme.captionTextStyle.font
+        self.add(characterSpacing: theme.captionTextStyle.letterSpacing, lineHeight: theme.captionTextStyle.lineHeight)
+    }
+
     func applyStyleSubtitle1OnSurface(theme: PresentationTheme) {
         self.textColor = theme.onSurfaceColor
         self.font = theme.subtitle1TextStyle.font

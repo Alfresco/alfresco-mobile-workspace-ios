@@ -16,29 +16,10 @@
 //  limitations under the License.
 //
 
-import Foundation
-import UIKit
+import AVFoundation
 
-protocol FilePreviewProtocol: UIView {
-    var filePreviewDelegate: FilePreviewDelegate? { get set }
-    func applyComponentsThemes(_ currentTheme: PresentationTheme?)
-    func recalculateFrame(from size: CGSize)
-    func cancel()
-}
-
-protocol FilePreviewDelegate: class {
-    func applyFullScreen(_ enable: Bool)
-}
-
-extension FilePreviewProtocol {
-    var filePreviewDelegate: FilePreviewDelegate? {
-        get {
-            return filePreviewDelegate
-        }
-        set {}
+extension AVPlayer {
+    var isPlaying: Bool {
+        return rate != 0 && error == nil
     }
-
-    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}
-    func recalculateFrame(from size: CGSize) {}
-    func cancel() {}
 }

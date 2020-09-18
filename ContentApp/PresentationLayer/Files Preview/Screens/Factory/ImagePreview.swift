@@ -25,6 +25,8 @@ import SVGKit
 public typealias ImagePreviewHandler = (_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void
 
 class ImagePreview: UIView, FilePreviewProtocol {
+
+    weak var delegate: FilePreviewDelegate?
     private var zoomImageView: ZoomImageView?
     private var imageRequest: ImageRequest?
     private var imagePreviewHandler: ImagePreviewHandler?
@@ -35,27 +37,37 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var svgImageView: SVGKImage?
     private var svgImageSize: CGSize?
 
-    private var isRendaring: Bool = false
+    private var isRendering: Bool = false
+    private var numberOfTaps: Int = 0
+    private var fullScreenTimer: Timer?
+    private var isFullScreen: Bool = false {
+        didSet {
+            delegate?.applyFullScreen(isFullScreen)
+        }
+    }
 
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
-
         let zoomImageView = ZoomImageView(frame: frame)
         zoomImageView.setup()
         zoomImageView.imageContentMode = .aspectFit
         zoomImageView.initialOffset = .center
         zoomImageView.backgroundColor = .clear
         zoomImageView.translatesAutoresizingMaskIntoConstraints = false
+        zoomImageView.contentInsetAdjustmentBehavior = .never
         addSubview(zoomImageView)
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(ImagePreview.zoomImageTapGestureRecognizer(_:)))
+        zoomImageView.addGestureRecognizer(tapGesture)
 
         self.zoomImageView = zoomImageView
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
 
     // MARK: - Public Utils
@@ -63,18 +75,18 @@ class ImagePreview: UIView, FilePreviewProtocol {
     func display(for imagePreview: FilePreviewType, from url: URL, handler: @escaping ImagePreviewHandler) {
 
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView else { return }
-
+        isRendering = true
         let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
                                  height: imageView.bounds.height * kMultiplerPreviewSizeImage)
         let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
 
-        if let imageContainer = ImagePipeline.shared.cachedImage(for: imageRequest) {
+        if let imageCachedContainer = ImagePipeline.shared.cachedImage(for: imageRequest) {
             if imagePreview == .gif {
-                display(imageContainer)
+                display(imageCachedContainer)
             } else {
-                zoomImageView?.display(image: imageContainer.image)
+                zoomImageView?.display(image: imageCachedContainer.image)
             }
-            handler(imageContainer.image, 0, 0, nil)
+            handler(imageCachedContainer.image, 0, 0, nil)
             return
         }
         self.imageRequest = imageRequest
@@ -92,11 +104,26 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - Private Helpers
 
+    @objc private func zoomImageTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+        numberOfTaps += 1
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] (_) in
+            guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }
+            sSelf.isFullScreen = !sSelf.isFullScreen
+            sSelf.numberOfTaps = 0
+        })
+        if numberOfTaps == 2 {
+            numberOfTaps = 0
+            fullScreenTimer?.invalidate()
+            if gifImageView == nil {
+                zoomImageView?.doubleTapGestureRecognizer(gestureRecognizer)
+            }
+        }
+    }
+
     private func displayImage() {
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView,
             let imageRequest = self.imageRequest,
             let handler = imagePreviewHandler else { return }
-        isRendaring = true
 
         var options = ImageLoadingOptions()
         options.pipeline = ImagePipeline {
@@ -111,7 +138,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
-            sSelf.isRendaring = false
+            sSelf.isRendering = false
             switch result {
             case .failure(let error):
                 handler(nil, 0, 0, error)
@@ -126,17 +153,43 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let imageRequest = self.imageRequest, let handler = imagePreviewHandler else { return }
 
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
-        task = ImagePipeline.shared.loadImage(with: imageRequest) { [weak self] result in
+        ImagePipeline.shared.loadImage(with: imageRequest, completion: { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .success(let response):
+                sSelf.isRendering = false
                 handler(response.image, 0, 0, nil)
                 sSelf.display(response.container)
                 sSelf.animateFadeIn()
             case .failure(let error):
                 handler(nil, 0, 0, error)
             }
-        }
+        })
+    }
+
+    private func displaySVG() {
+        guard let url = self.imageRequest?.urlRequest.url,
+            let handler = imagePreviewHandler else { return }
+        ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
+        ImagePipeline.shared.loadImage(with: url, completion: { [weak self] result in
+            guard let sSelf = self else { return }
+            switch result {
+            case .failure(let error):
+                handler(nil, 0, 0, error)
+            case .success(let response):
+                sSelf.isRendering = false
+                if let data = response.container.data {
+                    if let svgImage = SVGKImage(data: data) {
+                        sSelf.svgImageSize = svgImage.size
+                        svgImage.size = sSelf.resizeSVG()
+                        sSelf.svgImageView = svgImage
+                        sSelf.zoomImageView?.display(image: svgImage.uiImage)
+                        handler(svgImage.uiImage, 0, 0, nil)
+                    }
+                }
+                handler(nil, 0, 0, nil)
+            }
+        })
     }
 
     private func resizeSVG() -> CGSize {
@@ -151,36 +204,13 @@ class ImagePreview: UIView, FilePreviewProtocol {
         }
     }
 
-    private func displaySVG() {
-        guard let url = self.imageRequest?.urlRequest.url,
-            let handler = imagePreviewHandler else { return }
-        ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
-        task = ImagePipeline.shared.loadImage(with: url) { [weak self] result in
-            guard let sSelf = self else { return }
-            switch result {
-            case .failure(let error):
-                handler(nil, 0, 0, error)
-            case .success(let response):
-                if let data = response.container.data {
-                    if let svgImage = SVGKImage(data: data) {
-                        sSelf.svgImageSize = svgImage.size
-                        svgImage.size = sSelf.resizeSVG()
-                        sSelf.svgImageView = svgImage
-                        sSelf.zoomImageView?.display(image: svgImage.uiImage)
-                        handler(svgImage.uiImage, 0, 0, nil)
-                    }
-                }
-                handler(nil, 0, 0, nil)
-            }
-        }
-    }
-
     private func display(_ container: Nuke.ImageContainer) {
         if let data = container.data {
             let imageView = GIFImageView()
             imageView.frame = frame
             imageView.contentMode = .scaleAspectFit
             imageView.clipsToBounds = true
+            imageView.image = container.image
             imageView.animate(withGIFData: data)
             zoomImageView?.display(image: imageView)
             gifImageView = imageView
@@ -199,14 +229,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-    }
-
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         zoomImageView?.frame = frame
         gifImageView?.frame = frame
-        if isRendaring {
+        if isRendering {
             zoomImageView?.zoomView?.frame = frame
         }
         if svgImageView != nil {
@@ -218,5 +245,6 @@ class ImagePreview: UIView, FilePreviewProtocol {
         task?.cancel()
         task = nil
         zoomImageView?.removeFromSuperview()
+        fullScreenTimer?.invalidate()
     }
 }

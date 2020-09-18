@@ -102,6 +102,10 @@
 		E334C081247582B400F74880 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C080247582B400F74880 /* ConnectViewController.swift */; };
 		E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3355FF224DAEAC900C2C8A5 /* String+LiveSearch.swift */; };
 		E3355FF524DC081300C2C8A5 /* ContextualSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3355FF424DC081300C2C8A5 /* ContextualSearchViewModel.swift */; };
+		E3436F88250B8C4A00634C62 /* UIView+LoadNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3436F84250B8C4900634C62 /* UIView+LoadNib.swift */; };
+		E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3436F85250B8C4900634C62 /* MediaPreview.swift */; };
+		E3436F8A250B8C4A00634C62 /* AVPlayer+Playing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3436F86250B8C4A00634C62 /* AVPlayer+Playing.swift */; };
+		E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3436F87250B8C4A00634C62 /* MediaPreview.xib */; };
 		E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E348EDDC2498A2DE00F489B4 /* DefaultTheme.swift */; };
 		E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E348EDDE2498A30300F489B4 /* DarkTheme.swift */; };
 		E348EDE12498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E348EDE02498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift */; };
@@ -153,7 +157,7 @@
 		E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862324E698F0001C86B5 /* FilePreview.swift */; };
 		E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862824E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift */; };
 		E3CF862B24E69DC7001C86B5 /* FilePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862A24E69DC7001C86B5 /* FilePreviewViewController.swift */; };
-		E3CF862D24E69EDF001C86B5 /* PreviewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */; };
+		E3CF862D24E69EDF001C86B5 /* FilePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CF862C24E69EDF001C86B5 /* FilePreviewViewModel.swift */; };
 		E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C862493EF2E00FFD87F /* ListViewController.swift */; };
 		E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */; };
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
@@ -303,6 +307,10 @@
 		E334C080247582B400F74880 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		E3355FF224DAEAC900C2C8A5 /* String+LiveSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+LiveSearch.swift"; sourceTree = "<group>"; };
 		E3355FF424DC081300C2C8A5 /* ContextualSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualSearchViewModel.swift; sourceTree = "<group>"; };
+		E3436F84250B8C4900634C62 /* UIView+LoadNib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+LoadNib.swift"; sourceTree = "<group>"; };
+		E3436F85250B8C4900634C62 /* MediaPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaPreview.swift; sourceTree = "<group>"; };
+		E3436F86250B8C4A00634C62 /* AVPlayer+Playing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Playing.swift"; sourceTree = "<group>"; };
+		E3436F87250B8C4A00634C62 /* MediaPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MediaPreview.xib; sourceTree = "<group>"; };
 		E348EDDC2498A2DE00F489B4 /* DefaultTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultTheme.swift; sourceTree = "<group>"; };
 		E348EDDE2498A30300F489B4 /* DarkTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkTheme.swift; sourceTree = "<group>"; };
 		E348EDE02498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialDesignThemingServiceWorkerProtocol.swift; sourceTree = "<group>"; };
@@ -354,7 +362,7 @@
 		E3CF862324E698F0001C86B5 /* FilePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreview.swift; sourceTree = "<group>"; };
 		E3CF862824E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3CF862A24E69DC7001C86B5 /* FilePreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewViewController.swift; sourceTree = "<group>"; };
-		E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewFileViewModel.swift; sourceTree = "<group>"; };
+		E3CF862C24E69EDF001C86B5 /* FilePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewViewModel.swift; sourceTree = "<group>"; };
 		E3D25C862493EF2E00FFD87F /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
@@ -733,7 +741,7 @@
 		E319AA762507BA380072DFFE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E3CF862C24E69EDF001C86B5 /* PreviewFileViewModel.swift */,
+				E3CF862C24E69EDF001C86B5 /* FilePreviewViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -840,6 +848,8 @@
 				E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */,
 				E319AA73250782F00072DFFE /* FilePreviewFactory.swift */,
 				E3AE4EA0250675870095C76E /* ImagePreview.swift */,
+				E3436F85250B8C4900634C62 /* MediaPreview.swift */,
+				E3436F87250B8C4A00634C62 /* MediaPreview.xib */,
 				E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */,
 			);
 			path = Factory;
@@ -957,6 +967,8 @@
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E3436F86250B8C4A00634C62 /* AVPlayer+Playing.swift */,
+				E3436F84250B8C4900634C62 /* UIView+LoadNib.swift */,
 				E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */,
 				E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */,
 				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
@@ -1234,6 +1246,7 @@
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				B9B908E12507D83C0013ED81 /* pdfjs-library in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
+				E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
@@ -1365,6 +1378,7 @@
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
 				E3355FF524DC081300C2C8A5 /* ContextualSearchViewModel.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
+				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */,
 				E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */,
@@ -1392,7 +1406,7 @@
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
 				B9FC629D24C6C90600246606 /* UICollectionView+ItemIndex.swift in Sources */,
 				E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */,
-				E3CF862D24E69EDF001C86B5 /* PreviewFileViewModel.swift in Sources */,
+				E3CF862D24E69EDF001C86B5 /* FilePreviewViewModel.swift in Sources */,
 				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,
 				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
@@ -1424,6 +1438,7 @@
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
 				B91FEB6624B75D63002878F1 /* TopLevelTransition.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
+				E3436F88250B8C4A00634C62 /* UIView+LoadNib.swift in Sources */,
 				B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
 				B956715C24BDD86A009E1B23 /* SearchViewModelProtocol.swift in Sources */,
@@ -1456,6 +1471,7 @@
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,
+				E3436F8A250B8C4A00634C62 /* AVPlayer+Playing.swift in Sources */,
 				B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,

@@ -74,6 +74,7 @@
 "loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
 "loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";
 "loginNoLongerAuthenticatedText" = "You are no longer authenticated, please log in again.";
+"somethingWentWrong" = "Something went wrong!";
 
 // MARK: - Settings Screen
 "theme" = "Theme Mode";

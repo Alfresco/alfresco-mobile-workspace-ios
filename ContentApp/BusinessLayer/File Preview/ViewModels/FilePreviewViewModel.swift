@@ -20,10 +20,9 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-protocol PreviewFileViewModelDelegate: class {
+protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
-    func display(error: Error)
-    func display(doneRequesting: Bool)
+    func display(doneRequesting: Bool, error: Error?)
     func requestFileUnlock(retry: Bool)
 }
 
@@ -36,17 +35,17 @@ enum RenditionType: String {
     case pdf = "pdf", imagePreview = "imgpreview"
 }
 
-class PreviewFileViewModel {
+class FilePreviewViewModel {
     var node: ListNode
     var accountService: AccountService?
     var apiClient: APIClientProtocol?
 
-    weak var viewModelDelegate: PreviewFileViewModelDelegate?
-    
+    weak var viewModelDelegate: FilePreviewViewModelDelegate?
+
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol? {
         didSet {
-            appDelegate?.restrictRotation = .all
+            appDelegate?.allowedOrientation = .all
         }
     }
 
@@ -73,7 +72,7 @@ class PreviewFileViewModel {
                 } else {
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                     sSelf.viewModelDelegate?.display(view: noPreview)
-                    sSelf.viewModelDelegate?.display(doneRequesting: true)
+                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
                 }
             }
 
@@ -196,22 +195,22 @@ class PreviewFileViewModel {
             guard let sSelf = self else { return }
 
             if let error = error {
-                sSelf.viewModelDelegate?.display(error: error)
+                sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
 
                 let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                 sSelf.viewModelDelegate?.display(view: noPreview)
                 sSelf.filePreview = noPreview
             }
 
-            sSelf.viewModelDelegate?.display(doneRequesting: done)
+            sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
         }
 
         viewModelDelegate?.display(view: preview)
         filePreview = preview
-        
+
         // Set delegate for password requesting PDF renditions
         if let filePreview = preview as? PDFRenderer {
-            filePreview.delegate = self
+            filePreview.passwordDelegate = self
             pdfRenderer = filePreview
         }
     }
@@ -219,7 +218,7 @@ class PreviewFileViewModel {
 
 // MARK: - PDFRendererPasswordDelegate
 
-extension PreviewFileViewModel: PDFRendererPasswordDelegate {
+extension FilePreviewViewModel: PDFRendererPasswordDelegate {
     func providePDFPassword(for pdf: URL) {
         viewModelDelegate?.requestFileUnlock(retry: false)
     }

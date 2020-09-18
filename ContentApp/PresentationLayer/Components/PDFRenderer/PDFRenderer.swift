@@ -27,7 +27,7 @@ protocol PDFRendererPasswordDelegate: class {
 class PDFRenderer: UIView {
     var webView: WKWebView?
     var pdfURL: URL?
-    weak var delegate: PDFRendererPasswordDelegate?
+    weak var passwordDelegate: PDFRendererPasswordDelegate?
 
     // MARK: - Public interface
 
@@ -108,11 +108,11 @@ extension PDFRenderer: WKScriptMessageHandler {
         if message.name == "pdfAction" {
             if (message.body as? String) == "showPasswordPrompt" {
                 if let url = pdfURL {
-                    delegate?.providePDFPassword(for: url)
+                    passwordDelegate?.providePDFPassword(for: url)
                 }
             } else if (message.body as? String) == "invalidPasswordPrompt" {
                 if let url = pdfURL {
-                    delegate?.invalidPasswordProvided(for: url)
+                    passwordDelegate?.invalidPasswordProvided(for: url)
                 }
             }
         }

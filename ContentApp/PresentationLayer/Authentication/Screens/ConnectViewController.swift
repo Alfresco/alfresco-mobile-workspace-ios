@@ -187,7 +187,6 @@ class ConnectViewController: SystemThemableViewController {
     func showError(message: String) {
         Snackbar.dimissAll()
         let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: false)
-        snackbar.applyTheme(theme: themingService?.activeTheme)
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.errorShowInProgress = false

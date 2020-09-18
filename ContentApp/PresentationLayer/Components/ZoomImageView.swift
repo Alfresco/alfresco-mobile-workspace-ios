@@ -39,8 +39,8 @@ open class ZoomImageView: UIScrollView {
 
     static let kZoomInFactorFromMinWhenDoubleTap: CGFloat = 3
 
-    open var imageContentMode: ScaleMode = .widthFill
-    open var initialOffset: Offset = .begining
+    open var imageContentMode: ScaleMode = .aspectFit
+    open var initialOffset: Offset = .center
 
     public var zoomView: UIView?
 
@@ -96,10 +96,6 @@ open class ZoomImageView: UIScrollView {
         imageView.contentMode = .scaleAspectFit
         imageView.isUserInteractionEnabled = true
         addSubview(imageView)
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
 
         zoomView = imageView
         setMaxMinZoomScalesForCurrentBounds()
@@ -177,13 +173,10 @@ open class ZoomImageView: UIScrollView {
 
         let imageView = UIImageView(image: image)
         imageView.isUserInteractionEnabled = true
+        imageView.contentMode = .scaleAspectFit
         imageView.image = image
         addSubview(imageView)
         zoomView = imageView
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
 
         configureImageForSize(image.size)
     }
@@ -197,10 +190,6 @@ open class ZoomImageView: UIScrollView {
         imageView.isUserInteractionEnabled = true
         addSubview(imageView)
         zoomView = imageView
-
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ZoomImageView.doubleTapGestureRecognizer(_:)))
-        tapGesture.numberOfTapsRequired = 2
-        imageView.addGestureRecognizer(tapGesture)
 
         configureImageForSize(image.bounds.size)
     }
@@ -220,7 +209,7 @@ open class ZoomImageView: UIScrollView {
 
             switch imageContentMode {
             case .aspectFit:
-                contentOffset =  CGPoint.zero
+                contentOffset = CGPoint.zero
             case .aspectFill:
                 contentOffset = CGPoint(x: xOffset, y: yOffset)
             case .heightFill:
@@ -256,7 +245,7 @@ open class ZoomImageView: UIScrollView {
 
     // MARK: - Gesture
 
-    @objc func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+    func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         if zoomScale >= maximumZoomScale / 2.0 {
             setZoomScale(minimumZoomScale, animated: true)
         } else {

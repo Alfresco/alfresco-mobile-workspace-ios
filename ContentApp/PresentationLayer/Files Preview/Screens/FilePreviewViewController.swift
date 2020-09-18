@@ -21,10 +21,14 @@ import MaterialComponents.MaterialProgressView
 import MaterialComponents.MaterialDialogs
 
 class FilePreviewViewController: SystemThemableViewController {
-    @IBOutlet weak var preview: UIView!
+    @IBOutlet weak var containerFilePreview: UIView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet var previewContraintsToSafeArea: [NSLayoutConstraint]!
+    @IBOutlet var previewContraintsToSuperview: [NSLayoutConstraint]!
+    var needsContraintsForFullScreen = false
 
-    var filePreviewViewModel: PreviewFileViewModel?
+    var filePreviewViewModel: FilePreviewViewModel?
+    var isFullScreen = false
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
 
@@ -44,6 +48,7 @@ class FilePreviewViewController: SystemThemableViewController {
                                                selector: #selector(orientationChangedNotification),
                                                name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
+        appDelegate?.allowedOrientation = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -53,19 +58,41 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        filePreviewViewModel?.requestFilePreview(with: preview.bounds.size)
+        filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
 
-        appDelegate?.restrictRotation = .portrait
+        // Remove navigation bar underline separator
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.navigationBar.barTintColor = .clear
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        tabBarController?.tabBar.isHidden = false
+
+        appDelegate?.allowedOrientation = .portrait
         UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
+
         filePreviewViewModel?.cancelOngoingOperations()
+
+        Snackbar.dimissAll()
+    }
+
+    override var prefersStatusBarHidden: Bool {
+        return isFullScreen
     }
 
     // MARK: - Private Helpers
+
+    private func activateContraintsToSuperview() {
+        NSLayoutConstraint.deactivate(previewContraintsToSafeArea)
+        NSLayoutConstraint.activate(previewContraintsToSuperview)
+        view.layoutIfNeeded()
+        containerFilePreview.layoutIfNeeded()
+    }
 
     private func startLoading() {
         progressView.startAnimating()
@@ -78,17 +105,24 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     @objc private func orientationChangedNotification() {
-        filePreviewViewModel?.filePreview?.recalculateFrame(from: preview.bounds.size)
+        if needsContraintsForFullScreen {
+            activateContraintsToSuperview()
+        }
+        filePreviewViewModel?.filePreview?.recalculateFrame(from: containerFilePreview.bounds.size)
     }
 
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
-        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService: themingService)
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService.activeTheme)
         if let passwordDialog = filePreviewPasswordDialog, let passwordField = filePreviewPasswordField {
             applyTheme(for: passwordDialog)
             applyTheme(for: passwordField)
         }
+
+        navigationController?.navigationBar.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController?.navigationBar.shadowImage = nil
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
@@ -108,63 +142,77 @@ class FilePreviewViewController: SystemThemableViewController {
 
 // MARK: - PreviewFile ViewModel Delegate
 
-extension FilePreviewViewController: PreviewFileViewModelDelegate {
+extension FilePreviewViewController: FilePreviewViewModelDelegate {
     func display(view: FilePreviewProtocol) {
-        preview.addSubview(view)
+        containerFilePreview.addSubview(view)
+        filePreviewViewModel?.filePreview?.filePreviewDelegate = self
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.preview.topAnchor, constant: 0),
-            view.leftAnchor.constraint(equalTo: self.preview.leftAnchor, constant: 0),
-            view.rightAnchor.constraint(equalTo: self.preview.rightAnchor, constant: 0),
-            view.bottomAnchor.constraint(equalTo: self.preview.bottomAnchor, constant: 0)
+            view.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor, constant: 0),
+            view.leftAnchor.constraint(equalTo: self.containerFilePreview.leftAnchor, constant: 0),
+            view.rightAnchor.constraint(equalTo: self.containerFilePreview.rightAnchor, constant: 0),
+            view.bottomAnchor.constraint(equalTo: self.containerFilePreview.bottomAnchor, constant: 0)
         ])
     }
 
-    func display(error: Error) {
-        stopLoading()
-    }
-
-    func display(doneRequesting: Bool) {
+    func display(doneRequesting: Bool, error: Error?) {
         if doneRequesting {
             stopLoading()
         }
     }
 
     func requestFileUnlock(retry: Bool) {
-        let passwordField = MDCOutlinedTextField()
-        passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
-        passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
-        passwordField.isSecureTextEntry = false
-        passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
-        applyTheme(for: passwordField)
-        passwordField.isSecureTextEntry = true
-        filePreviewPasswordField = passwordField
+            let passwordField = MDCOutlinedTextField()
+            passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
+            passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
+            passwordField.isSecureTextEntry = false
+            passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
+            applyTheme(for: passwordField)
+            passwordField.isSecureTextEntry = true
+            filePreviewPasswordField = passwordField
 
-        let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
-        let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
+            let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
+            let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
 
-        let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
-        alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
-        let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
-        }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
-            guard let sSelf = self else { return }
+            let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
+            alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+            let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
+            }
+            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
+                guard let sSelf = self else { return }
 
-            alertController.dismiss(animated: true, completion: nil)
-            sSelf.filePreviewCoordinatorDelegate?.navigateBack()
-        }
-        alertController.addAction(submitAction)
-        alertController.addAction(cancelAction)
+                alertController.dismiss(animated: true, completion: nil)
+                sSelf.filePreviewCoordinatorDelegate?.navigateBack()
+            }
+            alertController.addAction(submitAction)
+            alertController.addAction(cancelAction)
 
-        alertController.accessoryView = passwordField
-        applyTheme(for: alertController)
-        filePreviewPasswordDialog = alertController
+            alertController.accessoryView = passwordField
+            applyTheme(for: alertController)
+            filePreviewPasswordDialog = alertController
 
-        present(alertController, animated: true, completion: {
-            passwordField.becomeFirstResponder()
-        })
+            present(alertController, animated: true, completion: {
+                passwordField.becomeFirstResponder()
+            })
+    }
+
+    func calculateViewForFullscreen() {
+        needsContraintsForFullScreen = true
+        activateContraintsToSuperview()
+    }
+}
+
+// MARK: - FilePreview Delegate
+
+extension FilePreviewViewController: FilePreviewDelegate {
+    func applyFullScreen(_ enable: Bool) {
+        isFullScreen = enable
+        containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
+        navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
+        setNeedsStatusBarAppearanceUpdate()
     }
 }
 

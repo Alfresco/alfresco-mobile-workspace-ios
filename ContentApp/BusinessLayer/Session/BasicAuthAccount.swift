@@ -52,7 +52,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func removeAuthenticationCredentials() {
-        _ = Keychain.delete(forKey: identifier)
+        Keychain.delete(forKey: identifier)
     }
 
     func removeDiskFolder() {

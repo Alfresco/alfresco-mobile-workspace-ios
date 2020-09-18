@@ -24,18 +24,21 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Init
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
 
+    init() {
+        super.init(frame: CGRect(origin: .zero, size: .zero))
         self.translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
+
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         label.text = LocalizationConstants.FilePreview.noPreview
         label.sizeToFit()
         noPreviewLabel = label
-
         addSubview(label)
 
         NSLayoutConstraint.activate([
@@ -44,23 +47,10 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         ])
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     // MARK: - FilePreviewProtocol
 
-    func applyComponentsThemes(themingService: MaterialDesignThemingService) {
-        if let currentTheme = themingService.activeTheme {
-            noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
-        }
-    }
-
-    func recalculateFrame(from size: CGSize) {
-        frame = CGRect(origin: .zero, size: size)
-        noPreviewLabel?.center = center
-    }
-
-    func cancel() {
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
     }
 }
