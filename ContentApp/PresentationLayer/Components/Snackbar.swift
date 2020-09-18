@@ -39,18 +39,22 @@ class Snackbar {
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses
         self.addButton()
+        self.applyTheme()
     }
 
     // MARK: - Public methods
 
-    func applyTheme(theme: PresentationTheme?) {
+    func applyTheme() {
+        let serviceRepository = ApplicationBootstrap.shared().serviceRepository
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let currentTheme = themingService?.activeTheme
         switch type {
         case .error:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorColor
         case .approve:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.primaryColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.primaryColor
         case .warning:
-            MDCSnackbarManager.snackbarMessageViewBackgroundColor = theme?.errorOnColor
+            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorOnColor
         }
     }
 
@@ -62,7 +66,7 @@ class Snackbar {
                 }
             }
         }
-        MDCSnackbarManager.show(snackBar)
+        MDCSnackbarManager.default.show(snackBar)
     }
 
     func hideButton(_ hidden: Bool) {
@@ -71,11 +75,11 @@ class Snackbar {
     }
 
     func dismiss() {
-        MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
+        MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
     }
 
     class func dimissAll() {
-         MDCSnackbarManager.dismissAndCallCompletionBlocks(withCategory: nil)
+        MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: nil)
     }
 
     // MARK: - Private methods

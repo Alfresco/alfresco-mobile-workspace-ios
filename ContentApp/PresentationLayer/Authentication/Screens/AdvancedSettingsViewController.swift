@@ -200,7 +200,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
                          clientID: clientIDTextField.text)
 
         let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar.applyTheme(theme: self.themingService?.activeTheme)
         snackbar.hideButton(true)
         snackbar.show(completion: nil)
     }

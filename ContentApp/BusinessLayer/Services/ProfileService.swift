@@ -21,7 +21,6 @@ import AlfrescoAuth
 import AlfrescoContent
 
 class ProfileService {
-    static var apiClient: APIClientProtocol?
     static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
     static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
@@ -43,29 +42,28 @@ class ProfileService {
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            let sSelf = self
-            guard let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                switch result {
-                case .success(let data):
+            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            PeopleAPI.getAvatarImage(personId: identifier) { (data, error) in
+                if let error = error {
+                    AlfrescoLog.error(error)
+                } else if let data = data {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             completionHandler(image)
                             DiskServices.saveAvatar(image)
                         }
                     }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
                 }
-            })
+            }
         })
     }
 
     static func fetchProfileInformation(completion: @escaping ((PersonEntry?, Error?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { (personEntry, error) in
+            PeopleAPI.getPerson(personId: identifier) { (personEntry, error) in
                 completion(personEntry, error)
             }
         })

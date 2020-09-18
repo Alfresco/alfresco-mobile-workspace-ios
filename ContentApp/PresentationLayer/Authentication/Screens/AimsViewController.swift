@@ -158,7 +158,6 @@ extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
             let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            snackbar.applyTheme(theme: themingService?.activeTheme)
             snackbar.show(completion: nil)
         }
     }

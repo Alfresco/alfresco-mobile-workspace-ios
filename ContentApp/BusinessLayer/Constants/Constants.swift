@@ -34,9 +34,12 @@ let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
 let kAPIPathMy = "-my-"
-let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
-let kAPIPathGetAvatarProfile = "\(kAPIPathVersion)/people/-me-/avatar"
+let kAPIPathRelativeForSites = "documentLibrary"
+let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
+let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
+
+// MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"
 let kWhereFavoritesSiteCondition = "(EXISTS(target/site))"
 
@@ -74,6 +77,10 @@ let kDefaultLoginSecuredPort = "443"
 let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
+// MARK: - Preview Files
+let kMultiplerPreviewSizeImage: CGFloat = 1.0
 
 // MARK: - Search related
 let kMaxElemetsInRecentSearchesArray = 15

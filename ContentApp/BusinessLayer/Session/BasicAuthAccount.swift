@@ -52,7 +52,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func removeAuthenticationCredentials() {
-        _ = Keychain.delete(forKey: identifier)
+        Keychain.delete(forKey: identifier)
     }
 
     func removeDiskFolder() {
@@ -65,6 +65,13 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         let basicAuthenticationProvider = BasicAuthenticationProvider(with: credential)
         completionHandler(basicAuthenticationProvider)
+    }
+
+    func getTicket(completionHandler: @escaping (String?, Error?) -> Void) {
+        let ticketBody = TicketBody(userId: credential.username, password: credential.password)
+        AuthenticationAPI.createTicket(ticketBodyCreate: ticketBody) { (ticket, error) in
+            completionHandler(ticket?.entry._id, error)
+        }
     }
 
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {

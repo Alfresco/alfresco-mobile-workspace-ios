@@ -24,6 +24,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     private var favoritesViewController: FavoritesViewController?
     private var navigationViewController: UINavigationController?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -69,11 +70,18 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension FavoritesScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
-    func showFolderScreen(from node: ListNode) {
+    func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
-            let folderDrillDownCoordinatorDelegate = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
-            folderDrillDownCoordinatorDelegate.start()
-            self.folderDrillDownCoordinator = folderDrillDownCoordinatorDelegate
+            switch node.kind {
+            case .folder, .site:
+                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                folderDrillDownCoordinator.start()
+                self.folderDrillDownCoordinator = folderDrillDownCoordinator
+            case .file:
+                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                filePreviewCoordinator.start()
+                self.filePreviewCoordinator = filePreviewCoordinator
+            }
         }
     }
 }

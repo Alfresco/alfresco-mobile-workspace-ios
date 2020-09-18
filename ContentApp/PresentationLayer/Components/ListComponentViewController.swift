@@ -230,9 +230,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        if node.kind == .folder || node.kind == .site {
-            folderDrillDownScreenCoordinatorDelegate?.showFolderScreen(from: node)
-        }
+        folderDrillDownScreenCoordinatorDelegate?.showPreview(from: node)
         listActionDelegate?.elementTapped(node: node)
     }
 }

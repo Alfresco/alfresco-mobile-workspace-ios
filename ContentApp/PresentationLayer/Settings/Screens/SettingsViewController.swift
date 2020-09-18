@@ -133,9 +133,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             let snackbar = Snackbar(with: message, type: .error, buttonTitle: LocalizationConstants.Buttons.retry)
-            if let theme = sSelf.themingService?.activeTheme {
-                snackbar.applyTheme(theme: theme)
-            }
             snackbar.show {
                 sSelf.viewModel?.reloadRequests()
             }

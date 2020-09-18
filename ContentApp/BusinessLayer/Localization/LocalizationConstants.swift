@@ -83,6 +83,7 @@ struct LocalizationConstants {
         static let saveSettings = NSLocalizedString("loginApprovedSaveSettings", comment: "")
         static let serviceDocumentEmpty = NSLocalizedString("loginWarningServiceDocumetEmptyText", comment: "")
         static let noLongerAuthenticated = NSLocalizedString("loginNoLongerAuthenticatedText", comment: "")
+        static let somethingWentWrong = NSLocalizedString("somethingWentWrong", comment: "")
     }
 
     struct Theme {
@@ -125,5 +126,14 @@ struct LocalizationConstants {
         static let myLibraries = NSLocalizedString("browse-myLibraries", comment: "")
         static let shared = NSLocalizedString("browse-shared", comment: "")
         static let trash = NSLocalizedString("browse-trash", comment: "")
+    }
+
+    struct FilePreview {
+        static let noPreview = NSLocalizedString("noPreview", comment: "")
+        static let passwordPromptTitle = NSLocalizedString("passwordPromptTitle", comment: "")
+        static let passwordPromptMessage = NSLocalizedString("passwordPromptMessage", comment: "")
+        static let passwordPromptFailTitle = NSLocalizedString("passwordPromptFailTitle", comment: "")
+        static let passwordPromptFailMessage = NSLocalizedString("passwordPromptFailMessage", comment: "")
+        static let passwordPromptSubmit = NSLocalizedString("passwordPromptSubmit", comment: "")
     }
 }

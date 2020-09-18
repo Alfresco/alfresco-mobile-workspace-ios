@@ -47,6 +47,7 @@ enum IconType: String {
     case site = "ic-site"
 }
 
+// swiftlint:disable type_body_length
 class FileIcon {
     static private var map: [String: IconType] {
         return [
@@ -229,6 +230,7 @@ class FileIcon {
             "text/x-markdown": .code,
             "text/x-setext": .generic,
             "text/xml": .code,
+            "text/x-csrc": .code,
             "video/3gpp": .video,
             "video/3gpp2": .video,
             "video/mp2t": .video,
@@ -245,11 +247,13 @@ class FileIcon {
             "video/x-msvideo": .video,
             "video/x-rad-screenplay": .video,
             "video/x-sgi-movie": .video,
+            "video/x-matroska": .video,
             "x-world/x-vrml": .generic,
             "cm:folder": .folder,
             "st:site": .site
         ]
     }
+// swiftlint:enable type_body_length
 
     static func icon(for mimetype: String?) -> UIImage? {
         guard let mimetype = mimetype else {

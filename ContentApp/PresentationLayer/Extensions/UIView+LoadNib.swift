@@ -17,28 +17,10 @@
 //
 
 import Foundation
-import AlfrescoCore
+import UIKit
 
-struct GetContentServicesAvatarProfile: APIRequest {
-    typealias Response = Data
-    let customHeader: [String: String]
-
-    var path: String {
-        return kAPIPathGetAvatarProfile
-    }
-
-    var method: HttpMethod {
-        return .get
-    }
-    var headers: [String: String] {
-        return customHeader
-    }
-
-    var parameters: [String: String] {
-        return [:]
-    }
-
-    init(with customHeader: [String: String]) {
-        self.customHeader = customHeader
+extension UIView {
+    class func fromNib<T: UIView>() -> T? {
+        return Bundle(for: T.self).loadNibNamed(String(describing: T.self), owner: nil, options: nil)?[0] as? T
     }
 }
