@@ -71,11 +71,11 @@ class FilePreviewViewModel {
         }
 
         // Fetch or generate a rendition preview
-        if filePreviewType == .renditionPdf {
+        if filePreviewType == .rendition {
             fetchRenditionURL(for: node.guid) { [weak self] url, isImageRendition in
                 guard let sSelf = self else { return }
 
-                sSelf.previewFile(type: (isImageRendition ? .image : .renditionPdf), at: url, with: size)
+                sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
             }
 
         } else if filePreviewType == .text { // Show text content
