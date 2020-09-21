@@ -179,6 +179,8 @@ class FileIcon {
             "audio/x-flac": .audio,
             "audio/x-ms-wma": .audio,
             "audio/x-wav": .audio,
+            "audio/x-aac": .audio,
+            "audio/opus": .audio,
             "image/bmp": .image,
             "image/cgm": .image,
             "image/gif": .image,
@@ -215,6 +217,7 @@ class FileIcon {
             "image/x-xbitmap": .image,
             "image/x-xpixmap": .image,
             "image/x-xwindowdump": .image,
+            "image/webp": .image,
             "message/rfc822": .email,
             "text/calendar": .generic,
             "text/css": .code,
@@ -261,6 +264,10 @@ class FileIcon {
         }
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
+        } else if mimetype.contains("video/") {
+            return UIImage(named: IconType.video.rawValue)
+        } else if mimetype.contains("audio/") {
+            return UIImage(named: IconType.audio.rawValue)
         } else {
             print(mimetype)
         }

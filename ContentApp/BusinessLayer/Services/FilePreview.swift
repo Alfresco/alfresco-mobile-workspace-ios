@@ -163,6 +163,8 @@ class FilePreview {
             "audio/x-flac": .audio,
             "audio/x-ms-wma": .audio,
             "audio/x-wav": .audio,
+            "audio/x-aac": .audio,
+            "audio/opus": .audio,
             "image/bmp": .image,
             "image/cgm": .image,
             "image/gif": .gif,
@@ -199,6 +201,7 @@ class FilePreview {
             "image/x-xbitmap": .image,
             "image/x-xpixmap": .image,
             "image/x-xwindowdump": .image,
+            "image/webp": .image,
             "message/rfc822": .renditionPdf,
             "text/calendar": .text,
             "text/css": .text,
@@ -243,6 +246,10 @@ class FilePreview {
         }
         if let previewType = self.map[mimetype] {
             return previewType
+        } else if mimetype.contains("video/") {
+            return .video
+        } else if mimetype.contains("audio/") {
+            return .audio
         } else {
             return .renditionPdf
         }
