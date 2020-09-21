@@ -82,7 +82,7 @@ class PDFRenderer: UIView {
         self.pdfURL = url
         guard let webView = self.webView else { return }
 
-        let pdfjsLibraryPath = Bundle.main.path(forResource: "viewer-inlined.html", ofType: nil) ?? ""
+        let pdfjsLibraryPath = Bundle.main.path(forResource: "pdfjs-library/viewer-inlined.html", ofType: nil) ?? ""
         do {
             let libraryData = try Data(contentsOf: URL(fileURLWithPath: pdfjsLibraryPath))
             let libraryDataEncodedString = String(decoding: libraryData, as: UTF8.self)
