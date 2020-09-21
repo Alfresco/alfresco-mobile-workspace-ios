@@ -44,7 +44,7 @@ class FilePreviewFactory {
                 completion?(completed == total, nil)
             }
             return imagePreview
-        case .pdf, .renditionPdf:
+        case .pdf, .rendition:
             let pdfRendered = PDFRenderer(with: CGRect(origin: .zero, size: size), pdfURL: url)
             completion?(true, nil)
             return pdfRendered
