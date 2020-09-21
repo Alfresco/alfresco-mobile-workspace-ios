@@ -19,29 +19,6 @@
 import Foundation
 import UIKit
 
-extension UITextView {
-    func add(characterSpacing kernValue: Double, lineHeight: CGFloat) {
-        if let labelText = text, labelText.count > 0 {
-            let attributedString = NSMutableAttributedString(string: labelText)
-            let style = NSMutableParagraphStyle()
-            let range = NSRange(location: 0, length: labelText.count)
-
-            attributedString.addAttribute(NSAttributedString.Key.kern, value: kernValue, range: range)
-
-            style.lineSpacing = lineHeight
-            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value: style, range: range)
-
-            attributedText = attributedString
-        }
-    }
-
-    func applyStyleBody2OnSurface(theme: PresentationTheme) {
-        self.textColor = theme.onSurfaceColor
-        self.font = theme.body2TextStyle.font
-        self.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
-    }
-}
-
 extension UILabel {
     func add(characterSpacing kernValue: Double, lineHeight: CGFloat) {
         if let labelText = text, labelText.count > 0 {
