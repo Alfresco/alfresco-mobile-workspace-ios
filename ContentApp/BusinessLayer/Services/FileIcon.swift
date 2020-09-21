@@ -206,7 +206,7 @@ class FileIcon {
         } else if mimetype.contains("audio/") {
             return UIImage(named: IconType.audio.rawValue)
         } else if mimetype.contains("image/") {
-            return UIImage(named: IconType.audio.rawValue)
+            return UIImage(named: IconType.image.rawValue)
         } else {
             print(mimetype)
         }
