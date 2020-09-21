@@ -44,7 +44,7 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
         ])
     }
 
-    required init?(coder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
