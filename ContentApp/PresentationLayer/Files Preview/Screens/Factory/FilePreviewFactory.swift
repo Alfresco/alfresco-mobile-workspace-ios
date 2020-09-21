@@ -20,6 +20,13 @@ import Foundation
 import UIKit
 
 class FilePreviewFactory {
+
+    static func getPlainTextPreview(with text: String, on size: CGSize) -> FilePreviewProtocol {
+        let plainTextPreview = PlainTextPreview()
+        plainTextPreview.display(text: text)
+        return plainTextPreview
+    }
+
     static func getPreview(for previewType: FilePreviewType, and url: URL? = nil, on size: CGSize,
                            completion: ((_ done: Bool, _ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
         guard let url = url else {

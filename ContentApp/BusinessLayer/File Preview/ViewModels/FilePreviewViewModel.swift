@@ -78,7 +78,22 @@ class FilePreviewViewModel {
                 sSelf.previewFile(type: (isImageRendition ? .image : .renditionPdf), at: url, with: size)
             }
 
-        } else { // Show the actual content
+        } else if filePreviewType == .text { // Show text content
+            contentText { [weak self] (text, error) in
+                guard let sSelf = self else { return }
+                if let text = text {
+                    let preview = FilePreviewFactory.getPlainTextPreview(with: text, on: size)
+                    sSelf.filePreview = preview
+                    sSelf.viewModelDelegate?.display(view: preview)
+                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
+                } else {
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                    sSelf.filePreview = noPreview
+                    sSelf.viewModelDelegate?.display(view: noPreview)
+                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
+                }
+            }
+        } else { // Show the actual content from URL
             fetchContentURL(for: node.guid) { [weak self] url in
                 guard let sSelf = self else { return }
 
@@ -100,6 +115,18 @@ class FilePreviewViewModel {
     }
 
     // MARK: - Private interface
+
+    private func contentText(_ completionHandler: @escaping (String?, Error?) -> Void) {
+        NodesAPI.getNodeContent(nodeId: node.guid) { (data, error) in
+            var contentString: String?
+            if let error = error {
+                AlfrescoLog.error(error)
+            } else if let data = data {
+                contentString = String(data: data, encoding: .utf8) ?? nil
+            }
+            completionHandler(contentString, error)
+        }
+    }
 
     private func contentURL(for ticket: String?) -> URL? {
         guard let ticket = ticket, let basePathURL = accountService?.activeAccount?.apiBasePath,
@@ -176,7 +203,7 @@ class FilePreviewViewModel {
                                     completionHandler(nil)
                                 }
 
-                                _ = RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
+                                RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
                                     if rendition?.entry.status == .created {
                                         timer.invalidate()
                                         completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
@@ -195,6 +222,7 @@ class FilePreviewViewModel {
     private func previewFile(type: FilePreviewType, at url: URL?, with size: CGSize) {
         guard let renditionURL = url else {
             let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+            filePreview = noPreview
             viewModelDelegate?.display(view: noPreview)
             viewModelDelegate?.display(doneRequesting: true, error: nil)
 
@@ -208,6 +236,7 @@ class FilePreviewViewModel {
                 sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
 
                 let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                sSelf.filePreview = noPreview
                 sSelf.viewModelDelegate?.display(view: noPreview)
             }
 

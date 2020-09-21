@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -141,6 +141,7 @@
 		E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */; };
 		E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */; };
 		E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */; };
+		E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A9B234251884D700A548E7 /* PlainTextPreview.swift */; };
 		E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05724926F5C006DF519 /* SettingsViewController.swift */; };
 		E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05924926F87006DF519 /* SettingsScreenCoordinator.swift */; };
 		E3ADD05C249279D8006DF519 /* SettingsItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */; };
@@ -346,6 +347,7 @@
 		E3A2A903247EBB690046582C /* BasicAuthScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		E3A9B234251884D700A548E7 /* PlainTextPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPreview.swift; sourceTree = "<group>"; };
 		E3ADD05724926F5C006DF519 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E3ADD05924926F87006DF519 /* SettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -851,6 +853,7 @@
 				E3436F85250B8C4900634C62 /* MediaPreview.swift */,
 				E3436F87250B8C4A00634C62 /* MediaPreview.xib */,
 				E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */,
+				E3A9B234251884D700A548E7 /* PlainTextPreview.swift */,
 			);
 			path = Factory;
 			sourceTree = "<group>";
@@ -1418,6 +1421,7 @@
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
+				E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
