@@ -45,7 +45,7 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: aDecoder)
     }
 
     // MARK: - Public Helpers
