@@ -40,24 +40,14 @@ class SplashScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.splashScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = SplashViewController.instantiateViewController()
 
-            let splashScreenViewController = SplashViewController.instantiateViewController()
-            splashScreenViewController.coordinatorDelegate = sSelf
-            splashScreenViewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-
-            return splashScreenViewController
-        })
-
-        if let splashScreenViewController = router?.push(route: NavigationRoutes.splashScreen.path, from: presenter) as? SplashViewController {
-            self.splashScreenViewController = splashScreenViewController
-
-            // Set up the connect view controller
-            let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController, authenticationError: authenticationError)
-            self.connectScreenCoordinator = connectScreenCoordinator
-        }
+        viewController.coordinatorDelegate = self
+        viewController.themingService = themingService
+        splashScreenViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
+        connectScreenCoordinator = ConnectScreenCoordinator(with: viewController, authenticationError: authenticationError)
     }
 }
 

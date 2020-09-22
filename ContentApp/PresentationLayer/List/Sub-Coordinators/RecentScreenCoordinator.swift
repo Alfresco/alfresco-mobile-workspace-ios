@@ -52,7 +52,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
         self.navigationViewController = navigationViewController
-        self.recentViewController = viewController
+        recentViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {

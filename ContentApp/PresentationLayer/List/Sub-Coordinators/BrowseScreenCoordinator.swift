@@ -41,9 +41,9 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        let browseViewModel = BrowseViewModel()
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
-        let browseViewModel = BrowseViewModel()
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
@@ -57,7 +57,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
-        self.browseViewController = viewController
+        browseViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
