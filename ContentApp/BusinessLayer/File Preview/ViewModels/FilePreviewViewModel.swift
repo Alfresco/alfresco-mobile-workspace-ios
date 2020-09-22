@@ -111,6 +111,7 @@ class FilePreviewViewModel {
     func cancelOngoingOperations() {
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
+        filePreview = nil
         renditionTimer?.invalidate()
     }
 

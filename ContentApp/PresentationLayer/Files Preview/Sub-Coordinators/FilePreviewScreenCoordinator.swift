@@ -33,26 +33,18 @@ class FilePreviewScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        let routerPath = NavigationRoutes.filePreviewScreen.path + "/<nodeID>"
-        router?.register(route: routerPath, factory: { [weak self] (_, _) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let filePreviewViewModel = FilePreviewViewModel(node: listNode, with: accountService)
+        let viewController = FilePreviewViewController.instantiateViewController()
+        viewController.filePreviewCoordinatorDelegate = self
 
-            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let filePreviewViewModel = FilePreviewViewModel(node: sSelf.listNode, with: accountService)
-            let viewController = FilePreviewViewController.instantiateViewController()
-            viewController.filePreviewCoordinatorDelegate = self
-
-            filePreviewViewModel.viewModelDelegate = viewController
-            viewController.themingService = themingService
-            viewController.filePreviewViewModel = filePreviewViewModel
-            viewController.title = sSelf.listNode.title
-            sSelf.previewViewController = viewController
-            return viewController
-        })
-        let routerPathValues = NavigationRoutes.filePreviewScreen.path + "/\(listNode.guid)"
-        router?.push(route: routerPathValues, from: presenter)
+        filePreviewViewModel.viewModelDelegate = viewController
+        viewController.themingService = themingService
+        viewController.filePreviewViewModel = filePreviewViewModel
+        viewController.title = listNode.title
+        previewViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

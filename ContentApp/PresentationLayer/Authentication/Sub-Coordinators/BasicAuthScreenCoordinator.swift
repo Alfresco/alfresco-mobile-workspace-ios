@@ -34,22 +34,19 @@ class BasicAuthScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.basicAuthScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let viewController = BasicAuthViewController.instantiateViewController()
+        let viewModel = BasicAuthViewModel(with: loginService, accountService: accountService)
 
-            let viewController = BasicAuthViewController.instantiateViewController()
-            viewController.splashScreenDelegate = sSelf.splashScreen
-            viewController.basicAuthCoordinatorDelegate = sSelf
-            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.viewModel = BasicAuthViewModel(with: sSelf.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                          accountService: sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-            sSelf.basicAuthViewController = viewController
+        viewController.splashScreenDelegate = splashScreen
+        viewController.basicAuthCoordinatorDelegate = self
+        viewController.themingService = themingService
 
-            return viewController
-        })
-
-        router?.push(route: NavigationRoutes.basicAuthScreen.path, from: presenter)
+        viewController.viewModel = viewModel
+        basicAuthViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

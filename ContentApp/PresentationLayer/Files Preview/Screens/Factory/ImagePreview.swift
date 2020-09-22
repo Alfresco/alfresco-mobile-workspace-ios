@@ -153,7 +153,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let imageRequest = self.imageRequest, let handler = imagePreviewHandler else { return }
 
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
-        ImagePipeline.shared.loadImage(with: imageRequest, completion: { [weak self] result in
+        task = ImagePipeline.shared.loadImage(with: imageRequest, completion: { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .success(let response):
@@ -171,7 +171,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let url = self.imageRequest?.urlRequest.url,
             let handler = imagePreviewHandler else { return }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
-        ImagePipeline.shared.loadImage(with: url, completion: { [weak self] result in
+        task = ImagePipeline.shared.loadImage(with: url, completion: { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .failure(let error):
@@ -243,6 +243,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     func cancel() {
         task?.cancel()
+        task?.priority = .high
         task = nil
         zoomImageView?.removeFromSuperview()
         fullScreenTimer?.invalidate()

@@ -33,26 +33,17 @@ class SettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.settingsScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let viewController = SettingsViewController.instantiateViewController()
+        let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
 
-            let viewController = SettingsViewController.instantiateViewController()
-            let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-
-            viewController.themingService = themingService
-            let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
-            viewModel.viewModelDelegate = viewController
-
-            viewController.viewModel = viewModel
-            viewController.settingsScreenCoordinatorDelegate = sSelf
-            sSelf.settingsViewController = viewController
-
-            return viewController
-        })
-
-        router?.push(route: NavigationRoutes.settingsScreen.path, from: presenter)
+        viewController.themingService = themingService
+        viewModel.viewModelDelegate = viewController
+        viewController.viewModel = viewModel
+        viewController.settingsScreenCoordinatorDelegate = self
+        settingsViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

@@ -31,33 +31,22 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        let routerPath = NavigationRoutes.browseScreen.path + "/<nodeTitle>" + "/<nodeID>"
-        router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let themingService =  serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = ListViewController()
 
-            let browseType = BrowseType(rawValue: parameters["nodeID"] as? String ?? "PersonalFiles")
-            let title = parameters["nodeTitle"] as? String ?? ""
-            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let themingService =  sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let viewController = ListViewController()
+        let listViewModel = self.listViewModel(from: browseNode.type, with: accountService)
+        let resultViewModel = ResultsViewModel()
+        let globalSearchViewModel = searchViewModel(from: browseNode.type, with: browseNode.title, with: accountService, with: resultViewModel)
 
-            let listViewModel = sSelf.listViewModel(from: browseType, with: accountService)
-            let resultViewModel = ResultsViewModel()
-            let globalSearchViewModel = sSelf.searchViewModel(from: browseType, with: title, with: accountService, with: resultViewModel)
-
-            viewController.title = title
-            viewController.themingService = themingService
-            viewController.folderDrillDownScreenCoordinatorDelegate = self
-            viewController.listViewModel = listViewModel
-            viewController.searchViewModel = globalSearchViewModel
-            viewController.resultViewModel = resultViewModel
-            sSelf.listViewController = viewController
-
-            return viewController
-        })
-        let routerPathValues = NavigationRoutes.browseScreen.path + "/\(browseNode.title)" + "/\(browseNode.type.rawValue)"
-        router?.push(route: routerPathValues, from: presenter)
+        viewController.title = browseNode.title
+        viewController.themingService = themingService
+        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listViewModel = listViewModel
+        viewController.searchViewModel = globalSearchViewModel
+        viewController.resultViewModel = resultViewModel
+        listViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 
     private func listViewModel(from type: BrowseType?, with accountService: AccountService?) -> ListViewModelProtocol {

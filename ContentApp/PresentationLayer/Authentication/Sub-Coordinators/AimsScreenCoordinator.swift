@@ -36,22 +36,18 @@ class AimsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        router?.register(route: NavigationRoutes.aimsAuthScreen.path, factory: { [weak self] (_, _) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let viewController = AimsViewController.instantiateViewController()
+        let viewModel = AimsViewModel(with: loginService, accountService: accountService)
 
-            let viewController = AimsViewController.instantiateViewController()
-            viewController.aimsScreenCoordinatorDelegate = sSelf
-            viewController.themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            viewController.viewModel = AimsViewModel(with: sSelf.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                     accountService: sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-            viewController.splashScreenDelegate = sSelf.splashScreen
-            sSelf.aimsViewController = viewController
-
-            return viewController
-        })
-
-        router?.push(route: NavigationRoutes.aimsAuthScreen.path, from: presenter)
+        viewController.aimsScreenCoordinatorDelegate = self
+        viewController.themingService = themingService
+        viewController.viewModel = viewModel
+        viewController.splashScreenDelegate = splashScreen
+        aimsViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

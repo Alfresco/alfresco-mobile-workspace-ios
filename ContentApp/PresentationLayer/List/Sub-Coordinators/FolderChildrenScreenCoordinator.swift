@@ -35,39 +35,26 @@ class FolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let router = self.serviceRepository.service(of: Router.serviceIdentifier) as? Router
-        let routerPath = NavigationRoutes.folderScreen.path + "/<nodeID>" + "/<nodeKind>" + "/<nodeTitle>"
-        router?.register(route: routerPath, factory: { [weak self] (_, parameters) -> UIViewController? in
-            guard let sSelf = self else { return nil }
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = ListViewController()
 
-            let title = parameters["nodeTitle"] as? String ?? ""
-            let nodeID = parameters["nodeID"] as? String
-            let nodeKind = parameters["nodeKind"] as? String
-            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let themingService = sSelf.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-            let viewController = ListViewController()
+        let listViewModel = self.listViewModel(with: listNode.guid, and: listNode.kind.rawValue, and: accountService)
+        let resultViewModel = ResultsViewModel()
+        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
+        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title, type: .node, selected: true, nodeID: listNode.guid)
+        contextualSearchViewModel.delegate = resultViewModel
+        contextualSearchViewModel.searchChipNode = chipNode
+        resultViewModel.delegate = contextualSearchViewModel
 
-            let listViewModel = sSelf.listViewModel(with: nodeID, and: nodeKind, and: accountService)
-            let resultViewModel = ResultsViewModel()
-            let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
-            contextualSearchViewModel.delegate = resultViewModel
-            if let nodeID = nodeID {
-                let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + title, type: .node, selected: true, nodeID: nodeID)
-                contextualSearchViewModel.searchChipNode = chipNode
-            }
-            resultViewModel.delegate = contextualSearchViewModel
-
-            viewController.title = title
-            viewController.themingService = themingService
-            viewController.folderDrillDownScreenCoordinatorDelegate = self
-            viewController.listViewModel = listViewModel
-            viewController.searchViewModel = contextualSearchViewModel
-            viewController.resultViewModel = resultViewModel
-            sSelf.listViewController = viewController
-            return viewController
-        })
-        let routerPathValues = NavigationRoutes.folderScreen.path + "/\(listNode.guid)" + "/\(listNode.kind.rawValue)" + "/\(listNode.title)"
-        router?.push(route: routerPathValues, from: presenter)
+        viewController.title = listNode.title
+        viewController.themingService = themingService
+        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listViewModel = listViewModel
+        viewController.searchViewModel = contextualSearchViewModel
+        viewController.resultViewModel = resultViewModel
+        listViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 
     private func listViewModel(with nodeID: String?, and nodeKind: String?, and accountService: AccountService?) -> ListViewModelProtocol {

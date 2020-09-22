@@ -37,10 +37,10 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         let resultViewModel = ResultsViewModel()
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
-        foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         let librariesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
-        librariesViewModel.listCondition = kWhereFavoritesSiteCondition
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
+        librariesViewModel.listCondition = kWhereFavoritesSiteCondition
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 
@@ -56,7 +56,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
-        self.favoritesViewController = viewController
+        favoritesViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
