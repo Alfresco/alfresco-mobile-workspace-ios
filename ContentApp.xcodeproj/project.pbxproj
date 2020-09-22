@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -142,6 +142,7 @@
 		E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */; };
 		E3A33E3124B7317D005FFB40 /* RecentSearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */; };
 		E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A9B234251884D700A548E7 /* PlainTextPreview.swift */; };
+		E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */; };
 		E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05724926F5C006DF519 /* SettingsViewController.swift */; };
 		E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05924926F87006DF519 /* SettingsScreenCoordinator.swift */; };
 		E3ADD05C249279D8006DF519 /* SettingsItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */; };
@@ -348,6 +349,7 @@
 		E3A2A905247EC1A70046582C /* AimsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		E3A9B234251884D700A548E7 /* PlainTextPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTextPreview.swift; sourceTree = "<group>"; };
+		E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Theming.swift"; sourceTree = "<group>"; };
 		E3ADD05724926F5C006DF519 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		E3ADD05924926F87006DF519 /* SettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3ADD05B249279D8006DF519 /* SettingsItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemTableViewCell.swift; sourceTree = "<group>"; };
@@ -985,6 +987,7 @@
 				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
 				B9FC629C24C6C90600246606 /* UICollectionView+ItemIndex.swift */,
 				E321380D24C6F2C60025A833 /* UILabel+Theming.swift */,
+				E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */,
 				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
 			);
 			path = Extensions;
@@ -1344,6 +1347,7 @@
 				E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */,
 				E3E9ED3924CB00D200F1A2C2 /* ResultsNodeMapper.swift in Sources */,
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
+				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
