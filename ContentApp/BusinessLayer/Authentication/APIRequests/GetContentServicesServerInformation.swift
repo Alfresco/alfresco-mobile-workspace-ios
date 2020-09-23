@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoCore
 
 struct GetContentServicesServerInformation: APIRequest {
-    typealias Response = StatusCodeResponse
+    typealias Response = VersionContentService
 
     var path: String {
         return kAPIPathIsContentServiceAvailable
@@ -36,5 +36,39 @@ struct GetContentServicesServerInformation: APIRequest {
 
     var parameters: [String: String] {
         return [:]
+    }
+}
+
+public struct VersionContentService: Codable {
+    private var version: String?
+    private let data: [String: String]?
+
+    enum CodingKeys: String, CodingKey {
+        case data
+        case version
+    }
+
+    public init(version: String, data: [String: String]) {
+        self.version = version
+        self.data = data
+    }
+
+    public init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        self.data = try values.decode([String: String].self, forKey: .data)
+        self.version = ""
+        if let version = data?[CodingKeys.version.rawValue] {
+            self.version = version
+        }
+    }
+
+    func isVersionOverMinium() -> Bool {
+        guard let version = self.version else {
+            return false
+        }
+        if version.compare(kAPIMinimumVersion, options: .numeric) == .orderedDescending {
+            return true
+        }
+        return false
     }
 }

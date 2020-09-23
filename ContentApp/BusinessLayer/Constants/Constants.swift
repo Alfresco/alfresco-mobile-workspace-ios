@@ -30,6 +30,7 @@ let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 let kSavePersonalFilesID = "kSavePersonalFilesID"
 
 // MARK: - API Paths
+let kAPIMinimumVersion = "5.2.2"
 let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"

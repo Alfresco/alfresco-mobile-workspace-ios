@@ -52,10 +52,16 @@ class ConnectViewModel {
                 if authType == .aimsAuth {
                     sSelf.authenticationService?.isContentServicesAvailable(handler: { (result) in
                         switch result {
-                        case .success(_):
-                            DispatchQueue.main.async {
-                                sSelf.delegate?.authServiceByPass()
-                                sSelf.aimsViewModel?.login(repository: url, in: viewController)
+                        case .success(let isVersionOverMinium):
+                            if isVersionOverMinium {
+                                DispatchQueue.main.async {
+                                    sSelf.delegate?.authServiceByPass()
+                                    sSelf.aimsViewModel?.login(repository: url, in: viewController)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    sSelf.delegate?.authServiceAvailable(for: authType)
+                                }
                             }
                         case .failure(let error):
                             AlfrescoLog.error(error)

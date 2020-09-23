@@ -96,8 +96,8 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.serviceDocument))
         _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
             switch result {
-            case .success(_):
-                handler(.success(true))
+            case .success(let response):
+                handler(.success(response.isVersionOverMinium()))
             case .failure(let error):
                 handler(.failure(error))
             }
