@@ -112,6 +112,7 @@ class FilePreviewViewModel {
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
         filePreview = nil
+        pdfRenderer = nil
         renditionTimer?.invalidate()
     }
 

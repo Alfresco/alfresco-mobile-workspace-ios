@@ -18,4 +18,8 @@
 
 import UIKit
 
-extension PDFRenderer: FilePreviewProtocol {}
+extension PDFRenderer: FilePreviewProtocol {
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        pdfBackgroundColor = currentTheme?.backgroundColor
+    }
+}
