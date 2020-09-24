@@ -54,6 +54,7 @@ class ConnectViewController: SystemThemableViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
         viewModel?.delegate = self
+        viewModel?.aimsViewModel?.delegate = self
 
         addLocalization()
         enableConnectButton = (connectTextField.text != "")
@@ -102,7 +103,7 @@ class ConnectViewController: SystemThemableViewController {
             return
         }
         activityIndicator?.state = .isLoading
-        viewModel?.availableAuthType(for: connectURL)
+        viewModel?.availableAuthType(for: connectURL, in: self)
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
@@ -243,6 +244,38 @@ extension ConnectViewController: ConnectViewModelDelegate {
         errorShowInProgress = true
         connectTextFieldAddMaterialComponents()
         showError(message: error.mapToMessage())
+    }
+
+    func authServiceByPass() {
+        activityIndicator?.state = .isIdle
+    }
+}
+
+// MARK: - Aims ViewModel Delegate
+
+extension ConnectViewController: AimsViewModelDelegate {
+    func logInFailed(with error: APIError) {
+        if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+            activityIndicator?.state = .isIdle
+            errorShowInProgress = true
+            connectTextFieldAddMaterialComponents()
+            showError(message: error.mapToMessage())
+        } else {
+            activityIndicator?.state = .isIdle
+            splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+            errorShowInProgress = false
+            connectTextFieldAddMaterialComponents()
+            Snackbar.dimissAll()
+        }
+    }
+
+    func logInSuccessful() {
+        activityIndicator?.state = .isIdle
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+        errorShowInProgress = false
+        connectTextFieldAddMaterialComponents()
+        Snackbar.dimissAll()
+        connectScreenCoordinatorDelegate?.showApplicationTabBar()
     }
 }
 

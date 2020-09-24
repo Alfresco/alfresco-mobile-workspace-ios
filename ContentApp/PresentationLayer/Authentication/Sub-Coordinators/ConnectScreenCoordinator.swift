@@ -24,6 +24,7 @@ protocol ConnectScreenCoordinatorDelegate: class {
     func showBasicAuthScreen()
     func showAimsScreen()
     func showNeedHelpSheet()
+    func showApplicationTabBar()
 }
 
 class ConnectScreenCoordinator: Coordinator {
@@ -34,6 +35,7 @@ class ConnectScreenCoordinator: Coordinator {
     private var basicAuthCoordinator: BasicAuthScreenCoordinator?
     private var aimsCoordinator: AimsScreenCoordinator?
     private var needHelpCoordinator: NeedHelpCoordinator?
+    private var tabBarCoordinator: TabBarScreenCoordinator?
     private var authenticationError: APIError?
 
     init(with presenter: SplashViewController, authenticationError: APIError? = nil) {
@@ -44,9 +46,13 @@ class ConnectScreenCoordinator: Coordinator {
     func start() {
         let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let viewController = ConnectViewController.instantiateViewController()
         let containerViewNavigationController = UINavigationController(rootViewController: viewController)
         let viewModel = ConnectViewModel(with: loginService)
+        let aimsViewModel = AimsViewModel(with: loginService, accountService: accountService)
+
+        viewModel.aimsViewModel = aimsViewModel
 
         viewController.splashScreenDelegate = presenter
         viewController.connectScreenCoordinatorDelegate = self
@@ -102,6 +108,16 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
             let needHelpCoordinator = NeedHelpCoordinator(with: containerViewNavigationController, model: NeedHelpConnectScreenModel())
             needHelpCoordinator.start()
             self.needHelpCoordinator = needHelpCoordinator
+        }
+    }
+
+    func showApplicationTabBar() {
+        if let containerViewNavigationController = self.containerViewNavigationController {
+            let tabBarCoordinator = TabBarScreenCoordinator(with: containerViewNavigationController)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                tabBarCoordinator.start()
+            }
+            self.tabBarCoordinator = tabBarCoordinator
         }
     }
 }

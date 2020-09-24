@@ -30,11 +30,13 @@ let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 let kSavePersonalFilesID = "kSavePersonalFilesID"
 
 // MARK: - API Paths
+let kAPIMinimumVersion = "5.2.2"
 let kAPIPathVersion = "alfresco/versions/1"
 let kAPIPathBase = "api/-default-/public"
 let kAPIPathMe = "-me-"
 let kAPIPathMy = "-my-"
 let kAPIPathGetProfile = "\(kAPIPathBase)/\(kAPIPathVersion)/people/-me-"
+let kAPIPathIsContentServiceAvailable = "service/api/server"
 let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
 let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
