@@ -18,6 +18,7 @@
 
 import Foundation
 import WebKit
+import PDFKit
 
 protocol PDFRendererPasswordDelegate: class {
     func providePDFPassword(for pdf: URL)
@@ -27,7 +28,15 @@ protocol PDFRendererPasswordDelegate: class {
 class PDFRenderer: UIView {
     var webView: WKWebView?
     var pdfURL: URL?
+
+    var pdfBackgroundColor: UIColor?
+
     weak var passwordDelegate: PDFRendererPasswordDelegate?
+
+    private var pdfView: PDFView?
+    private var pdfPassword: String?
+    private var pageViewOverlay: UIView?
+    private var pageCountLabel: UILabel?
 
     // MARK: - Public interface
 
@@ -59,6 +68,7 @@ class PDFRenderer: UIView {
         config.userContentController = contentController
 
         webView = WKWebView(frame: frame, configuration: config)
+        webView?.navigationDelegate = self
         guard let webView = self.webView else { return }
 
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -97,9 +107,54 @@ class PDFRenderer: UIView {
     }
 
     func unlockPDF(password: String) {
+        pdfPassword = password
         webView?.evaluateJavaScript("PDFViewerApplication.onPassword(\"\(password)\")", completionHandler: { (_, error) in
             AlfrescoLog.error("Unexpected error while unlocking PDF document")
         })
+    }
+
+    // MARK: - Private interface
+
+    private func addPageCountView() {
+        let pageViewOverlay = UIView()
+        let pageCountLabel = UILabel()
+        pageCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        pageCountLabel.textColor = .white
+        pageCountLabel.font = .systemFont(ofSize: 10)
+        pageCountLabel.textAlignment = .center
+
+        pageViewOverlay.translatesAutoresizingMaskIntoConstraints = false
+        pageViewOverlay.backgroundColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
+        pageViewOverlay.layer.cornerRadius = 3
+        pageViewOverlay.layer.masksToBounds = true
+        pageViewOverlay.alpha = 0
+
+        addSubview(pageViewOverlay)
+        pageViewOverlay.addSubview(pageCountLabel)
+
+        self.pageViewOverlay = pageViewOverlay
+        self.pageCountLabel = pageCountLabel
+
+        NSLayoutConstraint.activate([
+            self.leftAnchor.constraint(equalTo: pageViewOverlay.leftAnchor, constant: -15),
+            self.bottomAnchor.constraint(equalTo: pageViewOverlay.bottomAnchor, constant: 60),
+            pageViewOverlay.widthAnchor.constraint(equalToConstant: 60),
+            pageViewOverlay.heightAnchor.constraint(equalToConstant: 25),
+            pageViewOverlay.bottomAnchor.constraint(equalTo: pageCountLabel.bottomAnchor, constant: 0),
+            pageViewOverlay.topAnchor.constraint(equalTo: pageCountLabel.topAnchor, constant: 0),
+            pageViewOverlay.leftAnchor.constraint(equalTo: pageCountLabel.leftAnchor, constant: -4),
+            pageViewOverlay.rightAnchor.constraint(equalTo: pageCountLabel.rightAnchor, constant: 4)
+        ])
+    }
+
+    private func showPageCountView() {
+        UIView.animate(withDuration: 0.25) {
+            self.pageViewOverlay?.alpha = 1
+
+            UIView.animate(withDuration: 0.25, delay: 2, animations: {
+                self.pageViewOverlay?.alpha = 0
+            })
+        }
     }
 }
 
@@ -115,6 +170,61 @@ extension PDFRenderer: WKScriptMessageHandler {
                     passwordDelegate?.invalidPasswordProvided(for: url)
                 }
             }
+        }
+    }
+}
+
+extension PDFRenderer: WKNavigationDelegate {
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        // Fallback to native PDFKit if webview rendering fails or is out of memory
+        self.webView?.removeFromSuperview()
+        self.webView = nil
+
+        let pdfView = PDFView(frame: self.bounds)
+        pdfView.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(pdfView)
+        addPageCountView()
+
+        self.pdfView = pdfView
+
+        if let pdfURL = self.pdfURL {
+            if let pdfDocument = PDFDocument(url: pdfURL) {
+                if pdfDocument.isLocked {
+                    pdfDocument.unlock(withPassword: pdfPassword ?? "")
+                }
+                pdfView.document = pdfDocument
+            }
+        }
+
+        if let backgroundColor = pdfBackgroundColor {
+            pdfView.backgroundColor = backgroundColor
+        }
+
+        pdfView.autoScales = true
+        pdfView.maxScaleFactor = 10.0
+        pdfView.minScaleFactor = 1
+        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
+
+        NSLayoutConstraint.activate([
+            self.topAnchor.constraint(equalTo: pdfView.topAnchor, constant: 0),
+            self.leftAnchor.constraint(equalTo: pdfView.leftAnchor, constant: 0),
+            self.rightAnchor.constraint(equalTo: pdfView.rightAnchor, constant: 0),
+            self.bottomAnchor.constraint(equalTo: pdfView.bottomAnchor, constant: 0)
+        ])
+
+        // Add page changed listener
+        NotificationCenter.default.addObserver(
+              self,
+              selector: #selector(handlePageChange(notification:)),
+              name: Notification.Name.PDFViewPageChanged,
+              object: nil)
+    }
+
+    @objc private func handlePageChange(notification: Notification) {
+        if let currentPage = pdfView?.currentPage?.pageRef?.pageNumber, let totalNoOfPages = pdfView?.document?.pageCount {
+            showPageCountView()
+            pageCountLabel?.text = String(format: "%d of %d", currentPage, totalNoOfPages)
         }
     }
 }
