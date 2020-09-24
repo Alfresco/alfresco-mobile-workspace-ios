@@ -63,10 +63,11 @@ public struct VersionContentService: Codable {
     }
 
     func isVersionOverMinium() -> Bool {
-        guard let version = self.version else {
+        guard let version = self.version?.split(separator: " ").first else {
             return false
         }
-        if version.compare(kAPIMinimumVersion, options: .numeric) == .orderedDescending {
+        let comparison = String(version).versionCompare(kAPIMinimumVersion)
+        if comparison == .orderedDescending || comparison == .orderedSame {
             return true
         }
         return false
