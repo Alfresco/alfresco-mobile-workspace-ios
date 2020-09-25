@@ -44,6 +44,9 @@ protocol AccountProtocol: class {
     /// Removes disk folder for this account
     func removeDiskFolder()
 
+    /// Let's an account know when it's been registered
+    func registered()
+
     /// Cleanup session for this account
     func unregister()
 
@@ -51,9 +54,16 @@ protocol AccountProtocol: class {
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
 
-    /// Returns a valid authentication ticket or recreates one.
-    /// - Parameter completionHandler: Closure providing ticket value or an error
-    func getTicket(completionHandler: @escaping (String?, Error?) -> Void)
+    /**
+     Creates an authentication ticket used for convenient content fetching.
+
+     - SeeAlso:
+       [AuthenticationAPI](https://api-explorer.alfresco.com/api-explorer/#/authentication)
+    */
+    func createTicket()
+
+    /// Returns a valid authentication ticket or nil if it doesn't exist or it expired.
+    func getTicket() -> String?
 
     /// Logs out of the current account session.
     /// - Parameters:

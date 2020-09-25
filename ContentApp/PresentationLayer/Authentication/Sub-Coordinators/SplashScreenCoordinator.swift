@@ -100,10 +100,10 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     private func registerAndPresent(account: AccountProtocol) {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
+        AlfrescoContentAPI.basePath = account.apiBasePath
+
         accountService?.register(account: account)
         accountService?.activeAccount = account
-
-        AlfrescoContentAPI.basePath = account.apiBasePath
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()

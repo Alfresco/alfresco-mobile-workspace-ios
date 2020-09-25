@@ -46,6 +46,9 @@ class AIMSAccount: AccountProtocol, Equatable {
     }
     var session: AIMSSession
 
+    private var ticket: String?
+    private var ticketTimer: Timer?
+
     static func == (lhs: AIMSAccount, rhs: AIMSAccount) -> Bool {
         return lhs.identifier == rhs.identifier
     }
@@ -88,6 +91,11 @@ class AIMSAccount: AccountProtocol, Equatable {
 
     func unregister() {
         session.invalidateSessionRefresh()
+        ticketTimer?.invalidate()
+    }
+
+    func registered() {
+        createTicket()
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -106,21 +114,37 @@ class AIMSAccount: AccountProtocol, Equatable {
         }
     }
 
-    func getTicket(completionHandler: @escaping (String?, Error?) -> Void) {
-        // Validate ticket with existing credentials
-        getSession { authenticationprovider in
-            let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()
-            ticketValidationRequestBuilder.addHeaders(authenticationprovider.authorizationHeader())
-
-            ticketValidationRequestBuilder.execute { (response, error) in
-                completionHandler(response?.body?.entry._id, error)
-            }
-        }
+    func getTicket() -> String? {
+        return ticket
     }
 
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         guard let viewController = onViewController else { return }
         session.logOut(onViewController: viewController, completionHandler: completionHandler)
+    }
+
+    func createTicket() {
+        // Validate ticket with existing credentials
+        getSession { authenticationprovider in
+            let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()
+            ticketValidationRequestBuilder.addHeaders(authenticationprovider.authorizationHeader())
+
+            ticketValidationRequestBuilder.execute { [weak self] (response, error) in
+                guard let sSelf = self else { return }
+
+                if error == nil {
+                    sSelf.ticketTimer?.invalidate()
+                    sSelf.ticket = response?.body?.entry._id
+                } else {
+                    // Retry again in one minute
+                    if sSelf.ticketTimer == nil {
+                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+                            sSelf.createTicket()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

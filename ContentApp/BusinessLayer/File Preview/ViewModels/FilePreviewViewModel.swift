@@ -94,12 +94,8 @@ class FilePreviewViewModel {
                 }
             }
         } else { // Show the actual content from URL
-            fetchContentURL(for: node.guid) { [weak self] url in
-                guard let sSelf = self else { return }
-
-                if let contentURL = url {
-                    sSelf.previewFile(type: filePreviewType, at: contentURL, with: size)
-                }
+            if let contentURL = contentURL(for: accountService?.activeAccount?.getTicket()) {
+                previewFile(type: filePreviewType, at: contentURL, with: size)
             }
         }
     }
@@ -144,17 +140,6 @@ class FilePreviewViewModel {
         return renditionURL
     }
 
-    private func fetchContentURL(for nodeId: String, completionHandler: @escaping (URL?) -> Void) {
-        accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
-            guard let sSelf = self, let contentURL = sSelf.contentURL(for: ticket) else {
-                completionHandler(nil)
-                return
-            }
-
-            completionHandler(contentURL)
-        })
-    }
-
     private func fetchRenditionURL(for nodeId: String, completionHandler: @escaping (URL?, _ isImageRendition: Bool) -> Void) {
         accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -184,38 +169,37 @@ class FilePreviewViewModel {
         }.first
 
         if let rendition = rendition {
-            accountService?.activeAccount?.getTicket(completionHandler: { [weak self] (ticket, _) in
-                guard let sSelf = self else { return }
+            let ticket = accountService?.activeAccount?.getTicket()
+            if rendition.entry.status == .created {
+                completionHandler(renditionURL(for: renditionId, ticket: ticket))
+            } else {
+                let renditiontype = RenditionBodyCreate(_id: renditionId)
+                RenditionsAPI.createRendition(nodeId: node.guid, renditionBodyCreate: renditiontype) { [weak self] (_, error) in
+                    guard let sSelf = self else { return }
 
-                if rendition.entry.status == .created {
-                    completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
-                } else {
-                    let renditiontype = RenditionBodyCreate(_id: renditionId)
-                    RenditionsAPI.createRendition(nodeId: sSelf.node.guid, renditionBodyCreate: renditiontype) { (_, error) in
-                        if error != nil {
-                            AlfrescoLog.error("Unexpected error while creating rendition for node: \(sSelf.node.guid)")
-                        } else {
-                            var retries = RenditionServiceConfiguration.maxRetries
+                    if error != nil {
+                        AlfrescoLog.error("Unexpected error while creating rendition for node: \(sSelf.node.guid)")
+                    } else {
+                        var retries = RenditionServiceConfiguration.maxRetries
 
-                            sSelf.renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay, repeats: true) { (timer) in
-                                retries -= 1
+                        sSelf.renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay, repeats: true) { (timer) in
+                            retries -= 1
 
-                                if retries == 0 {
+                            if retries == 0 {
+                                timer.invalidate()
+                                completionHandler(nil)
+                            }
+
+                            RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
+                                if rendition?.entry.status == .created {
                                     timer.invalidate()
-                                    completionHandler(nil)
-                                }
-
-                                RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
-                                    if rendition?.entry.status == .created {
-                                        timer.invalidate()
-                                        completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
-                                    }
+                                    completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
                                 }
                             }
                         }
                     }
                 }
-            })
+            }
         } else {
             completionHandler(nil)
         }
