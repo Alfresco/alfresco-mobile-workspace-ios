@@ -20,7 +20,6 @@ import UIKit
 import AlfrescoContent
 
 class BasicAuthAccount: AccountProtocol, Equatable {
-
     var identifier: String {
         return credential.username
     }
@@ -29,6 +28,9 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
     var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
+
+    private var ticket: String?
+    private var ticketTimer: Timer?
 
     static func == (lhs: BasicAuthAccount, rhs: BasicAuthAccount) -> Bool {
         return lhs.identifier == rhs.identifier
@@ -60,6 +62,11 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func unregister() {
+        ticketTimer?.invalidate()
+    }
+
+    func registered() {
+        createTicket()
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -67,14 +74,30 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         completionHandler(basicAuthenticationProvider)
     }
 
-    func getTicket(completionHandler: @escaping (String?, Error?) -> Void) {
-        let ticketBody = TicketBody(userId: credential.username, password: credential.password)
-        AuthenticationAPI.createTicket(ticketBodyCreate: ticketBody) { (ticket, error) in
-            completionHandler(ticket?.entry._id, error)
-        }
+    func getTicket() -> String? {
+        return ticket
     }
 
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         completionHandler(nil)
+    }
+
+    func createTicket() {
+        let ticketBody = TicketBody(userId: credential.username, password: credential.password)
+        AuthenticationAPI.createTicket(ticketBodyCreate: ticketBody) { [weak self] (ticket, error) in
+            guard let sSelf = self else { return }
+
+            if error == nil {
+                sSelf.ticket = ticket?.entry._id
+                sSelf.ticketTimer?.invalidate()
+            } else {
+                // Retry again in one minute
+                if sSelf.ticketTimer == nil {
+                    sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+                        sSelf.createTicket()
+                    }
+                }
+            }
+        }
     }
 }

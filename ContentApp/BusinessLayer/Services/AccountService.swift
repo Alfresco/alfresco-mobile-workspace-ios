@@ -69,6 +69,7 @@ class AccountService: AccountServiceProtocol, Service {
         accounts?.append(account)
         account.persistAuthenticationParameters()
         account.persistAuthenticationCredentials()
+        account.registered()
     }
 
     func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {

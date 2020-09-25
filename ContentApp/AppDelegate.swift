@@ -47,6 +47,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
     }
 
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        accountService?.activeAccount?.createTicket()
+    }
+
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let authenticationService = self.applicationCoordinator?.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
         return authenticationService?.resumeExternalUserAgentFlow(with: url) ?? false
