@@ -39,6 +39,11 @@ class SystemSearchViewController: SystemThemableViewController {
         }
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
+        rvc.viewWillTransition(to: size, with: coordinator)
+    }
+
     // MARK: - Public Methods
 
     func cancelSearchMode() {
