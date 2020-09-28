@@ -71,6 +71,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     override func awakeFromNib() {
         videoPlayerTapGesture.isEnabled = false
         translatesAutoresizingMaskIntoConstraints = false
+        progressSlider.isUserInteractionEnabled = false
         progressSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
@@ -99,6 +100,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = player.currentItem?.error as NSError? {
             showError(error)
         } else {
+            progressSlider.isUserInteractionEnabled = true
             videoPlayerTapGesture.isEnabled = true
             updatePlayerControls()
             actionsView.isHidden = false
