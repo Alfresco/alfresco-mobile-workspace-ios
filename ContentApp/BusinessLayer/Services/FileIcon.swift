@@ -52,9 +52,9 @@ class FileIcon {
         return [
             "application/acp": .arhive,
             "application/dita+xml": .code,
-            "application/eps": .image,
+            "application/eps": .graphics,
             "application/framemaker": .document,
-            "application/illustrator": .image,
+            "application/illustrator": .graphics,
             "application/java": .generic,
             "application/java-archive": .arhive,
             "application/json": .code,
@@ -96,8 +96,8 @@ class FileIcon {
             "application/vnd.oasis.opendocument.chart": .generic,
             "application/vnd.oasis.opendocument.database": .database,
             "application/vnd.oasis.opendocument.formula": .generic,
-            "application/vnd.oasis.opendocument.graphics": .image,
-            "application/vnd.oasis.opendocument.graphics-template": .image,
+            "application/vnd.oasis.opendocument.graphics": .graphics,
+            "application/vnd.oasis.opendocument.graphics-template": .graphics,
             "application/vnd.oasis.opendocument.image": .image,
             "application/vnd.oasis.opendocument.presentation": .presentation,
             "application/vnd.oasis.opendocument.presentation-template": .presentation,
@@ -117,7 +117,7 @@ class FileIcon {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.template": .document,
             "application/vnd.stardivision.calc": .spreadsheet,
             "application/vnd.stardivision.chart": .generic,
-            "application/vnd.stardivision.draw": .image,
+            "application/vnd.stardivision.draw": .graphics,
             "application/vnd.stardivision.impress": .presentation,
             "application/vnd.stardivision.impress-packed": .presentation,
             "application/vnd.stardivision.math": .generic,
@@ -125,7 +125,7 @@ class FileIcon {
             "application/vnd.stardivision.writer-global": .document,
             "application/vnd.sun.xml.calc": .spreadsheet,
             "application/vnd.sun.xml.calc.template": .spreadsheet,
-            "application/vnd.sun.xml.draw": .image,
+            "application/vnd.sun.xml.draw": .graphics,
             "application/vnd.sun.xml.impress": .presentation,
             "application/vnd.sun.xml.impress.template": .presentation,
             "application/vnd.sun.xml.writer": .document,
@@ -143,11 +143,12 @@ class FileIcon {
             "application/x-gtar": .arhive,
             "application/x-gzip": .arhive,
             "application/x-hdf": .arhive,
-            "application/x-indesign": .image,
+            "application/x-indesign": .graphics,
             "application/x-javascript": .code,
             "application/x-latex": .document,
             "application/x-mif": .document,
             "application/x-netcdf": .document,
+            "application/x-mobipocket-ebook": .book,
             "application/x-rar-compressed": .arhive,
             "application/x-sh": .code,
             "application/x-shar": .arhive,
@@ -199,15 +200,17 @@ class FileIcon {
         }
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
-        } else if mimetype.contains("video/") {
+        } else if mimetype.hasPrefix("video/") {
             return UIImage(named: IconType.video.rawValue)
-        } else if mimetype.contains("audio/") {
+        } else if mimetype.hasPrefix("audio/") {
             return UIImage(named: IconType.audio.rawValue)
-        } else if mimetype.contains("image/") {
+        } else if mimetype.hasPrefix("image/") {
             return UIImage(named: IconType.image.rawValue)
+        } else if mimetype.hasPrefix("text/") {
+            return UIImage(named: IconType.document.rawValue)
         } else {
             print(mimetype)
+            return UIImage(named: IconType.generic.rawValue)
         }
-        return UIImage(named: IconType.generic.rawValue)
     }
 }
