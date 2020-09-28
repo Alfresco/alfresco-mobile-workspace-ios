@@ -44,6 +44,10 @@ class BrowseViewController: SystemSearchViewController {
         collectionView.reloadData()
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+
     // MARK: - IBActions
 
     @objc func settingsButtonTapped() {

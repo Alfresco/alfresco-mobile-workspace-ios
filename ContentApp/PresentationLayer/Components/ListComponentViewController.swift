@@ -175,8 +175,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let node = listDataSource?.listNode(for: indexPath)
-            else { return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight) }
-        return CGSize(width: self.view.bounds.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: listItemNodeCellHeight) }
+        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {

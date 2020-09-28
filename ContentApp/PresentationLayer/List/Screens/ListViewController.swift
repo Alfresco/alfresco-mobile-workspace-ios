@@ -72,6 +72,11 @@ class ListViewController: SystemSearchViewController {
         listController?.willTransition(to: newCollection, with: coordinator)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        listController?.collectionView.collectionViewLayout.invalidateLayout()
+    }
+
     // MARK: - IBActions
 
     @objc func settingsButtonTapped() {

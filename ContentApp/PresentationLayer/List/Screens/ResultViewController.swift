@@ -97,6 +97,11 @@ class ResultViewController: SystemThemableViewController {
         progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        resultsListController?.collectionView.collectionViewLayout.invalidateLayout()
+        recentSearchCollectionView?.collectionViewLayout.invalidateLayout()
+    }
+
     // MARK: - Public Helpers
 
     func startLoading() {

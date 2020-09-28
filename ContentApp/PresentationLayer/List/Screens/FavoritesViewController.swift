@@ -71,6 +71,23 @@ class FavoritesViewController: SystemSearchViewController {
         librariesViewController?.willTransition(to: newCollection, with: coordinator)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        folderAndFilesViewController?.collectionView.collectionViewLayout.invalidateLayout()
+        librariesViewController?.collectionView.collectionViewLayout.invalidateLayout()
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+    
+            if let selectedItem = sSelf.tabBar.selectedItem {
+                guard let selectedIndex = sSelf.tabBar.items.firstIndex(of: selectedItem) else {
+                    fatalError("MDCTabBarDelegate given selected item not found in tabBar.items")
+                }
+                sSelf.scrollView.setContentOffset(CGPoint(x: CGFloat(selectedIndex) * size.width, y: 0),
+                                                  animated: false)
+            }
+        }
+    }
+
     // MARK: - IBActions
 
     @objc func settingsButtonTapped() {
