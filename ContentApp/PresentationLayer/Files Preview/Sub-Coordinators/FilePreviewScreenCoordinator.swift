@@ -25,7 +25,6 @@ protocol FilePreviewScreenCoordinatorDelegate: class {
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listNode: ListNode
-    private var previewViewController: FilePreviewViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -43,7 +42,6 @@ class FilePreviewScreenCoordinator: Coordinator {
         viewController.themingService = themingService
         viewController.filePreviewViewModel = filePreviewViewModel
         viewController.title = listNode.title
-        previewViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
