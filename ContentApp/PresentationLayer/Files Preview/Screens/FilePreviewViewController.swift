@@ -43,11 +43,7 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
-
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(orientationChangedNotification),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
+        
         appDelegate?.allowedOrientation = .all
     }
 
@@ -85,6 +81,17 @@ class FilePreviewViewController: SystemThemableViewController {
         return isFullScreen
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            if sSelf.needsContraintsForFullScreen {
+                sSelf.activateContraintsToSuperview()
+            }
+        }
+        filePreviewViewModel?.filePreview?.recalculateFrame(from: size)
+    }
+
     // MARK: - Private Helpers
 
     private func activateContraintsToSuperview() {
@@ -102,17 +109,6 @@ class FilePreviewViewController: SystemThemableViewController {
     private func stopLoading() {
         progressView.stopAnimating()
         progressView.setHidden(true, animated: false)
-    }
-
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        filePreviewViewModel?.filePreview?.recalculateFrame(from: size)
-    }
-
-    @objc private func orientationChangedNotification() {
-        if needsContraintsForFullScreen {
-            activateContraintsToSuperview()
-        }
     }
 
     override func applyComponentsThemes() {
