@@ -104,11 +104,15 @@ class FilePreviewViewController: SystemThemableViewController {
         progressView.setHidden(true, animated: false)
     }
 
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        filePreviewViewModel?.filePreview?.recalculateFrame(from: size)
+    }
+
     @objc private func orientationChangedNotification() {
         if needsContraintsForFullScreen {
             activateContraintsToSuperview()
         }
-        filePreviewViewModel?.filePreview?.recalculateFrame(from: containerFilePreview.bounds.size)
     }
 
     override func applyComponentsThemes() {

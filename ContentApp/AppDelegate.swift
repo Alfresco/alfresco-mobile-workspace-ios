@@ -59,6 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.allowedOrientation
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return allowedOrientation
+        }
+        return .all
     }
 }
