@@ -122,7 +122,6 @@ class ResultViewController: SystemThemableViewController {
 
     func updateRecentSearches() {
         recentSearchesViewModel.reloadRecentSearch()
-        resultsListController?.scrollToSection(0)
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         stopLoading()
     }

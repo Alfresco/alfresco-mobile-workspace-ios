@@ -89,7 +89,7 @@ extension AimsViewModel: AlfrescoAuthDelegate {
 
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
-                
+        
                 self.fetchProfileInformation()
             }
         case .failure(let error):
