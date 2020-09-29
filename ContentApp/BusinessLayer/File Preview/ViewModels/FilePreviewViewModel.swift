@@ -44,11 +44,7 @@ class FilePreviewViewModel {
     weak var viewModelDelegate: FilePreviewViewModelDelegate?
 
     var pdfRenderer: PDFRenderer?
-    var filePreview: FilePreviewProtocol? {
-        didSet {
-            appDelegate?.allowedOrientation = .all
-        }
-    }
+    var filePreview: FilePreviewProtocol?
 
     private var renditionTimer: Timer?
 
