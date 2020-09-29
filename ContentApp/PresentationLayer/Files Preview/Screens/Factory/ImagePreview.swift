@@ -42,7 +42,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var fullScreenTimer: Timer?
     private var isFullScreen: Bool = false {
         didSet {
-            filePreviewDelegate?.applyFullScreen(isFullScreen)
+            filePreviewDelegate?.enableFullScreen(isFullScreen)
         }
     }
 

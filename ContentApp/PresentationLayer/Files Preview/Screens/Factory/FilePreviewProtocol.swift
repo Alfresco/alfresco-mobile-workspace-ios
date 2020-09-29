@@ -27,7 +27,7 @@ protocol FilePreviewProtocol: UIView {
 }
 
 protocol FilePreviewDelegate: class {
-    func applyFullScreen(_ enable: Bool)
+    func enableFullScreen(_ enable: Bool)
 }
 
 extension FilePreviewProtocol {

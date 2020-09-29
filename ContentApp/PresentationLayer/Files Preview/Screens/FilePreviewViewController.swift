@@ -199,7 +199,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         })
     }
 
-    func calculateViewForFullscreen() {
+    func enableFullscreenContentExperience() {
         needsContraintsForFullScreen = true
         activateContraintsToSuperview()
     }
@@ -208,7 +208,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 // MARK: - FilePreview Delegate
 
 extension FilePreviewViewController: FilePreviewDelegate {
-    func applyFullScreen(_ enable: Bool) {
+    func enableFullScreen(_ enable: Bool) {
         isFullScreen = enable
         containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
         navigationController?.setNavigationBarHidden(isFullScreen, animated: true)

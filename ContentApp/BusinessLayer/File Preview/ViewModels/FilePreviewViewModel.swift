@@ -23,7 +23,7 @@ import AlfrescoContent
 protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
     func display(doneRequesting: Bool, error: Error?)
-    func calculateViewForFullscreen()
+    func enableFullscreenContentExperience()
     func requestFileUnlock(retry: Bool)
 }
 
@@ -61,7 +61,7 @@ class FilePreviewViewModel {
 
         switch filePreviewType {
         case .video, .image, .gif:
-            viewModelDelegate?.calculateViewForFullscreen()
+            viewModelDelegate?.enableFullscreenContentExperience()
             size = kWindow.bounds.size
         default: break
         }
