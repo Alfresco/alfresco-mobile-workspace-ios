@@ -48,10 +48,11 @@ class BasicAuthViewModel {
             case .success:
                 if let accountParams = sSelf.authenticationService?.parameters {
                     let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
-                    sSelf.accountService?.register(account: account)
-                    sSelf.accountService?.activeAccount = account
 
                     AlfrescoContentAPI.basePath = account.apiBasePath
+
+                    sSelf.accountService?.register(account: account)
+                    sSelf.accountService?.activeAccount = account
                 }
 
                 sSelf.fetchProfileInformation()
