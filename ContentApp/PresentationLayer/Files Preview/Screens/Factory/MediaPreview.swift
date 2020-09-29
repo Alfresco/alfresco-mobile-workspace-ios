@@ -51,7 +51,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var isFullScreen: Bool = false {
         didSet {
             if !isAudioFile {
-                filePreviewDelegate?.applyFullScreen(isFullScreen)
+                filePreviewDelegate?.enableFullScreen(isFullScreen)
                 apply(fade: isFullScreen, to: actionsView)
             }
         }

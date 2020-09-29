@@ -201,10 +201,9 @@ extension PDFRenderer: WKNavigationDelegate {
             pdfView.backgroundColor = backgroundColor
         }
 
-        pdfView.autoScales = true
         pdfView.maxScaleFactor = 10.0
-        pdfView.minScaleFactor = 1
-        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
+        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit 
+        pdfView.autoScales = true
 
         NSLayoutConstraint.activate([
             self.topAnchor.constraint(equalTo: pdfView.topAnchor, constant: 0),
