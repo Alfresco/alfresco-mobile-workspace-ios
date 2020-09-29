@@ -29,7 +29,7 @@ protocol FilePreviewViewModelDelegate: class {
 }
 
 struct RenditionServiceConfiguration {
-    static let maxRetries = 10
+    static let maxRetries = 1
     static let retryDelay: TimeInterval = 5
 }
 
@@ -111,9 +111,9 @@ class FilePreviewViewModel {
 
     func sendAnalyticsForNoPreviewFile() {
         let fileExtension = node.title.split(separator: ".").last
-        Analytics.logEvent("No Preview",
-                           parameters: ["mimetype": node.mimeType ?? "",
-                                        "title": fileExtension ?? ""])
+        Analytics.logEvent("No_Preview_File",
+                           parameters: ["file_mimetype": node.mimeType ?? "",
+                                        "file_extension": fileExtension ?? ""])
     }
 
     // MARK: - Private interface
