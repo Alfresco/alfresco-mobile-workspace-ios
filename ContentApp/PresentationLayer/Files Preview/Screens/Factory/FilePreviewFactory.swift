@@ -21,7 +21,7 @@ import UIKit
 
 class FilePreviewFactory {
 
-    static func getPlainTextPreview(with text: String, on size: CGSize) -> FilePreviewProtocol {
+    static func getPlainTextPreview(with text: Data, on size: CGSize) -> FilePreviewProtocol {
         let plainTextPreview = PlainTextPreview()
         plainTextPreview.display(text: text)
         return plainTextPreview
