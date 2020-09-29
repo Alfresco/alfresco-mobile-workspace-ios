@@ -84,10 +84,12 @@ extension AimsViewModel: AlfrescoAuthDelegate {
             if let authSession = session, let accountParams = authenticationService?.parameters {
                 let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
                 let account = AIMSAccount(with: accountSession)
-                accountService?.register(account: account)
-                accountService?.activeAccount = account
 
                 AlfrescoContentAPI.basePath = account.apiBasePath
+
+                accountService?.register(account: account)
+                accountService?.activeAccount = account
+                
                 self.fetchProfileInformation()
             }
         case .failure(let error):
