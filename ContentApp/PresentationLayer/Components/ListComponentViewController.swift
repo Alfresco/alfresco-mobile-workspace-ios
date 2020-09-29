@@ -249,11 +249,18 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
 
         emptyListView.isHidden = !isDataSourceEmpty
 
+        // If loading the first page or missing pagination scroll to top
+        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil) && error == nil && !isDataSourceEmpty
+
         if error == nil {
             collectionView.reloadData()
             collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
                 guard let sSelf = self else { return }
                 sSelf.stopLoading()
+
+                if scrollToTop {
+                    sSelf.scrollToSection(0)
+                }
             })
 
             listActionDelegate?.didUpdateList(error: error, pagination: pagination)
@@ -261,12 +268,11 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
                 guard let sSelf = self else { return }
                 sSelf.stopLoading()
-            })
-        }
 
-        // If loading the first page or missing pagination scroll to top
-        if (pagination?.skipCount == 0 || pagination == nil) && error == nil && !isDataSourceEmpty {
-            scrollToSection(0)
+                if scrollToTop {
+                    sSelf.scrollToSection(0)
+                }
+            })
         }
     }
 }
