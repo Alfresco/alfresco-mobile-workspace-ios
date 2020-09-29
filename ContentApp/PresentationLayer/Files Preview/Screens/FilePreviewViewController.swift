@@ -160,6 +160,9 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         if doneRequesting {
             stopLoading()
         }
+        if error != nil {
+            filePreviewViewModel?.sendAnalyticsForNoPreviewFile()
+        }
     }
 
     func requestFileUnlock(retry: Bool) {

@@ -19,6 +19,7 @@
 import UIKit
 import AlfrescoAuth
 import AlfrescoContent
+import Firebase
 
 protocol FilePreviewViewModelDelegate: class {
     func display(view: FilePreviewProtocol)
@@ -86,7 +87,7 @@ class FilePreviewViewModel {
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                     sSelf.filePreview = noPreview
                     sSelf.viewModelDelegate?.display(view: noPreview)
-                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
+                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
                 }
             }
         } else { // Show the actual content from URL
@@ -106,6 +107,13 @@ class FilePreviewViewModel {
         filePreview = nil
         pdfRenderer = nil
         renditionTimer?.invalidate()
+    }
+
+    func sendAnalyticsForNoPreviewFile() {
+        let fileExtension = node.title.split(separator: ".").last
+        Analytics.logEvent(AnalyticsConstants.Events.noFilePreview,
+                           parameters: [AnalyticsConstants.Parameters.fileMimetype: node.mimeType ?? "",
+                                        AnalyticsConstants.Parameters.fileExtension: fileExtension ?? ""])
     }
 
     // MARK: - Private interface
@@ -203,7 +211,7 @@ class FilePreviewViewModel {
             let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
             filePreview = noPreview
             viewModelDelegate?.display(view: noPreview)
-            viewModelDelegate?.display(doneRequesting: true, error: nil)
+            viewModelDelegate?.display(doneRequesting: true, error: NSError())
 
             return
         }
