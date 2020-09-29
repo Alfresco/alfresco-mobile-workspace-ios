@@ -122,12 +122,9 @@ class ResultViewController: SystemThemableViewController {
 
     func updateRecentSearches() {
         recentSearchesViewModel.reloadRecentSearch()
-        if recentSearchesViewModel.searches.count > 0 && (recentSearchCollectionView.cellForItem(at: kIndexPathZero) != nil) {
-            recentSearchCollectionView.scrollToItem(at: kIndexPathZero, at: .top, animated: false)
-        }
+        resultsListController?.scrollToSection(0)
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         stopLoading()
-        recentSearchCollectionView.reloadData()
     }
 
     func updateChips(_ array: [SearchChipItem]) {
