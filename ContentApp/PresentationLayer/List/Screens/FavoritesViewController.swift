@@ -63,6 +63,15 @@ class FavoritesViewController: SystemSearchViewController {
         folderAndFilesViewController?.viewWillAppear(animated)
         librariesViewController?.viewWillAppear(animated)
         addAvatarInSettingsButton()
+
+        // Force a layout update if necessary to handle the case where the user
+        // is returning from a different orientation then the screen was originally on
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let selectedItem = tabBar.selectedItem {
+                view.layoutIfNeeded()
+                selectTabItem(item: selectedItem)
+            }
+        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -78,11 +87,7 @@ class FavoritesViewController: SystemSearchViewController {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }  
             if let selectedItem = sSelf.tabBar.selectedItem {
-                guard let selectedIndex = sSelf.tabBar.items.firstIndex(of: selectedItem) else {
-                    fatalError("MDCTabBarDelegate given selected item not found in tabBar.items")
-                }
-                sSelf.scrollView.setContentOffset(CGPoint(x: CGFloat(selectedIndex) * size.width, y: 0),
-                                                  animated: false)
+                sSelf.selectTabItem(item: selectedItem)
             }
         }
     }
@@ -193,16 +198,20 @@ class FavoritesViewController: SystemSearchViewController {
         librariesViewController.startLoading()
         librariesListViewModel?.refreshList()
     }
-}
 
-extension FavoritesViewController: MDCTabBarDelegate {
-    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+    func selectTabItem(item: UITabBarItem) {
         guard let index = tabBar.items.firstIndex(of: item) else {
             fatalError("MDCTabBarDelegate given selected item not found in tabBar.items")
         }
 
-        scrollView.setContentOffset(CGPoint(x: CGFloat(index) * view.bounds.width, y: 0),
+        scrollView.setContentOffset(CGPoint(x: CGFloat(index) * scrollView.bounds.width, y: 0),
                                     animated: true)
+    }
+}
+
+extension FavoritesViewController: MDCTabBarDelegate {
+    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+        selectTabItem(item: item)
     }
 }
 
