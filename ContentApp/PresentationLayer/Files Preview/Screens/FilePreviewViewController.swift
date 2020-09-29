@@ -43,7 +43,7 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
-        
+
         appDelegate?.allowedOrientation = .all
     }
 
