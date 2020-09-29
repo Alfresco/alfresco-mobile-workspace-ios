@@ -18,9 +18,10 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 class PlainTextPreview: UIView, FilePreviewProtocol {
-    private var plainTextView: UITextView?
+    private var plainTextWebView: WKWebView?
 
     // MARK: - Init
 
@@ -29,18 +30,17 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
 
-        let textView = UITextView()
-        textView.backgroundColor = .clear
-        textView.isEditable = false
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(textView)
-        plainTextView = textView
+        let webView = WKWebView()
+        webView.backgroundColor = .clear
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(webView)
+        plainTextWebView = webView
 
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            textView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
-            textView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            textView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
+            webView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
+            webView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
+            webView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
         ])
     }
 
@@ -50,15 +50,9 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Helpers
 
-    func display(text: String) {
-        plainTextView?.text = text
-    }
-
-    // MARK: - FilePreviewProtocol
-
-    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
-        guard let currentTheme = currentTheme else { return }
-
-        plainTextView?.applyStyleBody2OnSurface(theme: currentTheme)
+    func display(text: Data) {
+        if let url = URL(string: "http://localhost") {
+            plainTextWebView?.load(text, mimeType: "text/plain", characterEncodingName: "UTF-8", baseURL: url)
+        }
     }
 }

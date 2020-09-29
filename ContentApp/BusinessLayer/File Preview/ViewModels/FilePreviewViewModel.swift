@@ -110,15 +110,12 @@ class FilePreviewViewModel {
 
     // MARK: - Private interface
 
-    private func contentText(_ completionHandler: @escaping (String?, Error?) -> Void) {
+    private func contentText(_ completionHandler: @escaping (Data?, Error?) -> Void) {
         NodesAPI.getNodeContent(nodeId: node.guid) { (data, error) in
-            var contentString: String?
             if let error = error {
                 AlfrescoLog.error(error)
-            } else if let data = data {
-                contentString = String(data: data, encoding: .utf8) ?? nil
             }
-            completionHandler(contentString, error)
+            completionHandler(data, error)
         }
     }
 
