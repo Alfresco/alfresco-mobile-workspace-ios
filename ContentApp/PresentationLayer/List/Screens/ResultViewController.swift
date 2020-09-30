@@ -124,6 +124,7 @@ class ResultViewController: SystemThemableViewController {
         recentSearchesViewModel.reloadRecentSearch()
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ? LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
         stopLoading()
+        recentSearchCollectionView.reloadData()
     }
 
     func updateChips(_ array: [SearchChipItem]) {
