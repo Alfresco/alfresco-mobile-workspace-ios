@@ -20,10 +20,11 @@ import Foundation
 
 struct AnalyticsConstants {
     struct Events {
-        static let noFilePreview = "No_File_Preview_Event"
+        static let filePreview = "file_preview"
     }
     struct Parameters {
         static let fileMimetype = "file_mimetype"
         static let fileExtension = "file_extension"
+        static let previewSuccess = "success"
     }
 }

@@ -109,11 +109,12 @@ class FilePreviewViewModel {
         renditionTimer?.invalidate()
     }
 
-    func sendAnalyticsForNoPreviewFile() {
+    func sendAnalyticsForPreviewFile(success: Bool) {
         let fileExtension = node.title.split(separator: ".").last
-        Analytics.logEvent(AnalyticsConstants.Events.noFilePreview,
+        Analytics.logEvent(AnalyticsConstants.Events.filePreview,
                            parameters: [AnalyticsConstants.Parameters.fileMimetype: node.mimeType ?? "",
-                                        AnalyticsConstants.Parameters.fileExtension: fileExtension ?? ""])
+                                        AnalyticsConstants.Parameters.fileExtension: fileExtension ?? "",
+                                        AnalyticsConstants.Parameters.previewSuccess: success])
     }
 
     // MARK: - Private interface
