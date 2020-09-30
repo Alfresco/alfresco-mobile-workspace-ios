@@ -54,9 +54,13 @@ class ApplicationCoordinator: Coordinator {
     }
 
     @objc private func loadSplashScreenCoordinator(notification: Notification) {
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
+            guard let sSelf = self else { return }
 
-        start()
+            sSelf.rootViewController = UINavigationController()
+            sSelf.splashScreenCoordinator = SplashScreenCoordinator.init(with: sSelf.rootViewController)
+
+            sSelf.start()
+        })
     }
 }
