@@ -18,12 +18,30 @@
 
 import UIKit
 
+struct ControllerRotation {
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
+        if let delegate = UIApplication.shared.delegate as? AppDelegate {
+            if UIDevice.current.userInterfaceIdiom != .pad {
+                delegate.orientationLock = orientation
+            }
+        }
+    }
+
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation: UIInterfaceOrientation) {
+        self.lockOrientation(orientation)
+
+        UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
+        UINavigationController.attemptRotationToDeviceOrientation()
+    }
+}
+
 class SystemThemableViewController: UIViewController {
     var themingService: MaterialDesignThemingService?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyComponentsThemes()
+        ControllerRotation.lockOrientation(.portrait)
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
