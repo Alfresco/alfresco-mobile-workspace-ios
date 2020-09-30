@@ -43,13 +43,13 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
-
-        appDelegate?.allowedOrientation = .all
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+
+        ControllerRotation.lockOrientation(.all)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -69,12 +69,10 @@ class FilePreviewViewController: SystemThemableViewController {
 
         tabBarController?.tabBar.isHidden = false
 
-        appDelegate?.allowedOrientation = .portrait
-        UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
-
         filePreviewViewModel?.cancelOngoingOperations()
-
         Snackbar.dimissAll()
+
+        ControllerRotation.lockOrientation(.portrait, andRotateTo: .portrait)
     }
 
     override var prefersStatusBarHidden: Bool {

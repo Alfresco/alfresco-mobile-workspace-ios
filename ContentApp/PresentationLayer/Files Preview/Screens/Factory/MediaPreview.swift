@@ -63,7 +63,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 actionsView.isHidden = false
                 actionsView.alpha = 1.0
                 bigPlayPauseButton.alpha = 0.0
-                appDelegate?.allowedOrientation = .portrait
             }
         }
     }
