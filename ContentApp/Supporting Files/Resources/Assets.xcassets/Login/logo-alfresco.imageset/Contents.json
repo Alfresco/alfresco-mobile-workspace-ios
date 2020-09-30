@@ -1,19 +1,8 @@
 {
   "images" : [
     {
-      "filename" : "alfresco-logo-title.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "filename" : "alfresco-logo-title@2x.png",
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "filename" : "alfresco-logo-title@3x.png",
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "logo.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
