@@ -42,7 +42,9 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var fullScreenTimer: Timer?
     private var isFullScreen: Bool = false {
         didSet {
-            filePreviewDelegate?.enableFullScreen(isFullScreen)
+            if isRendering == false {
+                filePreviewDelegate?.enableFullScreen(isFullScreen)
+            }
         }
     }
 
@@ -86,6 +88,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
             } else {
                 zoomImageView?.display(image: imageCachedContainer.image)
             }
+            isRendering = false
             handler(imageCachedContainer.image, 0, 0, nil)
             return
         }
