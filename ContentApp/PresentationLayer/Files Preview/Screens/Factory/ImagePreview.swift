@@ -22,7 +22,7 @@ import Nuke
 import Gifu
 import SVGKit
 
-public typealias ImagePreviewHandler = (_ image: UIImage?, _ completedUnitCount: Int64, _ totalUnitCount: Int64, _ error: Error?) -> Void
+public typealias ImagePreviewHandler = (_ image: UIImage?, _ error: Error?) -> Void
 
 class ImagePreview: UIView, FilePreviewProtocol {
 
@@ -89,7 +89,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
                 zoomImageView?.display(image: imageCachedContainer.image)
             }
             isRendering = false
-            handler(imageCachedContainer.image, 0, 0, nil)
+            handler(imageCachedContainer.image, nil)
             return
         }
         self.imageRequest = imageRequest
@@ -135,21 +135,21 @@ class ImagePreview: UIView, FilePreviewProtocol {
         }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
         task = loadImage(with: imageRequest,
-                  options: options,
-                  into: imageView,
-                  progress: { (response, completed, total) in
-                    handler(response?.image, completed, total, nil)
-        }, completion: { [weak self] (result) in
-            guard let sSelf = self else { return }
-            sSelf.isRendering = false
-            switch result {
-            case .failure(let error):
-                handler(nil, 0, 0, error)
-            case .success(let response):
-                sSelf.zoomImageView?.display(image: response.image)
-                handler(response.image, 0, 0, nil)
-            }
-        })
+                         options: options,
+                         into: imageView,
+                         progress: nil,
+                         completion: { [weak self] (result) in
+                            guard let sSelf = self else { return }
+                            sSelf.isRendering = false
+
+                            switch result {
+                            case .failure(let error):
+                                handler(nil, error)
+                            case .success(let response):
+                                sSelf.zoomImageView?.display(image: response.image)
+                                handler(response.image, nil)
+                            }
+                         })
     }
 
     private func displayGIF() {
@@ -161,11 +161,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
             switch result {
             case .success(let response):
                 sSelf.isRendering = false
-                handler(response.image, 0, 0, nil)
+                handler(response.image, nil)
                 sSelf.display(response.container)
                 sSelf.animateFadeIn()
             case .failure(let error):
-                handler(nil, 0, 0, error)
+                handler(nil, error)
             }
         })
     }
@@ -178,7 +178,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
             guard let sSelf = self else { return }
             switch result {
             case .failure(let error):
-                handler(nil, 0, 0, error)
+                handler(nil, error)
             case .success(let response):
                 sSelf.isRendering = false
                 if let data = response.container.data {
@@ -187,10 +187,10 @@ class ImagePreview: UIView, FilePreviewProtocol {
                         svgImage.size = sSelf.resizeSVG()
                         sSelf.svgImageView = svgImage
                         sSelf.zoomImageView?.display(image: svgImage.uiImage)
-                        handler(svgImage.uiImage, 0, 0, nil)
+                        handler(svgImage.uiImage, nil)
                     }
                 }
-                handler(nil, 0, 0, nil)
+                handler(nil, nil)
             }
         })
     }

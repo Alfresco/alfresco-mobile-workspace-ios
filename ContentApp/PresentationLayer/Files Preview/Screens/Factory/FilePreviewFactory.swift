@@ -28,37 +28,41 @@ class FilePreviewFactory {
     }
 
     static func getPreview(for previewType: FilePreviewType, and url: URL? = nil, on size: CGSize,
-                           completion: ((_ done: Bool, _ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
+                           completion: ((_ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
         guard let url = url else {
-            completion?(true, nil)
+            completion?(nil)
             return FileWithoutPreview()
         }
+
         switch previewType {
         case .image, .svg, .gif:
             let imagePreview = ImagePreview(frame: CGRect(origin: .zero, size: size))
-            imagePreview.display(for: previewType, from: url) { (_, completed, total, error) in
+            imagePreview.display(for: previewType, from: url) { (_, error) in
                 if let error = error {
-                    completion?(true, error)
                     AlfrescoLog.error(error)
                 }
-                completion?((completed == total && completed == 0), nil)
+
+                completion?(error)
             }
             return imagePreview
+
         case .pdf, .rendition:
             let pdfRendered = PDFRenderer(with: CGRect(origin: .zero, size: size), pdfURL: url)
-            completion?(true, nil)
+            completion?(nil)
             return pdfRendered
+
         case .video, .audio:
             if let mediaPreview: MediaPreview = .fromNib() {
                 mediaPreview.frame = CGRect(origin: .zero, size: size)
                 mediaPreview.play(from: url, isAudioFile: (previewType == .audio))
-                completion?(true, nil)
+                completion?(nil)
                 return mediaPreview
             }
-            completion?(true, nil)
+            completion?(nil)
             return FileWithoutPreview()
+
         default:
-            completion?(true, nil)
+            completion?(nil)
             return FileWithoutPreview()
         }
     }

@@ -22,8 +22,9 @@ import AlfrescoContent
 import Firebase
 
 protocol FilePreviewViewModelDelegate: class {
-    func display(view: FilePreviewProtocol)
-    func display(doneRequesting: Bool, error: Error?)
+    func display(previewContainer: FilePreviewProtocol)
+    func didFinishLoadingPreview(error: Error?)
+    func willPreparePreview()
     func enableFullscreenContentExperience()
     func requestFileUnlock(retry: Bool)
 }
@@ -36,6 +37,12 @@ struct RenditionServiceConfiguration {
 enum RenditionType: String {
     case pdf = "pdf", imagePreview = "imgpreview"
 }
+
+enum FilePreviewError: Error {
+    case invalidRenditionURL(String)
+}
+
+typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel {
     var node: ListNode
@@ -74,20 +81,19 @@ class FilePreviewViewModel {
 
                 sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
             }
-
         } else if filePreviewType == .text { // Show text content
             contentText { [weak self] (text, error) in
                 guard let sSelf = self else { return }
                 if let text = text {
                     let preview = FilePreviewFactory.getPlainTextPreview(with: text, on: size)
                     sSelf.filePreview = preview
-                    sSelf.viewModelDelegate?.display(view: preview)
-                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: nil)
+                    sSelf.viewModelDelegate?.display(previewContainer: preview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
                 } else {
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                     sSelf.filePreview = noPreview
-                    sSelf.viewModelDelegate?.display(view: noPreview)
-                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
+                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
                 }
             }
         } else { // Show the actual content from URL
@@ -130,19 +136,21 @@ class FilePreviewViewModel {
 
     private func contentURL(for ticket: String?) -> URL? {
         guard let ticket = ticket, let basePathURL = accountService?.activeAccount?.apiBasePath,
-            let previewURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetNodeContent, node.guid, ticket))
-            else { return nil }
+              let previewURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetNodeContent, node.guid, ticket))
+        else { return nil }
         return previewURL
     }
 
     private func renditionURL(for renditionId: String, ticket: String?) -> URL? {
         guard let ticket = ticket, let basePathURL = accountService?.activeAccount?.apiBasePath,
-            let renditionURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetRenditionContent, node.guid, renditionId, ticket))
-            else { return nil }
+              let renditionURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetRenditionContent, node.guid, renditionId, ticket))
+        else { return nil }
         return renditionURL
     }
 
     private func fetchRenditionURL(for nodeId: String, completionHandler: @escaping (URL?, _ isImageRendition: Bool) -> Void) {
+        viewModelDelegate?.willPreparePreview()
+
         accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
 
@@ -165,7 +173,7 @@ class FilePreviewViewModel {
         })
     }
 
-    private func getRenditionURL(from list: [RenditionEntry], renditionId: String, completionHandler: @escaping (URL?) -> Void) {
+    private func getRenditionURL(from list: [RenditionEntry], renditionId: String, completionHandler: @escaping RenditionCompletionHandler) {
         let rendition = list.filter { (rendition) -> Bool in
             rendition.entry._id == renditionId
         }.first
@@ -176,34 +184,49 @@ class FilePreviewViewModel {
                 completionHandler(renditionURL(for: renditionId, ticket: ticket))
             } else {
                 let renditiontype = RenditionBodyCreate(_id: renditionId)
-                RenditionsAPI.createRendition(nodeId: node.guid, renditionBodyCreate: renditiontype) { [weak self] (_, error) in
+
+                accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
+                    AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
                     guard let sSelf = self else { return }
 
-                    if error != nil {
-                        AlfrescoLog.error("Unexpected error while creating rendition for node: \(sSelf.node.guid)")
-                    } else {
-                        var retries = RenditionServiceConfiguration.maxRetries
-
-                        sSelf.renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay, repeats: true) { (timer) in
-                            retries -= 1
-
-                            if retries == 0 {
-                                timer.invalidate()
-                                completionHandler(nil)
-                            }
-
-                            RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
-                                if rendition?.entry.status == .created {
-                                    timer.invalidate()
-                                    completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
-                                }
-                            }
+                    RenditionsAPI.createRendition(nodeId: sSelf.node.guid, renditionBodyCreate: renditiontype) {  (_, error) in
+                        if error != nil {
+                            AlfrescoLog.error("Unexpected error while creating rendition for node: \(sSelf.node.guid)")
+                        } else {
+                            sSelf.retryRenditionCall(for: renditionId, ticket: ticket, completionHandler: completionHandler)
                         }
                     }
-                }
+                })
             }
         } else {
             completionHandler(nil)
+        }
+    }
+
+    private func retryRenditionCall(for renditionId: String, ticket: String?, completionHandler: @escaping RenditionCompletionHandler) {
+        var retries = RenditionServiceConfiguration.maxRetries
+
+        renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay, repeats: true) { [weak self] (timer) in
+            guard let sSelf = self else { return }
+
+            retries -= 1
+
+            if retries == 0 {
+                timer.invalidate()
+                completionHandler(nil)
+            }
+
+            sSelf.accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+                RenditionsAPI.getRendition(nodeId: sSelf.node.guid, renditionId: renditionId) { (rendition, _) in
+                    if rendition?.entry.status == .created {
+                        timer.invalidate()
+                        completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
+                    }
+                }
+            })
         }
     }
 
@@ -211,35 +234,33 @@ class FilePreviewViewModel {
         guard let renditionURL = url else {
             let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
             filePreview = noPreview
-            viewModelDelegate?.display(view: noPreview)
-            viewModelDelegate?.display(doneRequesting: true, error: NSError())
+            viewModelDelegate?.display(previewContainer: noPreview)
+            viewModelDelegate?.didFinishLoadingPreview(error: FilePreviewError.invalidRenditionURL("No rendition URL provided"))
 
             return
         }
 
-        let preview = FilePreviewFactory.getPreview(for: type, and: renditionURL, on: size) { [weak self] (done, error) in
+        let preview = FilePreviewFactory.getPreview(for: type, and: renditionURL, on: size) { [weak self] (error) in
             guard let sSelf = self else { return }
 
             if let error = error {
                 if type != .pdf || type != .rendition {
-                    sSelf.fetchRenditionURL(for: sSelf.node.guid) { [weak self] url, isImageRendition in
-                        guard let sSelf = self else { return }
-
+                    sSelf.fetchRenditionURL(for: sSelf.node.guid) { url, isImageRendition in
                         sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
                     }
                 } else {
-                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
                     let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
                     sSelf.filePreview = noPreview
-                    sSelf.viewModelDelegate?.display(view: noPreview)
+                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
                 }
             } else {
-                sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
+                sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
             }
         }
 
         filePreview = preview
-        viewModelDelegate?.display(view: preview)
+        viewModelDelegate?.display(previewContainer: preview)
 
         // Set delegate for password requesting PDF renditions
         if let filePreview = preview as? PDFRenderer {

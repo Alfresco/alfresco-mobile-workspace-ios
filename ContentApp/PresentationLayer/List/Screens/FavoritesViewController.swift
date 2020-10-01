@@ -85,7 +85,7 @@ class FavoritesViewController: SystemSearchViewController {
         librariesViewController?.collectionView.collectionViewLayout.invalidateLayout()
 
         DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }  
+            guard let sSelf = self else { return }
             if let selectedItem = sSelf.tabBar.selectedItem {
                 sSelf.selectTabItem(item: selectedItem)
             }
