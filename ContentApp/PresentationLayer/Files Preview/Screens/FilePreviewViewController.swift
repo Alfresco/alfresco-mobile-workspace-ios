@@ -25,6 +25,10 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet var previewContraintsToSafeArea: [NSLayoutConstraint]!
     @IBOutlet var previewContraintsToSuperview: [NSLayoutConstraint]!
+    @IBOutlet weak var filePreviewStatusView: UIView!
+    @IBOutlet weak var mimeTypeImageView: UIImageView!
+    @IBOutlet weak var filePreviewStatusLabel: UILabel!
+
     var needsContraintsForFullScreen = false
 
     var filePreviewViewModel: FilePreviewViewModel?
@@ -121,6 +125,10 @@ class FilePreviewViewController: SystemThemableViewController {
         navigationController?.navigationBar.backgroundColor = currentTheme.backgroundColor
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController?.navigationBar.shadowImage = nil
+
+        filePreviewStatusLabel.font = currentTheme.captionTextStyle.font
+        filePreviewStatusLabel.textColor = currentTheme.onSurfaceColor
+        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
@@ -141,24 +149,19 @@ class FilePreviewViewController: SystemThemableViewController {
 // MARK: - PreviewFile ViewModel Delegate
 
 extension FilePreviewViewController: FilePreviewViewModelDelegate {
-    func display(view: FilePreviewProtocol) {
-        containerFilePreview.addSubview(view)
+    func display(previewContainer: FilePreviewProtocol) {
+        filePreviewStatusLabel.text = LocalizationConstants.FilePreview.loadingPreviewMessage
+
+        containerFilePreview.addSubview(previewContainer)
         filePreviewViewModel?.filePreview?.filePreviewDelegate = self
         filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
-            view.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor, constant: 0),
-            view.leftAnchor.constraint(equalTo: self.containerFilePreview.leftAnchor, constant: 0),
-            view.rightAnchor.constraint(equalTo: self.containerFilePreview.rightAnchor, constant: 0),
-            view.bottomAnchor.constraint(equalTo: self.containerFilePreview.bottomAnchor, constant: 0)
+            previewContainer.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor, constant: 0),
+            previewContainer.leftAnchor.constraint(equalTo: self.containerFilePreview.leftAnchor, constant: 0),
+            previewContainer.rightAnchor.constraint(equalTo: self.containerFilePreview.rightAnchor, constant: 0),
+            previewContainer.bottomAnchor.constraint(equalTo: self.containerFilePreview.bottomAnchor, constant: 0)
         ])
-    }
-
-    func display(doneRequesting: Bool, error: Error?) {
-        if doneRequesting {
-            stopLoading()
-            filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
-        }
     }
 
     func requestFileUnlock(retry: Bool) {
@@ -201,6 +204,16 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     func enableFullscreenContentExperience() {
         needsContraintsForFullScreen = true
         activateContraintsToSuperview()
+    }
+
+    func willPreparePreview() {
+        filePreviewStatusLabel.text = LocalizationConstants.FilePreview.preparingPreviewMessage
+    }
+
+    func didFinishLoadingPreview(error: Error?) {
+        filePreviewStatusView.isHidden = true
+        stopLoading()
+        filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
     }
 }
 

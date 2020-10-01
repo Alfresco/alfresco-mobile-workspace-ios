@@ -202,7 +202,7 @@ extension PDFRenderer: WKNavigationDelegate {
         }
 
         pdfView.maxScaleFactor = 10.0
-        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit 
+        pdfView.minScaleFactor = pdfView.scaleFactorForSizeToFit
         pdfView.autoScales = true
 
         NSLayoutConstraint.activate([

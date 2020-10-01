@@ -1054,6 +1054,33 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="Zx7-qK-8zz"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0F-3a-ePc">
+                                <rect key="frame" x="157" y="403" width="100" height="100"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Omh-yg-bT9">
+                                        <rect key="frame" x="25" y="25" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="50" id="hpV-KS-vPh"/>
+                                            <constraint firstAttribute="width" secondItem="Omh-yg-bT9" secondAttribute="height" multiplier="1:1" id="y8Y-0x-N2l"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcA-QW-qS4">
+                                        <rect key="frame" x="50" y="83" width="0.0" height="0.0"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="rcA-QW-qS4" firstAttribute="centerX" secondItem="Omh-yg-bT9" secondAttribute="centerX" id="9KC-iW-zJk"/>
+                                    <constraint firstItem="Omh-yg-bT9" firstAttribute="centerY" secondItem="F0F-3a-ePc" secondAttribute="centerY" id="BIY-rz-oMc"/>
+                                    <constraint firstItem="Omh-yg-bT9" firstAttribute="centerX" secondItem="F0F-3a-ePc" secondAttribute="centerX" id="GAe-Jo-YuV"/>
+                                    <constraint firstAttribute="width" secondItem="F0F-3a-ePc" secondAttribute="height" multiplier="1:1" id="Rz6-XM-9Hs"/>
+                                    <constraint firstItem="rcA-QW-qS4" firstAttribute="top" secondItem="Omh-yg-bT9" secondAttribute="bottom" constant="8" id="kBI-lg-Z1R"/>
+                                    <constraint firstAttribute="width" constant="100" id="qOc-Tt-TJL"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Q-0N-hv3">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1062,6 +1089,7 @@
                         <viewLayoutGuide key="safeArea" id="Nm8-k5-tkg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerX" secondItem="Nm8-k5-tkg" secondAttribute="centerX" id="1FJ-n9-ZTV"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
                             <constraint firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="Kyh-x1-Xub"/>
                             <constraint firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="L3T-gS-byg"/>
@@ -1073,6 +1101,7 @@
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="dLG-Wz-dlS"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="FKD-KB-WFW" secondAttribute="top" id="iJZ-jq-SmT"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
+                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerY" secondItem="Nm8-k5-tkg" secondAttribute="centerY" id="v8x-mr-DeR"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -1085,6 +1114,9 @@
                     </view>
                     <connections>
                         <outlet property="containerFilePreview" destination="T1Q-0N-hv3" id="EdG-js-f09"/>
+                        <outlet property="filePreviewStatusLabel" destination="rcA-QW-qS4" id="0yu-5U-Vjg"/>
+                        <outlet property="filePreviewStatusView" destination="F0F-3a-ePc" id="dp5-Qq-Nwx"/>
+                        <outlet property="mimeTypeImageView" destination="Omh-yg-bT9" id="0Lp-mU-S1q"/>
                         <outlet property="progressView" destination="pCa-oq-KHf" id="oZk-qk-eDn"/>
                         <outletCollection property="previewContraintsToSafeArea" destination="P4Q-uf-vVr" collectionClass="NSMutableArray" id="bPq-6m-h0n"/>
                         <outletCollection property="previewContraintsToSafeArea" destination="XQL-cq-uKo" collectionClass="NSMutableArray" id="D0Q-hi-e95"/>

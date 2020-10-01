@@ -135,5 +135,7 @@ struct LocalizationConstants {
         static let passwordPromptFailTitle = NSLocalizedString("passwordPromptFailTitle", comment: "")
         static let passwordPromptFailMessage = NSLocalizedString("passwordPromptFailMessage", comment: "")
         static let passwordPromptSubmit = NSLocalizedString("passwordPromptSubmit", comment: "")
+        static let preparingPreviewMessage = NSLocalizedString("preparingPreviewMessage", comment: "")
+        static let loadingPreviewMessage = NSLocalizedString("loadingPreviewMessage", comment: "")
     }
 }

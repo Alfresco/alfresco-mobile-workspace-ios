@@ -118,3 +118,5 @@
 "passwordPromptFailTitle" = "Incorrect Password";
 "passwordPromptFailMessage" = "Please re-enter the password to unlock the file.";
 "passwordPromptSubmit"  = "Submit";
+"preparingPreviewMessage" = "Preparing preview...";
+"loadingPreviewMessage" = "Loading preview...";
