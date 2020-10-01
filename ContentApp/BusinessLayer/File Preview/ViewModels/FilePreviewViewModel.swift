@@ -221,14 +221,21 @@ class FilePreviewViewModel {
             guard let sSelf = self else { return }
 
             if let error = error {
-                sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
+                if type != .pdf || type != .rendition {
+                    sSelf.fetchRenditionURL(for: sSelf.node.guid) { [weak self] url, isImageRendition in
+                        guard let sSelf = self else { return }
 
-                let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
-                sSelf.filePreview = noPreview
-                sSelf.viewModelDelegate?.display(view: noPreview)
+                        sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
+                    }
+                } else {
+                    sSelf.viewModelDelegate?.display(doneRequesting: true, error: error)
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                    sSelf.filePreview = noPreview
+                    sSelf.viewModelDelegate?.display(view: noPreview)
+                }
+            } else {
+                sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
             }
-
-            sSelf.viewModelDelegate?.display(doneRequesting: done, error: nil)
         }
 
         filePreview = preview
