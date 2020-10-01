@@ -40,8 +40,9 @@ class FilePreviewFactory {
                 if let error = error {
                     completion?(true, error)
                     AlfrescoLog.error(error)
+                } else {
+                    completion?((completed == total && completed == 0), nil)
                 }
-                completion?((completed == total && completed == 0), nil)
             }
             return imagePreview
         case .pdf, .rendition:
