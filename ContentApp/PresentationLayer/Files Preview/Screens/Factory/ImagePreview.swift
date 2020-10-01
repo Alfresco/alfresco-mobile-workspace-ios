@@ -235,6 +235,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         zoomImageView?.frame = frame
+        zoomImageView?.zoomView?.center = center
         gifImageView?.frame = frame
         if isRendering {
             zoomImageView?.zoomView?.frame = frame
