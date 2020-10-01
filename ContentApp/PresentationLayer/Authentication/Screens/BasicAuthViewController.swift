@@ -136,6 +136,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
         applyThemingInTextField(errorTheme: false)
 

@@ -133,7 +133,6 @@ class ConnectViewController: SystemThemableViewController {
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
-
     }
 
     override func applyComponentsThemes() {
@@ -154,6 +153,7 @@ class ConnectViewController: SystemThemableViewController {
         productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
