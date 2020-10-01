@@ -141,11 +141,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
                     handler(response?.image, completed, total, nil)
         }, completion: { [weak self] (result) in
             guard let sSelf = self else { return }
-            sSelf.isRendering = false
             switch result {
             case .failure(let error):
                 handler(nil, 0, 0, error)
             case .success(let response):
+                sSelf.isRendering = false
                 sSelf.zoomImageView?.display(image: response.image)
                 handler(response.image, 0, 0, nil)
             }
