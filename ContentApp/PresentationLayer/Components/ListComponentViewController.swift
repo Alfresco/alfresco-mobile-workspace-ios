@@ -49,7 +49,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
-    var refreshControl: RefreshIndicatorView?
+    var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
@@ -70,7 +70,7 @@ class ListComponentViewController: SystemThemableViewController {
         progressView.mode = .indeterminate
 
         // Set up pull to refresh control
-        let refreshControl = RefreshIndicatorView(theme: themingService?.activeTheme)
+        let refreshControl = UIRefreshControl()//RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
         self.refreshControl = refreshControl
@@ -87,9 +87,8 @@ class ListComponentViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        applyComponentsThemes()
+
         collectionView.reloadData()
-        refreshControl?.applyTheme(themingService?.activeTheme)
         progressView.progressTintColor = themingService?.activeTheme?.primaryColor
         progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
@@ -97,7 +96,6 @@ class ListComponentViewController: SystemThemableViewController {
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        refreshControl?.applyTheme(themingService?.activeTheme)
         progressView.progressTintColor = themingService?.activeTheme?.primaryColor
         progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
@@ -108,6 +106,7 @@ class ListComponentViewController: SystemThemableViewController {
         guard let currentTheme = self.themingService?.activeTheme else { return }
         emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        refreshControl?.tintColor = currentTheme.primaryColor
     }
 
     func addLocalization() {
