@@ -50,8 +50,8 @@ let kShowLoginScreenNotification = "kShowLoginScreenNotification"
 let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
 
 // MARK: - Animations Time
-let kAnimationSplashScreenLogo = 2.0
-let kAnimationSplashScreenContainerViews = 1.5
+let kAnimationSplashScreenLogo = 0.0
+let kAnimationSplashScreenContainerViews = 0.5
 
 // MARK: - Timers
 let kAIMSAccessTokenRefreshTimeBuffer = 20.0

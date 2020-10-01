@@ -122,6 +122,7 @@ class AimsViewController: SystemThemableViewController {
 
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
