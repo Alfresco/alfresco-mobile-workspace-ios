@@ -109,7 +109,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     @objc private func zoomImageTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         numberOfTaps += 1
-        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] (_) in
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: kFullScreenPreview, repeats: false, block: { [weak self] (_) in
             guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }
             sSelf.isFullScreen = !sSelf.isFullScreen
             sSelf.numberOfTaps = 0
@@ -125,8 +125,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     private func displayImage() {
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView,
-            let imageRequest = self.imageRequest,
-            let handler = imagePreviewHandler else { return }
+              let imageRequest = self.imageRequest,
+              let handler = imagePreviewHandler else { return }
 
         var options = ImageLoadingOptions()
         options.pipeline = ImagePipeline {
@@ -140,12 +140,12 @@ class ImagePreview: UIView, FilePreviewProtocol {
                          progress: nil,
                          completion: { [weak self] (result) in
                             guard let sSelf = self else { return }
-                            sSelf.isRendering = false
 
                             switch result {
                             case .failure(let error):
                                 handler(nil, error)
                             case .success(let response):
+                                sSelf.isRendering = false
                                 sSelf.zoomImageView?.display(image: response.image)
                                 handler(response.image, nil)
                             }
@@ -172,7 +172,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     private func displaySVG() {
         guard let url = self.imageRequest?.urlRequest.url,
-            let handler = imagePreviewHandler else { return }
+              let handler = imagePreviewHandler else { return }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
         task = ImagePipeline.shared.loadImage(with: url, completion: { [weak self] result in
             guard let sSelf = self else { return }
@@ -235,6 +235,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
         zoomImageView?.frame = frame
+        zoomImageView?.zoomView?.center = center
         gifImageView?.frame = frame
         if isRendering {
             zoomImageView?.zoomView?.frame = frame
