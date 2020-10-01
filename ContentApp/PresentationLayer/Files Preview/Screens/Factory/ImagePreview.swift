@@ -109,7 +109,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     @objc private func zoomImageTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         numberOfTaps += 1
-        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: false, block: { [weak self] (_) in
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: kFullScreenPreview, repeats: false, block: { [weak self] (_) in
             guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }
             sSelf.isFullScreen = !sSelf.isFullScreen
             sSelf.numberOfTaps = 0
