@@ -158,6 +158,14 @@ footer {
   right: 0;
 }
 
+#viewerContainer.singlePage {
+  display: flex;
+}
+
+#viewerContainer.singlePage > .pdfViewer {
+  margin: auto;
+}
+
 canvas {
   margin: auto;
   display: block;
