@@ -330,6 +330,7 @@ var PDFViewerApplication = {
   },
 
   initUI: function pdfViewInitUI() {
+    var self = this;
     var eventBus = new pdfjsViewer.EventBus();
     this.eventBus = eventBus;
 
@@ -369,6 +370,10 @@ var PDFViewerApplication = {
       pdfViewer.currentScaleValue = DEFAULT_SCALE_VALUE;
       PDFViewerApplication.initialScale = pdfViewer.currentScale;
 
+      if (self.pdfDocument.numPages == 1) {
+           container.classList.add('singlePage');
+      }
+
 //      pdfViewer.findController.executeCommand("find", {
 //        caseSensitive: false,
 //        findPrevious: undefined,
@@ -378,7 +383,6 @@ var PDFViewerApplication = {
 //      });
     });
 
-    var self = this;
     var pageIndicator = document.getElementById("pageIndicator");
     var padeIndicatorTimeout;
     eventBus.on("pagechanging", function (evt) {
