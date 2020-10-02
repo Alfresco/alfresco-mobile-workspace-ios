@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoCore
+import MaterialComponents.MaterialDialogs
 
 class ApplicationCoordinator: Coordinator {
     let window: UIWindow
@@ -45,12 +46,28 @@ class ApplicationCoordinator: Coordinator {
     }
 
     @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
-        rootViewController = UINavigationController()
-        if let error = notification.userInfo?["error"] as? APIError {
-            splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController, authenticationError: error)
-        }
+        let alert = MDCAlertController(title: LocalizationConstants.Labels.sessionExpiredTitle,
+                                       message: LocalizationConstants.Labels.sesssionExpiredMessage)
 
-        start()
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            let authParameters = AuthenticationParameters.parameters()
+            let loginService = sSelf.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let viewModel = AimsViewModel(with: loginService, accountService: accountService)
+            let url = (authParameters.contentURL == "") ? authParameters.hostname : authParameters.contentURL
+            viewModel.login(repository: url, in: (sSelf.window.rootViewController?.presentedViewController ??  sSelf.window.rootViewController ?? sSelf.rootViewController))
+
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        if let viewController = window.rootViewController?.presentedViewController {
+            viewController.present(alert, animated: true, completion: nil)
+        } else {
+            window.rootViewController?.present(alert, animated: true, completion: nil)
+        }
     }
 
     @objc private func loadSplashScreenCoordinator(notification: Notification) {

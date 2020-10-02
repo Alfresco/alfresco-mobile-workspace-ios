@@ -59,6 +59,8 @@ struct LocalizationConstants {
         static let needHelpTitle = NSLocalizedString("needHelpTitle", comment: "")
         static let conneting = NSLocalizedString("connecting", comment: "")
         static let signingIn = NSLocalizedString("signingIn", comment: "")
+        static let sessionExpiredTitle =  NSLocalizedString("sessionExpiredTitle", comment: "")
+        static let sesssionExpiredMessage =  NSLocalizedString("sesssionExpiredMessage", comment: "")
     }
 
     struct ScreenTitles {
