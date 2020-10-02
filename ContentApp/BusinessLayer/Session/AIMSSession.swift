@@ -118,7 +118,6 @@ extension AIMSSession: AlfrescoAuthDelegate {
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
             let errorDict = ["error": error]
             invalidateSessionRefresh()
-            delegate?.sessionFailedToRefresh(error: error)
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kAPIUnauthorizedRequestNotification), object: nil, userInfo: errorDict)
         }
         refreshInProgress = false

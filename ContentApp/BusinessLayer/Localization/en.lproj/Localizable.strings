@@ -53,6 +53,8 @@
 "needHelpTitle" = "Help";
 "connecting" = "Connecting";
 "signingIn" = "Signing In";
+"sessionExpiredTitle" = "Session Expired";
+"sesssionExpiredMessage" = "You are not longer signed in. Please Sign In again to continue.";
 
 // MARK: - Screen Titles
 "advancedSettings" = "Advanced Settings";
