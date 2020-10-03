@@ -21,6 +21,8 @@ variables:
     value: 'Release'
   - name: sdk
     value: 'iphoneos'
+  - name: cocoapods_path
+    value: $(Pipeline.Workspace)/.cocoapods
 
 steps:
 - checkout: self
@@ -31,11 +33,27 @@ steps:
     script: |
       pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
 
+- task: Cache@2
+  inputs:
+    key: 'cocoapods | Podfile.lock'
+    restoreKeys: cocoapods
+    path: $(cocoapods_path)
+  displayName: Cache CocoaPods Specs
+
+- task: Cache@2
+  inputs:
+    key: 'pods | Podfile.lock'
+    restoreKeys: pods
+    path: Pods
+  displayName: Cache Pods
+
 - task: CmdLine@2
   displayName: Installing pods
   inputs:
     script: |
-      pod install
+      pod install || pod install --repo-update
+  env:
+    CP_HOME_DIR: $(cocoapods_path)
 
 - task: InstallAppleCertificate@2
   inputs:
