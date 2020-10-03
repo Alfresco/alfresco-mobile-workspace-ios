@@ -10,8 +10,13 @@ pool:
 variables:
   - group: git-credentials
   - group: source-clear-credentials
-  - group: ios-signing
+  - group: ios-signing-alt
+  # appstore_upload_user
+  # appstore_upload_token
   - group: content-ios
+  # appstore_app_id
+  # provisioning_profile
+  # signing_identity
   - name: configuration
     value: 'Release'
   - name: sdk
@@ -37,57 +42,38 @@ steps:
    certSecureFile: '$(p12FileName)'
    certPwd: '$(p12Password)'
    keychain: 'temp'
-   deleteCert: true 
-  
+   deleteCert: true
+
 - task: InstallAppleProvisioningProfile@1
   inputs:
    provisioningProfileLocation: 'secureFiles'
-   provProfileSecureFile: '$(contentReleaseProvisioningProfile)'
+   provProfileSecureFile: '$(provisioning_profile)'
    removeProfile: true
 
-- task: Xcode@5
-  displayName: 'Running Content app tests'
+- task: DownloadSecureFile@1
+  name: prov_profile
   inputs:
-    actions: 'clean test'
-    sdk: 'iphonesimulator'
-    xcodeVersion: 11
-    scheme: 'ContentApp'
-    configuration: 'Debug'
-    destinationPlatformOption: 'custom'
-    destinationPlatform: 'iOS'
-    destinationSimulators: 'iPhone 11'
-    xcWorkspacePath: 'ContentApp.xcworkspace'
-    useXcpretty: true
-    publishJUnitResults: 'build/reports/junit.xml'
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: 'build/reports/junit.xml'
-    failTaskOnFailedTests: true
-    testRunTitle: 'Publishing test results'
+    secureFile: '$(provisioning_profile)'
 
 - task: ios-bundle-version@1
   inputs:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(Build.BuildId)'
-    versionName: 
     printFile: true
 
-- task: Xcode@5
-  displayName: 'Generate Content IPA'
+- task: CmdLine@2
+  displayName: 'Build and Pilot'
   inputs:
-    actions: 'build'
-    scheme: 'ContentApp'
-    sdk: '$(sdk)'
-    configuration: '$(configuration)'
-    xcWorkspacePath: '**/ContentApp.xcworkspace'
-    xcodeVersion: 'default'
-    packageApp: true
-    signingOption: 'manual'
-    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    script: 'bundle update && bundle exec fastlane build_and_pilot'
+  env:
+      FASTLANE_DISABLE_COLORS: 'true'
+      FASTLANE_USER: $(appstore_upload_user)
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(appstore_upload_token)
+      PROV_PROFILE: $(prov_profile.secureFilePath)
+      SIGNING_IDENTITY: $(signing_identity)
+      APPSTORE_APP_ID: $(appstore_app_id)
+      CONFIGURATION: $(configuration)
 
 - task: CmdLine@2
   inputs:
@@ -95,19 +81,3 @@ steps:
   displayName: 'Performing Source Clear checks'
   env:
     SRCCLR_API_TOKEN: $(source_clear_token)
-
-- task: AppStoreRelease@1
-  inputs:
-    authType: 'UserAndPass'
-    username: '$(FASTLANE_USER)'
-    password: '$(FASTLANE_PASSWORD)'
-    isTwoFactorAuth: true
-    appSpecificPassword: '$(FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD)'
-    fastlaneSession: '$(FASTLANE_SESSION)'
-    appIdentifier: 'com.alfresco.contentapp'
-    appType: 'iOS'
-    ipaPath: '**/*.ipa'
-    releaseTrack: 'TestFlight'
-    shouldSkipWaitingForProcessing: true
-    teamId: 'W8N95J537P'
-    teamName: 'Alfresco Software, Inc.'
