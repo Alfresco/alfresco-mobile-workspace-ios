@@ -11,9 +11,9 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - CocoaLumberjack (3.6.2):
-    - CocoaLumberjack/Core (= 3.6.2)
-  - CocoaLumberjack/Core (3.6.2)
+  - CocoaLumberjack (3.7.0):
+    - CocoaLumberjack/Core (= 3.7.0)
+  - CocoaLumberjack/Core (3.7.0)
   - Firebase/Analytics (6.33.0):
     - Firebase/Core
   - Firebase/Core (6.33.0):
@@ -82,14 +82,14 @@ PODS:
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
   - JWTDecode (2.4.1)
-  - MaterialComponents/ActivityIndicator (116.0.0):
+  - MaterialComponents/ActivityIndicator (117.0.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
     - MDFInternationalization
     - MotionAnimator (~> 2.0)
-  - MaterialComponents/AnimationTiming (116.0.0)
-  - MaterialComponents/Availability (116.0.0)
-  - MaterialComponents/BottomNavigation (116.0.0):
+  - MaterialComponents/AnimationTiming (117.0.0)
+  - MaterialComponents/Availability (117.0.0)
+  - MaterialComponents/BottomNavigation (117.0.0):
     - MaterialComponents/Availability
     - MaterialComponents/Elevation
     - MaterialComponents/Ink
@@ -100,13 +100,13 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/BottomNavigation+Theming (116.0.0)":
+  - "MaterialComponents/BottomNavigation+Theming (117.0.0)":
     - MaterialComponents/BottomNavigation
     - MaterialComponents/schemes/Color
     - MaterialComponents/schemes/Container
     - MaterialComponents/schemes/Typography
     - MaterialComponents/ShadowElevations
-  - MaterialComponents/BottomSheet (116.0.0):
+  - MaterialComponents/BottomSheet (117.0.0):
     - MaterialComponents/Elevation
     - MaterialComponents/private/KeyboardWatcher
     - MaterialComponents/private/Math
@@ -114,7 +114,7 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/ShapeLibrary
     - MaterialComponents/Shapes
-  - MaterialComponents/Buttons (116.0.0):
+  - MaterialComponents/Buttons (117.0.0):
     - MaterialComponents/Elevation
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
@@ -126,23 +126,23 @@ PODS:
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - "MaterialComponents/Buttons+ColorThemer (116.0.0)":
+  - "MaterialComponents/Buttons+ColorThemer (117.0.0)":
     - MaterialComponents/Buttons
     - MaterialComponents/schemes/Color
-  - "MaterialComponents/Buttons+ShapeThemer (116.0.0)":
+  - "MaterialComponents/Buttons+ShapeThemer (117.0.0)":
     - MaterialComponents/Buttons
     - MaterialComponents/schemes/Shape
-  - "MaterialComponents/Buttons+Theming (116.0.0)":
+  - "MaterialComponents/Buttons+Theming (117.0.0)":
     - MaterialComponents/Buttons
     - "MaterialComponents/Buttons+ColorThemer"
     - "MaterialComponents/Buttons+ShapeThemer"
     - "MaterialComponents/Buttons+TypographyThemer"
     - MaterialComponents/schemes/Container
     - MaterialComponents/ShadowElevations
-  - "MaterialComponents/Buttons+TypographyThemer (116.0.0)":
+  - "MaterialComponents/Buttons+TypographyThemer (117.0.0)":
     - MaterialComponents/Buttons
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Chips (116.0.0):
+  - MaterialComponents/Chips (117.0.0):
     - MaterialComponents/Elevation
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
@@ -154,11 +154,11 @@ PODS:
     - MaterialComponents/TextFields
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Chips+Theming (116.0.0)":
+  - "MaterialComponents/Chips+Theming (117.0.0)":
     - MaterialComponents/Chips
     - MaterialComponents/schemes/Container
     - MaterialComponents/Typography
-  - MaterialComponents/Dialogs (116.0.0):
+  - MaterialComponents/Dialogs (117.0.0):
     - MaterialComponents/Buttons
     - MaterialComponents/Elevation
     - MaterialComponents/private/KeyboardWatcher
@@ -167,103 +167,103 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Dialogs+ColorThemer (116.0.0)":
+  - "MaterialComponents/Dialogs+ColorThemer (117.0.0)":
     - "MaterialComponents/Buttons+ColorThemer"
     - MaterialComponents/Dialogs
     - MaterialComponents/Themes
-  - "MaterialComponents/Dialogs+Theming (116.0.0)":
+  - "MaterialComponents/Dialogs+Theming (117.0.0)":
     - "MaterialComponents/Buttons+Theming"
     - MaterialComponents/Dialogs
     - "MaterialComponents/Dialogs+ColorThemer"
     - "MaterialComponents/Dialogs+TypographyThemer"
     - MaterialComponents/schemes/Container
     - MaterialComponents/ShadowElevations
-  - "MaterialComponents/Dialogs+TypographyThemer (116.0.0)":
+  - "MaterialComponents/Dialogs+TypographyThemer (117.0.0)":
     - "MaterialComponents/Buttons+TypographyThemer"
     - MaterialComponents/Dialogs
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Elevation (116.0.0):
+  - MaterialComponents/Elevation (117.0.0):
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
-  - MaterialComponents/Ink (116.0.0):
+  - MaterialComponents/Ink (117.0.0):
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
-  - MaterialComponents/OverlayWindow (116.0.0):
+  - MaterialComponents/OverlayWindow (117.0.0):
     - MaterialComponents/Availability
     - MaterialComponents/private/Application
-  - MaterialComponents/Palettes (116.0.0)
-  - MaterialComponents/private/Application (116.0.0)
-  - MaterialComponents/private/Color (116.0.0):
+  - MaterialComponents/Palettes (117.0.0)
+  - MaterialComponents/private/Application (117.0.0)
+  - MaterialComponents/private/Color (117.0.0):
     - MaterialComponents/Availability
-  - MaterialComponents/private/KeyboardWatcher (116.0.0):
+  - MaterialComponents/private/KeyboardWatcher (117.0.0):
     - MaterialComponents/private/Application
-  - MaterialComponents/private/Math (116.0.0)
-  - MaterialComponents/private/Overlay (116.0.0)
-  - "MaterialComponents/private/TextControlsPrivate+BaseStyle (116.0.0)":
+  - MaterialComponents/private/Math (117.0.0)
+  - MaterialComponents/private/Overlay (117.0.0)
+  - "MaterialComponents/private/TextControlsPrivate+BaseStyle (117.0.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
-  - "MaterialComponents/private/TextControlsPrivate+FilledStyle (116.0.0)":
+  - "MaterialComponents/private/TextControlsPrivate+FilledStyle (117.0.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
     - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle"
-  - "MaterialComponents/private/TextControlsPrivate+OutlinedStyle (116.0.0)":
+  - "MaterialComponents/private/TextControlsPrivate+OutlinedStyle (117.0.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
-  - "MaterialComponents/private/TextControlsPrivate+Shared (116.0.0)":
+  - "MaterialComponents/private/TextControlsPrivate+Shared (117.0.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/private/Math
     - "MaterialComponents/TextControls+Enums"
-  - "MaterialComponents/private/TextControlsPrivate+TextFields (116.0.0)":
+  - "MaterialComponents/private/TextControlsPrivate+TextFields (117.0.0)":
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
-  - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle (116.0.0)":
+  - "MaterialComponents/private/TextControlsPrivate+UnderlinedStyle (117.0.0)":
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
-  - MaterialComponents/ProgressView (116.0.0):
+  - MaterialComponents/ProgressView (117.0.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Math
     - MDFInternationalization
-  - MaterialComponents/Ripple (116.0.0):
+  - MaterialComponents/Ripple (117.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
-  - MaterialComponents/schemes/Color (116.0.0):
+  - MaterialComponents/schemes/Color (117.0.0):
     - MaterialComponents/Availability
     - MaterialComponents/private/Color
-  - MaterialComponents/schemes/Container (116.0.0):
+  - MaterialComponents/schemes/Container (117.0.0):
     - MaterialComponents/schemes/Color
     - MaterialComponents/schemes/Shape
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/schemes/Shape (116.0.0):
+  - MaterialComponents/schemes/Shape (117.0.0):
     - MaterialComponents/ShapeLibrary
     - MaterialComponents/Shapes
-  - MaterialComponents/schemes/Typography (116.0.0):
+  - MaterialComponents/schemes/Typography (117.0.0):
     - "MaterialComponents/schemes/Typography+BasicFontScheme"
     - "MaterialComponents/schemes/Typography+Scheming"
     - MaterialComponents/Typography
-  - "MaterialComponents/schemes/Typography+BasicFontScheme (116.0.0)"
-  - "MaterialComponents/schemes/Typography+Scheming (116.0.0)"
-  - MaterialComponents/ShadowElevations (116.0.0)
-  - MaterialComponents/ShadowLayer (116.0.0):
+  - "MaterialComponents/schemes/Typography+BasicFontScheme (117.0.0)"
+  - "MaterialComponents/schemes/Typography+Scheming (117.0.0)"
+  - MaterialComponents/ShadowElevations (117.0.0)
+  - MaterialComponents/ShadowLayer (117.0.0):
     - MaterialComponents/ShadowElevations
-  - MaterialComponents/ShapeLibrary (116.0.0):
+  - MaterialComponents/ShapeLibrary (117.0.0):
     - MaterialComponents/private/Math
     - MaterialComponents/Shapes
-  - MaterialComponents/Shapes (116.0.0):
+  - MaterialComponents/Shapes (117.0.0):
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/Snackbar (116.0.0):
+  - MaterialComponents/Snackbar (117.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
     - MaterialComponents/Buttons
@@ -276,7 +276,7 @@ PODS:
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
-  - MaterialComponents/Tabs (116.0.0):
+  - MaterialComponents/Tabs (117.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Elevation
     - MaterialComponents/Ink
@@ -287,34 +287,34 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - "MaterialComponents/Tabs+Theming (116.0.0)":
+  - "MaterialComponents/Tabs+Theming (117.0.0)":
     - MaterialComponents/schemes/Container
     - MaterialComponents/Tabs
     - "MaterialComponents/Tabs+TypographyThemer"
-  - "MaterialComponents/Tabs+TypographyThemer (116.0.0)":
+  - "MaterialComponents/Tabs+TypographyThemer (117.0.0)":
     - MaterialComponents/schemes/Typography
     - MaterialComponents/Tabs
-  - "MaterialComponents/TextControls+BaseTextFields (116.0.0)":
+  - "MaterialComponents/TextControls+BaseTextFields (117.0.0)":
     - "MaterialComponents/private/TextControlsPrivate+BaseStyle"
     - "MaterialComponents/private/TextControlsPrivate+Shared"
     - "MaterialComponents/private/TextControlsPrivate+TextFields"
     - MDFInternationalization
-  - "MaterialComponents/TextControls+Enums (116.0.0)"
-  - "MaterialComponents/TextControls+FilledTextFields (116.0.0)":
+  - "MaterialComponents/TextControls+Enums (117.0.0)"
+  - "MaterialComponents/TextControls+FilledTextFields (117.0.0)":
     - MaterialComponents/Availability
     - "MaterialComponents/private/TextControlsPrivate+FilledStyle"
     - "MaterialComponents/TextControls+BaseTextFields"
-  - "MaterialComponents/TextControls+FilledTextFieldsTheming (116.0.0)":
+  - "MaterialComponents/TextControls+FilledTextFieldsTheming (117.0.0)":
     - MaterialComponents/schemes/Container
     - "MaterialComponents/TextControls+FilledTextFields"
-  - "MaterialComponents/TextControls+OutlinedTextFields (116.0.0)":
+  - "MaterialComponents/TextControls+OutlinedTextFields (117.0.0)":
     - MaterialComponents/Availability
     - "MaterialComponents/private/TextControlsPrivate+OutlinedStyle"
     - "MaterialComponents/TextControls+BaseTextFields"
-  - "MaterialComponents/TextControls+OutlinedTextFieldsTheming (116.0.0)":
+  - "MaterialComponents/TextControls+OutlinedTextFieldsTheming (117.0.0)":
     - MaterialComponents/schemes/Container
     - "MaterialComponents/TextControls+OutlinedTextFields"
-  - MaterialComponents/TextFields (116.0.0):
+  - MaterialComponents/TextFields (117.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Buttons
     - MaterialComponents/Elevation
@@ -322,10 +322,10 @@ PODS:
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/Themes (116.0.0):
+  - MaterialComponents/Themes (117.0.0):
     - MaterialComponents/schemes/Color
     - MaterialComponents/schemes/Typography
-  - MaterialComponents/Typography (116.0.0):
+  - MaterialComponents/Typography (117.0.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
     - MDFTextAccessibility
@@ -343,7 +343,7 @@ PODS:
   - PromisesObjC (1.2.10)
   - SVGKit (2.1.1):
     - CocoaLumberjack (~> 3.0)
-  - SwiftLint (0.40.2)
+  - SwiftLint (0.40.3)
 
 DEPENDENCIES:
   - AlfrescoAuth
@@ -376,11 +376,11 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
     - AlfrescoAuth
     - AlfrescoContent
     - AlfrescoCore
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - Alamofire
     - AppAuth
     - CocoaLumberjack
@@ -412,7 +412,7 @@ SPEC CHECKSUMS:
   AlfrescoContent: 351c631cd9201fab8759c509b1066fe90bd0e42c
   AlfrescoCore: 350f2029a789fbd42d54e92125bc63f572e04939
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  CocoaLumberjack: bd155f2dd06c0e0b03f876f7a3ee55693122ec94
+  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   Firebase: 8db6f2d1b2c5e2984efba4949a145875a8f65fe5
   FirebaseAnalytics: 5dd088bd2e67bb9d13dbf792d1164ceaf3052193
   FirebaseCore: d889d9e12535b7f36ac8bfbf1713a0836a3012cd
@@ -424,7 +424,7 @@ SPEC CHECKSUMS:
   GoogleDataTransport: b7f406340a291370045a270c599e53c6fa6ec20f
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
   JWTDecode: 4bd4da0cdf0f8154fd467fa48499f34ec057fb88
-  MaterialComponents: a6cf920307c2864f71e37972620f24c4d14fae8d
+  MaterialComponents: 29320b6a89c4c90e41c7a41fc70e91127ac34161
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   MotionAnimator: ee16aa30567c5bae0fb2750c132915829cfaaf8a
@@ -433,8 +433,8 @@ SPEC CHECKSUMS:
   Nuke: dd2e6be6a34c042a7861e190632781d11f253026
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
-  SwiftLint: 1216c910d27c2633ade33b4f071bb6b930982e62
+  SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: 0d9c469b5587ade225c4b6eeaf0200073413b237
+PODFILE CHECKSUM: c517af2a52f8ee556fb0d2d3520847ad430ba47e
 
 COCOAPODS: 1.9.3
