@@ -10,13 +10,8 @@ pool:
 variables:
   - group: git-credentials
   - group: source-clear-credentials
-  - group: ios-signing-alt
-  # appstore_upload_user
-  # appstore_upload_token
+  - group: ios-signing
   - group: content-ios
-  # appstore_app_id
-  # provisioning_profile
-  # signing_identity
   - name: configuration
     value: 'Release'
   - name: sdk
