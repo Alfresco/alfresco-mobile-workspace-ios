@@ -2,8 +2,6 @@ trigger:
 - master
 - develop
 
-pr: none
-
 pool:
   vmImage: 'macos-latest'
 
