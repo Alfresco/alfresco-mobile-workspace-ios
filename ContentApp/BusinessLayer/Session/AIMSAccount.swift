@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol AIMSAccountDelegate: class {
-    func sessionFailedToRefresh(error: APIError)
+    func didReSignIn()
 }
 
 class AIMSAccount: AccountProtocol, Equatable {
@@ -32,7 +32,7 @@ class AIMSAccount: AccountProtocol, Equatable {
         return "\(session.parameters.fullContentURL)/\(session.parameters.serviceDocument)/\(kAPIPathBase)"
     }
     var session: AIMSSession
-    
+
     var ticket: String?
     private var ticketTimer: Timer?
 
@@ -100,9 +100,9 @@ class AIMSAccount: AccountProtocol, Equatable {
         session.logOut(onViewController: viewController, completionHandler: completionHandler)
     }
 
-    func relogIn(onViewController: UIViewController?) {
+    func reSignIn(onViewController: UIViewController?) {
         guard let viewController = onViewController else { return }
-        session.relogIn(onViewController: viewController)
+        session.reSignIn(onViewController: viewController)
     }
 
     func createTicket() {
@@ -131,8 +131,7 @@ class AIMSAccount: AccountProtocol, Equatable {
 }
 
 extension AIMSAccount: AIMSAccountDelegate {
-    func sessionFailedToRefresh(error: APIError) {
-        removeAuthenticationCredentials()
-        removeDiskFolder()
+    func didReSignIn() {
+        createTicket()
     }
 }

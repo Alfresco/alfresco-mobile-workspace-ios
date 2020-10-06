@@ -82,7 +82,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         completionHandler(nil)
     }
 
-    func relogIn(onViewController: UIViewController?) {
+    func reSignIn(onViewController: UIViewController?) {
     }
 
     func createTicket() {

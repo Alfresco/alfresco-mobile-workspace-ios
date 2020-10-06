@@ -109,7 +109,7 @@ class AIMSSession {
         }
     }
 
-    func relogIn(onViewController viewController: UIViewController) {
+    func reSignIn(onViewController viewController: UIViewController) {
         alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
         alfrescoAuth?.pkceAuth(onViewController: viewController, delegate: self)
     }
@@ -155,6 +155,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
             if refreshTimer == nil {
                 scheduleSessionRefresh()
             }
+            delegate?.didReSignIn()
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
             let errorDict = ["error": error]

@@ -54,7 +54,7 @@ class ApplicationCoordinator: Coordinator {
             guard let sSelf = self else { return }
             let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             if let viewController = viewController {
-                accountService?.activeAccount?.relogIn(onViewController: viewController)
+                accountService?.activeAccount?.reSignIn(onViewController: viewController)
             }
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
