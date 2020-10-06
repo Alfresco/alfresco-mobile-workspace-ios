@@ -35,6 +35,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +44,7 @@ class NeedHelpViewController: SystemThemableViewController {
         textView.contentInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         textView.contentOffset = .zero
         textViewHeightConstraint.constant = textView.calculatedContentSize().height
+        view.isHidden = false
     }
 
     override func viewDidLayoutSubviews() {
