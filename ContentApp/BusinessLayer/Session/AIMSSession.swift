@@ -121,7 +121,7 @@ class AIMSSession {
             if aimsAccesstokenRefreshInterval < TimeInterval(kAIMSAccessTokenRefreshTimeBuffer) {
                 return
             }
-
+            refreshTimer?.invalidate()
             refreshTimer = Timer.scheduledTimer(withTimeInterval: aimsAccesstokenRefreshInterval, repeats: true, block: { [weak self] _ in
                 guard let sSelf = self else { return }
                 sSelf.refreshSession(completionHandler: nil)
@@ -152,9 +152,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
                 self.credential = credential
             }
             persistAuthenticationCredentials()
-            if refreshTimer == nil {
-                scheduleSessionRefresh()
-            }
+            scheduleSessionRefresh()
             delegate?.didReSignIn()
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
