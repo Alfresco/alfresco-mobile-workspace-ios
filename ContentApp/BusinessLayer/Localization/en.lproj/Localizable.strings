@@ -96,7 +96,7 @@
 "filterFiles" = "Files";
 "filterFolders" = "Folders";
 "filterLibraries" = "Libraries";
-"filterfoldersAndFiles" = "Folders and files";
+"filterfoldersAndFiles" = "Files and folders";
 "searchIn" = "in: ";
 
 // MARK: - Group List Section
