@@ -71,8 +71,8 @@ protocol AccountProtocol: class {
     ///   - completionHandler: Success or failure of the operation.
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler)
 
-    /// Log in of the current account session.
+    /// Re sign-in to active account.
     /// - Parameters:
     ///   - onViewController: Optional view controller to show the log out context for some authentication types.
-    func relogIn(onViewController: UIViewController?)
+    func reSignIn(onViewController: UIViewController?)
 }
