@@ -153,7 +153,11 @@ extension AIMSSession: AlfrescoAuthDelegate {
             }
             persistAuthenticationCredentials()
             scheduleSessionRefresh()
-            delegate?.didReSignIn()
+
+            // Check if the new credentials are part of a resign-in action
+            if refreshGroupRequestCount == 0 {
+                delegate?.didReSignIn()
+            }
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
             let errorDict = ["error": error]
