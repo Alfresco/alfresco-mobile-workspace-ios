@@ -82,6 +82,9 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         completionHandler(nil)
     }
 
+    func relogIn(onViewController: UIViewController?) {
+    }
+
     func createTicket() {
         let ticketBody = TicketBody(userId: credential.username, password: credential.password)
         AuthenticationAPI.createTicket(ticketBodyCreate: ticketBody) { [weak self] (ticket, error) in

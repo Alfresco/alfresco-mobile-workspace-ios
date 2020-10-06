@@ -18,7 +18,6 @@
 
 import Foundation
 import AlfrescoAuth
-import JWTDecode
 import AlfrescoContent
 
 protocol AIMSAccountDelegate: class {
@@ -27,26 +26,14 @@ protocol AIMSAccountDelegate: class {
 
 class AIMSAccount: AccountProtocol, Equatable {
     var identifier: String {
-        guard let token = session.credential?.accessToken else { return "" }
-
-        do {
-            let jwt = try decode(jwt: token)
-            let claim = jwt.claim(name: "preferred_username")
-            if let preferredusername = claim.string {
-                return preferredusername
-            }
-        } catch {
-            AlfrescoLog.error("Unable to decode account token for extracting account identifier")
-        }
-
-        return ""
+        return session.identifier
     }
     var apiBasePath: String {
         return "\(session.parameters.fullContentURL)/\(session.parameters.serviceDocument)/\(kAPIPathBase)"
     }
     var session: AIMSSession
-
-    private var ticket: String?
+    
+    var ticket: String?
     private var ticketTimer: Timer?
 
     static func == (lhs: AIMSAccount, rhs: AIMSAccount) -> Bool {
@@ -63,17 +50,7 @@ class AIMSAccount: AccountProtocol, Equatable {
     }
 
     func persistAuthenticationCredentials() {
-        do {
-            if let authSession = session.session {
-                let credentialData = try JSONEncoder().encode(session.credential)
-                let sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
-
-                _ = Keychain.set(value: credentialData, forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
-                _ = Keychain.set(value: sessionData, forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
-            }
-        } catch {
-            AlfrescoLog.error("Unable to persist credentials to Keychain.")
-        }
+        session.persistAuthenticationCredentials()
     }
 
     func removeAuthenticationParameters() {
@@ -123,14 +100,19 @@ class AIMSAccount: AccountProtocol, Equatable {
         session.logOut(onViewController: viewController, completionHandler: completionHandler)
     }
 
+    func relogIn(onViewController: UIViewController?) {
+        guard let viewController = onViewController else { return }
+        session.relogIn(onViewController: viewController)
+    }
+
     func createTicket() {
         // Validate ticket with existing credentials
-        getSession { authenticationprovider in
+        getSession { [weak self] authenticationprovider in
+            guard let sSelf = self else { return }
             let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()
             ticketValidationRequestBuilder.addHeaders(authenticationprovider.authorizationHeader())
 
-            ticketValidationRequestBuilder.execute { [weak self] (response, error) in
-                guard let sSelf = self else { return }
+            ticketValidationRequestBuilder.execute { (response, error) in
 
                 if error == nil {
                     sSelf.ticketTimer?.invalidate()
