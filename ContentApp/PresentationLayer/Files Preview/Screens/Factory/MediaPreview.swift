@@ -95,6 +95,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
 
         player.isPlaying ? player.pause() : player.play()
+        UIApplication.shared.isIdleTimerDisabled = player.isPlaying
 
         if let error = player.currentItem?.error as NSError? {
             showError(error)
@@ -300,5 +301,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
         self.timeObserver = nil
         self.statusObserver = nil
         self.rateObserver = nil
+        UIApplication.shared.isIdleTimerDisabled = false
     }
 }
