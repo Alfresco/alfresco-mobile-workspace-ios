@@ -18,9 +18,27 @@
 
 import Foundation
 import AlfrescoAuth
+import AlfrescoContent
+import JWTDecode
 
 class AIMSSession {
     weak var delegate: AIMSAccountDelegate?
+
+    var identifier: String {
+        guard let token = credential?.accessToken else { return "" }
+
+        do {
+            let jwt = try decode(jwt: token)
+            let claim = jwt.claim(name: "preferred_username")
+            if let preferredusername = claim.string {
+                return preferredusername
+            }
+        } catch {
+            AlfrescoLog.error("Unable to decode account token for extracting account identifier")
+        }
+
+        return ""
+    }
 
     private (set) var session: AlfrescoAuthSession?
     private var alfrescoAuth: AlfrescoAuth?
@@ -30,6 +48,7 @@ class AIMSSession {
     private var refreshGroup = DispatchGroup()
     private var refreshGroupRequestCount = 0
     private var refreshInProgress = false
+
     private var refreshTimer: Timer?
     private var logoutHandler: LogoutHandler?
 
@@ -40,6 +59,20 @@ class AIMSSession {
         let authConfig = parameters.authenticationConfiguration()
         self.alfrescoAuth = AlfrescoAuth.init(configuration: authConfig)
         scheduleSessionRefresh()
+    }
+
+    func persistAuthenticationCredentials() {
+        do {
+            if let authSession = session {
+                let credentialData = try JSONEncoder().encode(credential)
+                let sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
+
+                _ = Keychain.set(value: credentialData, forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
+                _ = Keychain.set(value: sessionData, forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
+            }
+        } catch {
+            AlfrescoLog.error("Unable to persist credentials to Keychain.")
+        }
     }
 
     func refreshSession(completionHandler: ((AlfrescoCredential) -> Void)?) {
@@ -74,6 +107,11 @@ class AIMSSession {
         if let credential = self.credential {
             alfrescoAuth?.logout(onViewController: viewController, delegate: self, forCredential: credential)
         }
+    }
+
+    func relogIn(onViewController viewController: UIViewController) {
+        alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
+        alfrescoAuth?.pkceAuth(onViewController: viewController, delegate: self)
     }
 
     private func scheduleSessionRefresh() {
@@ -113,7 +151,10 @@ extension AIMSSession: AlfrescoAuthDelegate {
                 self.session = refreshedSession
                 self.credential = credential
             }
-
+            persistAuthenticationCredentials()
+            if refreshTimer == nil {
+                scheduleSessionRefresh()
+            }
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
             let errorDict = ["error": error]
