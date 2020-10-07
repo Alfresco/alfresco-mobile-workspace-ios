@@ -49,9 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         accountService?.activeAccount?.createTicket()
     }
 
-    func applicationWillEnterForeground(_ application: UIApplication) {
-    }
-
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let authenticationService = self.applicationCoordinator?.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
         return authenticationService?.resumeExternalUserAgentFlow(with: url) ?? false
