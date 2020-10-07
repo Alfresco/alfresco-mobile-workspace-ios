@@ -133,5 +133,6 @@ class AIMSAccount: AccountProtocol, Equatable {
 extension AIMSAccount: AIMSAccountDelegate {
     func didReSignIn() {
         createTicket()
+        ProfileService.featchPersonalFilesID()
     }
 }
