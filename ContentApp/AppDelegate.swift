@@ -45,11 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         let themingService = applicationCoordinator?.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        accountService?.activeAccount?.createTicket()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        accountService?.activeAccount?.createTicket()
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
