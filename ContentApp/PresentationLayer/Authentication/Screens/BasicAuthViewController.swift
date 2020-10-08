@@ -127,12 +127,11 @@ class BasicAuthViewController: SystemThemableViewController {
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         signInButton.isUppercaseTitle = false
 
-        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
         hostnameLabel.textColor = currentTheme.onSurfaceColor
         hostnameLabel.font = currentTheme.body1TextStyle.font
-        hostnameLabel.add(characterSpacing: currentTheme.body1TextStyle.letterSpacing, lineHeight: 1.0)
 
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center

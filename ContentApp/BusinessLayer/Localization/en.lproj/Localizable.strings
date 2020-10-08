@@ -17,7 +17,7 @@
 //
 
 "copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
-"productName" = "Workspace";
+"productName" = "Alfresco\nMobile Workspace";
 
 // MARK: - Buttons
 "connectButton" = "Connect";
