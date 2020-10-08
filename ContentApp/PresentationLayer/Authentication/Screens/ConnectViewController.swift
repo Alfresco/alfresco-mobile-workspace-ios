@@ -150,7 +150,7 @@ class ConnectViewController: SystemThemableViewController {
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.applyeStyleHeadline5OnSurface(theme: currentTheme)
+        productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
         productLabel.textAlignment = .center
