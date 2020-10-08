@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-"copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
+"copyrightFormat" = "© %d Alfresco Software, Inc. All rights reserved.";
 "productName" = "Alfresco\nMobile Workspace";
 
 // MARK: - Buttons
