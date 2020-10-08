@@ -20,8 +20,8 @@ import Foundation
 import AlfrescoAuth
 
 class AuthenticationParameters: Codable {
-    var https: Bool = false
-    var port: String = "80"
+    var https: Bool = true
+    var port: String = "443"
     var serviceDocument: String = "alfresco"
     var realm: String = "alfresco"
     var clientID: String = "alfresco-ios-acs-app"
