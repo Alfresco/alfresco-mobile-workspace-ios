@@ -130,13 +130,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
     }
 
     func displayError(message: String) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            let snackbar = Snackbar(with: message, type: .error, buttonTitle: LocalizationConstants.Buttons.retry)
-            snackbar.show {
-                sSelf.viewModel?.reloadRequests()
-            }
-        }
     }
 
     func didUpdateDataSource() {
