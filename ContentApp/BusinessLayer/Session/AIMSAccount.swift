@@ -106,7 +106,6 @@ class AIMSAccount: AccountProtocol, Equatable {
     }
 
     func createTicket() {
-        // Validate ticket with existing credentials
         getSession { [weak self] authenticationprovider in
             guard let sSelf = self else { return }
             let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()

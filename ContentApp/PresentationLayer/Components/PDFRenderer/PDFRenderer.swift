@@ -156,37 +156,8 @@ class PDFRenderer: UIView {
             })
         }
     }
-}
 
-extension PDFRenderer: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == "pdfAction" {
-            if (message.body as? String) == "showPasswordPrompt" {
-                if let url = pdfURL {
-                    passwordDelegate?.providePDFPassword(for: url)
-                }
-            } else if (message.body as? String) == "invalidPasswordPrompt" {
-                if let url = pdfURL {
-                    passwordDelegate?.invalidPasswordProvided(for: url)
-                }
-            }
-        }
-    }
-}
-
-extension PDFRenderer: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if navigationAction.navigationType == .linkActivated {
-            if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-                decisionHandler(.cancel)
-            }
-        } else {
-            decisionHandler(.allow)
-        }
-    }
-
-    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+    private func loadPDFUsingNativeRenderer() {
         // Fallback to native PDFKit if webview rendering fails or is out of memory
         self.webView?.removeFromSuperview()
         self.webView = nil
@@ -229,6 +200,41 @@ extension PDFRenderer: WKNavigationDelegate {
               selector: #selector(handlePageChange(notification:)),
               name: Notification.Name.PDFViewPageChanged,
               object: nil)
+    }
+}
+
+extension PDFRenderer: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        if message.name == "pdfAction" {
+            if (message.body as? String) == "showPasswordPrompt" {
+                if let url = pdfURL {
+                    passwordDelegate?.providePDFPassword(for: url)
+                }
+            } else if (message.body as? String) == "invalidPasswordPrompt" {
+                if let url = pdfURL {
+                    passwordDelegate?.invalidPasswordProvided(for: url)
+                }
+            } else if (message.body as? String) == "pdfLoadingError" {
+                loadPDFUsingNativeRenderer()
+            }
+        }
+    }
+}
+
+extension PDFRenderer: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.navigationType == .linkActivated {
+            if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                decisionHandler(.cancel)
+            }
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        loadPDFUsingNativeRenderer()
     }
 
     @objc private func handlePageChange(notification: Notification) {

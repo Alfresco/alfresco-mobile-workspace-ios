@@ -96,6 +96,8 @@ var PDFViewerApplication = {
         self.setTitleUsingMetadata(pdfDocument);
       },
       function (exception) {
+        webkit.messageHandlers.pdfAction.postMessage("pdfLoadingError");
+
         var message = exception && exception.message;
         var l10n = self.l10n;
         var loadingErrorMessage;
