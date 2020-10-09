@@ -104,8 +104,8 @@ class AIMSSession {
     func logOut(onViewController viewController: UIViewController, completionHandler: @escaping LogoutHandler) {
         logoutHandler = completionHandler
         alfrescoAuth?.update(configuration: parameters.authenticationConfiguration())
-        if let credential = self.credential {
-            alfrescoAuth?.logout(onViewController: viewController, delegate: self, forCredential: credential)
+        if let credential = self.credential, let session = self.session {
+            alfrescoAuth?.logout(onViewController: viewController, delegate: self, session: session, forCredential: credential)
         }
     }
 
