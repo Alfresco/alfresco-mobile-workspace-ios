@@ -1,9 +1,9 @@
 PODS:
   - Alamofire (4.9.1)
-  - AlfrescoAuth (2.1.2):
+  - AlfrescoAuth (2.1.3):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (1.0.2):
+  - AlfrescoContent (1.0.3):
     - Alamofire (~> 4.9.0)
   - AlfrescoCore (2.0.3)
   - AppAuth (1.4.0):
@@ -376,7 +376,7 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
     - AlfrescoAuth
     - AlfrescoContent
     - AlfrescoCore
@@ -408,8 +408,8 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  AlfrescoAuth: 2814a9ed1c377f500fa5e25c8b50b1fd3f78a3e7
-  AlfrescoContent: 351c631cd9201fab8759c509b1066fe90bd0e42c
+  AlfrescoAuth: cec8f24637a48a30a5fcac50299fd440ce3aeb44
+  AlfrescoContent: 95fa439f8ec117e912d22ebf5ee7672e1ef24b79
   AlfrescoCore: 350f2029a789fbd42d54e92125bc63f572e04939
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
