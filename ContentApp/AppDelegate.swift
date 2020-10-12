@@ -50,8 +50,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        let authenticationService = self.applicationCoordinator?.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
-        return authenticationService?.resumeExternalUserAgentFlow(with: url) ?? false
+        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
+            if let session = aimsAccount.session.session {
+                return session.resumeExternalUserAgentFlow(with: url)
+            }
+        }
+
+        return false
     }
 
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {

@@ -101,7 +101,6 @@ extension AimsViewModel: AlfrescoAuthDelegate {
         }
     }
 
-    func didLogOut(result: Result<Int, APIError>) {
-
+    func didLogOut(result: Result<Int, APIError>, session: AlfrescoAuthSession?) {
     }
 }
