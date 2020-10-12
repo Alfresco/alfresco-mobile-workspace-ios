@@ -168,18 +168,20 @@ extension AIMSSession: AlfrescoAuthDelegate {
         dequeueRefreshOperationRequests()
     }
 
-    func didLogOut(result: Result<Int, APIError>) {
+    func didLogOut(result: Result<Int, APIError>, session: AlfrescoAuthSession?) {
         if let handler = logoutHandler {
             switch result {
             case .success(_):
                 AlfrescoLog.debug("Succesfully logged out.")
-                session = nil
+                if let refreshedSession = session {
+                    self.session = refreshedSession
+                }
                 invalidateSessionRefresh()
                 handler(nil)
             case .failure(let error):
                 AlfrescoLog.error("Failed to log out. Reason: \(error)")
                 if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
-                    session = nil
+                    self.session = nil
                     invalidateSessionRefresh()
                 }
                 handler(error)
