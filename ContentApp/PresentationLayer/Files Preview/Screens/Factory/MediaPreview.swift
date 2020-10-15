@@ -30,6 +30,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var audioImageView: UIImageView!
 
     @IBOutlet weak var playPauseButton: UIButton!
+    @IBOutlet weak var backwardButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
     @IBOutlet weak var bigPlayPauseButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
     @IBOutlet weak var currentTimeMinutesLabel: UILabel!
@@ -86,6 +88,14 @@ class MediaPreview: UIView, FilePreviewProtocol {
         isFullScreen = !isFullScreen
     }
 
+    @IBAction func backwardButtonTapped(_ sender: UIButton) {
+        advancedPlayerTime(with: -kPlayerBackForWardTime)
+    }
+
+    @IBAction func forwardButtonTapped(_ sender: UIButton) {
+        advancedPlayerTime(with: kPlayerBackForWardTime)
+    }
+
     @IBAction func playPauseTapped(_ sender: UIButton) {
         guard let player = player else { return }
 
@@ -129,9 +139,12 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 updatePlayerControls()
             case .moved:
                 guard let currentItem = player?.currentItem else { return }
-                let currentTimeInSeconds = currentItem.duration.seconds * Double(progressSlider.value)
+                let sliderValue = Double(progressSlider.value)
+                let currentTimeInSeconds = currentItem.duration.seconds * sliderValue
+                let totalTimeInSeconds = currentTimeInSeconds - currentItem.duration.seconds
+
                 updateCurrentTime(from: timeFormatter(from: currentTimeInSeconds))
-                updateTotalTime(from: timeFormatter(from: currentTimeInSeconds - currentItem.duration.seconds))
+                updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
             case .ended:
                 playbackSliderValueChanged(slider)
                 sliderIsMoving = false
@@ -157,18 +170,18 @@ class MediaPreview: UIView, FilePreviewProtocol {
         self.playerLayer = playerLayer
         self.player = player
 
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01,
-                                                                          preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
-                                                       queue: .main,
+        let intervalTime = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        timeObserver = player.addPeriodicTimeObserver(forInterval: intervalTime, queue: .main,
                                                        using: { [weak self] _ in
                 guard let sSelf = self else { return }
-                sSelf.updateVideoPlayerState()
+                sSelf.updatePlayerState()
         })
         rateObserver = player.observe(\AVPlayer.rate, changeHandler: { [weak self] _, _ in
             guard let sSelf = self else { return }
             sSelf.updatePlayerControls()
         })
-        statusObserver = playerItem.observe(\AVPlayerItem.status, changeHandler: { [weak self] playerItem, _ in
+        statusObserver = playerItem.observe(\AVPlayerItem.status,
+                                            changeHandler: { [weak self] playerItem, _ in
             guard let sSelf = self else { return }
             switch playerItem.status {
             case .readyToPlay:
@@ -202,28 +215,37 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     private func updatePlayerControls() {
         guard let player = player else { return }
-        var stringImage = player.isPlaying ? "pause" : "play"
+        var stringImage = player.isPlaying ? "player_small_pause" : "player_small_play"
         if player.currentItem?.error != nil {
-            stringImage = "play"
+            stringImage = "player_small_play"
         }
         playPauseButton.setImage(UIImage(named: stringImage), for: .normal)
     }
 
-    private func updateVideoPlayerState() {
+    private func advancedPlayerTime(with seconds: Double) {
+        guard let currentTime = player?.currentTime() else { return }
+        let newTime =  CMTimeGetSeconds(currentTime).advanced(by: seconds)
+        let seekTime = CMTime(value: CMTimeValue(newTime), timescale: 1)
+        player?.seek(to: seekTime)
+    }
+
+    private func updatePlayerState() {
         guard let currentTime = player?.currentTime(),
             let currentItem = player?.currentItem else { return }
         if let error = currentItem.error {
             showError(error)
         }
-        updateCurrentTime(from: timeFormatter(from: currentTime.seconds))
-        updateTotalTime(from: timeFormatter(from: currentTime.seconds - currentItem.duration.seconds))
+        let currenTimeInSeconds = currentTime.seconds
+        let totalTimeInSeconds = currentTime.seconds - currentItem.duration.seconds
+        updateCurrentTime(from: timeFormatter(from: currenTimeInSeconds))
+        updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
 
         if !self.sliderIsMoving {
             progressSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
         }
         if currentTime.seconds == currentItem.duration.seconds {
             updatePlayerControls()
-            bigPlayPauseButton.alpha = 1.0
+            apply(fade: false, to: bigPlayPauseButton)
             finishPlaying = true
         }
     }
@@ -266,24 +288,26 @@ class MediaPreview: UIView, FilePreviewProtocol {
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
 
-        currentTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        currentTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeClockLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        currentTimeMinutesLabel.applyStyleBody2OnSurface(theme: currentTheme)
         currentTimeMinutesLabel.textAlignment = .right
-        currentTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         currentTimeSecondsLabel.textAlignment = .left
 
-        totalTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        totalTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeClockLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        totalTimeMinutesLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeMinutesLabel.textAlignment = .right
-        totalTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeSecondsLabel.textAlignment = .left
 
-        actionsView.backgroundColor = currentTheme.onSurfaceColor
+        progressSlider.tintColor = currentTheme.primaryColor
+        progressSlider.thumbTintColor = currentTheme.primaryColor
+        progressSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
+        progressSlider.setThumbImage(UIImage(named: "player_sliderThumb"), for: .normal)
+
+        actionsView.backgroundColor = currentTheme.dividerColor
         playPauseButton.tintColor = currentTheme.surfaceColor
         bigPlayPauseButton.tintColor = currentTheme.surfaceColor
-        progressSlider.tintColor = currentTheme.primaryColor
-        progressSlider.thumbTintColor = currentTheme.primaryVariantColor
-        audioImageView.tintColor = currentTheme.onSurfaceColor
     }
 
     func recalculateFrame(from size: CGSize) {
