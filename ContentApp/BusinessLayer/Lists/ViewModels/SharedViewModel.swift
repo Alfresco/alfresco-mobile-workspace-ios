@@ -42,7 +42,11 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            SharedLinksAPI.listSharedLinks(skipCount: skipCount, maxItems: maxItems, _where: nil, include: nil, fields: nil) { (result, error) in
+            SharedLinksAPI.listSharedLinks(skipCount: skipCount,
+                                           maxItems: maxItems,
+                                           _where: nil,
+                                           include: ["isFavorite"],
+                                           fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list.entries {
                     listNodes = SharedLinkMapper.map(entries)

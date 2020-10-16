@@ -80,4 +80,18 @@ extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
             }
         }
     }
+
+    func showActionMenuFromMoreButton(from node: ListNode) {
+        if let navigationViewController = self.navigationViewController {
+            let menu = ActionsMenuGenericMoreButton(with: node)
+            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let actionMenuViewModel = ActionMenuViewModel(with: menu,
+                                                          node: node,
+                                                          accountService: accountService,
+                                                          delegate: recentViewController)
+            let actionMenuCoordinator = ActionMenuScreenCoordinator(with: navigationViewController,
+                                                                    model: actionMenuViewModel)
+            actionMenuCoordinator.start()
+        }
+    }
 }

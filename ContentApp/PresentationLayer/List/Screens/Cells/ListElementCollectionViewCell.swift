@@ -18,19 +18,24 @@
 
 import UIKit
 
+protocol ListElementCollectionViewCellDelegate: class {
+    func moreButtonTapped(for element: ListNode?)
+}
+
 class ListElementCollectionViewCell: ListSelectableCell {
 
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    weak var delegate: ListElementCollectionViewCellDelegate?
     var element: ListNode? {
         didSet {
             if let element = element {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element.mimeType)
-                moreButton.isHidden = true
+                moreButton.isHidden = false
             }
         }
     }
@@ -49,5 +54,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
+        delegate?.moreButtonTapped(for: element)
     }
 }

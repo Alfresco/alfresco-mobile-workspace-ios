@@ -103,4 +103,16 @@ extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinator
             self.filePreviewCoordinator = filePreviewCoordinator
         }
     }
+
+    func showActionMenuFromMoreButton(from node: ListNode) {
+        let menu = ActionsMenuGenericMoreButton(with: node)
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let actionMenuViewModel = ActionMenuViewModel(with: menu,
+                                                      node: node,
+                                                      accountService: accountService,
+                                                      delegate: listViewController)
+        let actionMenuCoordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                                model: actionMenuViewModel)
+        actionMenuCoordinator.start()
+    }
 }

@@ -91,4 +91,6 @@ extension BrowseScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
             }
         }
     }
+    func showActionMenuFromMoreButton(from node: ListNode) {
+    }
 }

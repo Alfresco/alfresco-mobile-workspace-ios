@@ -223,6 +223,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
+        cell?.delegate = self
         cell?.applyTheme(themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
@@ -231,6 +232,16 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
         folderDrillDownScreenCoordinatorDelegate?.showPreview(from: node)
         listActionDelegate?.elementTapped(node: node)
+    }
+}
+
+// MARK: - ListElementCollectionViewCell Delegate
+
+extension ListComponentViewController: ListElementCollectionViewCellDelegate {
+    func moreButtonTapped(for element: ListNode?) {
+        if let node = element {
+            folderDrillDownScreenCoordinatorDelegate?.showActionMenuFromMoreButton(from: node)
+        }
     }
 }
 

@@ -29,13 +29,20 @@ struct NodeChildMapper {
     }
 
     private static func create(from node: NodeChildAssociation) -> ListNode {
-        let path = node.path?.elements?.compactMap({ $0.name }).joined(separator: " \u{203A} ") ?? ""
+        let path = node.path?.elements?.compactMap({ $0.name })
+            .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
         var kind = ElementKindType.file
         if node.isFolder {
             mimeType = node.nodeType
             kind = .folder
         }
-        return ListNode(guid: node._id, mimeType: mimeType, title: node.name, path: path, modifiedAt: node.modifiedAt, kind: kind)
+        return ListNode(guid: node._id,
+                        mimeType: mimeType,
+                        title: node.name,
+                        path: path,
+                        modifiedAt: node.modifiedAt,
+                        kind: kind,
+                        favorite: node.isFavorite ?? false)
     }
 }

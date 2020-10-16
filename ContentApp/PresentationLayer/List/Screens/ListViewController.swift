@@ -90,6 +90,13 @@ class ListViewController: SystemSearchViewController {
     }
 }
 
+// MARK: - ActionMenuViewModel Delegate
+
+extension ListViewController: ActionMenuViewModelDelegate {
+    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
+    }
+}
+
 // MARK: - ListComponentActionDelegate
 
 extension ListViewController: ListComponentActionDelegate {

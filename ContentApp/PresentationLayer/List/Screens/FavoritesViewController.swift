@@ -209,11 +209,22 @@ class FavoritesViewController: SystemSearchViewController {
     }
 }
 
+// MARK: - ActionMenuViewModel Delegate
+
+extension FavoritesViewController: ActionMenuViewModelDelegate {
+    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
+    }
+}
+
+// MARK: - MDCTabBar Delegate
+
 extension FavoritesViewController: MDCTabBarDelegate {
     func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
 }
+
+// MARK: - UIScrollView Delegate
 
 extension FavoritesViewController: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
