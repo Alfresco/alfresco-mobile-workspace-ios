@@ -23,7 +23,8 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
 
     init(with node: ListNode) {
         actions.removeAll()
-        let infoAction = ActionMenu(title: node.title, type: .node,
+        let infoAction = ActionMenu(title: node.title,
+                                    type: .node,
                                     icon: FileIcon.icon(for: node.mimeType))
         let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
                                       type: .addFavorite)

@@ -23,7 +23,7 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var separator: UIView!
     @IBOutlet weak var sectionSeparator: UIView!
-    
+
     var action: ActionMenu? {
         didSet {
             imageView.image = action?.icon

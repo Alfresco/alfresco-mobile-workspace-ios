@@ -46,7 +46,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = foldersAndFilesViewModel
         viewController.librariesListViewModel = librariesViewModel
@@ -69,7 +69,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     }
 }
 
-extension FavoritesScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
@@ -84,15 +84,16 @@ extension FavoritesScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
             }
         }
     }
-
-    func showActionMenuFromMoreButton(from node: ListNode) {
+    
+    func showActionSheetForListItem(node: ListNode,
+                                    listComponent: ListComponentViewController) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let actionMenuViewModel = ActionMenuViewModel(with: menu,
                                                           node: node,
                                                           accountService: accountService,
-                                                          delegate: favoritesViewController)
+                                                          delegate: listComponent)
             let actionMenuCoordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                                     model: actionMenuViewModel)
             actionMenuCoordinator.start()

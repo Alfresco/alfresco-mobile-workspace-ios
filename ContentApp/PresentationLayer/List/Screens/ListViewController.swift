@@ -50,7 +50,7 @@ class ListViewController: SystemSearchViewController {
 
         }
         listController = listComponentViewController
-        listController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        listController?.listItemActionDelegate = self.listItemActionDelegate
 
         configureNavigationBar()
         if listViewModel?.shouldDisplaySettingsButton() ?? false {
@@ -87,13 +87,6 @@ class ListViewController: SystemSearchViewController {
 
     func scrollToTop() {
         listController?.scrollToSection(0)
-    }
-}
-
-// MARK: - ActionMenuViewModel Delegate
-
-extension ListViewController: ActionMenuViewModelDelegate {
-    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
     }
 }
 

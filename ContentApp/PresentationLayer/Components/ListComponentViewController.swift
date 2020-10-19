@@ -53,7 +53,7 @@ class ListComponentViewController: SystemThemableViewController {
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
-    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var listItemActionDelegate: ListItemActionDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -230,8 +230,16 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        folderDrillDownScreenCoordinatorDelegate?.showPreview(from: node)
+        listItemActionDelegate?.showPreview(from: node)
         listActionDelegate?.elementTapped(node: node)
+    }
+}
+
+// MARK: - ActionMenuViewModel Delegate
+
+extension ListComponentViewController: ActionMenuViewModelDelegate {
+    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
+        print("asd")
     }
 }
 
@@ -240,7 +248,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?) {
         if let node = element {
-            folderDrillDownScreenCoordinatorDelegate?.showActionMenuFromMoreButton(from: node)
+            listItemActionDelegate?.showActionSheetForListItem(node: node, listComponent: self)
         }
     }
 }
@@ -252,6 +260,8 @@ extension ListComponentViewController: PageFetchableDelegate {
         listActionDelegate?.fetchNextListPage(for: itemAtIndexPath)
     }
 }
+
+// MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?, pagination: Pagination?) {
@@ -283,5 +293,7 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         }
     }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension ListComponentViewController: StoryboardInstantiable {}

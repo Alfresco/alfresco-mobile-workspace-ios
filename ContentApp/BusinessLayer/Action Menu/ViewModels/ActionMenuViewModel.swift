@@ -20,7 +20,9 @@ import UIKit
 import AlfrescoContent
 
 protocol ActionMenuViewModelDelegate: class {
-    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?)
+    func actionFinished(on action: ActionMenu?,
+                        node: ListNode,
+                        error: Error?)
 }
 
 typealias ActionFinishedCompletionHandler = (() -> Void)

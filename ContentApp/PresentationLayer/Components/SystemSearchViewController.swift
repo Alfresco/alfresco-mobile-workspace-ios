@@ -21,7 +21,7 @@ import UIKit
 class SystemSearchViewController: SystemThemableViewController {
     var searchViewModel: SearchViewModelProtocol?
     var resultViewModel: ResultsViewModel?
-    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var listItemActionDelegate: ListItemActionDelegate?
     var tagSearchController: UISearchController?
 
     // MARK: - View Life Cycle
@@ -118,7 +118,7 @@ class SystemSearchViewController: SystemThemableViewController {
         rvc.themingService = themingService
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = resultViewModel
-        rvc.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        rvc.listItemActionDelegate = self.listItemActionDelegate
         let searchController = UISearchController(searchResultsController: rvc)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self

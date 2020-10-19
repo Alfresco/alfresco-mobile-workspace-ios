@@ -41,7 +41,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
         viewController.title = browseNode.title
         viewController.themingService = themingService
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
@@ -90,7 +90,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     }
 }
 
-extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         switch node.kind {
         case .folder, .site:
@@ -103,14 +103,15 @@ extension BrowseTopLevelFolderScreenCoordinator: FolderDrilDownScreenCoordinator
             self.filePreviewCoordinator = filePreviewCoordinator
         }
     }
-
-    func showActionMenuFromMoreButton(from node: ListNode) {
+    
+    func showActionSheetForListItem(node: ListNode,
+                                    listComponent: ListComponentViewController) {
         let menu = ActionsMenuGenericMoreButton(with: node)
         let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let actionMenuViewModel = ActionMenuViewModel(with: menu,
                                                       node: node,
                                                       accountService: accountService,
-                                                      delegate: listViewController)
+                                                      delegate: listComponent)
         let actionMenuCoordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                                 model: actionMenuViewModel)
         actionMenuCoordinator.start()

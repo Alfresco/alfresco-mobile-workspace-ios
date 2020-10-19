@@ -45,7 +45,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         viewController.themingService = themingService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
@@ -65,7 +65,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 }
 
-extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+extension RecentScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
@@ -81,14 +81,15 @@ extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
         }
     }
 
-    func showActionMenuFromMoreButton(from node: ListNode) {
+    func showActionSheetForListItem(node: ListNode,
+                                    listComponent: ListComponentViewController) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
             let actionMenuViewModel = ActionMenuViewModel(with: menu,
                                                           node: node,
                                                           accountService: accountService,
-                                                          delegate: recentViewController)
+                                                          delegate: listComponent)
             let actionMenuCoordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                                     model: actionMenuViewModel)
             actionMenuCoordinator.start()

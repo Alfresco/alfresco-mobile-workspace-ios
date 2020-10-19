@@ -43,7 +43,8 @@ class ActionMenuViewController: SystemThemableViewController {
         calculatePreferredSize(view.bounds.size)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         calculatePreferredSize(size)
     }
@@ -51,7 +52,8 @@ class ActionMenuViewController: SystemThemableViewController {
     // MARK: - Private Utils
 
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
+        let targetSize = CGSize(width: size.width,
+                                height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
         collectionView.contentOffset = .zero
     }
@@ -75,8 +77,9 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
             return UICollectionViewCell()
         }
         let identifier = String(describing: ActionMenuCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
-                                                      for: indexPath) as? ActionMenuCollectionViewCell
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
+                                               for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
         cell?.applyTheme(themingService?.activeTheme)
 
