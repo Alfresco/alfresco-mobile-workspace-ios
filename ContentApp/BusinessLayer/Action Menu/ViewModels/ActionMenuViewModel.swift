@@ -65,6 +65,18 @@ class ActionMenuViewModel {
         return CGFloat(numberOfActions)
     }
 
+    func shouldShowSectionSeparator(for indexPath: IndexPath) -> Bool {
+        guard let actions = menu?.actions else { return false }
+        if actions[indexPath.section][indexPath.row].type == .node {
+            return false
+        }
+        if indexPath.section != actions.count - 1 &&
+            indexPath.row == actions[indexPath.section].count - 1 {
+            return true
+        }
+        return false
+    }
+
     // MARK: - Private Helpers
 
     private func requestAction() {

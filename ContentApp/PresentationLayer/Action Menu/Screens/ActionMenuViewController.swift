@@ -73,7 +73,8 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let action = model?.menu?.actions[indexPath.section][indexPath.row] else {
+        guard let model = self.model,
+              let action = model.menu?.actions[indexPath.section][indexPath.row] else {
             return UICollectionViewCell()
         }
         let identifier = String(describing: ActionMenuCollectionViewCell.self)
@@ -82,13 +83,7 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
                                                for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
         cell?.applyTheme(themingService?.activeTheme)
-
-        if indexPath.row == (model?.menu?.actions[indexPath.section].count ?? 0) - 1 &&
-            indexPath.section != (model?.menu?.actions.count ?? 0) - 1 {
-            cell?.sectionSeparator.isHidden = false
-        } else {
-            cell?.sectionSeparator.isHidden = true
-        }
+        cell?.sectionSeparator.isHidden = !(model.shouldShowSectionSeparator(for: indexPath))
         return cell ?? UICollectionViewCell()
     }
 
