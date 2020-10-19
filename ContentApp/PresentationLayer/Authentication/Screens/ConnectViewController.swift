@@ -155,7 +155,7 @@ class ConnectViewController: SystemThemableViewController {
         copyrightLabel.textAlignment = .center
         productLabel.textAlignment = .center
 
-        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
                                                                    NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]

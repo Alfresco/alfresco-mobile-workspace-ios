@@ -115,10 +115,10 @@ class FavoritesViewController: SystemSearchViewController {
 
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
         tabBar.applySurfaceTheme(withScheme: themingService.containerScheming(for: .favoritesTabBar))
-        tabBar.backgroundColor = currentTheme.backgroundColor
+        tabBar.backgroundColor = currentTheme.surfaceColor
         tabBar.bottomDividerColor = currentTheme.dividerColor
         tabBar.enableRippleBehavior = true
-        tabBar.rippleColor = currentTheme.backgroundColor
+        tabBar.rippleColor = currentTheme.surfaceColor
     }
 
     func setupTabBarView() -> MDCTabBar {

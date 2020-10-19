@@ -35,7 +35,7 @@ struct DarkTheme: PresentationTheme {
     // COLORS
     var primaryVariantColor = #colorLiteral(red: 0.431372549, green: 0.6745098039, blue: 1, alpha: 1)
     var primaryColor = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
-    var primaryOnColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var onPrimaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var surfaceColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
     var onSurfaceColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     var backgroundColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)

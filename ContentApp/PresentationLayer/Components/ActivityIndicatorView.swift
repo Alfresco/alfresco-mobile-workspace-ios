@@ -64,7 +64,7 @@ class ActivityIndicatorView: UIView {
         activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
         label.applyStyleBody2OnSurface60(theme: currentTheme)
         label.textAlignment = .center
-        overlayView?.backgroundColor = currentTheme.backgroundColor
+        overlayView?.backgroundColor = currentTheme.surfaceColor
     }
 
     // MARK: - Private Helpers

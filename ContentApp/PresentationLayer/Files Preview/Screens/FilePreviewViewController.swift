@@ -122,7 +122,7 @@ class FilePreviewViewController: SystemThemableViewController {
             applyTheme(for: passwordField)
         }
 
-        navigationController?.navigationBar.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController?.navigationBar.shadowImage = nil
 

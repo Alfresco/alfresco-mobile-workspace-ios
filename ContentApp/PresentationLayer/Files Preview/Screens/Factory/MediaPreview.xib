@@ -141,11 +141,6 @@
                         <constraint firstItem="jJG-De-cej" firstAttribute="top" secondItem="eL1-58-t8M" secondAttribute="bottom" id="w4b-eS-7sY"/>
                         <constraint firstItem="Npq-9n-q7v" firstAttribute="leadingMargin" secondItem="vb7-0h-3My" secondAttribute="trailingMargin" constant="38" id="zA5-pE-BdR"/>
                     </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                            <integer key="value" value="5"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVg-ly-IFj">
                     <rect key="frame" x="182" y="423" width="50" height="50"/>

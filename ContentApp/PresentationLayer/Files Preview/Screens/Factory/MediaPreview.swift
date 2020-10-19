@@ -76,6 +76,9 @@ class MediaPreview: UIView, FilePreviewProtocol {
         progressSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
+        actionsView.layer.cornerRadius = 8.0
+        actionsView.layer.borderWidth = 1.0
+        actionsView.layer.masksToBounds = true
     }
 
     deinit {
@@ -305,9 +308,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
         progressSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
         progressSlider.setThumbImage(UIImage(named: "player_sliderThumb"), for: .normal)
 
-        actionsView.backgroundColor = currentTheme.dividerColor
-        playPauseButton.tintColor = currentTheme.surfaceColor
-        bigPlayPauseButton.tintColor = currentTheme.surfaceColor
+        actionsView.backgroundColor = currentTheme.surfaceColor
+        actionsView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12).cgColor
+
+        backwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        forwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+
+        playPauseButton.tintColor = currentTheme.primaryColor
     }
 
     func recalculateFrame(from size: CGSize) {
