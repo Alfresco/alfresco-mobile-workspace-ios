@@ -43,7 +43,7 @@ class ResultViewController: SystemThemableViewController {
     var resultsViewModel: ResultsViewModel?
     var recentSearchesViewModel = RecentSearchesViewModel()
     var searchChipsViewModel = SearchChipsViewModel()
-    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var listItemActionDelegate: ListItemActionDelegate?
 
     // MARK: - View Life Cycle
 
@@ -66,7 +66,7 @@ class ResultViewController: SystemThemableViewController {
             listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         }
         resultsListController = listComponentViewController
-        resultsListController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        resultsListController?.listItemActionDelegate = self.listItemActionDelegate
 
         // Set up progress view
         progressView.progress = 0

@@ -46,8 +46,16 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             let relativePath = (sSelf.listNodeIsFolder) ? nil : kAPIPathRelativeForSites
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid, skipCount: skipCount, maxItems: maxItems, orderBy: nil, _where: nil,
-                                      include: nil, relativePath: relativePath, includeSource: nil, fields: nil) { (result, error) in
+
+            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid,
+                                      skipCount: skipCount,
+                                      maxItems: maxItems,
+                                      orderBy: nil,
+                                      _where: nil,
+                                      include: ["isFavorite"],
+                                      relativePath: relativePath,
+                                      includeSource: nil,
+                                      fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = NodeChildMapper.map(entries)

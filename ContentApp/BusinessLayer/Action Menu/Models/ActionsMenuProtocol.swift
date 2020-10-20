@@ -17,29 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContent
 
-enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
-}
-
-struct ListNode: Hashable {
-    var guid: String
-    var mimeType: String?
-    var title: String
-    var path: String
-    var modifiedAt: Date?
-    var kind: ElementKindType
-    var favorite: Bool
-
-    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid &&
-            lhs.title == rhs.title &&
-            lhs.path == rhs.path &&
-            lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind &&
-            lhs.mimeType == rhs.mimeType
-    }
+protocol ActionsMenuProtocol {
+    var actions: [[ActionMenu]] { get }
 }

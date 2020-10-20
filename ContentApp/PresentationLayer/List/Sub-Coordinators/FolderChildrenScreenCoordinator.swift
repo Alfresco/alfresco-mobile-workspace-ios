@@ -18,8 +18,9 @@
 
 import UIKit
 
-protocol FolderDrilDownScreenCoordinatorDelegate: class {
+protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
 }
 
 class FolderChildrenScreenCoordinator: Coordinator {
@@ -39,17 +40,21 @@ class FolderChildrenScreenCoordinator: Coordinator {
         let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = ListViewController()
 
-        let listViewModel = self.listViewModel(with: listNode.guid, and: listNode.kind.rawValue, and: accountService)
+        let listViewModel = self.listViewModel(with: listNode.guid,
+                                               and: listNode.kind.rawValue,
+                                               and: accountService)
         let resultViewModel = ResultsViewModel()
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title, type: .node, selected: true, nodeID: listNode.guid)
+        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
+                                      type: .node, selected: true,
+                                      nodeID: listNode.guid)
         contextualSearchViewModel.delegate = resultViewModel
         contextualSearchViewModel.searchChipNode = chipNode
         resultViewModel.delegate = contextualSearchViewModel
 
         viewController.title = listNode.title
         viewController.themingService = themingService
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = contextualSearchViewModel
         viewController.resultViewModel = resultViewModel
@@ -57,7 +62,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
         presenter.pushViewController(viewController, animated: true)
     }
 
-    private func listViewModel(with nodeID: String?, and nodeKind: String?, and accountService: AccountService?) -> ListViewModelProtocol {
+    private func listViewModel(with nodeID: String?,
+                               and nodeKind: String?,
+                               and accountService: AccountService?) -> ListViewModelProtocol {
         let listViewModel = FolderDrillViewModel(with: accountService, listRequest: nil)
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
@@ -67,17 +74,32 @@ class FolderChildrenScreenCoordinator: Coordinator {
     }
 }
 
-extension FolderChildrenScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         switch node.kind {
         case .folder, .site:
-            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter,
+                                                                             listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
-            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter, listNode: node)
+            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter,
+                                                                      listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
+    }
+
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+        let menu = ActionsMenuGenericMoreButton(with: node)
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let actionMenuViewModel = ActionMenuViewModel(with: menu)
+        let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                    accountService: accountService,
+                                                    delegate: delegate)
+        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsModel)
+        coordinator.start()
     }
 }

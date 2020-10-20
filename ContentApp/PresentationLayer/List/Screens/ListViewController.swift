@@ -50,7 +50,7 @@ class ListViewController: SystemSearchViewController {
 
         }
         listController = listComponentViewController
-        listController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        listController?.listItemActionDelegate = self.listItemActionDelegate
 
         configureNavigationBar()
         if listViewModel?.shouldDisplaySettingsButton() ?? false {

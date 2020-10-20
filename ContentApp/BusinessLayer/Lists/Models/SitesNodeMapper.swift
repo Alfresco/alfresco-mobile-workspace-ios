@@ -37,6 +37,12 @@ struct SitesNodeMapper {
     }
 
     private static func create(from node: Site) -> ListNode {
-        return ListNode(guid: node.guid, mimeType: "st:site", title: node.title, path: "", modifiedAt: nil, kind: .site)
+        return ListNode(guid: node.guid,
+                        mimeType: "st:site",
+                        title: node.title,
+                        path: "",
+                        modifiedAt: nil,
+                        kind: .site,
+                        favorite: false)
     }
 }
