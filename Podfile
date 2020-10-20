@@ -1,25 +1,45 @@
 source 'https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git'
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 platform :ios, '12.0'
 use_frameworks!
+inhibit_all_warnings!
 
 target 'ContentApp' do
-  pod 'AlfrescoAuth', :inhibit_warnings => true
-  pod 'SwiftLint', :inhibit_warnings => true
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
+  pod 'SwiftLint'
+  pod 'JWTDecode'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
+  pod 'Nuke'
+  pod 'Gifu'
+  pod 'SVGKit'
+
+  # Alfresco iOS Swift API
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
 
   # Material Components
-#  pod 'MaterialComponents'
-  pod 'MaterialComponents/Buttons', :inhibit_warnings => true
-  pod 'MaterialComponents/Buttons+Theming', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+FilledTextFields', :inhibit_warnings => true
-  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', :inhibit_warnings => true
+  pod 'MaterialComponents/Buttons'
+  pod 'MaterialComponents/Buttons+Theming'
+  pod 'MaterialComponents/TextControls+FilledTextFields'
+  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming'
+  pod 'MaterialComponents/TextControls+OutlinedTextFields'
+  pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming'
   pod 'MaterialComponents/BottomSheet'
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/Snackbar'
   pod 'MaterialComponents/Dialogs'
-  pod 'JWTDecode'
-  pod 'AlfrescoContentServices'
+  pod 'MaterialComponents/Dialogs+Theming'
+  pod 'MaterialComponents/BottomNavigation'
+  pod 'MaterialComponents/BottomNavigation+Theming'
+  pod 'MaterialComponents/Chips'
+  pod 'MaterialComponents/Chips+Theming'
+  pod 'MaterialComponents/Tabs'
+  pod 'MaterialComponents/ProgressView'
+  pod 'MaterialComponents/Tabs+TypographyThemer'
+  pod 'MaterialComponents/Tabs+Theming'
 
   target 'ContentAppTests' do
     inherit! :search_paths
@@ -36,6 +56,8 @@ post_install do |installer|
       config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ""
       config.build_settings['CODE_SIGNING_REQUIRED'] = "NO"
       config.build_settings['CODE_SIGNING_ALLOWED'] = "NO"
+      config.build_settings['LD_RUNPATH_SEARCH_PATHS'] = ['$(FRAMEWORK_SEARCH_PATHS)']
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
     end
   end
 end

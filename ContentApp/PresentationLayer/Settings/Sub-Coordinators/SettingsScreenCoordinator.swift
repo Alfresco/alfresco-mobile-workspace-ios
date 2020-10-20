@@ -33,17 +33,17 @@ class SettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let viewController = SettingsViewController.instantiateViewController()
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        viewController.themingService = themingService
         let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
+
+        viewController.themingService = themingService
         viewModel.viewModelDelegate = viewController
         viewController.viewModel = viewModel
         viewController.settingsScreenCoordinatorDelegate = self
-        viewController.hidesBottomBarWhenPushed = true
-        presenter.pushViewController(viewController, animated: true)
         settingsViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

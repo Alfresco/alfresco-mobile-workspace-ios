@@ -19,7 +19,7 @@
 import Foundation
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol AimsViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -49,7 +49,7 @@ class AimsViewModel {
 
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {
@@ -62,8 +62,9 @@ class AimsViewModel {
                         sSelf.accountService?.unregister(account: activeAccount)
                     }
                 } else {
-                    if let person = personEntry?.entry, let activeAccount = sSelf.accountService?.activeAccount {
-                        UserProfile.persistUserProfile(person: person, withAccountIdentifier: activeAccount.identifier)
+                    if let person = personEntry?.entry {
+                        UserProfile.persistUserProfile(person: person)
+                        ProfileService.featchPersonalFilesID()
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }
@@ -83,10 +84,12 @@ extension AimsViewModel: AlfrescoAuthDelegate {
             if let authSession = session, let accountParams = authenticationService?.parameters {
                 let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
                 let account = AIMSAccount(with: accountSession)
+
+                AlfrescoContentAPI.basePath = account.apiBasePath
+
                 accountService?.register(account: account)
                 accountService?.activeAccount = account
 
-                AlfrescoContentServicesAPI.basePath = account.apiBasePath
                 self.fetchProfileInformation()
             }
         case .failure(let error):
@@ -98,7 +101,6 @@ extension AimsViewModel: AlfrescoAuthDelegate {
         }
     }
 
-    func didLogOut(result: Result<Int, APIError>) {
-
+    func didLogOut(result: Result<Int, APIError>, session: AlfrescoAuthSession?) {
     }
 }

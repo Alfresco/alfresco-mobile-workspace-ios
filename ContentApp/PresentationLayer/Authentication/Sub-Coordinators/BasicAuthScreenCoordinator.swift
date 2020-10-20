@@ -34,14 +34,19 @@ class BasicAuthScreenCoordinator: Coordinator {
     }
 
     func start() {
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let viewController = BasicAuthViewController.instantiateViewController()
-        viewController.splashScreenDelegate = self.splashScreen
+        let viewModel = BasicAuthViewModel(with: loginService, accountService: accountService)
+
+        viewController.splashScreenDelegate = splashScreen
         viewController.basicAuthCoordinatorDelegate = self
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = BasicAuthViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                      accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-        presenter.pushViewController(viewController, animated: kPushAnimation)
+        viewController.themingService = themingService
+
+        viewController.viewModel = viewModel
         basicAuthViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

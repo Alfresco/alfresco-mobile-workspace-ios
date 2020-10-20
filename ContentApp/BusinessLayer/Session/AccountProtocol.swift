@@ -18,7 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 typealias LogoutHandler = (APIError?) -> Void
 
@@ -44,6 +44,9 @@ protocol AccountProtocol: class {
     /// Removes disk folder for this account
     func removeDiskFolder()
 
+    /// Let's an account know when it's been registered
+    func registered()
+
     /// Cleanup session for this account
     func unregister()
 
@@ -51,9 +54,25 @@ protocol AccountProtocol: class {
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))
 
+    /**
+     Creates an authentication ticket used for convenient content fetching.
+
+     - SeeAlso:
+       [AuthenticationAPI](https://api-explorer.alfresco.com/api-explorer/#/authentication)
+    */
+    func createTicket()
+
+    /// Returns a valid authentication ticket or nil if it doesn't exist or it expired.
+    func getTicket() -> String?
+
     /// Logs out of the current account session.
     /// - Parameters:
     ///   - onViewController: Optional view controller to show the log out context for some authentication types.
     ///   - completionHandler: Success or failure of the operation.
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler)
+
+    /// Re sign-in to active account.
+    /// - Parameters:
+    ///   - onViewController: Optional view controller to show the log out context for some authentication types.
+    func reSignIn(onViewController: UIViewController?)
 }

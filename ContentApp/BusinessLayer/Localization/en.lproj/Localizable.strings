@@ -16,18 +16,17 @@
 //  limitations under the License.
 //
 
-"copyrightFormat" = "© 2017 - %d Alfresco Software, Inc. All rights reserved.";
-"productName" = "Content Services";
+"copyrightFormat" = "© %d Alfresco Software, Inc. All rights reserved.";
+"productName" = "Alfresco\nMobile Workspace";
 
 // MARK: - Buttons
 "connectButton" = "Connect";
-"advancedSettingButton" = "Advanced Settings";
-"needHelpButton" = "Need Help";
+"advancedSettingButton" = "Advanced settings";
+"needHelpButton" = "Need help?";
 "resetToDefaultButton" = "Reset to Default";
 "saveButton" = "Save";
 "signin" = "Sign in";
 "signInWithSSO" = "Sign in with SSO";
-"Ok" = "Ok";
 "signOut" = "Sign out";
 "retry" = "Retry";
 "yes" = "Yes";
@@ -46,7 +45,7 @@
 // MARK: - Labels
 "loginTransportProtocolLabel" = "Transport Protocol";
 "https" = "HTTPS";
-"alfrescoContentServicesSettings" = "Alfresco Content Services Settings";
+"AlfrescoContentSettings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
 "infoBasicAuthConnectTo" = "Connected to: ";
 "infoAimsConnectTo" = "Signing in to: ";
@@ -54,12 +53,15 @@
 "needHelpTitle" = "Help";
 "connecting" = "Connecting";
 "signingIn" = "Signing In";
+"sessionExpiredTitle" = "Session Expired";
+"sesssionExpiredMessage" = "You are no longer signed in. Please Sign In again to continue.";
 
 // MARK: - Screen Titles
 "advancedSettings" = "Advanced Settings";
 "settings" = "Settings";
-"recent" = "Recent";
+"recent" = "Recents";
 "favorites" = "Favorites";
+"browse" = "Browse";
 
 // MARK: - Textviews
 "serviceURLHint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
@@ -74,6 +76,7 @@
 "loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
 "loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";
 "loginNoLongerAuthenticatedText" = "You are no longer authenticated, please log in again.";
+"somethingWentWrong" = "Something went wrong!";
 
 // MARK: - Settings Screen
 "theme" = "Theme Mode";
@@ -82,4 +85,40 @@
 "dark" = "Dark";
 "failedProfileInfo" = "Failed to fetch profile information for current user.";
 "appVersion" = "App Version %@-%@";
-"signOutConfirmation" = "Are you sure you want to sign out of Alfresco Content mobile?";
+"signOutConfirmation" = "Are you sure you want to sign out?";
+
+// MARK: - Search
+"emptyListTitle" = "Oops...";
+"emptyListSubtitle" = "We can’t find what\n you’re looking for";
+"searching" = "Searching...";
+"noRecentSearch" = "There is no recent searches.";
+"recentSearch" = "Recent Searches";
+"filterFiles" = "Files";
+"filterFolders" = "Folders";
+"filterLibraries" = "Libraries";
+"filterfoldersAndFiles" = "Files and folders";
+"searchIn" = "in: ";
+
+// MARK: - Group List Section
+"today" = "Today";
+"yesterday" = "Yesterday";
+"thisWeek" = "This Week";
+"lastWeek" = "Last Week";
+"thisMonth" = "This Month";
+"older" = "Older";
+
+// MARK: - Browse Static List
+"browse-personalFiles" = "Personal files";
+"browse-myLibraries" = "My libraries";
+"browse-shared" = "Shared";
+"browse-trash" = "Trash";
+
+// MARK: - File Preview
+"noPreview" = "No preview for this file.";
+"passwordPromptTitle" = "File Locked";
+"passwordPromptMessage" = "Please enter the password to unlock the file.";
+"passwordPromptFailTitle" = "Incorrect Password";
+"passwordPromptFailMessage" = "Please re-enter the password to unlock the file.";
+"passwordPromptSubmit"  = "Submit";
+"preparingPreviewMessage" = "Preparing preview...";
+"loadingPreviewMessage" = "Loading preview...";

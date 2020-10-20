@@ -18,40 +18,37 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
-
+class SettingsViewController: SystemThemableViewController {
     @IBOutlet weak var tableView: UITableView!
 
     weak var settingsScreenCoordinatorDelegate: SettingsScreenCoordinatorDelegate?
-    var themingService: MaterialDesignThemingService?
+
     var viewModel: SettingsViewModel?
-    var heightCell: CGFloat = 64
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = heightCell
+
         navigationController?.setNavigationBarHidden(false, animated: true)
         addLocalization()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
         tableView.reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     // MARK: - Helpers
@@ -60,7 +57,13 @@ class SettingsViewController: UIViewController {
         self.title = LocalizationConstants.ScreenTitles.settings
     }
 
-    func addMaterialComponentsTheme() {
+    override func applyComponentsThemes() {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        view.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 }
 
@@ -77,9 +80,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = viewModel?.items[indexPath.section][indexPath.row] else {
-            return UITableViewCell()
-        }
+        guard let item = viewModel?.items[indexPath.section][indexPath.row] else { return UITableViewCell() }
 
         var cell: SettingsTablewViewCellProtocol?
         switch item.type {
@@ -95,7 +96,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell?.item = item
         cell?.delegate = self
-        cell?.applyThemingService(themingService)
+        cell?.applyTheme(with: themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)
         } else {
@@ -129,16 +130,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
     }
 
     func displayError(message: String) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            let snackbar = Snackbar(with: message, type: .error, buttonTitle: LocalizationConstants.Buttons.retry)
-            if let theme = sSelf.themingService?.activeTheme {
-                snackbar.applyTheme(theme: theme)
-            }
-            snackbar.show {
-                sSelf.viewModel?.reloadRequests()
-            }
-        }
     }
 
     func didUpdateDataSource() {
@@ -154,8 +145,8 @@ extension SettingsViewController: SettingsTableViewCellDelegate {
 
 extension SettingsViewController: ThemesModeScrenDelegate {
     func changeThemeMode() {
+        applyComponentsThemes()
         viewModel?.reloadDataSource()
-        addMaterialComponentsTheme()
     }
 }
 

@@ -36,14 +36,18 @@ class AimsScreenCoordinator: Coordinator {
     }
 
     func start() {
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
+        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let viewController = AimsViewController.instantiateViewController()
+        let viewModel = AimsViewModel(with: loginService, accountService: accountService)
+
         viewController.aimsScreenCoordinatorDelegate = self
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        viewController.viewModel = AimsViewModel(with: self.serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService,
-                                                 accountService: self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService)
-        viewController.splashScreenDelegate = self.splashScreen
-        presenter.pushViewController(viewController, animated: kPushAnimation)
+        viewController.themingService = themingService
+        viewController.viewModel = viewModel
+        viewController.splashScreenDelegate = splashScreen
         aimsViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

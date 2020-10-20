@@ -18,7 +18,7 @@
 
 import UIKit
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol SplashScreenCoordinatorDelegate: class {
     func showLoginContainerView()
@@ -40,15 +40,14 @@ class SplashScreenCoordinator: Coordinator {
     }
 
     func start() {
-        // Set up the splash view controller
-        let splashScreenViewController = SplashViewController.instantiateViewController()
-        splashScreenViewController.coordinatorDelegate = self
-        splashScreenViewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        presenter.pushViewController(splashScreenViewController, animated: true)
-        self.splashScreenViewController = splashScreenViewController
-        // Set up the connect view controller
-        let connectScreenCoordinator = ConnectScreenCoordinator(with: splashScreenViewController, authenticationError: authenticationError)
-        self.connectScreenCoordinator = connectScreenCoordinator
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewController = SplashViewController.instantiateViewController()
+
+        viewController.coordinatorDelegate = self
+        viewController.themingService = themingService
+        splashScreenViewController = viewController
+        presenter.pushViewController(viewController, animated: true)
+        connectScreenCoordinator = ConnectScreenCoordinator(with: viewController, authenticationError: authenticationError)
     }
 }
 
@@ -101,10 +100,10 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     private func registerAndPresent(account: AccountProtocol) {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
+        AlfrescoContentAPI.basePath = account.apiBasePath
+
         accountService?.register(account: account)
         accountService?.activeAccount = account
-
-        AlfrescoContentServicesAPI.basePath = account.apiBasePath
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()

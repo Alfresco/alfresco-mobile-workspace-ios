@@ -33,19 +33,19 @@ class ActivityIndicatorView: UIView {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                let window = UIApplication.shared.windows[0]
-                window.isUserInteractionEnabled = (sSelf.state == .isIdle)
-                (sSelf.state == .isIdle) ? sSelf.removeFromSuperview() : window.addSubview(sSelf)
+                (sSelf.state == .isLoading) ? sSelf.activityIndicator.startAnimating() : sSelf.activityIndicator.stopAnimating()
+                sSelf.isHidden = (sSelf.state == .isIdle)
+                sSelf.superview?.isUserInteractionEnabled = (sSelf.state == .isIdle)
             }
         }
     }
 
     // MARK: - Init
 
-    init(themingService: MaterialDesignThemingService?) {
-        super.init(frame: UIApplication.shared.windows[0].bounds)
+    init(currentTheme: PresentationTheme?) {
+        super.init(frame: kWindow.bounds)
         self.commonInit()
-        self.applyTheme(themingService)
+        self.applyTheme(currentTheme)
     }
 
     required init?(coder: NSCoder) {
@@ -59,47 +59,43 @@ class ActivityIndicatorView: UIView {
         label.text = text
     }
 
-    func reload(from size: CGSize) {
-        self.frame.size = size
-        overlayView?.frame.size = size
-        activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+        label.applyStyleBody2OnSurface60(theme: currentTheme)
+        label.textAlignment = .center
+        overlayView?.backgroundColor = currentTheme.backgroundColor
     }
 
     // MARK: - Private Helpers
 
-    private func applyTheme(_ themingService: MaterialDesignThemingService?) {
-        activityIndicator.cycleColors = [themingService?.activeTheme?.activityIndicatorViewColor ?? .black]
-        label.textColor = themingService?.activeTheme?.activityIndicatorLabelColor
-        label.font = themingService?.activeTheme?.activityIndicatorLabelFont
-        label.text = LocalizationConstants.Labels.conneting
-    }
-
     private func commonInit() {
         self.isUserInteractionEnabled = false
+
         overlayView = UIView(frame: frame)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
+
+        activityIndicator.radius = 12.0
+        activityIndicator.strokeWidth = 2.0
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.sizeToFit()
-        activityIndicator.radius = 40
-        activityIndicator.strokeWidth = 7
-        activityIndicator.center = CGPoint(x: self.center.x, y: self.center.y - self.frame.height / 7)
+
         if let overlayView = self.overlayView {
-            if #available(iOS 13.0, *) {
-                overlayView.backgroundColor = .systemBackground
-            } else {
-                overlayView.backgroundColor = .white
-            }
-            overlayView.alpha = 0.87
+            overlayView.backgroundColor = .white
             self.addSubview(overlayView)
             self.addSubview(activityIndicator)
             self.addSubview(label)
-            activityIndicator.startAnimating()
+
             NSLayoutConstraint.activate([
+                activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: -self.frame.size.height / 6),
+                activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
                 label.widthAnchor.constraint(equalToConstant: 250),
                 label.heightAnchor.constraint(equalToConstant: 20),
                 label.centerXAnchor.constraint(equalTo: activityIndicator.centerXAnchor),
-                label.centerYAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 56.0)
+                label.centerYAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 40.0)
             ])
         }
+        self.state = .isIdle
     }
 }

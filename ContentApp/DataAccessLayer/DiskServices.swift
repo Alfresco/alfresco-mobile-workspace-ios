@@ -20,28 +20,48 @@ import Foundation
 import UIKit
 
 class DiskServices {
+    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
+    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
 
-    static func save(image: UIImage, named imageNamed: String, inDirectory directory: String) {
+    static func saveAvatar(_ image: UIImage) {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
         let fileManager = FileManager.default
-        if let newDirectoryPath = create(directory: directory) {
-            fileManager.createFile(atPath: "\(newDirectoryPath)/\(imageNamed)",
+        if let newDirectoryPath = create(directory: identifier) {
+            fileManager.createFile(atPath: "\(newDirectoryPath)/\(kProfileAvatarImageFileName)",
                 contents: image.pngData(), attributes: nil)
         }
+    }
+
+    static func getAvatar() -> UIImage? {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
+        let fileManager = FileManager.default
+        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(identifier) + "/" + kProfileAvatarImageFileName
+        if fileManager.fileExists(atPath: imagePAth) {
+            return UIImage(contentsOfFile: imagePAth)
+        }
+        return nil
+    }
+
+    static func saveVideo(named: String, data: Data) -> URL? {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
+        if let newDirectoryPath = create(directory: identifier) {
+            do {
+                let urlString = "file:///" + newDirectoryPath + "/" + named.filter { !$0.isWhitespace }
+                if let url = URL(string: urlString) {
+                    try data.write(to: url)
+                    return url
+                }
+            } catch {
+                AlfrescoLog.error("Problem saving video.")
+            }
+        }
+        return nil
     }
 
     static func getDirectoryPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory = paths[0]
         return documentsDirectory
-    }
-
-    static func get(image imageNamed: String, from directory: String) -> UIImage? {
-        let fileManager = FileManager.default
-        let imagePAth = (self.getDirectoryPath() as NSString).appendingPathComponent(directory) + "/" + imageNamed
-        if fileManager.fileExists(atPath: imagePAth) {
-            return UIImage(contentsOfFile: imagePAth)
-        }
-        return nil
     }
 
     static func create(directory: String) -> String? {

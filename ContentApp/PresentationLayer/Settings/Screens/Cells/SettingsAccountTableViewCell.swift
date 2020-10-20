@@ -53,17 +53,12 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
         }
     }
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        guard let themingService = themingService else {
-            return
-        }
-        titleLabel.font = themingService.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService.activeTheme?.settingsTitleLabelColor
+    func applyTheme(with service: MaterialDesignThemingService?) {
+        guard let themingService = service, let currentTheme = themingService.activeTheme else { return }
+        titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
+        subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
-        subtitleLabel.font = themingService.activeTheme?.settingsSubtitleLabelFont
-        subtitleLabel.textColor = themingService.activeTheme?.settingsSubtitleLabelColor
-
-        iconImageView.tintColor = themingService.activeTheme?.settingsIconColor
+        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
         signOutButton.isUppercaseTitle = false
         signOutButton.setTitle(LocalizationConstants.Buttons.signOut, for: .normal)

@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoCore
+import MaterialComponents.MaterialDialogs
 
 class ApplicationCoordinator: Coordinator {
     let window: UIWindow
@@ -33,10 +34,6 @@ class ApplicationCoordinator: Coordinator {
         NotificationCenter.default.addObserver(self, selector: #selector(self.loadSplashScreenCoordinator(notification:)), name: Notification.Name(kShowLoginScreenNotification), object: nil)
     }
 
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
     func start() {
         window.rootViewController = rootViewController
 
@@ -49,18 +46,32 @@ class ApplicationCoordinator: Coordinator {
     }
 
     @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
-        rootViewController = UINavigationController()
-        if let error = notification.userInfo?["error"] as? APIError {
-            splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController, authenticationError: error)
-        }
+        let viewController = window.rootViewController?.presentedViewController ?? window.rootViewController
+        let alert = MDCAlertController(title: LocalizationConstants.Labels.sessionExpiredTitle,
+                                       message: LocalizationConstants.Labels.sesssionExpiredMessage)
 
-        start()
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            if let viewController = viewController {
+                accountService?.activeAccount?.reSignIn(onViewController: viewController)
+            }
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        viewController?.present(alert, animated: true, completion: nil)
     }
 
     @objc private func loadSplashScreenCoordinator(notification: Notification) {
-        rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
+            guard let sSelf = self else { return }
 
-        start()
+            sSelf.rootViewController = UINavigationController()
+            sSelf.splashScreenCoordinator = SplashScreenCoordinator.init(with: sSelf.rootViewController)
+
+            sSelf.start()
+        })
     }
 }

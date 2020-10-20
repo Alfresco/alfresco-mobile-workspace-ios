@@ -17,7 +17,7 @@
 //
 
 import Foundation
-import AlfrescoContentServices
+import AlfrescoContent
 import AlfrescoAuth
 import MaterialComponents.MaterialDialogs
 
@@ -33,7 +33,6 @@ class SettingsViewModel {
     var accountService: AccountService?
     var userProfile: PersonEntry?
     weak var viewModelDelegate: SettingsViewModelDelegate?
-    var apiClient: APIClientProtocol?
 
     // MARK: - Init
 
@@ -47,8 +46,8 @@ class SettingsViewModel {
     // MARK: - Public methods
 
     func reloadRequests() {
-        fetchProfileInformation()
         fetchAvatar()
+        fetchProfileInformation()
     }
 
     func reloadDataSource() {
@@ -70,22 +69,18 @@ class SettingsViewModel {
     }
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
-        if accountService?.activeAccount is BasicAuthAccount {
-            let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut, message: LocalizationConstants.Settings.signOutConfirmation)
-
-            let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.logOutForCurrentAccount(in: viewController)
-            }
-            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
-
-            alert.addAction(confirmAction)
-            alert.addAction(cancelAction)
-
-            viewController.present(alert, animated: true, completion: nil)
-        } else {
-            logOutForCurrentAccount(in: viewController)
+        let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut, message: LocalizationConstants.Settings.signOutConfirmation)
+        
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.logOutForCurrentAccount(in: viewController)
         }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+        
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        viewController.present(alert, animated: true, completion: nil)
     }
 
     // MARK: - Private methods
@@ -111,25 +106,20 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        if let currentAccount = self.accountService?.activeAccount {
-            UserProfile.persistUserProfile(person: userProfile, withAccountIdentifier: currentAccount.identifier)
-        }
+        UserProfile.persistUserProfile(person: userProfile)
         return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
     }
 
     private func getLocalProfileItem() -> SettingsItem? {
-        guard let identifier = accountService?.activeAccount?.identifier else { return nil }
-
-        var avatar = DiskServices.get(image: "avatar", from: accountService?.activeAccount?.identifier ?? "")
+        var avatar = DiskServices.getAvatar()
         if avatar == nil {
             avatar = UIImage(named: "account-circle")
         }
-        return SettingsItem(type: .account, title: UserProfile.getProfileName(withAccountIdentifier: identifier),
-                            subtitle: UserProfile.getEmail(withAccountIdentifier: identifier), icon: avatar)
+        return SettingsItem(type: .account, title: UserProfile.getProfileName(), subtitle: UserProfile.getEmail(), icon: avatar)
     }
 
     private func getThemeItem() -> SettingsItem {
@@ -153,40 +143,26 @@ class SettingsViewModel {
     }
 
     private func fetchAvatar() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
-            sSelf.apiClient = APIClient(with: currentAccount.apiBasePath + "/", session: URLSession(configuration: .ephemeral))
-            _ = sSelf.apiClient?.send(GetContentServicesAvatarProfile(with: authenticationProvider.authorizationHeader()), completion: { (result) in
-                switch result {
-                case .success(let data):
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            DiskServices.save(image: image, named: kProfileAvatarImageFileName, inDirectory: currentAccount.identifier)
-                            sSelf.reloadDataSource()
-                        }
-                    }
-                case .failure(let error):
-                    AlfrescoLog.error(error)
-                }
-            })
-        })
+        ProfileService.featchAvatar { (_) in
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.reloadDataSource()
+            }
+        }
     }
 
     private func fetchProfileInformation() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
-                guard let sSelf = self else { return }
-                if let error = error {
-                    AlfrescoLog.error(error)
-                    sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
-                } else {
-                    sSelf.userProfile = personEntry
-                    DispatchQueue.main.async {
-                        sSelf.reloadDataSource()
-                    }
+        ProfileService.fetchProfileInformation { [weak self] (personEntry, error) in
+            guard let sSelf = self else { return }
+            if let error = error {
+                AlfrescoLog.error(error)
+                sSelf.viewModelDelegate?.displayError(message: LocalizationConstants.Settings.failedProfileInfo)
+            } else {
+                sSelf.userProfile = personEntry
+                DispatchQueue.main.async {
+                    sSelf.reloadDataSource()
                 }
             }
-        })
+        }
     }
 }

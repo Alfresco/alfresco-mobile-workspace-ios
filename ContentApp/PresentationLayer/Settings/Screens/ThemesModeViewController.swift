@@ -22,21 +22,18 @@ protocol ThemesModeScrenDelegate: class {
     func changeThemeMode()
 }
 
-class ThemesModeViewController: UIViewController {
+class ThemesModeViewController: SystemThemableViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
     weak var delegate: ThemesModeScrenDelegate?
-    var themingService: MaterialDesignThemingService?
     var viewModel = ThemeModesViewModel()
-    var heightCell: CGFloat = 44.0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.themingService = themingService
         addLocalization()
-        addMaterialComponentsTheme()
     }
 
     override func viewDidLayoutSubviews() {
@@ -51,8 +48,6 @@ class ThemesModeViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
         tableView.reloadData()
     }
 
@@ -62,12 +57,10 @@ class ThemesModeViewController: UIViewController {
         titleLabel.text = LocalizationConstants.Theme.theme
     }
 
-    func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
-        titleLabel.font = themingService.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService.activeTheme?.settingsTitleLabelColor
+    override func applyComponentsThemes() {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        view.backgroundColor = currentTheme.backgroundColor
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
@@ -88,7 +81,7 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ThemeModeTableViewCell else {
             return UITableViewCell()
         }
-        cell.applyThemingService(themingService)
+        cell.applyThemingService(themingService?.activeTheme)
         cell.item = viewModel.items[indexPath.row]
         if viewModel.items[indexPath.row] == themingService?.getThemeMode() {
             cell.selectRadioButton()
@@ -104,7 +97,7 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return heightCell
+        return settingsThemeCellHeight
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -17,67 +17,31 @@
 //
 
 import UIKit
+typealias TextStyle = (font: UIFont, lineHeight: CGFloat, letterSpacing: Double)
 
 protocol PresentationTheme {
-    // TYPOGRAPHY - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonFont: UIFont { get }
-    var loginUtilitiesButtonFont: UIFont { get }
-    var loginSavePadButtonFont: UIFont { get }
-    var signOutButtonFont: UIFont { get }
-    /// Labels
-    var productLabelFont: UIFont { get }
-    var applicationTitleFont: UIFont { get }
-    var loginCopyrightLabelFont: UIFont { get }
-    var loginFieldLabelFont: UIFont { get }
-    var loginHTTPSLabelFont: UIFont { get }
-    var loginTitleLabelFont: UIFont { get }
-    var loginInfoLabelFont: UIFont { get }
-    var loginInfoHostnameLabelFont: UIFont { get }
-    var needHelpTitleLabelFont: UIFont { get }
-    var activityIndicatorLabelFont: UIFont { get }
-    var settingsTitleLabelFont: UIFont { get }
-    var settingsSubtitleLabelFont: UIFont { get }
-    /// TextFields
-    var loginTextFieldFont: UIFont { get }
-    /// Textviews
-    var needHelpHintTextViewFont: UIFont { get }
+    // TYPOGRAPHY
+    var headline3TextStyle: TextStyle { get }
+    var headline4TextStyle: TextStyle { get }
+    var headline5TextStyle: TextStyle { get }
+    var headline6TextStyle: TextStyle { get }
+    var subtitle1TextStyle: TextStyle { get }
+    var subtitle2TextStyle: TextStyle { get }
+    var buttonTextStyle: TextStyle { get }
+    var body1TextStyle: TextStyle { get }
+    var body2TextStyle: TextStyle { get }
+    var captionTextStyle: TextStyle { get }
+    var overlineTextStyle: TextStyle { get }
 
-    // COLORS - LOGIN COMPONENTS
-    /// Buttons
-    var loginButtonColor: UIColor { get }
-    var loginTextButtonColor: UIColor { get }
-    var loginButtonDisableColor: UIColor { get }
-    var loginNeedHelpButtonColor: UIColor { get }
-    var loginAdvancedSettingsButtonColor: UIColor { get }
-    var loginSavePadButtonColor: UIColor { get }
-    var signOutButtonColor: UIColor { get }
-    var signOutTextButtonColor: UIColor { get }
-    /// Labels
-    var productLabelColor: UIColor { get }
-    var applicationTitleColor: UIColor { get }
-    var loginCopyrightLabelColor: UIColor { get }
-    var loginFieldLabelColor: UIColor { get }
-    var loginInfoLabelColor: UIColor { get }
-    var loginFieldDisableLabelColor: UIColor { get }
-    var loginTitleLabelColor: UIColor { get }
-    var needHelpTitleColor: UIColor { get }
-    var activityIndicatorLabelColor: UIColor { get }
-    var settingsTitleLabelColor: UIColor { get }
-    var settingsSubtitleLabelColor: UIColor { get }
-
-    /// TextFields
-    var loginTextFieldPrimaryColor: UIColor { get }
-    var loginTextFieldErrorColor: UIColor { get }
-    var loginTextFieldOnSurfaceColor: UIColor { get }
-    var loginTextFieldIconColor: UIColor { get }
-    /// Textviews
-    var needHelpHintTextViewColor: UIColor { get }
-    /// Views
+    // COLORS
+    var primaryVariantColor: UIColor { get }
+    var primaryColor: UIColor { get }
+    var primaryOnColor: UIColor { get }
+    var surfaceColor: UIColor { get }
+    var onSurfaceColor: UIColor { get }
     var backgroundColor: UIColor { get }
-    var activityIndicatorViewColor: UIColor { get }
-    var snackbarErrorColor: UIColor { get }
-    var snackbarApproved: UIColor { get }
-    var snackbarWarning: UIColor { get }
-    var settingsIconColor: UIColor { get }
+    var onBackgroundColor: UIColor { get }
+    var errorColor: UIColor { get }
+    var errorOnColor: UIColor { get }
+    var dividerColor: UIColor { get }
 }

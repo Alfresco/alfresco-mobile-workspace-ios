@@ -51,7 +51,7 @@ struct LocalizationConstants {
     struct Labels {
         static let transportProtocol = NSLocalizedString("loginTransportProtocolLabel", comment: "")
         static let https = NSLocalizedString("https", comment: "")
-        static let alfrescoContentServicesSettings = NSLocalizedString("alfrescoContentServicesSettings", comment: "")
+        static let AlfrescoContentSettings = NSLocalizedString("AlfrescoContentSettings", comment: "")
         static let authentication = NSLocalizedString("authentication", comment: "")
         static let infoBasicAuthConnectTo = NSLocalizedString("infoBasicAuthConnectTo", comment: "")
         static let infoAimsConnectTo = NSLocalizedString("infoAimsConnectTo", comment: "")
@@ -59,6 +59,8 @@ struct LocalizationConstants {
         static let needHelpTitle = NSLocalizedString("needHelpTitle", comment: "")
         static let conneting = NSLocalizedString("connecting", comment: "")
         static let signingIn = NSLocalizedString("signingIn", comment: "")
+        static let sessionExpiredTitle =  NSLocalizedString("sessionExpiredTitle", comment: "")
+        static let sesssionExpiredMessage =  NSLocalizedString("sesssionExpiredMessage", comment: "")
     }
 
     struct ScreenTitles {
@@ -66,6 +68,7 @@ struct LocalizationConstants {
         static let settings = NSLocalizedString("settings", comment: "")
         static let recent = NSLocalizedString("recent", comment: "")
         static let favorites = NSLocalizedString("favorites", comment: "")
+        static let browse = NSLocalizedString("browse", comment: "")
     }
 
     struct Textviews {
@@ -82,6 +85,7 @@ struct LocalizationConstants {
         static let saveSettings = NSLocalizedString("loginApprovedSaveSettings", comment: "")
         static let serviceDocumentEmpty = NSLocalizedString("loginWarningServiceDocumetEmptyText", comment: "")
         static let noLongerAuthenticated = NSLocalizedString("loginNoLongerAuthenticatedText", comment: "")
+        static let somethingWentWrong = NSLocalizedString("somethingWentWrong", comment: "")
     }
 
     struct Theme {
@@ -95,5 +99,45 @@ struct LocalizationConstants {
         static let failedProfileInfo = NSLocalizedString("failedProfileInfo", comment: "")
         static let appVersion = NSLocalizedString("appVersion", comment: "")
         static let signOutConfirmation = NSLocalizedString("signOutConfirmation", comment: "")
+    }
+
+    struct Search {
+        static let title = NSLocalizedString("emptyListTitle", comment: "")
+        static let subtitle = NSLocalizedString("emptyListSubtitle", comment: "")
+        static let searching = NSLocalizedString("searching", comment: "")
+        static let noRecentSearch = NSLocalizedString("noRecentSearch", comment: "")
+        static let recentSearch = NSLocalizedString("recentSearch", comment: "")
+        static let filterFiles = NSLocalizedString("filterFiles", comment: "")
+        static let filterFolders = NSLocalizedString("filterFolders", comment: "")
+        static let filterLibraries = NSLocalizedString("filterLibraries", comment: "")
+        static let filterFoldersAndFiles = NSLocalizedString("filterfoldersAndFiles", comment: "")
+        static let searchIn = NSLocalizedString("searchIn", comment: "")
+    }
+
+    struct GroupListSection {
+        static let today = NSLocalizedString("today", comment: "")
+        static let yesterday = NSLocalizedString("yesterday", comment: "")
+        static let thisWeek = NSLocalizedString("thisWeek", comment: "")
+        static let lastWeek = NSLocalizedString("lastWeek", comment: "")
+        static let thisMonth = NSLocalizedString("thisMonth", comment: "")
+        static let older = NSLocalizedString("older", comment: "")
+    }
+
+    struct BrowseStaticList {
+        static let personalFiles = NSLocalizedString("browse-personalFiles", comment: "")
+        static let myLibraries = NSLocalizedString("browse-myLibraries", comment: "")
+        static let shared = NSLocalizedString("browse-shared", comment: "")
+        static let trash = NSLocalizedString("browse-trash", comment: "")
+    }
+
+    struct FilePreview {
+        static let noPreview = NSLocalizedString("noPreview", comment: "")
+        static let passwordPromptTitle = NSLocalizedString("passwordPromptTitle", comment: "")
+        static let passwordPromptMessage = NSLocalizedString("passwordPromptMessage", comment: "")
+        static let passwordPromptFailTitle = NSLocalizedString("passwordPromptFailTitle", comment: "")
+        static let passwordPromptFailMessage = NSLocalizedString("passwordPromptFailMessage", comment: "")
+        static let passwordPromptSubmit = NSLocalizedString("passwordPromptSubmit", comment: "")
+        static let preparingPreviewMessage = NSLocalizedString("preparingPreviewMessage", comment: "")
+        static let loadingPreviewMessage = NSLocalizedString("loadingPreviewMessage", comment: "")
     }
 }

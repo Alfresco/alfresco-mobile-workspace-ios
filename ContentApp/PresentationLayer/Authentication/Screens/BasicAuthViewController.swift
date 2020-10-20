@@ -21,10 +21,10 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
-class BasicAuthViewController: UIViewController {
+class BasicAuthViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -32,8 +32,8 @@ class BasicAuthViewController: UIViewController {
     @IBOutlet weak var hostnameLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    @IBOutlet weak var usernameTextField: MDCFilledTextField!
-    @IBOutlet weak var passwordTextField: MDCFilledTextField!
+    @IBOutlet weak var usernameTextField: MDCOutlinedTextField!
+    @IBOutlet weak var passwordTextField: MDCOutlinedTextField!
     var showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
 
     @IBOutlet weak var signInButton: MDCButton!
@@ -44,7 +44,6 @@ class BasicAuthViewController: UIViewController {
     var viewModel: BasicAuthViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
     var enableSignInButton: Bool = false {
@@ -63,13 +62,17 @@ class BasicAuthViewController: UIViewController {
 
         addLocalization()
         enableSignInButton = false
+
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+        if let activityIndicator = activityIndicator {
+            kWindow.addSubview(activityIndicator)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService)
-        activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,15 +80,9 @@ class BasicAuthViewController: UIViewController {
         Snackbar.dimissAll()
     }
 
-   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-       super.viewWillTransition(to: size, with: coordinator)
-       activityIndicator?.reload(from: size)
-   }
-
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     // MARK: - IBActions
@@ -95,6 +92,7 @@ class BasicAuthViewController: UIViewController {
         guard let username = usernameTextField.text, let password = passwordTextField.text else {
             return
         }
+        Snackbar.dimissAll()
         activityIndicator?.state = .isLoading
         viewModel?.authenticate(username: username, password: password)
     }
@@ -122,46 +120,43 @@ class BasicAuthViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+    override func applyComponentsThemes() {
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        signInButton.isUppercaseTitle = false
 
-        productLabel.textColor = themingService.activeTheme?.productLabelColor
-        productLabel.font = themingService.activeTheme?.productLabelFont
+        productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
-        infoLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        infoLabel.font = themingService.activeTheme?.loginInfoLabelFont
+        hostnameLabel.textColor = currentTheme.onSurfaceColor
+        hostnameLabel.font = currentTheme.body1TextStyle.font
 
-        hostnameLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        hostnameLabel.font = themingService.activeTheme?.loginInfoHostnameLabelFont
-
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
         applyThemingInTextField(errorTheme: false)
+
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 
     func applyThemingInTextField(errorTheme: Bool) {
-        guard let themingService = self.themingService else {
-            return
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
         if errorTheme {
             usernameTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.isSecureTextEntry = false
             passwordTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         } else {
             usernameTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            passwordTextField.isSecureTextEntry = false
             passwordTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
 
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
-        usernameTextField.setFilledBackgroundColor(.clear, for: .normal)
-        usernameTextField.setFilledBackgroundColor(.clear, for: .editing)
+        usernameTextField.trailingView?.tintColor = currentTheme.dividerColor
 
         showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
         showPasswordImageView.contentMode = .scaleAspectFit
@@ -169,9 +164,7 @@ class BasicAuthViewController: UIViewController {
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
         passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
-        passwordTextField.trailingView?.tintColor = themingService.activeTheme?.loginTextFieldIconColor
-        passwordTextField.setFilledBackgroundColor(.clear, for: .normal)
-        passwordTextField.setFilledBackgroundColor(.clear, for: .editing)
+        passwordTextField.trailingView?.tintColor = currentTheme.dividerColor
         passwordTextField.isSecureTextEntry = true
     }
 }
@@ -181,7 +174,7 @@ class BasicAuthViewController: UIViewController {
 extension BasicAuthViewController: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldPrimaryColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.primaryVariantColor
         keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
@@ -210,7 +203,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = themingService?.activeTheme?.loginTextFieldIconColor
+        textField.rightView?.tintColor = themingService?.activeTheme?.dividerColor
         return true
     }
 
@@ -226,11 +219,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         if error.responseCode == 401 {
             applyThemingInTextField(errorTheme: true)
         }
-        Snackbar.dimissAll()
         let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.applyThemingInTextField(errorTheme: false)
@@ -244,11 +233,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
-        Snackbar.dimissAll()
         let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
         snackbar.show(completion: nil)
     }
 }

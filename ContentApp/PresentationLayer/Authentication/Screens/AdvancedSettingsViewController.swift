@@ -20,10 +20,10 @@ import UIKit
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
-class AdvancedSettingsViewController: UIViewController {
+class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBOutlet weak var backPadButton: UIButton!
     @IBOutlet weak var titlePadLabel: UILabel!
@@ -39,10 +39,10 @@ class AdvancedSettingsViewController: UIViewController {
     @IBOutlet weak var httpsLabel: UILabel!
     @IBOutlet weak var httpsSwitch: UISwitch!
 
-    @IBOutlet weak var portTextField: MDCFilledTextField!
-    @IBOutlet weak var serviceDocumentsTextField: MDCFilledTextField!
-    @IBOutlet weak var realmTextField: MDCFilledTextField!
-    @IBOutlet weak var clientIDTextField: MDCFilledTextField!
+    @IBOutlet weak var portTextField: MDCOutlinedTextField!
+    @IBOutlet weak var serviceDocumentsTextField: MDCOutlinedTextField!
+    @IBOutlet weak var realmTextField: MDCOutlinedTextField!
+    @IBOutlet weak var clientIDTextField: MDCOutlinedTextField!
 
     @IBOutlet weak var saveButton: UIBarButtonItem!
     @IBOutlet weak var needHelpButton: MDCButton!
@@ -53,7 +53,6 @@ class AdvancedSettingsViewController: UIViewController {
     var viewModel = AdvancedSettingsViewModel()
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
 
     var enableSaveButton: Bool = false {
         didSet {
@@ -76,17 +75,6 @@ class AdvancedSettingsViewController: UIViewController {
         Snackbar.dimissAll()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
-    }
-
     // MARK: - IBAction
 
     @IBAction func backPadButtonTapped(_ sender: UIButton) {
@@ -102,7 +90,12 @@ class AdvancedSettingsViewController: UIViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        httpsLabel.textColor = (httpsSwitch.isOn) ? themingService?.activeTheme?.loginFieldLabelColor : themingService?.activeTheme?.loginFieldDisableLabelColor
+        guard let currentTheme = self.themingService?.activeTheme else { return }
+        if httpsSwitch.isOn {
+            httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        } else {
+            httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        }
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (serviceDocumentsTextField.text != "")
     }
@@ -137,7 +130,7 @@ class AdvancedSettingsViewController: UIViewController {
         self.title = LocalizationConstants.ScreenTitles.advancedSettings
 
         transportProtocolLabel.text = LocalizationConstants.Labels.transportProtocol
-        settingsLabel.text = LocalizationConstants.Labels.alfrescoContentServicesSettings
+        settingsLabel.text = LocalizationConstants.Labels.AlfrescoContentSettings
         authenticationLabel.text = LocalizationConstants.Labels.authentication
         httpsLabel.text = LocalizationConstants.Labels.https
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
@@ -147,56 +140,45 @@ class AdvancedSettingsViewController: UIViewController {
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
-        saveButton.title = LocalizationConstants.Buttons.save.uppercased()
+        saveButton.title = LocalizationConstants.Buttons.save
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         resetButton.setTitle(LocalizationConstants.Buttons.resetToDefault, for: .normal)
     }
 
-    func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+    override func applyComponentsThemes() {
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        portTextField.setFilledBackgroundColor(.clear, for: .normal)
-        portTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         serviceDocumentsTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        serviceDocumentsTextField.setFilledBackgroundColor(.clear, for: .normal)
-        serviceDocumentsTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         clientIDTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        clientIDTextField.setFilledBackgroundColor(.clear, for: .normal)
-        clientIDTextField.setFilledBackgroundColor(.clear, for: .editing)
-
         realmTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        realmTextField.setFilledBackgroundColor(.clear, for: .normal)
-        realmTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        transportProtocolLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        transportProtocolLabel.font = themingService.activeTheme?.loginFieldLabelFont
-
-        httpsLabel.textColor = (viewModel.authParameters.https) ? themingService.activeTheme?.loginFieldLabelColor : themingService.activeTheme?.loginFieldDisableLabelColor
-        httpsLabel.font = themingService.activeTheme?.loginHTTPSLabelFont
-
-        settingsLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        settingsLabel.font = themingService.activeTheme?.loginFieldLabelFont
-
-        authenticationLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        authenticationLabel.font = themingService.activeTheme?.loginFieldLabelFont
-
-        titlePadLabel.textColor = themingService.activeTheme?.applicationTitleColor
-        titlePadLabel.font = themingService.activeTheme?.loginTitleLabelFont
-
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        if viewModel.authParameters.https {
+            httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        } else {
+            httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        }
+        transportProtocolLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        settingsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        authenticationLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        titlePadLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
 
         resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
+        resetButton.isUppercaseTitle = false
+
         savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        savePadButton.setTitleColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        savePadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
+        savePadButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
-        saveButton.tintColor = themingService.activeTheme?.loginButtonColor
-        backPadButton.tintColor = themingService.activeTheme?.loginButtonColor
+        needHelpButton.isUppercaseTitle = false
+
+        saveButton.tintColor = currentTheme.primaryVariantColor
+        backPadButton.tintColor = currentTheme.primaryVariantColor
+
+        view.backgroundColor = currentTheme.backgroundColor
     }
 
     func updateFields() {
@@ -218,9 +200,6 @@ class AdvancedSettingsViewController: UIViewController {
                          clientID: clientIDTextField.text)
 
         let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        if let theme = self.themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
         snackbar.hideButton(true)
         snackbar.show(completion: nil)
     }

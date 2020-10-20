@@ -18,33 +18,23 @@
 
 import Foundation
 import AlfrescoAuth
-import JWTDecode
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol AIMSAccountDelegate: class {
-    func sessionFailedToRefresh(error: APIError)
+    func didReSignIn()
 }
 
 class AIMSAccount: AccountProtocol, Equatable {
     var identifier: String {
-        guard let token = session.credential?.accessToken else { return "" }
-
-        do {
-            let jwt = try decode(jwt: token)
-            let claim = jwt.claim(name: "email")
-            if let email = claim.string {
-                return email
-            }
-        } catch {
-            AlfrescoLog.error("Unable to decode account token for extracting account identifier")
-        }
-
-        return ""
+        return session.identifier
     }
     var apiBasePath: String {
         return "\(session.parameters.fullContentURL)/\(session.parameters.serviceDocument)/\(kAPIPathBase)"
     }
     var session: AIMSSession
+
+    var ticket: String?
+    private var ticketTimer: Timer?
 
     static func == (lhs: AIMSAccount, rhs: AIMSAccount) -> Bool {
         return lhs.identifier == rhs.identifier
@@ -60,17 +50,7 @@ class AIMSAccount: AccountProtocol, Equatable {
     }
 
     func persistAuthenticationCredentials() {
-        do {
-            if let authSession = session.session {
-                let credentialData = try JSONEncoder().encode(session.credential)
-                let sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
-
-                _ = Keychain.set(value: credentialData, forKey: "\(identifier)-\(String(describing: AlfrescoCredential.self))")
-                _ = Keychain.set(value: sessionData, forKey: "\(identifier)-\(String(describing: AlfrescoAuthSession.self))")
-            }
-        } catch {
-            AlfrescoLog.error("Unable to persist credentials to Keychain.")
-        }
+        session.persistAuthenticationCredentials()
     }
 
     func removeAuthenticationParameters() {
@@ -88,6 +68,11 @@ class AIMSAccount: AccountProtocol, Equatable {
 
     func unregister() {
         session.invalidateSessionRefresh()
+        ticketTimer?.invalidate()
+    }
+
+    func registered() {
+        createTicket()
     }
 
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
@@ -106,15 +91,47 @@ class AIMSAccount: AccountProtocol, Equatable {
         }
     }
 
+    func getTicket() -> String? {
+        return ticket
+    }
+
     func logOut(onViewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
         guard let viewController = onViewController else { return }
         session.logOut(onViewController: viewController, completionHandler: completionHandler)
     }
+
+    func reSignIn(onViewController: UIViewController?) {
+        guard let viewController = onViewController else { return }
+        session.reSignIn(onViewController: viewController)
+    }
+
+    func createTicket() {
+        getSession { [weak self] authenticationprovider in
+            guard let sSelf = self else { return }
+            let ticketValidationRequestBuilder = AuthenticationAPI.validateTicketWithRequestBuilder()
+            ticketValidationRequestBuilder.addHeaders(authenticationprovider.authorizationHeader())
+
+            ticketValidationRequestBuilder.execute { (response, error) in
+
+                if error == nil {
+                    sSelf.ticketTimer?.invalidate()
+                    sSelf.ticket = response?.body?.entry._id
+                } else {
+                    // Retry again in one minute
+                    if sSelf.ticketTimer == nil {
+                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+                            sSelf.createTicket()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AIMSAccount: AIMSAccountDelegate {
-    func sessionFailedToRefresh(error: APIError) {
-        removeAuthenticationCredentials()
-        removeDiskFolder()
+    func didReSignIn() {
+        createTicket()
+        ProfileService.featchPersonalFilesID()
     }
 }

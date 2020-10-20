@@ -21,13 +21,13 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
-class ConnectViewController: UIViewController {
+class ConnectViewController: SystemThemableViewController {
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
-    @IBOutlet weak var connectTextField: MDCFilledTextField!
+    @IBOutlet weak var connectTextField: MDCOutlinedTextField!
     @IBOutlet weak var connectButton: MDCButton!
     @IBOutlet weak var advancedSettingsButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
@@ -40,7 +40,6 @@ class ConnectViewController: UIViewController {
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var openKeyboard: Bool = true
     var errorShowInProgress: Bool = false
-    var themingService: MaterialDesignThemingService?
     var activityIndicator: ActivityIndicatorView?
 
     var enableConnectButton: Bool = false {
@@ -55,17 +54,22 @@ class ConnectViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = UIDevice.current.userInterfaceIdiom == .pad
         viewModel?.delegate = self
+        viewModel?.aimsViewModel?.delegate = self
 
         addLocalization()
         enableConnectButton = (connectTextField.text != "")
+        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
+        if let activityIndicator = activityIndicator {
+            kWindow.addSubview(activityIndicator)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-        activityIndicator = ActivityIndicatorView(themingService: themingService)
         navigationBar(hide: true)
-        self.splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -86,16 +90,11 @@ class ConnectViewController: UIViewController {
         navigationBar(hide: false)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        activityIndicator?.reload(from: size)
-    }
-
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
+        activityIndicator?.applyTheme(themingService?.activeTheme)
     }
+
     // MARK: - IBActions
 
     @IBAction func connectButtonTapped(_ sender: UIButton) {
@@ -104,7 +103,7 @@ class ConnectViewController: UIViewController {
             return
         }
         activityIndicator?.state = .isLoading
-        viewModel?.availableAuthType(for: connectURL)
+        viewModel?.availableAuthType(for: connectURL, in: self)
     }
 
     @IBAction func advancedSettingsButtonTapped(_ sender: UIButton) {
@@ -134,27 +133,32 @@ class ConnectViewController: UIViewController {
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
-
     }
 
-    func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+    override func applyComponentsThemes() {
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        connectButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        connectButton.isUppercaseTitle = false
+
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        advancedSettingsButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.isUppercaseTitle = false
 
         connectTextFieldAddMaterialComponents()
 
-        productLabel.textColor = themingService.activeTheme?.productLabelColor
-        productLabel.font = themingService.activeTheme?.productLabelFont
+        productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
-
-        self.navigationController?.navigationBar.tintColor = themingService.activeTheme?.loginButtonColor
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
+        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     func connectTextFieldAddMaterialComponents() {
@@ -167,8 +171,6 @@ class ConnectViewController: UIViewController {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
         }
-        connectTextField.setFilledBackgroundColor(.clear, for: .normal)
-        connectTextField.setFilledBackgroundColor(.clear, for: .editing)
     }
 
     func navigationBar(hide: Bool) {
@@ -186,9 +188,6 @@ class ConnectViewController: UIViewController {
     func showError(message: String) {
         Snackbar.dimissAll()
         let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: false)
-        if let theme = themingService?.activeTheme {
-            snackbar.applyTheme(theme: theme)
-        }
         snackbar.show(completion: { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.errorShowInProgress = false
@@ -228,30 +227,55 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceAvailable(for authType: AvailableAuthType) {
         activityIndicator?.state = .isIdle
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-            sSelf.errorShowInProgress = false
-            sSelf.connectTextFieldAddMaterialComponents()
-            Snackbar.dimissAll()
-            switch authType {
-            case .aimsAuth:
-                sSelf.connectScreenCoordinatorDelegate?.showAimsScreen()
-            case .basicAuth:
-                sSelf.connectScreenCoordinatorDelegate?.showBasicAuthScreen()
-            }
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+        errorShowInProgress = false
+        connectTextFieldAddMaterialComponents()
+        Snackbar.dimissAll()
+        switch authType {
+        case .aimsAuth:
+            connectScreenCoordinatorDelegate?.showAimsScreen()
+        case .basicAuth:
+            connectScreenCoordinatorDelegate?.showBasicAuthScreen()
         }
     }
 
     func authServiceUnavailable(with error: APIError) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.errorShowInProgress = true
-            sSelf.connectTextFieldAddMaterialComponents()
-
-            sSelf.showError(message: error.mapToMessage())
-        }
         activityIndicator?.state = .isIdle
+        errorShowInProgress = true
+        connectTextFieldAddMaterialComponents()
+        showError(message: error.mapToMessage())
+    }
+
+    func authServiceByPass() {
+        activityIndicator?.state = .isIdle
+    }
+}
+
+// MARK: - Aims ViewModel Delegate
+
+extension ConnectViewController: AimsViewModelDelegate {
+    func logInFailed(with error: APIError) {
+        if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+            activityIndicator?.state = .isIdle
+            errorShowInProgress = true
+            connectTextFieldAddMaterialComponents()
+            showError(message: error.mapToMessage())
+        } else {
+            activityIndicator?.state = .isIdle
+            splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+            errorShowInProgress = false
+            connectTextFieldAddMaterialComponents()
+            Snackbar.dimissAll()
+        }
+    }
+
+    func logInSuccessful() {
+        activityIndicator?.state = .isIdle
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+        errorShowInProgress = false
+        connectTextFieldAddMaterialComponents()
+        Snackbar.dimissAll()
+        connectScreenCoordinatorDelegate?.showApplicationTabBar()
     }
 }
 

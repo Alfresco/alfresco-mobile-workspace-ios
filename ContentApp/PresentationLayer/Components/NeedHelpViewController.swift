@@ -23,33 +23,19 @@ protocol NeedHelpModelProtocol {
     var hintText: String { get }
 }
 
-class NeedHelpViewController: UIViewController {
+class NeedHelpViewController: SystemThemableViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
 
     var model: NeedHelpModelProtocol?
-    var themingService: ThemingService?
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        titleLabel.text = model?.titleText
-        if let needHelpTextViewFont = themingService?.activeTheme?.needHelpHintTextViewFont,
-            let titleLabelFont = themingService?.activeTheme?.needHelpTitleLabelFont {
-            textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
-                                                         font: needHelpTextViewFont)
-            titleLabel.font = titleLabelFont
-        }
-
-        if let needHelpTextViewColor = themingService?.activeTheme?.needHelpHintTextViewColor,
-            let titleLabelColor = themingService?.activeTheme?.needHelpTitleColor {
-            titleLabel.textColor = titleLabelColor
-            textView.textColor = needHelpTextViewColor
-        }
+        view.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +44,7 @@ class NeedHelpViewController: UIViewController {
         textView.contentInset = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
         textView.contentOffset = .zero
         textViewHeightConstraint.constant = textView.calculatedContentSize().height
+        view.isHidden = false
     }
 
     override func viewDidLayoutSubviews() {
@@ -75,6 +62,20 @@ class NeedHelpViewController: UIViewController {
     private func calculatePreferredSize(_ size: CGSize) {
         let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
+    }
+
+    override func applyComponentsThemes() {
+        guard let currentTheme = themingService?.activeTheme else { return }
+
+        textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
+                                                     font: currentTheme.subtitle2TextStyle.font)
+        textView.textColor = currentTheme.onSurfaceColor
+
+        titleLabel.text = model?.titleText
+        titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+
+        closeButton.setTitleColor(currentTheme.primaryVariantColor, for: .normal)
+        view.backgroundColor = currentTheme.backgroundColor
     }
 
     // MARK: - Actions

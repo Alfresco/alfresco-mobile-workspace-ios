@@ -50,9 +50,9 @@ class ThemeModeTableViewCell: UITableViewCell {
         radioImageView.image = UIImage(named: "radio-button-checked")
     }
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        titleLabel.font = themingService?.activeTheme?.settingsTitleLabelFont
-        titleLabel.textColor = themingService?.activeTheme?.settingsTitleLabelColor
-        radioImageView.tintColor = themingService?.activeTheme?.settingsIconColor
+    func applyThemingService(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
+        radioImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 }

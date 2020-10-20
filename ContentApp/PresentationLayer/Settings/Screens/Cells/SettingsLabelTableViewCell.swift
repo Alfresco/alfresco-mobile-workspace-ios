@@ -37,9 +37,9 @@ class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtoco
         super.setSelected(selected, animated: animated)
     }
 
-    func applyThemingService(_ themingService: MaterialDesignThemingService?) {
-        titleLabel.font = themingService?.activeTheme?.settingsSubtitleLabelFont
-        titleLabel.textColor = themingService?.activeTheme?.settingsSubtitleLabelColor
+    func applyTheme(with service: MaterialDesignThemingService?) {
+        guard let currentTheme = service?.activeTheme else { return }
+        titleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
     }
 
     func shouldHideSeparator(hidden: Bool) {

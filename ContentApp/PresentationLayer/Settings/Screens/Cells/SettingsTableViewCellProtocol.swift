@@ -26,6 +26,6 @@ protocol SettingsTableViewCellDelegate: class {
 protocol SettingsTablewViewCellProtocol: UITableViewCell {
     var delegate: SettingsTableViewCellDelegate? { get set }
     var item: SettingsItem? { get set }
-    func applyThemingService(_ themingService: MaterialDesignThemingService?)
+    func applyTheme(with service: MaterialDesignThemingService?)
     func shouldHideSeparator(hidden: Bool)
 }

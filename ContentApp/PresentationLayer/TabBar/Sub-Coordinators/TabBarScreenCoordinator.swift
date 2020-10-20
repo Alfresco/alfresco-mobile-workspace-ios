@@ -21,7 +21,9 @@ import UIKit
 protocol TabBarScreenCoordinatorDelegate: class {
     func showRecentScreen()
     func showFavoritesScreen()
+    func showBrowseScreen()
     func showSettingsScreen()
+    func scrollToTopOrPopToRoot(forScreen item: Int)
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -29,6 +31,7 @@ class TabBarScreenCoordinator: Coordinator {
     private var tabBarMainViewController: TabBarMainViewController?
     private var recentCoordinator: RecentScreenCoordinator?
     private var favoritesCoordinator: FavoritesScreenCoordinator?
+    private var browseCoordinator: BrowseScreenCoordinator?
     private var settingsCoordinator: SettingsScreenCoordinator?
 
     init(with presenter: UINavigationController) {
@@ -36,20 +39,37 @@ class TabBarScreenCoordinator: Coordinator {
     }
 
     func start() {
+        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = TabBarMainViewController.instantiateViewController()
-        viewController.themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
+                                            image: UIImage(named: "recent-unselected"),
+                                            selectedImage: UIImage(named: "recent-selected"))
+        let favoritesTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
+                                               image: UIImage(named: "favorite-unselected"),
+                                               selectedImage: UIImage(named: "favorite-selected"))
+        let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
+                                            image: UIImage(named: "browse-unselected"),
+                                            selectedImage: UIImage(named: "browse-selected"))
+
+        recentTabBarItem.tag = 0
+        favoritesTabBarItem.tag = 1
+        browseTabBarItem.tag = 2
+        viewController.tabs = [recentTabBarItem, favoritesTabBarItem, browseTabBarItem]
+        viewController.themingService = themingService
         viewController.tabBarCoordinatorDelegate = self
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .fullScreen
-        self.tabBarMainViewController = viewController
-
+        tabBarMainViewController = viewController
         presenter.present(viewController, animated: true, completion: nil)
     }
 }
 
 extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
     func showSettingsScreen() {
-        if let navigationController = tabBarMainViewController?.viewControllers?.first as? UINavigationController {
+        if let viewControllers = tabBarMainViewController?.viewControllers,
+            let selectedIndex = tabBarMainViewController?.selectedIndex,
+            let navigationController = viewControllers[selectedIndex] as? UINavigationController {
+            tabBarMainViewController?.tabBar.isHidden = true
             settingsCoordinator = SettingsScreenCoordinator(with: navigationController)
             settingsCoordinator?.start()
         }
@@ -66,6 +86,26 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
         if let tabBarMainViewController = self.tabBarMainViewController {
             favoritesCoordinator = FavoritesScreenCoordinator(with: tabBarMainViewController)
             favoritesCoordinator?.start()
+        }
+    }
+
+    func showBrowseScreen() {
+        if let tabBarMainViewController = self.tabBarMainViewController {
+            browseCoordinator = BrowseScreenCoordinator(with: tabBarMainViewController)
+            browseCoordinator?.start()
+        }
+    }
+
+    func scrollToTopOrPopToRoot(forScreen item: Int) {
+        switch item {
+        case 0: //Recents
+            recentCoordinator?.scrollToTopOrPopToRoot()
+        case 1: //Favorites
+            favoritesCoordinator?.scrollToTopOrPopToRoot()
+        case 2: //Browse
+            browseCoordinator?.scrollToTopOrPopToRoot()
+        default:
+            break
         }
     }
 }

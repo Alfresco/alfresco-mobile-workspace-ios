@@ -17,24 +17,56 @@
 //
 
 import UIKit
+import MaterialComponents
 
 protocol TabBarScreenDelegate: class {
     func showSettingsScreen()
 }
 
 class TabBarMainViewController: UITabBarController {
+    let bottomNavigationBar = MDCBottomNavigationBar()
+    var tabs = [UITabBarItem]()
 
     var themingService: MaterialDesignThemingService?
     weak var tabBarCoordinatorDelegate: TabBarScreenCoordinatorDelegate?
 
+    private var observation: NSKeyValueObservation?
+    private let itemsContentVerticalMargin: CGFloat = 5.0
+
     // MARK: - View Life Cycle
+
+    deinit {
+        observation?.invalidate()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        observation =  observe(\.tabBar.isHidden, options: [.old, .new]) { [weak self] _, change in
+            guard let sSelf = self else { return }
+            sSelf.bottomNavigationBar.isHidden = change.newValue ?? false
+            sSelf.addMaterialComponentsTheme()
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        delegate = self
 
         tabBarCoordinatorDelegate?.showRecentScreen()
         tabBarCoordinatorDelegate?.showFavoritesScreen()
+        tabBarCoordinatorDelegate?.showBrowseScreen()
         addLocalization()
+        addBottomNavigationBar()
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        layoutBottomNavBar()
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        layoutBottomNavBar()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -56,12 +88,56 @@ class TabBarMainViewController: UITabBarController {
     }
 
     func addMaterialComponentsTheme() {
-        if #available(iOS 13.0, *) {
-            navigationController?.navigationBar.tintColor = .label
-        } else {
-            navigationController?.navigationBar.tintColor = .black
-        }
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
+        bottomNavigationBar.applyPrimaryTheme(withScheme: themingService.containerScheming(for: .applicationTabBar))
+        bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
+        bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
+    }
+
+    func addBottomNavigationBar() {
+        view.addSubview(bottomNavigationBar)
+        bottomNavigationBar.titleVisibility = .always
+        bottomNavigationBar.alignment = .centered
+        bottomNavigationBar.items = tabs
+
+        bottomNavigationBar.selectedItem = tabs.first
+        bottomNavigationBar.delegate = self
+    }
+
+    func layoutBottomNavBar() {
+        let size = bottomNavigationBar.sizeThatFits(view.bounds.size)
+        var bottomNavigationBarFrame = CGRect( x: 0,
+                                               y: view.bounds.height - size.height,
+                                               width: size.width,
+                                               height: size.height )
+        bottomNavigationBarFrame.size.height += view.safeAreaInsets.bottom
+        bottomNavigationBarFrame.origin.y -= view.safeAreaInsets.bottom
+        bottomNavigationBar.frame = bottomNavigationBarFrame
+    }
+
+    func doubleTapLogic(for item: Int) {
+        guard self.selectedIndex == item else { return }
+        self.tabBarCoordinatorDelegate?.scrollToTopOrPopToRoot(forScreen: item)
+    }
+}
+
+// MARK: - MDCBottomNavigationBarDelegate
+
+extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
+    func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar, shouldSelect item: UITabBarItem) -> Bool {
+        doubleTapLogic(for: item.tag)
+        self.selectedIndex = item.tag
+        return true
+    }
+}
+
+// MARK: - UITabBarControllerDelegate
+
+extension TabBarMainViewController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return TopLevelTransition(viewControllers: tabBarController.viewControllers)
     }
 }
 

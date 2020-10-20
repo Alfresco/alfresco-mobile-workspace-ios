@@ -18,7 +18,7 @@
 
 import Foundation
 import AlfrescoAuth
-import AlfrescoContentServices
+import AlfrescoContent
 
 protocol BasicAuthViewModelDelegate: class {
     func logInFailed(with error: APIError)
@@ -48,10 +48,11 @@ class BasicAuthViewModel {
             case .success:
                 if let accountParams = sSelf.authenticationService?.parameters {
                     let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
+
+                    AlfrescoContentAPI.basePath = account.apiBasePath
+
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account
-
-                    AlfrescoContentServicesAPI.basePath = account.apiBasePath
                 }
 
                 sSelf.fetchProfileInformation()
@@ -70,7 +71,7 @@ class BasicAuthViewModel {
 
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentServicesAPI.customHeaders = authenticationProvider.authorizationHeader()
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {
@@ -83,8 +84,9 @@ class BasicAuthViewModel {
                         sSelf.accountService?.unregister(account: activeAccount)
                     }
                 } else {
-                    if let person = personEntry?.entry, let activeAccount = sSelf.accountService?.activeAccount {
-                        UserProfile.persistUserProfile(person: person, withAccountIdentifier: activeAccount.identifier)
+                    if let person = personEntry?.entry {
+                        UserProfile.persistUserProfile(person: person)
+                        ProfileService.featchPersonalFilesID()
                         DispatchQueue.main.async {
                             sSelf.delegate?.logInSuccessful()
                         }

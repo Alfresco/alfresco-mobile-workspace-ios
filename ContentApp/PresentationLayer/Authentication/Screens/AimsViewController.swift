@@ -21,10 +21,10 @@ import AlfrescoAuth
 
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
-import MaterialComponents.MaterialTextControls_FilledTextFields
-import MaterialComponents.MaterialTextControls_FilledTextFieldsTheming
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
-class AimsViewController: UIViewController {
+class AimsViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
@@ -33,7 +33,7 @@ class AimsViewController: UIViewController {
     @IBOutlet weak var allowLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
-    @IBOutlet weak var repositoryTextField: MDCFilledTextField!
+    @IBOutlet weak var repositoryTextField: MDCOutlinedTextField!
     @IBOutlet weak var signInButton: MDCButton!
     @IBOutlet weak var needHelpButton: MDCButton!
 
@@ -42,7 +42,6 @@ class AimsViewController: UIViewController {
     var viewModel: AimsViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var themingService: MaterialDesignThemingService?
 
     var enableSignInButton: Bool = false {
         didSet {
@@ -62,20 +61,9 @@ class AimsViewController: UIViewController {
         enableSignInButton = (repositoryTextField.text != "")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        addMaterialComponentsTheme()
-    }
-
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Snackbar.dimissAll()
-    }
-
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
-        addMaterialComponentsTheme()
     }
 
     // MARK: - IBActions
@@ -112,33 +100,30 @@ class AimsViewController: UIViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
-    func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService else {
-            return
-        }
+    override func applyComponentsThemes() {
+        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        signInButton.setBackgroundColor(themingService.activeTheme?.loginButtonDisableColor, for: .disabled)
+        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        signInButton.isUppercaseTitle = false
+
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.isUppercaseTitle = false
 
         repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        repositoryTextField.setFilledBackgroundColor(.clear, for: .normal)
-        repositoryTextField.setFilledBackgroundColor(.clear, for: .editing)
 
-        productLabel.textColor = themingService.activeTheme?.productLabelColor
-        productLabel.font = themingService.activeTheme?.productLabelFont
+        productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        allowLabel.applyStyleBody2OnSurface60(theme: currentTheme)
 
-        infoLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        infoLabel.font = themingService.activeTheme?.loginInfoLabelFont
+        hostnameLabel.textColor = currentTheme.onSurfaceColor
+        hostnameLabel.font = currentTheme.body1TextStyle.font
 
-        hostnameLabel.textColor = themingService.activeTheme?.loginInfoLabelColor
-        hostnameLabel.font = themingService.activeTheme?.loginInfoHostnameLabelFont
+        copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        copyrightLabel.textAlignment = .center
+        productLabel.textAlignment = .center
 
-        allowLabel.textColor = themingService.activeTheme?.loginFieldLabelColor
-        allowLabel.font = themingService.activeTheme?.loginInfoHostnameLabelFont
-
-        copyrightLabel.textColor = themingService.activeTheme?.loginCopyrightLabelColor
-        copyrightLabel.font = themingService.activeTheme?.loginCopyrightLabelFont
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
     }
 }
 
@@ -172,11 +157,7 @@ extension AimsViewController: UITextFieldDelegate {
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
-            guard let themingService = themingService  else { return }
             let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            if let theme = themingService.activeTheme {
-                snackbar.applyTheme(theme: theme)
-            }
             snackbar.show(completion: nil)
         }
     }
