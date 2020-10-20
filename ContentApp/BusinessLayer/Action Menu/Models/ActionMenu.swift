@@ -16,30 +16,27 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContent
+import UIKit
 
-enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
+struct ActionMenu {
+    var title: String
+    var type: ActionMenuType
+    var icon: UIImage
+
+    init(title: String, type: ActionMenuType, icon: UIImage? = nil) {
+        self.title = title
+        self.type = type
+        if let icon = icon {
+            self.icon = icon
+        } else {
+            self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
+        }
+    }
 }
 
-struct ListNode: Hashable {
-    var guid: String
-    var mimeType: String?
-    var title: String
-    var path: String
-    var modifiedAt: Date?
-    var kind: ElementKindType
-    var favorite: Bool
-
-    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid &&
-            lhs.title == rhs.title &&
-            lhs.path == rhs.path &&
-            lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind &&
-            lhs.mimeType == rhs.mimeType
-    }
+enum ActionMenuType: String {
+    case addFavorite = "ic-action-outline-favorite"
+    case removeFavorite = "ic-action-fill-favorite"
+    case delete = "ic-action-delete"
+    case node = "ic-node"
 }

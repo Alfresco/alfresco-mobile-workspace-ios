@@ -45,7 +45,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         viewController.themingService = themingService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
-        viewController.folderDrillDownScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
@@ -65,7 +65,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 }
 
-extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
+extension RecentScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
@@ -78,6 +78,21 @@ extension RecentScreenCoordinator: FolderDrilDownScreenCoordinatorDelegate {
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
+        }
+    }
+
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+        if let navigationViewController = self.navigationViewController {
+            let menu = ActionsMenuGenericMoreButton(with: node)
+            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let actionMenuViewModel = ActionMenuViewModel(with: menu)
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        accountService: accountService,
+                                                        delegate: delegate)
+            let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
+                                                          actionMenuViewModel: actionMenuViewModel,
+                                                          nodeActionViewModel: nodeActionsModel)
+            coordinator.start()
         }
     }
 }

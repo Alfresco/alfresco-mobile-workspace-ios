@@ -122,3 +122,8 @@
 "passwordPromptSubmit"  = "Submit";
 "preparingPreviewMessage" = "Preparing preview...";
 "loadingPreviewMessage" = "Loading preview...";
+
+// MARK: - Actions Menu
+"action-menu-add-favorite" = "Add to Favorites";
+"action-menu-remove-favorite" = "Remove from Favorites";
+"action-menu-delete" = "Delete";

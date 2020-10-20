@@ -157,7 +157,7 @@ class FavoritesViewController: SystemSearchViewController {
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
         self.folderAndFilesViewController = folderAndFilesViewController
-        self.folderAndFilesViewController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        self.folderAndFilesViewController?.listItemActionDelegate = self.listItemActionDelegate
 
         // Set up the libraries view
         let librariesViewController = ListComponentViewController.instantiateViewController()
@@ -167,7 +167,7 @@ class FavoritesViewController: SystemSearchViewController {
         librariesListViewModel?.pageUpdatingDelegate = librariesViewController
 
         self.librariesViewController = librariesViewController
-        self.librariesViewController?.folderDrillDownScreenCoordinatorDelegate = self.folderDrillDownScreenCoordinatorDelegate
+        self.librariesViewController?.listItemActionDelegate = self.listItemActionDelegate
 
         if let foldersAndFilesListView = folderAndFilesViewController.view, let librariesListView = librariesViewController.view {
             foldersAndFilesListView.translatesAutoresizingMaskIntoConstraints = false
@@ -209,11 +209,15 @@ class FavoritesViewController: SystemSearchViewController {
     }
 }
 
+// MARK: - MDCTabBar Delegate
+
 extension FavoritesViewController: MDCTabBarDelegate {
     func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
 }
+
+// MARK: - UIScrollView Delegate
 
 extension FavoritesViewController: UIScrollViewDelegate {
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {

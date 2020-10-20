@@ -42,7 +42,13 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe, skipCount: skipCount, maxItems: maxItems, orderBy: nil, relations: nil, fields: nil, _where: nil) { (result, error) in
+            SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe,
+                                                  skipCount: skipCount,
+                                                  maxItems: maxItems,
+                                                  orderBy: nil,
+                                                  relations: nil,
+                                                  fields: nil,
+                                                  _where: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list.entries {
                     listNodes = SitesNodeMapper.map(entries)

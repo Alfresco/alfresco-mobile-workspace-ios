@@ -53,7 +53,7 @@ class ListComponentViewController: SystemThemableViewController {
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
-    weak var folderDrillDownScreenCoordinatorDelegate: FolderDrilDownScreenCoordinatorDelegate?
+    weak var listItemActionDelegate: ListItemActionDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -223,14 +223,32 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         let identifier = String(describing: ListElementCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
+        cell?.delegate = self
         cell?.applyTheme(themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        folderDrillDownScreenCoordinatorDelegate?.showPreview(from: node)
+        listItemActionDelegate?.showPreview(from: node)
         listActionDelegate?.elementTapped(node: node)
+    }
+}
+
+// MARK: - ActionMenuViewModel Delegate
+
+extension ListComponentViewController: NodeActionsViewModelDelegate {
+    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
+    }
+}
+
+// MARK: - ListElementCollectionViewCell Delegate
+
+extension ListComponentViewController: ListElementCollectionViewCellDelegate {
+    func moreButtonTapped(for element: ListNode?) {
+        if let node = element {
+            listItemActionDelegate?.showActionSheetForListItem(node: node, delegate: self)
+        }
     }
 }
 
@@ -241,6 +259,8 @@ extension ListComponentViewController: PageFetchableDelegate {
         listActionDelegate?.fetchNextListPage(for: itemAtIndexPath)
     }
 }
+
+// MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?, pagination: Pagination?) {
@@ -272,5 +292,7 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         }
     }
 }
+
+// MARK: - Storyboard Instantiable
 
 extension ListComponentViewController: StoryboardInstantiable {}
