@@ -239,7 +239,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: ActionMenuViewModelDelegate {
     func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
-        
     }
 }
 

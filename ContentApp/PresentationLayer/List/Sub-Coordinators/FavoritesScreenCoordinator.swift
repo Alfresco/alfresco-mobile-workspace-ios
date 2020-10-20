@@ -84,7 +84,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
             }
         }
     }
-    
+
     func showActionSheetForListItem(node: ListNode,
                                     listComponent: ListComponentViewController) {
         if let navigationViewController = self.navigationViewController {

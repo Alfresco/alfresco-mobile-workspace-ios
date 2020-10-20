@@ -103,7 +103,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
             self.filePreviewCoordinator = filePreviewCoordinator
         }
     }
-    
+
     func showActionSheetForListItem(node: ListNode,
                                     listComponent: ListComponentViewController) {
         let menu = ActionsMenuGenericMoreButton(with: node)

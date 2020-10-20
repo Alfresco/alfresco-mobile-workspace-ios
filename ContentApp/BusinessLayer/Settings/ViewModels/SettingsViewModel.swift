@@ -70,16 +70,16 @@ class SettingsViewModel {
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
         let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut, message: LocalizationConstants.Settings.signOutConfirmation)
-        
+
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.logOutForCurrentAccount(in: viewController)
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
-        
+
         alert.addAction(confirmAction)
         alert.addAction(cancelAction)
-        
+
         viewController.present(alert, animated: true, completion: nil)
     }
 
