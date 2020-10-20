@@ -23,10 +23,14 @@ class ActionMenuScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var actionMenuViewController: ActionMenuViewController?
     private let actionMenuViewModel: ActionMenuViewModel
+    private let nodeActionViewModel: NodeActionsViewModel
 
-    init(with presenter: UINavigationController, model: ActionMenuViewModel) {
+    init(with presenter: UINavigationController,
+         actionMenuViewModel: ActionMenuViewModel,
+         nodeActionViewModel: NodeActionsViewModel) {
         self.presenter = presenter
-        self.actionMenuViewModel = model
+        self.actionMenuViewModel = actionMenuViewModel
+        self.nodeActionViewModel = nodeActionViewModel
     }
 
     func start() {
@@ -35,7 +39,8 @@ class ActionMenuScreenCoordinator: Coordinator {
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 
         viewController.themingService = themingService
-        viewController.model = actionMenuViewModel
+        viewController.actionMenuModel = actionMenuViewModel
+        viewController.nodeActionsModel = nodeActionViewModel
         presenter.present(bottomSheet, animated: true, completion: nil)
         actionMenuViewController = viewController
     }

@@ -237,8 +237,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 // MARK: - ActionMenuViewModel Delegate
 
-extension ListComponentViewController: ActionMenuViewModelDelegate {
-    func actionFinished(on action: ActionMenu?, node: ListNode, error: Error?) {
+extension ListComponentViewController: NodeActionsViewModelDelegate {
+    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
     }
 }
 
@@ -247,7 +247,7 @@ extension ListComponentViewController: ActionMenuViewModelDelegate {
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?) {
         if let node = element {
-            listItemActionDelegate?.showActionSheetForListItem(node: node, listComponent: self)
+            listItemActionDelegate?.showActionSheetForListItem(node: node, delegate: self)
         }
     }
 }

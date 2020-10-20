@@ -19,41 +19,19 @@
 import UIKit
 import AlfrescoContent
 
-protocol ActionMenuViewModelDelegate: class {
-    func actionFinished(on action: ActionMenu?,
-                        node: ListNode,
-                        error: Error?)
-}
-
-typealias ActionFinishedCompletionHandler = (() -> Void)
-
 class ActionMenuViewModel {
-    weak var delegate: ActionMenuViewModelDelegate?
-    var menu: ActionsMenuProtocol?
-    private var node: ListNode
-    private var accountService: AccountService?
-    private var action: ActionMenu?
-    private var actionFinishedHandler: ActionFinishedCompletionHandler?
+    private var menu: ActionsMenuProtocol?
 
     // MARK: - Init
 
-    init(with menu: ActionsMenuProtocol?,
-         node: ListNode,
-         accountService: AccountService?,
-         delegate: ActionMenuViewModelDelegate?) {
-
+    init(with menu: ActionsMenuProtocol?) {
         self.menu = menu
-        self.delegate = delegate
-        self.node = node
-        self.accountService = accountService
     }
 
     // MARK: - Public Helpers
 
-    func tapped(on action: ActionMenu, finished: @escaping ActionFinishedCompletionHandler) {
-        self.actionFinishedHandler = finished
-        self.action = action
-        requestAction()
+    func actions() -> [[ActionMenu]]? {
+        return menu?.actions
     }
 
     func numberOfActions() -> CGFloat {
@@ -75,68 +53,5 @@ class ActionMenuViewModel {
             return true
         }
         return false
-    }
-
-    // MARK: - Private Helpers
-
-    private func requestAction() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
-            switch sSelf.action?.type {
-            case .addFavorite:
-                sSelf.requestAddToFavorites()
-            case .removeFavorite:
-                sSelf.requestRemoveFromFavorites()
-            case .delete:
-                sSelf.requestDelete()
-            default:
-                if let handler = sSelf.actionFinishedHandler {
-                    handler()
-                }
-            }
-        })
-    }
-
-    private func requestAddToFavorites() {
-        let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
-        let jsonFolder = JSONValue(dictionaryLiteral: (node.kind.rawValue, jsonGuid))
-        let jsonBody = FavoriteBodyCreate(target: jsonFolder)
-
-        FavoritesAPI.createFavorite(personId: kAPIPathMe,
-                                    favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
-            sSelf.handleResponse(error: error)
-        }
-    }
-
-    private func requestRemoveFromFavorites() {
-        FavoritesAPI.deleteFavorite(personId: kAPIPathMe,
-                                    favoriteId: node.guid) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
-            sSelf.handleResponse(error: error)
-        }
-    }
-
-    private func requestDelete() {
-        NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
-            sSelf.handleResponse(error: error)
-        }
-    }
-
-    private func handleResponse(error: Error?) {
-        if let error = error {
-            AlfrescoLog.error(error)
-        }
-
-        delegate?.actionFinished(on: action,
-                                 node: node,
-                                 error: error)
-
-        if let handler = actionFinishedHandler {
-            handler()
-        }
     }
 }

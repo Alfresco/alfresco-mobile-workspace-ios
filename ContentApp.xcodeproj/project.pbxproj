@@ -189,6 +189,7 @@
 		E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */; };
 		E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4C24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift */; };
 		E3E9ED4F24CB3E4800F1A2C2 /* NodeChildMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */; };
+		E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EB8EA2253ED44C005CA0D9 /* NodeActionsViewModel.swift */; };
 		E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
 		E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */; };
 		E3EFAB27248F99BE00635521 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB26248F99BE00635521 /* Snackbar.swift */; };
@@ -406,6 +407,7 @@
 		E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseTopLevelFolderScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3E9ED4C24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDrillViewModel.swift; sourceTree = "<group>"; };
 		E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeChildMapper.swift; sourceTree = "<group>"; };
+		E3EB8EA2253ED44C005CA0D9 /* NodeActionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeActionsViewModel.swift; sourceTree = "<group>"; };
 		E3EC133724A4C7930068E3C7 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Mapper.swift"; sourceTree = "<group>"; };
 		E3EFAB26248F99BE00635521 /* Snackbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snackbar.swift; sourceTree = "<group>"; };
@@ -901,6 +903,7 @@
 			isa = PBXGroup;
 			children = (
 				E335E730253865CF0036E090 /* ActionMenuViewModel.swift */,
+				E3EB8EA2253ED44C005CA0D9 /* NodeActionsViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1414,6 +1417,7 @@
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
+				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,

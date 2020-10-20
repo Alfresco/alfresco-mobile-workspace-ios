@@ -92,18 +92,18 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode,
-                                    listComponent: ListComponentViewController) {
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-            let actionMenuViewModel = ActionMenuViewModel(with: menu,
-                                                          node: node,
-                                                          accountService: accountService,
-                                                          delegate: listComponent)
-            let actionMenuCoordinator = ActionMenuScreenCoordinator(with: navigationViewController,
-                                                                    model: actionMenuViewModel)
-            actionMenuCoordinator.start()
+            let actionMenuViewModel = ActionMenuViewModel(with: menu)
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        accountService: accountService,
+                                                        delegate: delegate)
+            let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
+                                                          actionMenuViewModel: actionMenuViewModel,
+                                                          nodeActionViewModel: nodeActionsModel)
+            coordinator.start()
         }
     }
 }

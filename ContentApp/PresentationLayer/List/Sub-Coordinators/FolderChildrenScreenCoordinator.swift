@@ -20,8 +20,7 @@ import UIKit
 
 protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
-    func showActionSheetForListItem(node: ListNode,
-                                    listComponent: ListComponentViewController)
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
 }
 
 class FolderChildrenScreenCoordinator: Coordinator {
@@ -91,16 +90,16 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode,
-                                    listComponent: ListComponentViewController) {
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         let menu = ActionsMenuGenericMoreButton(with: node)
         let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let actionMenuViewModel = ActionMenuViewModel(with: menu,
-                                                      node: node,
-                                                      accountService: accountService,
-                                                      delegate: listComponent)
-        let actionMenuCoordinator = ActionMenuScreenCoordinator(with: self.presenter,
-                                                                model: actionMenuViewModel)
-        actionMenuCoordinator.start()
+        let actionMenuViewModel = ActionMenuViewModel(with: menu)
+        let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                    accountService: accountService,
+                                                    delegate: delegate)
+        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsModel)
+        coordinator.start()
     }
 }

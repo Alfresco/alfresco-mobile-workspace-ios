@@ -22,7 +22,8 @@ class ActionMenuViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewContraintHeight: NSLayoutConstraint!
 
-    var model: ActionMenuViewModel?
+    var actionMenuModel: ActionMenuViewModel?
+    var nodeActionsModel: NodeActionsViewModel?
 
     // MARK: - View Life Cycle
 
@@ -33,7 +34,7 @@ class ActionMenuViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let numberOfActions = model?.numberOfActions() ?? 1
+        let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
         collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
         view.isHidden = false
     }
@@ -64,17 +65,17 @@ class ActionMenuViewController: SystemThemableViewController {
 extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return model?.menu?.actions[section].count ?? 0
+        return actionMenuModel?.actions()?[section].count ?? 0
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return model?.menu?.actions.count ?? 0
+        return actionMenuModel?.actions()?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let model = self.model,
-              let action = model.menu?.actions[indexPath.section][indexPath.row] else {
+        guard let actionMenuModel = self.actionMenuModel,
+              let action = actionMenuModel.actions()?[indexPath.section][indexPath.row] else {
             return UICollectionViewCell()
         }
         let identifier = String(describing: ActionMenuCollectionViewCell.self)
@@ -83,7 +84,7 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
                                                for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
         cell?.applyTheme(themingService?.activeTheme)
-        cell?.sectionSeparator.isHidden = !(model.shouldShowSectionSeparator(for: indexPath))
+        cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
         return cell ?? UICollectionViewCell()
     }
 
@@ -95,8 +96,8 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
 
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let action = model?.menu?.actions[indexPath.section][indexPath.row]else { return }
-        model?.tapped(on: action, finished: { [weak self] in
+        guard let action = actionMenuModel?.actions()?[indexPath.section][indexPath.row] else { return }
+        nodeActionsModel?.tapped(on: action.type, finished: { [weak self] in
             guard let sSelf = self else { return }
             sSelf.dismiss(animated: true, completion: nil)
         })
