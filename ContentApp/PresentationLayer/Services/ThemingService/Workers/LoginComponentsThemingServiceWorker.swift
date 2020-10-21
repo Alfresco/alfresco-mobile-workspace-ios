@@ -44,7 +44,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
     private func loginButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
-        containerScheme.colorScheme.onPrimaryColor = theme.primaryOnColor
+        containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
         containerScheme.typographyScheme.button = theme.subtitle2TextStyle.font
 
         return containerScheme

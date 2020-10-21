@@ -36,7 +36,7 @@ protocol PresentationTheme {
     // COLORS
     var primaryVariantColor: UIColor { get }
     var primaryColor: UIColor { get }
-    var primaryOnColor: UIColor { get }
+    var onPrimaryColor: UIColor { get }
     var surfaceColor: UIColor { get }
     var onSurfaceColor: UIColor { get }
     var backgroundColor: UIColor { get }

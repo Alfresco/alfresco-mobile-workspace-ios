@@ -139,7 +139,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
         applyThemingInTextField(errorTheme: false)
 
-        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
+        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
     }
 
     func applyThemingInTextField(errorTheme: Bool) {

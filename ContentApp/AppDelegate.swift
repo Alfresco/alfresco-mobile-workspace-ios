@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
         self.applicationCoordinator = applicationCoordinator
         if let themingService = applicationCoordinator.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
-            window.backgroundColor = themingService.activeTheme?.backgroundColor
+            window.backgroundColor = themingService.activeTheme?.surfaceColor
         }
 
         applicationCoordinator.start()

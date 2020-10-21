@@ -178,7 +178,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         saveButton.tintColor = currentTheme.primaryVariantColor
         backPadButton.tintColor = currentTheme.primaryVariantColor
 
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
     }
 
     func updateFields() {

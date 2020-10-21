@@ -1162,17 +1162,17 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0F-3a-ePc">
-                                <rect key="frame" x="250" y="250" width="100" height="100"/>
+                                <rect key="frame" x="157" y="398" width="100" height="100"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Omh-yg-bT9">
-                                        <rect key="frame" x="25" y="25" width="50" height="50"/>
+                                        <rect key="frame" x="14" y="14" width="72" height="72"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="50" id="hpV-KS-vPh"/>
+                                            <constraint firstAttribute="width" constant="72" id="hpV-KS-vPh"/>
                                             <constraint firstAttribute="width" secondItem="Omh-yg-bT9" secondAttribute="height" multiplier="1:1" id="y8Y-0x-N2l"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcA-QW-qS4">
-                                        <rect key="frame" x="50" y="83" width="0.0" height="0.0"/>
+                                        <rect key="frame" x="50" y="94" width="0.0" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1196,7 +1196,7 @@
                         <viewLayoutGuide key="safeArea" id="Nm8-k5-tkg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerX" secondItem="Nm8-k5-tkg" secondAttribute="centerX" id="1FJ-n9-ZTV"/>
+                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerX" secondItem="FKD-KB-WFW" secondAttribute="centerX" id="1FJ-n9-ZTV"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
                             <constraint firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="Kyh-x1-Xub"/>
                             <constraint firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="L3T-gS-byg"/>
@@ -1208,7 +1208,7 @@
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="dLG-Wz-dlS"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="FKD-KB-WFW" secondAttribute="top" id="iJZ-jq-SmT"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
-                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerY" secondItem="Nm8-k5-tkg" secondAttribute="centerY" id="v8x-mr-DeR"/>
+                            <constraint firstItem="F0F-3a-ePc" firstAttribute="centerY" secondItem="FKD-KB-WFW" secondAttribute="centerY" id="v8x-mr-DeR"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

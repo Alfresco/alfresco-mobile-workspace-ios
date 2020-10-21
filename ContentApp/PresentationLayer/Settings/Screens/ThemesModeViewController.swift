@@ -60,7 +60,7 @@ class ThemesModeViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
