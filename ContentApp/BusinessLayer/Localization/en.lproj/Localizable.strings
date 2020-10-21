@@ -16,114 +16,113 @@
 //  limitations under the License.
 //
 
-"copyrightFormat" = "© %d Alfresco Software, Inc. All rights reserved.";
-"productName" = "Alfresco\nMobile Workspace";
+"copyright-format" = "© %d Alfresco Software, Inc. All rights reserved.";
+"product-name" = "Alfresco\nMobile Workspace";
 
 // MARK: - Buttons
-"connectButton" = "Connect";
-"advancedSettingButton" = "Advanced settings";
-"needHelpButton" = "Need help?";
-"resetToDefaultButton" = "Reset to Default";
-"saveButton" = "Save";
-"signin" = "Sign in";
-"signInWithSSO" = "Sign in with SSO";
-"signOut" = "Sign out";
+"connect" = "Connect";
+"advanced-settings" = "Advanced settings";
+"need-help" = "Need help?";
+"reset-to-default" = "Reset to Default";
+"save" = "Save";
+"sign-in" = "Sign in";
+"sign-in-with-sso" = "Sign in with SSO";
+"sign-out" = "Sign out";
 "retry" = "Retry";
 "yes" = "Yes";
 "cancel" = "Cancel";
 
 // MARK: - PlaceHolders
-"loginConnectTextFieldPlaceholder" = "Connect to";
-"loginPortTextFieldPlaceholder" = "Port";
-"loginServiceDocumentsTextFieldPlaceholder" = "Service Document";
-"loginRealmTextFieldPlaceholder" = "Realm";
-"loginClientIDTextFieldPlaceholder" = "Client ID";
-"loginUsernameTextFieldPlaceholder" = "Username or Email";
-"loginPasswordTextFieldPlaceholder" = "Password";
-"loginRepositoryTextFieldPlaceholder" = "Content Services URL";
+"connect-to" = "Connect to";
+"port" = "Port";
+"service-document" = "Path";
+"realm" = "Realm";
+"client-id" = "Client ID";
+"username-or-email" = "Username or Email";
+"password" = "Password";
+"content-services-url" = "Content Services URL";
 
 // MARK: - Labels
-"loginTransportProtocolLabel" = "Transport Protocol";
+"transport-protocol" = "Transport Protocol";
 "https" = "HTTPS";
-"AlfrescoContentSettings" = "Alfresco Content Services Settings";
+"alfresco-content-settings" = "Alfresco Content Services Settings";
 "authentication" = "Authentication";
-"infoBasicAuthConnectTo" = "Connected to: ";
-"infoAimsConnectTo" = "Signing in to: ";
-"loginAllowSSO" = "Please provide the URL of your Content Services environment.";
-"needHelpTitle" = "Help";
+"info-connect-to" = "Connected to: ";
+"info-aims-connect-to"  = "Signing in to: ";
+"login-allow-sso" = "Please provide the URL of your Content Services environment.";
+"help" = "Help";
 "connecting" = "Connecting";
-"signingIn" = "Signing In";
-"sessionExpiredTitle" = "Session Expired";
-"sesssionExpiredMessage" = "You are no longer signed in. Please Sign In again to continue.";
+"signing-in" = "Signing In";
+"session-expired" = "Session Expired";
+"sesssion-expired-message" = "You are no longer signed in. Please Sign In again to continue.";
 
 // MARK: - Screen Titles
-"advancedSettings" = "Advanced Settings";
 "settings" = "Settings";
 "recent" = "Recents";
 "favorites" = "Favorites";
 "browse" = "Browse";
 
-// MARK: - Textviews
-"serviceURLHint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
-"advancedSettingsHint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
-"ssoHint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
+// MARK: - Help Textviews
+"help-service-url-hint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
+"help-advanced-settings-hint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
+"help-sso-hint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
 
 // MARK: - Login Errors
-"loginGenericErrorText" = "Something went wrong. Contact your administrator for help. Error code: %d";
-"loginErrorNoAuthAlfrescoURL" = "No authentication service can be found at the provided Alfresco URL.";
-"loginErrorCheckConnectURL" = "Check your Connect to URL.";
-"loginErrorWrongCredentialProvided" = "Wrong username or password provided.";
-"loginApprovedSaveSettings" = "Changes to the configuration have been saved.";
-"loginWarningServiceDocumetEmptyText"= "Service Document shouldn't be empty, go to Advanced Settings.";
-"loginNoLongerAuthenticatedText" = "You are no longer authenticated, please log in again.";
-"somethingWentWrong" = "Something went wrong!";
+"error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
+"error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
+"error-login-check-connect-url" = "Check your Connect to URL.";
+"error-login-wrong-credential" = "Wrong username or password provided.";
+"error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
+"error-something-went-wrong" = "Something went wrong!";
+"approved-login-save-settings" = "Changes to the configuration have been saved.";
+"warning-login-service-document-empty"= "Service Document shouldn't be empty, go to Advanced Settings.";
 
 // MARK: - Settings Screen
 "theme" = "Theme Mode";
 "auto" = "Auto";
 "light" = "Light";
 "dark" = "Dark";
-"failedProfileInfo" = "Failed to fetch profile information for current user.";
-"appVersion" = "App Version %@-%@";
-"signOutConfirmation" = "Are you sure you want to sign out?";
+"failed-profile-info" = "Failed to fetch profile information for current user.";
+"app-version" = "App Version %@-%@";
+"sign-out-confirmation" = "Are you sure you want to sign out?";
 
 // MARK: - Search
-"emptyListTitle" = "Oops...";
-"emptyListSubtitle" = "We can’t find what\n you’re looking for";
+"empty-list" = "Oops...";
+"empty-list-subtitle" = "We can’t find what\n you’re looking for";
 "searching" = "Searching...";
-"noRecentSearch" = "There is no recent searches.";
-"recentSearch" = "Recent Searches";
-"filterFiles" = "Files";
-"filterFolders" = "Folders";
-"filterLibraries" = "Libraries";
-"filterfoldersAndFiles" = "Files and folders";
-"searchIn" = "in: ";
+"no-recent-search" = "There is no recent searches.";
+"recent-search" = "Recent Searches";
+"files" = "Files";
+"folders" = "Folders";
+"libraries" = "Libraries";
+"file-and-folders" = "Files and folders";
+"search-in" = "in: ";
 
 // MARK: - Group List Section
 "today" = "Today";
 "yesterday" = "Yesterday";
-"thisWeek" = "This Week";
-"lastWeek" = "Last Week";
-"thisMonth" = "This Month";
+"this-week" = "This Week";
+"last-week" = "Last Week";
+"this-month" = "This Month";
 "older" = "Older";
 
 // MARK: - Browse Static List
-"browse-personalFiles" = "Personal files";
-"browse-myLibraries" = "My libraries";
-"browse-shared" = "Shared";
-"browse-trash" = "Trash";
+"personal-files" = "Personal files";
+"my-libraries" = "My libraries";
+"shared" = "Shared";
+"trash" = "Trash";
 
 // MARK: - File Preview
-"noPreview" = "No preview for this file.";
-"passwordPromptTitle" = "File Locked";
-"passwordPromptMessage" = "Please enter the password to unlock the file.";
-"passwordPromptFailTitle" = "Incorrect Password";
-"passwordPromptFailMessage" = "Please re-enter the password to unlock the file.";
-"passwordPromptSubmit"  = "Submit";
-"preparingPreviewMessage" = "Preparing preview...";
-"loadingPreviewMessage" = "Loading preview...";
+"no-preview" = "No preview for this file.";
+"password-prompt" = "File Locked";
+"password-prompt-message" = "Please enter the password to unlock the file.";
+"password-prompt-fail" = "Incorrect Password";
+"password-prompt-fail-message" = "Please re-enter the password to unlock the file.";
+"password-prompt-submit"  = "Submit";
+"preparing-preview-message" = "Preparing preview...";
+"loading-preview-message" = "Loading preview...";
 
-// MARK: - Actions Menu
+// MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Add to Favorites";
 "action-menu-remove-favorite" = "Remove from Favorites";
 "action-menu-delete" = "Delete";
