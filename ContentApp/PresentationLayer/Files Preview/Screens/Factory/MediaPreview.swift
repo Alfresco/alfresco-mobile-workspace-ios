@@ -20,10 +20,13 @@ import Foundation
 import UIKit
 import AVFoundation
 
+public typealias VideoPreviewHandler = (_ error: Error?) -> Void
+
 class MediaPreview: UIView, FilePreviewProtocol {
 
     weak var filePreviewDelegate: FilePreviewDelegate?
     @IBOutlet weak var videoPlayerTapGesture: UITapGestureRecognizer!
+    private var videoPreviewHandler: VideoPreviewHandler?
 
     @IBOutlet weak var videoPlayerView: UIView!
     @IBOutlet weak var actionsView: UIView!
@@ -32,7 +35,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var backwardButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
-    @IBOutlet weak var bigPlayPauseButton: UIButton!
     @IBOutlet weak var progressSlider: UISlider!
     @IBOutlet weak var currentTimeMinutesLabel: UILabel!
     @IBOutlet weak var currentTimeSecondsLabel: UILabel!
@@ -52,20 +54,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var sliderIsMoving: Bool = false
     private var isFullScreen: Bool = false {
         didSet {
-            if !isAudioFile {
-                filePreviewDelegate?.enableFullScreen(isFullScreen)
-                apply(fade: isFullScreen, to: actionsView)
-            }
+            filePreviewDelegate?.enableFullScreen(isFullScreen)
+            apply(fade: isFullScreen, to: actionsView)
         }
     }
     private var isAudioFile: Bool = false {
         didSet {
             audioImageView.isHidden = !isAudioFile
-            if isAudioFile {
-                actionsView.isHidden = false
-                actionsView.alpha = 1.0
-                bigPlayPauseButton.alpha = 0.0
-            }
         }
     }
 
@@ -117,7 +112,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
             videoPlayerTapGesture.isEnabled = true
             updatePlayerControls()
             actionsView.isHidden = false
-            apply(fade: true, to: bigPlayPauseButton)
             apply(fade: false, to: actionsView)
         }
     }
@@ -144,7 +138,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 guard let currentItem = player?.currentItem else { return }
                 let sliderValue = Double(progressSlider.value)
                 let currentTimeInSeconds = currentItem.duration.seconds * sliderValue
-                let totalTimeInSeconds = currentTimeInSeconds - currentItem.duration.seconds
+                let totalTimeInSeconds = currentItem.duration.seconds
 
                 updateCurrentTime(from: timeFormatter(from: currentTimeInSeconds))
                 updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
@@ -161,7 +155,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Helpers
 
-    func play(from url: URL, isAudioFile: Bool) {
+    func play(from url: URL, isAudioFile: Bool, handler: @escaping VideoPreviewHandler) {
+        self.videoPreviewHandler = handler
         self.isAudioFile = isAudioFile
 
         let playerItem = AVPlayerItem(url: url)
@@ -189,7 +184,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
             switch playerItem.status {
             case .readyToPlay:
                 sSelf.updateTotalTime(from: sSelf.timeFormatter(from: playerItem.duration.seconds))
+                if let handler = sSelf.videoPreviewHandler {
+                    handler(nil)
+                }
             case .failed:
+                if let handler = sSelf.videoPreviewHandler {
+                    handler(playerItem.error)
+                }
                 sSelf.showError(playerItem.error)
             default: break
             }
@@ -209,7 +210,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     private func apply(fade: Bool, to object: UIView) {
-        guard !isAudioFile else { return }
         let fadeTo: CGFloat = (fade) ? 0.0 : 1.0
         UIView.animate(withDuration: animationFade) {
             object.alpha = fadeTo
@@ -239,7 +239,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             showError(error)
         }
         let currenTimeInSeconds = currentTime.seconds
-        let totalTimeInSeconds = currentTime.seconds - currentItem.duration.seconds
+        let totalTimeInSeconds = currentItem.duration.seconds
         updateCurrentTime(from: timeFormatter(from: currenTimeInSeconds))
         updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
 
@@ -248,7 +248,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
         if currentTime.seconds == currentItem.duration.seconds {
             updatePlayerControls()
-            apply(fade: false, to: bigPlayPauseButton)
+            progressSlider.value = 0.0
             finishPlaying = true
         }
     }
@@ -315,6 +315,9 @@ class MediaPreview: UIView, FilePreviewProtocol {
         forwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
         playPauseButton.tintColor = currentTheme.primaryColor
+        if isAudioFile {
+            backgroundColor = currentTheme.backgroundColor
+        }
     }
 
     func recalculateFrame(from size: CGSize) {

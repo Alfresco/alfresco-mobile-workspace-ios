@@ -54,8 +54,9 @@ class FilePreviewFactory {
         case .video, .audio:
             if let mediaPreview: MediaPreview = .fromNib() {
                 mediaPreview.frame = CGRect(origin: .zero, size: size)
-                mediaPreview.play(from: url, isAudioFile: (previewType == .audio))
-                completion?(nil)
+                mediaPreview.play(from: url, isAudioFile: (previewType == .audio)) { (error) in
+                    completion?(error)
+                }
                 return mediaPreview
             }
             completion?(nil)

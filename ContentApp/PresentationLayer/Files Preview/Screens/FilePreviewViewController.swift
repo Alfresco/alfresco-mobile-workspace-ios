@@ -150,6 +150,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
 extension FilePreviewViewController: FilePreviewViewModelDelegate {
     func display(previewContainer: FilePreviewProtocol) {
+        view.bringSubviewToFront(filePreviewStatusView)
         filePreviewStatusLabel.text = LocalizationConstants.FilePreview.loadingPreviewMessage
 
         containerFilePreview.addSubview(previewContainer)

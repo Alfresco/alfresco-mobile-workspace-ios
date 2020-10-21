@@ -22,7 +22,7 @@
                         <outletCollection property="gestureRecognizers" destination="muY-ee-MGQ" appends="YES" id="vsO-Rd-p3h"/>
                     </connections>
                 </view>
-                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-audio" translatesAutoresizingMaskIntoConstraints="NO" id="BhC-7B-chu">
+                <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-audio" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BhC-7B-chu">
                     <rect key="frame" x="171" y="412" width="72" height="72"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="72" id="Mun-lx-Tas"/>
@@ -142,17 +142,6 @@
                         <constraint firstItem="Npq-9n-q7v" firstAttribute="leadingMargin" secondItem="vb7-0h-3My" secondAttribute="trailingMargin" constant="38" id="zA5-pE-BdR"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVg-ly-IFj">
-                    <rect key="frame" x="182" y="423" width="50" height="50"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="50" id="aei-5s-hFU"/>
-                        <constraint firstAttribute="width" constant="50" id="knH-E3-0cH"/>
-                    </constraints>
-                    <state key="normal" image="player_big_play"/>
-                    <connections>
-                        <action selector="playPauseTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="kIf-ND-jn9"/>
-                    </connections>
-                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -160,9 +149,7 @@
                 <constraint firstAttribute="bottom" secondItem="KUS-L8-7iW" secondAttribute="bottom" id="4lm-va-gcH"/>
                 <constraint firstItem="KUS-L8-7iW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8d0-oZ-OQR"/>
                 <constraint firstItem="BhC-7B-chu" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ECb-Er-Qca"/>
-                <constraint firstItem="TVg-ly-IFj" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="EqC-8R-Mtj"/>
                 <constraint firstItem="BhC-7B-chu" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ErP-QX-Or8"/>
-                <constraint firstItem="TVg-ly-IFj" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Gml-ii-BWk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bBb-jW-jVI" secondAttribute="trailing" constant="8" id="VwL-CV-rt8"/>
                 <constraint firstAttribute="trailing" secondItem="KUS-L8-7iW" secondAttribute="trailing" id="ZHA-Jn-Kuz"/>
                 <constraint firstItem="bBb-jW-jVI" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="meT-yT-AIq"/>
@@ -173,7 +160,6 @@
                 <outlet property="actionsView" destination="bBb-jW-jVI" id="Vyt-z5-5cM"/>
                 <outlet property="audioImageView" destination="BhC-7B-chu" id="YfR-y7-MQ6"/>
                 <outlet property="backwardButton" destination="zkY-Jo-eFB" id="QeI-yh-O5q"/>
-                <outlet property="bigPlayPauseButton" destination="TVg-ly-IFj" id="swv-fc-GKR"/>
                 <outlet property="currentTimeClockLabel" destination="MxW-1K-sUx" id="rTe-K6-9JX"/>
                 <outlet property="currentTimeMinutesLabel" destination="4VW-CM-6ey" id="jbb-AU-RbK"/>
                 <outlet property="currentTimeSecondsLabel" destination="JOJ-Iy-Vap" id="raC-cd-8GD"/>
@@ -197,7 +183,6 @@
     <resources>
         <image name="ic-audio" width="24" height="24"/>
         <image name="player_backward_30" width="24" height="24"/>
-        <image name="player_big_play" width="56" height="56"/>
         <image name="player_forward_30" width="24" height="24"/>
         <image name="player_small_play" width="32" height="32"/>
     </resources>
