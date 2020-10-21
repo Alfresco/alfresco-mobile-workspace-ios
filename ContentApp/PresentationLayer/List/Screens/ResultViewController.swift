@@ -151,8 +151,8 @@ class ResultViewController: SystemThemableViewController {
         guard let currentTheme = self.themingService?.activeTheme else { return }
 
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
-        view.backgroundColor = currentTheme.backgroundColor
-        recentSearchesView.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
+        recentSearchesView.backgroundColor = currentTheme.surfaceColor
     }
 
     func addChipsCollectionViewFlowLayout() {

@@ -68,7 +68,7 @@ class FilePreviewViewModel {
         let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
 
         switch filePreviewType {
-        case .video, .image, .gif:
+        case .video, .image, .gif, .audio:
             viewModelDelegate?.enableFullscreenContentExperience()
             size = kWindow.bounds.size
         default: break

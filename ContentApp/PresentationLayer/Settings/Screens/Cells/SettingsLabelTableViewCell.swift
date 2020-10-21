@@ -39,6 +39,7 @@ class SettingsLabelTableViewCell: UITableViewCell, SettingsTablewViewCellProtoco
 
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
     }
 

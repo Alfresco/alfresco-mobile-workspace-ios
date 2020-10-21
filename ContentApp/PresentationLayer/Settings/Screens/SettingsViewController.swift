@@ -59,9 +59,9 @@ class SettingsViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         guard let currentTheme = self.themingService?.activeTheme else { return }
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
                                                                    NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }

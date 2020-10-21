@@ -108,9 +108,9 @@ class SplashViewController: SystemThemableViewController {
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
         backButton.tintColor = currentTheme.primaryVariantColor
-        view.backgroundColor = currentTheme.backgroundColor
-        whiteAlphaView.backgroundColor = currentTheme.backgroundColor
-        containerView.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
+        whiteAlphaView.backgroundColor = currentTheme.surfaceColor
+        containerView.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
     }
 
     func animateLogo() {

@@ -23,6 +23,7 @@ class BrowseSectionCollectionReusableView: UICollectionReusableView {
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
         separator.backgroundColor = currentTheme.dividerColor
     }
 }
