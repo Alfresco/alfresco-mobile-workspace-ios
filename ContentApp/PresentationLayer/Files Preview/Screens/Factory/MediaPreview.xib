@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -36,7 +36,7 @@
                             <rect key="frame" x="14" y="10" width="370" height="31"/>
                         </slider>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QFs-sP-tcR">
-                            <rect key="frame" x="16" y="40" width="68" height="14.5"/>
+                            <rect key="frame" x="16" y="42" width="68" height="14.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VW-CM-6ey">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="14.5"/>
@@ -63,7 +63,7 @@
                             </constraints>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jJG-De-cej">
-                            <rect key="frame" x="314" y="40" width="68" height="14.5"/>
+                            <rect key="frame" x="314" y="42" width="68" height="14.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usu-vR-3T6">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="14.5"/>
@@ -132,13 +132,13 @@
                         <constraint firstItem="jJG-De-cej" firstAttribute="trailing" secondItem="eL1-58-t8M" secondAttribute="trailing" id="Dfj-gh-c1b"/>
                         <constraint firstItem="Npq-9n-q7v" firstAttribute="centerY" secondItem="vb7-0h-3My" secondAttribute="centerY" id="Kan-2Q-8hk"/>
                         <constraint firstItem="eL1-58-t8M" firstAttribute="leading" secondItem="bBb-jW-jVI" secondAttribute="leading" constant="16" id="MNR-Yb-5o1"/>
-                        <constraint firstItem="QFs-sP-tcR" firstAttribute="top" secondItem="eL1-58-t8M" secondAttribute="bottom" id="Md1-Lb-Dbb"/>
+                        <constraint firstItem="QFs-sP-tcR" firstAttribute="top" secondItem="eL1-58-t8M" secondAttribute="bottom" constant="2" id="Md1-Lb-Dbb"/>
+                        <constraint firstItem="jJG-De-cej" firstAttribute="top" secondItem="QFs-sP-tcR" secondAttribute="top" id="NDf-Jm-cbr"/>
                         <constraint firstItem="vb7-0h-3My" firstAttribute="leadingMargin" secondItem="zkY-Jo-eFB" secondAttribute="trailingMargin" constant="38" id="TVx-To-57g"/>
                         <constraint firstItem="vb7-0h-3My" firstAttribute="centerX" secondItem="bBb-jW-jVI" secondAttribute="centerX" id="UYs-Co-76b"/>
                         <constraint firstItem="QFs-sP-tcR" firstAttribute="leading" secondItem="eL1-58-t8M" secondAttribute="leading" id="h8Y-2E-jyi"/>
                         <constraint firstItem="eL1-58-t8M" firstAttribute="top" secondItem="bBb-jW-jVI" secondAttribute="top" constant="10" id="tBH-r2-8pi"/>
                         <constraint firstItem="zkY-Jo-eFB" firstAttribute="centerY" secondItem="vb7-0h-3My" secondAttribute="centerY" id="tJ3-47-trx"/>
-                        <constraint firstItem="jJG-De-cej" firstAttribute="top" secondItem="eL1-58-t8M" secondAttribute="bottom" id="w4b-eS-7sY"/>
                         <constraint firstItem="Npq-9n-q7v" firstAttribute="leadingMargin" secondItem="vb7-0h-3My" secondAttribute="trailingMargin" constant="38" id="zA5-pE-BdR"/>
                     </constraints>
                 </view>
