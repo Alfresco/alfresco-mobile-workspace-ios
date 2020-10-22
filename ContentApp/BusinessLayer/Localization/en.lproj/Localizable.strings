@@ -23,7 +23,7 @@
 "connect" = "Connect";
 "advanced-settings" = "Advanced settings";
 "need-help" = "Need help?";
-"reset-to-default" = "Reset to Default";
+"reset-to-default" = "Reset to default";
 "save" = "Save";
 "sign-in" = "Sign in";
 "sign-in-with-sso" = "Sign in with SSO";
@@ -38,23 +38,23 @@
 "path" = "Path";
 "realm" = "Realm";
 "client-id" = "Client ID";
-"username-or-email" = "Username or Email";
+"username-or-email" = "Username or email";
 "password" = "Password";
 "content-services-url" = "Content Services URL";
 
 // MARK: - Labels
-"transport-protocol" = "Transport Protocol";
+"transport-protocol" = "Transport protocol";
 "https" = "HTTPS";
-"alfresco-content-settings" = "Alfresco Content Services Settings";
+"alfresco-content-settings" = "Alfresco Content Services settings";
 "authentication" = "Authentication";
 "info-connect-to" = "Connected to: ";
 "info-aims-connect-to"  = "Signing in to: ";
 "login-allow-sso" = "Please provide the URL of your Content Services environment.";
 "help" = "Help";
 "connecting" = "Connecting";
-"signing-in" = "Signing In";
-"session-expired" = "Session Expired";
-"sesssion-expired-message" = "You are no longer signed in. Please Sign In again to continue.";
+"signing-in" = "Signing in";
+"session-expired" = "Session expired";
+"sesssion-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 
 // MARK: - Screen Titles
 "settings" = "Settings";
@@ -70,20 +70,20 @@
 // MARK: - Login Errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
 "error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
-"error-login-check-connect-url" = "Check your Connect to URL.";
+"error-login-check-connect-url" = "Check your \"Connect to\" URL.";
 "error-login-wrong-credential" = "Wrong username or password provided.";
 "error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
 "error-something-went-wrong" = "Something went wrong!";
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
-"warning-login-path-empty"= "Service Document shouldn't be empty, go to Advanced Settings.";
+"warning-login-path-empty"= "Path shouldn't be empty, go to advanced settings.";
 
 // MARK: - Settings Screen
-"theme" = "Theme Mode";
-"auto" = "Auto";
+"theme" = "Appearance";
+"auto" = "System default";
 "light" = "Light";
 "dark" = "Dark";
 "failed-profile-info" = "Failed to fetch profile information for current user.";
-"app-version" = "App Version %@-%@";
+"app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
 
 // MARK: - Search
@@ -91,7 +91,7 @@
 "empty-list-subtitle" = "We can’t find what\n you’re looking for";
 "searching" = "Searching...";
 "no-recent-search" = "There is no recent searches.";
-"recent-search" = "Recent Searches";
+"recent-search" = "Recent searches";
 "files" = "Files";
 "folders" = "Folders";
 "libraries" = "Libraries";
@@ -101,9 +101,9 @@
 // MARK: - Group List Section
 "today" = "Today";
 "yesterday" = "Yesterday";
-"this-week" = "This Week";
-"last-week" = "Last Week";
-"this-month" = "This Month";
+"this-week" = "This week";
+"last-week" = "Last week";
+"this-month" = "This month";
 "older" = "Older";
 
 // MARK: - Browse Static List
@@ -114,15 +114,15 @@
 
 // MARK: - File Preview
 "no-preview" = "No preview for this file.";
-"password-prompt" = "File Locked";
+"password-prompt" = "File locked";
 "password-prompt-message" = "Please enter the password to unlock the file.";
-"password-prompt-fail" = "Incorrect Password";
+"password-prompt-fail" = "Incorrect password";
 "password-prompt-fail-message" = "Please re-enter the password to unlock the file.";
 "password-prompt-submit"  = "Submit";
 "preparing-preview-message" = "Preparing preview...";
 "loading-preview-message" = "Loading preview...";
 
 // MARK: - Actions Menu Sheet
-"action-menu-add-favorite" = "Add to Favorites";
-"action-menu-remove-favorite" = "Remove from Favorites";
+"action-menu-add-favorite" = "Add to favorites";
+"action-menu-remove-favorite" = "Remove from favorites";
 "action-menu-delete" = "Delete";
