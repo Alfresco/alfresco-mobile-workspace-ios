@@ -75,10 +75,10 @@
 "error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
 "error-something-went-wrong" = "Something went wrong!";
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
-"warning-login-path-empty"= "Service Document shouldn't be empty, go to Advanced settings.";
+"warning-login-path-empty"= "Path shouldn't be empty, go to advanced settings.";
 
 // MARK: - Settings Screen
-"theme" = "Theme Mode";
+"theme" = "Theme mode";
 "auto" = "Auto";
 "light" = "Light";
 "dark" = "Dark";
