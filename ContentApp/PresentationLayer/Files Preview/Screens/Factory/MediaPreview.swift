@@ -249,6 +249,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if currentTime.seconds == currentItem.duration.seconds {
             updatePlayerControls()
             progressSlider.value = 0.0
+            updateCurrentTime(from: timeFormatter(from: 0))
             finishPlaying = true
         }
     }
