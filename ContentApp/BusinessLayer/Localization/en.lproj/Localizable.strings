@@ -78,8 +78,8 @@
 "warning-login-path-empty"= "Path shouldn't be empty, go to advanced settings.";
 
 // MARK: - Settings Screen
-"theme" = "Theme mode";
-"auto" = "Auto";
+"theme" = "Appearance";
+"auto" = "System default";
 "light" = "Light";
 "dark" = "Dark";
 "failed-profile-info" = "Failed to fetch profile information for current user.";
