@@ -40,7 +40,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var httpsSwitch: UISwitch!
 
     @IBOutlet weak var portTextField: MDCOutlinedTextField!
-    @IBOutlet weak var serviceDocumentsTextField: MDCOutlinedTextField!
+    @IBOutlet weak var pathTextField: MDCOutlinedTextField!
     @IBOutlet weak var realmTextField: MDCOutlinedTextField!
     @IBOutlet weak var clientIDTextField: MDCOutlinedTextField!
 
@@ -97,7 +97,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
             httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
         portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        enableSaveButton = (pathTextField.text != "")
     }
 
     @IBAction func resetButtonTapped(_ sender: UIButton) {
@@ -136,7 +136,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
 
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
-        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments + "*"
+        pathTextField.label.text = LocalizationConstants.TextFieldPlaceholders.path + "*"
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
@@ -149,7 +149,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        serviceDocumentsTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        pathTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         clientIDTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         realmTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
 
@@ -184,18 +184,18 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     func updateFields() {
         httpsSwitch.isOn = viewModel.authParameters.https
         portTextField.text = viewModel.authParameters.port
-        serviceDocumentsTextField.text = viewModel.authParameters.serviceDocument
+        pathTextField.text = viewModel.authParameters.path
         realmTextField.text = viewModel.authParameters.realm
         clientIDTextField.text = viewModel.authParameters.clientID
     }
 
     func saveFields() {
-        if serviceDocumentsTextField.text == "" {
+        if pathTextField.text == "" {
             return
         }
         viewModel.saveFields(https: httpsSwitch.isOn,
                          port: portTextField.text,
-                         serviceDocuments: serviceDocumentsTextField.text,
+                         path: pathTextField.text,
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
 
@@ -210,19 +210,19 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        enableSaveButton = (pathTextField.text != "")
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        enableSaveButton = (pathTextField.text != "")
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == serviceDocumentsTextField {
+        if textField == pathTextField {
             enableSaveButton = (textField.updatedText(for: range, replacementString: string) != "")
         } else {
-            enableSaveButton = (serviceDocumentsTextField.text != "")
+            enableSaveButton = (pathTextField.text != "")
         }
         return true
     }
@@ -231,8 +231,8 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         var nextTextField = textField
         switch textField {
         case portTextField:
-            nextTextField = serviceDocumentsTextField
-        case serviceDocumentsTextField:
+            nextTextField = pathTextField
+        case pathTextField:
             nextTextField = realmTextField
         case realmTextField:
             nextTextField = clientIDTextField
@@ -246,7 +246,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        if textField == serviceDocumentsTextField {
+        if textField == pathTextField {
             enableSaveButton = false
         }
         return true

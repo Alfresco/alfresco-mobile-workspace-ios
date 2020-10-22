@@ -22,7 +22,7 @@ import AlfrescoAuth
 class AuthenticationParameters: Codable {
     var https: Bool = true
     var port: String = "443"
-    var serviceDocument: String = "alfresco"
+    var path: String = "alfresco"
     var realm: String = "alfresco"
     var clientID: String = "alfresco-ios-acs-app"
     var redirectURI: String = "iosacsapp://aims/auth"

@@ -25,10 +25,10 @@ class AdvancedSettingsViewModel {
         authParameters = AuthenticationParameters()
     }
 
-    func saveFields(https: Bool, port: String?, serviceDocuments: String?, realm: String?, clientID: String?) {
+    func saveFields(https: Bool, port: String?, path: String?, realm: String?, clientID: String?) {
         authParameters.https = https
         authParameters.port = port ?? ""
-        authParameters.serviceDocument = serviceDocuments ?? ""
+        authParameters.path = path ?? ""
         authParameters.realm = realm ?? ""
         authParameters.clientID = clientID ?? ""
         authParameters.save()

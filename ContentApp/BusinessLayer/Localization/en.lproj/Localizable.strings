@@ -35,7 +35,7 @@
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
 "port" = "Port";
-"service-document" = "Path";
+"path" = "Path";
 "realm" = "Realm";
 "client-id" = "Client ID";
 "username-or-email" = "Username or Email";
@@ -75,7 +75,7 @@
 "error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
 "error-something-went-wrong" = "Something went wrong!";
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
-"warning-login-service-document-empty"= "Service Document shouldn't be empty, go to Advanced Settings.";
+"warning-login-path-empty"= "Service Document shouldn't be empty, go to Advanced Settings.";
 
 // MARK: - Settings Screen
 "theme" = "Theme Mode";

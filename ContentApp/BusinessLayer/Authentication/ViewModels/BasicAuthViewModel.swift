@@ -37,8 +37,8 @@ class BasicAuthViewModel {
     }
 
     func authenticate(username: String, password: String) {
-        if authenticationService?.parameters.serviceDocument == "" {
-            self.delegate?.logInWarning(with: LocalizationConstants.Errors.serviceDocumentEmpty)
+        if authenticationService?.parameters.path == "" {
+            self.delegate?.logInWarning(with: LocalizationConstants.Errors.pathEmpty)
             return
         }
         let basicAuthCredential = BasicAuthCredential(username: username, password: password)

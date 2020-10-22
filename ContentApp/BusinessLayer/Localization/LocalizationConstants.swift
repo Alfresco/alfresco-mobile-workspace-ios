@@ -40,7 +40,7 @@ struct LocalizationConstants {
     struct TextFieldPlaceholders {
         static let connect = NSLocalizedString("connect-to", comment: "")
         static let port = NSLocalizedString("port", comment: "")
-        static let serviceDocuments = NSLocalizedString("service-document", comment: "")
+        static let path = NSLocalizedString("path", comment: "")
         static let realm = NSLocalizedString("realm", comment: "")
         static let clientID = NSLocalizedString("client-id", comment: "")
         static let username = NSLocalizedString("username-or-email", comment: "")
@@ -83,7 +83,7 @@ struct LocalizationConstants {
         static let checkConnectURL = NSLocalizedString("error-login-check-connect-url", comment: "")
         static let wrongCredentials = NSLocalizedString("error-login-wrong-credential", comment: "")
         static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
-        static let serviceDocumentEmpty = NSLocalizedString("warning-login-service-document-empty", comment: "")
+        static let pathEmpty = NSLocalizedString("warning-login-path-empty", comment: "")
         static let noLongerAuthenticated = NSLocalizedString("error-logjn-no-longer-authenticated", comment: "")
         static let somethingWentWrong = NSLocalizedString("error-something-went-wrong", comment: "")
     }
