@@ -74,6 +74,7 @@ let listBrowseSectionCellHeight: CGFloat = 1.0
 let chipSearchCellMinimHeight: CGFloat = 32.0
 let chipSearchCellMinimWidth: CGFloat = 52.0
 let actionMenuCellHeight: CGFloat = 63.0
+let dialogCornerRadius: CGFloat = 8.0
 
 // MARK: -
 let kDefaultLoginUnsecuredPort = "80"

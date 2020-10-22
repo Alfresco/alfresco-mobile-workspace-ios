@@ -71,7 +71,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         progressSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
-        actionsView.layer.cornerRadius = 8.0
+        actionsView.layer.cornerRadius = dialogCornerRadius
         actionsView.layer.borderWidth = 1.0
         actionsView.layer.masksToBounds = true
     }

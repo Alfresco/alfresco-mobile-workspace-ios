@@ -179,6 +179,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
 
         let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
+        alertController.cornerRadius = dialogCornerRadius
         alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
         let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
             guard let sSelf = self else { return }

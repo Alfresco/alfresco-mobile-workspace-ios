@@ -29,6 +29,7 @@ class ActionMenuViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.layer.cornerRadius = dialogCornerRadius
         view.isHidden = true
     }
 
