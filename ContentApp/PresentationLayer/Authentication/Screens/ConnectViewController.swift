@@ -131,7 +131,7 @@ class ConnectViewController: SystemThemableViewController {
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .normal)
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .disabled)
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
-        needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
+        needHelpButton.setTitle(LocalizationConstants.Buttons.needHelpAlfresco, for: .normal)
         copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
     }
 
@@ -139,13 +139,14 @@ class ConnectViewController: SystemThemableViewController {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        connectButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        connectButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05), for: .disabled)
         connectButton.isUppercaseTitle = false
+        connectButton.setShadowColor(.clear, for: .normal)
 
         advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         advancedSettingsButton.isUppercaseTitle = false
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.isUppercaseTitle = false
 
         connectTextFieldAddMaterialComponents()
@@ -171,6 +172,10 @@ class ConnectViewController: SystemThemableViewController {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
         }
+
+        connectTextField.trailingViewMode = .unlessEditing
+        connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-connect-to-qr-code"))
+        connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     func navigationBar(hide: Bool) {

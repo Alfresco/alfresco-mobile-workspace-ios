@@ -23,6 +23,7 @@
 "connect" = "Connect";
 "advanced-settings" = "Advanced settings";
 "need-help" = "Need help?";
+"need-help-alfresco" = "How to connect to Alfresco?";
 "reset-to-default" = "Reset to default";
 "save" = "Save";
 "sign-in" = "Sign in";

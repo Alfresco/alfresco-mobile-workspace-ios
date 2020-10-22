@@ -28,6 +28,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
+    @IBOutlet weak var separator: UIView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var hostnameLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
@@ -123,9 +124,12 @@ class BasicAuthViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
+        separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
+
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         signInButton.isUppercaseTitle = false
+        signInButton.setShadowColor(.clear, for: .normal)
 
         productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)

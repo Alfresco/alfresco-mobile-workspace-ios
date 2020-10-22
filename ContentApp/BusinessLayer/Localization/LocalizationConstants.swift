@@ -26,6 +26,7 @@ struct LocalizationConstants {
         static let connect = NSLocalizedString("connect", comment: "")
         static let advancedSetting = NSLocalizedString("advanced-settings", comment: "")
         static let needHelp = NSLocalizedString("need-help", comment: "")
+        static let needHelpAlfresco = NSLocalizedString("need-help-alfresco", comment: "")
         static let resetToDefault = NSLocalizedString("reset-to-default", comment: "")
         static let save = NSLocalizedString("save", comment: "")
         static let signin = NSLocalizedString("sign-in", comment: "")
