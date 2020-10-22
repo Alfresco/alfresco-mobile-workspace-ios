@@ -49,6 +49,7 @@ class ApplicationCoordinator: Coordinator {
         let viewController = window.rootViewController?.presentedViewController ?? window.rootViewController
         let alert = MDCAlertController(title: LocalizationConstants.Labels.sessionExpiredTitle,
                                        message: LocalizationConstants.Labels.sesssionExpiredMessage)
+        alert.cornerRadius = dialogCornerRadius
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }

@@ -32,6 +32,7 @@ class ThemesModeViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.layer.cornerRadius = dialogCornerRadius
         viewModel.themingService = themingService
         addLocalization()
     }
