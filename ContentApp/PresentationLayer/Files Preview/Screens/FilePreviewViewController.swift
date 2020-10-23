@@ -47,6 +47,7 @@ class FilePreviewViewController: SystemThemableViewController {
         view.bringSubviewToFront(progressView)
 
         startLoading()
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +78,7 @@ class FilePreviewViewController: SystemThemableViewController {
         Snackbar.dimissAll()
 
         ControllerRotation.lockOrientation(.portrait, andRotateTo: .portrait)
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
 
     override var prefersStatusBarHidden: Bool {
