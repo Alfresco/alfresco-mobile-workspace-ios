@@ -28,6 +28,7 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewStatusView: UIView!
     @IBOutlet weak var mimeTypeImageView: UIImageView!
     @IBOutlet weak var filePreviewStatusLabel: UILabel!
+    @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
     var needsContraintsForFullScreen = false
 
@@ -59,6 +60,7 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
+        filePreviewTitleLabel.text = filePreviewViewModel?.node.title
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -126,8 +128,8 @@ class FilePreviewViewController: SystemThemableViewController {
         navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
         navigationController?.navigationBar.shadowImage = nil
 
-        filePreviewStatusLabel.font = currentTheme.captionTextStyle.font
-        filePreviewStatusLabel.textColor = currentTheme.onSurfaceColor
+        filePreviewStatusLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        filePreviewTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
         mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
     }
 

@@ -90,7 +90,10 @@ class FilePreviewViewModel {
                     sSelf.viewModelDelegate?.display(previewContainer: preview)
                     sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
                 } else {
-                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                                  node: sSelf.node,
+                                                                  size: size)
                     sSelf.filePreview = noPreview
                     sSelf.viewModelDelegate?.display(previewContainer: noPreview)
                     sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
@@ -232,7 +235,10 @@ class FilePreviewViewModel {
 
     private func previewFile(type: FilePreviewType, at url: URL?, with size: CGSize) {
         guard let renditionURL = url else {
-            let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+            viewModelDelegate?.enableFullscreenContentExperience()
+            let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                          node: node,
+                                                          size: size)
             filePreview = noPreview
             viewModelDelegate?.display(previewContainer: noPreview)
             viewModelDelegate?.didFinishLoadingPreview(error: FilePreviewError.invalidRenditionURL("No rendition URL provided"))
@@ -240,7 +246,10 @@ class FilePreviewViewModel {
             return
         }
 
-        let preview = FilePreviewFactory.getPreview(for: type, and: renditionURL, on: size) { [weak self] (error) in
+        let preview = FilePreviewFactory.getPreview(for: type,
+                                                    node: node,
+                                                    url: renditionURL,
+                                                    size: size) { [weak self] (error) in
             guard let sSelf = self else { return }
 
             if let error = error {
@@ -249,7 +258,10 @@ class FilePreviewViewModel {
                         sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
                     }
                 } else {
-                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview, on: size)
+                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                                  node: sSelf.node,
+                                                                  size: size)
                     sSelf.filePreview = noPreview
                     sSelf.viewModelDelegate?.display(previewContainer: noPreview)
                     sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)

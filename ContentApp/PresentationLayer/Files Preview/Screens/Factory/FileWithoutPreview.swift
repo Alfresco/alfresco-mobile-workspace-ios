@@ -20,7 +20,9 @@ import Foundation
 import UIKit
 
 class FileWithoutPreview: UIView, FilePreviewProtocol {
-    private var noPreviewLabel: UILabel?
+    private var statusLabel: UILabel?
+    private var titleLabel: UILabel?
+    private var iconImageView: UIImageView?
 
     // MARK: - Init
 
@@ -28,22 +30,44 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         super.init(coder: aDecoder)
     }
 
-    init() {
+    init(with node: ListNode?) {
         super.init(frame: CGRect(origin: .zero, size: .zero))
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
 
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.text = LocalizationConstants.FilePreview.noPreview
-        label.sizeToFit()
-        noPreviewLabel = label
-        addSubview(label)
-
+        let imageView = UIImageView(image: FileIcon.icon(for: node?.mimeType))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.iconImageView = imageView
+        addSubview(imageView)
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0),
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0)
+            imageView.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            imageView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0),
+            imageView.widthAnchor.constraint(equalToConstant: 72),
+            imageView.heightAnchor.constraint(equalToConstant: 72)
+        ])
+
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.textAlignment = .center
+        titleLabel.text = node?.title
+        titleLabel.sizeToFit()
+        self.titleLabel = titleLabel
+        addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+        ])
+
+        let statuslabel = UILabel()
+        statuslabel.translatesAutoresizingMaskIntoConstraints = false
+        statuslabel.textAlignment = .center
+        statuslabel.text = LocalizationConstants.FilePreview.noPreview
+        statuslabel.sizeToFit()
+        self.statusLabel = statuslabel
+        addSubview(statuslabel)
+        NSLayoutConstraint.activate([
+            statuslabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
+            statuslabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4)
         ])
     }
 
@@ -51,6 +75,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        noPreviewLabel?.applyStyleBody2OnSurface(theme: currentTheme)
+        statusLabel?.applyStyleCaptionOnSurface60(theme: currentTheme)
+        titleLabel?.applyStyleBody2OnSurface(theme: currentTheme)
     }
 }

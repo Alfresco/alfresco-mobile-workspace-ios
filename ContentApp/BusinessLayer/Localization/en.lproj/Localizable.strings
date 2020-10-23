@@ -113,7 +113,7 @@
 "trash" = "Trash";
 
 // MARK: - File Preview
-"no-preview" = "No preview for this file.";
+"no-preview" = "Preview not available.";
 "password-prompt" = "File locked";
 "password-prompt-message" = "Please enter the password to unlock the file.";
 "password-prompt-fail" = "Incorrect password";
