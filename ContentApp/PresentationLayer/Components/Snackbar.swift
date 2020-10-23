@@ -29,16 +29,11 @@ enum SnackBarType {
 class Snackbar {
     private var type: SnackBarType
     private var snackBar: MDCSnackbarMessage
-    private var buttonTitle: String
-    private var hideButton: Bool = false
 
-    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.snackbarConfirmation) {
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
         self.type = type
-        self.buttonTitle = buttonTitle
-        self.hideButton = (buttonTitle == "")
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses
-        self.addButton()
         self.applyTheme()
     }
 
@@ -47,15 +42,10 @@ class Snackbar {
     func applyTheme() {
         let serviceRepository = ApplicationBootstrap.shared().serviceRepository
         let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let currentTheme = themingService?.activeTheme
-        switch type {
-        case .error:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorColor
-        case .approve:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.primaryColor
-        case .warning:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorOnColor
-        }
+        guard let currentTheme = themingService?.activeTheme else { return }
+        MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme.onSurfaceColor
+        MDCSnackbarManager.default.messageFont = currentTheme.body2TextStyle.font
+        MDCSnackbarManager.default.messageTextColor = currentTheme.onPrimaryColor
     }
 
     func show(completion: (() -> Void)?) {
@@ -69,25 +59,11 @@ class Snackbar {
         MDCSnackbarManager.default.show(snackBar)
     }
 
-    func hideButton(_ hidden: Bool) {
-        hideButton = false
-        snackBar.action = nil
-    }
-
     func dismiss() {
         MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
     }
 
     class func dimissAll() {
         MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: nil)
-    }
-
-    // MARK: - Private methods
-
-    private func addButton() {
-        guard !hideButton  else { return }
-        let action = MDCSnackbarMessageAction()
-        action.title = buttonTitle
-        snackBar.action = action
     }
 }

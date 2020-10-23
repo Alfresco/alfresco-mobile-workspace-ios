@@ -47,7 +47,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         backgroundColor = currentTheme.surfaceColor
-        title.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        title.applyStyleBody1OnSurface(theme: currentTheme)
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead

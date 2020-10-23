@@ -23,6 +23,7 @@
 "connect" = "Connect";
 "advanced-settings" = "Advanced settings";
 "need-help" = "Need help?";
+"need-help-alfresco" = "How to connect to Alfresco?";
 "reset-to-default" = "Reset to default";
 "save" = "Save";
 "sign-in" = "Sign in";
@@ -51,6 +52,7 @@
 "info-aims-connect-to"  = "Signing in to: ";
 "login-allow-sso" = "Please provide the URL of your Content Services environment.";
 "help" = "Help";
+"how-to-connect-to-alfresco" = "How to connect to Alfresco";
 "connecting" = "Connecting";
 "signing-in" = "Signing in";
 "session-expired" = "Session expired";
@@ -63,7 +65,7 @@
 "browse" = "Browse";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
+"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
 "help-advanced-settings-hint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
 

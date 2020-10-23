@@ -16,9 +16,15 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-struct NeedHelpConnectScreenModel: NeedHelpModelProtocol {
-    var titleText = LocalizationConstants.Labels.howToConnectTitle
-    var hintText = LocalizationConstants.Textviews.serviceURLHint
+extension UIView {
+   func applyRoundedCorners(on corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: bounds,
+                                byRoundingCorners: corners,
+                                cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        layer.mask = mask
+    }
 }
