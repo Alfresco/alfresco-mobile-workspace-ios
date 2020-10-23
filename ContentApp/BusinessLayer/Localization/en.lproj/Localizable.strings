@@ -60,7 +60,7 @@
 
 // MARK: - Screen Titles
 "settings" = "Settings";
-"recent" = "Recents";
+"recent" = "Recent";
 "favorites" = "Favorites";
 "browse" = "Browse";
 
