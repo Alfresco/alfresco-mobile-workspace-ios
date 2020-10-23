@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="BOA-c7-Asg">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="BOA-c7-Asg">
                                 <rect key="frame" x="194" y="123.66666666666669" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="BOA-c7-Asg" secondAttribute="height" id="64F-oI-0qn"/>
@@ -141,7 +141,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="0CU-Tt-c1d">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="0CU-Tt-c1d">
                                 <rect key="frame" x="194" y="123.66666666666669" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="0CU-Tt-c1d" secondAttribute="height" id="bQL-Id-Cl1"/>
@@ -202,7 +202,7 @@
                                     <constraint firstAttribute="height" constant="48" id="gDs-N1-V2R"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="sign in with sso" image="signin-icon">
+                                <state key="normal" title="sign in with sso">
                                     <color key="titleColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <state key="disabled" title="sign in with sso">
@@ -374,7 +374,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="03B-ZR-cXY">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="03B-ZR-cXY">
                                 <rect key="frame" x="194" y="123.66666666666669" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="NBM-GE-aFO"/>
@@ -437,7 +437,7 @@
                                 </constraints>
                                 <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="sign in" image="signin-icon">
+                                <state key="normal" title="sign in">
                                     <color key="titleColor" red="0.20392156862745098" green="0.47450980392156861" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 </state>
                                 <state key="disabled" title="sign in">
@@ -1497,7 +1497,7 @@
                                             <constraint firstAttribute="height" constant="58" id="LFt-aB-eep"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="20" minY="20" maxX="20" maxY="20"/>
-                                        <state key="normal" image="reset-to-default">
+                                        <state key="normal" image="ic-reset-to-default">
                                             <color key="titleColor" red="0.20392156862745098" green="0.47058823529411764" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         </state>
                                         <state key="disabled">
@@ -1545,7 +1545,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Advanced Settings" id="XTb-Eo-waB">
-                        <barButtonItem key="rightBarButtonItem" image="reset-to-default" style="done" id="qmt-Lx-WCa">
+                        <barButtonItem key="rightBarButtonItem" image="ic-reset-to-default" style="done" id="qmt-Lx-WCa">
                             <connections>
                                 <action selector="resetToDefaultButtonTapped:" destination="U7y-JF-Com" id="ngc-xX-GYZ"/>
                             </connections>
@@ -1596,7 +1596,7 @@
                                     <outletCollection property="gestureRecognizers" destination="ZWe-sy-lKu" appends="YES" id="2EN-jP-3J9"/>
                                 </connections>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="logo-alfresco" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-sk-1EV">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="252" image="alfresco-logo" translatesAutoresizingMaskIntoConstraints="NO" id="YJ3-sk-1EV">
                                 <rect key="frame" x="168" y="417" width="92" height="92"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -1852,14 +1852,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="alfresco-logo" width="92" height="92"/>
         <image name="emptyList" width="139" height="128"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
-        <image name="logo-alfresco" width="92" height="92"/>
+        <image name="ic-reset-to-default" width="16" height="16"/>
         <image name="radio-button-unchecked" width="20" height="20"/>
         <image name="recentsearch-history" width="21" height="18"/>
         <image name="recentsearches-arrow" width="12" height="12"/>
-        <image name="reset-to-default" width="16" height="16"/>
-        <image name="signin-icon" width="24" height="24"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

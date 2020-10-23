@@ -58,6 +58,7 @@ struct LocalizationConstants {
         static let infoAimsConnectTo = NSLocalizedString("info-aims-connect-to", comment: "")
         static let allowSSO = NSLocalizedString("login-allow-sso", comment: "")
         static let needHelpTitle = NSLocalizedString("help", comment: "")
+        static let howToConnectTitle = NSLocalizedString("how-to-connect-to-alfresco", comment: "")
         static let conneting = NSLocalizedString("connecting", comment: "")
         static let signingIn = NSLocalizedString("signing-in", comment: "")
         static let sessionExpiredTitle =  NSLocalizedString("session-expired", comment: "")

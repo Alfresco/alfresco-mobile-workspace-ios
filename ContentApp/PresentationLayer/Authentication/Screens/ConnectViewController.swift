@@ -166,16 +166,16 @@ class ConnectViewController: SystemThemableViewController {
         guard let themingService = self.themingService else {
             return
         }
+        connectTextField.trailingViewMode = .unlessEditing
         if errorShowInProgress {
             connectTextField.applyErrorTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+            connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
         } else {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
+            connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-connect-to-qr-code"))
+            connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurfaceColor.withAlphaComponent(0.6)
         }
-
-        connectTextField.trailingViewMode = .unlessEditing
-        connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-connect-to-qr-code"))
-        connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     func navigationBar(hide: Bool) {
