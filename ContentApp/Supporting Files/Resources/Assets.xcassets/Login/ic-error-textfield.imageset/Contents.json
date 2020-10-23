@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "ic-helpers.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

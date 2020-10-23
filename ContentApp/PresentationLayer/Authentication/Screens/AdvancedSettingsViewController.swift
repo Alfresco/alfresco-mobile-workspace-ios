@@ -27,7 +27,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBOutlet weak var backPadButton: UIButton!
     @IBOutlet weak var titlePadLabel: UILabel!
-    @IBOutlet weak var savePadButton: MDCButton!
+    @IBOutlet weak var resetToDefaultPadButton: MDCButton!
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -44,9 +44,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var realmTextField: MDCOutlinedTextField!
     @IBOutlet weak var clientIDTextField: MDCOutlinedTextField!
 
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var resetToDefaultButton: UIBarButtonItem!
     @IBOutlet weak var needHelpButton: MDCButton!
-    @IBOutlet weak var resetButton: MDCButton!
+    @IBOutlet weak var saveButton: MDCButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
@@ -57,7 +57,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     var enableSaveButton: Bool = false {
         didSet {
             saveButton.isEnabled = enableSaveButton
-            savePadButton.isEnabled = enableSaveButton
         }
     }
 
@@ -82,10 +81,10 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         advSettingsScreenCoordinatorDelegate?.dismiss()
     }
 
-    @IBAction func savePadButtonTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        saveFields()
-        enableSaveButton = false
+    @IBAction func resetToDefaultPadButtonTapped(_ sender: UIButton) {
+        viewModel.resetAuthParameters()
+        updateFields()
+        enableSaveButton = true
     }
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
@@ -100,20 +99,20 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         enableSaveButton = (pathTextField.text != "")
     }
 
-    @IBAction func resetButtonTapped(_ sender: UIButton) {
-        viewModel.resetAuthParameters()
-        updateFields()
-        enableSaveButton = true
+    @IBAction func saveButtonTapped(_ sender: UIButton) {
+        view.endEditing(true)
+        saveFields()
+        enableSaveButton = false
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
         advSettingsScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        self.view.endEditing(true)
-        saveFields()
-        enableSaveButton = false
+    @IBAction func resetToDefaultButtonTapped(_ sender: UIBarButtonItem) {
+        viewModel.resetAuthParameters()
+        updateFields()
+        enableSaveButton = true
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -123,11 +122,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        self.titlePadLabel.text = LocalizationConstants.ScreenTitles.advancedSettings
-        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
-        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .disabled)
-
-        self.title = LocalizationConstants.ScreenTitles.advancedSettings
+        titlePadLabel.text = LocalizationConstants.ScreenTitles.advancedSettings
+        title = LocalizationConstants.ScreenTitles.advancedSettings
 
         transportProtocolLabel.text = LocalizationConstants.Labels.transportProtocol
         settingsLabel.text = LocalizationConstants.Labels.AlfrescoContentSettings
@@ -140,9 +136,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
-        saveButton.title = LocalizationConstants.Buttons.save
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
-        resetButton.setTitle(LocalizationConstants.Buttons.resetToDefault, for: .normal)
+        saveButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
     }
 
     override func applyComponentsThemes() {
@@ -165,17 +160,19 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
-        resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
-        resetButton.isUppercaseTitle = false
+        saveButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        saveButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05), for: .disabled)
+        saveButton.isUppercaseTitle = false
+        saveButton.setShadowColor(.clear, for: .normal)
 
-        savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        savePadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
-        savePadButton.isUppercaseTitle = false
+        resetToDefaultPadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
+        resetToDefaultPadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
+        resetToDefaultPadButton.isUppercaseTitle = false
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.isUppercaseTitle = false
 
-        saveButton.tintColor = currentTheme.primaryVariantColor
+        resetToDefaultButton.tintColor = currentTheme.primaryVariantColor
         backPadButton.tintColor = currentTheme.primaryVariantColor
 
         view.backgroundColor = currentTheme.surfaceColor
@@ -200,7 +197,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
                          clientID: clientIDTextField.text)
 
         let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar.hideButton(true)
         snackbar.show(completion: nil)
     }
 }

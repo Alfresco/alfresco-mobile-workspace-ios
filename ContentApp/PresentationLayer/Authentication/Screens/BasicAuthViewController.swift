@@ -28,13 +28,14 @@ class BasicAuthViewController: SystemThemableViewController {
 
     @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productLabel: UILabel!
+    @IBOutlet weak var separator: UIView!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var hostnameLabel: UILabel!
     @IBOutlet weak var copyrightLabel: UILabel!
 
     @IBOutlet weak var usernameTextField: MDCOutlinedTextField!
     @IBOutlet weak var passwordTextField: MDCOutlinedTextField!
-    var showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
+    var showPasswordImageView = UIImageView(image: UIImage(named: "ic-password-hide"))
 
     @IBOutlet weak var signInButton: MDCButton!
 
@@ -103,7 +104,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
     @objc func showPasswordButtonTapped(_ sender: UIButton) {
         passwordTextField.isSecureTextEntry = !passwordTextField.isSecureTextEntry
-        showPasswordImageView.image = (passwordTextField.isSecureTextEntry) ? UIImage(named: "hide-password-icon") : UIImage(named: "show-password-icon")
+        showPasswordImageView.image = (passwordTextField.isSecureTextEntry) ? UIImage(named: "ic-password-hide") : UIImage(named: "ic-password-show")
     }
 
     // MARK: - Helpers
@@ -123,9 +124,12 @@ class BasicAuthViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
+        separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
+
         signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         signInButton.isUppercaseTitle = false
+        signInButton.setShadowColor(.clear, for: .normal)
 
         productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
@@ -155,16 +159,16 @@ class BasicAuthViewController: SystemThemableViewController {
         }
 
         usernameTextField.trailingViewMode = .unlessEditing
-        usernameTextField.trailingView = UIImageView(image: UIImage(named: "username-icon"))
-        usernameTextField.trailingView?.tintColor = currentTheme.dividerColor
+        usernameTextField.trailingView = UIImageView(image: UIImage(named: "ic-username"))
+        usernameTextField.trailingView?.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
-        showPasswordImageView = UIImageView(image: UIImage(named: "hide-password-icon"))
+        showPasswordImageView = UIImageView(image: UIImage(named: "ic-password-hide"))
         showPasswordImageView.contentMode = .scaleAspectFit
         passwordTextField.trailingViewMode = .always
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
         passwordTextField.trailingView?.addGestureRecognizer(UITapGestureRecognizer.init(target: self, action: #selector(showPasswordButtonTapped(_:))))
-        passwordTextField.trailingView?.tintColor = currentTheme.dividerColor
+        passwordTextField.trailingView?.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         passwordTextField.isSecureTextEntry = true
     }
 }
