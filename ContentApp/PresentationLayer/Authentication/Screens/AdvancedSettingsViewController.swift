@@ -165,15 +165,13 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         saveButton.isUppercaseTitle = false
         saveButton.setShadowColor(.clear, for: .normal)
 
-        resetToDefaultPadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        resetToDefaultPadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
-        resetToDefaultPadButton.isUppercaseTitle = false
+        resetToDefaultPadButton.backgroundColor = .clear
+        resetToDefaultPadButton.setTitleColor(currentTheme.onSurfaceColor.withAlphaComponent(0.6), for: .normal)
+
+        backPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
         needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
         needHelpButton.isUppercaseTitle = false
-
-        resetToDefaultButton.tintColor = currentTheme.primaryVariantColor
-        backPadButton.tintColor = currentTheme.primaryVariantColor
 
         view.backgroundColor = currentTheme.surfaceColor
     }
