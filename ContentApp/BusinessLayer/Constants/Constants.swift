@@ -83,6 +83,7 @@ let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
 let kPlayerBackForWardTime: Double = 30
+let kToolbarFilePreviewNumberOfAction: Int = 3
 
 // MARK: - Preview Files
 let kMultiplerPreviewSizeImage: CGFloat = 1.0

@@ -21,6 +21,7 @@ import AlfrescoContent
 
 class ActionMenuViewModel {
     private var menu: ActionsMenuProtocol?
+    private var toolbarActions: [ActionMenu]?
 
     // MARK: - Init
 
@@ -30,8 +31,35 @@ class ActionMenuViewModel {
 
     // MARK: - Public Helpers
 
+    func divideForToolbarActions() {
+        var toolActions = [ActionMenu]()
+        let section = (isFirstActionInfo()) ? 1 : 0
+        if let menu = menu {
+            for index in section...menu.actions.count {
+                for action in menu.actions[index] {
+
+                    toolActions.append(action)
+
+                    self.menu?.actions[section].removeFirst()
+                    if self.menu?.actions[section].count == 0 {
+                        self.menu?.actions.remove(at: section)
+                    }
+                    if toolActions.count == kToolbarFilePreviewNumberOfAction {
+                        toolbarActions = toolActions
+                        return
+                    }
+                }
+            }
+        }
+        toolbarActions = toolActions
+    }
+
     func actions() -> [[ActionMenu]]? {
         return menu?.actions
+    }
+
+    func actionsForToolbar() -> [ActionMenu]? {
+        return toolbarActions
     }
 
     func numberOfActions() -> CGFloat {
@@ -53,5 +81,11 @@ class ActionMenuViewModel {
             return true
         }
         return false
+    }
+
+    // MARK: - Private Helpers
+
+    private func isFirstActionInfo() -> Bool {
+        return menu?.actions[0][0].type == .node
     }
 }

@@ -35,8 +35,10 @@ struct ActionMenu {
 }
 
 enum ActionMenuType: String {
+    case node = "ic-node"
+    case more = "ic-action-more"
     case addFavorite = "ic-action-outline-favorite"
     case removeFavorite = "ic-action-fill-favorite"
     case delete = "ic-action-delete"
-    case node = "ic-node"
+    case download = "ic-action-download"
 }

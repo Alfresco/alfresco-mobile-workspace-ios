@@ -49,7 +49,7 @@
                             <constraint firstAttribute="width" secondItem="YfJ-2w-APk" secondAttribute="height" multiplier="1:1" id="gZG-76-pVu"/>
                         </constraints>
                         <color key="tintColor" systemColor="labelColor"/>
-                        <state key="normal" image="more"/>
+                        <state key="normal" image="ic-action-more"/>
                         <connections>
                             <action selector="moreButtonTapped:" destination="TZI-a9-K3a" eventType="touchUpInside" id="lrA-ho-yVK"/>
                         </connections>
@@ -76,7 +76,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="more" width="24" height="24"/>
+        <image name="ic-action-more" width="24" height="24"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
