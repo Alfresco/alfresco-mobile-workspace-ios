@@ -74,6 +74,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         actionsView.layer.cornerRadius = dialogCornerRadius
         actionsView.layer.borderWidth = 1.0
         actionsView.layer.masksToBounds = true
+        actionsView.isHidden = true
     }
 
     deinit {
@@ -183,6 +184,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             guard let sSelf = self else { return }
             switch playerItem.status {
             case .readyToPlay:
+                sSelf.actionsView.isHidden = false
                 sSelf.updateTotalTime(from: sSelf.timeFormatter(from: playerItem.duration.seconds))
                 if let handler = sSelf.videoPreviewHandler {
                     handler(nil)
@@ -191,7 +193,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 if let handler = sSelf.videoPreviewHandler {
                     handler(playerItem.error)
                 }
-                sSelf.showError(playerItem.error)
             default: break
             }
         })

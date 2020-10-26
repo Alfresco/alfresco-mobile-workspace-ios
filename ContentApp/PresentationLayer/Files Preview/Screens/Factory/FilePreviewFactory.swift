@@ -27,11 +27,14 @@ class FilePreviewFactory {
         return plainTextPreview
     }
 
-    static func getPreview(for previewType: FilePreviewType, and url: URL? = nil, on size: CGSize,
+    static func getPreview(for previewType: FilePreviewType,
+                           node: ListNode?,
+                           url: URL? = nil,
+                           size: CGSize,
                            completion: ((_ error: Error?) -> Void)? = nil) -> FilePreviewProtocol {
         guard let url = url else {
             completion?(nil)
-            return FileWithoutPreview()
+            return FileWithoutPreview(with: node)
         }
 
         switch previewType {
@@ -41,7 +44,6 @@ class FilePreviewFactory {
                 if let error = error {
                     AlfrescoLog.error(error)
                 }
-
                 completion?(error)
             }
             return imagePreview
@@ -60,11 +62,11 @@ class FilePreviewFactory {
                 return mediaPreview
             }
             completion?(nil)
-            return FileWithoutPreview()
+            return FileWithoutPreview(with: node)
 
         default:
             completion?(nil)
-            return FileWithoutPreview()
+            return FileWithoutPreview(with: node)
         }
     }
 }
