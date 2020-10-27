@@ -136,6 +136,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
@@ -157,9 +158,18 @@ class ConnectViewController: SystemThemableViewController {
         productLabel.textAlignment = .center
 
         view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
+
+        let image = UIImage(color: currentTheme.surfaceColor,
+                            size: navigationController?.navigationBar.bounds.size)
+        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
-                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+             NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     func connectTextFieldAddMaterialComponents() {
@@ -179,14 +189,17 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     func navigationBar(hide: Bool) {
+        guard let currentTheme = self.themingService?.activeTheme else { return }
         if hide {
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             self.navigationController?.navigationBar.shadowImage = UIImage()
             self.navigationController?.navigationBar.isTranslucent = true
             self.navigationController?.view.backgroundColor = .clear
         } else {
-            self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-            self.navigationController?.navigationBar.shadowImage = nil
+            let image = UIImage(color: currentTheme.surfaceColor,
+                                size: navigationController?.navigationBar.bounds.size)
+            navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
         }
     }
 

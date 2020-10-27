@@ -142,6 +142,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))

@@ -62,12 +62,6 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "back-icon")
         navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "back-icon")
-
-        // Remove navigation bar underline separator
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
     }
 
     // MARK: - IBActions
@@ -85,14 +79,21 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let currentTheme = self.themingService?.activeTheme else { return }
 
         view.backgroundColor = currentTheme.surfaceColor
+        let image = UIImage(color: currentTheme.surfaceColor,
+                            size: navigationController?.navigationBar.bounds.size)
+        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
-                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+             NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     private func addSearchButton() {
