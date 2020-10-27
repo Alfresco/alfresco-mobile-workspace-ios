@@ -59,11 +59,11 @@ class EventBusService: EventBusServiceProtocol, Service {
                     case .backgroundQueue:
                         dispatchQueue = DispatchQueue.global(qos: .userInitiated)
                     case .mainQueue:
-                        dispatchQueue = DispatchQueue.main()
+                        dispatchQueue = DispatchQueue.main
                     }
 
                     dispatchQueue.async {
-                        registeredObserver.handle(event: event, on: .queue)
+                        registeredObserver.handle(event: event, on: queue)
                     }
                 }
             }
