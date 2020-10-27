@@ -104,6 +104,7 @@ class SplashViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let currentTheme = self.themingService?.activeTheme else { return }
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center

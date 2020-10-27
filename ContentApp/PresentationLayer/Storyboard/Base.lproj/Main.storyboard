@@ -1542,7 +1542,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="91C-8y-3px"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="feP-M4-o5O" firstAttribute="width" secondItem="mdu-F1-2kG" secondAttribute="width" id="Aht-4H-dB5"/>
                             <constraint firstItem="DIA-lY-PMD" firstAttribute="leading" secondItem="91C-8y-3px" secondAttribute="leading" id="Do4-pP-1p1"/>
@@ -1570,6 +1570,7 @@
                         <outlet property="copyrightLabel" destination="MD5-6O-qcf" id="IeT-69-V5a"/>
                         <outlet property="httpsLabel" destination="z3E-9n-TcT" id="wN9-vz-jdu"/>
                         <outlet property="httpsSwitch" destination="RFO-oh-7nc" id="VeO-ir-ve7"/>
+                        <outlet property="navigationPadBar" destination="DIA-lY-PMD" id="Pr8-Az-wWh"/>
                         <outlet property="needHelpButton" destination="FzM-th-1FX" id="0uD-il-Lvo"/>
                         <outlet property="pathTextField" destination="OFY-WU-gPl" id="zbR-rs-ufW"/>
                         <outlet property="portTextField" destination="N0m-dZ-b4g" id="F6Q-Af-Zar"/>

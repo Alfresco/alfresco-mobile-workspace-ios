@@ -148,6 +148,7 @@ class ResultViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let currentTheme = self.themingService?.activeTheme else { return }
 
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
