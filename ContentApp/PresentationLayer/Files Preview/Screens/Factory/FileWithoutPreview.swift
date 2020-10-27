@@ -48,14 +48,18 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
 
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.numberOfLines = 2
         titleLabel.textAlignment = .center
+        titleLabel.lineBreakMode = .byTruncatingTail
         titleLabel.text = node?.title
         titleLabel.sizeToFit()
         self.titleLabel = titleLabel
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20)
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 84),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -84)
         ])
 
         let statuslabel = UILabel()
@@ -76,6 +80,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         statusLabel?.applyStyleCaptionOnSurface60(theme: currentTheme)
-        titleLabel?.applyStyleBody2OnSurface(theme: currentTheme)
+        titleLabel?.font = currentTheme.body2TextStyle.font
+        titleLabel?.textColor = currentTheme.onSurfaceColor
     }
 }
