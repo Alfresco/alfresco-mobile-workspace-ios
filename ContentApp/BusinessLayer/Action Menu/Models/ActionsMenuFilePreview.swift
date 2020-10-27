@@ -34,10 +34,8 @@ struct ActionsMenuFilePreview: ActionsMenuProtocol {
                                       type: .delete)
         let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
                                       type: .download)
-        let moreAction = ActionMenu(title: "",
-                                      type: .more)
         let actions1 = [infoAction]
-        let actions2 = [downloadAction, (node.favorite) ? removeFavAction : addFavAction, moreAction, deleteAction]
+        let actions2 = [downloadAction, (node.favorite) ? removeFavAction : addFavAction, deleteAction]
         actions.append(actions1)
         actions.append(actions2)
     }

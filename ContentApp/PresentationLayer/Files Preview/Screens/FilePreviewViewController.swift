@@ -115,7 +115,6 @@ class FilePreviewViewController: SystemThemableViewController {
     // MARK: - Private Helpers
 
     private func addToolbarActions() {
-        actionMenuViewModel?.divideForToolbarActions()
         guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
         var array = [UIBarButtonItem]()
         for action in actions {

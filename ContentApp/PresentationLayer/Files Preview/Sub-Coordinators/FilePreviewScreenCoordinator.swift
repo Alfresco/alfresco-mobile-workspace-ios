@@ -40,7 +40,7 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(node: listNode, with: accountService)
         let menu = ActionsMenuFilePreview(with: listNode)
-        let actionMenuViewModel = ActionMenuViewModel(with: menu)
+        let actionMenuViewModel = ActionMenuViewModel(with: menu, toolbarDivide: true)
         let nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         accountService: accountService,
                                                         delegate: viewController)
