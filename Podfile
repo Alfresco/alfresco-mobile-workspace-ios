@@ -1,4 +1,3 @@
-source 'https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git'
 source 'https://cdn.cocoapods.org/'
 
 platform :ios, '12.0'
