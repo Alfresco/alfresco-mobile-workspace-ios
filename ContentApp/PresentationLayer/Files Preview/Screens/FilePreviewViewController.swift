@@ -132,6 +132,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
         filePreviewStatusLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         filePreviewTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        filePreviewTitleLabel.lineBreakMode = .byTruncatingTail
         mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
     }
 
