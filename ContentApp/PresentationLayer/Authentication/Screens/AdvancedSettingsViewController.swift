@@ -157,7 +157,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         transportProtocolLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         settingsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         authenticationLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
-        titlePadLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        titlePadLabel.applyeStyleHeadline6OnSurface60(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
