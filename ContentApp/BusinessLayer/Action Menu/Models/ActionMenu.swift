@@ -18,7 +18,7 @@
 
 import UIKit
 
-struct ActionMenu {
+class ActionMenu {
     var title: String
     var type: ActionMenuType
     var icon: UIImage

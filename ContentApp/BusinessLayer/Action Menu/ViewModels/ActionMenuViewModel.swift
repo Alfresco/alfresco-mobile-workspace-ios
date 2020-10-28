@@ -42,6 +42,42 @@ class ActionMenuViewModel {
         return toolbarActions
     }
 
+    func indexInToolbar(for actionType: ActionMenuType) -> Int? {
+        guard let actions = toolbarActions else { return nil }
+        for index in 0...actions.count - 1 where actions[index].type == actionType {
+            return index
+        }
+        return nil
+    }
+
+    func changeFavorite(node: ListNode) {
+        if let actions = toolbarActions {
+            for action in actions {
+                if action.type == .addFavorite && node.favorite == true {
+                    action.title = LocalizationConstants.ActionMenu.removeFavorite
+                    action.type = .removeFavorite
+                } else if action.type == .removeFavorite && node.favorite == false {
+                    action.title = LocalizationConstants.ActionMenu.addFavorite
+                    action.type = .addFavorite
+                }
+            }
+            return
+        }
+        if let menu = menu?.actions {
+            for actions in menu {
+                for action in actions {
+                    if action.type == .addFavorite && node.favorite == true {
+                        action.title = LocalizationConstants.ActionMenu.removeFavorite
+                        action.type = .removeFavorite
+                    } else if action.type == .removeFavorite && node.favorite == false {
+                        action.title = LocalizationConstants.ActionMenu.addFavorite
+                        action.type = .addFavorite
+                    }
+                }
+            }
+        }
+    }
+
     func numberOfActions() -> CGFloat {
         guard let actions = self.menu?.actions else { return 0 }
         var numberOfActions = 0

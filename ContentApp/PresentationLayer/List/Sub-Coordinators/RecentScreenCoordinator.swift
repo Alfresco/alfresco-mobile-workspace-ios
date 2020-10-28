@@ -53,6 +53,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         viewController.resultViewModel = resultViewModel
 
         eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: listViewModel, for: FavouriteEvent.self)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]

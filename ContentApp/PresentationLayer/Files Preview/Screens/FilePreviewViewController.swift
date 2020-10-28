@@ -31,8 +31,11 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
     @IBOutlet weak var toolbar: UIToolbar!
+    var toolbarActions: [UIBarButtonItem]?
 
     var needsContraintsForFullScreen = false
+
+    var eventBusService: EventBusService?
 
     var filePreviewViewModel: FilePreviewViewModel?
     var actionMenuViewModel: ActionMenuViewModel?
@@ -66,7 +69,7 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
-        filePreviewTitleLabel.text = filePreviewViewModel?.node.title
+        filePreviewTitleLabel.text = filePreviewViewModel?.listNode.title
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,7 +122,7 @@ class FilePreviewViewController: SystemThemableViewController {
             button.image = action.icon
             array.append(button)
         }
-
+        self.toolbarActions = array
         var toolbarActions = [UIBarButtonItem]()
         for button in array {
             toolbarActions.append(button)
@@ -160,7 +163,7 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
 
-        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
+        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode.mimeType)
 
         toolbar.barTintColor = currentTheme.surfaceColor
         toolbar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
@@ -252,6 +255,18 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         stopLoading()
         filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
     }
+
+    func updateNode() {
+        if filePreviewViewModel?.listNode.favorite == true {
+            if let index = actionMenuViewModel?.indexInToolbar(for: ActionMenuType.removeFavorite) {
+                toolbarActions?[index].image = UIImage(named: ActionMenuType.removeFavorite.rawValue)
+            }
+        } else {
+            if let index = actionMenuViewModel?.indexInToolbar(for: ActionMenuType.addFavorite) {
+                toolbarActions?[index].image = UIImage(named: ActionMenuType.addFavorite.rawValue)
+            }
+        }
+    }
 }
 
 // MARK: - ActionMenuViewModel Delegate
@@ -261,7 +276,16 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         switch actionType {
         case .more:
             filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        default: break
+        case .addFavorite:
+            let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
+            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
+            actionMenuViewModel?.changeFavorite(node: node)
+        case .removeFavorite:
+            let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
+            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
+            actionMenuViewModel?.changeFavorite(node: node)
+        default:
+            AlfrescoLog.error("Unhandled event")
         }
     }
 }

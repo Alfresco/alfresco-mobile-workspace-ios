@@ -59,6 +59,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
         eventBusService?.register(observer: foldersAndFilesViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: librariesViewModel, for: FavouriteEvent.self)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)

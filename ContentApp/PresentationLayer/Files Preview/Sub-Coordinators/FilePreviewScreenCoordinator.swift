@@ -36,9 +36,11 @@ class FilePreviewScreenCoordinator: Coordinator {
     func start() {
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FilePreviewViewController.instantiateViewController()
 
-        let filePreviewViewModel = FilePreviewViewModel(node: listNode, with: accountService)
+        let filePreviewViewModel = FilePreviewViewModel(with: listNode,
+                                                        accountService: accountService)
         let menu = ActionsMenuFilePreview(with: listNode)
         let actionMenuViewModel = ActionMenuViewModel(with: menu, toolbarDivide: true)
         let nodeActionsViewModel = NodeActionsViewModel(node: listNode,
@@ -51,8 +53,12 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         filePreviewViewModel.viewModelDelegate = viewController
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.filePreviewViewModel = filePreviewViewModel
         viewController.title = listNode.title
+
+        eventBusService?.register(observer: filePreviewViewModel, for: FavouriteEvent.self)
+
         presenter.pushViewController(viewController, animated: true)
         filePreviewViewController = viewController
     }
