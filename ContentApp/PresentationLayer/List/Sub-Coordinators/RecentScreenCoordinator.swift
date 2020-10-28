@@ -31,9 +31,9 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let eventBusService = serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = ListViewController()
 
         let listViewModel = RecentViewModel(with: accountService,
@@ -88,7 +88,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
-            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
             let actionMenuViewModel = ActionMenuViewModel(with: menu)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         accountService: accountService,

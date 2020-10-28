@@ -40,8 +40,8 @@ class Snackbar {
     // MARK: - Public methods
 
     func applyTheme() {
-        let serviceRepository = ApplicationBootstrap.shared().serviceRepository
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let repository = ApplicationBootstrap.shared().repository
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         guard let currentTheme = themingService?.activeTheme else { return }
         MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme.onSurfaceColor
         MDCSnackbarManager.default.messageFont = currentTheme.body2TextStyle.font

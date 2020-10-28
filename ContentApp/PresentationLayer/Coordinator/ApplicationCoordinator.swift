@@ -53,7 +53,7 @@ class ApplicationCoordinator: Coordinator {
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }
-            let accountService = sSelf.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let accountService = sSelf.repository.service(of: AccountService.identifier) as? AccountService
             if let viewController = viewController {
                 accountService?.activeAccount?.reSignIn(onViewController: viewController)
             }

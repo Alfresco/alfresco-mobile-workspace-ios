@@ -39,7 +39,7 @@ class TabBarScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let viewController = TabBarMainViewController.instantiateViewController()
         let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
                                             image: UIImage(named: "recent-unselected"),

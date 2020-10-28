@@ -21,7 +21,7 @@ protocol Coordinator {
 }
 
 extension Coordinator {
-    var serviceRepository: ServiceRepository {
-        return ApplicationBootstrap.shared().serviceRepository
+    var repository: ServiceRepository {
+        return ApplicationBootstrap.shared().repository
     }
 }

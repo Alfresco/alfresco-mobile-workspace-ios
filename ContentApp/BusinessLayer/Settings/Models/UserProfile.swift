@@ -20,8 +20,8 @@ import Foundation
 import AlfrescoContent
 
 class UserProfile {
-    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
-    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+    static var repository = ApplicationBootstrap.shared().repository
+    static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func persistUserProfile(person: Person) {
         let identifier = accountService?.activeAccount?.identifier ?? ""
