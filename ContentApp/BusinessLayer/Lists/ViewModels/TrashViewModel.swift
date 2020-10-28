@@ -118,6 +118,5 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
 extension TrashViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        print(event.node)
     }
 }

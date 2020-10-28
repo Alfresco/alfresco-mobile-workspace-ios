@@ -39,7 +39,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let listViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil,
                                             eventBusService: eventBusService)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: eventBusService)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel

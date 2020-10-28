@@ -25,6 +25,13 @@ protocol ResultsViewModelDelegate: class {
 
 class ResultsViewModel: PageFetchingViewModel {
     weak var delegate: ResultsViewModelDelegate?
+    var eventBusService: EventBusService?
+
+    init(with eventBusService: EventBusService?) {
+        self.eventBusService = eventBusService
+        super.init()
+        eventBusService?.register(observer: self, for: FavouriteEvent.self)
+    }
 }
 
 // MARK: - SearchViewModelDelegate
@@ -36,6 +43,7 @@ extension ResultsViewModel: SearchViewModelDelegate {
 }
 
 // MARK: - ListCcomponentDataSourceProtocol
+
 extension ResultsViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -68,5 +76,18 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()
+    }
+}
+
+// MARK: - Event bus handling
+
+extension ResultsViewModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
+            }
+        }
     }
 }

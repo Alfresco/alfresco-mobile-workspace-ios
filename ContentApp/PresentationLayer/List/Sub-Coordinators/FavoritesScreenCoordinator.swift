@@ -36,7 +36,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FavoritesViewController()
 
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: eventBusService)
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
                                                                listRequest: nil,
                                                                eventBusService: eventBusService)

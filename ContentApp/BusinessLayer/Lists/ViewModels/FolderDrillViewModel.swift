@@ -131,13 +131,8 @@ extension FolderDrillViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .addToFavourite:
-                if results.contains(node) == false {
-                    results.append(node)
-                }
-            case .removeFromFavourites:
-                print("")
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
             }
         }
     }

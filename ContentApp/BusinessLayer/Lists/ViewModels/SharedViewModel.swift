@@ -120,6 +120,11 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
 extension SharedViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        print(event.node)
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
+            }
+        }
     }
 }

@@ -45,7 +45,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                                and: listNode.kind.rawValue,
                                                and: accountService,
                                                and: eventBusService)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: eventBusService)
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,

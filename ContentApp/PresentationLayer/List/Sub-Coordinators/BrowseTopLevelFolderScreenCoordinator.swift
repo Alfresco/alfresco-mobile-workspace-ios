@@ -39,7 +39,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         let listViewModel = self.listViewModel(from: browseNode.type,
                                                with: accountService,
                                                with: eventBusService)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: eventBusService)
         let globalSearchViewModel = searchViewModel(from: browseNode.type,
                                                     with: browseNode.title,
                                                     with: accountService,

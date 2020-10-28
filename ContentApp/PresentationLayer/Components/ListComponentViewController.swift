@@ -250,7 +250,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
             eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
         default:
-            print("Unhandled event")
+            AlfrescoLog.error("Unhandled event")
         }
     }
 }

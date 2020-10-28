@@ -25,8 +25,6 @@ class ListViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
-    var eventBusService: EventBusService?
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {

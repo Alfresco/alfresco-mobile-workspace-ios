@@ -34,8 +34,6 @@ class FavoritesViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
-    var eventBusService: EventBusService?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
