@@ -45,7 +45,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                                and: listNode.kind.rawValue,
                                                and: accountService,
                                                and: eventBusService)
-        let resultViewModel = ResultsViewModel(with: eventBusService)
+        let resultViewModel = ResultsViewModel()
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,
@@ -61,6 +61,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = contextualSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
@@ -70,8 +73,8 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                and accountService: AccountService?,
                                and eventBusService: EventBusService?) -> ListViewModelProtocol {
         let listViewModel = FolderDrillViewModel(with: accountService,
-                                                 listRequest: nil,
-                                                 eventBusService: eventBusService)
+                                                 listRequest: nil)
+        eventBusService?.register(observer: listViewModel, for: FavouriteEvent.self)
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)

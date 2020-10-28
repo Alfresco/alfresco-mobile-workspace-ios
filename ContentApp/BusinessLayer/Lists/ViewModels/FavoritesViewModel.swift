@@ -24,16 +24,14 @@ import AlfrescoContent
 class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-    var eventBusService: EventBusService?
 
     var listCondition: String = kWhereFavoritesFileFolderCondition
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?, eventBusService: EventBusService?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
-        self.eventBusService = eventBusService
     }
 
     // MARK: - Public interface
@@ -124,5 +122,19 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
 extension FavoritesViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+
+            switch publishedEvent.eventType {
+            case .addToFavourite:
+                if results.contains(node) == false {
+                    results.append(node)
+
+                    pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
+                }
+            case .removeFromFavourites:
+                print("")
+            }
+        }
     }
 }

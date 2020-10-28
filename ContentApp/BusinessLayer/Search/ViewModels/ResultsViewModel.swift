@@ -25,13 +25,6 @@ protocol ResultsViewModelDelegate: class {
 
 class ResultsViewModel: PageFetchingViewModel {
     weak var delegate: ResultsViewModelDelegate?
-    var eventBusService: EventBusService?
-
-    init(with eventBusService: EventBusService?) {
-        self.eventBusService = eventBusService
-        super.init()
-        eventBusService?.register(observer: self, for: FavouriteEvent.self)
-    }
 }
 
 // MARK: - SearchViewModelDelegate

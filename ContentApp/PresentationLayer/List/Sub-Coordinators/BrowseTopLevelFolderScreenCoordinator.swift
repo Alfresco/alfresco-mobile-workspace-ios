@@ -38,8 +38,8 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
         let listViewModel = self.listViewModel(from: browseNode.type,
                                                with: accountService,
-                                               with: eventBusService)
-        let resultViewModel = ResultsViewModel(with: eventBusService)
+                                               eventBusService: eventBusService)
+        let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = searchViewModel(from: browseNode.type,
                                                     with: browseNode.title,
                                                     with: accountService,
@@ -52,33 +52,40 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 
     private func listViewModel(from type: BrowseType?,
                                with accountService: AccountService?,
-                               with eventBusService: EventBusService?) -> ListViewModelProtocol {
+                               eventBusService: EventBusService?) -> ListViewModelProtocol {
         switch type {
         case .personalFiles:
-            return FolderDrillViewModel(with: accountService,
-                                        listRequest: nil,
-                                        eventBusService: eventBusService)
+            let viewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil)
+            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            return viewModel
         case .myLibraries:
-            return MyLibrariesViewModel(with: accountService,
-                                        listRequest: nil,
-                                        eventBusService: eventBusService)
+            let viewModel = MyLibrariesViewModel(with: accountService,
+                                                 listRequest: nil)
+            return viewModel
         case .shared:
-            return SharedViewModel(with: accountService,
-                                   listRequest: nil,
-                                   eventBusService: eventBusService)
+            let viewModel = SharedViewModel(with: accountService,
+                                            listRequest: nil)
+            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            return viewModel
+
         case .trash:
             return TrashViewModel(with: accountService,
-                                  listRequest: nil,
-                                  eventBusService: eventBusService)
-        default: return FolderDrillViewModel(with: accountService,
-                                             listRequest: nil,
-                                             eventBusService: eventBusService)
+                                  listRequest: nil)
+        default:
+            let viewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil)
+            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            return viewModel
         }
     }
 

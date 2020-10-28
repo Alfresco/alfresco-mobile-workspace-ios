@@ -37,9 +37,8 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let viewController = ListViewController()
 
         let listViewModel = RecentViewModel(with: accountService,
-                                            listRequest: nil,
-                                            eventBusService: eventBusService)
-        let resultViewModel = ResultsViewModel(with: eventBusService)
+                                            listRequest: nil)
+        let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
@@ -52,6 +51,8 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         viewController.listItemActionDelegate = self
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]

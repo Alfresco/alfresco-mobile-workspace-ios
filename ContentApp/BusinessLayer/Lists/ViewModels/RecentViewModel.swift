@@ -25,16 +25,12 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var eventBusService: EventBusService?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?, eventBusService: EventBusService?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
-        self.eventBusService = eventBusService
-        super.init()
-        eventBusService?.register(observer: self, for: FavouriteEvent.self)
     }
 
     // MARK: - Public methods

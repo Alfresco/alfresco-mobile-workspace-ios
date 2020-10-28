@@ -40,7 +40,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = BrowseViewController.instantiateViewController()
 
-        let resultViewModel = ResultsViewModel(with: eventBusService)
+        let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         let browseViewModel = BrowseViewModel()
         globalSearchViewModel.delegate = resultViewModel
@@ -55,6 +55,8 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         viewController.listViewModel = browseViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)

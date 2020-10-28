@@ -36,13 +36,11 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FavoritesViewController()
 
-        let resultViewModel = ResultsViewModel(with: eventBusService)
+        let resultViewModel = ResultsViewModel()
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
-                                                               listRequest: nil,
-                                                               eventBusService: eventBusService)
+                                                               listRequest: nil)
         let librariesViewModel = FavoritesViewModel.init(with: accountService,
-                                                         listRequest: nil,
-                                                         eventBusService: eventBusService)
+                                                         listRequest: nil)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition
@@ -58,6 +56,9 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         viewController.librariesListViewModel = librariesViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: foldersAndFilesViewModel, for: FavouriteEvent.self)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
