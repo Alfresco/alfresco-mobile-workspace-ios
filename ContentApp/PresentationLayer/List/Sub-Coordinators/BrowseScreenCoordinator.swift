@@ -37,6 +37,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let eventBusService = serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
         let viewController = BrowseViewController.instantiateViewController()
 
         let resultViewModel = ResultsViewModel()
@@ -47,6 +48,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter

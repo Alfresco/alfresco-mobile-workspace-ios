@@ -24,12 +24,16 @@ import AlfrescoContent
 class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var eventBusService: EventBusService?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?, eventBusService: EventBusService?) {
         self.accountService = accountService
         self.listRequest = listRequest
+        self.eventBusService = eventBusService
+        super.init()
+        eventBusService?.register(observer: self, for: FavouriteEvent.self)
     }
 
     // MARK: - Public methods
@@ -109,5 +113,13 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+}
+
+// MARK: - Event bus handling
+
+extension SharedViewModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        print(event.node)
     }
 }

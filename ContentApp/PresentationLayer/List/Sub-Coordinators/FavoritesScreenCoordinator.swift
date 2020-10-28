@@ -37,8 +37,12 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
-        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
-        let librariesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
+        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
+                                                               listRequest: nil,
+                                                               eventBusService: eventBusService)
+        let librariesViewModel = FavoritesViewModel.init(with: accountService,
+                                                         listRequest: nil,
+                                                         eventBusService: eventBusService)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition

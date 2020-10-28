@@ -25,6 +25,8 @@ class ListViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
+    var eventBusService: EventBusService?
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -34,6 +36,7 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
         listComponentViewController.themingService = self.themingService
+        listComponentViewController.eventBusService = self.eventBusService
         listViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {

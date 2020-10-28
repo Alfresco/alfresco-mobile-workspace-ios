@@ -25,12 +25,16 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
+    var eventBusService: EventBusService?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?, eventBusService: EventBusService?) {
         self.accountService = accountService
         self.listRequest = listRequest
+        self.eventBusService = eventBusService
+        super.init()
+        eventBusService?.register(observer: self, for: FavouriteEvent.self)
     }
 
     // MARK: - Public methods
@@ -98,6 +102,9 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         recentsList(with: nil)
     }
 
+    func update(node: ListNode) {
+    }
+
     override func updatedResults(results: [ListNode]) {
         groupedLists = []
         addInGroupList(self.results)
@@ -141,5 +148,13 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 groupedLists.first?.list.append(element)
             }
         }
+    }
+}
+
+// MARK: - Event bus handling
+
+extension RecentViewModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        print(event.node)
     }
 }

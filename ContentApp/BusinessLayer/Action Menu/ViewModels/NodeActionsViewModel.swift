@@ -88,6 +88,7 @@ class NodeActionsViewModel {
         FavoritesAPI.createFavorite(personId: kAPIPathMe,
                                     favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
             guard let sSelf = self else { return }
+            sSelf.node.favorite = true
             sSelf.handleResponse(error: error)
         }
     }
@@ -96,6 +97,7 @@ class NodeActionsViewModel {
         FavoritesAPI.deleteFavorite(personId: kAPIPathMe,
                                     favoriteId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
+            sSelf.node.favorite = false
             sSelf.handleResponse(error: error)
         }
     }

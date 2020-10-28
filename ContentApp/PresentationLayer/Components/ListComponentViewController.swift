@@ -247,7 +247,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
         case .addFavorite:
             let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
             event = favouriteEvent
-            
+
         case .removeFavorite:
             let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
             event = favouriteEvent

@@ -33,9 +33,12 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let eventBusService = serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
         let viewController = ListViewController()
 
-        let listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        let listViewModel = RecentViewModel(with: accountService,
+                                            listRequest: nil,
+                                            eventBusService: eventBusService)
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
@@ -43,6 +46,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self

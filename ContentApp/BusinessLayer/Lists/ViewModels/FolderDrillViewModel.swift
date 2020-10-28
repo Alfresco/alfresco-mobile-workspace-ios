@@ -24,15 +24,19 @@ import AlfrescoContent
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var eventBusService: EventBusService?
 
     var listNodeGuid: String = kAPIPathMy
     var listNodeIsFolder: Bool = true
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    required init(with accountService: AccountService?, listRequest: SearchRequest?, eventBusService: EventBusService?) {
         self.accountService = accountService
         self.listRequest = listRequest
+        self.eventBusService = eventBusService
+        super.init()
+        eventBusService?.register(observer: self, for: FavouriteEvent.self)
     }
 
     // MARK: - Public methods
@@ -118,5 +122,23 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+}
+
+// MARK: - Event bus handling
+
+extension FolderDrillViewModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            switch publishedEvent.eventType {
+            case .addToFavourite:
+                if results.contains(node) == false {
+                    results.append(node)
+                }
+            case .removeFromFavourites:
+                print("")
+            }
+        }
     }
 }

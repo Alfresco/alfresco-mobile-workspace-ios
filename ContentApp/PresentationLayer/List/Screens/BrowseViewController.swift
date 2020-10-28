@@ -26,6 +26,8 @@ class BrowseViewController: SystemSearchViewController {
     weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
+    var eventBusService: EventBusService?
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {

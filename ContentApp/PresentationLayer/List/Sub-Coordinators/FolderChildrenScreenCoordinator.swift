@@ -38,11 +38,13 @@ class FolderChildrenScreenCoordinator: Coordinator {
     func start() {
         let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let eventBusService = serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
         let viewController = ListViewController()
 
         let listViewModel = self.listViewModel(with: listNode.guid,
                                                and: listNode.kind.rawValue,
-                                               and: accountService)
+                                               and: accountService,
+                                               and: eventBusService)
         let resultViewModel = ResultsViewModel()
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
@@ -54,6 +56,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
         viewController.title = listNode.title
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = contextualSearchViewModel
@@ -64,8 +67,11 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
     private func listViewModel(with nodeID: String?,
                                and nodeKind: String?,
-                               and accountService: AccountService?) -> ListViewModelProtocol {
-        let listViewModel = FolderDrillViewModel(with: accountService, listRequest: nil)
+                               and accountService: AccountService?,
+                               and eventBusService: EventBusService?) -> ListViewModelProtocol {
+        let listViewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil,
+                                                 eventBusService: eventBusService)
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)

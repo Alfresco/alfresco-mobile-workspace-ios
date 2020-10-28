@@ -35,11 +35,6 @@ struct ListNode: Hashable {
     var favorite: Bool
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid &&
-            lhs.title == rhs.title &&
-            lhs.path == rhs.path &&
-            lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind &&
-            lhs.mimeType == rhs.mimeType
+        return lhs.guid == rhs.guid
     }
 }

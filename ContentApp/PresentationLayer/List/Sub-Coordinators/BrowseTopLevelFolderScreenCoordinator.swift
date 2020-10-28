@@ -33,14 +33,21 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     func start() {
         let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService =  serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let eventBusService = serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
         let viewController = ListViewController()
 
-        let listViewModel = self.listViewModel(from: browseNode.type, with: accountService)
+        let listViewModel = self.listViewModel(from: browseNode.type,
+                                               with: accountService,
+                                               with: eventBusService)
         let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = searchViewModel(from: browseNode.type, with: browseNode.title, with: accountService, with: resultViewModel)
+        let globalSearchViewModel = searchViewModel(from: browseNode.type,
+                                                    with: browseNode.title,
+                                                    with: accountService,
+                                                    with: resultViewModel)
 
         viewController.title = browseNode.title
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel
@@ -49,26 +56,44 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         presenter.pushViewController(viewController, animated: true)
     }
 
-    private func listViewModel(from type: BrowseType?, with accountService: AccountService?) -> ListViewModelProtocol {
+    private func listViewModel(from type: BrowseType?,
+                               with accountService: AccountService?,
+                               with eventBusService: EventBusService?) -> ListViewModelProtocol {
         switch type {
         case .personalFiles:
-            return FolderDrillViewModel(with: accountService, listRequest: nil)
+            return FolderDrillViewModel(with: accountService,
+                                        listRequest: nil,
+                                        eventBusService: eventBusService)
         case .myLibraries:
-            return MyLibrariesViewModel(with: accountService, listRequest: nil)
+            return MyLibrariesViewModel(with: accountService,
+                                        listRequest: nil,
+                                        eventBusService: eventBusService)
         case .shared:
-            return SharedViewModel(with: accountService, listRequest: nil)
+            return SharedViewModel(with: accountService,
+                                   listRequest: nil,
+                                   eventBusService: eventBusService)
         case .trash:
-            return TrashViewModel(with: accountService, listRequest: nil)
-        default: return FolderDrillViewModel(with: accountService, listRequest: nil)
+            return TrashViewModel(with: accountService,
+                                  listRequest: nil,
+                                  eventBusService: eventBusService)
+        default: return FolderDrillViewModel(with: accountService,
+                                             listRequest: nil,
+                                             eventBusService: eventBusService)
         }
     }
 
-    private func searchViewModel(from type: BrowseType?, with title: String?, with accountService: AccountService?, with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
+    private func searchViewModel(from type: BrowseType?,
+                                 with title: String?,
+                                 with accountService: AccountService?,
+                                 with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
         var searchChip: SearchChipItem?
         switch type {
         case .personalFiles:
             if let nodeID = UserProfile.getPersonalFilesID() {
-                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeID: nodeID)
+                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""),
+                                            type: .node,
+                                            selected: true,
+                                            nodeID: nodeID)
             } else {
                 ProfileService.featchPersonalFilesID()
             }
