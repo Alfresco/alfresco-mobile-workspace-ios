@@ -241,22 +241,16 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
-        var event: BaseNodeEvent?
-
         switch actionType {
         case .addFavorite:
             let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
-            event = favouriteEvent
+            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
 
         case .removeFavorite:
             let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
-            event = favouriteEvent
+            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
         default:
             print("Unhandled event")
-        }
-
-        if let eventToBePublished = event {
-            eventBusService?.publish(event: eventToBePublished, on: .mainQueue)
         }
     }
 }
