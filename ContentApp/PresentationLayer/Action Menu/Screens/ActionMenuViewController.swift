@@ -69,7 +69,7 @@ class ActionMenuViewController: SystemThemableViewController {
 
 // MARK: - UIColectionView Delegates
 
-extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ActionMenuViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         return actionMenuModel?.actions()?[section].count ?? 0
