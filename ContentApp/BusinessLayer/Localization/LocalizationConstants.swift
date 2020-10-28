@@ -147,5 +147,6 @@ struct LocalizationConstants {
         static let addFavorite = NSLocalizedString("action-menu-add-favorite", comment: "")
         static let removeFavorite = NSLocalizedString("action-menu-remove-favorite", comment: "")
         static let delete = NSLocalizedString("action-menu-delete", comment: "")
+        static let download = NSLocalizedString("action-menu-download", comment: "")
     }
 }

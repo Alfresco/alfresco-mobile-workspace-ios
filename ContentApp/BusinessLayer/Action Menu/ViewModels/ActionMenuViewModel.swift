@@ -21,17 +21,25 @@ import AlfrescoContent
 
 class ActionMenuViewModel {
     private var menu: ActionsMenuProtocol?
+    private var toolbarActions: [ActionMenu]?
 
     // MARK: - Init
 
-    init(with menu: ActionsMenuProtocol?) {
+    init(with menu: ActionsMenuProtocol?, toolbarDivide: Bool = false) {
         self.menu = menu
+        if toolbarDivide {
+            divideForToolbarActions()
+        }
     }
 
     // MARK: - Public Helpers
 
     func actions() -> [[ActionMenu]]? {
         return menu?.actions
+    }
+
+    func actionsForToolbar() -> [ActionMenu]? {
+        return toolbarActions
     }
 
     func numberOfActions() -> CGFloat {
@@ -53,5 +61,40 @@ class ActionMenuViewModel {
             return true
         }
         return false
+    }
+
+    // MARK: - Private Helpers
+
+    private func divideForToolbarActions() {
+        var toolActions = [ActionMenu]()
+        if let menu = menu {
+            for index in 0...menu.actions.count - 1 {
+                for action in menu.actions[index] where action.type != .node {
+
+                    toolActions.append(action)
+                    self.menu?.actions[index].removeFirst()
+                    if self.menu?.actions[index].count == 0 {
+                        self.menu?.actions.remove(at: index)
+                    }
+                    if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
+                        addActionToOpenMenu(in: toolActions)
+                        return
+                    }
+                }
+            }
+        }
+        addActionToOpenMenu(in: toolActions)
+    }
+
+    private func addActionToOpenMenu(in array: [ActionMenu]?) {
+        guard var array = array else { return }
+        array.append(ActionMenu(title: "", type: .more))
+        toolbarActions = array
+
+        if menu?.actions.count == 1 &&
+            menu?.actions[0].count == 1 &&
+            menu?.actions[0][0].type == .node {
+            toolbarActions?.removeLast()
+        }
     }
 }

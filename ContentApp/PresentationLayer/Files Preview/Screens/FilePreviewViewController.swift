@@ -30,9 +30,13 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewStatusLabel: UILabel!
     @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
+    @IBOutlet weak var toolbar: UIToolbar!
+
     var needsContraintsForFullScreen = false
 
     var filePreviewViewModel: FilePreviewViewModel?
+    var actionMenuViewModel: ActionMenuViewModel?
+    var nodeActionsViewModel: NodeActionsViewModel?
     var isFullScreen = false
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
@@ -49,6 +53,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        addToolbarActions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -91,7 +96,38 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewViewModel?.filePreview?.recalculateFrame(from: size)
     }
 
+    // MARK: - IBActions
+
+    @objc func toolbarActionTapped(sender: UIBarButtonItem) {
+        guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
+        let action = actions[sender.tag]
+        nodeActionsViewModel?.tapped(on: action.type, finished: {
+        })
+    }
+
     // MARK: - Private Helpers
+
+    private func addToolbarActions() {
+        guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
+        var array = [UIBarButtonItem]()
+        for action in actions {
+            let button = UIBarButtonItem(image: action.icon,
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(toolbarActionTapped(sender:)))
+            button.tag = array.count
+            button.image = action.icon
+            array.append(button)
+        }
+
+        var toolbarActions = [UIBarButtonItem]()
+        for button in array {
+            toolbarActions.append(button)
+            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+        }
+        toolbarActions.removeLast()
+        toolbar.items = toolbarActions
+    }
 
     private func activateContraintsToSuperview() {
         NSLayoutConstraint.deactivate(previewContraintsToSafeArea)
@@ -125,6 +161,9 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
 
         mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
+
+        toolbar.barTintColor = currentTheme.surfaceColor
+        toolbar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
@@ -212,6 +251,18 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         filePreviewStatusView.isHidden = true
         stopLoading()
         filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
+    }
+}
+
+// MARK: - ActionMenuViewModel Delegate
+
+extension FilePreviewViewController: NodeActionsViewModelDelegate {
+    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
+        switch actionType {
+        case .more:
+            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node, delegate: self)
+        default: break
+        }
     }
 }
 

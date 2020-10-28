@@ -19,5 +19,5 @@
 import Foundation
 
 protocol ActionsMenuProtocol {
-    var actions: [[ActionMenu]] { get }
+    var actions: [[ActionMenu]] { get set }
 }

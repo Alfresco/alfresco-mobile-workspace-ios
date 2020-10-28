@@ -68,8 +68,13 @@ class NodeActionsViewModel {
             case .delete:
                 sSelf.requestDelete()
             default:
-                if let handler = sSelf.actionFinishedHandler {
-                    handler()
+                if let actionType = sSelf.actionType {
+                    DispatchQueue.main.async {
+                        sSelf.delegate?.nodeActionFinished(with: actionType, node: sSelf.node, error: nil)
+                    }
+                    if let handler = sSelf.actionFinishedHandler {
+                        handler()
+                    }
                 }
             }
         })
@@ -107,7 +112,10 @@ class NodeActionsViewModel {
         if let error = error {
             AlfrescoLog.error(error)
         }
-        delegate?.nodeActionFinished(with: actionType, node: node, error: error)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.delegate?.nodeActionFinished(with: actionType, node: sSelf.node, error: error)
+        }
         if let handler = actionFinishedHandler {
             handler()
         }

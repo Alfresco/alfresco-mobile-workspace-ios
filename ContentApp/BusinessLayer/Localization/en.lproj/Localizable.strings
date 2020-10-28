@@ -128,3 +128,4 @@
 "action-menu-add-favorite" = "Add to favorites";
 "action-menu-remove-favorite" = "Remove from favorites";
 "action-menu-delete" = "Delete";
+"action-menu-download" = "Download";

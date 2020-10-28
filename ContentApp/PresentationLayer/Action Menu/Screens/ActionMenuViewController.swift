@@ -59,6 +59,12 @@ class ActionMenuViewController: SystemThemableViewController {
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
         collectionView.contentOffset = .zero
     }
+
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        guard let currentTheme = themingService?.activeTheme else { return }
+        view.backgroundColor = currentTheme.surfaceColor
+    }
 }
 
 // MARK: - UIColectionView Delegates
