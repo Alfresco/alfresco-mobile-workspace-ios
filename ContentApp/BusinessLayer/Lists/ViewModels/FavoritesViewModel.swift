@@ -117,3 +117,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         updateResults(results: results, pagination: pagination, error: error)
     }
 }
+
+// MARK: - Event bus handling
+
+extension FavoritesViewModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+    }
+}

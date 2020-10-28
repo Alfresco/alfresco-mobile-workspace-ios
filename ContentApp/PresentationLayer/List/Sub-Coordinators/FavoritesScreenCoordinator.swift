@@ -33,6 +33,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
         let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let eventBusService = self.serviceRepository.service(of: EventBusService.serviceIdentifier) as? EventBusService
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
@@ -46,6 +47,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = foldersAndFilesViewModel

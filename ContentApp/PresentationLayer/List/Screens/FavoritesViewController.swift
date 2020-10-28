@@ -33,6 +33,7 @@ class FavoritesViewController: SystemSearchViewController {
     lazy var tabBar: MDCTabBar = setupTabBarView()
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    var eventBusService: EventBusService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,6 +155,7 @@ class FavoritesViewController: SystemSearchViewController {
         folderAndFilesViewController.listActionDelegate = self
         folderAndFilesViewController.listDataSource = folderAndFilesListViewModel
         folderAndFilesViewController.themingService = self.themingService
+        folderAndFilesViewController.eventBusService = self.eventBusService
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
         self.folderAndFilesViewController = folderAndFilesViewController

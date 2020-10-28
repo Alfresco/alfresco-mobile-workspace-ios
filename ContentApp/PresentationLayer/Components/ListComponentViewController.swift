@@ -55,6 +55,8 @@ class ListComponentViewController: SystemThemableViewController {
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
+    var eventBusService: EventBusService?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -239,6 +241,23 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
+        var event: BaseNodeEvent?
+
+        switch actionType {
+        case .addFavorite:
+            let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
+            event = favouriteEvent
+            
+        case .removeFavorite:
+            let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
+            event = favouriteEvent
+        default:
+            print("Unhandled event")
+        }
+
+        if let eventToBePublished = event {
+            eventBusService?.publish(event: eventToBePublished, on: .mainQueue)
+        }
     }
 }
 
