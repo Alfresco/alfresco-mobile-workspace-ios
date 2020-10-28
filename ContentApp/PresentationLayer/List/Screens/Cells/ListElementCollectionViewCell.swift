@@ -35,7 +35,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element.mimeType)
-                moreButton.isHidden = true
+                moreButton.isHidden = false
             }
         }
     }
