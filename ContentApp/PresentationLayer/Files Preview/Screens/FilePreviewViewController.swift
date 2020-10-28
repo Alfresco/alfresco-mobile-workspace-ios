@@ -72,13 +72,6 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        // Remove navigation bar underline separator
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-
         tabBarController?.tabBar.isHidden = false
 
         filePreviewViewModel?.cancelOngoingOperations()
@@ -154,6 +147,7 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
         filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService.activeTheme)
@@ -162,12 +156,10 @@ class FilePreviewViewController: SystemThemableViewController {
             applyTheme(for: passwordField)
         }
 
-        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
-        navigationController?.navigationBar.shadowImage = nil
-
         filePreviewStatusLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
-        filePreviewTitleLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
+        filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
+
         mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
 
         toolbar.barTintColor = currentTheme.surfaceColor

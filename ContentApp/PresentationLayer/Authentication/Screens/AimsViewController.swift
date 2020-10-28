@@ -102,6 +102,7 @@ class AimsViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)

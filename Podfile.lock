@@ -1,11 +1,11 @@
 PODS:
   - Alamofire (4.9.1)
-  - AlfrescoAuth (0.1.0):
+  - AlfrescoAuth (0.1.1):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.1.0):
+  - AlfrescoContent (0.1.1):
     - Alamofire (~> 4.9.0)
-  - AlfrescoCore (0.1.0)
+  - AlfrescoCore (0.1.1)
   - AppAuth (1.4.0):
     - AppAuth/Core (= 1.4.0)
     - AppAuth/ExternalUserAgent (= 1.4.0)
@@ -376,12 +376,11 @@ DEPENDENCIES:
   - SwiftLint
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
+  trunk:
+    - Alamofire
     - AlfrescoAuth
     - AlfrescoContent
     - AlfrescoCore
-  trunk:
-    - Alamofire
     - AppAuth
     - CocoaLumberjack
     - Firebase
@@ -408,9 +407,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
-  AlfrescoAuth: c6e7f323d376a997bf93cc8fe661cfa0475b17e1
-  AlfrescoContent: 562b568169194642ce0f79ab78c427e8e7550bdb
-  AlfrescoCore: f91560a073007d7f49781be273b7b8df21c18573
+  AlfrescoAuth: 791c97ab8258e23710a5b6941cf4db8b6887f702
+  AlfrescoContent: 229c05047854d0a2c167a86c1de42a5f5b5b0fb5
+  AlfrescoCore: 658f4838e71bccdbe02b3d5e31c7c9559a8cfa92
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   Firebase: c23a36d9e4cdf7877dfcba8dd0c58add66358999
@@ -435,6 +434,6 @@ SPEC CHECKSUMS:
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: dfd554ff0dff17288ee574814ccdd5cea85d76f7
 
-PODFILE CHECKSUM: c517af2a52f8ee556fb0d2d3520847ad430ba47e
+PODFILE CHECKSUM: 5cea60f378ed097d7242111dab08ce1c9283a58d
 
 COCOAPODS: 1.10.0

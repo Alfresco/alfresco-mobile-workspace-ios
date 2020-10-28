@@ -100,4 +100,10 @@ extension UILabel {
         self.font = theme.headline6TextStyle.font
         self.add(characterSpacing: theme.headline6TextStyle.letterSpacing, lineHeight: theme.headline6TextStyle.lineHeight)
     }
+
+    func applyeStyleHeadline6OnSurface60(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.font = theme.headline6TextStyle.font
+        self.add(characterSpacing: theme.headline6TextStyle.letterSpacing, lineHeight: theme.headline6TextStyle.lineHeight)
+    }
 }

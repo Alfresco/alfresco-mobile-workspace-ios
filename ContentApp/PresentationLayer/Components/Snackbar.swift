@@ -45,7 +45,7 @@ class Snackbar {
         guard let currentTheme = themingService?.activeTheme else { return }
         MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme.onSurfaceColor
         MDCSnackbarManager.default.messageFont = currentTheme.body2TextStyle.font
-        MDCSnackbarManager.default.messageTextColor = currentTheme.onPrimaryColor
+        MDCSnackbarManager.default.messageTextColor = currentTheme.surfaceColor
     }
 
     func show(completion: (() -> Void)?) {

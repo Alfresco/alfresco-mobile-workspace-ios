@@ -96,7 +96,7 @@
                                 <constraint firstAttribute="width" constant="44" id="nmL-cn-mVw"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                            <state key="normal" image="player_small_play"/>
+                            <state key="normal" image="ic-player-play"/>
                             <connections>
                                 <action selector="playPauseTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="9ZG-Bd-Uea"/>
                             </connections>
@@ -107,7 +107,8 @@
                                 <constraint firstAttribute="width" constant="44" id="E1g-Sz-49z"/>
                                 <constraint firstAttribute="width" secondItem="zkY-Jo-eFB" secondAttribute="height" multiplier="1:1" id="hyY-uP-0AK"/>
                             </constraints>
-                            <state key="normal" image="player_backward_30"/>
+                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic-player-backward"/>
                             <connections>
                                 <action selector="backwardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="8C2-eo-Rbx"/>
                             </connections>
@@ -118,7 +119,8 @@
                                 <constraint firstAttribute="width" constant="44" id="0Qh-xI-TVh"/>
                                 <constraint firstAttribute="width" secondItem="Npq-9n-q7v" secondAttribute="height" multiplier="1:1" id="bX4-Ph-MFo"/>
                             </constraints>
-                            <state key="normal" image="player_forward_30"/>
+                            <inset key="imageEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                            <state key="normal" image="ic-player-forward"/>
                             <connections>
                                 <action selector="forwardButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="SFR-Sp-7p8"/>
                             </connections>
@@ -182,8 +184,8 @@
     </objects>
     <resources>
         <image name="ic-audio" width="24" height="24"/>
-        <image name="player_backward_30" width="24" height="24"/>
-        <image name="player_forward_30" width="24" height="24"/>
-        <image name="player_small_play" width="32" height="32"/>
+        <image name="ic-player-backward" width="36" height="36"/>
+        <image name="ic-player-forward" width="36" height="36"/>
+        <image name="ic-player-play" width="32" height="32"/>
     </resources>
 </document>

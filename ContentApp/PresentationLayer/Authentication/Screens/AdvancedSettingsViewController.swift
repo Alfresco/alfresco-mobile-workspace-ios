@@ -28,6 +28,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var backPadButton: UIButton!
     @IBOutlet weak var titlePadLabel: UILabel!
     @IBOutlet weak var resetToDefaultPadButton: MDCButton!
+    @IBOutlet weak var navigationPadBar: UIView!
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -141,6 +142,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
@@ -156,7 +158,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         transportProtocolLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         settingsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         authenticationLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
-        titlePadLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        titlePadLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
@@ -166,7 +168,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         saveButton.setShadowColor(.clear, for: .normal)
 
         resetToDefaultPadButton.backgroundColor = .clear
-        resetToDefaultPadButton.setTitleColor(currentTheme.onSurfaceColor.withAlphaComponent(0.6), for: .normal)
+        resetToDefaultPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        resetToDefaultButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
         backPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
@@ -174,6 +177,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         needHelpButton.isUppercaseTitle = false
 
         view.backgroundColor = currentTheme.surfaceColor
+        navigationPadBar.backgroundColor = currentTheme.surfaceColor
     }
 
     func updateFields() {
