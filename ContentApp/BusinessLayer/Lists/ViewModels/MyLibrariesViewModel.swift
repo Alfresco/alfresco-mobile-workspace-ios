@@ -21,10 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-    var acceptedNodeTypesForBusEvents: [ElementKindType]?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -117,14 +117,9 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
-}
 
-// MARK: - Event bus handling
 
-extension MyLibrariesViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return acceptedNodeTypesForBusEvents
-    }
+    // MARK: - Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {

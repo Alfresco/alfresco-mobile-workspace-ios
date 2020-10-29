@@ -46,7 +46,6 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                                and: accountService,
                                                and: eventBusService)
         let resultViewModel = ResultsViewModel()
-        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,
@@ -63,7 +62,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
         viewController.searchViewModel = contextualSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
@@ -75,8 +76,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                and eventBusService: EventBusService?) -> ListViewModelProtocol {
         let listViewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
-        listViewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
-        eventBusService?.register(observer: listViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: listViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)

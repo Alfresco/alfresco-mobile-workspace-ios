@@ -21,11 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var acceptedNodeTypesForBusEvents: [ElementKindType]?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -147,14 +147,9 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
             }
         }
     }
-}
 
-// MARK: - Event bus handling
+    // MARK: - Event observable
 
-extension RecentViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return acceptedNodeTypesForBusEvents
-    }
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

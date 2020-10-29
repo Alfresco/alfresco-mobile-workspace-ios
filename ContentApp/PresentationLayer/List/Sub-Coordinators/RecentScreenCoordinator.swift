@@ -38,9 +38,7 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         let listViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil)
-        listViewModel.acceptedNodeTypesForBusEvents = [.file]
         let resultViewModel = ResultsViewModel()
-        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
@@ -54,8 +52,12 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
-        eventBusService?.register(observer: listViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: listViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -78,11 +80,15 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
             case .folder, .site:
-                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                let folderDrillDownCoordinator =
+                    FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                    listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                let filePreviewCoordinator =
+                    FilePreviewScreenCoordinator(with: navigationViewController,
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }

@@ -40,7 +40,6 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
                                                with: accountService,
                                                eventBusService: eventBusService)
         let resultViewModel = ResultsViewModel()
-        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let globalSearchViewModel = searchViewModel(from: browseNode.type,
                                                     with: browseNode.title,
                                                     with: accountService,
@@ -54,7 +53,9 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
@@ -67,19 +68,20 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         case .personalFiles:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
-            viewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
-            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file, .folder])
             return viewModel
         case .myLibraries:
             let viewModel = MyLibrariesViewModel(with: accountService,
                                                  listRequest: nil)
-            viewModel.acceptedNodeTypesForBusEvents = [.site]
             return viewModel
         case .shared:
             let viewModel = SharedViewModel(with: accountService,
                                             listRequest: nil)
-            viewModel.acceptedNodeTypesForBusEvents = [.file]
-            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file])
             return viewModel
 
         case .trash:
@@ -88,8 +90,9 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         default:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
-            viewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
-            eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file, .folder])
             return viewModel
         }
     }
@@ -131,11 +134,15 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         switch node.kind {
         case .folder, .site:
-            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+            let folderDrillDownCoordinator =
+                FolderChildrenScreenCoordinator(with: self.presenter,
+                                                listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
-            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter, listNode: node)
+            let filePreviewCoordinator =
+                FilePreviewScreenCoordinator(with: self.presenter,
+                                             listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }

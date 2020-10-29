@@ -21,9 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -112,15 +113,8 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
-}
 
-// MARK: - Event bus handling
-
-extension TrashViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return nil
-    }
-
+    // MARK: Event Observable
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
     }
 }

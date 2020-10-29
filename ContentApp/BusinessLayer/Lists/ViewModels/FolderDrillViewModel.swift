@@ -21,13 +21,14 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     var listNodeGuid: String = kAPIPathMy
     var listNodeIsFolder: Bool = true
+
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -124,14 +125,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
-}
 
-// MARK: - Event bus handling
-
-extension FolderDrillViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return acceptedNodeTypesForBusEvents
-    }
+    // MARK: Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {

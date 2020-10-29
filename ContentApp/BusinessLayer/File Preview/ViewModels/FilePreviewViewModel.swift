@@ -45,16 +45,17 @@ enum FilePreviewError: Error {
 
 typealias RenditionCompletionHandler = (URL?) -> Void
 
-class FilePreviewViewModel {
+class FilePreviewViewModel: EventObservable {
     var listNode: ListNode
     var accountService: AccountService?
     var eventBusService: EventBusService?
-    var acceptedNodeTypesForBusEvents: [ElementKindType]?
+    var supportedNodeTypes: [ElementKindType]?
 
     weak var viewModelDelegate: FilePreviewViewModelDelegate?
 
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol?
+    
 
     private var renditionTimer: Timer?
 
@@ -282,6 +283,16 @@ class FilePreviewViewModel {
             pdfRenderer = filePreview
         }
     }
+
+    // MARK: - Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            listNode.favorite = node.favorite
+            self.viewModelDelegate?.update(listNode: listNode)
+        }
+    }
 }
 
 // MARK: - PDFRendererPasswordDelegate
@@ -293,21 +304,5 @@ extension FilePreviewViewModel: PDFRendererPasswordDelegate {
 
     func invalidPasswordProvided(for pdf: URL) {
         viewModelDelegate?.requestFileUnlock(retry: true)
-    }
-}
-
-// MARK: - Event bus handling
-
-extension FilePreviewViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return acceptedNodeTypesForBusEvents
-    }
-
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-            listNode.favorite = node.favorite
-            self.viewModelDelegate?.update(listNode: listNode)
-        }
     }
 }

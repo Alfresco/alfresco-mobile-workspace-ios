@@ -21,12 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-
     var listCondition: String = kWhereFavoritesFileFolderCondition
-    var acceptedNodeTypesForBusEvents: [ElementKindType]?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -125,14 +124,8 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func updatedResults(results: [ListNode]) {
         pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
     }
-}
 
-// MARK: - Event bus handling
-
-extension FavoritesViewModel: EventObservable {
-    var supportedNodeTypes: [ElementKindType]? {
-        return acceptedNodeTypesForBusEvents
-    }
+    // MARK: - Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {

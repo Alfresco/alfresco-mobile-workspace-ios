@@ -37,13 +37,10 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
-        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
                                                                listRequest: nil)
-        foldersAndFilesViewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
         let librariesViewModel = FavoritesViewModel.init(with: accountService,
                                                          listRequest: nil)
-        librariesViewModel.acceptedNodeTypesForBusEvents = [.site]
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition
@@ -60,9 +57,15 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-        eventBusService?.register(observer: resultViewModel, for: FavouriteEvent.self)
-        eventBusService?.register(observer: foldersAndFilesViewModel, for: FavouriteEvent.self)
-        eventBusService?.register(observer: librariesViewModel, for: FavouriteEvent.self)
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: librariesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
@@ -85,11 +88,15 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
             case .folder, .site:
-                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                let folderDrillDownCoordinator =
+                    FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                    listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                let filePreviewCoordinator =
+                    FilePreviewScreenCoordinator(with: navigationViewController,
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
