@@ -27,7 +27,7 @@ protocol FilePreviewViewModelDelegate: class {
     func willPreparePreview()
     func enableFullscreenContentExperience()
     func requestFileUnlock(retry: Bool)
-    func updateNode()
+    func update(listNode: ListNode)
 }
 
 struct RenditionServiceConfiguration {
@@ -302,7 +302,7 @@ extension FilePreviewViewModel: EventObservable {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node
             listNode.favorite = node.favorite
-            self.viewModelDelegate?.updateNode()
+            self.viewModelDelegate?.update(listNode: listNode)
         }
     }
 }

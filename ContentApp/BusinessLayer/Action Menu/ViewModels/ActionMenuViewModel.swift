@@ -50,34 +50,6 @@ class ActionMenuViewModel {
         return nil
     }
 
-    func changeFavorite(node: ListNode) {
-        if let actions = toolbarActions {
-            for action in actions {
-                if action.type == .addFavorite && node.favorite == true {
-                    action.title = LocalizationConstants.ActionMenu.removeFavorite
-                    action.type = .removeFavorite
-                } else if action.type == .removeFavorite && node.favorite == false {
-                    action.title = LocalizationConstants.ActionMenu.addFavorite
-                    action.type = .addFavorite
-                }
-            }
-            return
-        }
-        if let menu = menu?.actions {
-            for actions in menu {
-                for action in actions {
-                    if action.type == .addFavorite && node.favorite == true {
-                        action.title = LocalizationConstants.ActionMenu.removeFavorite
-                        action.type = .removeFavorite
-                    } else if action.type == .removeFavorite && node.favorite == false {
-                        action.title = LocalizationConstants.ActionMenu.addFavorite
-                        action.type = .addFavorite
-                    }
-                }
-            }
-        }
-    }
-
     func numberOfActions() -> CGFloat {
         guard let actions = self.menu?.actions else { return 0 }
         var numberOfActions = 0

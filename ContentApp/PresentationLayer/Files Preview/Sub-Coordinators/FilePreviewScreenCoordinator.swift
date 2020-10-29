@@ -45,6 +45,7 @@ class FilePreviewScreenCoordinator: Coordinator {
         let actionMenuViewModel = ActionMenuViewModel(with: menu, toolbarDivide: true)
         let nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         accountService: accountService,
+                                                        eventBusService: eventBusService,
                                                         delegate: viewController)
 
         viewController.filePreviewCoordinatorDelegate = self

@@ -240,17 +240,13 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 // MARK: - ActionMenuViewModel Delegate
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
-        switch actionType {
-        case .addFavorite:
-            let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
-            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
-
-        case .removeFavorite:
-            let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
-            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
-        default:
-            AlfrescoLog.error("Unhandled event")
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        if let error = error {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                let snackbar = Snackbar(with: error.localizedDescription,
+                                        type: .error)
+                snackbar.show(completion: nil)
+            })
         }
     }
 }

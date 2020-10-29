@@ -20,9 +20,9 @@ import Foundation
 import AlfrescoContent
 
 enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
+    case file
+    case folder
+    case site
 }
 
 class ListNode: Hashable {

@@ -104,7 +104,7 @@ class FilePreviewViewController: SystemThemableViewController {
     @objc func toolbarActionTapped(sender: UIBarButtonItem) {
         guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
         let action = actions[sender.tag]
-        nodeActionsViewModel?.tapped(on: action.type, finished: {
+        nodeActionsViewModel?.tapped(on: action, finished: {
         })
     }
 
@@ -256,15 +256,14 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
     }
 
-    func updateNode() {
-        if filePreviewViewModel?.listNode.favorite == true {
-            if let index = actionMenuViewModel?.indexInToolbar(for: ActionMenuType.removeFavorite) {
-                toolbarActions?[index].image = UIImage(named: ActionMenuType.removeFavorite.rawValue)
-            }
-        } else {
-            if let index = actionMenuViewModel?.indexInToolbar(for: ActionMenuType.addFavorite) {
-                toolbarActions?[index].image = UIImage(named: ActionMenuType.addFavorite.rawValue)
-            }
+    func update(listNode: ListNode) {
+        if let index = actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
+            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            toolbarActions?[index].image = UIImage(named: icon)
+        }
+        if let index = actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
+            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            toolbarActions?[index].image = UIImage(named: icon)
         }
     }
 }
@@ -272,20 +271,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 // MARK: - ActionMenuViewModel Delegate
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
-        switch actionType {
-        case .more:
-            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        case .addFavorite:
-            let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
-            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
-            actionMenuViewModel?.changeFavorite(node: node)
-        case .removeFavorite:
-            let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
-            eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
-            actionMenuViewModel?.changeFavorite(node: node)
-        default:
-            AlfrescoLog.error("Unhandled event")
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        if let error = error {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                let snackbar = Snackbar(with: error.localizedDescription,
+                                        type: .error)
+                snackbar.show(completion: nil)
+            })
         }
     }
 }
@@ -298,6 +290,7 @@ extension FilePreviewViewController: FilePreviewDelegate {
         containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
         navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
         setNeedsStatusBarAppearanceUpdate()
+        toolbar.isHidden = enable
     }
 }
 
