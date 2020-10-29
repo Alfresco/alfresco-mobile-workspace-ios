@@ -36,16 +36,16 @@ extension NameDescribable {
 }
 
 protocol Service: NameDescribable {
-    static var serviceIdentifier: ServiceIdentifier { get }
-    var serviceIdentifier: ServiceIdentifier { get }
+    static var identifier: ServiceIdentifier { get }
+    var identifier: ServiceIdentifier { get }
 }
 
 extension Service {
-    static var serviceIdentifier: ServiceIdentifier {
+    static var identifier: ServiceIdentifier {
         return typeName
     }
 
-    var serviceIdentifier: ServiceIdentifier {
+    var identifier: ServiceIdentifier {
         return typeName
     }
 }
@@ -75,7 +75,7 @@ class ServiceRepository: ServiceRepositoryProtocol {
     private var services: [String: Service] = [:]
 
     func register(service: ServiceType) {
-        services[service.serviceIdentifier] = service
+        services[service.identifier] = service
     }
 
     func service(of type: String) -> Service? {

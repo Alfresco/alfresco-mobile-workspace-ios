@@ -36,13 +36,15 @@ class FolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = ListViewController()
 
         let listViewModel = self.listViewModel(with: listNode.guid,
                                                and: listNode.kind.rawValue,
-                                               and: accountService)
+                                               and: accountService,
+                                               and: eventBusService)
         let resultViewModel = ResultsViewModel()
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
@@ -54,18 +56,29 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
         viewController.title = listNode.title
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = contextualSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 
     private func listViewModel(with nodeID: String?,
                                and nodeKind: String?,
-                               and accountService: AccountService?) -> ListViewModelProtocol {
-        let listViewModel = FolderDrillViewModel(with: accountService, listRequest: nil)
+                               and accountService: AccountService?,
+                               and eventBusService: EventBusService?) -> ListViewModelProtocol {
+        let listViewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil)
+        eventBusService?.register(observer: listViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
@@ -92,10 +105,12 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
 
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let actionMenuViewModel = ActionMenuViewModel(with: menu)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     accountService: accountService,
+                                                    eventBusService: eventBusService,
                                                     delegate: delegate)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,

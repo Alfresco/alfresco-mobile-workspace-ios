@@ -22,8 +22,8 @@ import AlfrescoContent
 let kRequestDefaultsFieldName = "keywords"
 
 struct SearchRequestBuilder {
-    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
-    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+    static var repository = ApplicationBootstrap.shared().repository
+    static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func searchRequest(_ string: String, chipFilters: [SearchChipItem], pagination: RequestPagination?) -> SearchRequest {
         return SearchRequest(query: self.requestQuery(string),

@@ -16,12 +16,18 @@
 //  limitations under the License.
 //
 
-protocol Coordinator {
-    func start()
+import Foundation
+
+enum FavouriteEventType {
+    case addToFavourite
+    case removeFromFavourites
 }
 
-extension Coordinator {
-    var repository: ServiceRepository {
-        return ApplicationBootstrap.shared().repository
+class FavouriteEvent: BaseNodeEvent {
+    var eventType: FavouriteEventType
+
+    init(node: ListNode, eventType: FavouriteEventType) {
+        self.eventType = eventType
+        super.init(node: node)
     }
 }

@@ -31,11 +31,13 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = ListViewController()
 
-        let listViewModel = RecentViewModel(with: accountService, listRequest: nil)
+        let listViewModel = RecentViewModel(with: accountService,
+                                            listRequest: nil)
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
@@ -43,11 +45,19 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: listViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -70,11 +80,15 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
             case .folder, .site:
-                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                let folderDrillDownCoordinator =
+                    FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                    listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                let filePreviewCoordinator =
+                    FilePreviewScreenCoordinator(with: navigationViewController,
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
@@ -84,10 +98,12 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
-            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
+            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
             let actionMenuViewModel = ActionMenuViewModel(with: menu)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         accountService: accountService,
+                                                        eventBusService: eventBusService,
                                                         delegate: delegate)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,

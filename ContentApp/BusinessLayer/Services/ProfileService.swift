@@ -21,8 +21,8 @@ import AlfrescoAuth
 import AlfrescoContent
 
 class ProfileService {
-    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
-    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+    static var repository = ApplicationBootstrap.shared().repository
+    static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
         if let avatar = DiskServices.getAvatar() {

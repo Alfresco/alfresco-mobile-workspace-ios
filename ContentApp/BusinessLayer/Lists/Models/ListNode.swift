@@ -20,12 +20,12 @@ import Foundation
 import AlfrescoContent
 
 enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
+    case file
+    case folder
+    case site
 }
 
-struct ListNode: Hashable {
+class ListNode: Hashable {
     var guid: String
     var mimeType: String?
     var title: String
@@ -34,12 +34,27 @@ struct ListNode: Hashable {
     var kind: ElementKindType
     var favorite: Bool
 
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(guid)
+    }
+
+    init(guid: String,
+         mimeType: String? = nil,
+         title: String, path: String,
+         modifiedAt: Date? = nil,
+         kind: ElementKindType,
+         favorite: Bool) {
+
+        self.guid = guid
+        self.mimeType = mimeType
+        self.title = title
+        self.path = path
+        self.modifiedAt = modifiedAt
+        self.kind = kind
+        self.favorite = favorite
+    }
+
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid &&
-            lhs.title == rhs.title &&
-            lhs.path == rhs.path &&
-            lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind &&
-            lhs.mimeType == rhs.mimeType
+        return lhs.guid == rhs.guid
     }
 }

@@ -23,8 +23,20 @@ protocol ResultsViewModelDelegate: class {
     func refreshResults()
 }
 
-class ResultsViewModel: PageFetchingViewModel {
+class ResultsViewModel: PageFetchingViewModel, EventObservable {
+    var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
+
+    // MARK: Event observable
+    
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
+            }
+        }
+    }
 }
 
 // MARK: - SearchViewModelDelegate
@@ -36,6 +48,7 @@ extension ResultsViewModel: SearchViewModelDelegate {
 }
 
 // MARK: - ListCcomponentDataSourceProtocol
+
 extension ResultsViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -63,6 +76,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func shouldDisplayMoreButton() -> Bool {
+        return true
     }
 
     func refreshList() {

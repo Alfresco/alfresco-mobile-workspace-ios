@@ -21,12 +21,14 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
 
     var listNodeGuid: String = kAPIPathMy
     var listNodeIsFolder: Bool = true
+
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -77,6 +79,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
@@ -118,5 +124,16 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    // MARK: Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
+            }
+        }
     }
 }

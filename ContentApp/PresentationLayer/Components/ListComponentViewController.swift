@@ -29,6 +29,7 @@ protocol ListComponentDataSourceProtocol: class {
     func listNode(for indexPath: IndexPath) -> ListNode
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func shouldDisplayListLoadingIndicator() -> Bool
+    func shouldDisplayMoreButton() -> Bool
     func refreshList()
 }
 
@@ -54,6 +55,8 @@ class ListComponentViewController: SystemThemableViewController {
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+
+    var eventBusService: EventBusService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,7 +156,9 @@ class ListComponentViewController: SystemThemableViewController {
 
 extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
 
         if listDataSource?.shouldDisplaySections() ?? false {
             return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
@@ -166,7 +171,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         return listDataSource?.numberOfSections() ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return listDataSource?.numberOfItems(in: section) ?? 0
     }
 
@@ -178,7 +184,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForFooterInSection section: Int) -> CGSize {
         guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
 
         if dataSource.numberOfSections() - 1 == section {
@@ -186,7 +194,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                 return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
             }
         }
-
         return CGSize(width: 0, height: 0)
     }
 
@@ -217,7 +224,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         return UICollectionReusableView()
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
 
         let identifier = String(describing: ListElementCollectionViewCell.self)
@@ -225,6 +233,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         cell?.element = node
         cell?.delegate = self
         cell?.applyTheme(themingService?.activeTheme)
+        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
         return cell ?? UICollectionViewCell()
     }
 
@@ -238,7 +247,14 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 // MARK: - ActionMenuViewModel Delegate
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        if let error = error {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                let snackbar = Snackbar(with: error.localizedDescription,
+                                        type: .error)
+                snackbar.show(completion: nil)
+            })
+        }
     }
 }
 

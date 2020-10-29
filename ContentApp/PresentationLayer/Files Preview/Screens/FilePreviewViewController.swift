@@ -31,8 +31,11 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
     @IBOutlet weak var toolbar: UIToolbar!
+    var toolbarActions: [UIBarButtonItem]?
 
     var needsContraintsForFullScreen = false
+
+    var eventBusService: EventBusService?
 
     var filePreviewViewModel: FilePreviewViewModel?
     var actionMenuViewModel: ActionMenuViewModel?
@@ -66,7 +69,7 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
-        filePreviewTitleLabel.text = filePreviewViewModel?.node.title
+        filePreviewTitleLabel.text = filePreviewViewModel?.listNode.title
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,7 +104,7 @@ class FilePreviewViewController: SystemThemableViewController {
     @objc func toolbarActionTapped(sender: UIBarButtonItem) {
         guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
         let action = actions[sender.tag]
-        nodeActionsViewModel?.tapped(on: action.type, finished: {
+        nodeActionsViewModel?.tapped(on: action, finished: {
         })
     }
 
@@ -119,7 +122,7 @@ class FilePreviewViewController: SystemThemableViewController {
             button.image = action.icon
             array.append(button)
         }
-
+        self.toolbarActions = array
         var toolbarActions = [UIBarButtonItem]()
         for button in array {
             toolbarActions.append(button)
@@ -160,7 +163,7 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
 
-        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.node.mimeType)
+        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode.mimeType)
 
         toolbar.barTintColor = currentTheme.surfaceColor
         toolbar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
@@ -252,16 +255,29 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         stopLoading()
         filePreviewViewModel?.sendAnalyticsForPreviewFile(success: (error == nil))
     }
+
+    func update(listNode: ListNode) {
+        if let index = actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
+            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            toolbarActions?[index].image = UIImage(named: icon)
+        }
+        if let index = actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
+            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            toolbarActions?[index].image = UIImage(named: icon)
+        }
+    }
 }
 
 // MARK: - ActionMenuViewModel Delegate
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
-        switch actionType {
-        case .more:
-            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        default: break
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        if let error = error {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                let snackbar = Snackbar(with: error.localizedDescription,
+                                        type: .error)
+                snackbar.show(completion: nil)
+            })
         }
     }
 }
@@ -274,6 +290,7 @@ extension FilePreviewViewController: FilePreviewDelegate {
         containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
         navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
         setNeedsStatusBarAppearanceUpdate()
+        toolbar.isHidden = enable
     }
 }
 

@@ -18,9 +18,13 @@
 
 import UIKit
 
-struct ActionMenu {
+class ActionMenu {
     var title: String
-    var type: ActionMenuType
+    var type: ActionMenuType {
+        didSet {
+            self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
+        }
+    }
     var icon: UIImage
 
     init(title: String, type: ActionMenuType, icon: UIImage? = nil) {

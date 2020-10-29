@@ -154,6 +154,7 @@ class FavoritesViewController: SystemSearchViewController {
         folderAndFilesViewController.listActionDelegate = self
         folderAndFilesViewController.listDataSource = folderAndFilesListViewModel
         folderAndFilesViewController.themingService = self.themingService
+        folderAndFilesViewController.eventBusService = self.eventBusService
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
         self.folderAndFilesViewController = folderAndFilesViewController
@@ -164,6 +165,7 @@ class FavoritesViewController: SystemSearchViewController {
         librariesViewController.listActionDelegate = self
         librariesViewController.listDataSource = librariesListViewModel
         librariesViewController.themingService = self.themingService
+        librariesViewController.eventBusService = self.eventBusService
         librariesListViewModel?.pageUpdatingDelegate = librariesViewController
 
         self.librariesViewController = librariesViewController

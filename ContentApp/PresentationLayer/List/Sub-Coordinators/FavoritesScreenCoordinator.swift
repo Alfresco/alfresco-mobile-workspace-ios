@@ -31,13 +31,16 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
-        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
-        let librariesViewModel = FavoritesViewModel.init(with: accountService, listRequest: nil)
+        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
+                                                               listRequest: nil)
+        let librariesViewModel = FavoritesViewModel.init(with: accountService,
+                                                         listRequest: nil)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition
@@ -46,12 +49,23 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = foldersAndFilesViewModel
         viewController.librariesListViewModel = librariesViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: librariesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
@@ -74,11 +88,15 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
             case .folder, .site:
-                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                let folderDrillDownCoordinator =
+                    FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                    listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                let filePreviewCoordinator =
+                    FilePreviewScreenCoordinator(with: navigationViewController,
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
@@ -88,10 +106,12 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
-            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
+            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
             let actionMenuViewModel = ActionMenuViewModel(with: menu)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         accountService: accountService,
+                                                        eventBusService: eventBusService,
                                                         delegate: delegate)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,

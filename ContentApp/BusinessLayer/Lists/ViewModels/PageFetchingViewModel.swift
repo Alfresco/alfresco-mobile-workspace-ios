@@ -37,9 +37,6 @@ class PageFetchingViewModel {
 
     var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
-        willSet {
-            shouldDisplayNextPageLoadingIndicator = true
-        }
         didSet {
             updatedResults(results: results)
         }

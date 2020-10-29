@@ -21,10 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -93,6 +94,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         recentsList(with: nil)
@@ -139,6 +144,17 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 self.add(element: element, inGroupType: groupType)
             } else {
                 groupedLists.first?.list.append(element)
+            }
+        }
+    }
+
+    // MARK: - Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
             }
         }
     }

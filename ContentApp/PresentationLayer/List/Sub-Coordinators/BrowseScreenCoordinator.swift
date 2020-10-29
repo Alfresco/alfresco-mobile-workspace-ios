@@ -35,8 +35,9 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = self.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = self.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = BrowseViewController.instantiateViewController()
 
         let resultViewModel = ResultsViewModel()
@@ -47,12 +48,17 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.listViewModel = browseViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
@@ -69,7 +75,9 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
     func showTopLevelFolderScreen(from browseNode: BrowseNode) {
         if let navigationViewController = self.navigationViewController {
-            let staticFolderScreenCoordinator = BrowseTopLevelFolderScreenCoordinator(with: navigationViewController, browseNode: browseNode)
+            let staticFolderScreenCoordinator =
+                BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
+                                                      browseNode: browseNode)
             staticFolderScreenCoordinator.start()
             self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
@@ -81,11 +89,15 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.kind {
             case .folder, .site:
-                let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: navigationViewController, listNode: node)
+                let folderDrillDownCoordinator =
+                    FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                    listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
             case .file:
-                let filePreviewCoordinator = FilePreviewScreenCoordinator(with: navigationViewController, listNode: node)
+                let filePreviewCoordinator =
+                    FilePreviewScreenCoordinator(with: navigationViewController,
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
@@ -95,10 +107,12 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
-            let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
+            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
             let actionMenuViewModel = ActionMenuViewModel(with: menu)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         accountService: accountService,
+                                                        eventBusService: eventBusService,
                                                         delegate: delegate)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,

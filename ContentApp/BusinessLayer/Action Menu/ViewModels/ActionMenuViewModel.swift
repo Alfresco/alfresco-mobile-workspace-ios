@@ -42,6 +42,14 @@ class ActionMenuViewModel {
         return toolbarActions
     }
 
+    func indexInToolbar(for actionType: ActionMenuType) -> Int? {
+        guard let actions = toolbarActions else { return nil }
+        for index in 0...actions.count - 1 where actions[index].type == actionType {
+            return index
+        }
+        return nil
+    }
+
     func numberOfActions() -> CGFloat {
         guard let actions = self.menu?.actions else { return 0 }
         var numberOfActions = 0

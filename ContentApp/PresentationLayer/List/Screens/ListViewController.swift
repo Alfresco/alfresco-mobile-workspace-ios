@@ -34,6 +34,7 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
         listComponentViewController.themingService = self.themingService
+        listComponentViewController.eventBusService = self.eventBusService
         listViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {

@@ -31,44 +31,84 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService =  serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let themingService =  repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = ListViewController()
 
-        let listViewModel = self.listViewModel(from: browseNode.type, with: accountService)
+        let listViewModel = self.listViewModel(from: browseNode.type,
+                                               with: accountService,
+                                               eventBusService: eventBusService)
         let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = searchViewModel(from: browseNode.type, with: browseNode.title, with: accountService, with: resultViewModel)
+        let globalSearchViewModel = searchViewModel(from: browseNode.type,
+                                                    with: browseNode.title,
+                                                    with: accountService,
+                                                    with: resultViewModel)
 
         viewController.title = browseNode.title
         viewController.themingService = themingService
+        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 
-    private func listViewModel(from type: BrowseType?, with accountService: AccountService?) -> ListViewModelProtocol {
+    private func listViewModel(from type: BrowseType?,
+                               with accountService: AccountService?,
+                               eventBusService: EventBusService?) -> ListViewModelProtocol {
         switch type {
         case .personalFiles:
-            return FolderDrillViewModel(with: accountService, listRequest: nil)
+            let viewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file, .folder])
+            return viewModel
         case .myLibraries:
-            return MyLibrariesViewModel(with: accountService, listRequest: nil)
+            let viewModel = MyLibrariesViewModel(with: accountService,
+                                                 listRequest: nil)
+            return viewModel
         case .shared:
-            return SharedViewModel(with: accountService, listRequest: nil)
+            let viewModel = SharedViewModel(with: accountService,
+                                            listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file])
+            return viewModel
+
         case .trash:
-            return TrashViewModel(with: accountService, listRequest: nil)
-        default: return FolderDrillViewModel(with: accountService, listRequest: nil)
+            return TrashViewModel(with: accountService,
+                                  listRequest: nil)
+        default:
+            let viewModel = FolderDrillViewModel(with: accountService,
+                                                 listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.file, .folder])
+            return viewModel
         }
     }
 
-    private func searchViewModel(from type: BrowseType?, with title: String?, with accountService: AccountService?, with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
+    private func searchViewModel(from type: BrowseType?,
+                                 with title: String?,
+                                 with accountService: AccountService?,
+                                 with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
         var searchChip: SearchChipItem?
         switch type {
         case .personalFiles:
             if let nodeID = UserProfile.getPersonalFilesID() {
-                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""), type: .node, selected: true, nodeID: nodeID)
+                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""),
+                                            type: .node,
+                                            selected: true,
+                                            nodeID: nodeID)
             } else {
                 ProfileService.featchPersonalFilesID()
             }
@@ -94,11 +134,15 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         switch node.kind {
         case .folder, .site:
-            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter, listNode: node)
+            let folderDrillDownCoordinator =
+                FolderChildrenScreenCoordinator(with: self.presenter,
+                                                listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
-            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter, listNode: node)
+            let filePreviewCoordinator =
+                FilePreviewScreenCoordinator(with: self.presenter,
+                                             listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
@@ -106,10 +150,12 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
 
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let actionMenuViewModel = ActionMenuViewModel(with: menu)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     accountService: accountService,
+                                                    eventBusService: eventBusService,
                                                     delegate: delegate)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,

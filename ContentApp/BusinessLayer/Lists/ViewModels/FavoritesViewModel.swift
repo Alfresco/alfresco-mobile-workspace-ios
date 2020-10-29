@@ -21,11 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-
     var listCondition: String = kWhereFavoritesFileFolderCondition
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -109,11 +109,38 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         favoritesList(with: requestPagination)
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode]) {
+        pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
+    }
+
+    // MARK: - Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+
+            switch publishedEvent.eventType {
+            case .addToFavourite:
+                if results.contains(node) == false {
+                    results.append(node)
+                }
+            case .removeFromFavourites:
+                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                    results.remove(at: indexOfRemovedFavorite)
+                }
+            }
+        }
     }
 }

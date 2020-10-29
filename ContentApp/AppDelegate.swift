@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         self.window = window
         self.applicationCoordinator = applicationCoordinator
-        if let themingService = applicationCoordinator.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService {
+        if let themingService = applicationCoordinator.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
             window.backgroundColor = themingService.activeTheme?.surfaceColor
         }
 
@@ -43,14 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        let themingService = applicationCoordinator?.serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let themingService = applicationCoordinator?.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
-        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         accountService?.activeAccount?.createTicket()
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        let accountService = applicationCoordinator?.serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
             if let session = aimsAccount.session.session {
                 return session.resumeExternalUserAgentFlow(with: url)

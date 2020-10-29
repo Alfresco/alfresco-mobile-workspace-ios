@@ -25,15 +25,15 @@ class ApplicationBootstrap {
         return applicationBootstrap
     }()
 
-    let serviceRepository: ServiceRepository
+    let repository: ServiceRepository
 
     private init() {
-        self.serviceRepository = ServiceRepository()
-        self.serviceRepository.register(service: themingService())
-        self.serviceRepository.register(service: authenticationService())
-        self.serviceRepository.register(service: accountService())
-        self.serviceRepository.register(service: applicationRouter())
-        self.serviceRepository.register(service: eventBusService())
+        self.repository = ServiceRepository()
+        self.repository.register(service: themingService())
+        self.repository.register(service: authenticationService())
+        self.repository.register(service: accountService())
+        self.repository.register(service: applicationRouter())
+        self.repository.register(service: eventBusService())
     }
 
     class func shared() -> ApplicationBootstrap {

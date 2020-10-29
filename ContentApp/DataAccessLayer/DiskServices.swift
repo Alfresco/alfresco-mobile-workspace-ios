@@ -20,8 +20,8 @@ import Foundation
 import UIKit
 
 class DiskServices {
-    static var serviceRepository = ApplicationBootstrap.shared().serviceRepository
-    static var accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+    static var repository = ApplicationBootstrap.shared().repository
+    static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func saveAvatar(_ image: UIImage) {
         let identifier = accountService?.activeAccount?.identifier ?? ""
