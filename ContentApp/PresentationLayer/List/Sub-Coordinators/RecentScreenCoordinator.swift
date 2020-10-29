@@ -38,7 +38,9 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         let listViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil)
+        listViewModel.acceptedNodeTypesForBusEvents = [.file]
         let resultViewModel = ResultsViewModel()
+        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel

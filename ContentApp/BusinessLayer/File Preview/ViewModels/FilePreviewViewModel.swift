@@ -49,6 +49,7 @@ class FilePreviewViewModel {
     var listNode: ListNode
     var accountService: AccountService?
     var eventBusService: EventBusService?
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     weak var viewModelDelegate: FilePreviewViewModelDelegate?
 
@@ -298,6 +299,10 @@ extension FilePreviewViewModel: PDFRendererPasswordDelegate {
 // MARK: - Event bus handling
 
 extension FilePreviewViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

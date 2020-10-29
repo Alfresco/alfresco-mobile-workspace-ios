@@ -53,17 +53,21 @@ class EventBusService: EventBusServiceProtocol, Service {
             for idx in 0 ..< observers.count {
                 if let registeredObserver = observers.object(at: idx) as? EventObservable {
 
-                    var dispatchQueue: DispatchQueue
+                    if let supportedNoteTypes = registeredObserver.supportedNodeTypes {
+                        if supportedNoteTypes.contains(event.node.kind) {
+                            var dispatchQueue: DispatchQueue
 
-                    switch queue {
-                    case .backgroundQueue:
-                        dispatchQueue = DispatchQueue.global(qos: .userInitiated)
-                    case .mainQueue:
-                        dispatchQueue = DispatchQueue.main
-                    }
+                            switch queue {
+                            case .backgroundQueue:
+                                dispatchQueue = DispatchQueue.global(qos: .userInitiated)
+                            case .mainQueue:
+                                dispatchQueue = DispatchQueue.main
+                            }
 
-                    dispatchQueue.async {
-                        registeredObserver.handle(event: event, on: queue)
+                            dispatchQueue.async {
+                                registeredObserver.handle(event: event, on: queue)
+                            }
+                        }
                     }
                 }
             }

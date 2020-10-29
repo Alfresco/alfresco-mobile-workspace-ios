@@ -41,6 +41,7 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         accountService: accountService)
+        filePreviewViewModel.acceptedNodeTypesForBusEvents = [.file]
         let menu = ActionsMenuFilePreview(with: listNode)
         let actionMenuViewModel = ActionMenuViewModel(with: menu, toolbarDivide: true)
         let nodeActionsViewModel = NodeActionsViewModel(node: listNode,

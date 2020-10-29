@@ -41,6 +41,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
         let viewController = BrowseViewController.instantiateViewController()
 
         let resultViewModel = ResultsViewModel()
+        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         let browseViewModel = BrowseViewModel()
         globalSearchViewModel.delegate = resultViewModel

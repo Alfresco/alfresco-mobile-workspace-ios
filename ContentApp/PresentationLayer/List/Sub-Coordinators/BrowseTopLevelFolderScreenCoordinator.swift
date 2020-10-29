@@ -40,6 +40,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
                                                with: accountService,
                                                eventBusService: eventBusService)
         let resultViewModel = ResultsViewModel()
+        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let globalSearchViewModel = searchViewModel(from: browseNode.type,
                                                     with: browseNode.title,
                                                     with: accountService,
@@ -66,15 +67,18 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         case .personalFiles:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
+            viewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
             eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
             return viewModel
         case .myLibraries:
             let viewModel = MyLibrariesViewModel(with: accountService,
                                                  listRequest: nil)
+            viewModel.acceptedNodeTypesForBusEvents = [.site]
             return viewModel
         case .shared:
             let viewModel = SharedViewModel(with: accountService,
                                             listRequest: nil)
+            viewModel.acceptedNodeTypesForBusEvents = [.file]
             eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
             return viewModel
 
@@ -84,6 +88,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         default:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
+            viewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
             eventBusService?.register(observer: viewModel, for: FavouriteEvent.self)
             return viewModel
         }

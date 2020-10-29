@@ -37,10 +37,13 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
+        resultViewModel.acceptedNodeTypesForBusEvents = [.file, .folder, .site]
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
                                                                listRequest: nil)
+        foldersAndFilesViewModel.acceptedNodeTypesForBusEvents = [.file, .folder]
         let librariesViewModel = FavoritesViewModel.init(with: accountService,
                                                          listRequest: nil)
+        librariesViewModel.acceptedNodeTypesForBusEvents = [.site]
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition

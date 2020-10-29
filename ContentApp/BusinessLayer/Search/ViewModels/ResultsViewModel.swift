@@ -24,6 +24,7 @@ protocol ResultsViewModelDelegate: class {
 }
 
 class ResultsViewModel: PageFetchingViewModel {
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
 }
 
@@ -75,6 +76,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
 // MARK: - Event bus handling
 
 extension ResultsViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

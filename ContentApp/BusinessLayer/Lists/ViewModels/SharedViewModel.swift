@@ -24,6 +24,7 @@ import AlfrescoContent
 class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     // MARK: - Init
 
@@ -115,6 +116,9 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension SharedViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

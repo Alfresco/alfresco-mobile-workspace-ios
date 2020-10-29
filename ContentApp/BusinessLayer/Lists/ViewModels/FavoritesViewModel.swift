@@ -26,6 +26,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var accountService: AccountService?
 
     var listCondition: String = kWhereFavoritesFileFolderCondition
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     // MARK: - Init
 
@@ -125,6 +126,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension FavoritesViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

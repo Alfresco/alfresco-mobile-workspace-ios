@@ -24,6 +24,7 @@ import AlfrescoContent
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     var listNodeGuid: String = kAPIPathMy
     var listNodeIsFolder: Bool = true
@@ -124,6 +125,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension FolderDrillViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

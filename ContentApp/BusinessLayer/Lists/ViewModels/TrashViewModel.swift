@@ -113,6 +113,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension TrashViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return nil
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
     }
 }

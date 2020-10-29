@@ -25,6 +25,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     // MARK: - Init
 
@@ -150,6 +151,9 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension RecentViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

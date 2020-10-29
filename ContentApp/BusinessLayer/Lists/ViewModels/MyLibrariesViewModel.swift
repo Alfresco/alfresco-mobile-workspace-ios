@@ -24,6 +24,7 @@ import AlfrescoContent
 class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var acceptedNodeTypesForBusEvents: [ElementKindType]?
 
     // MARK: - Init
 
@@ -117,6 +118,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - Event bus handling
 
 extension MyLibrariesViewModel: EventObservable {
+    var supportedNodeTypes: [ElementKindType]? {
+        return acceptedNodeTypesForBusEvents
+    }
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node
