@@ -109,6 +109,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         favoritesList(with: requestPagination)
     }

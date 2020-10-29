@@ -98,6 +98,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)

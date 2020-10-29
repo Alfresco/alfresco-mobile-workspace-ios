@@ -93,12 +93,13 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         recentsList(with: nil)
-    }
-
-    func update(node: ListNode) {
     }
 
     override func updatedResults(results: [ListNode]) {

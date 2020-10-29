@@ -77,6 +77,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
