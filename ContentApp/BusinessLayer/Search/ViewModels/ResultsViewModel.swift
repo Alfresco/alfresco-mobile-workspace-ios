@@ -67,6 +67,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()

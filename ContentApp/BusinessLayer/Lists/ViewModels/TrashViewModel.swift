@@ -96,6 +96,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return false
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
