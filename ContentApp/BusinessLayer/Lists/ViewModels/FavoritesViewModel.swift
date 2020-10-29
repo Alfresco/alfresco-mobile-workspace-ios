@@ -116,6 +116,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
+
+    override func updatedResults(results: [ListNode]) {
+        pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
+    }
 }
 
 // MARK: - Event bus handling
@@ -129,11 +133,11 @@ extension FavoritesViewModel: EventObservable {
             case .addToFavourite:
                 if results.contains(node) == false {
                     results.append(node)
-
-                    pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
                 }
             case .removeFromFavourites:
-                print("")
+                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                    results.remove(at: indexOfRemovedFavorite)
+                }
             }
         }
     }
