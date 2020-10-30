@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,6 +34,7 @@
 		B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */; };
 		B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */; };
 		B97391A62519205F00CB2ECA /* viewer-inlined.html in Resources */ = {isa = PBXBuildFile; fileRef = B97391A52519205F00CB2ECA /* viewer-inlined.html */; };
+		B9747A16254C65B700D63B71 /* SystemThemable+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */; };
 		B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */; };
 		B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */; };
 		B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0724D852590058BCE1 /* FavoritesViewController.swift */; };
@@ -255,6 +256,7 @@
 		B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+LocalizedHTML.swift"; sourceTree = "<group>"; };
 		B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		B97391A52519205F00CB2ECA /* viewer-inlined.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "viewer-inlined.html"; path = "pdfjs-library/viewer-inlined.html"; sourceTree = "<group>"; };
+		B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SystemThemable+Dialog.swift"; sourceTree = "<group>"; };
 		B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestBuilder.swift; sourceTree = "<group>"; };
 		B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSelectableCell.swift; sourceTree = "<group>"; };
 		B9958E0724D852590058BCE1 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -1095,6 +1097,7 @@
 				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
 				E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */,
 				E3E8B0102548683D00CD399D /* UImage+Color.swift */,
+				B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1467,6 +1470,7 @@
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
+				B9747A16254C65B700D63B71 /* SystemThemable+Dialog.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
