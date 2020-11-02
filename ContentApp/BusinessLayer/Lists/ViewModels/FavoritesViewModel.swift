@@ -47,7 +47,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                                        maxItems: kListPageSize,
                                        orderBy: nil,
                                        _where: sSelf.listCondition,
-                                       include: ["path"],
+                                       include: [kAPIIncludePathNode],
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 

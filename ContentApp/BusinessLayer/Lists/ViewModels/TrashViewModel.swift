@@ -45,7 +45,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
             TrashcanAPI.listDeletedNodes(skipCount: skipCount,
                                          maxItems: maxItems,
-                                         include: ["path"]) { (result, error) in
+                                         include: [kAPIIncludePathNode]) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = DeleteNodeMapper.map(entries)

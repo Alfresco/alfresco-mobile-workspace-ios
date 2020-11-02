@@ -248,9 +248,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if let error = error {
+        if error != nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                let snackbar = Snackbar(with: error.localizedDescription,
+                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
                                         type: .error)
                 snackbar.show(completion: nil)
             })

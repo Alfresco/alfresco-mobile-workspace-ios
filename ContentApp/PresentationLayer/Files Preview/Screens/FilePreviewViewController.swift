@@ -38,8 +38,6 @@ class FilePreviewViewController: SystemThemableViewController {
     var eventBusService: EventBusService?
 
     var filePreviewViewModel: FilePreviewViewModel?
-    var actionMenuViewModel: ActionMenuViewModel?
-    var nodeActionsViewModel: NodeActionsViewModel?
     var isFullScreen = false
 
     weak var filePreviewCoordinatorDelegate: FilePreviewScreenCoordinatorDelegate?
@@ -56,7 +54,6 @@ class FilePreviewViewController: SystemThemableViewController {
 
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        addToolbarActions()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -64,12 +61,6 @@ class FilePreviewViewController: SystemThemableViewController {
         self.tabBarController?.tabBar.isHidden = true
 
         ControllerRotation.lockOrientation(.all)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
-        filePreviewTitleLabel.text = filePreviewViewModel?.listNode.title
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -102,16 +93,16 @@ class FilePreviewViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func toolbarActionTapped(sender: UIBarButtonItem) {
-        guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
+        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else { return }
         let action = actions[sender.tag]
-        nodeActionsViewModel?.tapped(on: action, finished: {
+        filePreviewViewModel?.nodeActionsViewModel?.tapped(on: action, finished: {
         })
     }
 
     // MARK: - Private Helpers
 
     private func addToolbarActions() {
-        guard let actions = actionMenuViewModel?.actionsForToolbar() else { return }
+        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else { return }
         var array = [UIBarButtonItem]()
         for action in actions {
             let button = UIBarButtonItem(image: action.icon,
@@ -125,10 +116,10 @@ class FilePreviewViewController: SystemThemableViewController {
         self.toolbarActions = array
         var toolbarActions = [UIBarButtonItem]()
         for button in array {
+            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
             toolbarActions.append(button)
             toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         }
-        toolbarActions.removeLast()
         toolbar.items = toolbarActions
     }
 
@@ -162,8 +153,6 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewStatusLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
-
-        mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode.mimeType)
 
         toolbar.barTintColor = currentTheme.surfaceColor
         toolbar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
@@ -257,13 +246,32 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     }
 
     func update(listNode: ListNode) {
-        if let index = actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
+        if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
             let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
         }
-        if let index = actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
+        if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
             let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
+        }
+    }
+
+    func didFinishNodeDetails(error: Error?) {
+        if error != nil {
+            DispatchQueue.main.async {
+                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
+                                        type: .error)
+                snackbar.show(completion: nil)
+            }
+            toolbar.isHidden = true
+        } else {
+            toolbar.isHidden = false
+            filePreviewViewModel?.nodeActionsViewModel?.delegate = self
+            addToolbarActions()
+            filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
+            filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.title
+            mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode?.mimeType)
+            title = filePreviewViewModel?.listNode?.title
         }
     }
 }
@@ -272,12 +280,27 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if let error = error {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                let snackbar = Snackbar(with: error.localizedDescription,
+        if error != nil {
+            DispatchQueue.main.async {
+                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
                                         type: .error)
                 snackbar.show(completion: nil)
-            })
+            }
+        } else {
+            guard let action = action else { return }
+            var message = ""
+            if action.type == .addFavorite {
+                message = LocalizationConstants.ActionMenu.removeFavorite
+            } else if action.type == .removeFavorite {
+                message = LocalizationConstants.ActionMenu.addFavorite
+            }
+            if message != "" {
+                DispatchQueue.main.async {
+                    let snackbar = Snackbar(with: message,
+                                            type: .approve)
+                    snackbar.show(completion: nil)
+                }
+            }
         }
     }
 }
