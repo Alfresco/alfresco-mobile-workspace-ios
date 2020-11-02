@@ -142,7 +142,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         case .file:
             let filePreviewCoordinator =
                 FilePreviewScreenCoordinator(with: self.presenter,
-                                             listNode: node)
+                                             guidListNode: node.guid)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }

@@ -97,7 +97,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
         case .file:
             let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter,
-                                                                      listNode: node)
+                                                                      guidListNode: node.guid)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
