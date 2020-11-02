@@ -142,8 +142,9 @@ class FilePreviewViewModel: EventObservable {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludePermissionsNode]) { (node, error) in
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeIsFavoriteNode,
+                                       kAPIIncludeAllowableOperationsNode]) { (node, error) in
                 if let error = error {
                     sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
                 } else if let node = node {

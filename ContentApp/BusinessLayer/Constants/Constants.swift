@@ -42,7 +42,7 @@ let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=fal
 let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
 let kAPIIncludePathNode = "path"
 let kAPIIncludeIsFavoriteNode = "isFavorite"
-let kAPIIncludePermissionsNode = "permissions"
+let kAPIIncludeAllowableOperationsNode = "allowableOperations"
 
 // MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"
