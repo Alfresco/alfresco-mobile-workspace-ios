@@ -54,7 +54,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                                       maxItems: maxItems,
                                       orderBy: nil,
                                       _where: nil,
-                                      include: ["isFavorite"],
+                                      include: [kAPIIncludeIsFavoriteNode],
                                       relativePath: relativePath,
                                       includeSource: nil,
                                       fields: nil) { (result, error) in

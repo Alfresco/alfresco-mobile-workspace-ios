@@ -40,6 +40,9 @@ let kAPIPathIsContentServiceAvailable = "service/api/server"
 let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
 let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
+let kAPIIncludePathNode = "path"
+let kAPIIncludeIsFavoriteNode = "isFavorite"
+let kAPIIncludePermissionsNode = "permissions"
 
 // MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"

@@ -26,11 +26,11 @@ protocol FilePreviewScreenCoordinatorDelegate: class {
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var filePreviewViewController: FilePreviewViewController?
-    private var listNode: ListNode
+    private var guidListNode: String
 
-    init(with presenter: UINavigationController, listNode: ListNode) {
+    init(with presenter: UINavigationController, guidListNode: String) {
         self.presenter = presenter
-        self.listNode = listNode
+        self.guidListNode = guidListNode
     }
 
     func start() {
@@ -39,24 +39,15 @@ class FilePreviewScreenCoordinator: Coordinator {
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FilePreviewViewController.instantiateViewController()
 
-        let filePreviewViewModel = FilePreviewViewModel(with: listNode,
-                                                        accountService: accountService)
-        let menu = ActionsMenuFilePreview(with: listNode)
-        let actionMenuViewModel = ActionMenuViewModel(with: menu, toolbarDivide: true)
-        let nodeActionsViewModel = NodeActionsViewModel(node: listNode,
+        let filePreviewViewModel = FilePreviewViewModel(with: guidListNode,
                                                         accountService: accountService,
-                                                        eventBusService: eventBusService,
-                                                        delegate: viewController)
+                                                        eventBusService: eventBusService)
 
         viewController.filePreviewCoordinatorDelegate = self
-        viewController.actionMenuViewModel = actionMenuViewModel
-        viewController.nodeActionsViewModel = nodeActionsViewModel
-
         filePreviewViewModel.viewModelDelegate = viewController
         viewController.themingService = themingService
         viewController.eventBusService = eventBusService
         viewController.filePreviewViewModel = filePreviewViewModel
-        viewController.title = listNode.title
 
         eventBusService?.register(observer: filePreviewViewModel,
                                   for: FavouriteEvent.self,
@@ -74,8 +65,8 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
 
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
         guard let filePreviewViewController = filePreviewViewController,
-              let actionMenuViewModel = filePreviewViewController.actionMenuViewModel,
-              let nodeActionsViewModel = filePreviewViewController.nodeActionsViewModel else { return }
+              let actionMenuViewModel = filePreviewViewController.filePreviewViewModel?.actionMenuViewModel,
+              let nodeActionsViewModel = filePreviewViewController.filePreviewViewModel?.nodeActionsViewModel else { return }
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsViewModel)

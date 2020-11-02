@@ -46,7 +46,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             SharedLinksAPI.listSharedLinks(skipCount: skipCount,
                                            maxItems: maxItems,
                                            _where: nil,
-                                           include: ["isFavorite"],
+                                           include: [kAPIIncludeIsFavoriteNode],
                                            fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list.entries {

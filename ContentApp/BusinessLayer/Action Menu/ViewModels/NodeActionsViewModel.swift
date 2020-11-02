@@ -31,7 +31,7 @@ class NodeActionsViewModel {
     private var action: ActionMenu?
     private var node: ListNode
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
-    private weak var delegate: NodeActionsViewModelDelegate?
+    weak var delegate: NodeActionsViewModelDelegate?
     private var accountService: AccountService?
     private var eventBusService: EventBusService?
 

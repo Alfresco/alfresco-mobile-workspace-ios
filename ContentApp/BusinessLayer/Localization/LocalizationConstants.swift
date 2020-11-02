@@ -88,6 +88,7 @@ struct LocalizationConstants {
         static let pathEmpty = NSLocalizedString("warning-login-path-empty", comment: "")
         static let noLongerAuthenticated = NSLocalizedString("error-logjn-no-longer-authenticated", comment: "")
         static let somethingWentWrong = NSLocalizedString("error-something-went-wrong", comment: "")
+        static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
     }
 
     struct Theme {

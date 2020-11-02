@@ -28,6 +28,7 @@ protocol FilePreviewViewModelDelegate: class {
     func enableFullscreenContentExperience()
     func requestFileUnlock(retry: Bool)
     func update(listNode: ListNode)
+    func didFinishNodeDetails(error: Error?)
 }
 
 struct RenditionServiceConfiguration {
@@ -46,28 +47,32 @@ enum FilePreviewError: Error {
 typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel: EventObservable {
-    var listNode: ListNode
+    var listNode: ListNode?
     var accountService: AccountService?
     var eventBusService: EventBusService?
     var supportedNodeTypes: [ElementKindType]?
 
     weak var viewModelDelegate: FilePreviewViewModelDelegate?
+    var actionMenuViewModel: ActionMenuViewModel?
+    var nodeActionsViewModel: NodeActionsViewModel?
 
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol?
-    
 
     private var renditionTimer: Timer?
 
     // MARK: - Public interface
 
-    init(with node: ListNode, accountService: AccountService?) {
-        self.listNode = node
+    init(with guidNode: String,
+         accountService: AccountService?,
+         eventBusService: EventBusService?) {
         self.accountService = accountService
+        self.eventBusService = eventBusService
+        self.detailsNode(guid: guidNode)
     }
 
     func requestFilePreview(with size: CGSize?) {
-        guard var size = size else { return }
+        guard var size = size, let listNode = listNode else { return }
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
 
         switch filePreviewType {
@@ -122,6 +127,7 @@ class FilePreviewViewModel: EventObservable {
     }
 
     func sendAnalyticsForPreviewFile(success: Bool) {
+        guard let listNode = listNode else { return }
         let fileExtension = listNode.title.split(separator: ".").last
         Analytics.logEvent(AnalyticsConstants.Events.filePreview,
                            parameters: [AnalyticsConstants.Parameters.fileMimetype: listNode.mimeType ?? "",
@@ -131,7 +137,33 @@ class FilePreviewViewModel: EventObservable {
 
     // MARK: - Private interface
 
+    private func detailsNode(guid: String) {
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.getNode(nodeId: guid,
+                             include: [kAPIIncludeIsFavoriteNode,
+                                       kAPIIncludePermissionsNode]) { (node, error) in
+                if let error = error {
+                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
+                } else if let node = node {
+                    let listNode = NodeChildMapper.create(from: node)
+                    sSelf.listNode = listNode
+                    let menu = ActionsMenuFilePreview(with: listNode)
+                    sSelf.actionMenuViewModel = ActionMenuViewModel(with: menu,
+                                                                    toolbarDivide: true)
+                    sSelf.nodeActionsViewModel = NodeActionsViewModel(node: listNode,
+                                                                      accountService: sSelf.accountService,
+                                                                      eventBusService: sSelf.eventBusService,
+                                                                      delegate: nil)
+                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
+                }
+            }
+        })
+    }
+
     private func contentText(_ completionHandler: @escaping (Data?, Error?) -> Void) {
+        guard let listNode = listNode else { return }
         NodesAPI.getNodeContent(nodeId: listNode.guid) { (data, error) in
             if let error = error {
                 AlfrescoLog.error(error)
@@ -141,15 +173,21 @@ class FilePreviewViewModel: EventObservable {
     }
 
     private func contentURL(for ticket: String?) -> URL? {
-        guard let ticket = ticket, let basePathURL = accountService?.activeAccount?.apiBasePath,
-              let previewURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
+        guard let ticket = ticket,
+              let basePathURL = accountService?.activeAccount?.apiBasePath,
+              let listNode = listNode,
+              let previewURL = URL(string: basePathURL + "/" +
+                                    String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
         else { return nil }
         return previewURL
     }
 
     private func renditionURL(for renditionId: String, ticket: String?) -> URL? {
-        guard let ticket = ticket, let basePathURL = accountService?.activeAccount?.apiBasePath,
-              let renditionURL = URL(string: basePathURL + "/" + String(format: kAPIPathGetRenditionContent, listNode.guid, renditionId, ticket))
+        guard let ticket = ticket,
+              let basePathURL = accountService?.activeAccount?.apiBasePath,
+              let listNode = listNode,
+              let renditionURL = URL(string: basePathURL + "/" +
+                                        String(format: kAPIPathGetRenditionContent, listNode.guid, renditionId, ticket))
         else { return nil }
         return renditionURL
     }
@@ -194,11 +232,11 @@ class FilePreviewViewModel: EventObservable {
                 accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
                     AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
 
-                    guard let sSelf = self else { return }
+                    guard let sSelf = self, let listNode = sSelf.listNode else { return }
 
-                    RenditionsAPI.createRendition(nodeId: sSelf.listNode.guid, renditionBodyCreate: renditiontype) {  (_, error) in
+                    RenditionsAPI.createRendition(nodeId: listNode.guid, renditionBodyCreate: renditiontype) {  (_, error) in
                         if error != nil {
-                            AlfrescoLog.error("Unexpected error while creating rendition for node: \(sSelf.listNode.guid)")
+                            AlfrescoLog.error("Unexpected error while creating rendition for node: \(listNode.guid)")
                         } else {
                             sSelf.retryRenditionCall(for: renditionId, ticket: ticket, completionHandler: completionHandler)
                         }
@@ -213,7 +251,8 @@ class FilePreviewViewModel: EventObservable {
     private func retryRenditionCall(for renditionId: String, ticket: String?, completionHandler: @escaping RenditionCompletionHandler) {
         var retries = RenditionServiceConfiguration.maxRetries
 
-        renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay, repeats: true) { [weak self] (timer) in
+        renditionTimer = Timer.scheduledTimer(withTimeInterval: RenditionServiceConfiguration.retryDelay,
+                                              repeats: true) { [weak self] (timer) in
             guard let sSelf = self else { return }
 
             retries -= 1
@@ -225,8 +264,8 @@ class FilePreviewViewModel: EventObservable {
 
             sSelf.accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
-                RenditionsAPI.getRendition(nodeId: sSelf.listNode.guid, renditionId: renditionId) { (rendition, _) in
+                guard let listNode = sSelf.listNode else { return }
+                RenditionsAPI.getRendition(nodeId: listNode.guid, renditionId: renditionId) { (rendition, _) in
                     if rendition?.entry.status == .created {
                         timer.invalidate()
                         completionHandler(sSelf.renditionURL(for: renditionId, ticket: ticket))
@@ -253,11 +292,11 @@ class FilePreviewViewModel: EventObservable {
                                                     node: listNode,
                                                     url: renditionURL,
                                                     size: size) { [weak self] (error) in
-            guard let sSelf = self else { return }
+            guard let sSelf = self, let listNode = sSelf.listNode else { return }
 
             if let error = error {
                 if type != .pdf || type != .rendition {
-                    sSelf.fetchRenditionURL(for: sSelf.listNode.guid) { url, isImageRendition in
+                    sSelf.fetchRenditionURL(for: listNode.guid) { url, isImageRendition in
                         sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
                     }
                 } else {
@@ -288,6 +327,7 @@ class FilePreviewViewModel: EventObservable {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
+            guard let listNode = listNode else { return }
             let node = publishedEvent.node
             listNode.favorite = node.favorite
             self.viewModelDelegate?.update(listNode: listNode)
