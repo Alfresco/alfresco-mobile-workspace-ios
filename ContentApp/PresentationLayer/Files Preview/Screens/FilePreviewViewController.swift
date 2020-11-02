@@ -116,10 +116,10 @@ class FilePreviewViewController: SystemThemableViewController {
         self.toolbarActions = array
         var toolbarActions = [UIBarButtonItem]()
         for button in array {
+            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
             toolbarActions.append(button)
             toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
         }
-        toolbarActions.removeLast()
         toolbar.items = toolbarActions
     }
 
@@ -263,7 +263,9 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
                                         type: .error)
                 snackbar.show(completion: nil)
             })
+            toolbar.isHidden = true
         } else {
+            toolbar.isHidden = false
             filePreviewViewModel?.nodeActionsViewModel?.delegate = self
             addToolbarActions()
             filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
