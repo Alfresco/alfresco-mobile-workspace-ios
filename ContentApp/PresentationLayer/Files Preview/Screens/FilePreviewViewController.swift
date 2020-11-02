@@ -258,11 +258,11 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func didFinishNodeDetails(error: Error?) {
         if error != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            DispatchQueue.main.async {
                 let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
                                         type: .error)
                 snackbar.show(completion: nil)
-            })
+            }
             toolbar.isHidden = true
         } else {
             toolbar.isHidden = false
@@ -281,12 +281,11 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         if error != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5,
-                                          execute: {
+            DispatchQueue.main.async {
                 let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
                                         type: .error)
                 snackbar.show(completion: nil)
-            })
+            }
         } else {
             guard let action = action else { return }
             var message = ""
@@ -296,12 +295,11 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 message = LocalizationConstants.ActionMenu.addFavorite
             }
             if message != "" {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5,
-                                              execute: {
+                DispatchQueue.main.async {
                     let snackbar = Snackbar(with: message,
                                             type: .approve)
                     snackbar.show(completion: nil)
-                })
+                }
             }
         }
     }
