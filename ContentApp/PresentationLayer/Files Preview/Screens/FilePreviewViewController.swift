@@ -281,11 +281,28 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         if error != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5,
+                                          execute: {
                 let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
                                         type: .error)
                 snackbar.show(completion: nil)
             })
+        } else {
+            guard let action = action else { return }
+            var message = ""
+            if action.type == .addFavorite {
+                message = LocalizationConstants.ActionMenu.removeFavorite
+            } else if action.type == .removeFavorite {
+                message = LocalizationConstants.ActionMenu.addFavorite
+            }
+            if message != "" {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5,
+                                              execute: {
+                    let snackbar = Snackbar(with: message,
+                                            type: .approve)
+                    snackbar.show(completion: nil)
+                })
+            }
         }
     }
 }
