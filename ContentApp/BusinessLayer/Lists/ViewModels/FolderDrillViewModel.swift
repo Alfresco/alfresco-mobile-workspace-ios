@@ -54,7 +54,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                                       maxItems: maxItems,
                                       orderBy: nil,
                                       _where: nil,
-                                      include: [kAPIIncludeIsFavoriteNode],
+                                      include: [kAPIIncludeIsFavoriteNode,
+                                                kAPIIncludeAllowableOperationsNode],
                                       relativePath: relativePath,
                                       includeSource: nil,
                                       fields: nil) { (result, error) in
@@ -118,7 +119,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         request(with: nil)
     }
 
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }
 

@@ -44,7 +44,8 @@ struct NodeChildMapper {
                         path: path,
                         modifiedAt: node.entry.modifiedAt,
                         kind: kind,
-                        favorite: node.entry.isFavorite ?? false)
+                        favorite: node.entry.isFavorite ?? false,
+                        allowableOperations: node.entry.allowableOperations)
     }
 
     private static func create(from node: NodeChildAssociation) -> ListNode {
@@ -56,12 +57,14 @@ struct NodeChildMapper {
             mimeType = node.nodeType
             kind = .folder
         }
+
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: node.isFavorite ?? false)
+                        favorite: node.isFavorite ?? false,
+                        allowableOperations: node.allowableOperations)
     }
 }

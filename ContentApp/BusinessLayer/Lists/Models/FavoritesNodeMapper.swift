@@ -49,7 +49,8 @@ struct FavoritesNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: true)
+                        favorite: true,
+                        allowableOperations: node.allowableOperations)
     }
 
     private static func create(from node: Site) -> ListNode {

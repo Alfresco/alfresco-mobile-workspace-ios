@@ -33,6 +33,7 @@ class ListNode: Hashable {
     var modifiedAt: Date?
     var kind: ElementKindType
     var favorite: Bool
+    var allowableOperations: [String]?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(guid)
@@ -43,7 +44,8 @@ class ListNode: Hashable {
          title: String, path: String,
          modifiedAt: Date? = nil,
          kind: ElementKindType,
-         favorite: Bool) {
+         favorite: Bool,
+         allowableOperations: [String]? = nil) {
 
         self.guid = guid
         self.mimeType = mimeType
@@ -52,6 +54,7 @@ class ListNode: Hashable {
         self.modifiedAt = modifiedAt
         self.kind = kind
         self.favorite = favorite
+        self.allowableOperations = allowableOperations
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {

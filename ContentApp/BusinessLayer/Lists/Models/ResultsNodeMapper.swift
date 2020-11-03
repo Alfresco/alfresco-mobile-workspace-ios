@@ -40,12 +40,14 @@ struct ResultsNodeMapper {
                 kind = .site
             }
         }
+
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: node.isFavorite ?? false)
+                        favorite: node.isFavorite ?? false,
+                        allowableOperations: node.allowableOperations)
     }
 }

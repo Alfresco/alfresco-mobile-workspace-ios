@@ -35,6 +35,7 @@ struct SharedLinkMapper {
                         path: "",
                         modifiedAt: node.modifiedAt,
                         kind: .file,
-                        favorite: node.isFavorite ?? false)
+                        favorite: node.isFavorite ?? false,
+                        allowableOperations: node.allowableOperations)
     }
 }
