@@ -373,6 +373,10 @@
 		E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
 		E37618052476912000DA13ED /* Mirror+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Description.swift"; sourceTree = "<group>"; };
+		E378DC972550422900E96C99 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E378DC9B2550423200E96C99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E378DC9C2550425900E96C99 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E378DC9D255042AA00E96C99 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E37D1CA02493E874006373FD /* TabBarMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarMainViewController.swift; sourceTree = "<group>"; };
 		E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarScreenCoordinator.swift; sourceTree = "<group>"; };
 		E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
@@ -1350,6 +1354,10 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
+				fr,
+				it,
+				nl,
 			);
 			mainGroup = E334C03324755D8E00F74880;
 			productRefGroup = E334C03D24755D8E00F74880 /* Products */;
@@ -1686,6 +1694,10 @@
 			isa = PBXVariantGroup;
 			children = (
 				E334C07524755E6B00F74880 /* en */,
+				E378DC972550422900E96C99 /* es */,
+				E378DC9B2550423200E96C99 /* fr */,
+				E378DC9C2550425900E96C99 /* it */,
+				E378DC9D255042AA00E96C99 /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1697,6 +1709,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1758,6 +1771,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

@@ -162,8 +162,7 @@ extension AimsViewController: UITextFieldDelegate {
 extension AimsViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
-            let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-            snackbar.show(completion: nil)
+            Snackbar.display(with: error.mapToMessage(), type: .error, finish: nil)
         }
     }
 

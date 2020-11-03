@@ -1,0 +1,129 @@
+//
+// Copyright (C) 2005-2020 Alfresco Software Limited.
+//
+// This file is part of the Alfresco Content Mobile iOS App.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+"copyright-format" = "© %d Alfresco Software, Inc. Tous droits réservés.";
+"product-name" = "Alfresco\nMobile Workspace";
+
+// MARK: - Buttons
+"connect" = "Connexion";
+"advanced-settings" = "Réglages avancés";
+"need-help" = "Besoin d'aide?";
+"reset-to-default" = "Valeurs par défaut";
+"save" = "Enregistrer";
+"sign-in" = "Connexion";
+"sign-in-with-sso" = "Connexion avec SSO";
+"sign-out" = "Déconnexion";
+"retry" = "Réessayer";
+"yes" = "Oui";
+"cancel" = "Annuler";
+
+// MARK: - PlaceHolders
+"connect-to" = "Connexion à";
+"port" = "Port";
+"service-document" = "Chemin";
+"realm" = "Domaine";
+"client-id" = "ID client";
+"username-or-email" = "Nom d'utilisateur ou e-mail";
+"password" = "Mot de passe";
+"content-services-url" = "URL de Content Services";
+
+// MARK: - Labels
+"transport-protocol" = "Protocole de transport";
+"https" = "HTTPS";
+"alfresco-content-settings" = "Réglages Alfresco Content Services";
+"authentication" = "Authentification";
+"info-connect-to" = "Connecté à: ";
+"info-aims-connect-to"  = "Connexion à: ";
+"login-allow-sso" = "Entrez l'URL de votre environnement Content Services.";
+"help" = "Aide";
+"connecting" = "Connexion en cours";
+"signing-in" = "Connexion en cours";
+"session-expired" = "Session expirée";
+"sesssion-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
+
+// MARK: - Screen Titles
+"settings" = "Réglages";
+"recent" = "Récents";
+"favorites" = "Favoris";
+"browse" = "Parcourir";
+
+// MARK: - Help Textviews
+"help-service-url-hint" = "<p><font size=\"6\">Comment se connecter à Alfresco</font></p><p><font size=\"5\">URL d'Alfresco Content Services</font></p><p>Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.</p><p><font size=\"5\">Connexion avec SSO</font></p><p>Vous pouvez saisir l'URL de votre service de gestion d'identité Alfresco pour vous authentifier auprès du fournisseur d'identité de votre société.</p><p>*Vous devrez ensuite entrer l'URL de votre instance d'Alfresco Content Services</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
+"help-advanced-settings-hint" = "<p><font size=\"6\">Authentification Alfresco</font></p><p>Si vous n'utilisez pas les paramètres SSO par défaut, définissez les paramètres ici.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
+"help-sso-hint" = "<p><font size=\"6\">Emplacement de l'entrepôt de contenu</font></p><p>URL d'Alfresco Content Services :</p><p>Il s'agit de l'URL de votre instance d'Alfresco Content Services.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
+
+// MARK: - Login Errors
+"error-login-generic" = "Un problème est survenu. Pour obtenir de l'aide, contactez votre administrateur Alfresco. Code d'erreur : %d";
+"error-login-alfresco-url" = "Aucun service d'authentification trouvé à l'URL Alfresco spécifiée.";
+"error-login-check-connect-url" = "Vérifiez votre connexion à l'URL.";
+"error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
+"error-logjn-no-longer-authenticated" = "Vous n'êtes plus authentifié, veuillez vous reconnecter.";
+"error-something-went-wrong" = "Un problème est survenu!";
+"approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
+"warning-login-service-document-empty"= "Le champ Doc. de service doit être rempli ; allez dans les Réglages avancés.";
+
+// MARK: - Settings Screen
+"theme" = "Mode Thème";
+"auto" = "Auto";
+"light" = "Claire";
+"dark" = "Sombre";
+"failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
+"app-version" = "Version de l'application %@-%@";
+"sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter?";
+
+// MARK: - Search
+"empty-list" = "Oups...";
+"empty-list-subtitle" = "Nous n'avons pas trouvé ce que\n vous recherchez";
+"searching" = "Recherche en cours...";
+"no-recent-search" = "Aucune recherche récente.";
+"recent-search" = "Recherches récentes";
+"files" = "Fichiers";
+"folders" = "Dossiers";
+"libraries" = "Bibliothèques";
+"file-and-folders" = "Fichiers et dossiers";
+"search-in" = "dans: ";
+
+// MARK: - Group List Section
+"today" = "Aujourd'hui";
+"yesterday" = "Hier";
+"this-week" = "Cette semaine";
+"last-week" = "Semaine dernière";
+"this-month" = "Ce mois";
+"older" = "Plus ancien";
+
+// MARK: - Browse Static List
+"personal-files" = "Fichiers personnels";
+"my-libraries" = "Mes bibliothèques";
+"shared" = "Partagé";
+"trash" = "Corbeille";
+
+// MARK: - File Preview
+"no-preview" = "Aucun aperçu pour ce fichier.";
+"password-prompt" = "Fichier verrouillé";
+"password-prompt-message" = "Entrez le mot de passe pour déverrouiller le fichier.";
+"password-prompt-fail" = "Mot de passe incorrect";
+"password-prompt-fail-message" = "Entrez à nouveau le mot de passe pour déverrouiller le fichier.";
+"password-prompt-submit"  = "Envoyer";
+"preparing-preview-message" = "Préparation de l'aperçu...";
+"loading-preview-message" = "Chargement de l'aperçu...";
+
+// MARK: - Actions Menu Sheet
+"action-menu-add-favorite" = "Ajouter aux favoris";
+"action-menu-remove-favorite" = "Supprimer des favoris";
+"action-menu-delete" = "Supprimer";
+

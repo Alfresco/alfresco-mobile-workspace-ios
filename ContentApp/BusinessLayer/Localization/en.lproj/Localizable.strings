@@ -69,16 +69,20 @@
 "help-advanced-settings-hint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
 
-// MARK: - Login Errors
+// MARK: - Snackbar errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
 "error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
 "error-login-check-connect-url" = "Check your \"Connect to\" URL.";
 "error-login-wrong-credential" = "Wrong username or password provided.";
 "error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
 "error-something-went-wrong" = "Something went wrong!";
-"approved-login-save-settings" = "Changes to the configuration have been saved.";
 "warning-login-path-empty" = "Path shouldn't be empty, go to advanced settings.";
 "error-unknown" = "Unknown error occurred.";
+
+// MARK: - Snackbar approved
+"approved-login-save-settings" = "Changes to the configuration have been saved.";
+"approved-added-favorites" = "Added to favorites";
+"approved-removed-favorites" = "Removed from favorites";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";

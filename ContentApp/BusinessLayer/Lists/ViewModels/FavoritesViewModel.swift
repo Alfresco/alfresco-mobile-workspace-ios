@@ -60,10 +60,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                                             }
                                         }
 
-                                        let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                                                  error: error,
-                                                                                  requestPagination: paginationRequest,
-                                                                                  responsePagination: result?.list.pagination)
+                                        let paginatedResponse =
+                                            PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list.pagination)
 
                                         sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
@@ -113,16 +114,24 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return true
     }
 
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
         favoritesList(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
+    override func handlePage(results: [ListNode]?,
+                             pagination: Pagination?,
+                             error: Error?) {
+        updateResults(results: results,
+                      pagination: pagination,
+                      error: error)
     }
 
     override func updatedResults(results: [ListNode]) {
-        pageUpdatingDelegate?.didUpdateList(error: nil, pagination: nil)
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: nil,
+                                            bypassScrolling: true)
     }
 
     // MARK: - Event observable
