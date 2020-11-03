@@ -69,9 +69,8 @@ class SettingsViewModel {
     }
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
-        let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut,
-                                       message: LocalizationConstants.Settings.signOutConfirmation)
-        alert.cornerRadius = dialogCornerRadius
+        let title = LocalizationConstants.Buttons.signOut
+        let message = LocalizationConstants.Settings.signOutConfirmation
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
             guard let sSelf = self else { return }
@@ -79,10 +78,12 @@ class SettingsViewModel {
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
 
-        alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
-
-        viewController.present(alert, animated: true, completion: nil)
+        if let viewController = viewController as? SystemThemableViewController {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [confirmAction,
+                                                    cancelAction]) {}
+        }
     }
 
     // MARK: - Private methods

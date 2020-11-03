@@ -202,12 +202,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         passwordField.isSecureTextEntry = true
         filePreviewPasswordField = passwordField
 
-        let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
-        let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
+        let title = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle :
+            LocalizationConstants.FilePreview.passwordPromptTitle
+        let message = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage :
+            LocalizationConstants.FilePreview.passwordPromptMessage
 
-        let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
-        alertController.cornerRadius = dialogCornerRadius
-        alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        var alertController: MDCAlertController?
+
         let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
@@ -215,19 +216,19 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
             guard let sSelf = self else { return }
 
-            alertController.dismiss(animated: true, completion: nil)
+            alertController?.dismiss(animated: true, completion: nil)
             sSelf.filePreviewCoordinatorDelegate?.navigateBack()
         }
-        alertController.addAction(submitAction)
-        alertController.addAction(cancelAction)
 
-        alertController.accessoryView = passwordField
-        applyTheme(for: alertController)
-        filePreviewPasswordDialog = alertController
-
-        present(alertController, animated: true, completion: {
+        alertController = showDialog(title: title, message: message, actions: [submitAction, cancelAction], accesoryView: passwordField, completionHandler: {
             passwordField.becomeFirstResponder()
         })
+
+        if let alert = alertController {
+            applyTheme(for: alert)
+        }
+
+        filePreviewPasswordDialog = alertController
     }
 
     func enableFullscreenContentExperience() {

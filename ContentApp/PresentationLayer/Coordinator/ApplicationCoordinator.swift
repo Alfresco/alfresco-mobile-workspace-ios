@@ -30,8 +30,14 @@ class ApplicationCoordinator: Coordinator {
         rootViewController = UINavigationController()
         splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(self.handleUnauthorizedAPIAccess(notification:)), name: Notification.Name(kAPIUnauthorizedRequestNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.loadSplashScreenCoordinator(notification:)), name: Notification.Name(kShowLoginScreenNotification), object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
+                                               name: Notification.Name(kAPIUnauthorizedRequestNotification),
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.loadSplashScreenCoordinator(notification:)),
+                                               name: Notification.Name(kShowLoginScreenNotification),
+                                               object: nil)
     }
 
     func start() {
@@ -39,17 +45,23 @@ class ApplicationCoordinator: Coordinator {
 
         let options: UIView.AnimationOptions = .transitionCrossDissolve
         let duration: TimeInterval = 0.25
-        UIView.transition(with: window, duration: duration, options: options, animations: {}, completion: nil)
+        UIView.transition(with: window,
+                          duration: duration,
+                          options: options,
+                          animations: {},
+                          completion: nil)
 
         splashScreenCoordinator.start()
         window.makeKeyAndVisible()
     }
 
     @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
-        let viewController = window.rootViewController?.presentedViewController ?? window.rootViewController
-        let alert = MDCAlertController(title: LocalizationConstants.Labels.sessionExpiredTitle,
-                                       message: LocalizationConstants.Labels.sesssionExpiredMessage)
-        alert.cornerRadius = dialogCornerRadius
+        let viewController =
+            (window.rootViewController?.presentedViewController ?? window.rootViewController) as?
+            SystemThemableViewController
+
+        let title = LocalizationConstants.Labels.sessionExpiredTitle
+        let message = LocalizationConstants.Labels.sesssionExpiredMessage
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }
@@ -60,9 +72,10 @@ class ApplicationCoordinator: Coordinator {
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
 
-        alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
-        viewController?.present(alert, animated: true, completion: nil)
+        _ = viewController?.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
     }
 
     @objc private func loadSplashScreenCoordinator(notification: Notification) {
@@ -70,7 +83,8 @@ class ApplicationCoordinator: Coordinator {
             guard let sSelf = self else { return }
 
             sSelf.rootViewController = UINavigationController()
-            sSelf.splashScreenCoordinator = SplashScreenCoordinator.init(with: sSelf.rootViewController)
+            sSelf.splashScreenCoordinator =
+                SplashScreenCoordinator.init(with: sSelf.rootViewController)
 
             sSelf.start()
         })
