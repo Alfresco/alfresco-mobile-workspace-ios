@@ -40,7 +40,9 @@ protocol ListComponentActionDelegate: class {
 }
 
 protocol ListComponentPageUpdatingDelegate: class {
-    func didUpdateList(error: Error?, pagination: Pagination?)
+    func didUpdateList(error: Error?,
+                       pagination: Pagination?,
+                       bypassScrolling: Bool)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -75,7 +77,8 @@ class ListComponentViewController: SystemThemableViewController {
         // Set up pull to refresh control
         let refreshControl = UIRefreshControl()//RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
+                                 for: .valueChanged)
         self.refreshControl = refreshControl
 
         // Register collection view footer and cell
@@ -83,7 +86,9 @@ class ListComponentViewController: SystemThemableViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                 withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier)
         let identifier = String(describing: ListElementCollectionViewCell.self)
-        collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
+        collectionView?.register(UINib(nibName: identifier,
+                                       bundle: nil),
+                                 forCellWithReuseIdentifier: identifier)
 
         addLocalization()
     }
@@ -96,7 +101,8 @@ class ListComponentViewController: SystemThemableViewController {
         progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
         progressView.progressTintColor = themingService?.activeTheme?.primaryColor
@@ -134,7 +140,9 @@ class ListComponentViewController: SystemThemableViewController {
         let indexPath = IndexPath(item: 0, section: section)
         var pointToScroll = CGPoint.zero
         if collectionView.cellForItem(at: indexPath) != nil {
-            if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
+            if let attributes =
+                collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                       at: indexPath) {
                 pointToScroll = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
             }
         }
@@ -180,8 +188,10 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let node = listDataSource?.listNode(for: indexPath)
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: listItemNodeCellHeight) }
-        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
+                             height: listItemNodeCellHeight) }
+        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
+                      height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -203,18 +213,20 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                                   withReuseIdentifier: identifier,
-                                                                                   for: indexPath) as? ListSectionCollectionReusableView else {
-                                                                                    fatalError("Invalid ListSectionCollectionReusableView type") }
+            guard let headerView =
+                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                    withReuseIdentifier: identifier,
+                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
+                fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
             headerView.applyTheme(themingService?.activeTheme)
             return headerView
 
         case UICollectionView.elementKindSectionFooter:
-            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier,
-                                                                             for: indexPath)
+            let footerView =
+                collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier,
+                                                                for: indexPath)
             return footerView
 
         default:
@@ -229,7 +241,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
 
         let identifier = String(describing: ListElementCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
+                                               for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
         cell?.delegate = self
         cell?.applyTheme(themingService?.activeTheme)
@@ -248,13 +262,21 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if error != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            if error != nil {
                 Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
-                                 type: .error,
-                                 finish: nil)
-            })
-        }
+                                 type: .error, finish: nil)
+            } else {
+                guard let action = action else { return }
+                if action.type == .addFavorite {
+                    Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
+                                     type: .approve, finish: nil)
+                } else if action.type == .removeFavorite {
+                    Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
+                                     type: .approve, finish: nil)
+                }
+            }
+        })
     }
 }
 
@@ -279,13 +301,18 @@ extension ListComponentViewController: PageFetchableDelegate {
 // MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
-    func didUpdateList(error: Error?, pagination: Pagination?) {
+    func didUpdateList(error: Error?,
+                       pagination: Pagination?,
+                       bypassScrolling: Bool) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
 
         // If loading the first page or missing pagination scroll to top
-        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil) && error == nil && !isDataSourceEmpty
+        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)
+            && error == nil
+            && !isDataSourceEmpty
+            && !bypassScrolling
 
         if error == nil {
             collectionView.reloadData()

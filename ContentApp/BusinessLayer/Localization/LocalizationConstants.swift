@@ -92,8 +92,8 @@ struct LocalizationConstants {
 
     struct Approved {
         static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
-        static let addedFavorites = NSLocalizedString("approved-added-favorites" , comment: "")
-        static let removedFavorites = NSLocalizedString("approved-removed-favorites" , comment: "")
+        static let addedFavorites = NSLocalizedString("approved-added-favorites", comment: "")
+        static let removedFavorites = NSLocalizedString("approved-removed-favorites", comment: "")
     }
 
     struct Theme {

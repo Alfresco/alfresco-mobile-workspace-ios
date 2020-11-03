@@ -93,7 +93,9 @@ class PageFetchingViewModel {
             }
         }
 
-        pageUpdatingDelegate?.didUpdateList(error: error, pagination: pagination)
+        pageUpdatingDelegate?.didUpdateList(error: error,
+                                            pagination: pagination,
+                                            bypassScrolling: false)
     }
 
     func clear() {
