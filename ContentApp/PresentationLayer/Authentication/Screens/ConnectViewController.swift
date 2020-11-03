@@ -205,12 +205,13 @@ class ConnectViewController: SystemThemableViewController {
 
     func showError(message: String) {
         Snackbar.dimissAll()
-        let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: false)
-        snackbar.show(completion: { [weak self] () in
+        Snackbar.display(with: message,
+                         type: .error,
+                         automaticallyDismisses: false) { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.errorShowInProgress = false
             sSelf.connectTextFieldAddMaterialComponents()
-        })
+        }
     }
 }
 

@@ -30,7 +30,17 @@ class Snackbar {
     private var type: SnackBarType
     private var snackBar: MDCSnackbarMessage
 
-    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
+    static func display(with message: String,
+                        type: SnackBarType,
+                        automaticallyDismisses: Bool = true,
+                        finish: (() -> Void)?) {
+        let snackbar = Snackbar(with: message,
+                                type: type,
+                                automaticallyDismisses: automaticallyDismisses)
+        snackbar.show(completion: finish)
+    }
+
+    private init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
         self.type = type
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses

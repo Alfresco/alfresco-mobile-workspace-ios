@@ -224,11 +224,12 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
         if error.responseCode == 401 {
             applyThemingInTextField(errorTheme: true)
         }
-        let snackbar = Snackbar(with: error.mapToMessage(), type: .error, automaticallyDismisses: false)
-        snackbar.show(completion: { [weak self] () in
+        Snackbar.display(with: error.mapToMessage(),
+                         type: .error,
+                         automaticallyDismisses: false) { [weak self] () in
             guard let sSelf = self else { return }
             sSelf.applyThemingInTextField(errorTheme: false)
-        })
+        }
     }
 
     func logInSuccessful() {
@@ -238,8 +239,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInWarning(with message: String) {
         activityIndicator?.state = .isIdle
-        let snackbar = Snackbar(with: message, type: .warning, automaticallyDismisses: false)
-        snackbar.show(completion: nil)
+        Snackbar.display(with: message, type: .warning, automaticallyDismisses: false, finish: nil)
     }
 }
 

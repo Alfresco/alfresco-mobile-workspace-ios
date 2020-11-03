@@ -250,9 +250,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         if error != nil {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
-                                        type: .error)
-                snackbar.show(completion: nil)
+                Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                                 type: .error,
+                                 finish: nil)
             })
         }
     }
