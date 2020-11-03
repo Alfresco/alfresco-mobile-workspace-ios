@@ -118,7 +118,6 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         updateResults(results: results, pagination: pagination, error: error)
     }
 
-
     // MARK: - Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {

@@ -28,7 +28,7 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
     weak var delegate: ResultsViewModelDelegate?
 
     // MARK: Event observable
-    
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node
