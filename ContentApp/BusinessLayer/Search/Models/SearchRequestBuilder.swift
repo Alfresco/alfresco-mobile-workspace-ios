@@ -81,7 +81,7 @@ struct SearchRequestBuilder {
     }
 
     private static func requestInclude(_ chipFilters: [SearchChipItem]?) -> RequestInclude? {
-        return ["path"]
+        return [kAPIIncludePathNode]
     }
 
     // MARK: - Search

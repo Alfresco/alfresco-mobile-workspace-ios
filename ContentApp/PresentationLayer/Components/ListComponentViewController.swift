@@ -248,13 +248,21 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if error != nil {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            if error != nil {
                 Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
-                                 type: .error,
-                                 finish: nil)
-            })
-        }
+                                 type: .error, finish: nil)
+            } else {
+                guard let action = action else { return }
+                if action.type == .addFavorite {
+                    Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
+                                     type: .approve, finish: nil)
+                } else if action.type == .removeFavorite {
+                    Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
+                                     type: .approve, finish: nil)
+                }
+            }
+        })
     }
 }
 
