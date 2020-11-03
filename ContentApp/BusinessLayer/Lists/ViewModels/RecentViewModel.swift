@@ -106,6 +106,9 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     override func updatedResults(results: [ListNode]) {
         groupedLists = []
         addInGroupList(self.results)
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: nil,
+                                            bypassScrolling: true)
     }
 
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -155,6 +158,11 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             let node = publishedEvent.node
             for listNode in results where listNode == node {
                 listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfMovedNode)
             }
         }
     }

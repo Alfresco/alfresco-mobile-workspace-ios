@@ -30,8 +30,8 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
                                          type: .removeFavorite)
-        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.delete,
-                                      type: .delete)
+        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
+                                      type: .moveTrash)
         let actions1 = [infoAction]
         let actions2 = [(node.favorite) ? removeFavAction : addFavAction, deleteAction]
         actions.append(actions1)

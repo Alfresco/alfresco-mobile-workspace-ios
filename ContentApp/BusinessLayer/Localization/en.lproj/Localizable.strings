@@ -83,6 +83,7 @@
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
 "approved-added-favorites" = "Added to favorites";
 "approved-removed-favorites" = "Removed from favorites";
+"approved-moved-trash" = "%@ moved to trash";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -132,5 +133,5 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Add to favorites";
 "action-menu-remove-favorite" = "Remove from favorites";
-"action-menu-delete" = "Delete";
+"action-menu-move-trash" = "Move to trash";
 "action-menu-download" = "Download";

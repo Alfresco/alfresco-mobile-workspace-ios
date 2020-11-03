@@ -114,7 +114,35 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         updateResults(results: results, pagination: pagination, error: error)
     }
 
+    override func updatedResults(results: [ListNode]) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: nil,
+                                            bypassScrolling: true)
+    }
+
     // MARK: Event Observable
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+
+            switch publishedEvent.eventType {
+            case .addToFavourite:
+                if results.contains(node) == false {
+                    results.append(node)
+                }
+            case .removeFromFavourites:
+                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                    results.remove(at: indexOfRemovedFavorite)
+                }
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if results.contains(node) == false {
+                    results.append(node)
+                }
+            }
+        }
     }
 }

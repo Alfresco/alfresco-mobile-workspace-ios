@@ -171,12 +171,6 @@ class FilePreviewViewController: SystemThemableViewController {
             passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
     }
-
-    private func displaySnackbar(_ message: String, type: SnackBarType) {
-        DispatchQueue.main.async {
-            Snackbar.display(with: message, type: type, finish: nil)
-        }
-    }
 }
 
 // MARK: - PreviewFile ViewModel Delegate
@@ -264,7 +258,8 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func didFinishNodeDetails(error: Error?) {
         if error != nil {
-            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
+            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                             type: .error, automaticallyDismisses: false, finish: nil)
             toolbar.isHidden = true
         } else {
             toolbar.isHidden = false
@@ -282,16 +277,34 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if error != nil {
-            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
-        } else {
-            guard let action = action else { return }
-            if action.type == .addFavorite {
-                displaySnackbar(LocalizationConstants.Approved.removedFavorites, type: .approve)
-            } else if action.type == .removeFavorite {
-                displaySnackbar(LocalizationConstants.Approved.addedFavorites, type: .approve)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+            guard let sSelf = self else { return }
+            if error != nil {
+                Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                                 type: .error, finish: nil)
+            } else {
+                guard let action = action else { return }
+                switch action.type {
+                case .more:
+                    sSelf.filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
+                                                                                     delegate: sSelf)
+                case .addFavorite:
+                    Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
+                                     type: .approve, finish: nil)
+                case .removeFavorite:
+                    Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
+                                     type: .approve, finish: nil)
+                case .moveTrash:
+                    sSelf.filePreviewCoordinatorDelegate?.navigateBack()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                                      node.title),
+                                         type: .approve, finish: nil)
+                    })
+                default: break
+                }
             }
-        }
+        })
     }
 }
 

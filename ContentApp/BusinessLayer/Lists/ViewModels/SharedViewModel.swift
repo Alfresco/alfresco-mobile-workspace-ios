@@ -116,6 +116,12 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         updateResults(results: results, pagination: pagination, error: error)
     }
 
+    override func updatedResults(results: [ListNode]) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: nil,
+                                            bypassScrolling: true)
+    }
+
     // MARK: - Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
@@ -123,6 +129,11 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             let node = publishedEvent.node
             for listNode in results where listNode == node {
                 listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfMovedNode)
             }
         }
     }

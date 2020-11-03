@@ -68,13 +68,13 @@ class NodeActionsViewModel {
                 sSelf.requestAddToFavorites()
             case .removeFavorite:
                 sSelf.requestRemoveFromFavorites()
-            case .delete:
-                sSelf.requestDelete()
+            case .moveTrash:
+                sSelf.requestMoveToTrash()
             default:
-                    DispatchQueue.main.async {
-                        sSelf.delegate?.nodeActionFinished(with: sSelf.action,
-                                                           node: sSelf.node,
-                                                           error: nil)
+                DispatchQueue.main.async {
+                    sSelf.delegate?.nodeActionFinished(with: sSelf.action,
+                                                       node: sSelf.node,
+                                                       error: nil)
                     if let handler = sSelf.actionFinishedHandler {
                         handler()
                     }
@@ -117,9 +117,13 @@ class NodeActionsViewModel {
         }
     }
 
-    private func requestDelete() {
+    private func requestMoveToTrash() {
         NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
+            if error == nil {
+                let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
+                sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+            }
             sSelf.handleResponse(error: error)
         }
     }

@@ -25,6 +25,14 @@ enum ElementKindType: String {
     case site
 }
 
+enum AllowableOperationsType: String {
+    case update
+    case create
+    case updatePermissions
+    case delete
+    case unknown
+}
+
 class ListNode: Hashable {
     var guid: String
     var mimeType: String?
@@ -33,10 +41,14 @@ class ListNode: Hashable {
     var modifiedAt: Date?
     var kind: ElementKindType
     var favorite: Bool
-    var allowableOperations: [String]?
+    var allowableOperations: [AllowableOperationsType]?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(guid)
+    }
+
+    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
+        return lhs.guid == rhs.guid
     }
 
     init(guid: String,
@@ -54,10 +66,20 @@ class ListNode: Hashable {
         self.modifiedAt = modifiedAt
         self.kind = kind
         self.favorite = favorite
-        self.allowableOperations = allowableOperations
+        self.allowableOperations = parse(allowableOperations)
     }
 
-    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid
+    func hasPersmission(to type: AllowableOperationsType) -> Bool {
+        guard let allowableOperations = allowableOperations else { return favorite }
+        return allowableOperations.contains(type)
+    }
+
+    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
+        guard let allowableOperations = allowableOperations else { return nil }
+        var allowableOperationsTypes = [AllowableOperationsType]()
+        for allowableOperation in allowableOperations {
+            allowableOperationsTypes.append(AllowableOperationsType(rawValue: allowableOperation) ?? .unknown)
+        }
+        return allowableOperationsTypes
     }
 }

@@ -65,6 +65,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
@@ -78,6 +81,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                                  listRequest: nil)
         eventBusService?.register(observer: listViewModel,
                                   for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: listViewModel,
+                                  for: MoveEvent.self,
                                   nodeTypes: [.file, .folder])
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID

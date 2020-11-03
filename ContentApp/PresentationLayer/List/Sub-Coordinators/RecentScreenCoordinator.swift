@@ -59,6 +59,13 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
 
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: listViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file])
+
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
         self.navigationViewController = navigationViewController

@@ -56,6 +56,9 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
@@ -71,10 +74,19 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
                                       nodeTypes: [.file, .folder])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder])
             return viewModel
         case .myLibraries:
             let viewModel = MyLibrariesViewModel(with: accountService,
                                                  listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.site])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.site])
             return viewModel
         case .shared:
             let viewModel = SharedViewModel(with: accountService,
@@ -82,16 +94,26 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
                                       nodeTypes: [.file])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file])
             return viewModel
 
         case .trash:
-            return TrashViewModel(with: accountService,
+            let viewModel = TrashViewModel(with: accountService,
                                   listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder, .site])
+            return viewModel
         default:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
+                                      nodeTypes: [.file, .folder])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
                                       nodeTypes: [.file, .folder])
             return viewModel
         }

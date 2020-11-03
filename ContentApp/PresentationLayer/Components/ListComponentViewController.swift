@@ -268,12 +268,18 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
                                  type: .error, finish: nil)
             } else {
                 guard let action = action else { return }
-                if action.type == .addFavorite {
+                switch action.type {
+                case .addFavorite:
                     Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
                                      type: .approve, finish: nil)
-                } else if action.type == .removeFavorite {
+                case .removeFavorite:
                     Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
                                      type: .approve, finish: nil)
+                case .moveTrash:
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                                  node.title),
+                                     type: .approve, finish: nil)
+                default: break
                 }
             }
         })

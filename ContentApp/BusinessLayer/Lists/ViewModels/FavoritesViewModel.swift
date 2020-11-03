@@ -150,6 +150,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                     results.remove(at: indexOfRemovedFavorite)
                 }
             }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfMovedNode)
+            }
         }
     }
 }

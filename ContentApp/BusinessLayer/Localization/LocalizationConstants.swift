@@ -94,6 +94,7 @@ struct LocalizationConstants {
         static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
         static let addedFavorites = NSLocalizedString("approved-added-favorites", comment: "")
         static let removedFavorites = NSLocalizedString("approved-removed-favorites", comment: "")
+        static let movedTrash = NSLocalizedString("approved-moved-trash", comment: "")
     }
 
     struct Theme {
@@ -152,7 +153,7 @@ struct LocalizationConstants {
     struct ActionMenu {
         static let addFavorite = NSLocalizedString("action-menu-add-favorite", comment: "")
         static let removeFavorite = NSLocalizedString("action-menu-remove-favorite", comment: "")
-        static let delete = NSLocalizedString("action-menu-delete", comment: "")
+        static let moveTrash = NSLocalizedString("action-menu-move-trash", comment: "")
         static let download = NSLocalizedString("action-menu-download", comment: "")
     }
 }

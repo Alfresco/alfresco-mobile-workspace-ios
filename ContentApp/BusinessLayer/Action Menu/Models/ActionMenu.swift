@@ -43,6 +43,6 @@ enum ActionMenuType: String {
     case more = "ic-action-more"
     case addFavorite = "ic-action-outline-favorite"
     case removeFavorite = "ic-action-fill-favorite"
-    case delete = "ic-action-delete"
+    case moveTrash = "ic-action-delete"
     case download = "ic-action-download"
 }

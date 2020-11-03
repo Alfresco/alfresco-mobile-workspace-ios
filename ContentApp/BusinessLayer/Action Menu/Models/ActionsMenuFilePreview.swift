@@ -30,12 +30,21 @@ struct ActionsMenuFilePreview: ActionsMenuProtocol {
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
                                          type: .removeFavorite)
-        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.delete,
-                                      type: .delete)
+        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
+                                      type: .moveTrash)
         let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
                                       type: .download)
         let actions1 = [infoAction]
-        let actions2 = [downloadAction, (node.favorite) ? removeFavAction : addFavAction, deleteAction]
+        var actions2 = [downloadAction]
+
+        if node.favorite {
+            actions2.append(removeFavAction)
+        } else {
+            actions2.append(addFavAction)
+        }
+        if node.hasPersmission(to: .delete) {
+            actions2.append(deleteAction)
+        }
         actions.append(actions1)
         actions.append(actions2)
     }
