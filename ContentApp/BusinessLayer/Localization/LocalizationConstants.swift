@@ -84,11 +84,16 @@ struct LocalizationConstants {
         static let noAuthAlfrescoURL = NSLocalizedString("error-login-alfresco-url", comment: "")
         static let checkConnectURL = NSLocalizedString("error-login-check-connect-url", comment: "")
         static let wrongCredentials = NSLocalizedString("error-login-wrong-credential", comment: "")
-        static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
         static let pathEmpty = NSLocalizedString("warning-login-path-empty", comment: "")
         static let noLongerAuthenticated = NSLocalizedString("error-logjn-no-longer-authenticated", comment: "")
         static let somethingWentWrong = NSLocalizedString("error-something-went-wrong", comment: "")
         static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
+    }
+
+    struct Approved {
+        static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
+        static let addedFavorites = NSLocalizedString("approved-added-favorites" , comment: "")
+        static let removedFavorites = NSLocalizedString("approved-removed-favorites" , comment: "")
     }
 
     struct Theme {

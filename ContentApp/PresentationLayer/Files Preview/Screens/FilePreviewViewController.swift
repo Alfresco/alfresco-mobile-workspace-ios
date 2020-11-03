@@ -171,6 +171,12 @@ class FilePreviewViewController: SystemThemableViewController {
             passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
     }
+
+    private func displaySnackbar(_ message: String, type: SnackBarType) {
+        DispatchQueue.main.async {
+            Snackbar.display(with: message, type: type, finish: nil)
+        }
+    }
 }
 
 // MARK: - PreviewFile ViewModel Delegate
@@ -258,11 +264,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func didFinishNodeDetails(error: Error?) {
         if error != nil {
-            DispatchQueue.main.async {
-                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
-                                        type: .error)
-                snackbar.show(completion: nil)
-            }
+            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
             toolbar.isHidden = true
         } else {
             toolbar.isHidden = false
@@ -281,25 +283,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         if error != nil {
-            DispatchQueue.main.async {
-                let snackbar = Snackbar(with: LocalizationConstants.Errors.errorUnknown,
-                                        type: .error)
-                snackbar.show(completion: nil)
-            }
+            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
         } else {
             guard let action = action else { return }
-            var message = ""
             if action.type == .addFavorite {
-                message = LocalizationConstants.ActionMenu.removeFavorite
+                displaySnackbar(LocalizationConstants.Approved.removedFavorites, type: .approve)
             } else if action.type == .removeFavorite {
-                message = LocalizationConstants.ActionMenu.addFavorite
-            }
-            if message != "" {
-                DispatchQueue.main.async {
-                    let snackbar = Snackbar(with: message,
-                                            type: .approve)
-                    snackbar.show(completion: nil)
-                }
+                displaySnackbar(LocalizationConstants.Approved.addedFavorites, type: .approve)
             }
         }
     }

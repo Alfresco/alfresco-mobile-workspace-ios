@@ -206,8 +206,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = error as NSError? {
             message = error.localizedFailureReason ?? error.localizedDescription
         }
-        let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: true)
-        snackbar.show(completion: nil)
+        Snackbar.display(with: message, type: .error, finish: nil)
     }
 
     private func apply(fade: Bool, to object: UIView) {

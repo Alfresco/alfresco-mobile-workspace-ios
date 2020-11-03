@@ -198,8 +198,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
 
-        let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar.show(completion: nil)
+        Snackbar.display(with: LocalizationConstants.Approved.saveSettings, type: .approve, finish: nil)
     }
 }
 
