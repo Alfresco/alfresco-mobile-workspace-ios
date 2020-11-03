@@ -49,6 +49,17 @@ class ActionMenuViewController: SystemThemableViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         calculatePreferredSize(size)
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.collectionView?.collectionViewLayout.invalidateLayout()
+        }
+    }
+
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        collectionView.reloadData()
     }
 
     // MARK: - Private Utils
