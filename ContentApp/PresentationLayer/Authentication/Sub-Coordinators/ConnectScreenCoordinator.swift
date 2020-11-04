@@ -114,7 +114,7 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
     func showApplicationTabBar() {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let tabBarCoordinator = TabBarScreenCoordinator(with: containerViewNavigationController)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.async {
                 tabBarCoordinator.start()
             }
             self.tabBarCoordinator = tabBarCoordinator

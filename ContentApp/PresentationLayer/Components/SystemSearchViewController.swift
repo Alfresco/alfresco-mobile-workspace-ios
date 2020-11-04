@@ -71,7 +71,7 @@ class SystemSearchViewController: SystemThemableViewController {
     @objc func searchButtonTapped() {
         navigationItem.searchController = tagSearchController
         tagSearchController?.searchBar.alpha = 0.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.tagSearchController?.isActive = true
             sSelf.tagSearchController?.searchBar.becomeFirstResponder()
