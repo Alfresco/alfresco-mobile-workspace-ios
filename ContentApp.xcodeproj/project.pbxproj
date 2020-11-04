@@ -295,6 +295,7 @@
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		E300204E24A0EC90004FB12D /* RecentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewModel.swift; sourceTree = "<group>"; };
 		E303CE2024C876DF00E0BF5F /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		E30548B32552DC9400F474F5 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+ScrollTo.swift"; sourceTree = "<group>"; };
 		E30ADEF424A1EB7400C8C4E2 /* DiskServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskServices.swift; sourceTree = "<group>"; };
 		E30E341B24B87B7500836629 /* SearchChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipItem.swift; sourceTree = "<group>"; };
@@ -1355,6 +1356,7 @@
 				fr,
 				it,
 				nl,
+				de,
 			);
 			mainGroup = E334C03324755D8E00F74880;
 			productRefGroup = E334C03D24755D8E00F74880 /* Products */;
@@ -1694,6 +1696,7 @@
 				E378DC9B2550423200E96C99 /* fr */,
 				E378DC9C2550425900E96C99 /* it */,
 				E378DC9D255042AA00E96C99 /* nl */,
+				E30548B32552DC9400F474F5 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
