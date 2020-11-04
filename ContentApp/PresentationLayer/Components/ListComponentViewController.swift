@@ -275,7 +275,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
                 snackBarMessage = LocalizationConstants.Approved.addedFavorites
                 snackBarType = .approve
             case .moveTrash:
-                snackBarMessage = LocalizationConstants.Approved.movedTrash
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash, node.title)
                 snackBarType = .approve
             default: break
             }
