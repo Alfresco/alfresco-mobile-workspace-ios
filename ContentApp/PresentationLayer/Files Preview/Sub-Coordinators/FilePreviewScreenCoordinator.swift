@@ -46,7 +46,6 @@ class FilePreviewScreenCoordinator: Coordinator {
         viewController.filePreviewCoordinatorDelegate = self
         filePreviewViewModel.viewModelDelegate = viewController
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.filePreviewViewModel = filePreviewViewModel
 
         eventBusService?.register(observer: filePreviewViewModel,

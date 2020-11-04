@@ -48,7 +48,6 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter

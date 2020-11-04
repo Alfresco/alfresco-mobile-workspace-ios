@@ -58,8 +58,6 @@ class ListComponentViewController: SystemThemableViewController {
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    var eventBusService: EventBusService?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -262,6 +260,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
         if error != nil {
             Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
                              type: .error, finish: nil)
@@ -281,6 +280,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             default: break
             }
         }
+        })
     }
 }
 

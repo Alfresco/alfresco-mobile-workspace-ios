@@ -47,7 +47,6 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
         viewController.title = browseNode.title
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel

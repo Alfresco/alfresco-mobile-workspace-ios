@@ -49,7 +49,6 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = foldersAndFilesViewModel

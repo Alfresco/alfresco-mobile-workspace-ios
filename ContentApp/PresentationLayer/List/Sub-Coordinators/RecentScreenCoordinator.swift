@@ -45,7 +45,6 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self

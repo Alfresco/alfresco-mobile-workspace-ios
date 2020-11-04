@@ -24,8 +24,6 @@ class SystemSearchViewController: SystemThemableViewController {
     weak var listItemActionDelegate: ListItemActionDelegate?
     var tagSearchController: UISearchController?
 
-    var eventBusService: EventBusService?
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -119,7 +117,6 @@ class SystemSearchViewController: SystemThemableViewController {
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
         rvc.themingService = themingService
-        rvc.eventBusService = eventBusService
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = resultViewModel
         rvc.listItemActionDelegate = self.listItemActionDelegate

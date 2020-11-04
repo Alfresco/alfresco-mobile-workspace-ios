@@ -35,8 +35,6 @@ class FilePreviewViewController: SystemThemableViewController {
 
     var needsContraintsForFullScreen = false
 
-    var eventBusService: EventBusService?
-
     var filePreviewViewModel: FilePreviewViewModel?
     var isFullScreen = false
 
