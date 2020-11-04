@@ -115,8 +115,10 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let action = actionMenuModel?.actions()?[indexPath.section][indexPath.row] else { return }
-        nodeActionsModel?.tapped(on: action, finished: {})
-        self.dismiss(animated: true)
+        nodeActionsModel?.tapped(on: action, finished: { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.dismiss(animated: true)
+        })
     }
 }
 

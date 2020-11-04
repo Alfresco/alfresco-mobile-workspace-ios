@@ -262,24 +262,34 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+        var snackBarMessage: String?
+        var snackBarType: SnackBarType?
+
         if error != nil {
-            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
-                             type: .error, finish: nil)
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+            snackBarType = .error
         } else {
             guard let action = action else { return }
             switch action.type {
             case .addFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
-                                 type: .approve, finish: nil)
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+                snackBarType = .approve
             case .removeFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
-                                 type: .approve, finish: nil)
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+                snackBarType = .approve
             case .moveTrash:
-                Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                              node.title),
-                                 type: .approve, finish: nil)
+                snackBarMessage = LocalizationConstants.Approved.movedTrash
+                snackBarType = .approve
             default: break
             }
+        }
+
+        if let message = snackBarMessage, let type = snackBarType {
+            let snackBar = Snackbar.init(with: message,
+                                         type: type,
+                                         automaticallyDismisses: true)
+            snackBar.snackBar.presentationHostViewOverride = view
+            snackBar.show(completion: nil)
         }
     }
 }

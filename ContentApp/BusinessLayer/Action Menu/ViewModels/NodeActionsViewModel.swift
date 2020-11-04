@@ -132,10 +132,9 @@ class NodeActionsViewModel {
         if let error = error {
             AlfrescoLog.error(error)
         }
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.delegate?.nodeActionFinished(with: sSelf.action, node: sSelf.node, error: error)
-        }
+
+        delegate?.nodeActionFinished(with: action, node: node, error: error)
+
         if let handler = actionFinishedHandler {
             handler()
         }
