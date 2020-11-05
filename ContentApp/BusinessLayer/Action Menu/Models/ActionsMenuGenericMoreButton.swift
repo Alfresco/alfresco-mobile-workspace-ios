@@ -41,8 +41,14 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
             actions2.append(addFavAction)
         }
 
-        if node.hasPersmission(to: .delete) {
-            actions2.append(deleteAction)
+        if node.kind == .site {
+            if node.hasRole(to: .manager) {
+                actions2.append(deleteAction)
+            }
+        } else {
+            if node.hasPersmission(to: .delete) {
+                actions2.append(deleteAction)
+            }
         }
 
         let actions1 = [infoAction]

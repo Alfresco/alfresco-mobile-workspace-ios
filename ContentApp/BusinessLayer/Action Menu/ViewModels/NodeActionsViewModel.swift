@@ -30,6 +30,8 @@ protocol NodeActionsViewModelDelegate: class {
 class NodeActionsViewModel {
     private var action: ActionMenu?
     private var node: ListNode
+    private var informNodes: [ListNode] = []
+    private var relativPath: String?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
     weak var delegate: NodeActionsViewModelDelegate?
     private var accountService: AccountService?
@@ -118,13 +120,62 @@ class NodeActionsViewModel {
     }
 
     private func requestMoveToTrash() {
-        NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
-            guard let sSelf = self else { return }
-            if error == nil {
-                let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
-                sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+        if node.kind == .site {
+            relativPath = kAPIPathRelativeForSites
+            addNodesFrom(from: node.guid) { [weak self] in
+                guard let sSelf = self else { return }
+                SitesAPI.deleteSite(siteId: sSelf.node.siteID) { [weak self] (_, error) in
+                    guard let sSelf = self else { return }
+                    if error == nil {
+                        let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
+                        sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                        for listNode in sSelf.informNodes {
+                            let moveEvent = MoveEvent(node: listNode, eventType: .moveToTrash)
+                            sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                        }
+                    }
+                    sSelf.handleResponse(error: error)
+                }
             }
-            sSelf.handleResponse(error: error)
+        } else {
+            relativPath = nil
+            addNodesFrom(from: node.guid) { [weak self] in
+                guard let sSelf = self else { return }
+                NodesAPI.deleteNode(nodeId: sSelf.node.guid) { (_, error) in
+                    if error == nil {
+                        let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
+                        sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                        for listNode in sSelf.informNodes {
+                            let moveEvent = MoveEvent(node: listNode, eventType: .moveToTrash)
+                            sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                        }
+                    }
+                    sSelf.handleResponse(error: error)
+                }
+            }
+        }
+    }
+
+    private func addNodesFrom(from folderGuid: String, finish: @escaping (() -> Void)) {
+        NodesAPI.listNodeChildren(nodeId: folderGuid,
+                                  skipCount: nil,
+                                  maxItems: nil,
+                                  orderBy: nil,
+                                  _where: nil,
+                                  include: nil,
+                                  relativePath: relativPath,
+                                  includeSource: nil,
+                                  fields: nil) { [weak self] (result, _) in
+            guard let sSelf = self else { return }
+            sSelf.relativPath = nil
+            if let entries = result?.list?.entries {
+                let listNodes = NodeChildMapper.map(entries)
+                sSelf.informNodes.append(contentsOf: listNodes)
+                for listNode in listNodes where listNode.kind == .folder {
+                    sSelf.addNodesFrom(from: listNode.guid, finish: finish)
+                }
+                finish()
+            }
         }
     }
 

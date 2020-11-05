@@ -43,6 +43,7 @@ struct DeleteNodeMapper {
             }
         }
         return ListNode(guid: node._id,
+                        siteID: node._id,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,

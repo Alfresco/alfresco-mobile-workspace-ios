@@ -185,6 +185,7 @@ class FileIcon {
             "x-world/x-vrml": .generic,
 
             "cm:folder": .folder,
+            "st:sites": .folder,
             "st:site": .site
         ]
     }
