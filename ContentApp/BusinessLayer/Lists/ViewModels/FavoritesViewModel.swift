@@ -103,6 +103,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         favoritesList(with: nil)
     }
 
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        completion(listNode, nil)
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }

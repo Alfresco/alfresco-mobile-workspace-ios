@@ -21,19 +21,6 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
-    func refreshList()
-}
-
 protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
     func didUpdateList(error: Error?, pagination: Pagination?)
@@ -297,10 +284,15 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
 // MARK: - ListElementCollectionViewCell Delegate
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
-    func moreButtonTapped(for element: ListNode?) {
-        if let node = element {
-            listItemActionDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        }
+    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
+        cell.startLoadingProgressView()
+        listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
+            guard let sSelf = self else { return }
+            if let listNode = listNode {
+                sSelf.listItemActionDelegate?.showActionSheetForListItem(node: listNode, delegate: sSelf)
+            }
+            cell.stopLoadingProgressView()
+        })
     }
 }
 

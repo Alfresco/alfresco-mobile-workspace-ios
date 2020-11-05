@@ -107,6 +107,21 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        NodesAPI.getNode(nodeId: node.guid,
+                         include: [kAPIIncludePathNode,
+                                   kAPIIncludeAllowableOperationsNode,
+                                   kAPIIncludeIsFavoriteNode],
+                         relativePath: nil,
+                         fields: nil) { (result, error) in
+            if let entry = result?.entry {
+                let listNode = NodeChildMapper.create(from: entry)
+                completion(listNode, error)
+            }
+        }
+    }
+
     override func updatedResults(results: [ListNode]) {
         groupedLists = []
         addInGroupList(self.results)

@@ -114,6 +114,19 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         request(with: nil)
     }
 
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        FavoritesAPI.listFavoriteSitesForPerson(personId: kAPIPathMe) { (result, error) in
+            if let entries = result?.list.entries {
+                for entry in entries where entry.entry._id == node.siteID {
+                    node.favorite = true
+                    break
+                }
+            }
+            completion(node, error)
+        }
+    }
+
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }

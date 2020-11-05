@@ -103,4 +103,31 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         currentPage = 1
         delegate?.refreshResults()
     }
+
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        if node.kind == .site {
+            FavoritesAPI.listFavoriteSitesForPerson(personId: kAPIPathMe) { (result, error) in
+                if let entries = result?.list.entries {
+                    for entry in entries where entry.entry._id == node.siteID {
+                        node.favorite = true
+                        break
+                    }
+                }
+                completion(node, error)
+            }
+        } else {
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                }
+            }
+        }
+    }
 }

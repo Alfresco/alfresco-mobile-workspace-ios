@@ -144,11 +144,11 @@ class FilePreviewViewModel: EventObservable {
             NodesAPI.getNode(nodeId: guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode]) { (node, error) in
+                                       kAPIIncludeAllowableOperationsNode]) { (result, error) in
                 if let error = error {
                     sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
-                } else if let node = node {
-                    let listNode = NodeChildMapper.create(from: node)
+                } else if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
                     sSelf.listNode = listNode
                     let menu = ActionsMenuFilePreview(with: listNode)
                     sSelf.actionMenuViewModel = ActionMenuViewModel(with: menu,
