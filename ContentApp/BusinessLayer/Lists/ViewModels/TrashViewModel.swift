@@ -77,6 +77,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         return false
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }

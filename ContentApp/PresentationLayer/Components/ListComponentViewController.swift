@@ -30,6 +30,7 @@ protocol ListComponentDataSourceProtocol: class {
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayMoreButton() -> Bool
+    func shouldDisplayNodePath() -> Bool
     func refreshList()
 }
 
@@ -246,6 +247,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         cell?.delegate = self
         cell?.applyTheme(themingService?.activeTheme)
         cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
+        if listDataSource?.shouldDisplayNodePath() == false {
+            cell?.subtitle.text = ""
+        }
         return cell ?? UICollectionViewCell()
     }
 

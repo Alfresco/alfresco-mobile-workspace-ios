@@ -45,6 +45,7 @@ class EventBusService: EventBusServiceProtocol, Service {
             eventObserverAssociation[eventType] = observers
         } else {
             let array = NSPointerArray.weakObjects()
+            observer.supportedNodeTypes = nodeTypes
             array.addObject(observer)
             eventObserverAssociation[eventType] = array
         }

@@ -55,6 +55,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                                       orderBy: nil,
                                       _where: nil,
                                       include: [kAPIIncludeIsFavoriteNode,
+                                                kAPIIncludePathNode,
                                                 kAPIIncludeAllowableOperationsNode],
                                       relativePath: relativePath,
                                       includeSource: nil,
@@ -80,11 +81,15 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return false
     }
 
+    // MARK: - ListViewModelProtocol
+
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
     func shouldDisplayMoreButton() -> Bool {
         return true
     }
-
-    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty

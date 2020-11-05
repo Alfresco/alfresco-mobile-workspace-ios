@@ -105,6 +105,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return true
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
