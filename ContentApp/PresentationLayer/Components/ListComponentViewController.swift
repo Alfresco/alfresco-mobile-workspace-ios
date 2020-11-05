@@ -29,8 +29,7 @@ protocol ListComponentActionDelegate: class {
 
 protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?,
-                       bypassScrolling: Bool)
+                       pagination: Pagination?)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -308,8 +307,7 @@ extension ListComponentViewController: PageFetchableDelegate {
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?,
-                       bypassScrolling: Bool) {
+                       pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
@@ -318,7 +316,6 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)
             && error == nil
             && !isDataSourceEmpty
-            && !bypassScrolling
 
         if error == nil {
             collectionView.reloadData()

@@ -27,10 +27,9 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
 
-    override func updatedResults(results: [ListNode]) {
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: nil,
-                                            bypassScrolling: true)
+                                            pagination: pagination)
     }
 
     // MARK: Event observable

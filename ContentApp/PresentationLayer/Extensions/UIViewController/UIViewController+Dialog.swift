@@ -19,7 +19,7 @@
 import UIKit
 import MaterialComponents.MaterialDialogs
 
-extension SystemThemableViewController {
+extension UIViewController {
     func showDialog(title: String,
                     message: String,
                     actions: [MDCAlertAction]? = nil,
@@ -40,7 +40,8 @@ extension SystemThemableViewController {
             alertController.accessoryView = accesoryView
         }
 
-        if let themingService = self.themingService {
+        if let themingService =
+            ApplicationBootstrap.shared().repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
             alertController.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
             alertController.titleColor = themingService.activeTheme?.onSurfaceColor
             alertController.messageColor = themingService.activeTheme?.onBackgroundColor

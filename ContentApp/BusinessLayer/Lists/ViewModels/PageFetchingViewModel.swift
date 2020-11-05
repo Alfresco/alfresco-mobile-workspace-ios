@@ -38,7 +38,12 @@ class PageFetchingViewModel {
     var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
         didSet {
-            updatedResults(results: results)
+            let pagination = Pagination(count: 0,
+                                        hasMoreItems: false,
+                                        totalItems: 0,
+                                        skipCount: Int64(currentPage * kListPageSize),
+                                        maxItems: 0)
+            updatedResults(results: results, pagination: pagination)
         }
     }
 
@@ -47,8 +52,11 @@ class PageFetchingViewModel {
             guard let sSelf = self else { return }
 
             if sSelf.hasMoreItems {
-                let nextPage = RequestPagination(maxItems: kListPageSize, skipCount: sSelf.currentPage * kListPageSize)
-                sSelf.fetchItems(with: nextPage, userInfo: userInfo, completionHandler: { (paginatedResponse) in
+                let nextPage = RequestPagination(maxItems: kListPageSize,
+                                                 skipCount: sSelf.currentPage * kListPageSize)
+                sSelf.fetchItems(with: nextPage,
+                                 userInfo: userInfo,
+                                 completionHandler: { (paginatedResponse) in
                     sSelf.handlePaginatedResponse(response: paginatedResponse)
                 })
             }
@@ -61,8 +69,10 @@ class PageFetchingViewModel {
                 guard let sSelf = self else { return }
                 sSelf.handlePage(results: nil, pagination: nil, error: error)
             }
-        } else if let results = response.results, let skipCount = response.responsePagination?.skipCount {
-            self.hasMoreItems = (Int64(results.count) + skipCount) == response.responsePagination?.totalItems ? false : true
+        } else if let results = response.results,
+                  let skipCount = response.responsePagination?.skipCount {
+            self.hasMoreItems =
+                (Int64(results.count) + skipCount) == response.responsePagination?.totalItems ? false : true
 
             if response.requestPagination != nil && hasMoreItems {
                 incrementPage(for: response.requestPagination)
@@ -70,7 +80,9 @@ class PageFetchingViewModel {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.handlePage(results: results, pagination: response.responsePagination, error: nil)
+                sSelf.handlePage(results: results,
+                                 pagination: response.responsePagination,
+                                 error: nil)
             }
         }
         pageFetchingGroup.leave()
@@ -94,17 +106,18 @@ class PageFetchingViewModel {
         }
 
         pageUpdatingDelegate?.didUpdateList(error: error,
-                                            pagination: pagination,
-                                            bypassScrolling: false)
+                                            pagination: pagination)
     }
 
     func clear() {
         results = []
     }
 
-    func updatedResults(results: [ListNode]) {}
+    func updatedResults(results: [ListNode], pagination: Pagination) {}
 
-    func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+    func fetchItems(with requestPagination: RequestPagination,
+                    userInfo: Any?,
+                    completionHandler: @escaping PagedResponseCompletionHandler) {
         // Override in subclass to provide items for a page
     }
 
@@ -131,7 +144,8 @@ class PageFetchingViewModel {
             }
 
             if let pagination = pagination {
-                shouldDisplayNextPageLoadingIndicator = (Int64(self.results.count) == pagination.totalItems) ? false : true
+                shouldDisplayNextPageLoadingIndicator =
+                    (Int64(self.results.count) == pagination.totalItems) ? false : true
             }
         }
     }
@@ -141,7 +155,8 @@ class PageFetchingViewModel {
         if results.count != 0 {
             self.results = results
 
-            shouldDisplayNextPageLoadingIndicator = (Int64(results.count) == pagination?.totalItems) ? false : true
+            shouldDisplayNextPageLoadingIndicator =
+                (Int64(results.count) == pagination?.totalItems) ? false : true
         }
     }
 }

@@ -34,7 +34,7 @@
 		B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */; };
 		B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */; };
 		B97391A62519205F00CB2ECA /* viewer-inlined.html in Resources */ = {isa = PBXBuildFile; fileRef = B97391A52519205F00CB2ECA /* viewer-inlined.html */; };
-		B9747A16254C65B700D63B71 /* SystemThemable+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */; };
+		B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */; };
 		B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */; };
 		B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */; };
 		B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0724D852590058BCE1 /* FavoritesViewController.swift */; };
@@ -258,7 +258,7 @@
 		B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+LocalizedHTML.swift"; sourceTree = "<group>"; };
 		B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		B97391A52519205F00CB2ECA /* viewer-inlined.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "viewer-inlined.html"; path = "pdfjs-library/viewer-inlined.html"; sourceTree = "<group>"; };
-		B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SystemThemable+Dialog.swift"; sourceTree = "<group>"; };
+		B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
 		B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestBuilder.swift; sourceTree = "<group>"; };
 		B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSelectableCell.swift; sourceTree = "<group>"; };
 		B9958E0724D852590058BCE1 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -728,6 +728,35 @@
 			path = ApplicationBootstrap;
 			sourceTree = "<group>";
 		};
+		B97D373725545FD000CD1523 /* UIViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
+				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
+				B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */,
+			);
+			path = UIViewController;
+			sourceTree = "<group>";
+		};
+		B97D373825545FF900CD1523 /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				E3436F84250B8C4900634C62 /* UIView+LoadNib.swift */,
+				E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */,
+				E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
+		B97D373C2554603100CD1523 /* UITextView */ = {
+			isa = PBXGroup;
+			children = (
+				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
+				E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */,
+			);
+			path = UITextView;
+			sourceTree = "<group>";
+		};
 		B99D9BB824866F0000FBFC9B /* APIRequests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1088,26 +1117,21 @@
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B97D373725545FD000CD1523 /* UIViewController */,
+				B97D373825545FF900CD1523 /* UIView */,
+				B97D373C2554603100CD1523 /* UITextView */,
 				E3436F86250B8C4A00634C62 /* AVPlayer+Playing.swift */,
-				E3436F84250B8C4900634C62 /* UIView+LoadNib.swift */,
 				E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */,
-				E3A2A8FB247E7D230046582C /* UIView+LayerTransformations.swift */,
 				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
 				B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */,
 				E321BAD2248111F400BE938E /* UIFont+InterFont.swift */,
 				E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */,
-				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
 				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
 				E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */,
-				B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */,
 				B9FC629C24C6C90600246606 /* UICollectionView+ItemIndex.swift */,
 				E321380D24C6F2C60025A833 /* UILabel+Theming.swift */,
-				E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */,
-				B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */,
-				E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */,
 				E3E8B0102548683D00CD399D /* UImage+Color.swift */,
-				B9747A15254C65B700D63B71 /* SystemThemable+Dialog.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1484,7 +1508,7 @@
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
-				B9747A16254C65B700D63B71 /* SystemThemable+Dialog.swift in Sources */,
+				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,

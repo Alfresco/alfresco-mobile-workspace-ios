@@ -125,10 +125,9 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         updateResults(results: results, pagination: pagination, error: error)
     }
 
-    override func updatedResults(results: [ListNode]) {
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: nil,
-                                            bypassScrolling: true)
+                                            pagination: pagination)
     }
 
     // MARK: - Event observable

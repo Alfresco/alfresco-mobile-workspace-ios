@@ -57,8 +57,7 @@ class ApplicationCoordinator: Coordinator {
 
     @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
         let viewController =
-            (window.rootViewController?.presentedViewController ?? window.rootViewController) as?
-            SystemThemableViewController
+            window.rootViewController?.presentedViewController ?? window.rootViewController
 
         let title = LocalizationConstants.Labels.sessionExpiredTitle
         let message = LocalizationConstants.Labels.sesssionExpiredMessage

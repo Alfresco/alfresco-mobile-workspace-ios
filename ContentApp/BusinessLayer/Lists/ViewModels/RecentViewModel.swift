@@ -122,12 +122,11 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         }
     }
 
-    override func updatedResults(results: [ListNode]) {
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
         addInGroupList(self.results)
         pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: nil,
-                                            bypassScrolling: true)
+                                            pagination: pagination)
     }
 
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
