@@ -83,7 +83,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
                                   nodeTypes: [.file, .folder])
         eventBusService?.register(observer: listViewModel,
                                   for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder])
+                                  nodeTypes: [.file, .folder, .site])
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)

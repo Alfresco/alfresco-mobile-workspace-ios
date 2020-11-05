@@ -161,8 +161,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node) {
+            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
                 results.remove(at: indexOfMovedNode)
+            } else {
+                refreshList()
             }
         }
     }

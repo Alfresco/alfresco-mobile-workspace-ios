@@ -95,7 +95,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
                                       nodeTypes: [.file])
             eventBusService?.register(observer: viewModel,
                                       for: MoveEvent.self,
-                                      nodeTypes: [.file])
+                                      nodeTypes: [.file, .folder, .site])
             return viewModel
 
         case .trash:
@@ -113,7 +113,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
                                       nodeTypes: [.file, .folder])
             eventBusService?.register(observer: viewModel,
                                       for: MoveEvent.self,
-                                      nodeTypes: [.file, .folder])
+                                      nodeTypes: [.file, .folder, .site])
             return viewModel
         }
     }

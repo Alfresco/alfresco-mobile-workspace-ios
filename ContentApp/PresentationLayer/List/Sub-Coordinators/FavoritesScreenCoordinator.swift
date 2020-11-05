@@ -71,7 +71,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
                                   nodeTypes: [.file, .folder, .site])
         eventBusService?.register(observer: foldersAndFilesViewModel,
                                   for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder])
+                                  nodeTypes: [.file, .folder, .site])
         eventBusService?.register(observer: librariesViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.site])
