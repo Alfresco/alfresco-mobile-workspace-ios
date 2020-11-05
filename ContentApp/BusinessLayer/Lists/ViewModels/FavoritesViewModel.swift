@@ -45,7 +45,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
             FavoritesAPI.listFavorites(personId: kAPIPathMe,
                                        skipCount: paginationRequest?.skipCount,
                                        maxItems: kListPageSize,
-                                       orderBy: nil,
+                                       orderBy: ["title ASC"],
                                        _where: sSelf.listCondition,
                                        include: [kAPIIncludePathNode],
                                        fields: nil) { [weak self] (result, error) in
@@ -114,6 +114,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return true
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -142,8 +146,15 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
 
             switch publishedEvent.eventType {
             case .addToFavourite:
-                if results.contains(node) == false {
-                    results.append(node)
+                if let index = results.lastIndex(where: {
+                    let comparison = $0.title.compare(node.title)
+                    return comparison == .orderedAscending
+                }) {
+                    if index > results.count - 1 {
+                        results.append(node)
+                    } else {
+                        results.insert(node, at: index + 1)
+                    }
                 }
             case .removeFromFavourites:
                 if let indexOfRemovedFavorite = results.firstIndex(of: node) {
