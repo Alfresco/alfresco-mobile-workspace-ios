@@ -45,7 +45,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
             FavoritesAPI.listFavorites(personId: kAPIPathMe,
                                        skipCount: paginationRequest?.skipCount,
                                        maxItems: kListPageSize,
-                                       orderBy: nil,
+                                       orderBy: ["type DESC", "createdAt DESC"],
                                        _where: sSelf.listCondition,
                                        include: [kAPIIncludePathNode],
                                        fields: nil) { [weak self] (result, error) in
@@ -143,7 +143,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
             switch publishedEvent.eventType {
             case .addToFavourite:
                 if results.contains(node) == false {
-                    results.append(node)
+                    if let offset = results.firstIndex(where: {$0.kind == node.kind}) {
+                        results.insert(node, at: offset)
+                    } else {
+                        results.append(node)
+                    }
                 }
             case .removeFromFavourites:
                 if let indexOfRemovedFavorite = results.firstIndex(of: node) {
