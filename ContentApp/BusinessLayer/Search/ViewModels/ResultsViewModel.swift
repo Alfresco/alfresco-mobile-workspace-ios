@@ -82,6 +82,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return true
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()

@@ -114,6 +114,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return true
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
