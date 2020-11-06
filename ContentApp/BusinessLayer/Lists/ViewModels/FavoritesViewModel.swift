@@ -150,16 +150,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
 
             switch publishedEvent.eventType {
             case .addToFavourite:
-                if let index = results.lastIndex(where: {
-                    let comparison = $0.title.compare(node.title)
-                    return comparison == .orderedAscending
-                }) {
-                    if index > results.count - 1 {
-                        results.append(node)
-                    } else {
-                        results.insert(node, at: index + 1)
-                    }
-                }
+                refreshList()
             case .removeFromFavourites:
                 if let indexOfRemovedFavorite = results.firstIndex(of: node) {
                     results.remove(at: indexOfRemovedFavorite)

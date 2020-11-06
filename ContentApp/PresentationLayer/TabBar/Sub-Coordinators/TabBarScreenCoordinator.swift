@@ -42,14 +42,14 @@ class TabBarScreenCoordinator: Coordinator {
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let viewController = TabBarMainViewController.instantiateViewController()
         let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
-                                            image: UIImage(named: "recent-unselected"),
-                                            selectedImage: UIImage(named: "recent-selected"))
+                                            image: UIImage(named: "ic-recent-unselected"),
+                                            selectedImage: UIImage(named: "ic-recent-selected"))
         let favoritesTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.favorites,
-                                               image: UIImage(named: "favorite-unselected"),
-                                               selectedImage: UIImage(named: "favorite-selected"))
+                                               image: UIImage(named: "ic-favorite-unselected"),
+                                               selectedImage: UIImage(named: "ic-favorite-selected"))
         let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
-                                            image: UIImage(named: "browse-unselected"),
-                                            selectedImage: UIImage(named: "browse-selected"))
+                                            image: UIImage(named: "ic-browse-unselected"),
+                                            selectedImage: UIImage(named: "ic-browse-selected"))
 
         recentTabBarItem.tag = 0
         favoritesTabBarItem.tag = 1

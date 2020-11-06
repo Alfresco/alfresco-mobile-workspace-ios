@@ -25,7 +25,7 @@ class ThemeModeTableViewCell: UITableViewCell {
     var item: ThemeModeType? {
         didSet {
             if let item = item {
-                radioImageView.image = UIImage(named: "radio-button-unchecked")
+                radioImageView.image = UIImage(named: "ic-radio-unchecked")
                 switch item {
                 case .auto:
                     titleLabel.text = LocalizationConstants.Theme.auto
@@ -47,7 +47,7 @@ class ThemeModeTableViewCell: UITableViewCell {
     }
 
     func selectRadioButton() {
-        radioImageView.image = UIImage(named: "radio-button-checked")
+        radioImageView.image = UIImage(named: "ic-radio-checked")
     }
 
     func applyThemingService(_ currentTheme: PresentationTheme?) {

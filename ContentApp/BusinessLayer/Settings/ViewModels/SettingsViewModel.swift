@@ -135,7 +135,7 @@ class SettingsViewModel {
         default:
             themeName = LocalizationConstants.Theme.auto
         }
-        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "theme"))
+        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "ic-theme"))
     }
 
     private func getVersionItem() -> SettingsItem {

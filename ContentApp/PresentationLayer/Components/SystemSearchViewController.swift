@@ -60,8 +60,8 @@ class SystemSearchViewController: SystemThemableViewController {
 
         // Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "back-icon")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "back-icon")
+        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "ic-back")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "ic-back")
     }
 
     // MARK: - IBActions
@@ -103,7 +103,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         searchButton.layer.masksToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
-        searchButton.setImage(UIImage(named: "search-icon"), for: .normal)
+        searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
