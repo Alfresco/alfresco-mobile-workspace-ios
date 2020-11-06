@@ -48,7 +48,6 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
@@ -58,6 +57,9 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
@@ -104,7 +106,9 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = repository.service(of: AccountService.identifier) as? AccountService

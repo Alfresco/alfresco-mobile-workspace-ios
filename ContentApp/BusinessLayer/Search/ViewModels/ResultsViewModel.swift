@@ -27,6 +27,11 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
 
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
     // MARK: Event observable
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
@@ -34,6 +39,13 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
             let node = publishedEvent.node
             for listNode in results where listNode == node {
                 listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
+                results.remove(at: indexOfMovedNode)
+            } else {
+                refreshList()
             }
         }
     }
@@ -89,5 +101,32 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()
+    }
+
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        if node.kind == .site {
+            FavoritesAPI.listFavoriteSitesForPerson(personId: kAPIPathMe) { (result, error) in
+                if let entries = result?.list.entries {
+                    for entry in entries where entry.entry._id == node.siteID {
+                        node.favorite = true
+                        break
+                    }
+                }
+                completion(node, error)
+            }
+        } else {
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                }
+            }
+        }
     }
 }

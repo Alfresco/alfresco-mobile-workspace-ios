@@ -45,8 +45,6 @@ class ResultViewController: SystemThemableViewController {
     var searchChipsViewModel = SearchChipsViewModel()
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    var eventBusService: EventBusService?
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -56,7 +54,6 @@ class ResultViewController: SystemThemableViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = resultsViewModel
         listComponentViewController.themingService = self.themingService
-        listComponentViewController.eventBusService = self.eventBusService
         resultsViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {

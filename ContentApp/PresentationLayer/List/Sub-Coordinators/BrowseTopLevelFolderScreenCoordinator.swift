@@ -47,7 +47,6 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
         viewController.title = browseNode.title
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = globalSearchViewModel
@@ -55,6 +54,9 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
@@ -71,10 +73,19 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
                                       nodeTypes: [.file, .folder])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder])
             return viewModel
         case .myLibraries:
             let viewModel = MyLibrariesViewModel(with: accountService,
                                                  listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: FavouriteEvent.self,
+                                      nodeTypes: [.site])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.site])
             return viewModel
         case .shared:
             let viewModel = SharedViewModel(with: accountService,
@@ -82,17 +93,27 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
                                       nodeTypes: [.file])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder, .site])
             return viewModel
 
         case .trash:
-            return TrashViewModel(with: accountService,
+            let viewModel = TrashViewModel(with: accountService,
                                   listRequest: nil)
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder, .site])
+            return viewModel
         default:
             let viewModel = FolderDrillViewModel(with: accountService,
                                                  listRequest: nil)
             eventBusService?.register(observer: viewModel,
                                       for: FavouriteEvent.self,
                                       nodeTypes: [.file, .folder])
+            eventBusService?.register(observer: viewModel,
+                                      for: MoveEvent.self,
+                                      nodeTypes: [.file, .folder, .site])
             return viewModel
         }
     }
@@ -148,18 +169,28 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
-        let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-        let actionMenuViewModel = ActionMenuViewModel(with: menu)
-        let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                    accountService: accountService,
-                                                    eventBusService: eventBusService,
-                                                    delegate: delegate)
-        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
-                                                      actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
-        coordinator.start()
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
+        var menu: ActionsMenuProtocol?
+        if ((dataSource as? TrashViewModel) != nil) {
+            menu = ActionsMenuTrashMoreButton(with: node)
+        } else {
+            menu = ActionsMenuGenericMoreButton(with: node)
+        }
+
+        if let menu = menu {
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
+            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+            let actionMenuViewModel = ActionMenuViewModel(with: menu)
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        accountService: accountService,
+                                                        eventBusService: eventBusService,
+                                                        delegate: delegate)
+            let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                          actionMenuViewModel: actionMenuViewModel,
+                                                          nodeActionViewModel: nodeActionsModel)
+            coordinator.start()
+        }
     }
 }

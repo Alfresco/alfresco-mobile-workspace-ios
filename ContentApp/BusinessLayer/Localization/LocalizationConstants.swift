@@ -36,6 +36,7 @@ struct LocalizationConstants {
         static let retry = NSLocalizedString("retry", comment: "")
         static let yes = NSLocalizedString("yes", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
+        static let delete = NSLocalizedString("delete", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -94,6 +95,9 @@ struct LocalizationConstants {
         static let saveSettings = NSLocalizedString("approved-login-save-settings", comment: "")
         static let addedFavorites = NSLocalizedString("approved-added-favorites", comment: "")
         static let removedFavorites = NSLocalizedString("approved-removed-favorites", comment: "")
+        static let movedTrash = NSLocalizedString("approved-moved-trash", comment: "")
+        static let restored = NSLocalizedString("approved-restored", comment: "")
+        static let deleted = NSLocalizedString("approved-deleted", comment: "")
     }
 
     struct Theme {
@@ -152,7 +156,14 @@ struct LocalizationConstants {
     struct ActionMenu {
         static let addFavorite = NSLocalizedString("action-menu-add-favorite", comment: "")
         static let removeFavorite = NSLocalizedString("action-menu-remove-favorite", comment: "")
-        static let delete = NSLocalizedString("action-menu-delete", comment: "")
+        static let moveTrash = NSLocalizedString("action-menu-move-trash", comment: "")
         static let download = NSLocalizedString("action-menu-download", comment: "")
+        static let restore = NSLocalizedString("action-menu-restore", comment: "")
+        static let permanentlyDelete = NSLocalizedString("action-menu-permanently-delete", comment: "")
+    }
+
+    struct NodeActionsDialog {
+        static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
+        static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
     }
 }

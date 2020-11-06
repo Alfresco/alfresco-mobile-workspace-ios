@@ -24,8 +24,6 @@ class SystemSearchViewController: SystemThemableViewController {
     weak var listItemActionDelegate: ListItemActionDelegate?
     var tagSearchController: UISearchController?
 
-    var eventBusService: EventBusService?
-
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -62,8 +60,8 @@ class SystemSearchViewController: SystemThemableViewController {
 
         // Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "back-icon")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "back-icon")
+        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "ic-back")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "ic-back")
     }
 
     // MARK: - IBActions
@@ -71,7 +69,7 @@ class SystemSearchViewController: SystemThemableViewController {
     @objc func searchButtonTapped() {
         navigationItem.searchController = tagSearchController
         tagSearchController?.searchBar.alpha = 0.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+        DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.tagSearchController?.isActive = true
             sSelf.tagSearchController?.searchBar.becomeFirstResponder()
@@ -105,7 +103,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         searchButton.layer.masksToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
-        searchButton.setImage(UIImage(named: "search-icon"), for: .normal)
+        searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
@@ -119,7 +117,6 @@ class SystemSearchViewController: SystemThemableViewController {
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
         rvc.themingService = themingService
-        rvc.eventBusService = eventBusService
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = resultViewModel
         rvc.listItemActionDelegate = self.listItemActionDelegate

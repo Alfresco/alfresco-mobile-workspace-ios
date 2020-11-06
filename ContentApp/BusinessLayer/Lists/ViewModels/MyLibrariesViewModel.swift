@@ -114,12 +114,30 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         request(with: nil)
     }
 
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        FavoritesAPI.listFavoriteSitesForPerson(personId: kAPIPathMe) { (result, error) in
+            if let entries = result?.list.entries {
+                for entry in entries where entry.entry._id == node.siteID {
+                    node.favorite = true
+                    break
+                }
+            }
+            completion(node, error)
+        }
+    }
+
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
     }
 
     // MARK: - Event observable
@@ -129,6 +147,11 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             let node = publishedEvent.node
             for listNode in results where listNode == node {
                 listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfMovedNode)
             }
         }
     }

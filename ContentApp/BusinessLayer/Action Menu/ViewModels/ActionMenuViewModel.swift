@@ -104,5 +104,15 @@ class ActionMenuViewModel {
             menu?.actions[0][0].type == .node {
             toolbarActions?.removeLast()
         }
+
+        if menu?.actions.count == 2 &&
+            menu?.actions[0].count == 1 &&
+            menu?.actions[0][0].type == .node &&
+            menu?.actions[1].count == 1 {
+            if let action = menu?.actions[1][0] {
+                toolbarActions?.removeLast()
+                toolbarActions?.append(action)
+            }
+        }
     }
 }

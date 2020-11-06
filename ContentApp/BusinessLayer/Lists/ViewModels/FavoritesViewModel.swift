@@ -47,7 +47,8 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                                        maxItems: kListPageSize,
                                        orderBy: ["title ASC"],
                                        _where: sSelf.listCondition,
-                                       include: [kAPIIncludePathNode],
+                                       include: [kAPIIncludePathNode,
+                                                 kAPIIncludeAllowableOperationsNode],
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 
@@ -102,6 +103,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         favoritesList(with: nil)
     }
 
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        completion(listNode, nil)
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }
@@ -132,10 +137,9 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                       error: error)
     }
 
-    override func updatedResults(results: [ListNode]) {
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: nil,
-                                            bypassScrolling: true)
+                                            pagination: pagination)
     }
 
     // MARK: - Event observable
@@ -151,6 +155,13 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                 if let indexOfRemovedFavorite = results.firstIndex(of: node) {
                     results.remove(at: indexOfRemovedFavorite)
                 }
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
+                results.remove(at: indexOfMovedNode)
+            } else {
+                refreshList()
             }
         }
     }

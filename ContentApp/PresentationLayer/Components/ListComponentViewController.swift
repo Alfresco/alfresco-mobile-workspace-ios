@@ -21,17 +21,11 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
-    func refreshList()
+protocol ListItemActionDelegate: class {
+    func showPreview(from node: ListNode)
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -42,8 +36,7 @@ protocol ListComponentActionDelegate: class {
 
 protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?,
-                       bypassScrolling: Bool)
+                       pagination: Pagination?)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -58,8 +51,6 @@ class ListComponentViewController: SystemThemableViewController {
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
-
-    var eventBusService: EventBusService?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -266,31 +257,61 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            if error != nil {
-                Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
-                                 type: .error, finish: nil)
-            } else {
-                guard let action = action else { return }
-                if action.type == .addFavorite {
-                    Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
-                                     type: .approve, finish: nil)
-                } else if action.type == .removeFavorite {
-                    Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
-                                     type: .approve, finish: nil)
-                }
+        var snackBarMessage: String?
+        var snackBarType: SnackBarType?
+        if error != nil {
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+            snackBarType = .error
+        } else {
+            guard let action = action else { return }
+            switch action.type {
+            case .addFavorite:
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+                snackBarType = .approve
+            case .removeFavorite:
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+                snackBarType = .approve
+            case .moveTrash:
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash, node.title)
+                snackBarType = .approve
+            case .restore:
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored, node.title)
+                snackBarType = .approve
+            case .permanentlyDelete:
+                snackBarMessage = String(format: LocalizationConstants.Approved.deleted, node.title)
+                snackBarType = .approve
+            default: break
             }
-        })
+        }
+        if let message = snackBarMessage, let type = snackBarType {
+            let snackBar = Snackbar.init(with: message,
+                                         type: type,
+                                         automaticallyDismisses: true)
+            snackBar.snackBar.presentationHostViewOverride = view
+            snackBar.show(completion: nil)
+        }
+    }
+
+    func presentationContext() -> UIViewController? {
+        return self
     }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
-    func moreButtonTapped(for element: ListNode?) {
-        if let node = element {
-            listItemActionDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        }
+    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
+        cell.startLoadingProgressView()
+        listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
+            guard let sSelf = self else { return }
+            if let listNode = listNode, let dataSource = sSelf.listDataSource {
+                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: listNode,
+                                                                         dataSource: dataSource,
+                                                                         delegate: sSelf)
+            }
+
+            cell.stopLoadingProgressView()
+        })
     }
 }
 
@@ -306,8 +327,7 @@ extension ListComponentViewController: PageFetchableDelegate {
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?,
-                       pagination: Pagination?,
-                       bypassScrolling: Bool) {
+                       pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
@@ -316,7 +336,6 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)
             && error == nil
             && !isDataSourceEmpty
-            && !bypassScrolling
 
         if error == nil {
             collectionView.reloadData()

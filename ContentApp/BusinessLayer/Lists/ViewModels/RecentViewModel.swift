@@ -107,9 +107,26 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
-    override func updatedResults(results: [ListNode]) {
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        NodesAPI.getNode(nodeId: node.guid,
+                         include: [kAPIIncludePathNode,
+                                   kAPIIncludeAllowableOperationsNode,
+                                   kAPIIncludeIsFavoriteNode],
+                         relativePath: nil,
+                         fields: nil) { (result, error) in
+            if let entry = result?.entry {
+                let listNode = NodeChildMapper.create(from: entry)
+                completion(listNode, error)
+            }
+        }
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
         addInGroupList(self.results)
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
     }
 
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -159,6 +176,13 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             let node = publishedEvent.node
             for listNode in results where listNode == node {
                 listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
+                results.remove(at: indexOfMovedNode)
+            } else {
+                refreshList()
             }
         }
     }

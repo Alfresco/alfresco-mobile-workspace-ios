@@ -28,7 +28,7 @@ enum SnackBarType {
 
 class Snackbar {
     private var type: SnackBarType
-    private var snackBar: MDCSnackbarMessage
+    var snackBar: MDCSnackbarMessage
 
     static func display(with message: String,
                         type: SnackBarType,
@@ -40,7 +40,7 @@ class Snackbar {
         snackbar.show(completion: finish)
     }
 
-    private init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
         self.type = type
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses

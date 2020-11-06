@@ -35,8 +35,6 @@ class FilePreviewViewController: SystemThemableViewController {
 
     var needsContraintsForFullScreen = false
 
-    var eventBusService: EventBusService?
-
     var filePreviewViewModel: FilePreviewViewModel?
     var isFullScreen = false
 
@@ -171,12 +169,6 @@ class FilePreviewViewController: SystemThemableViewController {
             passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
     }
-
-    private func displaySnackbar(_ message: String, type: SnackBarType) {
-        DispatchQueue.main.async {
-            Snackbar.display(with: message, type: type, finish: nil)
-        }
-    }
 }
 
 // MARK: - PreviewFile ViewModel Delegate
@@ -208,12 +200,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         passwordField.isSecureTextEntry = true
         filePreviewPasswordField = passwordField
 
-        let alertTitle = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle : LocalizationConstants.FilePreview.passwordPromptTitle
-        let alertMessage = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage : LocalizationConstants.FilePreview.passwordPromptMessage
+        let title = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle :
+            LocalizationConstants.FilePreview.passwordPromptTitle
+        let message = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage :
+            LocalizationConstants.FilePreview.passwordPromptMessage
 
-        let alertController = MDCAlertController(title: alertTitle, message: alertMessage)
-        alertController.cornerRadius = dialogCornerRadius
-        alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        var alertController: MDCAlertController?
+
         let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
@@ -221,19 +214,15 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
             guard let sSelf = self else { return }
 
-            alertController.dismiss(animated: true, completion: nil)
+            alertController?.dismiss(animated: true, completion: nil)
             sSelf.filePreviewCoordinatorDelegate?.navigateBack()
         }
-        alertController.addAction(submitAction)
-        alertController.addAction(cancelAction)
 
-        alertController.accessoryView = passwordField
-        applyTheme(for: alertController)
-        filePreviewPasswordDialog = alertController
-
-        present(alertController, animated: true, completion: {
+        alertController = showDialog(title: title, message: message, actions: [submitAction, cancelAction], accesoryView: passwordField, completionHandler: {
             passwordField.becomeFirstResponder()
         })
+
+        filePreviewPasswordDialog = alertController
     }
 
     func enableFullscreenContentExperience() {
@@ -264,7 +253,8 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func didFinishNodeDetails(error: Error?) {
         if error != nil {
-            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
+            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                             type: .error, automaticallyDismisses: false, finish: nil)
             toolbar.isHidden = true
         } else {
             toolbar.isHidden = false
@@ -283,15 +273,34 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         if error != nil {
-            displaySnackbar(LocalizationConstants.Errors.errorUnknown, type: .error)
+            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
+                             type: .error, finish: nil)
         } else {
             guard let action = action else { return }
-            if action.type == .addFavorite {
-                displaySnackbar(LocalizationConstants.Approved.removedFavorites, type: .approve)
-            } else if action.type == .removeFavorite {
-                displaySnackbar(LocalizationConstants.Approved.addedFavorites, type: .approve)
+            switch action.type {
+            case .more:
+                self.filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
+                                                                                delegate: self)
+            case .addFavorite:
+                Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
+                                 type: .approve, finish: nil)
+            case .removeFavorite:
+                Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
+                                 type: .approve, finish: nil)
+            case .moveTrash:
+                self.filePreviewCoordinatorDelegate?.navigateBack()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                                  node.title),
+                                     type: .approve, finish: nil)
+                })
+            default: break
             }
         }
+    }
+
+    func presentationContext() -> UIViewController? {
+        return nil
     }
 }
 

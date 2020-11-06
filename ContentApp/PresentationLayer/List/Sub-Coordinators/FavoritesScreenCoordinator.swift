@@ -49,7 +49,6 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.favorites
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = foldersAndFilesViewModel
@@ -65,6 +64,16 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
                                   nodeTypes: [.file, .folder])
         eventBusService?.register(observer: librariesViewModel,
                                   for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: librariesViewModel,
+                                  for: MoveEvent.self,
                                   nodeTypes: [.site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
@@ -103,7 +112,9 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = repository.service(of: AccountService.identifier) as? AccountService

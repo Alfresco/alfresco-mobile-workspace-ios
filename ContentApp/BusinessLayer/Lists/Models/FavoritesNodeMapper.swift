@@ -49,16 +49,19 @@ struct FavoritesNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: true)
+                        favorite: true,
+                        allowableOperations: node.allowableOperations)
     }
 
     private static func create(from node: Site) -> ListNode {
         return ListNode(guid: node.guid,
+                        siteID: node._id,
                         mimeType: "st:site",
                         title: node.title,
                         path: "",
                         modifiedAt: nil,
                         kind: .site,
-                        favorite: true)
+                        favorite: true,
+                        siteRole: node.role?.rawValue)
     }
 }

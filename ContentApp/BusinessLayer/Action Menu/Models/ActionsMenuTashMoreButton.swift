@@ -18,7 +18,7 @@
 
 import Foundation
 
-struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
+struct ActionsMenuTrashMoreButton: ActionsMenuProtocol {
     var actions = [[ActionMenu]]()
 
     init(with node: ListNode) {
@@ -26,32 +26,13 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node.mimeType))
-        let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
-                                      type: .addFavorite)
-        let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
-                                         type: .removeFavorite)
-        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
-                                      type: .moveTrash)
-
-        var actions2: [ActionMenu] = []
-
-        if node.favorite {
-            actions2.append(removeFavAction)
-        } else {
-            actions2.append(addFavAction)
-        }
-
-        if node.kind == .site {
-            if node.hasRole(to: .manager) {
-                actions2.append(deleteAction)
-            }
-        } else {
-            if node.hasPersmission(to: .delete) {
-                actions2.append(deleteAction)
-            }
-        }
+        let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,
+                                      type: .permanentlyDelete)
+        let restoreAction = ActionMenu(title: LocalizationConstants.ActionMenu.restore,
+                                         type: .restore)
 
         let actions1 = [infoAction]
+        let actions2: [ActionMenu] = [permanentlyDeleteAction, restoreAction]
 
         actions.append(actions1)
         actions.append(actions2)

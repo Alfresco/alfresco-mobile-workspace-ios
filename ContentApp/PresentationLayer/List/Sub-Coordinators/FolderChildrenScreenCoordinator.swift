@@ -18,11 +18,6 @@
 
 import UIKit
 
-protocol ListItemActionDelegate: class {
-    func showPreview(from node: ListNode)
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
-}
-
 class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
@@ -56,7 +51,6 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
         viewController.title = listNode.title
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listItemActionDelegate = self
         viewController.listViewModel = listViewModel
         viewController.searchViewModel = contextualSearchViewModel
@@ -64,6 +58,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
 
         listViewController = viewController
@@ -79,6 +76,9 @@ class FolderChildrenScreenCoordinator: Coordinator {
         eventBusService?.register(observer: listViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: listViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
         if let nodeID = nodeID, let nodeKind = nodeKind {
             listViewModel.listNodeGuid = nodeID
             listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
@@ -103,7 +103,9 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         let menu = ActionsMenuGenericMoreButton(with: node)
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService

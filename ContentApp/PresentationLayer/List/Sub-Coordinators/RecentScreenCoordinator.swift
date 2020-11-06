@@ -45,7 +45,6 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
-        viewController.eventBusService = eventBusService
         viewController.listViewModel = listViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
@@ -58,6 +57,13 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         eventBusService?.register(observer: listViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: listViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -95,7 +101,9 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = repository.service(of: AccountService.identifier) as? AccountService

@@ -42,6 +42,14 @@
                             </label>
                         </subviews>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AFv-4d-xSF" customClass="MDCProgressView">
+                        <rect key="frame" x="0.0" y="62" width="412" height="2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="2" id="DTA-CV-jEs"/>
+                            <constraint firstAttribute="height" constant="2" id="d8e-kh-zJA"/>
+                        </constraints>
+                    </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YfJ-2w-APk">
                         <rect key="frame" x="351" y="9.5" width="45" height="45"/>
                         <constraints>
@@ -57,10 +65,13 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="3Xe-Cq-IYQ"/>
+                    <constraint firstAttribute="trailing" secondItem="AFv-4d-xSF" secondAttribute="trailing" id="4gT-ub-jzy"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="leading" secondItem="5U9-6I-Aoy" secondAttribute="trailing" constant="24" id="5jr-G8-6nt"/>
+                    <constraint firstAttribute="bottom" secondItem="AFv-4d-xSF" secondAttribute="bottom" id="8DU-ty-KR2"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" constant="24" id="9zI-jq-c4P"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="leadingMargin" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="24" id="ESQ-LN-QhT"/>
                     <constraint firstAttribute="trailing" secondItem="YfJ-2w-APk" secondAttribute="trailingMargin" constant="24" id="Imx-ML-NnS"/>
+                    <constraint firstItem="AFv-4d-xSF" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" id="QhD-j1-g7G"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="iDa-6v-qzU"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="jiv-k9-Ifw"/>
                 </constraints>
@@ -69,6 +80,7 @@
             <connections>
                 <outlet property="iconImageView" destination="5U9-6I-Aoy" id="z4N-k4-OX1"/>
                 <outlet property="moreButton" destination="YfJ-2w-APk" id="7XB-ik-Rl2"/>
+                <outlet property="progressView" destination="AFv-4d-xSF" id="TJq-co-qdE"/>
                 <outlet property="subtitle" destination="dbq-hM-j4M" id="Tbm-Pq-VNJ"/>
                 <outlet property="title" destination="MzF-td-FzW" id="Ewd-8Z-lzG"/>
             </connections>
@@ -79,6 +91,9 @@
         <image name="ic-action-more" width="24" height="24"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>

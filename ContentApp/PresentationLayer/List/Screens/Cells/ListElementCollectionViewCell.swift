@@ -17,9 +17,10 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialProgressView
 
 protocol ListElementCollectionViewCellDelegate: class {
-    func moreButtonTapped(for element: ListNode?)
+    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell)
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
@@ -28,6 +29,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var progressView: MDCProgressView!
     weak var delegate: ListElementCollectionViewCellDelegate?
     var element: ListNode? {
         didSet {
@@ -41,6 +43,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+        bringSubviewToFront(progressView)
+        progressView.setHidden(true, animated: false)
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -54,6 +60,16 @@ class ListElementCollectionViewCell: ListSelectableCell {
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
-        delegate?.moreButtonTapped(for: element)
+        delegate?.moreButtonTapped(for: element, in: self)
+    }
+
+    func startLoadingProgressView() {
+        progressView.startAnimating()
+        progressView.setHidden(false, animated: false)
+    }
+
+    func stopLoadingProgressView() {
+        progressView.stopAnimating()
+        progressView.setHidden(true, animated: false)
     }
 }
