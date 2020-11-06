@@ -106,12 +106,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
         if node.kind == .site {
-            FavoritesAPI.listFavoriteSitesForPerson(personId: kAPIPathMe) { (result, error) in
-                if let entries = result?.list.entries {
-                    for entry in entries where entry.entry._id == node.siteID {
-                        node.favorite = true
-                        break
-                    }
+            FavoritesAPI.getFavorite(personId: kAPIPathMe,
+                                     favoriteId: node.guid) { (_, error) in
+                if error == nil {
+                    node.favorite = true
                 }
                 completion(node, error)
             }
