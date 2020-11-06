@@ -173,7 +173,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                     dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         var menu: ActionsMenuProtocol?
-        if ((dataSource as? TrashViewModel) != nil) {
+        if dataSource as? TrashViewModel != nil {
             menu = ActionsMenuTrashMoreButton(with: node)
         } else {
             menu = ActionsMenuGenericMoreButton(with: node)

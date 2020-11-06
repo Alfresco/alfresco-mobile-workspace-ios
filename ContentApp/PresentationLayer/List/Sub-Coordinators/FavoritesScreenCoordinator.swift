@@ -33,7 +33,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     func start() {
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
         let viewController = FavoritesViewController()
 
         let resultViewModel = ResultsViewModel()
@@ -42,6 +42,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         let librariesViewModel = FavoritesViewModel.init(with: accountService,
                                                          listRequest: nil)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+    
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition
         globalSearchViewModel.delegate = resultViewModel
@@ -56,25 +57,13 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
         viewController.searchViewModel = globalSearchViewModel
         viewController.resultViewModel = resultViewModel
 
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: foldersAndFilesViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: librariesViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.site])
+        registerForFavouriteEvent(resultViewModel: resultViewModel,
+                                  foldersAndFilesViewModel: foldersAndFilesViewModel,
+                                  librariesViewModel: librariesViewModel)
 
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: foldersAndFilesViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: librariesViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.site])
+        registerForMoveEvent(resultViewModel: resultViewModel,
+                             foldersAndFilesViewModel: foldersAndFilesViewModel,
+                             librariesViewModel: librariesViewModel)
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
@@ -89,6 +78,40 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
             navigationViewController?.popToRootViewController(animated: true)
         }
         favoritesViewController?.cancelSearchMode()
+    }
+
+    // MARK: - Private interface
+
+    private func registerForFavouriteEvent(resultViewModel: ResultsViewModel,
+                                           foldersAndFilesViewModel: FavoritesViewModel,
+                                           librariesViewModel: FavoritesViewModel) {
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: librariesViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
+    }
+
+    private func registerForMoveEvent(resultViewModel: ResultsViewModel,
+                                      foldersAndFilesViewModel: FavoritesViewModel,
+                                      librariesViewModel: FavoritesViewModel) {
+        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: librariesViewModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.site])
     }
 }
 
