@@ -102,7 +102,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
     }
 
     func shouldDisplayMoreButton() -> Bool {
-        return false
+        return true
     }
 
     func refreshList() {
@@ -148,6 +148,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
             case .moveToTrash:
                 if results.contains(node) == false {
                     results.append(node)
+                }
+            case .restore, .permanentlyDelete:
+                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                    results.remove(at: indexOfRemovedFavorite)
                 }
             }
         }

@@ -169,18 +169,28 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
-        let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-        let actionMenuViewModel = ActionMenuViewModel(with: menu)
-        let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                    accountService: accountService,
-                                                    eventBusService: eventBusService,
-                                                    delegate: delegate)
-        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
-                                                      actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsModel)
-        coordinator.start()
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
+        var menu: ActionsMenuProtocol?
+        if ((dataSource as? TrashViewModel) != nil) {
+            menu = ActionsMenuTrashMoreButton(with: node)
+        } else {
+            menu = ActionsMenuGenericMoreButton(with: node)
+        }
+
+        if let menu = menu {
+            let accountService = repository.service(of: AccountService.identifier) as? AccountService
+            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+            let actionMenuViewModel = ActionMenuViewModel(with: menu)
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        accountService: accountService,
+                                                        eventBusService: eventBusService,
+                                                        delegate: delegate)
+            let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                          actionMenuViewModel: actionMenuViewModel,
+                                                          nodeActionViewModel: nodeActionsModel)
+            coordinator.start()
+        }
     }
 }

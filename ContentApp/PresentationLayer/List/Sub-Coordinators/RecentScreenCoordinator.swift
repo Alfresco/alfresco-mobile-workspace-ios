@@ -101,7 +101,9 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let menu = ActionsMenuGenericMoreButton(with: node)
             let accountService = repository.service(of: AccountService.identifier) as? AccountService

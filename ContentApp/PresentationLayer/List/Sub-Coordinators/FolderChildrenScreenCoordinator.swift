@@ -18,11 +18,6 @@
 
 import UIKit
 
-protocol ListItemActionDelegate: class {
-    func showPreview(from node: ListNode)
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
-}
-
 class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var listViewController: ListViewController?
@@ -108,7 +103,9 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         let menu = ActionsMenuGenericMoreButton(with: node)
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService

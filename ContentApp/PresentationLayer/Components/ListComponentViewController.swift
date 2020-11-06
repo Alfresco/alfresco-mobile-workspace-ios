@@ -21,6 +21,13 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
+protocol ListItemActionDelegate: class {
+    func showPreview(from node: ListNode)
+    func showActionSheetForListItem(for node: ListNode,
+                                    dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate)
+}
+
 protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
     func didUpdateList(error: Error?, pagination: Pagination?)
@@ -267,6 +274,12 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             case .moveTrash:
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash, node.title)
                 snackBarType = .approve
+            case .restore:
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored, node.title)
+                snackBarType = .approve
+            case .permanentlyDelete:
+                snackBarMessage = String(format: LocalizationConstants.Approved.deleted, node.title)
+                snackBarType = .approve
             default: break
             }
         }
@@ -278,6 +291,10 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             snackBar.show(completion: nil)
         }
     }
+
+    func presentationContext() -> UIViewController? {
+        return self
+    }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate
@@ -287,9 +304,12 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
         cell.startLoadingProgressView()
         listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
             guard let sSelf = self else { return }
-            if let listNode = listNode {
-                sSelf.listItemActionDelegate?.showActionSheetForListItem(node: listNode, delegate: sSelf)
+            if let listNode = listNode, let dataSource = sSelf.listDataSource {
+                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: listNode,
+                                                                         dataSource: dataSource,
+                                                                         delegate: sSelf)
             }
+
             cell.stopLoadingProgressView()
         })
     }

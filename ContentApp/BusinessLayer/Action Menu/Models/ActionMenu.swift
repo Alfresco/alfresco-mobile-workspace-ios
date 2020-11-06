@@ -45,4 +45,6 @@ enum ActionMenuType: String {
     case removeFavorite = "ic-action-fill-favorite"
     case moveTrash = "ic-action-delete"
     case download = "ic-action-download"
+    case restore = "recentsearch-history"
+    case permanentlyDelete = "ic-action-delete-forever"
 }

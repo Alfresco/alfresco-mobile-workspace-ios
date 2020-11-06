@@ -20,6 +20,8 @@ import Foundation
 
 enum MoveEventType {
     case moveToTrash
+    case restore
+    case permanentlyDelete
 }
 
 class MoveEvent: BaseNodeEvent {

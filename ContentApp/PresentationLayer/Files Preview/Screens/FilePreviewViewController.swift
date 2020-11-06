@@ -222,10 +222,6 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             passwordField.becomeFirstResponder()
         })
 
-        if let alert = alertController {
-            applyTheme(for: alert)
-        }
-
         filePreviewPasswordDialog = alertController
     }
 
@@ -301,6 +297,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             default: break
             }
         }
+    }
+
+    func presentationContext() -> UIViewController? {
+        return nil
     }
 }
 

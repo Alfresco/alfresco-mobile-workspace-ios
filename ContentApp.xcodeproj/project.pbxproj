@@ -48,6 +48,7 @@
 		B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BC52486850C00FBFC9B /* AIMSAuthenticationProvider.swift */; };
 		B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99E1C46247FA77300116F05 /* CALayer+Animations.swift */; };
 		B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */; };
+		B9A21CC22555255100F93383 /* ActionsMenuTashMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A21CC12555255100F93383 /* ActionsMenuTashMoreButton.swift */; };
 		B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */; };
 		B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */; };
 		B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */; };
@@ -272,6 +273,7 @@
 		B99D9BC52486850C00FBFC9B /* AIMSAuthenticationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSAuthenticationProvider.swift; sourceTree = "<group>"; };
 		B99E1C46247FA77300116F05 /* CALayer+Animations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Animations.swift"; sourceTree = "<group>"; };
 		B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpViewController.swift; sourceTree = "<group>"; };
+		B9A21CC12555255100F93383 /* ActionsMenuTashMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuTashMoreButton.swift; sourceTree = "<group>"; };
 		B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentViewController.swift; sourceTree = "<group>"; };
 		B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFetchingViewModel.swift; sourceTree = "<group>"; };
 		B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLPathComponent.swift; sourceTree = "<group>"; };
@@ -985,6 +987,7 @@
 				E335E73B2538677D0036E090 /* ActionMenu.swift */,
 				E3FADB91253869F200BA6F9B /* ActionsMenuProtocol.swift */,
 				E3FADB9625386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift */,
+				B9A21CC12555255100F93383 /* ActionsMenuTashMoreButton.swift */,
 				E31E44B92547188D00439404 /* ActionsMenuFilePreview.swift */,
 			);
 			path = Models;
@@ -1561,6 +1564,7 @@
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
 				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */,
+				B9A21CC22555255100F93383 /* ActionsMenuTashMoreButton.swift in Sources */,
 				E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,

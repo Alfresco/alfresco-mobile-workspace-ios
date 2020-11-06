@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
 
@@ -25,6 +26,7 @@ protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
                             node: ListNode,
                             error: Error?)
+    func presentationContext() -> UIViewController?
 }
 
 class NodeActionsViewModel {
@@ -70,6 +72,10 @@ class NodeActionsViewModel {
                 sSelf.requestRemoveFromFavorites()
             case .moveTrash:
                 sSelf.requestMoveToTrash()
+            case .restore :
+                sSelf.requestRestoreFromTrash()
+            case .permanentlyDelete:
+                sSelf.requestPermanentlyDelete()
             default:
                 DispatchQueue.main.async {
                     sSelf.delegate?.nodeActionFinished(with: sSelf.action,
@@ -135,6 +141,46 @@ class NodeActionsViewModel {
                     sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error)
+            }
+        }
+    }
+
+    private func requestRestoreFromTrash() {
+        TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
+            guard let sSelf = self else { return }
+            if error == nil {
+                let moveEvent = MoveEvent(node: sSelf.node, eventType: .restore)
+                sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+            }
+            self?.handleResponse(error: error)
+        }
+    }
+
+    private func requestPermanentlyDelete() {
+        if let presentationContext = delegate?.presentationContext() {
+            let title =
+                String(format: LocalizationConstants.NodeActionsDialog.deleteTitle, node.title)
+            let message =
+                String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
+
+            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
+            let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
+                guard let sSelf = self else { return }
+
+                TrashcanAPI.deleteDeletedNode(nodeId: sSelf.node.guid) { (_, error) in
+                    if error == nil {
+                        let moveEvent = MoveEvent(node: sSelf.node, eventType: .permanentlyDelete)
+                        sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                    }
+                    sSelf.handleResponse(error: error)
+                }
+            }
+
+            DispatchQueue.main.async {
+                _ = presentationContext.showDialog(title: title,
+                                                   message: message,
+                                                   actions: [cancelAction, deleteAction],
+                                                   completionHandler: {})
             }
         }
     }
