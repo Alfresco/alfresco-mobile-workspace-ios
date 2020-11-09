@@ -190,6 +190,9 @@ extension SystemSearchViewController: UISearchControllerDelegate {
                 sSelf.navigationController?.view.layoutIfNeeded()
             }
         }
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+        rvc.clearDataSource()
+        searchViewModel?.lastSearchedString = nil
     }
 }
 
@@ -208,12 +211,13 @@ extension SystemSearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
+        searchViewModel?.lastSearchedString = nil
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
+            var searchViewModel = self.searchViewModel else { return }
+        searchViewModel.lastSearchedString = searchText
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
         if searchText.canPerformLiveSearch() {

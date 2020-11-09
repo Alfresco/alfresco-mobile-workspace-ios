@@ -22,6 +22,7 @@ import AlfrescoContent
 protocol SearchViewModelProtocol {
     var delegate: SearchViewModelDelegate? { get set }
     var searchChips: [SearchChipItem] { get set }
+    var lastSearchedString: String? { get set }
 
     func defaultSearchChips() -> [SearchChipItem]
     func logicSearchChips(chipTapped: SearchChipItem) -> [Int]
