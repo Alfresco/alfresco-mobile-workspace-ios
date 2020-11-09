@@ -23,6 +23,7 @@
 "connect" = "Verbinden";
 "advanced-settings" = "Geavanceerde instellingen";
 "need-help" = "Hulp nodig?";
+"need-help-alfresco" = "Verbinding maken met Alfresco?";
 "reset-to-default" = "Standaardinstellingen herstellen";
 "save" = "Opslaan";
 "sign-in" = "Inloggen";
@@ -35,7 +36,7 @@
 // MARK: - PlaceHolders
 "connect-to" = "Verbinden met";
 "port" = "Poort";
-"service-document" = "Pad";
+"path" = "Pad";
 "realm" = "Realm";
 "client-id" = "Client-id";
 "username-or-email" = "Gebruikersnaam of e-mailadres";
@@ -51,6 +52,7 @@
 "info-aims-connect-to"  = "Inloggen bij: ";
 "login-allow-sso" = "Geef de URL van uw contentservices-omgeving op.";
 "help" = "Help";
+"how-to-connect-to-alfresco" = "Verbinding maken met Alfresco";
 "connecting" = "Verbinden";
 "signing-in" = "Inloggen";
 "session-expired" = "Sessie verlopen.";
@@ -63,23 +65,28 @@
 "browse" = "Bladeren";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"6\">Verbinding maken met Alfresco</font></p><p><font size=\"5\">Alfresco Content Services-URL</font></p><p>U kunt de URL van uw Alfresco Content Services-instance invoeren. Hiervoor moet u uw gebruikersnaam en wachtwoord opgeven voor verificatie.</p><p><font size=\"5\">Inloggen met SSO</font></p><p>U kunt de URL van uw Alfresco Identity Management Service invoeren voor verificatie met de identiteitsprovider van uw organisatie.</p><p>*U moet de URL van uw Alfresco Content Services-instance naderhand opgeven.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
+"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services-URL</font></p><p>U kunt de URL van uw Alfresco Content Services-instance invoeren. Hiervoor moet u uw gebruikersnaam en wachtwoord opgeven voor verificatie.</p><p><font size=\"5\">Inloggen met SSO</font></p><p>U kunt de URL van uw Alfresco Identity Management Service invoeren voor verificatie met de identiteitsprovider van uw organisatie.</p><p>*U moet de URL van uw Alfresco Content Services-instance naderhand opgeven.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
 "help-advanced-settings-hint" = "<p><font size=\"6\">Verifiëren met Alfresco</font></p><p>Als u de standaard SSO-instellingen niet gebruikt, kunnen uw waarden hier worden ingesteld.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Locatie content-repository</font></p><p>Alfresco Content Services-URL:</p><p>Dit is de URL van uw Alfresco Content Services-instance.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
 
-// MARK: - Login Errors
+// MARK: - Snackbar errors
 "error-login-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp. Foutcode: %d";
 "error-login-alfresco-url" = "Kan geen verificatieservice vinden op de opgegeven Alfresco-URL.";
 "error-login-check-connect-url" = "Controleer de URL waarmee u verbinding wilt maken.";
 "error-login-wrong-credential" = "Onjuiste gebruikersnaam of wachtwoord opgegeven.";
 "error-logjn-no-longer-authenticated" = "U bent niet meer geverifieerd, log opnieuw in.";
 "error-something-went-wrong" = "Er is iets fout gegaan!";
+"warning-login-path-empty" = "Pad mag niet leeg zijn, ga naar Geavanceerde instellingen.";
+"error-unknown" = "Onbekende fout opgetreden.";
+
+// MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
-"warning-login-service-document-empty"= "Servicedocument mag niet leeg zijn, ga naar Geavanceerde instellingen.";
+"approved-added-favorites" = "Toegevoegd aan Favorieten";
+"approved-removed-favorites" = "Verwijderd uit Favorieten";
 
 // MARK: - Settings Screen
-"theme" = "Themamodus";
-"auto" = "Automatisch";
+"theme" = "Weergave";
+"auto" = "Systeemstandaard";
 "light" = "Licht";
 "dark" = "Donker";
 "failed-profile-info" = "Kan profielinformatie voor huidige gebruiker niet ophalen.";
@@ -113,7 +120,7 @@
 "trash" = "Prullenbak";
 
 // MARK: - File Preview
-"no-preview" = "Geen voorvertoning voor dit bestand.";
+"no-preview" = "Voorvertoning niet beschikbaar.";
 "password-prompt" = "Bestand vergrendeld";
 "password-prompt-message" = "Voer het wachtwoord in om het bestand te ontgrendelen.";
 "password-prompt-fail" = "Onjuist wachtwoord";
@@ -126,4 +133,4 @@
 "action-menu-add-favorite" = "Toevoegen aan Favorieten";
 "action-menu-remove-favorite" = "Verwijderen uit Favorieten";
 "action-menu-delete" = "Verwijderen";
-
+"action-menu-download" = "Downloaden";
