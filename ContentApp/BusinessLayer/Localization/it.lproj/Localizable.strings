@@ -32,6 +32,7 @@
 "retry" = "Riprova";
 "yes" = "Sì";
 "cancel" = "Annulla";
+"delete" = "Elimina";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connetti a";
@@ -83,6 +84,9 @@
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
 "approved-added-favorites" = "Aggiunto ai preferiti";
 "approved-removed-favorites" = "Rimosso dai preferiti";
+"approved-moved-trash" = "%@ spostato nel cestino";
+"approved-restored" = "%@ ripristinato";
+"approved-deleted" = "%@ eliminato";
 
 // MARK: - Settings Screen
 "theme" = "Aspetto";
@@ -132,5 +136,11 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Aggiungi ai Preferiti";
 "action-menu-remove-favorite" = "Rimuovi dai Preferiti";
-"action-menu-delete" = "Elimina";
+"action-menu-move-trash" = "Sposta nel cestino";
 "action-menu-download" = "Scarica";
+"action-menu-restore" = "Ripristina";
+"action-menu-permanently-delete" = "Elimina definitivamente";
+
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "Elimina %@";
+"dialog-delete-message" = "%@ verrà eliminato definitivamente.";
