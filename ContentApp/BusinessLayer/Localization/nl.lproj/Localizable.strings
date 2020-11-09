@@ -32,6 +32,7 @@
 "retry" = "Opnieuw proberen";
 "yes" = "Ja";
 "cancel" = "Annuleren";
+"delete" = "Verwijderen";
 
 // MARK: - PlaceHolders
 "connect-to" = "Verbinden met";
@@ -83,6 +84,9 @@
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
 "approved-added-favorites" = "Toegevoegd aan Favorieten";
 "approved-removed-favorites" = "Verwijderd uit Favorieten";
+"approved-moved-trash" = "%@ verplaatst naar prullenmand";
+"approved-restored" = "%@ hersteld";
+"approved-deleted" = "%@ verwijderd";
 
 // MARK: - Settings Screen
 "theme" = "Weergave";
@@ -117,7 +121,7 @@
 "personal-files" = "Persoonlijke bestanden";
 "my-libraries" = "Mijn bibliotheken";
 "shared" = "Gedeeld";
-"trash" = "Prullenbak";
+"trash" = "Prullenmand";
 
 // MARK: - File Preview
 "no-preview" = "Voorvertoning niet beschikbaar.";
@@ -132,5 +136,11 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Toevoegen aan Favorieten";
 "action-menu-remove-favorite" = "Verwijderen uit Favorieten";
-"action-menu-delete" = "Verwijderen";
+"action-menu-move-trash" = "Verplaatsen naar prullenmand";
 "action-menu-download" = "Downloaden";
+"action-menu-restore" = "Herstellen";
+"action-menu-permanently-delete" = "Permanent verwijderen";
+
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "%@ verwijderen";
+"dialog-delete-message" = "%@ wordt permanent verwijderd.";

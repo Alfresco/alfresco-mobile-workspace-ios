@@ -22,7 +22,7 @@
 // MARK: - Buttons
 "connect" = "Connexion";
 "advanced-settings" = "Réglages avancés";
-"need-help" = "Besoin d'aide?";
+"need-help" = "Besoin d'aide ?";
 "need-help-alfresco" = "Comment se connecter à Alfresco ?";
 "reset-to-default" = "Valeurs par défaut";
 "save" = "Enregistrer";
@@ -32,6 +32,7 @@
 "retry" = "Réessayer";
 "yes" = "Oui";
 "cancel" = "Annuler";
+"delete" = "Supprimer";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connexion à";
@@ -48,8 +49,8 @@
 "https" = "HTTPS";
 "alfresco-content-settings" = "Réglages Alfresco Content Services";
 "authentication" = "Authentification";
-"info-connect-to" = "Connecté à: ";
-"info-aims-connect-to"  = "Connexion à: ";
+"info-connect-to" = "Connecté à : ";
+"info-aims-connect-to"  = "Connexion à : ";
 "login-allow-sso" = "Entrez l'URL de votre environnement Content Services.";
 "help" = "Aide";
 "how-to-connect-to-alfresco" = "Comment se connecter à Alfresco";
@@ -75,7 +76,7 @@
 "error-login-check-connect-url" = "Vérifiez l'URL à laquelle vous souhaitez vous connecter.";
 "error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
 "error-logjn-no-longer-authenticated" = "Vous n'êtes plus authentifié, veuillez vous reconnecter.";
-"error-something-went-wrong" = "Un problème est survenu!";
+"error-something-went-wrong" = "Un problème est survenu !";
 "warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux réglages avancés.";
 "error-unknown" = "Une erreur inconnue s'est produite.";
 
@@ -83,6 +84,9 @@
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
 "approved-added-favorites" = "Ajouté aux favoris";
 "approved-removed-favorites" = "Supprimé des favoris";
+"approved-moved-trash" = "%@ a été placé dans la corbeille";
+"approved-restored" = "%@ a été restauré";
+"approved-deleted" = "%@ a été supprimé";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -91,7 +95,7 @@
 "dark" = "Sombre";
 "failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
 "app-version" = "Version de l'application %@-%@";
-"sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter?";
+"sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
 
 // MARK: - Search
 "empty-list" = "Oups...";
@@ -103,7 +107,7 @@
 "folders" = "Dossiers";
 "libraries" = "Bibliothèques";
 "file-and-folders" = "Fichiers et dossiers";
-"search-in" = "dans: ";
+"search-in" = "dans : ";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";
@@ -132,5 +136,11 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Ajouter aux favoris";
 "action-menu-remove-favorite" = "Supprimer des favoris";
-"action-menu-delete" = "Supprimer";
+"action-menu-move-trash" = "Placer dans la corbeille";
 "action-menu-download" = "Télécharger";
+"action-menu-restore" = "Restaurer";
+"action-menu-permanently-delete" = "Supprimer définitivement";
+
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "Supprimer %@";
+"dialog-delete-message" = "%@ sera supprimé définitivement.";
