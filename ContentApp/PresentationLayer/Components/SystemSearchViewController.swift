@@ -175,6 +175,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches()
         rvc.clearDataSource()
+        rvc.resultsViewModel?.searchOnAction = true
 
         UIView.animate(withDuration: 0.2) {
             searchController.searchBar.alpha = 1.0
@@ -190,6 +191,9 @@ extension SystemSearchViewController: UISearchControllerDelegate {
                 sSelf.navigationController?.view.layoutIfNeeded()
             }
         }
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+        rvc.clearDataSource()
+        rvc.resultsViewModel?.searchOnAction = false
     }
 }
 

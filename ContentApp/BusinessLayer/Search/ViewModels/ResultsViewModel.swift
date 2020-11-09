@@ -26,6 +26,7 @@ protocol ResultsViewModelDelegate: class {
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
+    var searchOnAction: Bool = false
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
@@ -42,10 +43,16 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
-                results.remove(at: indexOfMovedNode)
-            } else {
-                refreshList()
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if node.kind == .file {
+                    if let indexOfMovedNode = results.firstIndex(of: node) {
+                        results.remove(at: indexOfMovedNode)
+                    }
+                } else if searchOnAction {
+                    refreshList()
+                }
+            default: break
             }
         }
     }
@@ -122,6 +129,8 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
                              fields: nil) { (result, error) in
                 if let entry = result?.entry {
                     let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                } else {
                     completion(listNode, error)
                 }
             }
