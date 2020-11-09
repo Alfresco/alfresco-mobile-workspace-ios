@@ -23,6 +23,7 @@
 "connect" = "Connetti";
 "advanced-settings" = "Impost. avanzate";
 "need-help" = "Serve aiuto?";
+"need-help-alfresco" = "Come connettersi ad Alfresco?";
 "reset-to-default" = "Reimposta su default";
 "save" = "Salva";
 "sign-in" = "Accedi";
@@ -35,7 +36,7 @@
 // MARK: - PlaceHolders
 "connect-to" = "Connetti a";
 "port" = "Porta";
-"service-document" = "Percorso";
+"path" = "Percorso";
 "realm" = "Area di autenticazione";
 "client-id" = "ID client";
 "username-or-email" = "Nome utente o e-mail";
@@ -45,12 +46,13 @@
 // MARK: - Labels
 "transport-protocol" = "Protocollo di trasporto";
 "https" = "HTTPS";
-"alfresco-content-settings" = "Impostazioni di Alfresco Content Services";
+"alfresco-content-settings" = "Impost. di Alfresco Content Services";
 "authentication" = "Autenticazione";
 "info-connect-to" = "Connesso a: ";
 "info-aims-connect-to"  = "Accedo a: ";
 "login-allow-sso" = "Fornisci l'URL dell'ambiente Content Services.";
 "help" = "Aiuto";
+"how-to-connect-to-alfresco" = "Come connettersi ad Alfresco";
 "connecting" = "Connetto";
 "signing-in" = "Accedo";
 "session-expired" = "Sessione scaduta";
@@ -63,23 +65,28 @@
 "browse" = "Sfoglia";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"6\">Come connettersi ad Alfresco</font></p><p><font size=\"5\">URL di Alfresco Content Services</font></p><p>Puoi immettere l'URL della tua istanza di Alfresco Content Services. In questo caso, devi inserire il tuo nome utente e la password per autenticarti.</p><p><font size=\"5\">Accesso con SSO</font></p><p>Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.</p><p>*Dovrai quindi fornire l'URL della tua istanza di Alfresco Content Services</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
+"help-service-url-hint" = "<p><font size=\"5\">URL di Alfresco Content Services</font></p><p>Puoi immettere l'URL della tua istanza di Alfresco Content Services. In questo caso, devi inserire il tuo nome utente e la password per autenticarti.</p><p><font size=\"5\">Accesso con SSO</font></p><p>Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.</p><p>*Dovrai quindi fornire l'URL della tua istanza di Alfresco Content Services</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
 "help-advanced-settings-hint" = "<p><font size=\"6\">Autenticazione con Alfresco</font></p><p>Se non utilizzi le impostazioni SSO di default, puoi impostare qui i tuoi valori.</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Percorso repository dei contenuti</font></p><p>URL di Alfresco Content Services:</p><p>Questo è l'URL della tua istanza di Alfresco Content Services.</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
 
-// MARK: - Login Errors
+// MARK: - Snackbar errors
 "error-login-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore. Codice errore: %d";
 "error-login-alfresco-url" = "Non è stato trovato alcun servizio di autenticazione all'URL di Alfresco specificato.";
-"error-login-check-connect-url" = "Verifica la connessione all'URL.";
+"error-login-check-connect-url" = "Verifica l'URL di connessione.";
 "error-login-wrong-credential" = "Nome utente o password non corretti.";
 "error-logjn-no-longer-authenticated" = "Non sei più autenticato, accedi di nuovo.";
 "error-something-went-wrong" = "Si è verificato un problema!";
+"warning-login-path-empty" = "Il percorso non può essere vuoto. Vai a Impostazioni avanzate.";
+"error-unknown" = "Si è verificato un errore sconosciuto.";
+
+// MARK: - Snackbar approved
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
-"warning-login-service-document-empty"= "Il documento del servizio non deve essere vuoto. Vai a Impostazioni avanzate.";
+"approved-added-favorites" = "Aggiunto ai preferiti";
+"approved-removed-favorites" = "Rimosso dai preferiti";
 
 // MARK: - Settings Screen
-"theme" = "Modalità tema";
-"auto" = "Automat.";
+"theme" = "Aspetto";
+"auto" = "Default di sistema";
 "light" = "Chiaro";
 "dark" = "Scuro";
 "failed-profile-info" = "Impossibile recuperare le informazioni del profilo per l'utente corrente.";
@@ -113,7 +120,7 @@
 "trash" = "Cestino";
 
 // MARK: - File Preview
-"no-preview" = "Nessuna anteprima per il file.";
+"no-preview" = "Anteprima non disponibile.";
 "password-prompt" = "File bloccato";
 "password-prompt-message" = "Inserisci la password per sbloccare il file.";
 "password-prompt-fail" = "Password non valida";
@@ -126,4 +133,4 @@
 "action-menu-add-favorite" = "Aggiungi ai Preferiti";
 "action-menu-remove-favorite" = "Rimuovi dai Preferiti";
 "action-menu-delete" = "Elimina";
-
+"action-menu-download" = "Scarica";
