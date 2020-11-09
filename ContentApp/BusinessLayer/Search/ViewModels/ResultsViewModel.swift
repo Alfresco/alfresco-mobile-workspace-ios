@@ -26,7 +26,6 @@ protocol ResultsViewModelDelegate: class {
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
-    var searchOnAction: Bool = false
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
@@ -49,7 +48,7 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
                     if let indexOfMovedNode = results.firstIndex(of: node) {
                         results.remove(at: indexOfMovedNode)
                     }
-                } else if searchOnAction {
+                } else {
                     refreshList()
                 }
             default: break

@@ -175,7 +175,6 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         rvc.updateChips(searchViewModel.defaultSearchChips())
         rvc.updateRecentSearches()
         rvc.clearDataSource()
-        rvc.resultsViewModel?.searchOnAction = true
 
         UIView.animate(withDuration: 0.2) {
             searchController.searchBar.alpha = 1.0
@@ -193,7 +192,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         }
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
         rvc.clearDataSource()
-        rvc.resultsViewModel?.searchOnAction = false
+        searchViewModel?.lastSearchedString = nil
     }
 }
 
@@ -212,12 +211,13 @@ extension SystemSearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
+        searchViewModel?.lastSearchedString = nil
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
+            var searchViewModel = self.searchViewModel else { return }
+        searchViewModel.lastSearchedString = searchText
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
         if searchText.canPerformLiveSearch() {
