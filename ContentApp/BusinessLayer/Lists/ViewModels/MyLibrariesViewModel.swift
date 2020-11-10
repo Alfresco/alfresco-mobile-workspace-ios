@@ -116,13 +116,16 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
-        FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                 favoriteId: node.guid) { (_, error) in
-            if error == nil {
-                node.favorite = true
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            FavoritesAPI.getFavorite(personId: kAPIPathMe,
+                                     favoriteId: node.guid) { (_, error) in
+                if error == nil {
+                    node.favorite = true
+                }
+                completion(node, error)
             }
-            completion(node, error)
-        }
+        })
     }
 
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {

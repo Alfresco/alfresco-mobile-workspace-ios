@@ -109,17 +109,22 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
 
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
-        NodesAPI.getNode(nodeId: node.guid,
-                         include: [kAPIIncludePathNode,
-                                   kAPIIncludeAllowableOperationsNode,
-                                   kAPIIncludeIsFavoriteNode],
-                         relativePath: nil,
-                         fields: nil) { (result, error) in
-            if let entry = result?.entry {
-                let listNode = NodeChildMapper.create(from: entry)
-                completion(listNode, error)
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                } else {
+                    completion(listNode, error)
+                }
             }
-        }
+        })
     }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
