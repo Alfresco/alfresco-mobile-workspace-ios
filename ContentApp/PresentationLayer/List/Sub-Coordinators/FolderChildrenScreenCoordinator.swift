@@ -31,10 +31,6 @@ class FolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-
         let viewModelFactory = FolderChildrenViewModelFactory()
         viewModelFactory.accountService = accountService
         viewModelFactory.eventBusService = eventBusService

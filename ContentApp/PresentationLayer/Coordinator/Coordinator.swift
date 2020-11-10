@@ -24,4 +24,19 @@ extension Coordinator {
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
     }
+
+    var accountService: AccountService?  {
+        let identifier = AccountService.identifier
+        return repository.service(of: identifier) as? AccountService
+    }
+
+    var themingService: MaterialDesignThemingService? {
+        let identifier = MaterialDesignThemingService.identifier
+        return repository.service(of: identifier) as? MaterialDesignThemingService
+    }
+
+    var eventBusService: EventBusService? {
+        let identifier = EventBusService.identifier
+        return repository.service(of: identifier) as? EventBusService
+    }
 }

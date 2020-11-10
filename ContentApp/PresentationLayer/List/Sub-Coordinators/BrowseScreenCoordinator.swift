@@ -35,10 +35,6 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-
         let viewModelFactory = BrowseViewModelFactory()
         viewModelFactory.accountService = accountService
         viewModelFactory.eventBusService = eventBusService

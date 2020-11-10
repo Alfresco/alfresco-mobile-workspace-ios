@@ -31,10 +31,6 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService =  repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-
         let viewModelFactory = TopLevelBrowseViewModelFactory()
         viewModelFactory.accountService = accountService
         viewModelFactory.eventBusService = eventBusService
