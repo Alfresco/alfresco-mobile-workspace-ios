@@ -34,56 +34,23 @@ class FolderChildrenScreenCoordinator: Coordinator {
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        let viewModelFactory = FolderChildrenViewModelFactory()
+        viewModelFactory.accountService = accountService
+        viewModelFactory.eventBusService = eventBusService
+
+        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
+
         let viewController = ListViewController()
-
-        let listViewModel = self.listViewModel(with: listNode.guid,
-                                               and: listNode.kind.rawValue,
-                                               and: accountService,
-                                               and: eventBusService)
-        let resultViewModel = ResultsViewModel()
-        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
-                                      type: .node, selected: true,
-                                      nodeID: listNode.guid)
-        contextualSearchViewModel.delegate = resultViewModel
-        contextualSearchViewModel.searchChipNode = chipNode
-        resultViewModel.delegate = contextualSearchViewModel
-
         viewController.title = listNode.title
         viewController.themingService = themingService
         viewController.listItemActionDelegate = self
-        viewController.listViewModel = listViewModel
-        viewController.searchViewModel = contextualSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
+        viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel
+        viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
+        viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
-    }
-
-    private func listViewModel(with nodeID: String?,
-                               and nodeKind: String?,
-                               and accountService: AccountService?,
-                               and eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let listViewModel = FolderDrillViewModel(with: accountService,
-                                                 listRequest: nil)
-        eventBusService?.register(observer: listViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: listViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        if let nodeID = nodeID, let nodeKind = nodeKind {
-            listViewModel.listNodeGuid = nodeID
-            listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
-        }
-        return listViewModel
     }
 }
 

@@ -34,36 +34,21 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        let recentViewModelFactory = RecentViewModelFactory()
+        recentViewModelFactory.accountService = accountService
+        recentViewModelFactory.eventBusService = eventBusService
+
+        let recentDataSource = recentViewModelFactory.recentDataSource()
+
         let viewController = ListViewController()
-
-        let listViewModel = RecentViewModel(with: accountService,
-                                            listRequest: nil)
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.themingService = themingService
-        viewController.listViewModel = listViewModel
+        viewController.listViewModel = recentDataSource.recentViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: listViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: listViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
+        viewController.searchViewModel = recentDataSource.globalSearchViewModel
+        viewController.resultViewModel = recentDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]

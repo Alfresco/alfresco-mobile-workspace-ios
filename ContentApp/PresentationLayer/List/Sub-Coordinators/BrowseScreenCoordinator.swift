@@ -35,32 +35,25 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        let viewModelFactory = BrowseViewModelFactory()
+        viewModelFactory.accountService = accountService
+        viewModelFactory.eventBusService = eventBusService
+
+        let browseDataSource = viewModelFactory.browseDataSource()
+
         let viewController = BrowseViewController.instantiateViewController()
-
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        let browseViewModel = BrowseViewModel()
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
         viewController.title = LocalizationConstants.ScreenTitles.browse
         viewController.themingService = themingService
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.listViewModel = browseViewModel
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
+        viewController.listViewModel = browseDataSource.browseViewModel
+        viewController.searchViewModel = browseDataSource.globalSearchViewModel
+        viewController.resultViewModel = browseDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)

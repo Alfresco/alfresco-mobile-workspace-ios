@@ -31,123 +31,26 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let themingService =  repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+
+        let viewModelFactory = TopLevelBrowseViewModelFactory()
+        viewModelFactory.accountService = accountService
+        viewModelFactory.eventBusService = eventBusService
+
+        let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
+
         let viewController = ListViewController()
-
-        let listViewModel = self.listViewModel(from: browseNode.type,
-                                               with: accountService,
-                                               eventBusService: eventBusService)
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = searchViewModel(from: browseNode.type,
-                                                    with: browseNode.title,
-                                                    with: accountService,
-                                                    with: resultViewModel)
-
         viewController.title = browseNode.title
         viewController.themingService = themingService
         viewController.listItemActionDelegate = self
-        viewController.listViewModel = listViewModel
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
+        viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
+        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
+        viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
 
         listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
-    }
-
-    private func listViewModel(from type: BrowseType?,
-                               with accountService: AccountService?,
-                               eventBusService: EventBusService?) -> ListViewModelProtocol {
-        switch type {
-        case .personalFiles:
-            let viewModel = FolderDrillViewModel(with: accountService,
-                                                 listRequest: nil)
-            eventBusService?.register(observer: viewModel,
-                                      for: FavouriteEvent.self,
-                                      nodeTypes: [.file, .folder])
-            eventBusService?.register(observer: viewModel,
-                                      for: MoveEvent.self,
-                                      nodeTypes: [.file, .folder])
-            return viewModel
-        case .myLibraries:
-            let viewModel = MyLibrariesViewModel(with: accountService,
-                                                 listRequest: nil)
-            eventBusService?.register(observer: viewModel,
-                                      for: FavouriteEvent.self,
-                                      nodeTypes: [.site])
-            eventBusService?.register(observer: viewModel,
-                                      for: MoveEvent.self,
-                                      nodeTypes: [.site])
-            return viewModel
-        case .shared:
-            let viewModel = SharedViewModel(with: accountService,
-                                            listRequest: nil)
-            eventBusService?.register(observer: viewModel,
-                                      for: FavouriteEvent.self,
-                                      nodeTypes: [.file])
-            eventBusService?.register(observer: viewModel,
-                                      for: MoveEvent.self,
-                                      nodeTypes: [.file, .folder, .site])
-            return viewModel
-
-        case .trash:
-            let viewModel = TrashViewModel(with: accountService,
-                                  listRequest: nil)
-            eventBusService?.register(observer: viewModel,
-                                      for: MoveEvent.self,
-                                      nodeTypes: [.file, .folder, .site])
-            return viewModel
-        default:
-            let viewModel = FolderDrillViewModel(with: accountService,
-                                                 listRequest: nil)
-            eventBusService?.register(observer: viewModel,
-                                      for: FavouriteEvent.self,
-                                      nodeTypes: [.file, .folder])
-            eventBusService?.register(observer: viewModel,
-                                      for: MoveEvent.self,
-                                      nodeTypes: [.file, .folder, .site])
-            return viewModel
-        }
-    }
-
-    private func searchViewModel(from type: BrowseType?,
-                                 with title: String?,
-                                 with accountService: AccountService?,
-                                 with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
-        var searchChip: SearchChipItem?
-        switch type {
-        case .personalFiles:
-            if let nodeID = UserProfile.getPersonalFilesID() {
-                searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""),
-                                            type: .node,
-                                            selected: true,
-                                            nodeID: nodeID)
-            } else {
-                ProfileService.featchPersonalFilesID()
-            }
-        default:
-            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-            resultViewModel.delegate = globalSearchViewModel
-            globalSearchViewModel.delegate = resultViewModel
-            globalSearchViewModel.displaySearchBar = false
-            globalSearchViewModel.displaySearchButton = false
-            return globalSearchViewModel
-        }
-
-        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
-
-        contextualSearchViewModel.searchChipNode = searchChip
-        resultViewModel.delegate = contextualSearchViewModel
-        contextualSearchViewModel.delegate = resultViewModel
-        return contextualSearchViewModel
     }
 }
 
