@@ -34,9 +34,7 @@ class BasicAuthScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let loginService = repository.service(of: AuthenticationService.identifier) as? AuthenticationService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let viewController = BasicAuthViewController.instantiateViewController()
         let viewModel = BasicAuthViewModel(with: loginService, accountService: accountService)
 

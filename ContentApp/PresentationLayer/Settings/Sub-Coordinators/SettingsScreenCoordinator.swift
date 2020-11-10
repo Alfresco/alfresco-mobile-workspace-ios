@@ -33,8 +33,6 @@ class SettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let viewController = SettingsViewController.instantiateViewController()
         let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
 

@@ -40,7 +40,6 @@ class SplashScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let viewController = SplashViewController.instantiateViewController()
 
         viewController.coordinatorDelegate = self
@@ -98,8 +97,6 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     }
 
     private func registerAndPresent(account: AccountProtocol) {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-
         AlfrescoContentAPI.basePath = account.apiBasePath
 
         accountService?.register(account: account)

@@ -25,7 +25,7 @@ extension Coordinator {
         return ApplicationBootstrap.shared().repository
     }
 
-    var accountService: AccountService?  {
+    var accountService: AccountService? {
         let identifier = AccountService.identifier
         return repository.service(of: identifier) as? AccountService
     }

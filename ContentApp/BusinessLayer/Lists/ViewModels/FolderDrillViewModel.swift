@@ -123,11 +123,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         currentPage = 1
         request(with: nil)
     }
-
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        completion(listNode, nil)
-    }
-
+    
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {

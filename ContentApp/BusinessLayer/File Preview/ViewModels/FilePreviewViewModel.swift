@@ -150,8 +150,8 @@ class FilePreviewViewModel: EventObservable {
                 } else if let entry = result?.entry {
                     let listNode = NodeChildMapper.create(from: entry)
                     sSelf.listNode = listNode
-                    let menu = ActionsMenuFilePreview(with: listNode)
-                    sSelf.actionMenuViewModel = ActionMenuViewModel(with: menu,
+                    sSelf.actionMenuViewModel = ActionMenuViewModel(with: sSelf.accountService,
+                                                                    listNode: listNode,
                                                                     toolbarDivide: true)
                     sSelf.nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                                       accountService: sSelf.accountService,

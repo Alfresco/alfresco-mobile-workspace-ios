@@ -39,6 +39,7 @@ class ActionMenu {
 }
 
 enum ActionMenuType: String {
+    case placeholder = "ic-placeholder"
     case node = "ic-node"
     case more = "ic-action-more"
     case addFavorite = "ic-action-outline-favorite"

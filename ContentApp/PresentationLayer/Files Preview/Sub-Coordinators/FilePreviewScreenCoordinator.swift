@@ -34,9 +34,6 @@ class FilePreviewScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FilePreviewViewController.instantiateViewController()
 
         let filePreviewViewModel = FilePreviewViewModel(with: guidListNode,

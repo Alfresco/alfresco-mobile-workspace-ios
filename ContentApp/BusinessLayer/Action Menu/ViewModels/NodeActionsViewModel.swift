@@ -128,6 +128,7 @@ class NodeActionsViewModel {
             SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
+                    sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
                     sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -137,6 +138,7 @@ class NodeActionsViewModel {
             NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
+                    sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
                     sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -149,6 +151,7 @@ class NodeActionsViewModel {
         TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
+                sSelf.node.trashed = false
                 let moveEvent = MoveEvent(node: sSelf.node, eventType: .restore)
                 sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }

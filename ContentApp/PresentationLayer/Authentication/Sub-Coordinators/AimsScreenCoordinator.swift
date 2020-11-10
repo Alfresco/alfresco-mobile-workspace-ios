@@ -36,9 +36,7 @@ class AimsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let loginService = repository.service(of: AuthenticationService.identifier) as? AuthenticationService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let viewController = AimsViewController.instantiateViewController()
         let viewModel = AimsViewModel(with: loginService, accountService: accountService)
 

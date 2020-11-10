@@ -25,14 +25,7 @@ protocol ResultsViewModelDelegate: class {
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [ElementKindType]?
-    var accountService: AccountService?
     weak var delegate: ResultsViewModelDelegate?
-
-    // MARK: - Init
-
-    required init(with accountService: AccountService?) {
-        self.accountService = accountService
-    }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
@@ -108,35 +101,5 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()
-    }
-
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        guard let node = listNode else { return }
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            if node.kind == .site {
-                FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                         favoriteId: node.guid) { (_, error) in
-                    if error == nil {
-                        node.favorite = true
-                    }
-                    completion(node, error)
-                }
-            } else {
-                NodesAPI.getNode(nodeId: node.guid,
-                                 include: [kAPIIncludePathNode,
-                                           kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeIsFavoriteNode],
-                                 relativePath: nil,
-                                 fields: nil) { (result, error) in
-                    if let entry = result?.entry {
-                        let listNode = NodeChildMapper.create(from: entry)
-                        completion(listNode, error)
-                    } else {
-                        completion(listNode, error)
-                    }
-                }
-            }
-        })
     }
 }

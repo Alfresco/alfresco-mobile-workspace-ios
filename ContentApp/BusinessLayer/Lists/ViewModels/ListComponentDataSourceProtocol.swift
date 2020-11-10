@@ -30,5 +30,4 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayMoreButton() -> Bool
     func shouldDisplayNodePath() -> Bool
     func refreshList()
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void))
 }

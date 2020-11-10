@@ -18,11 +18,9 @@
 
 import Foundation
 
-struct ActionsMenuTrashMoreButton: ActionsMenuProtocol {
-    var actions = [[ActionMenu]]()
-
-    init(with node: ListNode) {
-        actions.removeAll()
+struct ActionsMenuTrashMoreButton {
+    static func actions(for node: ListNode) -> [[ActionMenu]] {
+        var actions = [[ActionMenu]]()
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node.mimeType))
@@ -36,5 +34,6 @@ struct ActionsMenuTrashMoreButton: ActionsMenuProtocol {
 
         actions.append(actions1)
         actions.append(actions2)
+        return actions
     }
 }

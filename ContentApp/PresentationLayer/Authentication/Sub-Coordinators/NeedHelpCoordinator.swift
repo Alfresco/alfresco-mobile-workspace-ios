@@ -30,7 +30,6 @@ class NeedHelpCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let viewController = NeedHelpViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 

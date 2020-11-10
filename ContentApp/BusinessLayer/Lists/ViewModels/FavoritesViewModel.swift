@@ -102,27 +102,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         currentPage = 1
         favoritesList(with: nil)
     }
-
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        completion(listNode, nil)
-            accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-                NodesAPI.getNode(nodeId: node.guid,
-                                 include: [kAPIIncludePathNode,
-                                           kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeIsFavoriteNode],
-                                 relativePath: nil,
-                                 fields: nil) { (result, error) in
-                    if let entry = result?.entry {
-                        let listNode = NodeChildMapper.create(from: entry)
-                        completion(listNode, error)
-                    } else {
-                        completion(listNode, error)
-                    }
-                }
-            })
-    }
-
+    
     func shouldDisplaySections() -> Bool {
         return false
     }

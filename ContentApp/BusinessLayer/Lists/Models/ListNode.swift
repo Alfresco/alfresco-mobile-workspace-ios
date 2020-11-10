@@ -52,6 +52,7 @@ class ListNode: Hashable {
     var favorite: Bool
     var allowableOperations: [AllowableOperationsType]?
     var siteRole: SiteRole?
+    var trashed: Bool?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(guid)
@@ -69,7 +70,8 @@ class ListNode: Hashable {
          kind: ElementKindType,
          favorite: Bool,
          allowableOperations: [String]? = nil,
-         siteRole: String? = nil) {
+         siteRole: String? = nil,
+         trashed: Bool = false) {
 
         self.guid = guid
         self.siteID = siteID
@@ -81,6 +83,7 @@ class ListNode: Hashable {
         self.favorite = favorite
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
+        self.trashed = trashed
     }
 
     func hasPersmission(to type: AllowableOperationsType) -> Bool {

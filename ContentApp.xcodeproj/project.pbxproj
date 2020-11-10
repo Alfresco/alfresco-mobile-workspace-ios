@@ -94,7 +94,6 @@
 		E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */; };
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
 		E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E319AA73250782F00072DFFE /* FilePreviewFactory.swift */; };
-		E31E44BA2547188D00439404 /* ActionsMenuFilePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31E44B92547188D00439404 /* ActionsMenuFilePreview.swift */; };
 		E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */; };
 		E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */; };
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
@@ -214,8 +213,7 @@
 		E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */; };
 		E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625B2476D6440091896D /* KeyboardHandling.swift */; };
 		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
-		E3FADB92253869F200BA6F9B /* ActionsMenuProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB91253869F200BA6F9B /* ActionsMenuProtocol.swift */; };
-		E3FADB9725386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9625386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift */; };
+		E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */; };
 		E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -325,7 +323,6 @@
 		E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeTableViewCell.swift; sourceTree = "<group>"; };
 		E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeScreenCoordinator.swift; sourceTree = "<group>"; };
 		E319AA73250782F00072DFFE /* FilePreviewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewFactory.swift; sourceTree = "<group>"; };
-		E31E44B92547188D00439404 /* ActionsMenuFilePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuFilePreview.swift; sourceTree = "<group>"; };
 		E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
 		E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		E321380D24C6F2C60025A833 /* UILabel+Theming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Theming.swift"; sourceTree = "<group>"; };
@@ -466,8 +463,7 @@
 		E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
 		E3F5625B2476D6440091896D /* KeyboardHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardHandling.swift; sourceTree = "<group>"; };
 		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
-		E3FADB91253869F200BA6F9B /* ActionsMenuProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuProtocol.swift; sourceTree = "<group>"; };
-		E3FADB9625386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuGenericMoreButton.swift; sourceTree = "<group>"; };
+		E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuGeneric.swift; sourceTree = "<group>"; };
 		E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1019,10 +1015,8 @@
 			isa = PBXGroup;
 			children = (
 				E335E73B2538677D0036E090 /* ActionMenu.swift */,
-				E3FADB91253869F200BA6F9B /* ActionsMenuProtocol.swift */,
-				E3FADB9625386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift */,
+				E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */,
 				B9A21CC12555255100F93383 /* ActionsMenuTashMoreButton.swift */,
-				E31E44B92547188D00439404 /* ActionsMenuFilePreview.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1602,7 +1596,6 @@
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
 				E3355FF524DC081300C2C8A5 /* ContextualSearchViewModel.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
-				E3FADB92253869F200BA6F9B /* ActionsMenuProtocol.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */,
@@ -1673,7 +1666,6 @@
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
-				E31E44BA2547188D00439404 /* ActionsMenuFilePreview.swift in Sources */,
 				B91FEB6624B75D63002878F1 /* TopLevelTransition.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				E3436F88250B8C4A00634C62 /* UIView+LoadNib.swift in Sources */,
@@ -1688,7 +1680,7 @@
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
 				E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */,
 				E335E731253865CF0036E090 /* ActionMenuViewModel.swift in Sources */,
-				E3FADB9725386AA200BA6F9B /* ActionsMenuGenericMoreButton.swift in Sources */,
+				E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				E3E2BDA824CC2B3D00D8A7EC /* DeleteNodeMapper.swift in Sources */,

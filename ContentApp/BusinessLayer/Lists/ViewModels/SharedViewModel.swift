@@ -113,10 +113,6 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         request(with: nil)
     }
 
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        completion(listNode, nil)
-    }
-
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }

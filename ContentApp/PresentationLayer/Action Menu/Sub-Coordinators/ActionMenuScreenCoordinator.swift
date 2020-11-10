@@ -34,7 +34,6 @@ class ActionMenuScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let viewController = ActionMenuViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 

@@ -24,7 +24,6 @@ import MaterialComponents.MaterialProgressView
 protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
     func showActionSheetForListItem(for node: ListNode,
-                                    dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate)
 }
 
@@ -301,17 +300,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        cell.startLoadingProgressView()
-        listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
-            guard let sSelf = self else { return }
-            if let listNode = listNode, let dataSource = sSelf.listDataSource {
-                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: listNode,
-                                                                         dataSource: dataSource,
-                                                                         delegate: sSelf)
-            }
-
-            cell.stopLoadingProgressView()
-        })
+        guard let node = element else { return }
+        listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
     }
 }
 

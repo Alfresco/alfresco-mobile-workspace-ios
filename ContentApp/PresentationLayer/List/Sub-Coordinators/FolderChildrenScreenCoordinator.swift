@@ -67,12 +67,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
-        let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-        let actionMenuViewModel = ActionMenuViewModel(with: menu)
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     accountService: accountService,
                                                     eventBusService: eventBusService,

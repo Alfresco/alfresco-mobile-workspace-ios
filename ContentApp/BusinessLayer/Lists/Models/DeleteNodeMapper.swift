@@ -50,6 +50,7 @@ struct DeleteNodeMapper {
                         modifiedAt: node.modifiedAt,
                         kind: kind,
                         favorite: false,
-                        allowableOperations: node.allowableOperations)
+                        allowableOperations: node.allowableOperations,
+                        trashed: true)
     }
 }
