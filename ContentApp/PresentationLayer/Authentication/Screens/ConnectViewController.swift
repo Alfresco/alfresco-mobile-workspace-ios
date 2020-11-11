@@ -58,7 +58,7 @@ class ConnectViewController: SystemThemableViewController {
 
         addLocalization()
         enableConnectButton = (connectTextField.text != "")
-        activityIndicator = ActivityIndicatorView(currentTheme: nodeServices?.themingService?.activeTheme)
+        activityIndicator = ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
@@ -69,7 +69,7 @@ class ConnectViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         navigationBar(hide: true)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
-        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
+        activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -95,7 +95,7 @@ class ConnectViewController: SystemThemableViewController {
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
+        activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
     }
 
     // MARK: - IBActions
@@ -141,9 +141,9 @@ class ConnectViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
-              let advancedSettingsButtonSceheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
-              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+              let advancedSettingsButtonSceheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         connectButton.applyContainedTheme(withScheme: loginButtonScheme)
         connectButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
@@ -181,7 +181,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     func connectTextFieldAddMaterialComponents() {
-        guard let themingService = nodeServices?.themingService else {
+        guard let themingService = coordinatorServices?.themingService else {
             return
         }
         connectTextField.trailingViewMode = .unlessEditing
@@ -197,7 +197,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     func navigationBar(hide: Bool) {
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if hide {
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             self.navigationController?.navigationBar.shadowImage = UIImage()

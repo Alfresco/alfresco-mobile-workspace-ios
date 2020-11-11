@@ -121,8 +121,8 @@ class FavoritesViewController: SystemSearchViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let scheme = nodeServices?.themingService?.containerScheming(for: .favoritesTabBar),
-              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let scheme = coordinatorServices?.themingService?.containerScheming(for: .favoritesTabBar),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         tabBar.applySurfaceTheme(withScheme: scheme)
         tabBar.backgroundColor = currentTheme.surfaceColor
         tabBar.bottomDividerColor = currentTheme.dividerColor
@@ -166,7 +166,7 @@ class FavoritesViewController: SystemSearchViewController {
         let folderAndFilesViewController = ListComponentViewController.instantiateViewController()
         folderAndFilesViewController.listActionDelegate = self
         folderAndFilesViewController.listDataSource = folderAndFilesListViewModel
-        folderAndFilesViewController.nodeServices = nodeServices
+        folderAndFilesViewController.coordinatorServices = coordinatorServices
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
         self.folderAndFilesViewController = folderAndFilesViewController
@@ -176,7 +176,7 @@ class FavoritesViewController: SystemSearchViewController {
         let librariesViewController = ListComponentViewController.instantiateViewController()
         librariesViewController.listActionDelegate = self
         librariesViewController.listDataSource = librariesListViewModel
-        librariesViewController.nodeServices = nodeServices
+        librariesViewController.coordinatorServices = coordinatorServices
         librariesListViewModel?.pageUpdatingDelegate = librariesViewController
 
         self.librariesViewController = librariesViewController

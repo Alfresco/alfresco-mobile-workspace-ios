@@ -53,7 +53,7 @@ class ResultViewController: SystemThemableViewController {
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = resultsViewModel
-        listComponentViewController.nodeServices = nodeServices
+        listComponentViewController.coordinatorServices = coordinatorServices
         resultsViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
@@ -89,7 +89,7 @@ class ResultViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         resultsListController?.viewWillAppear(animated)
 
-        let activeTheme = nodeServices?.themingService?.activeTheme
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryColor
         progressView.trackTintColor = activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
@@ -101,7 +101,7 @@ class ResultViewController: SystemThemableViewController {
         recentSearchCollectionView.reloadData()
         resultsListController?.willTransition(to: newCollection, with: coordinator)
 
-        let activeTheme = nodeServices?.themingService?.activeTheme
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryColor
         progressView.trackTintColor = activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
@@ -160,7 +160,7 @@ class ResultViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
@@ -202,7 +202,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                           for: indexPath) as? RecentSearchCollectionViewCell
             cell?.search = recentSearchesViewModel.searches[indexPath.row]
-            cell?.applyTheme(nodeServices?.themingService?.activeTheme)
+            cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return cell ?? UICollectionViewCell()
         case chipsCollectionView:
             let reuseIdentifier = String(describing: MDCChipCollectionViewCell.self)
@@ -215,7 +215,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
                 cell?.isSelected = true
             }
-            if let themeService = nodeServices?.themingService {
+            if let themeService = coordinatorServices?.themingService {
                 if chip.selected {
                     let scheme = themeService.containerScheming(for: .searchChipSelected)
                     let backgroundColor = themeService.activeTheme?.primaryColor.withAlphaComponent(0.12)
@@ -246,7 +246,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             chip.selected = true
-            if let themeService = nodeServices?.themingService {
+            if let themeService = coordinatorServices?.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
 
                 let scheme = themeService.containerScheming(for: .searchChipSelected)
@@ -267,7 +267,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             chip.selected = false
-            if let themeService = nodeServices?.themingService {
+            if let themeService = coordinatorServices?.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
 
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)

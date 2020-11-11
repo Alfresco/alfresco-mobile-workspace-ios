@@ -55,7 +55,7 @@ class ConnectScreenCoordinator: Coordinator {
         viewController.splashScreenDelegate = presenter
         viewController.connectScreenCoordinatorDelegate = self
         viewController.viewModel = viewModel
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         connectViewController = viewController
 
         presenter.addChild(containerViewNavigationController)

@@ -49,7 +49,7 @@ typealias RenditionCompletionHandler = (URL?) -> Void
 class FilePreviewViewModel: EventObservable {
     var listNode: ListNode?
     var supportedNodeTypes: [ElementKindType]?
-    var nodeServices: NodeServices?
+    var coordinatorServices: CoordinatorServices?
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     var actionMenuViewModel: ActionMenuViewModel?
@@ -64,10 +64,10 @@ class FilePreviewViewModel: EventObservable {
 
     init(with listNode: ListNode,
          delegate: FilePreviewViewModelDelegate?,
-         nodeServices: NodeServices) {
+         coordinatorServices: CoordinatorServices) {
         self.listNode = listNode
         self.viewModelDelegate = delegate
-        self.nodeServices = nodeServices
+        self.coordinatorServices = coordinatorServices
     }
 
     func requestFilePreview(with size: CGSize?) {
@@ -108,7 +108,7 @@ class FilePreviewViewModel: EventObservable {
             }
         } else { // Show the actual content from URL
             if let contentURL =
-                contentURL(for: nodeServices?.accountService?.activeAccount?.getTicket()) {
+                contentURL(for: coordinatorServices?.accountService?.activeAccount?.getTicket()) {
                 previewFile(type: filePreviewType, at: contentURL, with: size)
             }
         }
@@ -138,16 +138,16 @@ class FilePreviewViewModel: EventObservable {
     func updateNodeDetails() {
         guard let listNode = self.listNode else { return }
         if listNode.shouldUpdateNode() == false {
-            actionMenuViewModel = ActionMenuViewModel(with: nodeServices?.accountService,
+            actionMenuViewModel = ActionMenuViewModel(with: coordinatorServices?.accountService,
                                                       listNode: listNode,
                                                       toolbarDivide: true)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
-                                                        nodeActionServices: nodeServices)
+                                                        nodeActionServices: coordinatorServices)
             viewModelDelegate?.didFinishNodeDetails(error: nil)
             return
         }
-        nodeServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+        coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             NodesAPI.getNode(nodeId: listNode.guid,
@@ -160,13 +160,13 @@ class FilePreviewViewModel: EventObservable {
                     let listNode = NodeChildMapper.create(from: entry)
                     sSelf.listNode = listNode
                     sSelf.actionMenuViewModel =
-                        ActionMenuViewModel(with: sSelf.nodeServices?.accountService,
+                        ActionMenuViewModel(with: sSelf.coordinatorServices?.accountService,
                                             listNode: listNode,
                                             toolbarDivide: true)
                     sSelf.nodeActionsViewModel =
                         NodeActionsViewModel(node: listNode,
                                              delegate: nil,
-                                             nodeActionServices: sSelf.nodeServices)
+                                             nodeActionServices: sSelf.coordinatorServices)
                     sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
                 }
             }
@@ -187,7 +187,7 @@ class FilePreviewViewModel: EventObservable {
 
     private func contentURL(for ticket: String?) -> URL? {
         guard let ticket = ticket,
-              let basePathURL = nodeServices?.accountService?.activeAccount?.apiBasePath,
+              let basePathURL = coordinatorServices?.accountService?.activeAccount?.apiBasePath,
               let listNode = listNode,
               let previewURL = URL(string: basePathURL + "/" +
                                     String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
@@ -197,7 +197,7 @@ class FilePreviewViewModel: EventObservable {
 
     private func renditionURL(for renditionId: String, ticket: String?) -> URL? {
         guard let ticket = ticket,
-              let basePathURL = nodeServices?.accountService?.activeAccount?.apiBasePath,
+              let basePathURL = coordinatorServices?.accountService?.activeAccount?.apiBasePath,
               let listNode = listNode,
               let renditionURL = URL(string: basePathURL + "/" +
                                         String(format: kAPIPathGetRenditionContent,
@@ -212,7 +212,7 @@ class FilePreviewViewModel: EventObservable {
                                    completionHandler: @escaping (URL?, _ isImageRendition: Bool) -> Void) {
         viewModelDelegate?.willPreparePreview()
 
-        nodeServices?.accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
+        coordinatorServices?.accountService?.activeAccount?.getSession(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
 
             RenditionsAPI.listRenditions(nodeId: nodeId) { [weak self] (renditionPaging, _) in
@@ -244,13 +244,13 @@ class FilePreviewViewModel: EventObservable {
         }.first
 
         if let rendition = rendition {
-            let ticket = nodeServices?.accountService?.activeAccount?.getTicket()
+            let ticket = coordinatorServices?.accountService?.activeAccount?.getTicket()
             if rendition.entry.status == .created {
                 completionHandler(renditionURL(for: renditionId, ticket: ticket))
             } else {
                 let renditiontype = RenditionBodyCreate(_id: renditionId)
 
-                let activeAccount = nodeServices?.accountService?.activeAccount
+                let activeAccount = coordinatorServices?.accountService?.activeAccount
                 activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
                     AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
 
@@ -290,7 +290,7 @@ class FilePreviewViewModel: EventObservable {
                     completionHandler(nil)
                 }
 
-                let activeAccount = sSelf.nodeServices?.accountService?.activeAccount
+                let activeAccount = sSelf.coordinatorServices?.accountService?.activeAccount
                 activeAccount?.getSession(completionHandler: { authenticationProvider in
                     AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                     guard let listNode = sSelf.listNode else { return }

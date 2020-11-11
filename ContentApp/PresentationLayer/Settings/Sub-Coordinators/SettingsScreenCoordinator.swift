@@ -36,7 +36,7 @@ class SettingsScreenCoordinator: Coordinator {
         let viewController = SettingsViewController.instantiateViewController()
         let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
 
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewModel.viewModelDelegate = viewController
         viewController.viewModel = viewModel
         viewController.settingsScreenCoordinatorDelegate = self

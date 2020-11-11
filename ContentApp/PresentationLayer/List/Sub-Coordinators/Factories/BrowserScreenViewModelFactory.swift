@@ -23,11 +23,11 @@ typealias BrowseDataSource = (browseViewModel: BrowseViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
 class BrowseViewModelFactory {
-    var nodeServices: NodeServices?
+    var coordinatorServices: CoordinatorServices?
 
     func browseDataSource() -> BrowseDataSource {
-        let accountService = nodeServices?.accountService
-        let eventBusService = nodeServices?.eventBusService
+        let accountService = coordinatorServices?.accountService
+        let eventBusService = coordinatorServices?.eventBusService
 
         let browseViewModel = BrowseViewModel()
         let resultViewModel = ResultsViewModel()

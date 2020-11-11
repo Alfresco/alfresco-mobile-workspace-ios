@@ -153,7 +153,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard  let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard  let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
         filePreviewViewModel?.filePreview?.applyComponentsThemes(currentTheme)
 
@@ -172,7 +172,7 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
-        if let themingService = nodeServices?.themingService {
+        if let themingService = coordinatorServices?.themingService {
             dialog.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
             dialog.titleColor = themingService.activeTheme?.onSurfaceColor
             dialog.messageColor = themingService.activeTheme?.onBackgroundColor
@@ -180,7 +180,7 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     private func applyTheme(for passwordField: MDCOutlinedTextField) {
-        if let themingService = nodeServices?.themingService {
+        if let themingService = coordinatorServices?.themingService {
             passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
     }
@@ -195,7 +195,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
         containerFilePreview.addSubview(previewContainer)
         filePreviewViewModel?.filePreview?.filePreviewDelegate = self
-        filePreviewViewModel?.filePreview?.applyComponentsThemes(nodeServices?.themingService?.activeTheme)
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(coordinatorServices?.themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
             previewContainer.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor,

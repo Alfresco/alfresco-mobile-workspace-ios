@@ -20,7 +20,7 @@ protocol Coordinator {
     func start()
 }
 
-class NodeServices {
+class CoordinatorServices {
     var accountService: AccountService?
     var eventBusService: EventBusService?
     var themingService: MaterialDesignThemingService?
@@ -46,8 +46,8 @@ extension Coordinator {
         return repository.service(of: identifier) as? EventBusService
     }
 
-    var nodeServices: NodeServices {
-        let nodeActionServices = NodeServices()
+    var coordinatorServices: CoordinatorServices {
+        let nodeActionServices = CoordinatorServices()
         nodeActionServices.accountService = accountService
         nodeActionServices.eventBusService = eventBusService
         nodeActionServices.themingService = themingService

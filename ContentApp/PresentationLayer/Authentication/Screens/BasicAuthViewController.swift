@@ -65,7 +65,7 @@ class BasicAuthViewController: SystemThemableViewController {
         enableSignInButton = false
 
         activityIndicator =
-            ActivityIndicatorView(currentTheme: nodeServices?.themingService?.activeTheme)
+            ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
@@ -74,7 +74,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
+        activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,7 +85,7 @@ class BasicAuthViewController: SystemThemableViewController {
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
+        activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
     }
 
     // MARK: - IBActions
@@ -131,8 +131,8 @@ class BasicAuthViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
-              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
 
@@ -159,8 +159,8 @@ class BasicAuthViewController: SystemThemableViewController {
     }
 
     func applyThemingInTextField(errorTheme: Bool) {
-        guard let loginTextFieldScheme = nodeServices?.themingService?.containerScheming(for: .loginTextField),
-              let currentTheme = nodeServices?.themingService?.activeTheme else {
+        guard let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else {
             return
         }
         if errorTheme {
@@ -196,7 +196,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
 extension BasicAuthViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = nodeServices?.themingService?.activeTheme?.primaryVariantColor
+        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.primaryVariantColor
         keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
@@ -231,7 +231,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = nodeServices?.themingService?.activeTheme?.dividerColor
+        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.dividerColor
         return true
     }
 

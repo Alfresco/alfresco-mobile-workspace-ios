@@ -88,24 +88,24 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
 
         collectionView.reloadData()
-        progressView.progressTintColor = nodeServices?.themingService?.activeTheme?.primaryColor
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
         progressView.trackTintColor =
-            nodeServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        progressView.progressTintColor = nodeServices?.themingService?.activeTheme?.primaryColor
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
         progressView.trackTintColor =
-            nodeServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryColor
@@ -213,7 +213,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                                                                     for: indexPath) as? ListSectionCollectionReusableView else {
                 fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(nodeServices?.themingService?.activeTheme)
+            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return headerView
 
         case UICollectionView.elementKindSectionFooter:
@@ -240,7 +240,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                                                for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
         cell?.delegate = self
-        cell?.applyTheme(nodeServices?.themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""

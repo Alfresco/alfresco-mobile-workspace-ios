@@ -33,14 +33,14 @@ class NodeActionsViewModel {
     private var action: ActionMenu?
     private var node: ListNode
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
-    private var nodeActionServices: NodeServices?
+    private var nodeActionServices: CoordinatorServices?
     weak var delegate: NodeActionsViewModelDelegate?
 
     // MARK: Init
 
     init(node: ListNode,
          delegate: NodeActionsViewModelDelegate?,
-         nodeActionServices: NodeServices?) {
+         nodeActionServices: CoordinatorServices?) {
         self.node = node
         self.delegate = delegate
         self.nodeActionServices = nodeActionServices

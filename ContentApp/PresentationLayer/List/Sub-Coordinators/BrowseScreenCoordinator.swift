@@ -36,13 +36,13 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
     func start() {
         let viewModelFactory = BrowseViewModelFactory()
-        viewModelFactory.nodeServices = nodeServices
+        viewModelFactory.coordinatorServices = coordinatorServices
 
         let browseDataSource = viewModelFactory.browseDataSource()
 
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
@@ -101,7 +101,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
 
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        nodeActionServices: nodeServices)
+                                                        nodeActionServices: coordinatorServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

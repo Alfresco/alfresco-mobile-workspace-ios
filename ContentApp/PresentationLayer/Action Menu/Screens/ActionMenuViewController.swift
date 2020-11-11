@@ -83,7 +83,7 @@ class ActionMenuViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.surfaceColor
         activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
     }
@@ -112,7 +112,7 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
-        cell?.applyTheme(nodeServices?.themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
         return cell ?? UICollectionViewCell()
     }

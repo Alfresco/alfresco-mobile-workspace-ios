@@ -60,7 +60,7 @@ class SettingsViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         view.backgroundColor = currentTheme.surfaceColor
         let image = UIImage(color: currentTheme.surfaceColor,
@@ -113,7 +113,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell?.item = item
         cell?.delegate = self
-        cell?.applyTheme(with: nodeServices?.themingService)
+        cell?.applyTheme(with: coordinatorServices?.themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)
         } else {

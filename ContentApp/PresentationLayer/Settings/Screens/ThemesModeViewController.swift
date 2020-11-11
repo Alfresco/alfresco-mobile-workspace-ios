@@ -32,7 +32,7 @@ class ThemesModeViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.layer.cornerRadius = dialogCornerRadius
-        viewModel.themingService = nodeServices?.themingService
+        viewModel.themingService = coordinatorServices?.themingService
         addLocalization()
     }
 
@@ -61,7 +61,7 @@ class ThemesModeViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme =  nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme =  coordinatorServices?.themingService?.activeTheme else { return }
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
     }
@@ -85,9 +85,9 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
                                                      for: indexPath) as? ThemeModeTableViewCell else {
             return UITableViewCell()
         }
-        cell.applyThemingService(nodeServices?.themingService?.activeTheme)
+        cell.applyThemingService(coordinatorServices?.themingService?.activeTheme)
         cell.item = viewModel.items[indexPath.row]
-        if viewModel.items[indexPath.row] == nodeServices?.themingService?.getThemeMode() {
+        if viewModel.items[indexPath.row] == coordinatorServices?.themingService?.getThemeMode() {
             cell.selectRadioButton()
         }
         return cell
@@ -95,7 +95,7 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.saveThemeMode(viewModel.items[indexPath.row],
-                                themingService: nodeServices?.themingService)
+                                themingService: coordinatorServices?.themingService)
         tableView.reloadData()
         delegate?.changeThemeMode()
         self.dismiss(animated: true, completion: nil)

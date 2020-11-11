@@ -32,13 +32,13 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 
     func start() {
         let recentViewModelFactory = RecentViewModelFactory()
-        recentViewModelFactory.nodeServices = nodeServices
+        recentViewModelFactory.coordinatorServices = coordinatorServices
 
         let recentDataSource = recentViewModelFactory.recentDataSource()
 
         let viewController = ListViewController()
         viewController.title = LocalizationConstants.ScreenTitles.recent
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.listViewModel = recentDataSource.recentViewModel
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
@@ -87,7 +87,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        nodeActionServices: nodeServices)
+                                                        nodeActionServices: coordinatorServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

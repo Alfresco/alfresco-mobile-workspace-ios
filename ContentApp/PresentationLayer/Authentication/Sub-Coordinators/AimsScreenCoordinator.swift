@@ -41,7 +41,7 @@ class AimsScreenCoordinator: Coordinator {
         let viewModel = AimsViewModel(with: loginService, accountService: accountService)
 
         viewController.aimsScreenCoordinatorDelegate = self
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.viewModel = viewModel
         viewController.splashScreenDelegate = splashScreen
         aimsViewController = viewController

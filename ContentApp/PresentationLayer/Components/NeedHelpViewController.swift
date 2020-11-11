@@ -67,7 +67,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
                                                      font: currentTheme.subtitle2TextStyle.font)

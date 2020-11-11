@@ -23,11 +23,11 @@ typealias RecentDataSource = (recentViewModel: RecentViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
 class RecentViewModelFactory {
-    var nodeServices: NodeServices?
+    var coordinatorServices: CoordinatorServices?
 
     func recentDataSource() -> RecentDataSource {
-        let accountService = nodeServices?.accountService
-        let eventBusService = nodeServices?.eventBusService
+        let accountService = coordinatorServices?.accountService
+        let eventBusService = coordinatorServices?.eventBusService
 
         let recentViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil)

@@ -105,10 +105,10 @@ class AimsViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
-              let needHelpButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
-              let repositoryTextFieldScheme = nodeServices?.themingService?.containerScheming(for: .loginTextField),
-              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+              let needHelpButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+              let repositoryTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
 

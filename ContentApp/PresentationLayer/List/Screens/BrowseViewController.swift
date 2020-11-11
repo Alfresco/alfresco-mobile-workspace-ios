@@ -80,7 +80,7 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                       for: indexPath) as? BrowseStaticNodeCollectionViewCell
         cell?.node = node
-        cell?.applyTheme(nodeServices?.themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 
@@ -107,7 +107,7 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
                                                                     for: indexPath) as? BrowseSectionCollectionReusableView else {
                 fatalError("Invalid BrowseSectionCollectionReusableView type")
             }
-            headerView.applyTheme(nodeServices?.themingService?.activeTheme)
+            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
 
             return headerView
         default: return UICollectionReusableView()

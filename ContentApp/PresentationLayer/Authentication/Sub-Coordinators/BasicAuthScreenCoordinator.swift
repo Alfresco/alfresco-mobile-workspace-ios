@@ -40,7 +40,7 @@ class BasicAuthScreenCoordinator: Coordinator {
 
         viewController.splashScreenDelegate = splashScreen
         viewController.basicAuthCoordinatorDelegate = self
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
 
         viewController.viewModel = viewModel
         basicAuthViewController = viewController

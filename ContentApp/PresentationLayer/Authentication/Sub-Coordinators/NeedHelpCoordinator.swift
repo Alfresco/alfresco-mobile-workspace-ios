@@ -33,7 +33,7 @@ class NeedHelpCoordinator: Coordinator {
         let viewController = NeedHelpViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.model = model
         presenter.present(bottomSheet, animated: true, completion: nil)
         needHelpViewController = viewController

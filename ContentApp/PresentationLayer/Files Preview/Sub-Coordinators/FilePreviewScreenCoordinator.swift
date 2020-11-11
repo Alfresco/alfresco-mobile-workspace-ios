@@ -38,10 +38,10 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
-                                                        nodeServices: nodeServices)
+                                                        coordinatorServices: coordinatorServices)
 
         viewController.filePreviewCoordinatorDelegate = self
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.filePreviewViewModel = filePreviewViewModel
 
         eventBusService?.register(observer: filePreviewViewModel,

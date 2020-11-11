@@ -90,7 +90,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if httpsSwitch.isOn {
             httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         } else {
@@ -146,10 +146,10 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard
-            let loginTextFieldScheme = nodeServices?.themingService?.containerScheming(for: .loginTextField),
-            let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
-            let advancedSettingsButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
-            let currentTheme = nodeServices?.themingService?.activeTheme else { return }
+            let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
+            let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+            let advancedSettingsButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+            let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: loginTextFieldScheme)
         pathTextField.applyTheme(withScheme: loginTextFieldScheme)

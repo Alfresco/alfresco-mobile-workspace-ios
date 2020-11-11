@@ -33,7 +33,7 @@ class ThemesModeScreenCoordinator: Coordinator {
         let dialogTransitionController = MDCDialogTransitionController()
         let viewController = ThemesModeViewController.instantiateViewController()
 
-        viewController.nodeServices = nodeServices
+        viewController.coordinatorServices = coordinatorServices
         viewController.delegate = settingsViewController
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = dialogTransitionController
