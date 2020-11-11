@@ -75,7 +75,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             case .file:
                 let filePreviewCoordinator =
                     FilePreviewScreenCoordinator(with: navigationViewController,
-                                                 guidListNode: node.guid)
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }

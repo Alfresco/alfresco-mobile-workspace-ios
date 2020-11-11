@@ -26,22 +26,22 @@ protocol FilePreviewScreenCoordinatorDelegate: class {
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var filePreviewViewController: FilePreviewViewController?
-    private var guidListNode: String
+    private var listNode: ListNode
 
-    init(with presenter: UINavigationController, guidListNode: String) {
+    init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
-        self.guidListNode = guidListNode
+        self.listNode = listNode
     }
 
     func start() {
         let viewController = FilePreviewViewController.instantiateViewController()
 
-        let filePreviewViewModel = FilePreviewViewModel(with: guidListNode,
+        let filePreviewViewModel = FilePreviewViewModel(with: listNode,
+                                                        delegate: viewController,
                                                         accountService: accountService,
                                                         eventBusService: eventBusService)
 
         viewController.filePreviewCoordinatorDelegate = self
-        filePreviewViewModel.viewModelDelegate = viewController
         viewController.themingService = themingService
         viewController.filePreviewViewModel = filePreviewViewModel
 

@@ -52,6 +52,8 @@ class FilePreviewViewController: SystemThemableViewController {
 
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        filePreviewViewModel?.updateNodeDetails()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -242,11 +244,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func update(listNode: ListNode) {
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
-            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            let icon = (listNode.favorite ?? false) ? ActionMenuType.removeFavorite.rawValue :
+                ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
         }
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
-            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            let icon = (listNode.favorite ?? false ) ? ActionMenuType.removeFavorite.rawValue :
+                ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
         }
     }

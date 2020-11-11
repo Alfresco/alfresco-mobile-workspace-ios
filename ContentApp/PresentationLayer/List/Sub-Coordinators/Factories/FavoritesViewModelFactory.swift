@@ -40,6 +40,14 @@ class FavoritesViewModelFactory {
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 
+        registerForMoveEvent(resultViewModel: resultViewModel,
+                             foldersAndFilesViewModel: foldersAndFilesViewModel,
+                             librariesViewModel: librariesViewModel)
+
+        registerForFavouriteEvent(resultViewModel: resultViewModel,
+                                  foldersAndFilesViewModel: foldersAndFilesViewModel,
+                                  librariesViewModel: librariesViewModel)
+
         return (foldersAndFilesViewModel, librariesViewModel, globalSearchViewModel, resultViewModel)
     }
 

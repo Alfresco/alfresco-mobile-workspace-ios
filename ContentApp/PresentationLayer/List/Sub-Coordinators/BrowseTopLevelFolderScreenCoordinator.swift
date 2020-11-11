@@ -62,7 +62,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         case .file:
             let filePreviewCoordinator =
                 FilePreviewScreenCoordinator(with: self.presenter,
-                                             guidListNode: node.guid)
+                                             listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
         }
@@ -70,7 +70,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
 
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
-        let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
+                                                      listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     accountService: accountService,
                                                     eventBusService: eventBusService,

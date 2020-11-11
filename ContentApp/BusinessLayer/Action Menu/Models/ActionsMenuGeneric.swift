@@ -36,7 +36,7 @@ struct ActionsMenuGeneric {
 
         var actions2: [ActionMenu] = [downloadAction]
 
-        if node.favorite {
+        if node.favorite == true {
             actions2.append(removeFavAction)
         } else {
             actions2.append(addFavAction)

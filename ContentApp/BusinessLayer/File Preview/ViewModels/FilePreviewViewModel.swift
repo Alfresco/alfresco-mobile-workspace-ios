@@ -52,7 +52,7 @@ class FilePreviewViewModel: EventObservable {
     var eventBusService: EventBusService?
     var supportedNodeTypes: [ElementKindType]?
 
-    weak var viewModelDelegate: FilePreviewViewModelDelegate?
+    private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     var actionMenuViewModel: ActionMenuViewModel?
     var nodeActionsViewModel: NodeActionsViewModel?
 
@@ -63,12 +63,14 @@ class FilePreviewViewModel: EventObservable {
 
     // MARK: - Public interface
 
-    init(with guidNode: String,
+    init(with listNode: ListNode,
+         delegate: FilePreviewViewModelDelegate?,
          accountService: AccountService?,
          eventBusService: EventBusService?) {
         self.accountService = accountService
         self.eventBusService = eventBusService
-        self.detailsNode(guid: guidNode)
+        self.listNode = listNode
+        self.viewModelDelegate = delegate
     }
 
     func requestFilePreview(with size: CGSize?) {
@@ -135,13 +137,23 @@ class FilePreviewViewModel: EventObservable {
                                         AnalyticsConstants.Parameters.previewSuccess: success])
     }
 
-    // MARK: - Private interface
-
-    private func detailsNode(guid: String) {
+    func updateNodeDetails() {
+        guard let listNode = self.listNode else { return }
+        if listNode.shouldUpdateNode() == false {
+            actionMenuViewModel = ActionMenuViewModel(with: accountService,
+                                                            listNode: listNode,
+                                                            toolbarDivide: true)
+            nodeActionsViewModel = NodeActionsViewModel(node: listNode,
+                                                              accountService: accountService,
+                                                              eventBusService: eventBusService,
+                                                              delegate: nil)
+            viewModelDelegate?.didFinishNodeDetails(error: nil)
+            return
+        }
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: guid,
+            NodesAPI.getNode(nodeId: listNode.guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
                                        kAPIIncludeAllowableOperationsNode]) { (result, error) in
@@ -162,6 +174,8 @@ class FilePreviewViewModel: EventObservable {
             }
         })
     }
+
+    // MARK: - Private interface
 
     private func contentText(_ completionHandler: @escaping (Data?, Error?) -> Void) {
         guard let listNode = listNode else { return }
