@@ -36,8 +36,8 @@ class ActionMenuViewController: SystemThemableViewController {
         view.isHidden = true
 
         actionMenuModel?.delegate = self
-        actionMenuModel?.fetchNodeInformation()
         activityIndicator.startAnimating()
+        actionMenuModel?.fetchNodeInformation()
         view.addSubview(activityIndicator)
     }
 

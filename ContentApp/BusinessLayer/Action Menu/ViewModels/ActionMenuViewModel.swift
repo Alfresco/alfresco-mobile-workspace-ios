@@ -54,6 +54,7 @@ class ActionMenuViewModel {
 
     func fetchNodeInformation() {
         if toolbarDivide {
+            delegate?.finishProvideActions()
             return
         }
         if listNode.trashed == true {
