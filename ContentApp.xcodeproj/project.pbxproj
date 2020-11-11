@@ -24,6 +24,8 @@
 		B9318AAE254893090023689D /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
 		B936A14424BDBE04003C9A95 /* ListViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */; };
 		B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944AADC255AB99F00965709 /* FavoritesViewModelFactory.swift */; };
+		B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944AB08255AD4F500965709 /* DownloadDialog.swift */; };
+		B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = B944AB25255BF20500965709 /* DownloadDialog.xib */; };
 		B946E84D25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B946E84C25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift */; };
 		B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95247312548134A00E768DD /* NSPointerArray+Operations.swift */; };
 		B95605022501208600D955BA /* PDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95605012501208600D955BA /* PDFRenderer.swift */; };
@@ -251,6 +253,8 @@
 		B9318AAD254893090023689D /* FavouriteEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteEvent.swift; sourceTree = "<group>"; };
 		B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModelProtocol.swift; sourceTree = "<group>"; };
 		B944AADC255AB99F00965709 /* FavoritesViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModelFactory.swift; sourceTree = "<group>"; };
+		B944AB08255AD4F500965709 /* DownloadDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadDialog.swift; sourceTree = "<group>"; };
+		B944AB25255BF20500965709 /* DownloadDialog.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DownloadDialog.xib; sourceTree = "<group>"; };
 		B946E84C25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelBrowseViewModelFactory.swift; sourceTree = "<group>"; };
 		B95247312548134A00E768DD /* NSPointerArray+Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPointerArray+Operations.swift"; sourceTree = "<group>"; };
 		B95605012501208600D955BA /* PDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFRenderer.swift; sourceTree = "<group>"; };
@@ -523,6 +527,15 @@
 				E35583F224BF40AD007011EF /* Models */,
 			);
 			path = Lists;
+			sourceTree = "<group>";
+		};
+		B944AB1E255BD9E200965709 /* DownloadDialog */ = {
+			isa = PBXGroup;
+			children = (
+				B944AB08255AD4F500965709 /* DownloadDialog.swift */,
+				B944AB25255BF20500965709 /* DownloadDialog.xib */,
+			);
+			path = DownloadDialog;
 			sourceTree = "<group>";
 		};
 		B946E84B25592DC600023A39 /* Factories */ = {
@@ -825,6 +838,7 @@
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
 				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
+				B944AB1E255BD9E200965709 /* DownloadDialog */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1465,6 +1479,7 @@
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
+				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 			);
@@ -1576,6 +1591,7 @@
 				E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */,
 				E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
+				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,

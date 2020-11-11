@@ -144,3 +144,4 @@
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Delete %@";
 "dialog-delete-message" = "%@ will be permanently deleted.";
+"dialog-download-message" = "Downloading '%@'";

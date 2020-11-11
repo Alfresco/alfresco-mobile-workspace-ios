@@ -34,7 +34,7 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = AdvancedSettingsViewController.instantiateViewController()
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.advSettingsScreenCoordinatorDelegate = self
         advancedSettingsViewController = viewController
         presenter.pushViewController(viewController, animated: true)

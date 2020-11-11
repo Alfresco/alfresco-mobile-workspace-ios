@@ -23,14 +23,17 @@ typealias RecentDataSource = (recentViewModel: RecentViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
 class RecentViewModelFactory {
-    var accountService: AccountService?
-    var eventBusService: EventBusService?
+    var nodeServices: NodeServices?
 
     func recentDataSource() -> RecentDataSource {
+        let accountService = nodeServices?.accountService
+        let eventBusService = nodeServices?.eventBusService
+
         let recentViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil)
         let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        let globalSearchViewModel =
+            GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 

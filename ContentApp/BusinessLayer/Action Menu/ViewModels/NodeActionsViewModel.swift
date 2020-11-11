@@ -33,20 +33,17 @@ class NodeActionsViewModel {
     private var action: ActionMenu?
     private var node: ListNode
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
+    private var nodeActionServices: NodeServices?
     weak var delegate: NodeActionsViewModelDelegate?
-    private var accountService: AccountService?
-    private var eventBusService: EventBusService?
 
     // MARK: Init
 
     init(node: ListNode,
-         accountService: AccountService?,
-         eventBusService: EventBusService?,
-         delegate: NodeActionsViewModelDelegate?) {
+         delegate: NodeActionsViewModelDelegate?,
+         nodeActionServices: NodeServices?) {
         self.node = node
-        self.accountService = accountService
         self.delegate = delegate
-        self.eventBusService = eventBusService
+        self.nodeActionServices = nodeActionServices
     }
 
     // MARK: - Public Helpers
@@ -61,6 +58,7 @@ class NodeActionsViewModel {
     // MARK: - Private Helpers
 
     private func requestAction() {
+        let accountService = nodeActionServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let action = sSelf.action else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -76,6 +74,8 @@ class NodeActionsViewModel {
                 sSelf.requestRestoreFromTrash()
             case .permanentlyDelete:
                 sSelf.requestPermanentlyDelete()
+            case .download :
+                sSelf.requestDownload()
             default:
                 DispatchQueue.main.async {
                     sSelf.delegate?.nodeActionFinished(with: sSelf.action,
@@ -102,7 +102,9 @@ class NodeActionsViewModel {
                 sSelf.action?.type = .removeFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
                 let favouriteEvent = FavouriteEvent(node: sSelf.node, eventType: .addToFavourite)
-                sSelf.eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
+
+                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
             sSelf.handleResponse(error: error)
         }
@@ -116,8 +118,11 @@ class NodeActionsViewModel {
                 sSelf.node.favorite = false
                 sSelf.action?.type = .addFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.addFavorite
-                let favouriteEvent = FavouriteEvent(node: sSelf.node, eventType: .removeFromFavourites)
-                sSelf.eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
+                let favouriteEvent = FavouriteEvent(node: sSelf.node,
+                                                    eventType: .removeFromFavourites)
+
+                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
             sSelf.handleResponse(error: error)
         }
@@ -130,7 +135,9 @@ class NodeActionsViewModel {
                 if error == nil {
                     sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
-                    sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+                    let eventBusService = sSelf.nodeActionServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error)
             }
@@ -140,7 +147,9 @@ class NodeActionsViewModel {
                 if error == nil {
                     sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
-                    sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+                    let eventBusService = sSelf.nodeActionServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error)
             }
@@ -153,7 +162,9 @@ class NodeActionsViewModel {
             if error == nil {
                 sSelf.node.trashed = false
                 let moveEvent = MoveEvent(node: sSelf.node, eventType: .restore)
-                sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
             self?.handleResponse(error: error)
         }
@@ -173,7 +184,9 @@ class NodeActionsViewModel {
                 TrashcanAPI.deleteDeletedNode(nodeId: sSelf.node.guid) { (_, error) in
                     if error == nil {
                         let moveEvent = MoveEvent(node: sSelf.node, eventType: .permanentlyDelete)
-                        sSelf.eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+                        let eventBusService = sSelf.nodeActionServices?.eventBusService
+                        eventBusService?.publish(event: moveEvent, on: .mainQueue)
                     }
                     sSelf.handleResponse(error: error)
                 }
@@ -184,6 +197,32 @@ class NodeActionsViewModel {
                                                    message: message,
                                                    actions: [cancelAction, deleteAction],
                                                    completionHandler: {})
+            }
+        }
+    }
+
+    private func requestDownload() {
+        if let presentationContext = delegate?.presentationContext() {
+            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
+
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+
+                if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+                    let themingService =  sSelf.nodeActionServices?.themingService
+                    let activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+                    activityIndicator.state = .isLoading
+                    downloadDialogView.activityIndicator = activityIndicator
+
+                    downloadDialogView.messageLabel.text =
+                        String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
+                                                                  sSelf.node.title)
+                    _ = presentationContext.showDialog(title: nil,
+                                                       message: nil,
+                                                       actions: [cancelAction],
+                                                       accesoryView: downloadDialogView,
+                                                       completionHandler: {})
+                }
             }
         }
     }

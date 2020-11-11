@@ -23,8 +23,7 @@ typealias TopLevelBrowseDataSource = (topLevelBrowseViewModel: ListViewModelProt
                                      globalSearchViewModel: SearchViewModelProtocol)
 
 class TopLevelBrowseViewModelFactory {
-    var accountService: AccountService?
-    var eventBusService: EventBusService?
+    var nodeServices: NodeServices?
 
     func topLevelBrowseDataSource(browseNode: BrowseNode) -> TopLevelBrowseDataSource {
         let topLevelBrowseViewModel = listViewModel(from: browseNode.type)
@@ -37,6 +36,9 @@ class TopLevelBrowseViewModelFactory {
     }
 
     func listViewModel(from type: BrowseType?) -> ListViewModelProtocol {
+        let accountService = nodeServices?.accountService
+        let eventBusService = nodeServices?.eventBusService
+
         switch type {
         case .personalFiles:
             return personalFilesViewModel(with: accountService,
@@ -59,6 +61,7 @@ class TopLevelBrowseViewModelFactory {
     func globalSearchViewModel(from type: BrowseType?,
                                with title: String?,
                                with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
+        let accountService = nodeServices?.accountService
         var searchChip: SearchChipItem?
 
         switch type {
@@ -89,6 +92,8 @@ class TopLevelBrowseViewModelFactory {
     }
 
     func resultsViewModel() -> ResultsViewModel {
+        let eventBusService = nodeServices?.eventBusService
+
         let resultViewModel = ResultsViewModel()
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,

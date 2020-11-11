@@ -58,7 +58,7 @@ class ConnectViewController: SystemThemableViewController {
 
         addLocalization()
         enableConnectButton = (connectTextField.text != "")
-        activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
+        activityIndicator = ActivityIndicatorView(currentTheme: nodeServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
         if let activityIndicator = activityIndicator {
             kWindow.addSubview(activityIndicator)
@@ -69,7 +69,7 @@ class ConnectViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         navigationBar(hide: true)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
-        activityIndicator?.applyTheme(themingService?.activeTheme)
+        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -77,7 +77,9 @@ class ConnectViewController: SystemThemableViewController {
 
         if openKeyboard {
             openKeyboard = false
-            DispatchQueue.main.asyncAfter(deadline: .now() + kAnimationSplashScreenLogo + kAnimationSplashScreenContainerViews,
+            DispatchQueue.main.asyncAfter(deadline: .now() +
+                                            kAnimationSplashScreenLogo +
+                                            kAnimationSplashScreenContainerViews,
                 execute: { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.connectTextField.becomeFirstResponder()
@@ -90,9 +92,10 @@ class ConnectViewController: SystemThemableViewController {
         navigationBar(hide: false)
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        activityIndicator?.applyTheme(themingService?.activeTheme)
+        activityIndicator?.applyTheme(nodeServices?.themingService?.activeTheme)
     }
 
     // MARK: - IBActions
@@ -132,22 +135,26 @@ class ConnectViewController: SystemThemableViewController {
         connectButton.setTitle(LocalizationConstants.Buttons.connect, for: .disabled)
         advancedSettingsButton.setTitle(LocalizationConstants.Buttons.advancedSetting, for: .normal)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelpAlfresco, for: .normal)
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        copyrightLabel.text = String(format: LocalizationConstants.copyright,
+                                     Calendar.current.component(.year, from: Date()))
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        guard let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
+              let advancedSettingsButtonSceheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
 
-        connectButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        connectButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05), for: .disabled)
+        connectButton.applyContainedTheme(withScheme: loginButtonScheme)
+        connectButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+                                         for: .disabled)
         connectButton.isUppercaseTitle = false
         connectButton.setShadowColor(.clear, for: .normal)
 
-        advancedSettingsButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        advancedSettingsButton.applyTextTheme(withScheme: advancedSettingsButtonSceheme)
         advancedSettingsButton.isUppercaseTitle = false
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        needHelpButton.applyTextTheme(withScheme: advancedSettingsButtonSceheme)
         needHelpButton.isUppercaseTitle = false
 
         connectTextFieldAddMaterialComponents()
@@ -157,7 +164,8 @@ class ConnectViewController: SystemThemableViewController {
         copyrightLabel.textAlignment = .center
         productLabel.textAlignment = .center
 
-        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
+        view.backgroundColor =
+            (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
 
         let image = UIImage(color: currentTheme.surfaceColor,
                             size: navigationController?.navigationBar.bounds.size)
@@ -173,7 +181,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     func connectTextFieldAddMaterialComponents() {
-        guard let themingService = self.themingService else {
+        guard let themingService = nodeServices?.themingService else {
             return
         }
         connectTextField.trailingViewMode = .unlessEditing
@@ -189,7 +197,7 @@ class ConnectViewController: SystemThemableViewController {
     }
 
     func navigationBar(hide: Bool) {
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
         if hide {
             self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
             self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -224,8 +232,11 @@ extension ConnectViewController: UITextFieldDelegate {
         return true
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        enableConnectButton = (textField.updatedText(for: range, replacementString: string) != "")
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        enableConnectButton = (textField.updatedText(for: range,
+                                                     replacementString: string) != "")
         return true
     }
 

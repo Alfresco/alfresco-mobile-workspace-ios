@@ -36,14 +36,13 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
 
     func start() {
         let viewModelFactory = BrowseViewModelFactory()
-        viewModelFactory.accountService = accountService
-        viewModelFactory.eventBusService = eventBusService
+        viewModelFactory.nodeServices = nodeServices
 
         let browseDataSource = viewModelFactory.browseDataSource()
 
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
@@ -98,12 +97,11 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel = ActionMenuViewModel(with: accountService,
-                                                          listNode: node)
+            let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+
             let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                        accountService: accountService,
-                                                        eventBusService: eventBusService,
-                                                        delegate: delegate)
+                                                        delegate: delegate,
+                                                        nodeActionServices: nodeServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

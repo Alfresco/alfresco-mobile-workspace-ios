@@ -20,6 +20,12 @@ protocol Coordinator {
     func start()
 }
 
+class NodeServices {
+    var accountService: AccountService?
+    var eventBusService: EventBusService?
+    var themingService: MaterialDesignThemingService?
+}
+
 extension Coordinator {
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
@@ -38,5 +44,14 @@ extension Coordinator {
     var eventBusService: EventBusService? {
         let identifier = EventBusService.identifier
         return repository.service(of: identifier) as? EventBusService
+    }
+
+    var nodeServices: NodeServices {
+        let nodeActionServices = NodeServices()
+        nodeActionServices.accountService = accountService
+        nodeActionServices.eventBusService = eventBusService
+        nodeActionServices.themingService = themingService
+
+        return nodeActionServices
     }
 }

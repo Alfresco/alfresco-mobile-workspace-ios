@@ -102,7 +102,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         currentPage = 1
         favoritesList(with: nil)
     }
-    
+
     func shouldDisplaySections() -> Bool {
         return false
     }

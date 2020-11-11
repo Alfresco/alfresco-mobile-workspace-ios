@@ -32,14 +32,13 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
     func start() {
         let viewModelFactory = FolderChildrenViewModelFactory()
-        viewModelFactory.accountService = accountService
-        viewModelFactory.eventBusService = eventBusService
+        viewModelFactory.nodeServices = nodeServices
 
         let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
 
         let viewController = ListViewController()
         viewController.title = listNode.title
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.listItemActionDelegate = self
         viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel
         viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
@@ -70,9 +69,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                    accountService: accountService,
-                                                    eventBusService: eventBusService,
-                                                    delegate: delegate)
+                                                    delegate: delegate,
+                                                    nodeActionServices: nodeServices)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)

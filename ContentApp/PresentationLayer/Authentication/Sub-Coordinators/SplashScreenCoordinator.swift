@@ -43,7 +43,7 @@ class SplashScreenCoordinator: Coordinator {
         let viewController = SplashViewController.instantiateViewController()
 
         viewController.coordinatorDelegate = self
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         splashScreenViewController = viewController
         presenter.pushViewController(viewController, animated: true)
         connectScreenCoordinator = ConnectScreenCoordinator(with: viewController, authenticationError: authenticationError)

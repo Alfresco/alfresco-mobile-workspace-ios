@@ -124,7 +124,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
     }
 
     // MARK: Event Observable
-    
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

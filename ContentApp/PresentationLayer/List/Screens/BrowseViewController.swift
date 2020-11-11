@@ -39,12 +39,14 @@ class BrowseViewController: SystemSearchViewController {
         collectionView.reloadData()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
     }
 
@@ -58,7 +60,8 @@ class BrowseViewController: SystemSearchViewController {
 // MARK: - UICollectionView DataSource & Delegate
 
 extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return listViewModel?.list[section].count ?? 0
     }
 
@@ -66,12 +69,18 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
         return listViewModel?.list.count ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listViewModel?.list[indexPath.section][indexPath.row] else { return UICollectionViewCell() }
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let node = listViewModel?.list[indexPath.section][indexPath.row] else {
+            return UICollectionViewCell()
+
+        }
+
         let identifier = String(describing: BrowseStaticNodeCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? BrowseStaticNodeCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
+                                                      for: indexPath) as? BrowseStaticNodeCollectionViewCell
         cell?.node = node
-        cell?.applyTheme(themingService?.activeTheme)
+        cell?.applyTheme(nodeServices?.themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }
 
@@ -86,23 +95,30 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
         browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
     }
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let identifier = String(describing: BrowseSectionCollectionReusableView.self)
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: identifier,
-                                                                                   for: indexPath) as? BrowseSectionCollectionReusableView else {
-                                                                                    fatalError("Invalid BrowseSectionCollectionReusableView type") }
-            headerView.applyTheme(themingService?.activeTheme)
+            guard let headerView =
+                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                    withReuseIdentifier: identifier,
+                                                                    for: indexPath) as? BrowseSectionCollectionReusableView else {
+                fatalError("Invalid BrowseSectionCollectionReusableView type")
+            }
+            headerView.applyTheme(nodeServices?.themingService?.activeTheme)
+
             return headerView
-        default:
-            return UICollectionReusableView()
+        default: return UICollectionReusableView()
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: (section == 0) ? 0 : listBrowseSectionCellHeight)
+        return CGSize(width: self.view.bounds.width,
+                      height: (section == 0) ? 0 : listBrowseSectionCellHeight)
     }
 }
 

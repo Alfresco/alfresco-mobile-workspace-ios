@@ -32,14 +32,13 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 
     func start() {
         let favoritesViewModelFactory = FavoritesViewModelFactory()
-        favoritesViewModelFactory.accountService = accountService
-        favoritesViewModelFactory.eventBusService = eventBusService
+        favoritesViewModelFactory.nodeServices = nodeServices
 
         let favoritesDataSource = favoritesViewModelFactory.favoritesDataSource()
 
         let viewController = FavoritesViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
         viewController.folderAndFilesListViewModel = favoritesDataSource.foldersAndFilesViewModel
@@ -88,9 +87,8 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
             let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                        accountService: accountService,
-                                                        eventBusService: eventBusService,
-                                                        delegate: delegate)
+                                                        delegate: delegate,
+                                                        nodeActionServices: nodeServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

@@ -80,7 +80,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
 
         view.backgroundColor = currentTheme.surfaceColor
         let image = UIImage(color: currentTheme.surfaceColor,
@@ -116,7 +116,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
-        rvc.themingService = themingService
+        rvc.nodeServices = nodeServices
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = resultViewModel
         rvc.listItemActionDelegate = self.listItemActionDelegate

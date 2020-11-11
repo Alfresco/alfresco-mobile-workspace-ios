@@ -32,14 +32,13 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
     func start() {
         let viewModelFactory = TopLevelBrowseViewModelFactory()
-        viewModelFactory.accountService = accountService
-        viewModelFactory.eventBusService = eventBusService
+        viewModelFactory.nodeServices = nodeServices
 
         let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
 
         let viewController = ListViewController()
         viewController.title = browseNode.title
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.listItemActionDelegate = self
         viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
         viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
@@ -73,9 +72,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let actionMenuViewModel = ActionMenuViewModel(with: accountService,
                                                       listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                    accountService: accountService,
-                                                    eventBusService: eventBusService,
-                                                    delegate: delegate)
+                                                    delegate: delegate,
+                                                    nodeActionServices: nodeServices)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)

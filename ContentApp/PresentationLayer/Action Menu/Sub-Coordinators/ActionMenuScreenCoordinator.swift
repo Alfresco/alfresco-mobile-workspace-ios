@@ -37,7 +37,7 @@ class ActionMenuScreenCoordinator: Coordinator {
         let viewController = ActionMenuViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 
-        viewController.themingService = themingService
+        viewController.nodeServices = nodeServices
         viewController.actionMenuModel = actionMenuViewModel
         viewController.nodeActionsModel = nodeActionViewModel
         presenter.present(bottomSheet, animated: true, completion: nil)

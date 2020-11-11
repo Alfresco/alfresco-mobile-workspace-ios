@@ -90,13 +90,14 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = nodeServices?.themingService?.activeTheme else { return }
         if httpsSwitch.isOn {
             httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         } else {
             httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
-        portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
+        portTextField.text =
+            (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
         enableSaveButton = (pathTextField.text != "")
     }
 
@@ -130,7 +131,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         settingsLabel.text = LocalizationConstants.Labels.AlfrescoContentSettings
         authenticationLabel.text = LocalizationConstants.Labels.authentication
         httpsLabel.text = LocalizationConstants.Labels.https
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        copyrightLabel.text = String(format: LocalizationConstants.copyright,
+                                     Calendar.current.component(.year, from: Date()))
 
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
         pathTextField.label.text = LocalizationConstants.TextFieldPlaceholders.path + "*"
@@ -143,12 +145,16 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        guard
+            let loginTextFieldScheme = nodeServices?.themingService?.containerScheming(for: .loginTextField),
+            let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
+            let advancedSettingsButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+            let currentTheme = nodeServices?.themingService?.activeTheme else { return }
 
-        portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        pathTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        clientIDTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        realmTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        portTextField.applyTheme(withScheme: loginTextFieldScheme)
+        pathTextField.applyTheme(withScheme: loginTextFieldScheme)
+        clientIDTextField.applyTheme(withScheme: loginTextFieldScheme)
+        realmTextField.applyTheme(withScheme: loginTextFieldScheme)
 
         if viewModel.authParameters.https {
             httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
@@ -162,8 +168,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
-        saveButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
-        saveButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05), for: .disabled)
+        saveButton.applyContainedTheme(withScheme: loginButtonScheme)
+        saveButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+                                      for: .disabled)
         saveButton.isUppercaseTitle = false
         saveButton.setShadowColor(.clear, for: .normal)
 
@@ -173,7 +180,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
         backPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        needHelpButton.applyTextTheme(withScheme: advancedSettingsButtonScheme)
         needHelpButton.isUppercaseTitle = false
 
         view.backgroundColor = currentTheme.surfaceColor
@@ -198,7 +205,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
 
-        Snackbar.display(with: LocalizationConstants.Approved.saveSettings, type: .approve, finish: nil)
+        Snackbar.display(with: LocalizationConstants.Approved.saveSettings,
+                         type: .approve,
+                         finish: nil)
     }
 }
 
@@ -215,9 +224,12 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         enableSaveButton = (pathTextField.text != "")
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
         if textField == pathTextField {
-            enableSaveButton = (textField.updatedText(for: range, replacementString: string) != "")
+            enableSaveButton = (textField.updatedText(for: range,
+                                                      replacementString: string) != "")
         } else {
             enableSaveButton = (pathTextField.text != "")
         }

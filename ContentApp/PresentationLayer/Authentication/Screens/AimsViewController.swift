@@ -98,24 +98,29 @@ class AimsViewController: SystemThemableViewController {
         signInButton.setTitle(LocalizationConstants.Buttons.signInWithSSO, for: .normal)
         signInButton.setTitle(LocalizationConstants.Buttons.signInWithSSO, for: .disabled)
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        copyrightLabel.text =
+            String(format: LocalizationConstants.copyright, Calendar.current.component(.year,
+                                                                                       from: Date()))
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        guard let loginButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginButton),
+              let needHelpButtonScheme = nodeServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+              let repositoryTextFieldScheme = nodeServices?.themingService?.containerScheming(for: .loginTextField),
+              let currentTheme = nodeServices?.themingService?.activeTheme else { return }
 
         separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
 
-        signInButton.applyContainedTheme(withScheme: themingService.containerScheming(for: .loginButton))
+        signInButton.applyContainedTheme(withScheme: loginButtonScheme)
         signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
         signInButton.isUppercaseTitle = false
         signInButton.setShadowColor(.clear, for: .normal)
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginAdvancedSettingsButton))
+        needHelpButton.applyTextTheme(withScheme: needHelpButtonScheme)
         needHelpButton.isUppercaseTitle = false
 
-        repositoryTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        repositoryTextField.applyTheme(withScheme: repositoryTextFieldScheme)
 
         productLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         infoLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
@@ -128,7 +133,8 @@ class AimsViewController: SystemThemableViewController {
         copyrightLabel.textAlignment = .center
         productLabel.textAlignment = .center
 
-        view.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
+        view.backgroundColor =
+            (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
     }
 }
 
@@ -141,8 +147,11 @@ extension AimsViewController: UITextFieldDelegate {
         return true
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        enableSignInButton = (textField.updatedText(for: range, replacementString: string) != "")
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        enableSignInButton = (textField.updatedText(for: range,
+                                                    replacementString: string) != "")
         return true
     }
 

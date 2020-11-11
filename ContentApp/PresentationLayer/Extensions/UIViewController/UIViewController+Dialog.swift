@@ -20,8 +20,8 @@ import UIKit
 import MaterialComponents.MaterialDialogs
 
 extension UIViewController {
-    func showDialog(title: String,
-                    message: String,
+    func showDialog(title: String?,
+                    message: String?,
                     actions: [MDCAlertAction]? = nil,
                     accesoryView: UIView? = nil,
                     completionHandler: @escaping () -> Void) -> MDCAlertController {

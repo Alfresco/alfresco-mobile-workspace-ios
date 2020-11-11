@@ -23,10 +23,12 @@ typealias FolderChildrenDataSource = (folderDrillDownViewModel: FolderDrillViewM
                                       contextualSearchViewModel: ContextualSearchViewModel)
 
 class FolderChildrenViewModelFactory {
-    var accountService: AccountService?
-    var eventBusService: EventBusService?
+    var nodeServices: NodeServices?
 
     func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
+        let accountService = nodeServices?.accountService
+        let eventBusService = nodeServices?.eventBusService
+
         let folderDrillViewModel = FolderDrillViewModel(with: accountService,
                                                         listRequest: nil)
         folderDrillViewModel.listNodeGuid = listNode.guid

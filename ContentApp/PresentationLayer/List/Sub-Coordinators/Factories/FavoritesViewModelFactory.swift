@@ -24,10 +24,11 @@ typealias FavoritesDataSource = (foldersAndFilesViewModel: FavoritesViewModel,
                                  resultsViewModel: ResultsViewModel)
 
 class FavoritesViewModelFactory {
-    var accountService: AccountService?
-    var eventBusService: EventBusService?
+    var nodeServices: NodeServices?
 
     func favoritesDataSource() -> FavoritesDataSource {
+        let accountService = nodeServices?.accountService
+
         let resultViewModel = ResultsViewModel()
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
                                                                listRequest: nil)
@@ -54,6 +55,8 @@ class FavoritesViewModelFactory {
     private func registerForFavouriteEvent(resultViewModel: ResultsViewModel,
                                            foldersAndFilesViewModel: FavoritesViewModel,
                                            librariesViewModel: FavoritesViewModel) {
+        let eventBusService = nodeServices?.eventBusService
+
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
@@ -68,6 +71,8 @@ class FavoritesViewModelFactory {
     private func registerForMoveEvent(resultViewModel: ResultsViewModel,
                                       foldersAndFilesViewModel: FavoritesViewModel,
                                       librariesViewModel: FavoritesViewModel) {
+        let eventBusService = nodeServices?.eventBusService
+
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])

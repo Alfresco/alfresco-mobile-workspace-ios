@@ -33,7 +33,7 @@ class ListViewController: SystemSearchViewController {
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
-        listComponentViewController.themingService = self.themingService
+        listComponentViewController.nodeServices = self.nodeServices
         listViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {

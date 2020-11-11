@@ -36,7 +36,7 @@ struct ControllerRotation {
 }
 
 class SystemThemableViewController: UIViewController {
-    var themingService: MaterialDesignThemingService?
+    var nodeServices: NodeServices?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,9 +46,9 @@ class SystemThemableViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
+        nodeServices?.themingService?.activateUserSelectedTheme()
         applyComponentsThemes()
-        kWindow.backgroundColor = themingService?.activeTheme?.surfaceColor
+        kWindow.backgroundColor = nodeServices?.themingService?.activeTheme?.surfaceColor
     }
 
     func applyComponentsThemes() {

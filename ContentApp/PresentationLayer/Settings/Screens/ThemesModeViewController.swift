@@ -23,7 +23,6 @@ protocol ThemesModeScrenDelegate: class {
 }
 
 class ThemesModeViewController: SystemThemableViewController {
-
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 
@@ -33,7 +32,7 @@ class ThemesModeViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.layer.cornerRadius = dialogCornerRadius
-        viewModel.themingService = themingService
+        viewModel.themingService = nodeServices?.themingService
         addLocalization()
     }
 
@@ -42,12 +41,14 @@ class ThemesModeViewController: SystemThemableViewController {
         calculatePreferredSize(view.bounds.size)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         calculatePreferredSize(size)
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         tableView.reloadData()
     }
@@ -60,7 +61,7 @@ class ThemesModeViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme =  nodeServices?.themingService?.activeTheme else { return }
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
     }
@@ -80,19 +81,21 @@ extension ThemesModeViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let identifier = NSStringFromClass(ThemeModeTableViewCell.self).components(separatedBy: ".").last,
-            let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? ThemeModeTableViewCell else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: identifier,
+                                                     for: indexPath) as? ThemeModeTableViewCell else {
             return UITableViewCell()
         }
-        cell.applyThemingService(themingService?.activeTheme)
+        cell.applyThemingService(nodeServices?.themingService?.activeTheme)
         cell.item = viewModel.items[indexPath.row]
-        if viewModel.items[indexPath.row] == themingService?.getThemeMode() {
+        if viewModel.items[indexPath.row] == nodeServices?.themingService?.getThemeMode() {
             cell.selectRadioButton()
         }
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.saveThemeMode(viewModel.items[indexPath.row], themingService: themingService)
+        viewModel.saveThemeMode(viewModel.items[indexPath.row],
+                                themingService: nodeServices?.themingService)
         tableView.reloadData()
         delegate?.changeThemeMode()
         self.dismiss(animated: true, completion: nil)
