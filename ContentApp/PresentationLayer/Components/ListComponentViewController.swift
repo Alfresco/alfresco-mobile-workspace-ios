@@ -245,7 +245,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""
         }
-        cell?.stopLoadingProgressView()
         return cell ?? UICollectionViewCell()
     }
 
@@ -300,19 +299,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        cell.startLoadingProgressView()
-        listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
-            guard let sSelf = self else { return }
-            if let listNode = listNode, let dataSource = sSelf.listDataSource {
-                DispatchQueue.main.async {
-                    sSelf.listItemActionDelegate?.showActionSheetForListItem(for: listNode,
-                                                                             dataSource: dataSource,
-                                                                             delegate: sSelf)
-                }
-            }
-
-            cell.stopLoadingProgressView()
-        })
+        guard let node = element else { return }
+        listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
     }
 }
 

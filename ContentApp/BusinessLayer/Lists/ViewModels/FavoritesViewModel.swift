@@ -103,24 +103,6 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         favoritesList(with: nil)
     }
 
-        guard let node = listNode else { return }
-        if node.kind == .site {
-            completion(listNode, nil)
-        } else {
-            NodesAPI.getNode(nodeId: node.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeIsFavoriteNode],
-                             relativePath: nil,
-                             fields: nil) { (result, error) in
-                if let entry = result?.entry {
-                    let listNode = NodeChildMapper.create(from: entry)
-                    completion(listNode, error)
-                } else {
-                    completion(listNode, error)
-                }
-            }
-        }
     func shouldDisplaySections() -> Bool {
         return false
     }

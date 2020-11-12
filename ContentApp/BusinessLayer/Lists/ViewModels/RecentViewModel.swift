@@ -107,8 +107,6 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
-            } else {
-                completion(listNode, error)
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
         addInGroupList(self.results)
