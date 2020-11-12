@@ -293,10 +293,6 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             snackBar.show(completion: nil)
         }
     }
-
-    func presentationContext() -> UIViewController? {
-        return self
-    }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate

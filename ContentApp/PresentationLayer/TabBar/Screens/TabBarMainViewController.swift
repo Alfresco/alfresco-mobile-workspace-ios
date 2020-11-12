@@ -75,7 +75,8 @@ class TabBarMainViewController: UITabBarController {
         addMaterialComponentsTheme()
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         themingService?.activateUserSelectedTheme()
         addMaterialComponentsTheme()
@@ -88,7 +89,8 @@ class TabBarMainViewController: UITabBarController {
     }
 
     func addMaterialComponentsTheme() {
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        guard let themingService = self.themingService,
+              let currentTheme = self.themingService?.activeTheme else { return }
 
         bottomNavigationBar.applyPrimaryTheme(withScheme: themingService.containerScheming(for: .applicationTabBar))
         bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
@@ -126,7 +128,8 @@ class TabBarMainViewController: UITabBarController {
 // MARK: - MDCBottomNavigationBarDelegate
 
 extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
-    func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar, shouldSelect item: UITabBarItem) -> Bool {
+    func bottomNavigationBar(_ bottomNavigationBar: MDCBottomNavigationBar,
+                             shouldSelect item: UITabBarItem) -> Bool {
         doubleTapLogic(for: item.tag)
         self.selectedIndex = item.tag
         return true
@@ -136,7 +139,9 @@ extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
 // MARK: - UITabBarControllerDelegate
 
 extension TabBarMainViewController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func tabBarController(_ tabBarController: UITabBarController,
+                          animationControllerForTransitionFrom fromVC: UIViewController,
+                          to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return TopLevelTransition(viewControllers: tabBarController.viewControllers)
     }
 }

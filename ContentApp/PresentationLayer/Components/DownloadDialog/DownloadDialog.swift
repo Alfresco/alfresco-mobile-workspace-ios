@@ -16,9 +16,20 @@
 //  limitations under the License.
 //
 
-import UIKit
+import MaterialComponents.MaterialDialogs
 
 class DownloadDialog: UIView {
-    @IBOutlet weak var activityIndicator: ActivityIndicatorView!
+    @IBOutlet weak var activityIndicator: MDCActivityIndicator!
     @IBOutlet weak var messageLabel: UILabel!
+
+    var themingService: MaterialDesignThemingService?
+
+    override func layoutSubviews() {
+        if let currentTheme = themingService?.activeTheme {
+            self.backgroundColor = currentTheme.surfaceColor
+            messageLabel?.font = currentTheme.body2TextStyle.font
+            messageLabel?.textColor = currentTheme.onSurfaceColor
+            activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+        }
+    }
 }

@@ -88,7 +88,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
             let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
-                                                        nodeActionServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

@@ -19,31 +19,33 @@
 import UIKit
 import AlfrescoContent
 import MaterialComponents.MaterialDialogs
+import Alamofire
+import AlfrescoCore
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
+let kSheetDismissDelay = 0.5
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
                             node: ListNode,
                             error: Error?)
-    func presentationContext() -> UIViewController?
 }
 
 class NodeActionsViewModel {
     private var action: ActionMenu?
     private var node: ListNode
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
-    private var nodeActionServices: CoordinatorServices?
+    private var coordinatorServices: CoordinatorServices?
     weak var delegate: NodeActionsViewModelDelegate?
 
     // MARK: Init
 
     init(node: ListNode,
          delegate: NodeActionsViewModelDelegate?,
-         nodeActionServices: CoordinatorServices?) {
+         coordinatorServices: CoordinatorServices?) {
         self.node = node
         self.delegate = delegate
-        self.nodeActionServices = nodeActionServices
+        self.coordinatorServices = coordinatorServices
     }
 
     // MARK: - Public Helpers
@@ -58,7 +60,7 @@ class NodeActionsViewModel {
     // MARK: - Private Helpers
 
     private func requestAction() {
-        let accountService = nodeActionServices?.accountService
+        let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let action = sSelf.action else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -103,7 +105,7 @@ class NodeActionsViewModel {
                 sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
                 let favouriteEvent = FavouriteEvent(node: sSelf.node, eventType: .addToFavourite)
 
-                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
             sSelf.handleResponse(error: error)
@@ -121,7 +123,7 @@ class NodeActionsViewModel {
                 let favouriteEvent = FavouriteEvent(node: sSelf.node,
                                                     eventType: .removeFromFavourites)
 
-                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
             sSelf.handleResponse(error: error)
@@ -136,7 +138,7 @@ class NodeActionsViewModel {
                     sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
 
-                    let eventBusService = sSelf.nodeActionServices?.eventBusService
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error)
@@ -148,7 +150,7 @@ class NodeActionsViewModel {
                     sSelf.node.trashed = true
                     let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
 
-                    let eventBusService = sSelf.nodeActionServices?.eventBusService
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error)
@@ -163,7 +165,7 @@ class NodeActionsViewModel {
                 sSelf.node.trashed = false
                 let moveEvent = MoveEvent(node: sSelf.node, eventType: .restore)
 
-                let eventBusService = sSelf.nodeActionServices?.eventBusService
+                let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
             self?.handleResponse(error: error)
@@ -171,28 +173,28 @@ class NodeActionsViewModel {
     }
 
     private func requestPermanentlyDelete() {
-        if let presentationContext = delegate?.presentationContext() {
-            let title =
-                String(format: LocalizationConstants.NodeActionsDialog.deleteTitle, node.title)
-            let message =
-                String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
+        let title =
+            String(format: LocalizationConstants.NodeActionsDialog.deleteTitle, node.title)
+        let message =
+            String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
 
-            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
-            let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
-                guard let sSelf = self else { return }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
+        let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
+            guard let sSelf = self else { return }
 
-                TrashcanAPI.deleteDeletedNode(nodeId: sSelf.node.guid) { (_, error) in
-                    if error == nil {
-                        let moveEvent = MoveEvent(node: sSelf.node, eventType: .permanentlyDelete)
+            TrashcanAPI.deleteDeletedNode(nodeId: sSelf.node.guid) { (_, error) in
+                if error == nil {
+                    let moveEvent = MoveEvent(node: sSelf.node, eventType: .permanentlyDelete)
 
-                        let eventBusService = sSelf.nodeActionServices?.eventBusService
-                        eventBusService?.publish(event: moveEvent, on: .mainQueue)
-                    }
-                    sSelf.handleResponse(error: error)
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
+                sSelf.handleResponse(error: error)
             }
+        }
 
-            DispatchQueue.main.async {
+        DispatchQueue.main.async {
+            if let presentationContext = UIViewController.applicationTopMost {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
                                                    actions: [cancelAction, deleteAction],
@@ -202,28 +204,39 @@ class NodeActionsViewModel {
     }
 
     private func requestDownload() {
-        if let presentationContext = delegate?.presentationContext() {
-            let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
+        var downloadDialog: MDCAlertController?
 
-            DispatchQueue.main.async { [weak self] in
-                guard let sSelf = self else { return }
+        let downloadRequest =
+            downloadNodeContent { destinationURL, error in
+                downloadDialog?.dismiss(animated: true,
+                                        completion: { [weak self] in
+                        guard let sSelf = self else { return }
 
-                if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
-                    let themingService =  sSelf.nodeActionServices?.themingService
-                    let activityIndicator = ActivityIndicatorView(currentTheme: themingService?.activeTheme)
-                    activityIndicator.state = .isLoading
-                    downloadDialogView.activityIndicator = activityIndicator
+                        sSelf.handleResponse(error: error)
 
-                    downloadDialogView.messageLabel.text =
-                        String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
-                                                                  sSelf.node.title)
-                    _ = presentationContext.showDialog(title: nil,
-                                                       message: nil,
-                                                       actions: [cancelAction],
-                                                       accesoryView: downloadDialogView,
-                                                       completionHandler: {})
-                }
+                        if let url = destinationURL {
+                            DispatchQueue.main.asyncAfter(deadline: .now() +
+                                                            kSheetDismissDelay) {
+                                let activityViewController =
+                                    UIActivityViewController(activityItems: [url],
+                                                             applicationActivities: nil)
+
+                                if let presentationContext =
+                                    UIViewController.applicationTopMostPresented {
+                                    presentationContext.present(activityViewController,
+                                                                animated: true,
+                                                                completion: nil)
+                                }
+                            }
+                        }
+                    })
             }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
+                downloadRequest?.cancel()
+            })
         }
     }
 
@@ -235,5 +248,68 @@ class NodeActionsViewModel {
         if let handler = actionFinishedHandler {
             handler()
         }
+    }
+
+    // MARK: - Download node content
+
+    private func showDownloadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
+        if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+            let themingService = coordinatorServices?.themingService
+            downloadDialogView.themingService = themingService
+            downloadDialogView.messageLabel.text =
+                String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
+                       node.title)
+            downloadDialogView.activityIndicator.startAnimating()
+
+            let cancelAction =
+                MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in
+                    actionHandler(action)
+            }
+
+            if let presentationContext = UIViewController.applicationTopMost {
+                let downloadDialog = presentationContext.showDialog(title: nil,
+                                                                    message: nil,
+                                                                    actions: [cancelAction],
+                                                                    accesoryView: downloadDialogView,
+                                                                    completionHandler: {})
+
+                return downloadDialog
+            }
+        }
+
+        return nil
+    }
+
+    private func downloadNodeContent(completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
+        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: self.node.guid)
+        let downloadURL = URL(string: requestBuilder.URLString)
+
+        var documentsURL = FileManager.default.urls(for: .documentDirectory,
+                                                    in: .userDomainMask)[0]
+        documentsURL.appendPathComponent(node.title)
+
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            return (documentsURL, [.removePreviousFile])
+        }
+
+        if let url = downloadURL {
+            return Alamofire.download(url,
+                                      parameters: requestBuilder.parameters,
+                                      headers: AlfrescoContentAPI.customHeaders,
+                                      to: destination).response { response in
+                                        if let destinationUrl = response.destinationURL,
+                                           let httpURLResponse = response.response {
+                                            if (200...299).contains(httpURLResponse.statusCode) {
+                                                completionHandler(destinationUrl, nil)
+                                            } else {
+                                                let error = APIError(domain: "",
+                                                                     code: httpURLResponse.statusCode)
+                                                completionHandler(nil, error)
+                                            }
+                                        }
+                                      }
+        }
+
+        return nil
     }
 }

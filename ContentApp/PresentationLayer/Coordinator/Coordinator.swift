@@ -47,11 +47,11 @@ extension Coordinator {
     }
 
     var coordinatorServices: CoordinatorServices {
-        let nodeActionServices = CoordinatorServices()
-        nodeActionServices.accountService = accountService
-        nodeActionServices.eventBusService = eventBusService
-        nodeActionServices.themingService = themingService
+        let coordinatorServices = CoordinatorServices()
+        coordinatorServices.accountService = accountService
+        coordinatorServices.eventBusService = eventBusService
+        coordinatorServices.themingService = themingService
 
-        return nodeActionServices
+        return coordinatorServices
     }
 }

@@ -23,6 +23,10 @@ extension UIViewController {
         return self.topMost(of: UIApplication.shared.keyWindow?.rootViewController)
     }
 
+    static var applicationTopMostPresented: UIViewController? {
+        return UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+    }
+
     static func topMost(of viewController: UIViewController?) -> UIViewController? {
         if let navigationController = viewController as? UINavigationController,
             let visibleViewController = navigationController.visibleViewController {

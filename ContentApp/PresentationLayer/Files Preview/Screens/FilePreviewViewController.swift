@@ -325,10 +325,6 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             }
         }
     }
-
-    func presentationContext() -> UIViewController? {
-        return nil
-    }
 }
 
 // MARK: - FilePreview Delegate

@@ -73,7 +73,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                       listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
-                                                    nodeActionServices: coordinatorServices)
+                                                    coordinatorServices: coordinatorServices)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)

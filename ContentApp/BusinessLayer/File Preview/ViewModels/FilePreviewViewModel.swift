@@ -143,7 +143,7 @@ class FilePreviewViewModel: EventObservable {
                                                       toolbarDivide: true)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
-                                                        nodeActionServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices)
             viewModelDelegate?.didFinishNodeDetails(error: nil)
             return
         }
@@ -166,7 +166,7 @@ class FilePreviewViewModel: EventObservable {
                     sSelf.nodeActionsViewModel =
                         NodeActionsViewModel(node: listNode,
                                              delegate: nil,
-                                             nodeActionServices: sSelf.coordinatorServices)
+                                             coordinatorServices: sSelf.coordinatorServices)
                     sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
                 }
             }

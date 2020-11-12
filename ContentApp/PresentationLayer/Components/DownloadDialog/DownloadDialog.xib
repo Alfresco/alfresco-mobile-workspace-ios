@@ -16,18 +16,18 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xag-9S-K5b">
-                    <rect key="frame" x="-22" y="0.0" width="428" height="150"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apW-d6-bRM" customClass="ActivityIndicatorView" customModule="ContentApp" customModuleProvider="target">
-                            <rect key="frame" x="194" y="17" width="40" height="40"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apW-d6-bRM" customClass="MDCActivityIndicator">
+                            <rect key="frame" x="187" y="0.0" width="40" height="40"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="NV5-Bv-1Ro"/>
                                 <constraint firstAttribute="height" constant="40" id="sTw-h3-98Y"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sU-3v-XuS">
-                            <rect key="frame" x="164" y="65" width="100" height="20"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sU-3v-XuS">
+                            <rect key="frame" x="8" y="48" width="398" height="52"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -35,19 +35,21 @@
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="150" id="1wM-CP-3MV"/>
-                        <constraint firstItem="8sU-3v-XuS" firstAttribute="centerX" secondItem="xag-9S-K5b" secondAttribute="centerX" id="EG9-8M-rLF"/>
+                        <constraint firstAttribute="height" constant="100" id="1wM-CP-3MV"/>
+                        <constraint firstItem="apW-d6-bRM" firstAttribute="top" secondItem="xag-9S-K5b" secondAttribute="top" id="2q5-PI-pmX"/>
                         <constraint firstItem="8sU-3v-XuS" firstAttribute="top" secondItem="apW-d6-bRM" secondAttribute="bottom" constant="8" id="PE6-HN-8er"/>
+                        <constraint firstItem="8sU-3v-XuS" firstAttribute="leading" secondItem="xag-9S-K5b" secondAttribute="leading" constant="8" id="RFh-Ob-r6n"/>
+                        <constraint firstAttribute="trailing" secondItem="8sU-3v-XuS" secondAttribute="trailing" constant="8" id="cK9-6m-H0p"/>
                         <constraint firstItem="apW-d6-bRM" firstAttribute="centerX" secondItem="xag-9S-K5b" secondAttribute="centerX" id="fu6-lc-eaU"/>
-                        <constraint firstItem="8sU-3v-XuS" firstAttribute="centerY" secondItem="xag-9S-K5b" secondAttribute="centerY" id="uGw-ho-rOG"/>
+                        <constraint firstAttribute="bottom" secondItem="8sU-3v-XuS" secondAttribute="bottom" id="hjf-8v-wtr"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xag-9S-K5b" secondAttribute="trailing" constant="8" id="6Cq-mj-Rnn"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="leading" secondItem="xag-9S-K5b" secondAttribute="leading" constant="22" id="D9t-Na-FjK"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xag-9S-K5b" secondAttribute="trailing" id="6Cq-mj-Rnn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="leading" secondItem="xag-9S-K5b" secondAttribute="leading" id="D9t-Na-FjK"/>
                 <constraint firstItem="xag-9S-K5b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="qH5-dF-0T4"/>
                 <constraint firstAttribute="bottom" secondItem="xag-9S-K5b" secondAttribute="bottom" priority="250" id="xr7-Rb-luT"/>
             </constraints>

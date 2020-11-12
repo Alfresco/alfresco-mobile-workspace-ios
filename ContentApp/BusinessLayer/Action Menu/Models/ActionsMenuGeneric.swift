@@ -34,7 +34,7 @@ struct ActionsMenuGeneric {
         let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
                                       type: .download)
 
-        var actions2: [ActionMenu] = [downloadAction]
+        var actions2: [ActionMenu] = []
 
         if node.favorite == true {
             actions2.append(removeFavAction)
@@ -47,6 +47,9 @@ struct ActionsMenuGeneric {
                 actions2.append(deleteAction)
             }
         } else {
+            if node.kind == .file {
+                actions2.append(downloadAction)
+            }
             if node.hasPersmission(to: .delete) {
                 actions2.append(deleteAction)
             }
