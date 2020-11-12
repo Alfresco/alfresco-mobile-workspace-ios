@@ -163,6 +163,8 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                 } else {
                     refreshList()
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }

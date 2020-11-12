@@ -51,6 +51,8 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
                 } else {
                     refreshList()
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }
