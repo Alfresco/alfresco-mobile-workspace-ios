@@ -255,11 +255,11 @@ class NodeActionsViewModel {
     private func showDownloadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
         if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
-            downloadDialogView.themingService = themingService
             downloadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
                        node.title)
             downloadDialogView.activityIndicator.startAnimating()
+            downloadDialogView.applyTheme(themingService?.activeTheme)
 
             let cancelAction =
                 MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in

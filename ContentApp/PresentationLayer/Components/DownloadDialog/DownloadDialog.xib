@@ -16,10 +16,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xag-9S-K5b">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                    <rect key="frame" x="57" y="0.0" width="300" height="100"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="apW-d6-bRM" customClass="MDCActivityIndicator">
-                            <rect key="frame" x="187" y="0.0" width="40" height="40"/>
+                            <rect key="frame" x="130" y="0.0" width="40" height="40"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="40" id="NV5-Bv-1Ro"/>
@@ -27,7 +27,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloading" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8sU-3v-XuS">
-                            <rect key="frame" x="8" y="48" width="398" height="52"/>
+                            <rect key="frame" x="8" y="48" width="284" height="52"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
@@ -42,14 +42,14 @@
                         <constraint firstAttribute="trailing" secondItem="8sU-3v-XuS" secondAttribute="trailing" constant="8" id="cK9-6m-H0p"/>
                         <constraint firstItem="apW-d6-bRM" firstAttribute="centerX" secondItem="xag-9S-K5b" secondAttribute="centerX" id="fu6-lc-eaU"/>
                         <constraint firstAttribute="bottom" secondItem="8sU-3v-XuS" secondAttribute="bottom" id="hjf-8v-wtr"/>
+                        <constraint firstAttribute="width" constant="300" id="qdX-yu-lee"/>
                     </constraints>
                 </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xag-9S-K5b" secondAttribute="trailing" id="6Cq-mj-Rnn"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="leading" secondItem="xag-9S-K5b" secondAttribute="leading" id="D9t-Na-FjK"/>
+                <constraint firstItem="xag-9S-K5b" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="NSq-qf-yTC"/>
                 <constraint firstItem="xag-9S-K5b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="qH5-dF-0T4"/>
                 <constraint firstAttribute="bottom" secondItem="xag-9S-K5b" secondAttribute="bottom" priority="250" id="xr7-Rb-luT"/>
             </constraints>

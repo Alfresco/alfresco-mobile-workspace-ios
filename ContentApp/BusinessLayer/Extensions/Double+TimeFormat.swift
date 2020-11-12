@@ -15,6 +15,32 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
-	
 
 import Foundation
+
+enum SplitTimerFormatType {
+    case minutesAndSeconds
+}
+
+extension Double {
+    func split(by type: SplitTimerFormatType) -> String {
+        switch type {
+        case .minutesAndSeconds:
+            let mins = self / 60
+            let secs = self.truncatingRemainder(dividingBy: 60)
+            let timeformatter = NumberFormatter()
+            timeformatter.minimumIntegerDigits = 2
+            timeformatter.minimumFractionDigits = 0
+            timeformatter.roundingMode = .down
+            guard let minsStr = timeformatter.string(from: NSNumber(value: mins)),
+                  let secsStr = timeformatter.string(from: NSNumber(value: secs))
+            else { return "00:00" }
+            let time = "\(minsStr):\(secsStr)".replacingOccurrences(of: "-", with: "")
+            if time.contains("NaN") {
+                return "00:00"
+            }
+            return time
+        }
+    }
+
+}

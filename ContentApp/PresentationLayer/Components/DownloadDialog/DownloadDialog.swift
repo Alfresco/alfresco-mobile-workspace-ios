@@ -22,14 +22,14 @@ class DownloadDialog: UIView {
     @IBOutlet weak var activityIndicator: MDCActivityIndicator!
     @IBOutlet weak var messageLabel: UILabel!
 
-    var themingService: MaterialDesignThemingService?
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        if let theme = currentTheme {
+            self.backgroundColor = theme.surfaceColor
+            activityIndicator.cycleColors = [theme.primaryVariantColor]
 
-    override func layoutSubviews() {
-        if let currentTheme = themingService?.activeTheme {
-            self.backgroundColor = currentTheme.surfaceColor
-            messageLabel?.font = currentTheme.body2TextStyle.font
-            messageLabel?.textColor = currentTheme.onSurfaceColor
-            activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+            messageLabel.applyStyleBody2OnSurface(theme: theme)
+            messageLabel.lineBreakMode = .byTruncatingTail
+            messageLabel.textAlignment = .center
         }
     }
 }
