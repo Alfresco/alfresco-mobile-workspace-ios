@@ -250,8 +250,12 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        listItemActionDelegate?.showPreview(from: node)
-        listActionDelegate?.elementTapped(node: node)
+        if node.trashed == false {
+            listItemActionDelegate?.showPreview(from: node)
+            listActionDelegate?.elementTapped(node: node)
+        } else {
+            listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
+        }
     }
 }
 
