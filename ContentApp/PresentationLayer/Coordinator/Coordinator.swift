@@ -20,8 +20,38 @@ protocol Coordinator {
     func start()
 }
 
+class CoordinatorServices {
+    var accountService: AccountService?
+    var eventBusService: EventBusService?
+    var themingService: MaterialDesignThemingService?
+}
+
 extension Coordinator {
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
+    }
+
+    var accountService: AccountService? {
+        let identifier = AccountService.identifier
+        return repository.service(of: identifier) as? AccountService
+    }
+
+    var themingService: MaterialDesignThemingService? {
+        let identifier = MaterialDesignThemingService.identifier
+        return repository.service(of: identifier) as? MaterialDesignThemingService
+    }
+
+    var eventBusService: EventBusService? {
+        let identifier = EventBusService.identifier
+        return repository.service(of: identifier) as? EventBusService
+    }
+
+    var coordinatorServices: CoordinatorServices {
+        let coordinatorServices = CoordinatorServices()
+        coordinatorServices.accountService = accountService
+        coordinatorServices.eventBusService = eventBusService
+        coordinatorServices.themingService = themingService
+
+        return coordinatorServices
     }
 }

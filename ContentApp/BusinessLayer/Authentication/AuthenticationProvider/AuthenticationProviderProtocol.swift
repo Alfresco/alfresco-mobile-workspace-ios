@@ -26,6 +26,7 @@ protocol AuthenticationProviderProtocol {
 
 extension AuthenticationProviderProtocol {
     func authorizationHeader() -> [String: String] {
-        return ["Authorization": authorizationHeaderValue()]
+        return ["Authorization": authorizationHeaderValue(),
+                "Accept-Language": "en"]
     }
 }

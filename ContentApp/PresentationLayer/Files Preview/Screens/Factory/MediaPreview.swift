@@ -35,7 +35,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var backwardButton: UIButton!
     @IBOutlet weak var forwardButton: UIButton!
-    @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var videoSlider: UISlider!
     @IBOutlet weak var currentTimeMinutesLabel: UILabel!
     @IBOutlet weak var currentTimeSecondsLabel: UILabel!
     @IBOutlet weak var currentTimeClockLabel: UILabel!
@@ -66,16 +66,14 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     override func awakeFromNib() {
-        videoPlayerTapGesture.isEnabled = false
         translatesAutoresizingMaskIntoConstraints = false
-        progressSlider.isUserInteractionEnabled = false
-        progressSlider.addTarget(self,
+        videoSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
         actionsView.layer.cornerRadius = dialogCornerRadius
         actionsView.layer.borderWidth = 1.0
         actionsView.layer.masksToBounds = true
-        actionsView.isHidden = true
+        playerControls(enable: false)
     }
 
     deinit {
@@ -109,17 +107,15 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = player.currentItem?.error as NSError? {
             showError(error)
         } else {
-            progressSlider.isUserInteractionEnabled = true
-            videoPlayerTapGesture.isEnabled = true
+            playerControls(enable: true)
             updatePlayerControls()
-            actionsView.isHidden = false
             apply(fade: false, to: actionsView)
         }
     }
 
     @IBAction func playbackSliderValueChanged(_ sender: UISlider) {
         guard let duration = player?.currentItem?.duration else { return }
-        let value = Double(progressSlider.value) * duration.seconds
+        let value = Double(videoSlider.value) * duration.seconds
         player?.seek(to: CMTime(value: CMTimeValue(value), timescale: 1))
 
         if player?.rate == 0 {
@@ -137,12 +133,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 updatePlayerControls()
             case .moved:
                 guard let currentItem = player?.currentItem else { return }
-                let sliderValue = Double(progressSlider.value)
-                let currentTimeInSeconds = currentItem.duration.seconds * sliderValue
-                let totalTimeInSeconds = currentItem.duration.seconds
-
-                updateCurrentTime(from: timeFormatter(from: currentTimeInSeconds))
-                updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
+                updateCurrentTime(from: currentItem.duration.seconds * Double(videoSlider.value))
+                updateTotalTime(from: currentItem.duration.seconds)
             case .ended:
                 playbackSliderValueChanged(slider)
                 sliderIsMoving = false
@@ -172,8 +164,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
         let intervalTime = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
         timeObserver = player.addPeriodicTimeObserver(forInterval: intervalTime, queue: .main,
                                                        using: { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.updatePlayerState()
+            guard let sSelf = self else { return }
+            sSelf.updatePlayerState()
         })
         rateObserver = player.observe(\AVPlayer.rate, changeHandler: { [weak self] _, _ in
             guard let sSelf = self else { return }
@@ -184,8 +176,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
             guard let sSelf = self else { return }
             switch cPlayerItem.status {
             case .readyToPlay:
-                sSelf.actionsView.isHidden = false
-                sSelf.updateTotalTime(from: sSelf.timeFormatter(from: cPlayerItem.duration.seconds))
+                sSelf.playerControls(enable: true)
+                sSelf.updateTotalTime(from: cPlayerItem.duration.seconds)
                 if let handler = sSelf.videoPreviewHandler {
                     handler(nil)
                 }
@@ -199,6 +191,12 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     // MARK: - Private Helpers
+
+    private func playerControls(enable: Bool) {
+        videoPlayerTapGesture.isEnabled = enable
+        videoSlider.isUserInteractionEnabled = enable
+        actionsView.isHidden = !enable
+    }
 
     private func showError(_ error: Error?) {
         actionsView.isUserInteractionEnabled = false
@@ -218,12 +216,9 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     private func updatePlayerControls() {
         guard let player = player else { return }
-        var stringImage = player.isPlaying ? "ic-player-pause" : "ic-player-play"
+        var stringImage = (player.isPlaying || jumpPlayer) ? "ic-player-pause" : "ic-player-play"
         if player.currentItem?.error != nil {
             stringImage = "ic-player-play"
-        }
-        if jumpPlayer {
-            stringImage = "ic-player-pause"
         }
         playPauseButton.setImage(UIImage(named: stringImage), for: .normal)
     }
@@ -237,7 +232,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
             return
         }
 
-        progressSlider.isUserInteractionEnabled = true
+        playerControls(enable: true)
         jumpPlayer = true
         player?.pause()
 
@@ -257,13 +252,11 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = currentItem.error {
             showError(error)
         }
-        let currenTimeInSeconds = currentTime.seconds
-        let totalTimeInSeconds = currentItem.duration.seconds
-        updateCurrentTime(from: timeFormatter(from: currenTimeInSeconds))
-        updateTotalTime(from: timeFormatter(from: totalTimeInSeconds))
+        updateCurrentTime(from: currentTime.seconds)
+        updateTotalTime(from: currentItem.duration.seconds)
 
         if !self.sliderIsMoving {
-            progressSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
+            videoSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
         }
         if currentTime.seconds >= floor(currentItem.duration.seconds) {
             resetPlayer()
@@ -274,42 +267,25 @@ class MediaPreview: UIView, FilePreviewProtocol {
         player?.pause()
         player?.seek(to: CMTime(value: CMTimeValue(0.0), timescale: 1))
         updatePlayerControls()
-        progressSlider.value = 0.0
-        updateCurrentTime(from: timeFormatter(from: 0))
+        videoSlider.value = 0.0
+        updateCurrentTime(from: 0)
         finishPlaying = false
     }
 
-    private func updateCurrentTime(from text: String) {
-        let array = text.split(separator: ":")
+    private func updateCurrentTime(from seconds: Double) {
+        let array = seconds.split(by: .minutesAndSeconds).split(separator: ":")
         if array.count == 2 {
             currentTimeMinutesLabel.text = String(array[0])
             currentTimeSecondsLabel.text = String(array[1])
         }
     }
 
-    private func updateTotalTime(from text: String) {
-        let array = text.split(separator: ":")
+    private func updateTotalTime(from seconds: Double) {
+        let array = seconds.split(by: .minutesAndSeconds).split(separator: ":")
         if array.count == 2 {
             totalTimeMinutesLabel.text = String(array[0])
             totalTimeSecondsLabel.text = String(array[1])
         }
-    }
-
-    private func timeFormatter(from seconds: Double) -> String {
-        let mins = seconds / 60
-        let secs = seconds.truncatingRemainder(dividingBy: 60)
-        let timeformatter = NumberFormatter()
-        timeformatter.minimumIntegerDigits = 2
-        timeformatter.minimumFractionDigits = 0
-        timeformatter.roundingMode = .down
-        guard let minsStr = timeformatter.string(from: NSNumber(value: mins)),
-            let secsStr = timeformatter.string(from: NSNumber(value: secs))
-            else { return "00:00" }
-        let time = "\(minsStr):\(secsStr)".replacingOccurrences(of: "-", with: "")
-        if time.contains("NaN") {
-            return "00:00"
-        }
-        return time
     }
 
     // MARK: - FilePreviewProtocol
@@ -329,10 +305,10 @@ class MediaPreview: UIView, FilePreviewProtocol {
         totalTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeSecondsLabel.textAlignment = .left
 
-        progressSlider.tintColor = currentTheme.primaryColor
-        progressSlider.thumbTintColor = currentTheme.primaryColor
-        progressSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
-        progressSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
+        videoSlider.tintColor = currentTheme.primaryColor
+        videoSlider.thumbTintColor = currentTheme.primaryColor
+        videoSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
+        videoSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
 
         actionsView.backgroundColor = currentTheme.surfaceColor
         actionsView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12).cgColor

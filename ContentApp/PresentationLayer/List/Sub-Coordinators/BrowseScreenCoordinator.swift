@@ -35,32 +35,20 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
+        let viewModelFactory = BrowseViewModelFactory()
+        viewModelFactory.coordinatorServices = coordinatorServices
+
+        let browseDataSource = viewModelFactory.browseDataSource()
+
         let viewController = BrowseViewController.instantiateViewController()
-
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-        let browseViewModel = BrowseViewModel()
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
         viewController.title = LocalizationConstants.ScreenTitles.browse
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
         viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.listViewModel = browseViewModel
-        viewController.searchViewModel = globalSearchViewModel
-        viewController.resultViewModel = resultViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
+        viewController.listViewModel = browseDataSource.browseViewModel
+        viewController.searchViewModel = browseDataSource.globalSearchViewModel
+        viewController.resultViewModel = browseDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)
@@ -99,7 +87,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
             case .file:
                 let filePreviewCoordinator =
                     FilePreviewScreenCoordinator(with: navigationViewController,
-                                                 guidListNode: node.guid)
+                                                 listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
             }
@@ -107,17 +95,13 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let menu = ActionsMenuGenericMoreButton(with: node)
-            let accountService = repository.service(of: AccountService.identifier) as? AccountService
-            let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
-            let actionMenuViewModel = ActionMenuViewModel(with: menu)
+            let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+
             let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                        accountService: accountService,
-                                                        eventBusService: eventBusService,
-                                                        delegate: delegate)
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)

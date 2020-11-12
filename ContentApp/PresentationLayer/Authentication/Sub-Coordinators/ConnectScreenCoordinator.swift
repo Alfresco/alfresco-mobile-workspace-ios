@@ -44,9 +44,7 @@ class ConnectScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         let loginService = repository.service(of: AuthenticationService.identifier) as? AuthenticationService
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
         let viewController = ConnectViewController.instantiateViewController()
         let containerViewNavigationController = UINavigationController(rootViewController: viewController)
         let viewModel = ConnectViewModel(with: loginService)
@@ -57,7 +55,7 @@ class ConnectScreenCoordinator: Coordinator {
         viewController.splashScreenDelegate = presenter
         viewController.connectScreenCoordinatorDelegate = self
         viewController.viewModel = viewModel
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         connectViewController = viewController
 
         presenter.addChild(containerViewNavigationController)

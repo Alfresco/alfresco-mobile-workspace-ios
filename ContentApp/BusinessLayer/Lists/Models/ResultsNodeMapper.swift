@@ -47,7 +47,7 @@ struct ResultsNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: node.isFavorite ?? false,
+                        favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations)
     }
 }

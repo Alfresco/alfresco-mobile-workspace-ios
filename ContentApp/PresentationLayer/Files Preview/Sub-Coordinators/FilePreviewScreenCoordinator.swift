@@ -26,26 +26,22 @@ protocol FilePreviewScreenCoordinatorDelegate: class {
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var filePreviewViewController: FilePreviewViewController?
-    private var guidListNode: String
+    private var listNode: ListNode
 
-    init(with presenter: UINavigationController, guidListNode: String) {
+    init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
-        self.guidListNode = guidListNode
+        self.listNode = listNode
     }
 
     func start() {
-        let accountService = repository.service(of: AccountService.identifier) as? AccountService
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        let eventBusService = repository.service(of: EventBusService.identifier) as? EventBusService
         let viewController = FilePreviewViewController.instantiateViewController()
 
-        let filePreviewViewModel = FilePreviewViewModel(with: guidListNode,
-                                                        accountService: accountService,
-                                                        eventBusService: eventBusService)
+        let filePreviewViewModel = FilePreviewViewModel(with: listNode,
+                                                        delegate: viewController,
+                                                        coordinatorServices: coordinatorServices)
 
         viewController.filePreviewCoordinatorDelegate = self
-        filePreviewViewModel.viewModelDelegate = viewController
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.filePreviewViewModel = filePreviewViewModel
 
         eventBusService?.register(observer: filePreviewViewModel,

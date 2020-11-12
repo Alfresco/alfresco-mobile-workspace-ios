@@ -18,11 +18,10 @@
 
 import Foundation
 
-struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
-    var actions = [[ActionMenu]]()
+struct ActionsMenuGeneric {
+    static func actions(for node: ListNode) -> [[ActionMenu]] {
+        var actions = [[ActionMenu]]()
 
-    init(with node: ListNode) {
-        actions.removeAll()
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node.mimeType))
@@ -32,10 +31,12 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
                                          type: .removeFavorite)
         let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
                                       type: .moveTrash)
+        let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
+                                      type: .download)
 
         var actions2: [ActionMenu] = []
 
-        if node.favorite {
+        if node.favorite == true {
             actions2.append(removeFavAction)
         } else {
             actions2.append(addFavAction)
@@ -46,14 +47,18 @@ struct ActionsMenuGenericMoreButton: ActionsMenuProtocol {
                 actions2.append(deleteAction)
             }
         } else {
+            if node.kind == .file {
+                actions2.append(downloadAction)
+            }
             if node.hasPersmission(to: .delete) {
                 actions2.append(deleteAction)
             }
         }
-
         let actions1 = [infoAction]
 
         actions.append(actions1)
         actions.append(actions2)
+
+        return actions
     }
 }

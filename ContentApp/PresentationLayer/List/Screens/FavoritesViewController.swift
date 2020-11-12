@@ -45,14 +45,20 @@ class FavoritesViewController: SystemSearchViewController {
         view.addSubview(scrollView)
 
         NSLayoutConstraint.activate([
-            tabBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
-            tabBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            tabBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
+            tabBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: 0),
+            tabBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                            constant: 0),
+            tabBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                             constant: 0),
             tabBar.heightAnchor.constraint(equalToConstant: 48),
             scrollView.topAnchor.constraint(equalTo: tabBar.bottomAnchor, constant: 0),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 0),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: 0),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor,
+                                                constant: 0),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor,
+                                                 constant: 0),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                               constant: 0)
         ])
 
         setupScrollingContent()
@@ -74,13 +80,15 @@ class FavoritesViewController: SystemSearchViewController {
         }
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         folderAndFilesViewController?.willTransition(to: newCollection, with: coordinator)
         librariesViewController?.willTransition(to: newCollection, with: coordinator)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         folderAndFilesViewController?.collectionView.collectionViewLayout.invalidateLayout()
         librariesViewController?.collectionView.collectionViewLayout.invalidateLayout()
 
@@ -113,8 +121,9 @@ class FavoritesViewController: SystemSearchViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
-        tabBar.applySurfaceTheme(withScheme: themingService.containerScheming(for: .favoritesTabBar))
+        guard let scheme = coordinatorServices?.themingService?.containerScheming(for: .favoritesTabBar),
+              let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        tabBar.applySurfaceTheme(withScheme: scheme)
         tabBar.backgroundColor = currentTheme.surfaceColor
         tabBar.bottomDividerColor = currentTheme.dividerColor
         tabBar.enableRippleBehavior = true
@@ -125,8 +134,12 @@ class FavoritesViewController: SystemSearchViewController {
         let tabBar = MDCTabBar()
         tabBar.delegate = self
 
-        tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles, image: nil, tag: 0),
-                        UITabBarItem(title: LocalizationConstants.Search.filterLibraries, image: nil, tag: 1)]
+        tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
+                                     image: nil,
+                                     tag: 0),
+                        UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
+                                     image: nil,
+                                     tag: 1)]
 
         tabBar.itemAppearance = .titles
         tabBar.setAlignment(.justified, animated: false)
@@ -153,7 +166,7 @@ class FavoritesViewController: SystemSearchViewController {
         let folderAndFilesViewController = ListComponentViewController.instantiateViewController()
         folderAndFilesViewController.listActionDelegate = self
         folderAndFilesViewController.listDataSource = folderAndFilesListViewModel
-        folderAndFilesViewController.themingService = self.themingService
+        folderAndFilesViewController.coordinatorServices = coordinatorServices
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
         self.folderAndFilesViewController = folderAndFilesViewController
@@ -163,13 +176,14 @@ class FavoritesViewController: SystemSearchViewController {
         let librariesViewController = ListComponentViewController.instantiateViewController()
         librariesViewController.listActionDelegate = self
         librariesViewController.listDataSource = librariesListViewModel
-        librariesViewController.themingService = self.themingService
+        librariesViewController.coordinatorServices = coordinatorServices
         librariesListViewModel?.pageUpdatingDelegate = librariesViewController
 
         self.librariesViewController = librariesViewController
         self.librariesViewController?.listItemActionDelegate = self.listItemActionDelegate
 
-        if let foldersAndFilesListView = folderAndFilesViewController.view, let librariesListView = librariesViewController.view {
+        if let foldersAndFilesListView = folderAndFilesViewController.view,
+           let librariesListView = librariesViewController.view {
             foldersAndFilesListView.translatesAutoresizingMaskIntoConstraints = false
             librariesListView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -177,9 +191,12 @@ class FavoritesViewController: SystemSearchViewController {
             scrollView.addSubview(librariesListView)
 
             NSLayoutConstraint.activate([
-                foldersAndFilesListView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor, constant: 0),
-                librariesListView.leadingAnchor.constraint(equalTo: foldersAndFilesListView.trailingAnchor, constant: 0),
-                librariesListView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor, constant: 0)
+                foldersAndFilesListView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor,
+                                                                 constant: 0),
+                librariesListView.leadingAnchor.constraint(equalTo: foldersAndFilesListView.trailingAnchor,
+                                                           constant: 0),
+                librariesListView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor,
+                                                            constant: 0)
             ])
 
             for subview in [foldersAndFilesListView, librariesListView] {
@@ -220,7 +237,9 @@ extension FavoritesViewController: MDCTabBarDelegate {
 // MARK: - UIScrollView Delegate
 
 extension FavoritesViewController: UIScrollViewDelegate {
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView,
+                                   withVelocity velocity: CGPoint,
+                                   targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         if let pageOffset = ScrollPageController().pageOffset(
             for: scrollView.contentOffset.x,
             velocity: velocity.x,
@@ -273,7 +292,10 @@ class FavoritesTabBarIndicator: NSObject, MDCTabBarIndicatorTemplate {
         let bounds = context.contentFrame
         let attr = MDCTabBarIndicatorAttributes()
         let overflow: CGFloat = 30
-        let frame = CGRect(x: bounds.minX - overflow / 2, y: context.bounds.maxY - 2, width: bounds.width + overflow, height: 2)
+        let frame = CGRect(x: bounds.minX - overflow / 2,
+                           y: context.bounds.maxY - 2,
+                           width: bounds.width + overflow,
+                           height: 2)
         attr.path = UIBezierPath(rect: frame)
         return attr
     }

@@ -24,7 +24,6 @@ import MaterialComponents.MaterialProgressView
 protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
     func showActionSheetForListItem(for node: ListNode,
-                                    dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate)
 }
 
@@ -89,22 +88,24 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
 
         collectionView.reloadData()
-        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
-        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor =
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
-        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor =
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
         refreshControl?.tintColor = currentTheme.primaryColor
@@ -135,7 +136,8 @@ class ListComponentViewController: SystemThemableViewController {
             if let attributes =
                 collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader,
                                                                        at: indexPath) {
-                pointToScroll = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+                pointToScroll =
+                    CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
@@ -211,7 +213,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                                                                     for: indexPath) as? ListSectionCollectionReusableView else {
                 fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(themingService?.activeTheme)
+            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return headerView
 
         case UICollectionView.elementKindSectionFooter:
@@ -238,12 +240,11 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                                                for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
         cell?.delegate = self
-        cell?.applyTheme(themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""
         }
-        cell?.stopLoadingProgressView()
         return cell ?? UICollectionViewCell()
     }
 
@@ -292,29 +293,14 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             snackBar.show(completion: nil)
         }
     }
-
-    func presentationContext() -> UIViewController? {
-        return self
-    }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        cell.startLoadingProgressView()
-        listDataSource?.updateDetails(for: element, completion: { [weak self] (listNode, _) in
-            guard let sSelf = self else { return }
-            if let listNode = listNode, let dataSource = sSelf.listDataSource {
-                DispatchQueue.main.async {
-                    sSelf.listItemActionDelegate?.showActionSheetForListItem(for: listNode,
-                                                                             dataSource: dataSource,
-                                                                             delegate: sSelf)
-                }
-            }
-
-            cell.stopLoadingProgressView()
-        })
+        guard let node = element else { return }
+        listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
     }
 }
 

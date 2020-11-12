@@ -71,7 +71,8 @@ class SplashViewController: SystemThemableViewController {
         }
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         shadowLayer?.removeFromSuperlayer()
         if isAnimationInProgress {
@@ -82,7 +83,8 @@ class SplashViewController: SystemThemableViewController {
             guard let sSelf = self else { return }
             sSelf.view.frame.size = size
             sSelf.view.layoutIfNeeded()
-            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity,
+                                                                   radius: sSelf.shadowLayerRadius)
             sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
         }
     }
@@ -100,18 +102,20 @@ class SplashViewController: SystemThemableViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        copyrightLabel.text = String(format: LocalizationConstants.copyright,
+                                     Calendar.current.component(.year, from: Date()))
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
         backButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         view.backgroundColor = currentTheme.surfaceColor
         whiteAlphaView.backgroundColor = currentTheme.surfaceColor
-        containerView.backgroundColor = (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
+        containerView.backgroundColor =
+            (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
     }
 
     func animateLogo() {
@@ -132,13 +136,24 @@ class SplashViewController: SystemThemableViewController {
     func animateContainerViews() {
         self.containerViews(alpha: 0.0, hidden: false)
         self.wasRotatedInAnimationProgress = false
-        self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity, radius: self.shadowLayerRadius)
-        self.shadowLayer?.fadeAnimation(with: .fadeIn, duration: TimeInterval(kAnimationSplashScreenContainerViews), completionHandler: {  [weak self] in
-            guard let sSelf = self, sSelf.wasRotatedInAnimationProgress == true else { return }
-            sSelf.shadowLayer?.removeFromSuperlayer()
-            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity, radius: sSelf.shadowLayerRadius)
-            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.0, completionHandler: nil)
-        })
+        self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity,
+                                                             radius: self.shadowLayerRadius)
+        self.shadowLayer?.fadeAnimation(with: .fadeIn,
+                                        duration: TimeInterval(kAnimationSplashScreenContainerViews),
+                                        completionHandler: { [weak self] in
+                                                guard let sSelf = self,
+                                                      sSelf.wasRotatedInAnimationProgress == true else {
+                                                    return
+                                                }
+
+                                                sSelf.shadowLayer?.removeFromSuperlayer()
+                                                sSelf.shadowLayer =
+                                                    sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity,
+                                                                                       radius: sSelf.shadowLayerRadius)
+                                                sSelf.shadowLayer?.fadeAnimation(with: .fadeIn,
+                                                                                 duration: 0.0,
+                                                                                 completionHandler: nil)
+                                            })
 
         UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
             guard let sSelf = self else { return }

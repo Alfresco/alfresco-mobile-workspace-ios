@@ -165,5 +165,6 @@ struct LocalizationConstants {
     struct NodeActionsDialog {
         static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
         static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
+        static let downloadMessage = NSLocalizedString("dialog-download-message", comment: "")
     }
 }

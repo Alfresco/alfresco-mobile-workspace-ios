@@ -110,10 +110,6 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         request(with: nil)
     }
 
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        completion(listNode, nil)
-    }
-
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }
@@ -128,6 +124,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
     }
 
     // MARK: Event Observable
+
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             let node = publishedEvent.node

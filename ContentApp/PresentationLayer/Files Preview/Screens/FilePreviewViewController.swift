@@ -52,6 +52,8 @@ class FilePreviewViewController: SystemThemableViewController {
 
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+
+        filePreviewViewModel?.updateNodeDetails()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +79,8 @@ class FilePreviewViewController: SystemThemableViewController {
         return isFullScreen
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
@@ -91,16 +94,22 @@ class FilePreviewViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func toolbarActionTapped(sender: UIBarButtonItem) {
-        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else { return }
+        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else {
+            return
+        }
+
         let action = actions[sender.tag]
-        filePreviewViewModel?.nodeActionsViewModel?.tapped(on: action, finished: {
-        })
+        filePreviewViewModel?.nodeActionsViewModel?.tapped(on: action,
+                                                           finished: {})
     }
 
     // MARK: - Private Helpers
 
     private func addToolbarActions() {
-        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else { return }
+        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else {
+            return
+        }
+
         var array = [UIBarButtonItem]()
         for action in actions {
             let button = UIBarButtonItem(image: action.icon,
@@ -114,9 +123,13 @@ class FilePreviewViewController: SystemThemableViewController {
         self.toolbarActions = array
         var toolbarActions = [UIBarButtonItem]()
         for button in array {
-            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                                  target: nil,
+                                                  action: nil))
             toolbarActions.append(button)
-            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil))
+            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
+                                                  target: nil,
+                                                  action: nil))
         }
         toolbar.items = toolbarActions
     }
@@ -140,10 +153,12 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let themingService = self.themingService, let currentTheme = themingService.activeTheme else { return }
+        guard  let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.backgroundColor
-        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService.activeTheme)
-        if let passwordDialog = filePreviewPasswordDialog, let passwordField = filePreviewPasswordField {
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(currentTheme)
+
+        if let passwordDialog = filePreviewPasswordDialog,
+           let passwordField = filePreviewPasswordField {
             applyTheme(for: passwordDialog)
             applyTheme(for: passwordField)
         }
@@ -157,7 +172,7 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
-        if let themingService = self.themingService {
+        if let themingService = coordinatorServices?.themingService {
             dialog.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
             dialog.titleColor = themingService.activeTheme?.onSurfaceColor
             dialog.messageColor = themingService.activeTheme?.onBackgroundColor
@@ -165,7 +180,7 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     private func applyTheme(for passwordField: MDCOutlinedTextField) {
-        if let themingService = themingService {
+        if let themingService = coordinatorServices?.themingService {
             passwordField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
         }
     }
@@ -180,13 +195,17 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
         containerFilePreview.addSubview(previewContainer)
         filePreviewViewModel?.filePreview?.filePreviewDelegate = self
-        filePreviewViewModel?.filePreview?.applyComponentsThemes(themingService?.activeTheme)
+        filePreviewViewModel?.filePreview?.applyComponentsThemes(coordinatorServices?.themingService?.activeTheme)
 
         NSLayoutConstraint.activate([
-            previewContainer.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor, constant: 0),
-            previewContainer.leftAnchor.constraint(equalTo: self.containerFilePreview.leftAnchor, constant: 0),
-            previewContainer.rightAnchor.constraint(equalTo: self.containerFilePreview.rightAnchor, constant: 0),
-            previewContainer.bottomAnchor.constraint(equalTo: self.containerFilePreview.bottomAnchor, constant: 0)
+            previewContainer.topAnchor.constraint(equalTo: self.containerFilePreview.topAnchor,
+                                                  constant: 0),
+            previewContainer.leftAnchor.constraint(equalTo: self.containerFilePreview.leftAnchor,
+                                                   constant: 0),
+            previewContainer.rightAnchor.constraint(equalTo: self.containerFilePreview.rightAnchor,
+                                                    constant: 0),
+            previewContainer.bottomAnchor.constraint(equalTo: self.containerFilePreview.bottomAnchor,
+                                                     constant: 0)
         ])
     }
 
@@ -207,20 +226,26 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
         var alertController: MDCAlertController?
 
-        let submitAction = MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
-        }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
-            guard let sSelf = self else { return }
+        let submitAction =
+            MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
+            }
+        let cancelAction =
+            MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
+                guard let sSelf = self else { return }
 
-            alertController?.dismiss(animated: true, completion: nil)
-            sSelf.filePreviewCoordinatorDelegate?.navigateBack()
-        }
+                alertController?.dismiss(animated: true, completion: nil)
+                sSelf.filePreviewCoordinatorDelegate?.navigateBack()
+            }
 
-        alertController = showDialog(title: title, message: message, actions: [submitAction, cancelAction], accesoryView: passwordField, completionHandler: {
-            passwordField.becomeFirstResponder()
-        })
+        alertController = showDialog(title: title,
+                                     message: message,
+                                     actions: [submitAction, cancelAction],
+                                     accesoryView: passwordField,
+                                     completionHandler: {
+                                        passwordField.becomeFirstResponder()
+                                     })
 
         filePreviewPasswordDialog = alertController
     }
@@ -242,11 +267,13 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func update(listNode: ListNode) {
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
-            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            let icon = (listNode.favorite ?? false) ? ActionMenuType.removeFavorite.rawValue :
+                ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
         }
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
-            let icon = (listNode.favorite) ? ActionMenuType.removeFavorite.rawValue : ActionMenuType.addFavorite.rawValue
+            let icon = (listNode.favorite ?? false ) ? ActionMenuType.removeFavorite.rawValue :
+                ActionMenuType.addFavorite.rawValue
             toolbarActions?[index].image = UIImage(named: icon)
         }
     }
@@ -297,10 +324,6 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             default: break
             }
         }
-    }
-
-    func presentationContext() -> UIViewController? {
-        return nil
     }
 }
 

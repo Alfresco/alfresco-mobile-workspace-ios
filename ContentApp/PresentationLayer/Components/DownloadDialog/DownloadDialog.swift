@@ -16,18 +16,20 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
-    func refreshList()
+class DownloadDialog: UIView {
+    @IBOutlet weak var activityIndicator: MDCActivityIndicator!
+    @IBOutlet weak var messageLabel: UILabel!
+
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        if let theme = currentTheme {
+            self.backgroundColor = theme.surfaceColor
+            activityIndicator.cycleColors = [theme.primaryVariantColor]
+
+            messageLabel.applyStyleBody2OnSurface(theme: theme)
+            messageLabel.lineBreakMode = .byTruncatingTail
+            messageLabel.textAlignment = .center
+        }
+    }
 }
