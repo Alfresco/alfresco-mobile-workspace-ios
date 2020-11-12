@@ -69,7 +69,7 @@ class SystemSearchViewController: SystemThemableViewController {
     @objc func searchButtonTapped() {
         navigationItem.searchController = tagSearchController
         tagSearchController?.searchBar.alpha = 0.0
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.tagSearchController?.isActive = true
             sSelf.tagSearchController?.searchBar.becomeFirstResponder()
@@ -190,6 +190,9 @@ extension SystemSearchViewController: UISearchControllerDelegate {
                 sSelf.navigationController?.view.layoutIfNeeded()
             }
         }
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+        rvc.clearDataSource()
+        searchViewModel?.lastSearchedString = nil
     }
 }
 
@@ -208,12 +211,13 @@ extension SystemSearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
+        searchViewModel?.lastSearchedString = nil
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
+            var searchViewModel = self.searchViewModel else { return }
+        searchViewModel.lastSearchedString = searchText
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
         if searchText.canPerformLiveSearch() {

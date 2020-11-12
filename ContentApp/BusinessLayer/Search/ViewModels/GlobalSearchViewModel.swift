@@ -29,7 +29,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var displaySearchButton: Bool = false
 
     private var liveSearchTimer: Timer?
-    private var lastSearchedString: String?
+    var lastSearchedString: String?
 
     // MARK: - Init
 

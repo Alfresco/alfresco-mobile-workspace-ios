@@ -22,7 +22,8 @@
 // MARK: - Buttons
 "connect" = "Connexion";
 "advanced-settings" = "Réglages avancés";
-"need-help" = "Besoin d'aide?";
+"need-help" = "Besoin d'aide ?";
+"need-help-alfresco" = "Comment se connecter à Alfresco ?";
 "reset-to-default" = "Valeurs par défaut";
 "save" = "Enregistrer";
 "sign-in" = "Connexion";
@@ -31,11 +32,12 @@
 "retry" = "Réessayer";
 "yes" = "Oui";
 "cancel" = "Annuler";
+"delete" = "Supprimer";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connexion à";
 "port" = "Port";
-"service-document" = "Chemin";
+"path" = "Chemin";
 "realm" = "Domaine";
 "client-id" = "ID client";
 "username-or-email" = "Nom d'utilisateur ou e-mail";
@@ -47,10 +49,11 @@
 "https" = "HTTPS";
 "alfresco-content-settings" = "Réglages Alfresco Content Services";
 "authentication" = "Authentification";
-"info-connect-to" = "Connecté à: ";
-"info-aims-connect-to"  = "Connexion à: ";
+"info-connect-to" = "Connecté à : ";
+"info-aims-connect-to"  = "Connexion à : ";
 "login-allow-sso" = "Entrez l'URL de votre environnement Content Services.";
 "help" = "Aide";
+"how-to-connect-to-alfresco" = "Comment se connecter à Alfresco";
 "connecting" = "Connexion en cours";
 "signing-in" = "Connexion en cours";
 "session-expired" = "Session expirée";
@@ -58,33 +61,41 @@
 
 // MARK: - Screen Titles
 "settings" = "Réglages";
-"recent" = "Récents";
+"recent" = "Récent";
 "favorites" = "Favoris";
 "browse" = "Parcourir";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"6\">Comment se connecter à Alfresco</font></p><p><font size=\"5\">URL d'Alfresco Content Services</font></p><p>Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.</p><p><font size=\"5\">Connexion avec SSO</font></p><p>Vous pouvez saisir l'URL de votre service de gestion d'identité Alfresco pour vous authentifier auprès du fournisseur d'identité de votre société.</p><p>*Vous devrez ensuite entrer l'URL de votre instance d'Alfresco Content Services</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
+"help-service-url-hint" = "<p><font size=\"5\">URL d'Alfresco Content Services</font></p><p>Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.</p><p><font size=\"5\">Connexion avec SSO</font></p><p>Vous pouvez saisir l'URL de votre service de gestion d'identité Alfresco pour vous authentifier auprès du fournisseur d'identité de votre société.</p><p>*Vous devrez ensuite entrer l'URL de votre instance d'Alfresco Content Services</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
 "help-advanced-settings-hint" = "<p><font size=\"6\">Authentification Alfresco</font></p><p>Si vous n'utilisez pas les paramètres SSO par défaut, définissez les paramètres ici.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Emplacement de l'entrepôt de contenu</font></p><p>URL d'Alfresco Content Services :</p><p>Il s'agit de l'URL de votre instance d'Alfresco Content Services.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
 
-// MARK: - Login Errors
+// MARK: - Snackbar errors
 "error-login-generic" = "Un problème est survenu. Pour obtenir de l'aide, contactez votre administrateur Alfresco. Code d'erreur : %d";
 "error-login-alfresco-url" = "Aucun service d'authentification trouvé à l'URL Alfresco spécifiée.";
-"error-login-check-connect-url" = "Vérifiez votre connexion à l'URL.";
+"error-login-check-connect-url" = "Vérifiez l'URL à laquelle vous souhaitez vous connecter.";
 "error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
 "error-logjn-no-longer-authenticated" = "Vous n'êtes plus authentifié, veuillez vous reconnecter.";
-"error-something-went-wrong" = "Un problème est survenu!";
+"error-something-went-wrong" = "Un problème est survenu !";
+"warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux réglages avancés.";
+"error-unknown" = "Une erreur inconnue s'est produite.";
+
+// MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
-"warning-login-service-document-empty"= "Le champ Doc. de service doit être rempli ; allez dans les Réglages avancés.";
+"approved-added-favorites" = "Ajouté aux favoris";
+"approved-removed-favorites" = "Supprimé des favoris";
+"approved-moved-trash" = "%@ a été placé dans la corbeille";
+"approved-restored" = "%@ a été restauré";
+"approved-deleted" = "%@ a été supprimé";
 
 // MARK: - Settings Screen
-"theme" = "Mode Thème";
-"auto" = "Auto";
+"theme" = "Apparence";
+"auto" = "Réglages système par défaut";
 "light" = "Claire";
 "dark" = "Sombre";
 "failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
 "app-version" = "Version de l'application %@-%@";
-"sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter?";
+"sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
 
 // MARK: - Search
 "empty-list" = "Oups...";
@@ -96,7 +107,7 @@
 "folders" = "Dossiers";
 "libraries" = "Bibliothèques";
 "file-and-folders" = "Fichiers et dossiers";
-"search-in" = "dans: ";
+"search-in" = "dans : ";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";
@@ -113,7 +124,7 @@
 "trash" = "Corbeille";
 
 // MARK: - File Preview
-"no-preview" = "Aucun aperçu pour ce fichier.";
+"no-preview" = "Aperçu non disponible.";
 "password-prompt" = "Fichier verrouillé";
 "password-prompt-message" = "Entrez le mot de passe pour déverrouiller le fichier.";
 "password-prompt-fail" = "Mot de passe incorrect";
@@ -125,5 +136,11 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Ajouter aux favoris";
 "action-menu-remove-favorite" = "Supprimer des favoris";
-"action-menu-delete" = "Supprimer";
+"action-menu-move-trash" = "Placer dans la corbeille";
+"action-menu-download" = "Télécharger";
+"action-menu-restore" = "Restaurer";
+"action-menu-permanently-delete" = "Supprimer définitivement";
 
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "Supprimer %@";
+"dialog-delete-message" = "%@ sera supprimé définitivement.";

@@ -107,6 +107,8 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
+            } else {
+                completion(listNode, error)
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
         addInGroupList(self.results)
@@ -164,10 +166,16 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
-                results.remove(at: indexOfMovedNode)
-            } else {
-                refreshList()
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if node.kind == .file {
+                    if let indexOfMovedNode = results.firstIndex(of: node) {
+                        results.remove(at: indexOfMovedNode)
+                    }
+                } else {
+                    refreshList()
+                }
+            default: break
             }
         }
     }

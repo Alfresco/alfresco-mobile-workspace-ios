@@ -103,6 +103,24 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         favoritesList(with: nil)
     }
 
+        guard let node = listNode else { return }
+        if node.kind == .site {
+            completion(listNode, nil)
+        } else {
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                } else {
+                    completion(listNode, error)
+                }
+            }
+        }
     func shouldDisplaySections() -> Bool {
         return false
     }
@@ -154,10 +172,16 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
-                results.remove(at: indexOfMovedNode)
-            } else {
-                refreshList()
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if node.kind == .file {
+                    if let indexOfMovedNode = results.firstIndex(of: node) {
+                        results.remove(at: indexOfMovedNode)
+                    }
+                } else {
+                    refreshList()
+                }
+            default: break
             }
         }
     }

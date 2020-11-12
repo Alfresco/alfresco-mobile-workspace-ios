@@ -42,10 +42,16 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node), node.kind == .file {
-                results.remove(at: indexOfMovedNode)
-            } else {
-                refreshList()
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if node.kind == .file {
+                    if let indexOfMovedNode = results.firstIndex(of: node) {
+                        results.remove(at: indexOfMovedNode)
+                    }
+                } else {
+                    refreshList()
+                }
+            default: break
             }
         }
     }
@@ -101,5 +107,32 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()
+    }
+
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        if node.kind == .site {
+            FavoritesAPI.getFavorite(personId: kAPIPathMe,
+                                     favoriteId: node.guid) { (_, error) in
+                if error == nil {
+                    node.favorite = true
+                }
+                completion(node, error)
+            }
+        } else {
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                } else {
+                    completion(listNode, error)
+                }
+            }
+        }
     }
 }

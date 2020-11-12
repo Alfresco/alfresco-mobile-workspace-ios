@@ -137,8 +137,12 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             }
         } else if let publishedEvent = event as? MoveEvent {
             let node = publishedEvent.node
-            if let indexOfMovedNode = results.firstIndex(of: node) {
-                results.remove(at: indexOfMovedNode)
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            default: break
             }
         }
     }
