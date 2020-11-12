@@ -33,7 +33,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="1wM-CP-3MV"/>
                         <constraint firstItem="apW-d6-bRM" firstAttribute="top" secondItem="xag-9S-K5b" secondAttribute="top" id="2q5-PI-pmX"/>
