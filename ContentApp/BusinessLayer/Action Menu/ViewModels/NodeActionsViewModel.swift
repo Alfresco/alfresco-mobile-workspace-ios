@@ -173,8 +173,7 @@ class NodeActionsViewModel {
     }
 
     private func requestPermanentlyDelete() {
-        let title =
-            String(format: LocalizationConstants.NodeActionsDialog.deleteTitle, node.title)
+        let title = LocalizationConstants.NodeActionsDialog.deleteTitle
         let message =
             String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
 

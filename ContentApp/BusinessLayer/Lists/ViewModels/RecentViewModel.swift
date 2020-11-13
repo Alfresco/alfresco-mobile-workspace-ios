@@ -173,6 +173,8 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 } else {
                     refreshList()
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }

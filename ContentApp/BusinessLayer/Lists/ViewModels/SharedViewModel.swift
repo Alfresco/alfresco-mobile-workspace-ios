@@ -145,6 +145,8 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 } else {
                     refreshList()
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }

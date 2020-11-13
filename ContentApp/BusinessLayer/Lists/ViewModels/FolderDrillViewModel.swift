@@ -158,6 +158,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                 } else {
                     refreshList()
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }

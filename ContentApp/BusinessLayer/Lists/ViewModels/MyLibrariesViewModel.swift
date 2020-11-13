@@ -142,6 +142,8 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
                 }
+            case .restore:
+                refreshList()
             default: break
             }
         }
