@@ -20,7 +20,6 @@ import UIKit
 
 class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private var listViewController: ListViewController?
     private var browseNode: BrowseNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
@@ -44,7 +43,6 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
         viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
 
-        listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
