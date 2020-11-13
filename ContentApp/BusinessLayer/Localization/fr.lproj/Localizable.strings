@@ -142,5 +142,5 @@
 "action-menu-permanently-delete" = "Supprimer définitivement";
 
 // MARK: - Node Actions Dialog
-"dialog-delete-title" = "Supprimer %@";
+"dialog-delete-title" = "Supprimer";
 "dialog-delete-message" = "%@ sera supprimé définitivement.";
