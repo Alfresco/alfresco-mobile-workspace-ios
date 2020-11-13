@@ -47,6 +47,7 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - Public Methods
 
     func cancelSearchMode() {
+        searchViewModel?.lastSearchedString = nil
         self.navigationItem.searchController?.searchBar.text = ""
         self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
     }
