@@ -20,7 +20,6 @@ import UIKit
 
 class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private var listViewController: ListViewController?
     private var listNode: ListNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
@@ -44,7 +43,6 @@ class FolderChildrenScreenCoordinator: Coordinator {
         viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
         viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
 
-        listViewController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
