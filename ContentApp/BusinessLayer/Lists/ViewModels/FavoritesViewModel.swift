@@ -78,6 +78,13 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        if listCondition == kWhereFavoritesFileFolderCondition {
+            return EmptyFavoritesFilesFolders()
+        }
+        return EmptyFavoritesLibraries()
+    }
+
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
