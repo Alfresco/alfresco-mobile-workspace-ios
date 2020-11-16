@@ -80,8 +80,6 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView?.register(UINib(nibName: identifier,
                                        bundle: nil),
                                  forCellWithReuseIdentifier: identifier)
-
-        addLocalization()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -106,14 +104,10 @@ class ListComponentViewController: SystemThemableViewController {
         super.applyComponentsThemes()
 
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryColor
-    }
-
-    func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.Search.title
-        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
     }
 
     // MARK: - Public interface
@@ -324,6 +318,12 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
+        if isDataSourceEmpty {
+            let emptyList = listDataSource?.emptyList()
+            emptyListImageView.image = emptyList?.icon
+            emptyListTitle.text = emptyList?.title
+            emptyListSubtitle.text = emptyList?.description
+        }
 
         // If loading the first page or missing pagination scroll to top
         let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)

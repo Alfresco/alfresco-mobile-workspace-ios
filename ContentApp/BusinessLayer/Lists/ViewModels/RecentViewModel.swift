@@ -70,6 +70,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return groupedLists.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyRecents()
+    }
+
     func shouldDisplaySections() -> Bool {
         return true
     }

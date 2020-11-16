@@ -114,8 +114,6 @@ struct LocalizationConstants {
     }
 
     struct Search {
-        static let title = NSLocalizedString("empty-list", comment: "")
-        static let subtitle = NSLocalizedString("empty-list-subtitle", comment: "")
         static let searching = NSLocalizedString("searching", comment: "")
         static let noRecentSearch = NSLocalizedString("no-recent-search", comment: "")
         static let recentSearch = NSLocalizedString("recent-search", comment: "")
@@ -166,5 +164,17 @@ struct LocalizationConstants {
         static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
         static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
         static let downloadMessage = NSLocalizedString("dialog-download-message", comment: "")
+    }
+
+    struct EmptyLists {
+        static let recentsTitle = NSLocalizedString("empty-recent-title", comment: "")
+        static let recentsDescription = NSLocalizedString("empty-recent-description", comment: "")
+        static let favoritesFilesFoldersTitle = NSLocalizedString("empty-favorites-files-folders-title", comment: "")
+        static let favoritesLibrariesTitle = NSLocalizedString("empty-favorites-libraries-title", comment: "")
+        static let favoritesDescription = NSLocalizedString("empty-favorites-description", comment: "")
+        static let folderTitle = NSLocalizedString("empty-folder-title", comment: "")
+        static let folderDescription = NSLocalizedString("empty-folder-description", comment: "")
+        static let searchTitle = NSLocalizedString("empty-search-title", comment: "")
+        static let searchDescription = NSLocalizedString("empty-search-description", comment: "")
     }
 }

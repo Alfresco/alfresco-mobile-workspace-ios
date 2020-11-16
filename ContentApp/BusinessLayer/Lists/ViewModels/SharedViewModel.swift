@@ -76,6 +76,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }

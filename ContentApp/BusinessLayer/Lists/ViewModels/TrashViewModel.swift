@@ -73,6 +73,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }

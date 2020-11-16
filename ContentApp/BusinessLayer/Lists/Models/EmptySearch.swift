@@ -17,18 +17,10 @@
 //
 
 import Foundation
-import AlfrescoContent
+import UIKit
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
-    func refreshList()
-    func emptyList() -> EmptyListProtocol
+struct EmptySearch: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-search")
+    var title = LocalizationConstants.EmptyLists.searchTitle
+    var description = LocalizationConstants.EmptyLists.searchDescription
 }

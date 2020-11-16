@@ -77,6 +77,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }

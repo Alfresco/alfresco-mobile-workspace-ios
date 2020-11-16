@@ -74,6 +74,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }
