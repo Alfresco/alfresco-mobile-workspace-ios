@@ -30,7 +30,7 @@ struct ActionsMenuTrashMoreButton {
                                          type: .restore)
 
         let actions1 = [infoAction]
-        let actions2: [ActionMenu] = [permanentlyDeleteAction, restoreAction]
+        let actions2: [ActionMenu] = [restoreAction, permanentlyDeleteAction]
 
         actions.append(actions1)
         actions.append(actions2)
