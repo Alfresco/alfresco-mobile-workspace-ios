@@ -194,7 +194,7 @@ class NodeActionsViewModel {
         }
 
         DispatchQueue.main.async {
-            if let presentationContext = UIViewController.applicationTopMost {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
                                                    actions: [cancelAction, deleteAction],
@@ -266,7 +266,7 @@ class NodeActionsViewModel {
                     actionHandler(action)
             }
 
-            if let presentationContext = UIViewController.applicationTopMost {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,
                                                                     message: nil,
                                                                     actions: [cancelAction],
