@@ -25,6 +25,7 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
     private var navigationViewController: UINavigationController?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -93,6 +94,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)
             coordinator.start()
+            actionMenuCoordinator = coordinator
         }
     }
 }
