@@ -57,7 +57,7 @@ class NodeActionsViewModel {
         requestAction()
     }
 
-    // MARK: - Private Helpers
+    // MARK: - Actions Request Helpers
 
     private func requestAction() {
         let accountService = coordinatorServices?.accountService
@@ -175,8 +175,8 @@ class NodeActionsViewModel {
 
     private func requestPermanentlyDelete() {
         let title = LocalizationConstants.NodeActionsDialog.deleteTitle
-        let message =
-            String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
+        let message = String(format: LocalizationConstants.NodeActionsDialog.deleteMessage,
+                             node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
         let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
@@ -205,40 +205,34 @@ class NodeActionsViewModel {
 
     private func requestDownload() {
         var downloadDialog: MDCAlertController?
+        var downloadRequest: DownloadRequest?
 
-        let downloadRequest =
-            downloadNodeContent { destinationURL, error in
-                downloadDialog?.dismiss(animated: true,
-                                        completion: { [weak self] in
-                        guard let sSelf = self else { return }
+        let mainQueue = coordinatorServices?.operationQueueService?.main
+        let workerQueue = coordinatorServices?.operationQueueService?.worker
 
-                        sSelf.handleResponse(error: error)
-
-                        if let url = destinationURL {
-                            DispatchQueue.main.asyncAfter(deadline: .now() +
-                                                            kSheetDismissDelay) {
-                                let activityViewController =
-                                    UIActivityViewController(activityItems: [url],
-                                                             applicationActivities: nil)
-
-                                if let presentationContext =
-                                    UIViewController.applicationTopMostPresented {
-                                    presentationContext.present(activityViewController,
-                                                                animated: true,
-                                                                completion: nil)
-                                }
-                            }
-                        }
-                    })
-            }
-
-        DispatchQueue.main.async { [weak self] in
+        mainQueue?.async { [weak self] in
             guard let sSelf = self else { return }
             downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
                 downloadRequest?.cancel()
             })
+
+            workerQueue?.async {
+                downloadRequest = sSelf.downloadNodeContent { destinationURL, error in
+                    mainQueue?.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+                        downloadDialog?.dismiss(animated: true,
+                                                completion: {
+                                                    sSelf.handleResponse(error: error)
+                                                    if let url = destinationURL {
+                                                        sSelf.displayActivityViewController(for: url)
+                                                    }
+                                                })
+                    })
+                }
+            }
         }
     }
+
+    // MARK: - Helpers
 
     private func handleResponse(error: Error?) {
         if let error = error {
@@ -311,5 +305,26 @@ class NodeActionsViewModel {
         }
 
         return nil
+    }
+
+    private func displayActivityViewController(for url: URL) {
+        let activityViewController =
+            UIActivityViewController(activityItems: [url],
+                                     applicationActivities: nil)
+        activityViewController.modalPresentationStyle = .popover
+
+        if let presentationContext = UIViewController.applicationTopMost {
+
+            if let popoverController = activityViewController.popoverPresentationController {
+                popoverController.sourceRect = presentationContext.view.bounds
+                popoverController.sourceView = presentationContext.view
+
+                popoverController.permittedArrowDirections = []
+            }
+
+            presentationContext.present(activityViewController,
+                                        animated: true,
+                                        completion: nil)
+        }
     }
 }

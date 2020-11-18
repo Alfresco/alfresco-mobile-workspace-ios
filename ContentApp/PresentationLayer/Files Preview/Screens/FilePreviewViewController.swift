@@ -299,9 +299,12 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        if error != nil {
-            Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
-                             type: .error, finish: nil)
+        if let error = error {
+            var snackBarMessage = LocalizationConstants.Errors.errorUnknown
+            if error.code == kTimeoutSwaggerErrorCode {
+                snackBarMessage = LocalizationConstants.Errors.errorTimeout
+            }
+            Snackbar.display(with: snackBarMessage, type: .error, finish: nil)
         } else {
             guard let action = action else { return }
             switch action.type {

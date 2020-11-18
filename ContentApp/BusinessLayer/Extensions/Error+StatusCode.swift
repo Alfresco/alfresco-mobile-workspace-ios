@@ -16,21 +16,15 @@
 //  limitations under the License.
 //
 
-import MaterialComponents.MaterialDialogs
+import Foundation
+import AlfrescoContent
 
-class DownloadDialog: UIView {
-    @IBOutlet weak var activityIndicator: MDCActivityIndicator!
-    @IBOutlet weak var messageLabel: UILabel!
-
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        if let theme = currentTheme {
-            self.backgroundColor = theme.surfaceColor
-            activityIndicator.cycleColors = [theme.primaryVariantColor]
-
-            messageLabel.font = theme.body2TextStyle.font
-            messageLabel.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
-            messageLabel.lineBreakMode = .byTruncatingTail
-            messageLabel.textAlignment = .center
+extension Error {
+    var code: Int {
+        guard let err = self as? ErrorResponse else { return (self as NSError).code }
+        switch err {
+        case ErrorResponse.error(let code, _, _):
+            return code
         }
     }
 }

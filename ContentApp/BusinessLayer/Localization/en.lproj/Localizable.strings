@@ -79,6 +79,7 @@
 "error-something-went-wrong" = "Something went wrong!";
 "warning-login-path-empty" = "Path shouldn't be empty, go to advanced settings.";
 "error-unknown" = "Unknown error occurred.";
+"error-timeout" = "This is taking longer than expected. Hang tight for a few moments.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
@@ -135,7 +136,7 @@
 "action-menu-add-favorite" = "Add to Favorites";
 "action-menu-remove-favorite" = "Remove from Favorites";
 "action-menu-move-trash" = "Move to Trash";
-"action-menu-download" = "Download";
+"action-menu-download" = "Open with";
 "action-menu-restore" = "Restore";
 "action-menu-permanently-delete" = "Permanently Delete";
 

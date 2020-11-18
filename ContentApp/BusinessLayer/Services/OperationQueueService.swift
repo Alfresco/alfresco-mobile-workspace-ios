@@ -16,21 +16,9 @@
 //  limitations under the License.
 //
 
-import MaterialComponents.MaterialDialogs
+import Foundation
 
-class DownloadDialog: UIView {
-    @IBOutlet weak var activityIndicator: MDCActivityIndicator!
-    @IBOutlet weak var messageLabel: UILabel!
-
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        if let theme = currentTheme {
-            self.backgroundColor = theme.surfaceColor
-            activityIndicator.cycleColors = [theme.primaryVariantColor]
-
-            messageLabel.font = theme.body2TextStyle.font
-            messageLabel.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
-            messageLabel.lineBreakMode = .byTruncatingTail
-            messageLabel.textAlignment = .center
-        }
-    }
+class OperationQueueService: Service {
+    let main = DispatchQueue.main
+    let worker = DispatchQueue.init(label: "WorkerQueue")
 }
