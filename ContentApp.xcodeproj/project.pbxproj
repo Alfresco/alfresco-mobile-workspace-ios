@@ -148,6 +148,7 @@
 		E363E34E256285DA00CB5338 /* EmptyFavoritesLibraries.swift in Sources */ = {isa = PBXBuildFile; fileRef = E363E34D256285DA00CB5338 /* EmptyFavoritesLibraries.swift */; };
 		E363E3532562865000CB5338 /* EmptyFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E363E3522562865000CB5338 /* EmptyFolder.swift */; };
 		E363E3582562867200CB5338 /* EmptySearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E363E3572562867200CB5338 /* EmptySearch.swift */; };
+		E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E363E43825655A5000CB5338 /* Error+StatusCode.swift */; };
 		E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
 		E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
 		E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */; };
@@ -410,6 +411,7 @@
 		E363E34D256285DA00CB5338 /* EmptyFavoritesLibraries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFavoritesLibraries.swift; sourceTree = "<group>"; };
 		E363E3522562865000CB5338 /* EmptyFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFolder.swift; sourceTree = "<group>"; };
 		E363E3572562867200CB5338 /* EmptySearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptySearch.swift; sourceTree = "<group>"; };
+		E363E43825655A5000CB5338 /* Error+StatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+StatusCode.swift"; sourceTree = "<group>"; };
 		E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
 		E369008E24C84BD000F03D60 /* Inter-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.ttf"; sourceTree = "<group>"; };
 		E369008F24C84BD000F03D60 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
@@ -776,6 +778,7 @@
 				B9ECED3925432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift */,
 				B95247312548134A00E768DD /* NSPointerArray+Operations.swift */,
 				E3BEB134255C3390008228AD /* Double+TimeFormat.swift */,
+				E363E43825655A5000CB5338 /* Error+StatusCode.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1687,6 +1690,7 @@
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
+				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,

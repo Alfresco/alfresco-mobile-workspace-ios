@@ -89,6 +89,7 @@ struct LocalizationConstants {
         static let noLongerAuthenticated = NSLocalizedString("error-logjn-no-longer-authenticated", comment: "")
         static let somethingWentWrong = NSLocalizedString("error-something-went-wrong", comment: "")
         static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
+        static let errorTimeout = NSLocalizedString("error-timeout", comment: "")
     }
 
     struct Approved {
