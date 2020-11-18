@@ -41,10 +41,12 @@ extension UIViewController {
         }
 
         if let themingService =
-            ApplicationBootstrap.shared().repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
+            ApplicationBootstrap.shared().repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService, let currentTheme = themingService.activeTheme {
             alertController.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
-            alertController.titleColor = themingService.activeTheme?.onSurfaceColor
-            alertController.messageColor = themingService.activeTheme?.onBackgroundColor
+            alertController.titleFont = currentTheme.subtitle1TextStyle.font
+            alertController.titleColor = currentTheme.onSurfaceColor
+            alertController.messageFont = currentTheme.body2TextStyle.font
+            alertController.messageColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         }
 
         self.present(alertController, animated: true, completion: completionHandler)

@@ -27,7 +27,8 @@ class DownloadDialog: UIView {
             self.backgroundColor = theme.surfaceColor
             activityIndicator.cycleColors = [theme.primaryVariantColor]
 
-            messageLabel.applyStyleBody2OnSurface(theme: theme)
+            messageLabel.font = theme.body2TextStyle.font
+            messageLabel.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
             messageLabel.lineBreakMode = .byTruncatingTail
             messageLabel.textAlignment = .center
         }
