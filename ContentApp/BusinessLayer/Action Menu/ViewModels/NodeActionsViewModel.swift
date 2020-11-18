@@ -317,6 +317,10 @@ class NodeActionsViewModel {
         clearController.view.backgroundColor = .clear
         clearController.modalPresentationStyle = .overCurrentContext
 
+        activityViewController.completionWithItemsHandler = { (activity, success, items, error) in
+            clearController.dismiss(animated: false, completion: nil)
+        }
+
         if let presentationContext = UIViewController.applicationTopMostPresented {
             if let popoverController = activityViewController.popoverPresentationController {
                 popoverController.sourceRect = presentationContext.view.bounds
