@@ -29,6 +29,7 @@ class BrowseScreenCoordinator: ListCoordinatorProtocol {
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -106,6 +107,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)
             coordinator.start()
+            actionMenuCoordinator = coordinator
         }
     }
 }

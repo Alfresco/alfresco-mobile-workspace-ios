@@ -23,6 +23,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
     private var browseNode: BrowseNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -76,5 +77,6 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
+        actionMenuCoordinator = coordinator
     }
 }

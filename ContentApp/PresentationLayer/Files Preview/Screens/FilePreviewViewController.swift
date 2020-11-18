@@ -318,7 +318,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 self.filePreviewCoordinatorDelegate?.navigateBack()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                                  node.title),
+                                                  node.truncateTailTitle()),
                                      type: .approve, finish: nil)
                 })
             default: break

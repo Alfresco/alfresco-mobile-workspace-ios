@@ -23,6 +23,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private var listNode: ListNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -73,5 +74,6 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
+        actionMenuCoordinator = coordinator
     }
 }

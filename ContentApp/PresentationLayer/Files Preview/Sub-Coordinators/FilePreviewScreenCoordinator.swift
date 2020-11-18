@@ -27,6 +27,7 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var filePreviewViewController: FilePreviewViewController?
     private var listNode: ListNode
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -66,5 +67,6 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsViewModel)
         coordinator.start()
+        actionMenuCoordinator = coordinator
     }
 }

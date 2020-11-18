@@ -64,7 +64,11 @@ class NodeActionsViewModel {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self, let action = sSelf.action else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
+            if let handler = sSelf.actionFinishedHandler {
+                DispatchQueue.main.async {
+                    handler()
+                }
+            }
             switch action.type {
             case .addFavorite:
                 sSelf.requestAddToFavorites()
@@ -83,9 +87,6 @@ class NodeActionsViewModel {
                     sSelf.delegate?.nodeActionFinished(with: sSelf.action,
                                                        node: sSelf.node,
                                                        error: nil)
-                    if let handler = sSelf.actionFinishedHandler {
-                        handler()
-                    }
                 }
             }
         })
@@ -193,7 +194,7 @@ class NodeActionsViewModel {
         }
 
         DispatchQueue.main.async {
-            if let presentationContext = UIViewController.applicationTopMost {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
                                                    actions: [cancelAction, deleteAction],
@@ -243,9 +244,9 @@ class NodeActionsViewModel {
         if let error = error {
             AlfrescoLog.error(error)
         }
-        delegate?.nodeActionFinished(with: action, node: node, error: error)
-        if let handler = actionFinishedHandler {
-            handler()
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.delegate?.nodeActionFinished(with: sSelf.action, node: sSelf.node, error: error)
         }
     }
 
@@ -265,7 +266,7 @@ class NodeActionsViewModel {
                     actionHandler(action)
             }
 
-            if let presentationContext = UIViewController.applicationTopMost {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,
                                                                     message: nil,
                                                                     actions: [cancelAction],

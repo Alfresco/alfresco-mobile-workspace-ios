@@ -272,13 +272,16 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
                 snackBarMessage = LocalizationConstants.Approved.addedFavorites
                 snackBarType = .approve
             case .moveTrash:
-                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash, node.title)
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
+                                         node.truncateTailTitle())
                 snackBarType = .approve
             case .restore:
-                snackBarMessage = String(format: LocalizationConstants.Approved.restored, node.title)
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored,
+                                         node.truncateTailTitle())
                 snackBarType = .approve
             case .permanentlyDelete:
-                snackBarMessage = String(format: LocalizationConstants.Approved.deleted, node.title)
+                snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
+                                         node.truncateTailTitle())
                 snackBarType = .approve
             default: break
             }

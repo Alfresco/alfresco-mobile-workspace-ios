@@ -115,6 +115,14 @@ class ListNode: Hashable {
         return siteRole == type
     }
 
+    func truncateTailTitle() -> String {
+        let text = self.title.prefix(kTruncateLimitTitleInSnackbar)
+        if text == self.title {
+            return String(text)
+        }
+        return text + "..."
+    }
+
     private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
         guard let allowableOperations = allowableOperations else { return nil }
         var allowableOperationsTypes = [AllowableOperationsType]()
