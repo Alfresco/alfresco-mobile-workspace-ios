@@ -136,7 +136,7 @@
 "action-menu-add-favorite" = "Add to Favorites";
 "action-menu-remove-favorite" = "Remove from Favorites";
 "action-menu-move-trash" = "Move to Trash";
-"action-menu-download" = "Download";
+"action-menu-download" = "Open with";
 "action-menu-restore" = "Restore";
 "action-menu-permanently-delete" = "Permanently Delete";
 
