@@ -313,8 +313,11 @@ class NodeActionsViewModel {
                                      applicationActivities: nil)
         activityViewController.modalPresentationStyle = .popover
 
-        if let presentationContext = UIViewController.applicationTopMost {
+        let clearController = UIViewController()
+        clearController.view.backgroundColor = .clear
+        clearController.modalPresentationStyle = .overCurrentContext
 
+        if let presentationContext = UIViewController.applicationTopMostPresented {
             if let popoverController = activityViewController.popoverPresentationController {
                 popoverController.sourceRect = presentationContext.view.bounds
                 popoverController.sourceView = presentationContext.view
@@ -322,9 +325,12 @@ class NodeActionsViewModel {
                 popoverController.permittedArrowDirections = []
             }
 
-            presentationContext.present(activityViewController,
-                                        animated: true,
-                                        completion: nil)
+            presentationContext.present(clearController,
+                                        animated: false) {
+                clearController.present(activityViewController,
+                                            animated: true,
+                                            completion: nil)
+            }
         }
     }
 }
