@@ -23,7 +23,7 @@ import Alamofire
 import AlfrescoCore
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
-let kSheetDismissDelay = 1.0
+let kSheetDismissDelay = 0.5
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
@@ -205,28 +205,30 @@ class NodeActionsViewModel {
 
     private func requestDownload() {
         var downloadDialog: MDCAlertController?
+        var downloadRequest: DownloadRequest?
 
-        let downloadRequest =
-            downloadNodeContent { destinationURL, error in
-                downloadDialog?.dismiss(animated: true,
-                                        completion: { [weak self] in
-                        guard let sSelf = self else { return }
+        let mainQueue = coordinatorServices?.operationQueueService?.main
+        let workerQueue = coordinatorServices?.operationQueueService?.worker
 
-                        sSelf.handleResponse(error: error)
-
-                        if let url = destinationURL {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + kSheetDismissDelay) {
-                                self?.displayActivityViewController(for: url)
-                            }
-                        }
-                    })
-            }
-
-        DispatchQueue.main.async { [weak self] in
+        mainQueue?.async { [weak self] in
             guard let sSelf = self else { return }
             downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
                 downloadRequest?.cancel()
             })
+
+            workerQueue?.async {
+                downloadRequest = sSelf.downloadNodeContent { destinationURL, error in
+                    mainQueue?.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+                        downloadDialog?.dismiss(animated: true,
+                                                completion: {
+                                                    sSelf.handleResponse(error: error)
+                                                    if let url = destinationURL {
+                                                        sSelf.displayActivityViewController(for: url)
+                                                    }
+                                                })
+                    })
+                }
+            }
         }
     }
 
@@ -307,19 +309,20 @@ class NodeActionsViewModel {
         let activityViewController =
             UIActivityViewController(activityItems: [url],
                                      applicationActivities: nil)
+        activityViewController.modalPresentationStyle = .popover
 
-        if let presentationContext =
-            UIViewController.applicationTopMostPresented {
+        if let presentationContext = UIViewController.applicationTopMost {
 
             if let popoverController = activityViewController.popoverPresentationController {
-                    popoverController.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2, width: 0, height: 0)
-                    popoverController.sourceView = presentationContext.view
-                    popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
-                }
+                popoverController.sourceRect = presentationContext.view.bounds
+                popoverController.sourceView = presentationContext.view
 
-                presentationContext.present(activityViewController,
-                                            animated: true,
-                                            completion: nil)
+                popoverController.permittedArrowDirections = []
+            }
+
+            presentationContext.present(activityViewController,
+                                        animated: true,
+                                        completion: nil)
         }
     }
 }

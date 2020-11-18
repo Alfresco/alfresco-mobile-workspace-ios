@@ -24,6 +24,7 @@ class CoordinatorServices {
     var accountService: AccountService?
     var eventBusService: EventBusService?
     var themingService: MaterialDesignThemingService?
+    var operationQueueService: OperationQueueService?
 }
 
 extension Coordinator {
@@ -46,11 +47,17 @@ extension Coordinator {
         return repository.service(of: identifier) as? EventBusService
     }
 
+    var operationQueueService: OperationQueueService? {
+        let identifier = OperationQueueService.identifier
+        return repository.service(of: identifier) as? OperationQueueService
+    }
+
     var coordinatorServices: CoordinatorServices {
         let coordinatorServices = CoordinatorServices()
         coordinatorServices.accountService = accountService
         coordinatorServices.eventBusService = eventBusService
         coordinatorServices.themingService = themingService
+        coordinatorServices.operationQueueService = operationQueueService
 
         return coordinatorServices
     }
