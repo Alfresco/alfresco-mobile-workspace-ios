@@ -57,7 +57,7 @@ class NodeActionsViewModel {
         requestAction()
     }
 
-    // MARK: - Private Helpers
+    // MARK: - Actions Request Helpers
 
     private func requestAction() {
         let accountService = coordinatorServices?.accountService
@@ -175,8 +175,8 @@ class NodeActionsViewModel {
 
     private func requestPermanentlyDelete() {
         let title = LocalizationConstants.NodeActionsDialog.deleteTitle
-        let message =
-            String(format: LocalizationConstants.NodeActionsDialog.deleteMessage, node.title)
+        let message = String(format: LocalizationConstants.NodeActionsDialog.deleteMessage,
+                             node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
         let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
@@ -229,6 +229,8 @@ class NodeActionsViewModel {
             })
         }
     }
+
+    // MARK: - Helpers
 
     private func handleResponse(error: Error?) {
         if let error = error {

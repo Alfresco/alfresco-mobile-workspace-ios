@@ -64,6 +64,7 @@ let kFullScreenPreview = 0.5
 
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
+let kTimeoutSwaggerErrorCode = 500
 
 // MARK: - Height&Widhts
 let settingsThemeCellHeight: CGFloat = 44.0

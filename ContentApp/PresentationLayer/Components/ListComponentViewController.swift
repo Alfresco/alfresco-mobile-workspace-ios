@@ -259,9 +259,12 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
     func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
         var snackBarMessage: String?
         var snackBarType: SnackBarType?
-        if error != nil {
-            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        if let error = error {
             snackBarType = .error
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+            if error.code == kTimeoutSwaggerErrorCode {
+                snackBarMessage = LocalizationConstants.Errors.errorTimeout
+            }
         } else {
             guard let action = action else { return }
             switch action.type {
@@ -287,9 +290,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
             }
         }
         if let message = snackBarMessage, let type = snackBarType {
-            let snackBar = Snackbar.init(with: message,
-                                         type: type,
-                                         automaticallyDismisses: true)
+            let snackBar = Snackbar(with: message, type: type)
             snackBar.snackBar.presentationHostViewOverride = view
             snackBar.show(completion: nil)
         }
