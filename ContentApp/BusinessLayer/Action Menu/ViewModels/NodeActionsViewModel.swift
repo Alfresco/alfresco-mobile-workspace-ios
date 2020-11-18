@@ -23,7 +23,7 @@ import Alamofire
 import AlfrescoCore
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
-let kSheetDismissDelay = 0.5
+let kSheetDismissDelay = 1.0
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
@@ -215,18 +215,8 @@ class NodeActionsViewModel {
                         sSelf.handleResponse(error: error)
 
                         if let url = destinationURL {
-                            DispatchQueue.main.asyncAfter(deadline: .now() +
-                                                            kSheetDismissDelay) {
-                                let activityViewController =
-                                    UIActivityViewController(activityItems: [url],
-                                                             applicationActivities: nil)
-
-                                if let presentationContext =
-                                    UIViewController.applicationTopMostPresented {
-                                    presentationContext.present(activityViewController,
-                                                                animated: true,
-                                                                completion: nil)
-                                }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + kSheetDismissDelay) {
+                                self?.displayActivityViewController(for: url)
                             }
                         }
                     })
@@ -311,5 +301,25 @@ class NodeActionsViewModel {
         }
 
         return nil
+    }
+
+    private func displayActivityViewController(for url: URL) {
+        let activityViewController =
+            UIActivityViewController(activityItems: [url],
+                                     applicationActivities: nil)
+
+        if let presentationContext =
+            UIViewController.applicationTopMostPresented {
+
+            if let popoverController = activityViewController.popoverPresentationController {
+                    popoverController.sourceRect = CGRect(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2, width: 0, height: 0)
+                    popoverController.sourceView = presentationContext.view
+                    popoverController.permittedArrowDirections = UIPopoverArrowDirection(rawValue: 0)
+                }
+
+                presentationContext.present(activityViewController,
+                                            animated: true,
+                                            completion: nil)
+        }
     }
 }
