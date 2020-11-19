@@ -24,7 +24,7 @@ import AlfrescoCore
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
 let kSheetDismissDelay = 0.5
-let kSaveToCameraRollAction = "SaveToCameraRoll"
+let kSaveToCameraRollAction = "com.apple.UIKit.activity.SaveToCameraRoll"
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
@@ -301,6 +301,14 @@ class NodeActionsViewModel {
                                                                      code: httpURLResponse.statusCode)
                                                 completionHandler(nil, error)
                                             }
+                                        } else {
+                                            if response.error?.code == NSURLErrorNetworkConnectionLost {
+                                                completionHandler(nil, nil)
+                                            } else {
+                                                let error = APIError(domain: "",
+                                                                     error: response.error)
+                                                completionHandler(nil, error)
+                                            }
                                         }
                                       }
         }
@@ -323,14 +331,16 @@ class NodeActionsViewModel {
         activityViewController.completionWithItemsHandler = { [weak self] (activity, success, items, error) in
             guard let sSelf = self else { return }
 
-            clearController.dismiss(animated: false) {
-                // Will not base check on error code as used constants have been deprecated
-                if (activity?.rawValue.contains(kSaveToCameraRollAction)) != nil && !success {
-                    let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                    privacyVC.coordinatorServices = sSelf.coordinatorServices
-                    presentationContext.present(privacyVC,
-                                                animated: true,
-                                                completion: nil)
+            activityViewController.dismiss(animated: true) {
+                clearController.dismiss(animated: false) {
+                    // Will not base check on error code as used constants have been deprecated
+                    if activity?.rawValue == kSaveToCameraRollAction && !success {
+                        let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                        privacyVC.coordinatorServices = sSelf.coordinatorServices
+                        presentationContext.present(privacyVC,
+                                                    animated: true,
+                                                    completion: nil)
+                    }
                 }
             }
         }
