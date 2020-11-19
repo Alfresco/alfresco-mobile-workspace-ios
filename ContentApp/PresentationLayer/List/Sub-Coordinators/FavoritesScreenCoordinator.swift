@@ -97,4 +97,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
             actionMenuCoordinator = coordinator
         }
     }
+
+    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    }
 }

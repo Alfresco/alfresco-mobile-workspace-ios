@@ -122,6 +122,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return true
     }
 
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func shouldDisplayNodePath() -> Bool {
         return true
     }

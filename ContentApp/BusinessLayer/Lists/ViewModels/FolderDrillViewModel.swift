@@ -91,6 +91,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return true
     }
 
+    func shouldDisplayCreateButton() -> Bool {
+        return true
+    }
+
     func isEmpty() -> Bool {
         return results.isEmpty
     }

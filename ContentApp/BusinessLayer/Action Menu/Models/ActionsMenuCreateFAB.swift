@@ -17,19 +17,18 @@
 //
 
 import Foundation
-import AlfrescoContent
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
-    func shouldDisplayCreateButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
-    func refreshList()
-    func emptyList() -> EmptyListProtocol
+struct ActionsMenuCreateFAB {
+    static func actions() -> [[ActionMenu]] {
+        var actions = [[ActionMenu]]()
+
+        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
+                                   type: .createMSWord),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
+                                   type: .createMSPowerPoint),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
+                                   type: .createMSExcel)]
+        actions.append(actions1)
+        return actions
+    }
 }

@@ -110,4 +110,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
             actionMenuCoordinator = coordinator
         }
     }
+
+    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    }
 }

@@ -159,6 +159,9 @@ struct LocalizationConstants {
         static let download = NSLocalizedString("action-menu-download", comment: "")
         static let restore = NSLocalizedString("action-menu-restore", comment: "")
         static let permanentlyDelete = NSLocalizedString("action-menu-permanently-delete", comment: "")
+        static let createMSword = NSLocalizedString("action-menu-create-ms-word", comment: "")
+        static let createMSexcel = NSLocalizedString("action-menu-create-ms-excel", comment: "")
+        static let createMSpowerpoint = NSLocalizedString("action-menu-create-ms-powerpoint", comment: "")
     }
 
     struct NodeActionsDialog {

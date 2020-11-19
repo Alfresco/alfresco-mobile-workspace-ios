@@ -96,4 +96,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             actionMenuCoordinator = coordinator
         }
     }
+
+    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    }
 }

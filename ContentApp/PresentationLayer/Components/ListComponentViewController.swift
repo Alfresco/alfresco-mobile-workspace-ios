@@ -25,6 +25,7 @@ protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate)
+    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -64,6 +65,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.pageDelegate = self
 
         emptyListView.isHidden = true
+        createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
 
         // Set up progress view
         progressView.progress = 0
@@ -107,6 +109,7 @@ class ListComponentViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
+        listItemActionDelegate?.showActionSheetForCreateFAB(delegate: self)
     }
 
     // MARK: - Public interface

@@ -108,6 +108,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return true
     }
 
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func shouldDisplayNodePath() -> Bool {
         return true
     }

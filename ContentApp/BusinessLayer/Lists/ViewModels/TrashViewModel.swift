@@ -109,6 +109,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         return true
     }
 
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)

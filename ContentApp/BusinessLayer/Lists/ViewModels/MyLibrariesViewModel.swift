@@ -109,6 +109,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return true
     }
 
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func shouldDisplayNodePath() -> Bool {
         return true
     }
