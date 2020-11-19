@@ -45,11 +45,15 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var createButton: MDCFloatingButton!
+
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +104,13 @@ class ListComponentViewController: SystemThemableViewController {
             coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
+    // MARK: - IBActions
+
+    @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
+    }
+
+    // MARK: - Public interface
+
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
@@ -107,10 +118,11 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
+
+        createButton.backgroundColor = currentTheme.primaryColor
+        createButton.tintColor = currentTheme.onPrimaryColor
         refreshControl?.tintColor = currentTheme.primaryColor
     }
-
-    // MARK: - Public interface
 
     func startLoading() {
         progressView.startAnimating()

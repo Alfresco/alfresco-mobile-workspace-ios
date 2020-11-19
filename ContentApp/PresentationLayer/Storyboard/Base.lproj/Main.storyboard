@@ -1844,6 +1844,17 @@
                                     <constraint firstItem="o9C-Qd-WPm" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="hUF-85-fVI"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6C-F8-M04" customClass="MDCFloatingButton">
+                                <rect key="frame" x="356" y="820" width="56" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="YE8-zc-voB"/>
+                                    <constraint firstAttribute="width" constant="56" id="zIf-0k-5A5"/>
+                                </constraints>
+                                <state key="normal" image="ic-button-create"/>
+                                <connections>
+                                    <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7G7-4Z-gpZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9rc-8Z-DQe"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1853,6 +1864,8 @@
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="ddo-cc-nfp" secondAttribute="bottom" id="44e-4L-G3P"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="16" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
@@ -1864,6 +1877,7 @@
                     <tabBarItem key="tabBarItem" title="Item 1" id="kdK-fz-nwD"/>
                     <connections>
                         <outlet property="collectionView" destination="9q7-tN-q37" id="GAq-bv-IKB"/>
+                        <outlet property="createButton" destination="W6C-F8-M04" id="Uix-0T-wAV"/>
                         <outlet property="emptyListImageView" destination="vM6-Fd-wHr" id="uxv-By-NAa"/>
                         <outlet property="emptyListSubtitle" destination="o9C-Qd-WPm" id="IWI-Mz-46e"/>
                         <outlet property="emptyListTitle" destination="qbf-LQ-gvV" id="EHq-ol-yWz"/>
@@ -1873,11 +1887,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nZ-FS-cCQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2024.6376811594205" y="1672.7678571428571"/>
+            <point key="canvasLocation" x="2024.2990654205607" y="1672.354211663067"/>
         </scene>
     </scenes>
     <resources>
         <image name="alfresco-logo" width="92" height="92"/>
+        <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>
         <image name="ic-recent-searches" width="12" height="12"/>
