@@ -1167,6 +1167,99 @@
             </objects>
             <point key="canvasLocation" x="2024.6376811594205" y="3192.8571428571427"/>
         </scene>
+        <!--Privacy Notice View Controller-->
+        <scene sceneID="IDm-D8-dSO">
+            <objects>
+                <viewController storyboardIdentifier="PrivacyNoticeViewController" id="X5O-mS-HrQ" customClass="PrivacyNoticeViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="RYe-Hp-ZAF">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHg-rN-xs7">
+                                <rect key="frame" x="0.0" y="44" width="428" height="44"/>
+                                <items>
+                                    <navigationItem id="rcR-6c-PG7">
+                                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="6C9-Od-amB">
+                                            <connections>
+                                                <action selector="dismissPrivacyVC:" destination="X5O-mS-HrQ" id="xGG-Am-dT8"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4bc-Zt-mwr">
+                                <rect key="frame" x="0.0" y="88" width="428" height="804"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-image" translatesAutoresizingMaskIntoConstraints="NO" id="lAK-WR-Cfc">
+                                        <rect key="frame" x="182" y="224" width="64" height="88"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="IMn-K8-xHa"/>
+                                            <constraint firstAttribute="height" constant="88" id="uhy-Bi-Sqe"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Workspace needs photos access" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6JA-Z8-PZp">
+                                        <rect key="frame" x="8" y="312" width="412" height="67"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To save images or videos on your device, Mobile Workspace needs access to your photos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDd-q7-2Ei">
+                                        <rect key="frame" x="8" y="387" width="412" height="40.666666666666686"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1z-OU-mAW" customClass="MDCButton">
+                                        <rect key="frame" x="119.66666666666669" y="443.66666666666663" width="189" height="48"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="48" id="9Tb-HK-ZKL"/>
+                                        </constraints>
+                                        <state key="normal" title="Review privacy settings"/>
+                                        <connections>
+                                            <action selector="privacyButtonTapped:" destination="X5O-mS-HrQ" eventType="touchUpInside" id="Rgj-il-Nip"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="0IK-86-kGM"/>
+                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="top" secondItem="lAK-WR-Cfc" secondAttribute="bottom" id="9CL-J6-3Wd"/>
+                                    <constraint firstItem="C1z-OU-mAW" firstAttribute="top" secondItem="BDd-q7-2Ei" secondAttribute="bottom" constant="16" id="Bjb-oU-gJL"/>
+                                    <constraint firstItem="lAK-WR-Cfc" firstAttribute="centerY" secondItem="4bc-Zt-mwr" secondAttribute="centerY" multiplier="2/3" id="IZS-wy-pOi"/>
+                                    <constraint firstItem="C1z-OU-mAW" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="NoR-lq-cXV"/>
+                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="8" id="Tn6-Vf-XBR"/>
+                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="X7S-pA-RTn"/>
+                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="8" id="aAe-rk-CF5"/>
+                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="top" secondItem="6JA-Z8-PZp" secondAttribute="bottom" constant="8" id="f5a-Lj-qGQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="6JA-Z8-PZp" secondAttribute="trailing" constant="8" id="kpR-Dh-1qe"/>
+                                    <constraint firstItem="lAK-WR-Cfc" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="rlu-EJ-BUF"/>
+                                    <constraint firstAttribute="trailing" secondItem="BDd-q7-2Ei" secondAttribute="trailing" constant="8" id="yPO-LI-6i8"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yAu-e8-hjc"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="yAu-e8-hjc" firstAttribute="trailing" secondItem="QHg-rN-xs7" secondAttribute="trailing" id="0Er-mn-GI1"/>
+                            <constraint firstItem="4bc-Zt-mwr" firstAttribute="leading" secondItem="yAu-e8-hjc" secondAttribute="leading" id="BYg-YB-H4p"/>
+                            <constraint firstItem="4bc-Zt-mwr" firstAttribute="top" secondItem="QHg-rN-xs7" secondAttribute="bottom" id="IsM-qE-bVQ"/>
+                            <constraint firstItem="QHg-rN-xs7" firstAttribute="top" secondItem="yAu-e8-hjc" secondAttribute="top" id="Ogo-4e-Scq"/>
+                            <constraint firstItem="yAu-e8-hjc" firstAttribute="bottom" secondItem="4bc-Zt-mwr" secondAttribute="bottom" id="Rcr-90-N0X"/>
+                            <constraint firstItem="4bc-Zt-mwr" firstAttribute="trailing" secondItem="yAu-e8-hjc" secondAttribute="trailing" id="rEF-3h-zw7"/>
+                            <constraint firstItem="QHg-rN-xs7" firstAttribute="leading" secondItem="yAu-e8-hjc" secondAttribute="leading" id="t1F-uA-SHb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="descriptionLabel" destination="BDd-q7-2Ei" id="Ks5-LI-Wub"/>
+                        <outlet property="imageView" destination="lAK-WR-Cfc" id="bgO-pM-r3h"/>
+                        <outlet property="privacyButton" destination="C1z-OU-mAW" id="gpE-Gf-4Y2"/>
+                        <outlet property="titleLabel" destination="6JA-Z8-PZp" id="lyY-XQ-0VG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MB0-E9-LoN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2811" y="3192"/>
+        </scene>
         <!--File Preview View Controller-->
         <scene sceneID="u4d-TT-dQm">
             <objects>
@@ -1879,6 +1972,7 @@
     <resources>
         <image name="alfresco-logo" width="92" height="92"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
+        <image name="ic-image" width="24" height="24"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>
         <image name="ic-recent-searches" width="12" height="12"/>
         <image name="ic-reset-to-default" width="16" height="16"/>
