@@ -271,7 +271,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
 // MARK: - ActionMenuViewModel Delegate
 
 extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
         var snackBarMessage: String?
         var snackBarType: SnackBarType?
         if let error = error {
@@ -291,15 +291,15 @@ extension ListComponentViewController: NodeActionsViewModelDelegate {
                 snackBarType = .approve
             case .moveTrash:
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                         node.truncateTailTitle())
+                                         node?.truncateTailTitle() ?? "")
                 snackBarType = .approve
             case .restore:
                 snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                         node.truncateTailTitle())
+                                         node?.truncateTailTitle() ?? "")
                 snackBarType = .approve
             case .permanentlyDelete:
                 snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                         node.truncateTailTitle())
+                                         node?.truncateTailTitle() ?? "")
                 snackBarType = .approve
             default: break
             }

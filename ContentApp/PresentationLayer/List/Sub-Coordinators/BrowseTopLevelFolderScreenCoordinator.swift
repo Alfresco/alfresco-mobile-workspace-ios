@@ -81,5 +81,15 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+        let actions = ActionsMenuCreateFAB.actions()
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
+                                                      menuActions: actions)
+        let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsModel)
+        coordinator.start()
+        actionMenuCoordinator = coordinator
     }
 }

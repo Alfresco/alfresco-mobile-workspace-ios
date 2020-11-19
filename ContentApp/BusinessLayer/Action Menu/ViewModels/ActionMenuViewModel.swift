@@ -25,7 +25,7 @@ protocol ActionMenuViewModelDelegate: class {
 
 class ActionMenuViewModel {
     private var accountService: AccountService?
-    private var listNode: ListNode
+    private var listNode: ListNode?
     private var toolbarActions: [ActionMenu]?
     private var menuActions: [[ActionMenu]]
     var toolbarDivide: Bool
@@ -34,25 +34,35 @@ class ActionMenuViewModel {
     // MARK: - Init
 
     init(with accountService: AccountService?,
-         listNode: ListNode,
+         menuActions: [[ActionMenu]] = [[ActionMenu]](),
+         listNode: ListNode? = nil,
          toolbarDivide: Bool = false) {
+
         self.accountService = accountService
         self.listNode = listNode
         self.toolbarDivide = toolbarDivide
-        self.menuActions = [[ActionMenu(title: listNode.title,
-                                        type: .node,
-                                        icon: FileIcon.icon(for: listNode.mimeType))],
-                            [ActionMenu(title: "", type: .placeholder),
-                             ActionMenu(title: "", type: .placeholder)]]
-        if toolbarDivide {
-            self.createMenuActions()
-            self.divideForToolbarActions()
+        self.menuActions = menuActions
+
+        if let listNode = listNode {
+            self.menuActions = [[ActionMenu(title: listNode.title,
+                                            type: .node,
+                                            icon: FileIcon.icon(for: listNode.mimeType))],
+                                [ActionMenu(title: "", type: .placeholder),
+                                 ActionMenu(title: "", type: .placeholder)]]
+            if toolbarDivide {
+                self.createMenuActions()
+                self.divideForToolbarActions()
+            }
         }
     }
 
     // MARK: - Public Helpers
 
     func fetchNodeInformation() {
+        guard let listNode = self.listNode else {
+            delegate?.finishProvideActions()
+            return
+        }
         if toolbarDivide {
             delegate?.finishProvideActions()
             return
@@ -64,16 +74,16 @@ class ActionMenuViewModel {
         accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             guard let sSelf = self else { return }
-            if sSelf.listNode.kind == .site {
+            if listNode.kind == .site {
                 FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                         favoriteId: sSelf.listNode.guid) { (_, error) in
+                                         favoriteId: listNode.guid) { (_, error) in
                     if error == nil {
-                        sSelf.listNode.favorite = true
+                        sSelf.listNode?.favorite = true
                     }
                     sSelf.createMenuActions()
                 }
             } else {
-                NodesAPI.getNode(nodeId: sSelf.listNode.guid,
+                NodesAPI.getNode(nodeId: listNode.guid,
                                  include: [kAPIIncludePathNode,
                                            kAPIIncludeAllowableOperationsNode,
                                            kAPIIncludeIsFavoriteNode],
@@ -126,6 +136,7 @@ class ActionMenuViewModel {
     // MARK: - Private Helpers
 
     private func createMenuActions() {
+        guard let listNode = listNode else { return }
         if listNode.trashed == true {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {

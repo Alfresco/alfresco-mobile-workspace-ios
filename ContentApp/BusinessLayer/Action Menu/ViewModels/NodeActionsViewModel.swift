@@ -27,20 +27,20 @@ let kSheetDismissDelay = 0.5
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
-                            node: ListNode,
+                            node: ListNode?,
                             error: Error?)
 }
 
 class NodeActionsViewModel {
     private var action: ActionMenu?
-    private var node: ListNode
+    private var node: ListNode?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
     private var coordinatorServices: CoordinatorServices?
     weak var delegate: NodeActionsViewModelDelegate?
 
     // MARK: Init
 
-    init(node: ListNode,
+    init(node: ListNode? = nil,
          delegate: NodeActionsViewModelDelegate?,
          coordinatorServices: CoordinatorServices?) {
         self.node = node
@@ -93,6 +93,7 @@ class NodeActionsViewModel {
     }
 
     private func requestAddToFavorites() {
+        guard let node = self.node else { return }
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
         let jsonFolder = JSONValue(dictionaryLiteral: (node.kind.rawValue, jsonGuid))
         let jsonBody = FavoriteBodyCreate(target: jsonFolder)
@@ -101,10 +102,10 @@ class NodeActionsViewModel {
                                     favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node.favorite = true
+                sSelf.node?.favorite = true
                 sSelf.action?.type = .removeFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
-                let favouriteEvent = FavouriteEvent(node: sSelf.node, eventType: .addToFavourite)
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
 
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
@@ -114,14 +115,15 @@ class NodeActionsViewModel {
     }
 
     private func requestRemoveFromFavorites() {
+        guard let node = self.node else { return }
         FavoritesAPI.deleteFavorite(personId: kAPIPathMe,
                                     favoriteId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node.favorite = false
+                sSelf.node?.favorite = false
                 sSelf.action?.type = .addFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.addFavorite
-                let favouriteEvent = FavouriteEvent(node: sSelf.node,
+                let favouriteEvent = FavouriteEvent(node: node,
                                                     eventType: .removeFromFavourites)
 
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
@@ -132,12 +134,13 @@ class NodeActionsViewModel {
     }
 
     private func requestMoveToTrash() {
+        guard let node = self.node else { return }
         if node.kind == .site {
             SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
-                    sSelf.node.trashed = true
-                    let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
+                    sSelf.node?.trashed = true
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
@@ -148,8 +151,8 @@ class NodeActionsViewModel {
             NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
-                    sSelf.node.trashed = true
-                    let moveEvent = MoveEvent(node: sSelf.node, eventType: .moveToTrash)
+                    sSelf.node?.trashed = true
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
@@ -160,11 +163,12 @@ class NodeActionsViewModel {
     }
 
     private func requestRestoreFromTrash() {
+        guard let node = self.node else { return }
         TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
-                sSelf.node.trashed = false
-                let moveEvent = MoveEvent(node: sSelf.node, eventType: .restore)
+                sSelf.node?.trashed = false
+                let moveEvent = MoveEvent(node: node, eventType: .restore)
 
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
@@ -174,6 +178,7 @@ class NodeActionsViewModel {
     }
 
     private func requestPermanentlyDelete() {
+        guard let node = self.node else { return }
         let title = LocalizationConstants.NodeActionsDialog.deleteTitle
         let message = String(format: LocalizationConstants.NodeActionsDialog.deleteMessage,
                              node.title)
@@ -182,9 +187,9 @@ class NodeActionsViewModel {
         let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
             guard let sSelf = self else { return }
 
-            TrashcanAPI.deleteDeletedNode(nodeId: sSelf.node.guid) { (_, error) in
+            TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { (_, error) in
                 if error == nil {
-                    let moveEvent = MoveEvent(node: sSelf.node, eventType: .permanentlyDelete)
+                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
 
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
@@ -251,7 +256,7 @@ class NodeActionsViewModel {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
-                       node.title)
+                       node?.title ?? "")
             downloadDialogView.activityIndicator.startAnimating()
             downloadDialogView.applyTheme(themingService?.activeTheme)
 
@@ -275,7 +280,8 @@ class NodeActionsViewModel {
     }
 
     private func downloadNodeContent(completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: self.node.guid)
+        guard let node = self.node else { return nil}
+        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
         let downloadURL = URL(string: requestBuilder.URLString)
 
         var documentsURL = FileManager.default.urls(for: .documentDirectory,
