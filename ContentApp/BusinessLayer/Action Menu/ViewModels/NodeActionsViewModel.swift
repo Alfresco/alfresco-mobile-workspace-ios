@@ -24,6 +24,7 @@ import AlfrescoCore
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
 let kSheetDismissDelay = 0.5
+let kSaveToCameraRollAction = "com.apple.UIKit.activity.SaveToCameraRoll"
 
 protocol NodeActionsViewModelDelegate: class {
     func nodeActionFinished(with action: ActionMenu?,
@@ -300,6 +301,14 @@ class NodeActionsViewModel {
                                                                      code: httpURLResponse.statusCode)
                                                 completionHandler(nil, error)
                                             }
+                                        } else {
+                                            if response.error?.code == NSURLErrorNetworkConnectionLost {
+                                                completionHandler(nil, nil)
+                                            } else {
+                                                let error = APIError(domain: "",
+                                                                     error: response.error)
+                                                completionHandler(nil, error)
+                                            }
                                         }
                                       }
         }
@@ -308,6 +317,8 @@ class NodeActionsViewModel {
     }
 
     private func displayActivityViewController(for url: URL) {
+        guard let presentationContext = UIViewController.applicationTopMostPresented else { return }
+
         let activityViewController =
             UIActivityViewController(activityItems: [url],
                                      applicationActivities: nil)
@@ -317,24 +328,35 @@ class NodeActionsViewModel {
         clearController.view.backgroundColor = .clear
         clearController.modalPresentationStyle = .overCurrentContext
 
-        activityViewController.completionWithItemsHandler = { (activity, success, items, error) in
-            clearController.dismiss(animated: false, completion: nil)
+        activityViewController.completionWithItemsHandler = { [weak self] (activity, success, items, error) in
+            guard let sSelf = self else { return }
+
+            activityViewController.dismiss(animated: true) {
+                clearController.dismiss(animated: false) {
+                    // Will not base check on error code as used constants have been deprecated
+                    if activity?.rawValue == kSaveToCameraRollAction && !success {
+                        let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                        privacyVC.coordinatorServices = sSelf.coordinatorServices
+                        presentationContext.present(privacyVC,
+                                                    animated: true,
+                                                    completion: nil)
+                    }
+                }
+            }
         }
 
-        if let presentationContext = UIViewController.applicationTopMostPresented {
-            if let popoverController = activityViewController.popoverPresentationController {
-                popoverController.sourceRect = presentationContext.view.bounds
-                popoverController.sourceView = presentationContext.view
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceRect = presentationContext.view.bounds
+            popoverController.sourceView = presentationContext.view
 
-                popoverController.permittedArrowDirections = []
-            }
+            popoverController.permittedArrowDirections = []
+        }
 
-            presentationContext.present(clearController,
-                                        animated: false) {
-                clearController.present(activityViewController,
-                                            animated: true,
-                                            completion: nil)
-            }
+        presentationContext.present(clearController,
+                                    animated: false) {
+            clearController.present(activityViewController,
+                                    animated: true,
+                                    completion: nil)
         }
     }
 }

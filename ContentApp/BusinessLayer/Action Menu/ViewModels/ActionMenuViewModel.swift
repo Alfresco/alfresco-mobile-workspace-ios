@@ -142,10 +142,6 @@ class ActionMenuViewModel {
         for index in 0...menuActions.count - 1 {
             for action in menuActions[index] where action.type != .node {
                 toolActions.append(action)
-                menuActions[index].removeFirst()
-                if menuActions[index].count == 0 {
-                    menuActions.remove(at: index)
-                }
                 if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
                     addActionToOpenMenu(in: toolActions)
                     return
@@ -159,20 +155,5 @@ class ActionMenuViewModel {
         guard var array = array else { return }
         array.append(ActionMenu(title: "", type: .more))
         toolbarActions = array
-
-        if menuActions.count == 1 &&
-            menuActions[0].count == 1 &&
-            menuActions[0][0].type == .node {
-            toolbarActions?.removeLast()
-        }
-
-        if menuActions.count == 2 &&
-            menuActions[0].count == 1 &&
-            menuActions[0][0].type == .node &&
-            menuActions[1].count == 1 {
-            let action = menuActions[1][0]
-            toolbarActions?.removeLast()
-            toolbarActions?.append(action)
-        }
     }
 }

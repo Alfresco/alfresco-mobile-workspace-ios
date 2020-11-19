@@ -148,10 +148,15 @@
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";
 "empty-recent-description" = "Files that you view and\n edit will show here.";
-"empty-favorites-files-folders-title" = "No favorites files or folder";
-"empty-favorites-libraries-title" = "No favorites libraries";
+"empty-favorites-files-folders-title" = "No favorite files or folders";
+"empty-favorites-libraries-title" = "No favorite libraries";
 "empty-favorites-description" = "Looks like you haven’t\n added anything.";
 "empty-folder-title" = "Folder is empty";
 "empty-folder-description" = "Looks like there is\n nothing here yet.";
 "empty-search-title" = "Oops!";
 "empty-search-description" = "We can’t find what\n you’re looking for.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace needs photos access";
+"privacy-photos-description" = "To save images or videos on your device, Mobile Workspace needs access to your photos.";
+"privacy-button" = "Review privacy settings";
