@@ -144,8 +144,8 @@
 "action-menu-restore" = "Restore";
 "action-menu-permanently-delete" = "Permanently Delete";
 "action-menu-create-ms-word" = "Word document";
-"action-menu-create-ms-excel" = "PowerPoint presentation";
-"action-menu-create-ms-powerpoint" = "Excel spreadsheet";
+"action-menu-create-ms-excel" = "Excel spreadsheet";
+"action-menu-create-ms-powerpoint" = "PowerPoint presentation";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Delete";

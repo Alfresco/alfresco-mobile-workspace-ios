@@ -170,7 +170,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                 refreshList()
             case .created:
                 if listNodeGuid == node.guid {
-                    refreshList()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                        guard let sSelf = self else { return }
+                        sSelf.refreshList()
+                    }
                 }
             default: break
             }

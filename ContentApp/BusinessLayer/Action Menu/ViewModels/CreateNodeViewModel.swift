@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoContent
+import Alamofire
 import MaterialComponents.MaterialDialogs
 
 protocol CreateNodeViewModelDelegate: class {
@@ -57,31 +58,52 @@ class CreateNodeViewModel {
 
         uploadDialog = showUploadDialog(actionHandler: { _ in
         })
-        NodesAPI.createNode(nodeId: parentListNode.guid,
-                            nodeBodyCreate: nodeBody,
-                            autoRename: true,
-                            include: nil,
-                            fields: nil) { [weak self] (result, error) in
-
+        let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: parentListNode.guid,
+                                                                   nodeBodyCreate: nodeBody,
+                                                                   autoRename: true,
+                                                                   include: nil,
+                                                                   fields: nil)
+        guard let url = URL(string: requestBuilder.URLString) else { return }
+        Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
-            var listNode: ListNode?
-            if let entry = result?.entry {
-                listNode = NodeChildMapper.create(from: entry)
+            if let dataTemplate = sSelf.dataFromTemplateFile() {
+                formData.append(dataTemplate, withName: "filedata", fileName: nodeBody.name, mimeType: "")
+            }
+            if let data = nodeBody.nodeType.data(using: .utf8) {
+                formData.append(data, withName: "nodeType")
+            }
+        }, to: url, headers: AlfrescoContentAPI.customHeaders) { [weak self] (result) in
+            guard let sSelf = self else { return }
+            uploadDialog?.dismiss(animated: true, completion: nil)
+            switch result {
+            case .failure(let error):
+                sSelf.delegate?.createNode(node: nil, error: error)
+                AlfrescoLog.error(error)
+            case .success(request: _, streamingFromDisk: _, streamFileURL: _):
+                let listNode = ListNode(guid: "", title: nodeBody.name, path: "", kind: .file)
+                sSelf.delegate?.createNode(node: listNode, error: nil)
                 let moveEvent = MoveEvent(node: sSelf.parentListNode, eventType: .created)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
-            sSelf.delegate?.createNode(node: listNode, error: error)
-            uploadDialog?.dismiss(animated: true, completion: nil)
         }
     }
 
     // MARK: - Private
 
+    private func dataFromTemplateFile() -> Data? {
+        do {
+            let data = try Data(contentsOf: URL(fileURLWithPath: actionMenu.getTemplateBundlePath()))
+            return data
+        } catch {
+        }
+        return nil
+    }
+
     private func showUploadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
         if let uploadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
-            let nodeNameWithExtension = ( nodeName ?? "" ) + actionMenu.getExtension()
+            let nodeNameWithExtension = ( nodeName ?? "" ) + "." + actionMenu.getExtension()
             uploadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.NodeActionsDialog.uploadMessage,
                        nodeNameWithExtension)
@@ -107,7 +129,7 @@ class CreateNodeViewModel {
 
     private func nodeBody() -> NodeBodyCreate? {
         guard let name = self.nodeName else { return nil }
-        return NodeBodyCreate(name: name + actionMenu.getExtension(),
+        return NodeBodyCreate(name: name + "."  + actionMenu.getExtension(),
                               nodeType: actionMenu.getNodeType(),
                               aspectNames: nil,
                               properties: nil,
