@@ -83,11 +83,11 @@ class NodeActionsViewModel {
             case .download :
                 sSelf.requestDownload()
             default:
-                DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                     sSelf.delegate?.nodeActionFinished(with: sSelf.action,
                                                        node: sSelf.node,
                                                        error: nil)
-                }
+                })
             }
         })
     }

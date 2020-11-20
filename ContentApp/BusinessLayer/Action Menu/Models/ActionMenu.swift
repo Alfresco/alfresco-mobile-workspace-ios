@@ -36,6 +36,26 @@ class ActionMenu {
             self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
         }
     }
+
+    static private var mapExtensions: [ActionMenuType: (String, String)] {
+        return [.createMSExcel: (".xlsx", "cm:content"),
+                .createMSWord: (".docx", "cm:content"),
+                .createMSPowerPoint: (".pptx", "cm:content")]
+    }
+
+    func getExtension() -> String {
+        if let ext = ActionMenu.mapExtensions[self.type] {
+            return ext.0
+        }
+        return ""
+    }
+
+    func getNodeType() -> String {
+        if let ext = ActionMenu.mapExtensions[self.type] {
+            return ext.1
+        }
+        return ""
+    }
 }
 
 enum ActionMenuType: String {
@@ -52,7 +72,7 @@ enum ActionMenuType: String {
     case restore = "ic-restore"
     case permanentlyDelete = "ic-action-delete-forever"
 
-    // MARK: -  Create
+    // MARK: - Create
     case createMSExcel = "ic-ms_spreadsheet"
     case createMSWord = "ic-ms_document"
     case createMSPowerPoint = "ic-ms_presentation"

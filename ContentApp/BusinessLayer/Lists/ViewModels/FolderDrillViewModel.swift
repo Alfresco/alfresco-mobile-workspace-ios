@@ -168,6 +168,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                 }
             case .restore:
                 refreshList()
+            case .created:
+                if listNodeGuid == node.guid {
+                    refreshList()
+                }
             default: break
             }
         }

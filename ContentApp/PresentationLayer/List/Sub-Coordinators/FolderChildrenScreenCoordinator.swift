@@ -24,6 +24,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -88,5 +89,15 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+
+    func showCreateNodeDialog(with actionMenu: ActionMenu,
+                              delegate: CreateNodeViewModelDelegate?) {
+        let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                     actionMenu: actionMenu,
+                                                     parentListNode: listNode,
+                                                     createNodeViewModelDelegate: delegate)
+        coordinator.start()
+        createNodeSheetCoordinator = coordinator
     }
 }

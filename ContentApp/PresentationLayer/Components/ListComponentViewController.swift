@@ -26,6 +26,7 @@ protocol ListItemActionDelegate: class {
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate)
     func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate)
+    func showCreateNodeDialog(with actionMenu: ActionMenu, delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -268,43 +269,59 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
     }
 }
 
-// MARK: - ActionMenuViewModel Delegate
+// MARK: - CreateNodeViewModel and ActionMenuViewModel Delegates
 
-extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
-        var snackBarMessage: String?
-        var snackBarType: SnackBarType?
+extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
+
+    func createNode(node: ListNode?, error: Error?) {
         if let error = error {
-            snackBarType = .error
-            snackBarMessage = LocalizationConstants.Errors.errorUnknown
-            if error.code == kTimeoutSwaggerErrorCode {
-                snackBarMessage = LocalizationConstants.Errors.errorTimeout
-            }
+            self.display(error: error)
         } else {
+            displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
+                                         node?.truncateTailTitle() ?? ""),
+                            type: .approve)
+        }
+    }
+
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
+
+        if let error = error {
+            self.display(error: error)
+        } else {
+            var snackBarMessage: String?
             guard let action = action else { return }
             switch action.type {
             case .addFavorite:
                 snackBarMessage = LocalizationConstants.Approved.removedFavorites
-                snackBarType = .approve
             case .removeFavorite:
                 snackBarMessage = LocalizationConstants.Approved.addedFavorites
-                snackBarType = .approve
             case .moveTrash:
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
                                          node?.truncateTailTitle() ?? "")
-                snackBarType = .approve
             case .restore:
                 snackBarMessage = String(format: LocalizationConstants.Approved.restored,
                                          node?.truncateTailTitle() ?? "")
-                snackBarType = .approve
             case .permanentlyDelete:
                 snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                          node?.truncateTailTitle() ?? "")
-                snackBarType = .approve
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                listItemActionDelegate?.showCreateNodeDialog(with: action, delegate: self)
             default: break
             }
+            displaySnackbar(with: snackBarMessage, type: .approve)
         }
-        if let message = snackBarMessage, let type = snackBarType {
+    }
+
+    func display(error: Error) {
+        var snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        if error.code == kTimeoutSwaggerErrorCode {
+            snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        }
+        displaySnackbar(with: snackBarMessage, type: .error)
+    }
+
+    func displaySnackbar(with message: String?, type: SnackBarType?) {
+        if let message = message, let type = type {
             let snackBar = Snackbar(with: message, type: type)
             snackBar.snackBar.presentationHostViewOverride = view
             snackBar.show(completion: nil)

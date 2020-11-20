@@ -22,6 +22,7 @@ enum MoveEventType {
     case moveToTrash
     case restore
     case permanentlyDelete
+    case created
 }
 
 class MoveEvent: BaseNodeEvent {

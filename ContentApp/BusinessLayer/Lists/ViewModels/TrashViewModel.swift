@@ -158,7 +158,9 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
                 if let indexOfRemovedFavorite = results.firstIndex(of: node) {
                     results.remove(at: indexOfRemovedFavorite)
                 }
+            default: break
             }
+
         }
     }
 }
