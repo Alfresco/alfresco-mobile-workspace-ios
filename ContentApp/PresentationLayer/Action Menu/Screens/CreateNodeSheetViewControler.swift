@@ -105,10 +105,12 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         view.backgroundColor = currentTheme.surfaceColor
 
         uploadButton.applyTextTheme(withScheme: buttonScheme)
+        uploadButton.isUppercaseTitle = false
         uploadButton.setTitleColor(currentTheme.onSurfaceColor.withAlphaComponent(0.4),
                                    for: .disabled)
 
         cancelButton.applyTextTheme(withScheme: buttonScheme)
+        cancelButton.isUppercaseTitle = false
 
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
         descriptionTextView.applyStyleBody2OnSurface(theme: currentTheme)

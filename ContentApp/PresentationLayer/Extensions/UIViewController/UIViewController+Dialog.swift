@@ -18,6 +18,7 @@
 
 import UIKit
 import MaterialComponents.MaterialDialogs
+import MaterialComponents.MDCAlertController_ButtonForAction
 
 extension UIViewController {
     func showDialog(title: String?,
@@ -47,6 +48,11 @@ extension UIViewController {
             alertController.titleColor = currentTheme.onSurfaceColor
             alertController.messageFont = currentTheme.body2TextStyle.font
             alertController.messageColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        }
+
+        for action in alertController.actions {
+            let button = alertController.button(for: action)
+            button?.isUppercaseTitle = false
         }
 
         self.present(alertController, animated: true, completion: completionHandler)
