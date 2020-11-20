@@ -332,16 +332,15 @@ class NodeActionsViewModel {
         activityViewController.completionWithItemsHandler = { [weak self] (activity, success, items, error) in
             guard let sSelf = self else { return }
 
-            activityViewController.dismiss(animated: true) {
-                clearController.dismiss(animated: false) {
-                    // Will not base check on error code as used constants have been deprecated
-                    if activity?.rawValue == kSaveToCameraRollAction && !success {
-                        let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                        privacyVC.coordinatorServices = sSelf.coordinatorServices
-                        presentationContext.present(privacyVC,
-                                                    animated: true,
-                                                    completion: nil)
-                    }
+            activityViewController.dismiss(animated: true)
+            clearController.dismiss(animated: false) {
+                // Will not base check on error code as used constants have been deprecated
+                if activity?.rawValue == kSaveToCameraRollAction && !success {
+                    let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                    privacyVC.coordinatorServices = sSelf.coordinatorServices
+                    presentationContext.present(privacyVC,
+                                                animated: true,
+                                                completion: nil)
                 }
             }
         }
