@@ -302,7 +302,8 @@ class NodeActionsViewModel {
                                                 completionHandler(nil, error)
                                             }
                                         } else {
-                                            if response.error?.code == NSURLErrorNetworkConnectionLost {
+                                            if response.error?.code == NSURLErrorNetworkConnectionLost ||
+                                                response.error?.code == NSURLErrorCancelled {
                                                 completionHandler(nil, nil)
                                             } else {
                                                 let error = APIError(domain: "",
