@@ -28,7 +28,7 @@ extension UIViewController {
                     completionHandler: @escaping () -> Void) -> MDCAlertController {
         let alertController = MDCAlertController(title: title,
                                                  message: message)
-        alertController.cornerRadius = dialogCornerRadius
+
         alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
 
         if let actions = actions {
@@ -55,6 +55,8 @@ extension UIViewController {
             let button = alertController.button(for: action)
             button?.isUppercaseTitle = false
         }
+
+        alertController.cornerRadius = dialogCornerRadius
 
         self.present(alertController, animated: true, completion: completionHandler)
 
