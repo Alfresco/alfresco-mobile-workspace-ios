@@ -92,7 +92,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
-                              delegate: CreateNodeViewModelDelegate?) {
+                                delegate: CreateNodeViewModelDelegate?) {
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
                                                      parentListNode: listNode,

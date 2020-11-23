@@ -95,7 +95,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
-                              delegate: CreateNodeViewModelDelegate?) {
+                                delegate: CreateNodeViewModelDelegate?) {
         let personalFilesNode = ListNode(guid: kAPIPathMy,
                                          title: "Personal files",
                                          path: "",

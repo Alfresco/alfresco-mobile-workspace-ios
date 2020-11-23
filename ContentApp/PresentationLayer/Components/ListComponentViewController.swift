@@ -27,7 +27,7 @@ protocol ListItemActionDelegate: class {
                                     delegate: NodeActionsViewModelDelegate)
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
     func showNodeCreationDialog(with actionMenu: ActionMenu,
-                              delegate: CreateNodeViewModelDelegate?)
+                                delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -322,7 +322,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
                 listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
             default: break
             }
-            
+
             displaySnackbar(with: snackBarMessage, type: .approve)
         }
     }

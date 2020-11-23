@@ -115,6 +115,6 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
-                              delegate: CreateNodeViewModelDelegate?) {
+                                delegate: CreateNodeViewModelDelegate?) {
     }
 }
