@@ -68,6 +68,11 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
 
+        if listDataSource?.shouldDisplayCreateButton() == true {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
+        }
+
         // Set up progress view
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -166,7 +171,15 @@ class ListComponentViewController: SystemThemableViewController {
 
 // MARK: - UICollectionView DataSource & Delegate
 
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
+                                       UICollectionViewDataSource,
+                                       UICollectionViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard listDataSource?.shouldDisplayCreateButton() == true else { return }
+        let position = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+        createButton.isHidden = !(position.y > 0 )
+    }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
