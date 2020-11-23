@@ -145,37 +145,48 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+}
 
-    // MARK: Event observable
+// MARK: Event observable
+
+extension FolderDrillViewModel {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-            for listNode in results where listNode == node {
-                listNode.favorite = node.favorite
-            }
+            handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if node.kind == .file {
-                    if let indexOfMovedNode = results.firstIndex(of: node) {
-                        results.remove(at: indexOfMovedNode)
-                    }
-                } else {
-                    refreshList()
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
                 }
-            case .restore:
+            } else {
                 refreshList()
-            case .created:
-                if self.listNode?.guid == node.guid {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                        guard let sSelf = self else { return }
-                        sSelf.refreshList()
-                    }
-                }
-            default: break
             }
+        case .restore:
+            refreshList()
+        case .created:
+            if self.listNode?.guid == node.guid {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.refreshList()
+                }
+            }
+        default: break
         }
     }
 }

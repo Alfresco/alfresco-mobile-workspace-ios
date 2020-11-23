@@ -148,36 +148,46 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+}
 
-    // MARK: - Event observable
+// MARK: - Event observable
+
+extension FavoritesViewModel {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-
-            switch publishedEvent.eventType {
-            case .addToFavourite:
-                refreshList()
-            case .removeFromFavourites:
-                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
-                    results.remove(at: indexOfRemovedFavorite)
-                }
-            }
+            handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if node.kind == .file {
-                    if let indexOfMovedNode = results.firstIndex(of: node) {
-                        results.remove(at: indexOfMovedNode)
-                    }
-                } else {
-                    refreshList()
-                }
-            case .restore:
-                refreshList()
-            default: break
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .addToFavourite:
+            refreshList()
+        case .removeFromFavourites:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
             }
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
         }
     }
 }

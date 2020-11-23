@@ -130,37 +130,46 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+}
 
-    // MARK: Event Observable
+// MARK: Event Observable
+
+extension TrashViewModel {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-
-            switch publishedEvent.eventType {
-            case .addToFavourite:
-                if results.contains(node) == false {
-                    results.append(node)
-                }
-            case .removeFromFavourites:
-                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
-                    results.remove(at: indexOfRemovedFavorite)
-                }
-            }
+            handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if results.contains(node) == false {
-                    results.append(node)
-                }
-            case .restore, .permanentlyDelete:
-                if let indexOfRemovedFavorite = results.firstIndex(of: node) {
-                    results.remove(at: indexOfRemovedFavorite)
-                }
-            default: break
-            }
+            handleMove(event: publishedEvent)
+        }
+    }
 
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .addToFavourite:
+            if results.contains(node) == false {
+                results.append(node)
+            }
+        case .removeFromFavourites:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
+            }
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if results.contains(node) == false {
+                results.append(node)
+            }
+        case .restore, .permanentlyDelete:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
+            }
+        case .created: break
         }
     }
 }
