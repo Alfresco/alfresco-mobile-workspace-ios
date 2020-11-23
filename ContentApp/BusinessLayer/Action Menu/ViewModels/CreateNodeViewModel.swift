@@ -67,10 +67,14 @@ class CreateNodeViewModel {
         Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
             if let dataTemplate = sSelf.dataFromTemplateFile() {
-                formData.append(dataTemplate, withName: "filedata", fileName: nodeBody.name, mimeType: "")
+                formData.append(dataTemplate, withName: "filedata",
+                                fileName: nodeBody.name, mimeType: "")
             }
             if let data = nodeBody.nodeType.data(using: .utf8) {
                 formData.append(data, withName: "nodeType")
+            }
+            if let data = "true".data(using: .utf8) {
+                formData.append(data, withName: "autoRename")
             }
         }, to: url, headers: AlfrescoContentAPI.customHeaders) { [weak self] (result) in
             guard let sSelf = self else { return }
