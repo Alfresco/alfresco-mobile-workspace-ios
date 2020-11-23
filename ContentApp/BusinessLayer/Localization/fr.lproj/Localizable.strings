@@ -79,6 +79,7 @@
 "error-something-went-wrong" = "Un problème est survenu !";
 "warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux réglages avancés.";
 "error-unknown" = "Une erreur inconnue s'est produite.";
+"error-timeout" = "Cette opération est plus longue que prévu. Veuillez patienter quelques instants.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
@@ -98,8 +99,6 @@
 "sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
 
 // MARK: - Search
-"empty-list" = "Oups...";
-"empty-list-subtitle" = "Nous n'avons pas trouvé ce que\n vous recherchez";
 "searching" = "Recherche en cours...";
 "no-recent-search" = "Aucune recherche récente.";
 "recent-search" = "Recherches récentes";
@@ -137,10 +136,27 @@
 "action-menu-add-favorite" = "Ajouter aux favoris";
 "action-menu-remove-favorite" = "Supprimer des favoris";
 "action-menu-move-trash" = "Placer dans la corbeille";
-"action-menu-download" = "Télécharger";
+"action-menu-download" = "Ouvrir avec";
 "action-menu-restore" = "Restaurer";
 "action-menu-permanently-delete" = "Supprimer définitivement";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Supprimer";
 "dialog-delete-message" = "%@ sera supprimé définitivement.";
+"dialog-download-message" = "Téléchargement de '%@' en cours";
+
+// MARK: - Empty List
+"empty-recent-title" = "Aucun fichier récent";
+"empty-recent-description" = "Les fichiers consultés et\n modifiés apparaîtront ici.";
+"empty-favorites-files-folders-title" = "Aucun fichier ou dossier favori";
+"empty-favorites-libraries-title" = "Pas de bibliothèques favorites";
+"empty-favorites-description" = "Il semble que vous n'ayez\n rien ajouté.";
+"empty-folder-title" = "Le dossier est vide";
+"empty-folder-description" = "Il semble que cet emplacement\n ne contienne aucun élément.";
+"empty-search-title" = "Oups !";
+"empty-search-description" = "Nous n'avons pas trouvé ce que\n vous recherchez.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
+"privacy-photos-description" = "Pour enregistrer des images ou des vidéos sur votre appareil, Mobile Workspace a besoin d'accéder à vos photos.";
+"privacy-button" = "Passer en revue les réglages de confidentialité";
