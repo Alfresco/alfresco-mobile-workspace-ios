@@ -98,10 +98,10 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
     }
 
-    func showCreateNodeDialog(with actionMenu: ActionMenu,
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
                               delegate: CreateNodeViewModelDelegate?) {
     }
 }

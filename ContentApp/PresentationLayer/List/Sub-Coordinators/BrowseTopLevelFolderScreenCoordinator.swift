@@ -81,7 +81,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
-    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(with: accountService,
                                                       menuActions: actions)
@@ -94,7 +94,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
-    func showCreateNodeDialog(with actionMenu: ActionMenu,
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
                               delegate: CreateNodeViewModelDelegate?) {
         let personalFilesNode = ListNode(guid: kAPIPathMy,
                                          title: "Personal files",

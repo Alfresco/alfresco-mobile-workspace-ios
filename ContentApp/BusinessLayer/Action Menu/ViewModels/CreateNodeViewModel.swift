@@ -68,8 +68,10 @@ class CreateNodeViewModel {
         Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
             if let dataTemplate = sSelf.dataFromTemplateFile() {
-                formData.append(dataTemplate, withName: "filedata",
-                                fileName: nodeBody.name, mimeType: "")
+                formData.append(dataTemplate,
+                                withName: "filedata",
+                                fileName: nodeBody.name,
+                                mimeType: "")
             }
             if let data = nodeBody.nodeType.data(using: .utf8) {
                 formData.append(data, withName: "nodeType")
@@ -79,19 +81,37 @@ class CreateNodeViewModel {
             }
         }, to: url,
         headers: AlfrescoContentAPI.customHeaders,
-        encodingCompletion: { [weak self] (result) in
+        encodingCompletion: { [weak self] encodingResult in
             guard let sSelf = self else { return }
-            uploadDialog?.dismiss(animated: true, completion: nil)
-            switch result {
-            case .failure(let error):
-                sSelf.delegate?.createNode(node: nil, error: error)
-                AlfrescoLog.error(error)
-            case .success(request: _, streamingFromDisk: _, streamFileURL: _):
-                let listNode = ListNode(guid: "", title: nodeBody.name, path: "", kind: .file)
-                sSelf.delegate?.createNode(node: listNode, error: nil)
-                let moveEvent = MoveEvent(node: sSelf.parentListNode, eventType: .created)
-                let eventBusService = sSelf.coordinatorServices?.eventBusService
-                eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+            switch encodingResult {
+            case .success(let upload, _, _) :
+                upload.responseJSON { response in
+                    uploadDialog?.dismiss(animated: true)
+
+                    if let error = response.error {
+                        sSelf.delegate?.createNode(node: nil, error: error)
+                        AlfrescoLog.error(error)
+                    } else {
+                        let decodeResult: (decodableObj: NodeEntry?, error: Error?) =
+                            CodableHelper.decode(NodeEntry.self, from: response.data!)
+                        if decodeResult.error == nil {
+                            if let nodeEntry = decodeResult.decodableObj {
+                                let listNode = NodeChildMapper.create(from: nodeEntry.entry)
+
+                                sSelf.delegate?.createNode(node: listNode, error: nil)
+                                let moveEvent = MoveEvent(node: sSelf.parentListNode,
+                                                          eventType: .created)
+                                let eventBusService = sSelf.coordinatorServices?.eventBusService
+                                eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                            }
+                        }
+                    }
+                }
+            case .failure(let encodingError):
+                uploadDialog?.dismiss(animated: true)
+                sSelf.delegate?.createNode(node: nil, error: encodingError)
+                AlfrescoLog.error(encodingError)
             }
         })
     }

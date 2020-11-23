@@ -78,7 +78,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
-    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate) {
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(with: accountService,
                                                       menuActions: actions)
@@ -91,7 +91,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         actionMenuCoordinator = coordinator
     }
 
-    func showCreateNodeDialog(with actionMenu: ActionMenu,
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
                               delegate: CreateNodeViewModelDelegate?) {
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,

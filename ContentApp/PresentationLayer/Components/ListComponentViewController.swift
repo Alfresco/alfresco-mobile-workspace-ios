@@ -25,8 +25,9 @@ protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate)
-    func showActionSheetForCreateFAB(delegate: NodeActionsViewModelDelegate)
-    func showCreateNodeDialog(with actionMenu: ActionMenu, delegate: CreateNodeViewModelDelegate?)
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                              delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -115,7 +116,7 @@ class ListComponentViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
-        listItemActionDelegate?.showActionSheetForCreateFAB(delegate: self)
+        listItemActionDelegate?.showNodeCreationSheet(delegate: self)
     }
 
     // MARK: - Public interface
@@ -318,9 +319,10 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
                 snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                          node?.truncateTailTitle() ?? "")
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                listItemActionDelegate?.showCreateNodeDialog(with: action, delegate: self)
+                listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
             default: break
             }
+            
             displaySnackbar(with: snackBarMessage, type: .approve)
         }
     }
