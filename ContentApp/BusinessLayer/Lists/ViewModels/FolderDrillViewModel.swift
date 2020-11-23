@@ -24,9 +24,7 @@ import AlfrescoContent
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-
-    var listNodeGuid: String = kAPIPathMy
-    var listNodeIsFolder: Bool = true
+    var listNode: ListNode?
 
     var supportedNodeTypes: [ElementKindType]?
 
@@ -45,11 +43,11 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNodeIsFolder) ? nil : kAPIPathRelativeForSites
+            let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
 
-            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid,
+            NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
                                       skipCount: skipCount,
                                       maxItems: maxItems,
                                       orderBy: nil,
@@ -92,7 +90,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     }
 
     func shouldDisplayCreateButton() -> Bool {
-        return true
+        guard let listNode = listNode else { return true }
+        return listNode.hasPersmission(to: .create)
     }
 
     func isEmpty() -> Bool {
@@ -169,7 +168,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             case .restore:
                 refreshList()
             case .created:
-                if listNodeGuid == node.guid {
+                if self.listNode?.guid == node.guid {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
                         guard let sSelf = self else { return }
                         sSelf.refreshList()

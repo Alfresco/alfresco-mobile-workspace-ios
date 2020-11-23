@@ -63,6 +63,7 @@ class CreateNodeViewModel {
                                                                    autoRename: true,
                                                                    include: nil,
                                                                    fields: nil)
+
         guard let url = URL(string: requestBuilder.URLString) else { return }
         Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
@@ -76,7 +77,9 @@ class CreateNodeViewModel {
             if let data = "true".data(using: .utf8) {
                 formData.append(data, withName: "autoRename")
             }
-        }, to: url, headers: AlfrescoContentAPI.customHeaders) { [weak self] (result) in
+        }, to: url,
+        headers: AlfrescoContentAPI.customHeaders,
+        encodingCompletion: { [weak self] (result) in
             guard let sSelf = self else { return }
             uploadDialog?.dismiss(animated: true, completion: nil)
             switch result {
@@ -90,7 +93,7 @@ class CreateNodeViewModel {
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
-        }
+        })
     }
 
     // MARK: - Private
@@ -117,7 +120,7 @@ class CreateNodeViewModel {
             let cancelAction =
                 MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in
                     actionHandler(action)
-            }
+                }
 
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,

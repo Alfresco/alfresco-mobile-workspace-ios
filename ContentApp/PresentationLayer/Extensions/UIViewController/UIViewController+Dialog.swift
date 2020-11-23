@@ -48,6 +48,7 @@ extension UIViewController {
             alertController.titleColor = currentTheme.onSurfaceColor
             alertController.messageFont = currentTheme.body2TextStyle.font
             alertController.messageColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+            alertController.view.backgroundColor = currentTheme.surfaceColor
         }
 
         for action in alertController.actions {
