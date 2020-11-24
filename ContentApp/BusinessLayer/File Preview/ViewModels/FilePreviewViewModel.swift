@@ -137,7 +137,7 @@ class FilePreviewViewModel: EventObservable {
 
     func updateNodeDetails() {
         guard let listNode = self.listNode else { return }
-        if listNode.shouldUpdateNode() == false {
+        if listNode.shouldUpdate() == false {
             actionMenuViewModel = ActionMenuViewModel(with: coordinatorServices?.accountService,
                                                       listNode: listNode,
                                                       toolbarDivide: true)

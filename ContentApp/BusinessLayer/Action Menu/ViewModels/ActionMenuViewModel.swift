@@ -67,7 +67,7 @@ class ActionMenuViewModel {
             delegate?.finishProvideActions()
             return
         }
-        if listNode.shouldUpdateNode() == false {
+        if listNode.shouldUpdate() == false {
             createMenuActions()
             return
         }

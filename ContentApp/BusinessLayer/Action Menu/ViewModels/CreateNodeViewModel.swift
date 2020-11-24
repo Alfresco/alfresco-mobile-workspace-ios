@@ -33,6 +33,9 @@ class CreateNodeViewModel {
     private var nodeDescription: String?
     private weak var delegate: CreateNodeViewModelDelegate?
 
+    private var uploadDialog: MDCAlertController?
+    private var uploadRequest: UploadRequest?
+
     // MARK: - Init
 
     init(with actionMenu: ActionMenu,
@@ -48,36 +51,47 @@ class CreateNodeViewModel {
 
     // MARK: - Public
 
-    func requestUploadNode(with name: String, description: String?) {
-        var uploadDialog: MDCAlertController?
-
+    func createNode(with name: String, description: String?) {
         self.nodeName = name
         self.nodeDescription = description
 
         guard let nodeBody = self.nodeBody() else { return }
 
-        uploadDialog = showUploadDialog(actionHandler: { _ in
+        uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.uploadRequest?.cancel()
         })
         let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: parentListNode.guid,
                                                                    nodeBodyCreate: nodeBody,
                                                                    autoRename: true,
                                                                    include: nil,
                                                                    fields: nil)
+        switch actionMenu.type {
+        case .createMSWord, .createMSExcel, .createMSPowerPoint:
+            createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+        default: break
+        }
+    }
 
+    // MARK: - Create Nodes
+
+    private func createMSOfficeNode(with requestBuilder: RequestBuilder<NodeEntry>,
+                                    nodeBody: NodeBodyCreate) {
         guard let url = URL(string: requestBuilder.URLString) else { return }
+
         Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
-            if let dataTemplate = sSelf.dataFromTemplateFile() {
+
+            if let dataTemplate = sSelf.dataFromTemplateFile(),
+               let dataNodeType = nodeBody.nodeType.data(using: .utf8),
+               let dataAutoRename = "true".data(using: .utf8) {
+
                 formData.append(dataTemplate,
                                 withName: "filedata",
                                 fileName: nodeBody.name,
                                 mimeType: "")
-            }
-            if let data = nodeBody.nodeType.data(using: .utf8) {
-                formData.append(data, withName: "nodeType")
-            }
-            if let data = "true".data(using: .utf8) {
-                formData.append(data, withName: "autoRename")
+                formData.append(dataNodeType, withName: "nodeType")
+                formData.append(dataAutoRename, withName: "autoRename")
             }
         }, to: url,
         headers: AlfrescoContentAPI.customHeaders,
@@ -86,51 +100,68 @@ class CreateNodeViewModel {
 
             switch encodingResult {
             case .success(let upload, _, _) :
+                sSelf.uploadRequest = upload
                 upload.responseJSON { response in
-                    uploadDialog?.dismiss(animated: true)
+                    sSelf.uploadDialog?.dismiss(animated: true)
 
-                    if let error = response.error {
+                    if let data = response.data {
+                        let resultDecode = sSelf.decode(data: data)
+                        if let nodeEntry = resultDecode.0 {
+                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
+                            sSelf.delegate?.createNode(node: listNode, error: nil)
+                            sSelf.publishEventBus(with: listNode)
+                        }
+                        if let error = resultDecode.1 {
+                            sSelf.delegate?.createNode(node: nil, error: error)
+                            AlfrescoLog.error(error)
+                        }
+                    } else if let error = response.error {
                         sSelf.delegate?.createNode(node: nil, error: error)
                         AlfrescoLog.error(error)
-                    } else {
-                        let decodeResult: (decodableObj: NodeEntry?, error: Error?) =
-                            CodableHelper.decode(NodeEntry.self, from: response.data!)
-                        if decodeResult.error == nil {
-                            if let nodeEntry = decodeResult.decodableObj {
-                                let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-
-                                sSelf.delegate?.createNode(node: listNode, error: nil)
-                                let moveEvent = MoveEvent(node: sSelf.parentListNode,
-                                                          eventType: .created)
-                                let eventBusService = sSelf.coordinatorServices?.eventBusService
-                                eventBusService?.publish(event: moveEvent, on: .mainQueue)
-                            }
-                        }
                     }
                 }
             case .failure(let encodingError):
-                uploadDialog?.dismiss(animated: true)
+                sSelf.uploadDialog?.dismiss(animated: true)
                 sSelf.delegate?.createNode(node: nil, error: encodingError)
                 AlfrescoLog.error(encodingError)
             }
         })
     }
 
-    // MARK: - Private
+    // MARK: - Private Utils
+
+    private func decode(data: Data) -> (NodeEntry?, Error?) {
+        let decodeResult: (decodableObj: NodeEntry?, error: Error?)
+        decodeResult = CodableHelper.decode(NodeEntry.self, from: data)
+        if let error = decodeResult.error {
+            return (nil, error)
+        } else if let nodeEntry = decodeResult.decodableObj {
+            return (nodeEntry, nil)
+        }
+        return (nil, nil)
+    }
+
+    private func publishEventBus(with listNode: ListNode) {
+        let moveEvent = MoveEvent(node: parentListNode, eventType: .created)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: moveEvent, on: .mainQueue)
+
+    }
 
     private func dataFromTemplateFile() -> Data? {
+        guard let stringPath = ListNode.templateFileBundlePath(from: actionMenu.type)
+        else { return nil }
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: actionMenu.getTemplateBundlePath()))
-            return data
-        } catch {
-        }
+            return try Data(contentsOf: URL(fileURLWithPath: stringPath))
+        } catch {}
         return nil
     }
 
     private func showUploadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
         if let uploadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
-            let nodeNameWithExtension = ( nodeName ?? "" ) + "." + actionMenu.getExtension()
+            let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
+            let nodeNameWithExtension = ( nodeName ?? "" ) + "." + nodeExtension
             uploadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.NodeActionsDialog.uploadMessage,
                        nodeNameWithExtension)
@@ -155,9 +186,13 @@ class CreateNodeViewModel {
     }
 
     private func nodeBody() -> NodeBodyCreate? {
-        guard let name = self.nodeName else { return nil }
-        return NodeBodyCreate(name: name + "."  + actionMenu.getExtension(),
-                              nodeType: actionMenu.getNodeType(),
+        guard let name = self.nodeName,
+              let nodeType = ListNode.nodeType(from: actionMenu.type),
+              let nodeExtension = ListNode.getExtension(from: actionMenu.type)
+        else { return nil }
+
+        return NodeBodyCreate(name: name + "."  + nodeExtension,
+                              nodeType: nodeType,
                               aspectNames: nil,
                               properties: nil,
                               permissions: nil,

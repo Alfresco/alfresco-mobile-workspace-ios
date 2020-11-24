@@ -36,34 +36,6 @@ class ActionMenu {
             self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
         }
     }
-
-    static private var mapExtensions: [ActionMenuType: (String, String, String)] {
-        return [.createMSExcel: ("xlsx", "cm:content", "excel"),
-                .createMSWord: ("docx", "cm:content", "word"),
-                .createMSPowerPoint: ("pptx", "cm:content", "powerpoint")]
-    }
-
-    func getExtension() -> String {
-        if let ext = ActionMenu.mapExtensions[self.type] {
-            return ext.0
-        }
-        return ""
-    }
-
-    func getNodeType() -> String {
-        if let ext = ActionMenu.mapExtensions[self.type] {
-            return ext.1
-        }
-        return ""
-    }
-
-    func getTemplateBundlePath() -> String {
-        guard let obj = ActionMenu.mapExtensions[self.type] else { return "" }
-        if let filePath = Bundle.main.path(forResource: obj.2, ofType: obj.0) {
-            return filePath
-        }
-        return ""
-    }
 }
 
 enum ActionMenuType: String {

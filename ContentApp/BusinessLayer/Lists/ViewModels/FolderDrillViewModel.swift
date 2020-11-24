@@ -181,10 +181,7 @@ extension FolderDrillViewModel {
             refreshList()
         case .created:
             if self.listNode?.guid == node.guid {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-                    guard let sSelf = self else { return }
-                    sSelf.refreshList()
-                }
+                refreshList()
             }
         default: break
         }

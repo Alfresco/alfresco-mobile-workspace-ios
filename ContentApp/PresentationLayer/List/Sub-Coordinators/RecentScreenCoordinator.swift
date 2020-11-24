@@ -99,7 +99,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
     }
-    
+
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?) {
     }
