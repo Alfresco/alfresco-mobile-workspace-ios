@@ -79,6 +79,7 @@
 "error-something-went-wrong" = "Si è verificato un problema!";
 "warning-login-path-empty" = "Il percorso non può essere vuoto. Vai a Impostazioni avanzate.";
 "error-unknown" = "Si è verificato un errore sconosciuto.";
+"error-timeout" = "L'operazione sta richiedendo più tempo del previsto. Attendi qualche istante.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
@@ -98,8 +99,6 @@
 "sign-out-confirmation" = "Vuoi uscire?";
 
 // MARK: - Search
-"empty-list" = "Oops...";
-"empty-list-subtitle" = "Impossibile trovare quello\n che stai cercando";
 "searching" = "Cerco...";
 "no-recent-search" = "Non vi sono ricerche recenti.";
 "recent-search" = "Ricerche recenti";
@@ -137,10 +136,27 @@
 "action-menu-add-favorite" = "Aggiungi ai Preferiti";
 "action-menu-remove-favorite" = "Rimuovi dai Preferiti";
 "action-menu-move-trash" = "Sposta nel cestino";
-"action-menu-download" = "Scarica";
+"action-menu-download" = "Apri con";
 "action-menu-restore" = "Ripristina";
 "action-menu-permanently-delete" = "Elimina definitivamente";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Elimina";
 "dialog-delete-message" = "%@ verrà eliminato definitivamente.";
+"dialog-download-message" = "Scarico '%@'";
+
+// MARK: - Empty List
+"empty-recent-title" = "Nessun file recente";
+"empty-recent-description" = "I file che visualizzi e\n modifichi verranno visualizzati qui.";
+"empty-favorites-files-folders-title" = "Nessun file o cartella preferiti";
+"empty-favorites-libraries-title" = "Nessuna libreria preferita";
+"empty-favorites-description" = "A quanto pare non hai\n aggiunto nulla.";
+"empty-folder-title" = "La cartella è vuota";
+"empty-folder-description" = "A quanto pare\n qui non c'è nulla.";
+"empty-search-title" = "Oops!";
+"empty-search-description" = "Non riusciamo a trovare ciò che\n stai cercando.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace deve accedere alle foto";
+"privacy-photos-description" = "Per salvare immagini o video sul tuo dispositivo, Mobile Workspace deve accedere alle tue foto.";
+"privacy-button" = "Controlla impostazioni privacy";

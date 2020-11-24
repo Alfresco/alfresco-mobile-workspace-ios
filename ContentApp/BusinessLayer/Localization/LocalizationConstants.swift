@@ -186,4 +186,10 @@ struct LocalizationConstants {
         static let searchTitle = NSLocalizedString("empty-search-title", comment: "")
         static let searchDescription = NSLocalizedString("empty-search-description", comment: "")
     }
+
+    struct PrivacySettings {
+        static let privacyPhotosTitle = NSLocalizedString("privacy-photos-title", comment: "")
+        static let privacyPhotosDescription = NSLocalizedString("privacy-photos-description", comment: "")
+        static let privacyButton = NSLocalizedString("privacy-button", comment: "")
+    }
 }

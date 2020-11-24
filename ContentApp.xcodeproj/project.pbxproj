@@ -25,6 +25,7 @@
 		B92E13ED24AF449B00D607D4 /* NavigationURLMatchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */; };
 		B9318AAE254893090023689D /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
 		B936A14424BDBE04003C9A95 /* ListViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */; };
+		B93E08FA25665297009732C3 /* PrivacyNoticeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93E08F925665297009732C3 /* PrivacyNoticeViewController.swift */; };
 		B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944AADC255AB99F00965709 /* FavoritesViewModelFactory.swift */; };
 		B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944AB08255AD4F500965709 /* DownloadDialog.swift */; };
 		B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = B944AB25255BF20500965709 /* DownloadDialog.xib */; };
@@ -277,6 +278,7 @@
 		B92E13EC24AF449B00D607D4 /* NavigationURLMatchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLMatchResult.swift; sourceTree = "<group>"; };
 		B9318AAD254893090023689D /* FavouriteEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteEvent.swift; sourceTree = "<group>"; };
 		B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModelProtocol.swift; sourceTree = "<group>"; };
+		B93E08F925665297009732C3 /* PrivacyNoticeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeViewController.swift; sourceTree = "<group>"; };
 		B944AADC255AB99F00965709 /* FavoritesViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModelFactory.swift; sourceTree = "<group>"; };
 		B944AB08255AD4F500965709 /* DownloadDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadDialog.swift; sourceTree = "<group>"; };
 		B944AB25255BF20500965709 /* DownloadDialog.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DownloadDialog.xib; sourceTree = "<group>"; };
@@ -922,6 +924,7 @@
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
 				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
+				B93E08F925665297009732C3 /* PrivacyNoticeViewController.swift */,
 				B944AB1E255BD9E200965709 /* Download Dialog */,
 			);
 			path = Components;
@@ -1885,6 +1888,7 @@
 				B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
+				B93E08FA25665297009732C3 /* PrivacyNoticeViewController.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				B9ECECFA254302420097DB3F /* NodeEvent.swift in Sources */,
 				E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */,
