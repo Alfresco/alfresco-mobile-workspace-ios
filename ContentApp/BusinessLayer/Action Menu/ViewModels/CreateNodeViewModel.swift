@@ -63,20 +63,38 @@ class CreateNodeViewModel {
         })
         updateNodeDetails { [weak self] (listNode, _) in
             guard let sSelf = self, let listNode = listNode else { return }
+            let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
             let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
                                                                        nodeBodyCreate: nodeBody,
-                                                                       autoRename: true,
+                                                                       autoRename: shouldAutorename,
                                                                        include: nil,
                                                                        fields: nil)
             switch sSelf.actionMenu.type {
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
                 sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+            case .createFolder:
+                sSelf.createNewFolder(with: requestBuilder)
             default: break
             }
         }
     }
 
     // MARK: - Create Nodes
+
+    private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
+        requestBuilder.execute { [weak self] (result, error) in
+            guard let sSelf = self else { return }
+            sSelf.uploadDialog?.dismiss(animated: true)
+            if let error = error {
+                sSelf.delegate?.createNode(node: nil, error: error)
+                AlfrescoLog.error(error)
+            } else if let node = result?.body?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                sSelf.delegate?.createNode(node: listNode, error: nil)
+                sSelf.publishEventBus(with: listNode)
+            }
+        }
+    }
 
     private func createMSOfficeNode(with requestBuilder: RequestBuilder<NodeEntry>,
                                     nodeBody: NodeBodyCreate) {
@@ -143,7 +161,7 @@ class CreateNodeViewModel {
                                        kAPIIncludeIsFavoriteNode,
                                        kAPIIncludeAllowableOperationsNode],
                              relativePath: kAPIPathRelativeForSites) { (result, error) in
-                var listNode: ListNode? = nil
+                var listNode: ListNode?
                 if let error = error {
                     AlfrescoLog.error(error)
                 } else if let entry = result?.entry {
@@ -185,7 +203,7 @@ class CreateNodeViewModel {
         if let uploadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
             let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
-            let nodeNameWithExtension = ( nodeName ?? "" ) + "." + nodeExtension
+            let nodeNameWithExtension = ( nodeName ?? "" ) + nodeExtension
             uploadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.NodeActionsDialog.uploadMessage,
                        nodeNameWithExtension)
@@ -211,11 +229,12 @@ class CreateNodeViewModel {
 
     private func nodeBody() -> NodeBodyCreate? {
         guard let name = self.nodeName,
-              let nodeType = ListNode.nodeType(from: actionMenu.type),
-              let nodeExtension = ListNode.getExtension(from: actionMenu.type)
+              let nodeType = ListNode.nodeType(from: actionMenu.type)
         else { return nil }
 
-        return NodeBodyCreate(name: name + "."  + nodeExtension,
+        let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
+
+        return NodeBodyCreate(name: name + nodeExtension,
                               nodeType: nodeType,
                               aspectNames: nil,
                               properties: nil,

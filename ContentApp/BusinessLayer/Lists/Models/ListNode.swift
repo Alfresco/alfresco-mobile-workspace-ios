@@ -143,13 +143,14 @@ class ListNode: Hashable {
     static private var mapExtensions: [ActionMenuType: CreatedNodeType] {
         return [.createMSExcel: ("xlsx", "cm:content", "excel"),
                 .createMSWord: ("docx", "cm:content", "word"),
-                .createMSPowerPoint: ("pptx", "cm:content", "powerpoint")]
+                .createMSPowerPoint: ("pptx", "cm:content", "powerpoint"),
+                .createFolder: ("", "cm:folder", "")]
     }
 
     static func getExtension(from type: ActionMenuType?) -> String? {
         guard let type = type else { return nil }
-        if let ext = ListNode.mapExtensions[type] {
-            return ext.0
+        if let ext = ListNode.mapExtensions[type], ext.0 != "" {
+            return  "." + ext.0
         }
         return nil
     }
