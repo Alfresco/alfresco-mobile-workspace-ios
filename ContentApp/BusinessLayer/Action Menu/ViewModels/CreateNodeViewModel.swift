@@ -127,13 +127,7 @@ class CreateNodeViewModel {
                     sSelf.uploadDialog?.dismiss(animated: true)
 
                     if let error = response.error {
-                        if response.error?.code == NSURLErrorNetworkConnectionLost ||
-                            response.error?.code == NSURLErrorCancelled {
-                            sSelf.delegate?.createNode(node: nil, error: nil)
-                            return
-                        }
-
-                        sSelf.delegate?.createNode(node: nil, error: error)
+                        sSelf.handle(error: error)
                     } else {
                         if let data = response.data {
                             let resultDecode = sSelf.decode(data: data)
@@ -151,8 +145,7 @@ class CreateNodeViewModel {
                 }
             case .failure(let encodingError):
                 sSelf.uploadDialog?.dismiss(animated: true)
-                sSelf.delegate?.createNode(node: nil, error: encodingError)
-                AlfrescoLog.error(encodingError)
+                sSelf.handle(error: encodingError)
             }
         })
     }
@@ -251,5 +244,16 @@ class CreateNodeViewModel {
                               association: nil,
                               secondaryChildren: nil,
                               targets: nil)
+    }
+
+    private func handle(error: Error) {
+        if error.code == NSURLErrorNetworkConnectionLost ||
+            error.code == NSURLErrorCancelled {
+            delegate?.createNode(node: nil, error: nil)
+            return
+        }
+
+        delegate?.createNode(node: nil, error: error)
+        AlfrescoLog.error(error)
     }
 }
