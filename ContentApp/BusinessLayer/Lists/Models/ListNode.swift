@@ -41,6 +41,8 @@ enum SiteRole: String {
     case unknown = "unknown"
 }
 
+typealias CreatedNodeType = (String, String, String)
+
 class ListNode: Hashable {
     var guid: String
     var siteID: String
@@ -129,7 +131,7 @@ class ListNode: Hashable {
 
     // MARK: - Creation
 
-    static private var mapExtensions: [ActionMenuType: (String, String, String)] {
+    static private var mapExtensions: [ActionMenuType: CreatedNodeType] {
         return [.createMSExcel: ("xlsx", "cm:content", "excel"),
                 .createMSWord: ("docx", "cm:content", "word"),
                 .createMSPowerPoint: ("pptx", "cm:content", "powerpoint")]
@@ -153,8 +155,8 @@ class ListNode: Hashable {
 
     static func templateFileBundlePath(from type: ActionMenuType?) -> String? {
         guard  let type = type,
-               let obj = ListNode.mapExtensions[type] else { return nil }
-        if let filePath = Bundle.main.path(forResource: obj.2, ofType: obj.0) {
+               let ext = ListNode.mapExtensions[type] else { return nil }
+        if let filePath = Bundle.main.path(forResource: ext.2, ofType: ext.0) {
             return filePath
         }
         return nil
