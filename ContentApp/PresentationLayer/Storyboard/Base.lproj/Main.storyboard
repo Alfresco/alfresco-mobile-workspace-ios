@@ -2016,7 +2016,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6C-F8-M04" customClass="MDCFloatingButton">
-                                <rect key="frame" x="356" y="820" width="56" height="56"/>
+                                <rect key="frame" x="356" y="813" width="56" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="YE8-zc-voB"/>
                                     <constraint firstAttribute="width" constant="56" id="zIf-0k-5A5"/>
@@ -2036,7 +2036,7 @@
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="16" id="TUs-8u-Qcm"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="23" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
