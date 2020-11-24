@@ -73,7 +73,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
-        if let nodeName = nameTextField.text {
+        if let nodeName = nameTextField.text, nodeName != "" {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
                 var descriptionNode: String?
@@ -161,6 +161,11 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
                    replacementString string: String) -> Bool {
 
         enableUploadButton = (textField.updatedText(for: range, replacementString: string) != "")
+        return true
+    }
+
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        enableUploadButton = false
         return true
     }
 
