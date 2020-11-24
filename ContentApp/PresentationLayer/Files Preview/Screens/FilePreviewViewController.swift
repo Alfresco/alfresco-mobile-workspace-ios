@@ -298,7 +298,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 // MARK: - ActionMenuViewModel Delegate
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
         if let error = error {
             var snackBarMessage = LocalizationConstants.Errors.errorUnknown
             if error.code == kTimeoutSwaggerErrorCode {
@@ -309,8 +309,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             guard let action = action else { return }
             switch action.type {
             case .more:
-                self.filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
-                                                                                delegate: self)
+                if let node = node {
+                    filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
+                                                                               delegate: self)
+                }
             case .addFavorite:
                 Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
                                  type: .approve, finish: nil)
@@ -318,10 +320,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
                                  type: .approve, finish: nil)
             case .moveTrash:
-                self.filePreviewCoordinatorDelegate?.navigateBack()
+                filePreviewCoordinatorDelegate?.navigateBack()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                     Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                                  node.truncateTailTitle()),
+                                                  node?.truncateTailTitle() ?? ""),
                                      type: .approve, finish: nil)
                 })
             default: break

@@ -41,6 +41,8 @@ enum SiteRole: String {
     case unknown = "unknown"
 }
 
+typealias CreatedNodeType = (String, String, String)
+
 class ListNode: Hashable {
     var guid: String
     var siteID: String
@@ -54,13 +56,7 @@ class ListNode: Hashable {
     var siteRole: SiteRole?
     var trashed: Bool?
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(guid)
-    }
-
-    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid
-    }
+    // MARK: - Init
 
     init(guid: String,
          siteID: String = "",
@@ -86,7 +82,13 @@ class ListNode: Hashable {
         self.trashed = trashed
     }
 
-    func shouldUpdateNode() -> Bool {
+    // MARK: - Public Helpers
+
+    static func == (lhs: ListNode, rhs: ListNode) -> Bool {
+        return lhs.guid == rhs.guid
+    }
+
+    func shouldUpdate() -> Bool {
         if self.trashed == true {
             return false
         }
@@ -122,6 +124,45 @@ class ListNode: Hashable {
         }
         return text + "..."
     }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(guid)
+    }
+
+    // MARK: - Creation
+
+    static private var mapExtensions: [ActionMenuType: CreatedNodeType] {
+        return [.createMSExcel: ("xlsx", "cm:content", "excel"),
+                .createMSWord: ("docx", "cm:content", "word"),
+                .createMSPowerPoint: ("pptx", "cm:content", "powerpoint")]
+    }
+
+    static func getExtension(from type: ActionMenuType?) -> String? {
+        guard let type = type else { return nil }
+        if let ext = ListNode.mapExtensions[type] {
+            return ext.0
+        }
+        return nil
+    }
+
+    static func nodeType(from type: ActionMenuType?) -> String? {
+        guard let type = type else { return nil }
+        if let ext = ListNode.mapExtensions[type] {
+            return ext.1
+        }
+        return nil
+    }
+
+    static func templateFileBundlePath(from type: ActionMenuType?) -> String? {
+        guard  let type = type,
+               let ext = ListNode.mapExtensions[type] else { return nil }
+        if let filePath = Bundle.main.path(forResource: ext.2, ofType: ext.0) {
+            return filePath
+        }
+        return nil
+    }
+
+    // MARK: - Private Helpers
 
     private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
         guard let allowableOperations = allowableOperations else { return nil }

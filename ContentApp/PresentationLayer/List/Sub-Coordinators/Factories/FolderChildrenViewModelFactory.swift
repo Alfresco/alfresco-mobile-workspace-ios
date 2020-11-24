@@ -31,8 +31,7 @@ class FolderChildrenViewModelFactory {
 
         let folderDrillViewModel = FolderDrillViewModel(with: accountService,
                                                         listRequest: nil)
-        folderDrillViewModel.listNodeGuid = listNode.guid
-        folderDrillViewModel.listNodeIsFolder = (listNode.kind.rawValue == ElementKindType.folder.rawValue)
+        folderDrillViewModel.listNode = listNode
 
         let resultViewModel = ResultsViewModel()
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)

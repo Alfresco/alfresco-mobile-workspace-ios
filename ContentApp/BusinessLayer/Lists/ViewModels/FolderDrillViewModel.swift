@@ -24,9 +24,7 @@ import AlfrescoContent
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-
-    var listNodeGuid: String = kAPIPathMy
-    var listNodeIsFolder: Bool = true
+    var listNode: ListNode?
 
     var supportedNodeTypes: [ElementKindType]?
 
@@ -45,11 +43,11 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNodeIsFolder) ? nil : kAPIPathRelativeForSites
+            let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
 
-            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid,
+            NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
                                       skipCount: skipCount,
                                       maxItems: maxItems,
                                       orderBy: nil,
@@ -89,6 +87,11 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
     func shouldDisplayMoreButton() -> Bool {
         return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        guard let listNode = listNode else { return true }
+        return listNode.hasPersmission(to: .create)
     }
 
     func isEmpty() -> Bool {
@@ -142,30 +145,45 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+}
 
-    // MARK: Event observable
+// MARK: Event observable
+
+extension FolderDrillViewModel {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-            for listNode in results where listNode == node {
-                listNode.favorite = node.favorite
-            }
+            handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if node.kind == .file {
-                    if let indexOfMovedNode = results.firstIndex(of: node) {
-                        results.remove(at: indexOfMovedNode)
-                    }
-                } else {
-                    refreshList()
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
                 }
-            case .restore:
+            } else {
                 refreshList()
-            default: break
             }
+        case .restore:
+            refreshList()
+        case .created:
+            if self.listNode?.guid == node.guid {
+                refreshList()
+            }
+        default: break
         }
     }
 }

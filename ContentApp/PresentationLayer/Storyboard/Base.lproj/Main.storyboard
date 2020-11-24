@@ -812,7 +812,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hiw-at-KPx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2025" y="935"/>
+            <point key="canvasLocation" x="2024" y="935"/>
         </scene>
         <!--Browse View Controller-->
         <scene sceneID="ds5-Pa-0Ue">
@@ -1166,6 +1166,84 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sfq-7o-DrH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2024.6376811594205" y="3192.8571428571427"/>
+        </scene>
+        <!--Create Node Sheet View Controler-->
+        <scene sceneID="fIL-mf-l9Y">
+            <objects>
+                <viewController storyboardIdentifier="CreateNodeSheetViewControler" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MGN-jE-qJc" customClass="CreateNodeSheetViewControler" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Yt3-12-Wb8">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-og-1bt" customClass="MDCOutlinedTextField">
+                                <rect key="frame" x="16" y="68" width="396" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="xc7-Sd-Zzh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="MGN-jE-qJc" id="b2G-9Y-kb7"/>
+                                </connections>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EsN-Vu-bLT">
+                                <rect key="frame" x="16" y="142" width="396" height="100"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="EmA-g1-n23"/>
+                                </constraints>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="MGN-jE-qJc" id="9cX-kc-NBU"/>
+                                </connections>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCV-2v-eN9" customClass="MDCButton">
+                                <rect key="frame" x="382" y="258" width="30" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="yVu-jJ-c6f"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="uploadButtonTapped:" destination="MGN-jE-qJc" eventType="touchUpInside" id="SRp-MF-1JI"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YX-6x-DuM" customClass="MDCButton">
+                                <rect key="frame" x="336" y="258" width="30" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="ywA-u8-JDB"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="MGN-jE-qJc" eventType="touchUpInside" id="eDa-3E-KUp"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="oa6-wP-FHQ"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="top" secondItem="oa6-wP-FHQ" secondAttribute="top" constant="24" id="7FV-cp-DJA"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="bottom" secondItem="qCV-2v-eN9" secondAttribute="bottom" priority="250" id="H2b-ez-Rm6"/>
+                            <constraint firstItem="4YX-6x-DuM" firstAttribute="centerY" secondItem="qCV-2v-eN9" secondAttribute="centerY" id="N3A-hO-bXY"/>
+                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="Otc-H1-XGI"/>
+                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="top" secondItem="rpv-og-1bt" secondAttribute="bottom" constant="24" id="VTb-4I-71y"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="top" secondItem="EsN-Vu-bLT" secondAttribute="bottom" constant="16" id="Wuo-Eh-JkC"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="leadingMargin" secondItem="4YX-6x-DuM" secondAttribute="trailingMargin" constant="32" id="YV7-vb-1uF"/>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" constant="16" id="Ywd-wQ-MAA"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="16" id="cIo-22-xAp"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="ev6-rb-nb6"/>
+                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="leading" secondItem="rpv-og-1bt" secondAttribute="leading" id="h0i-1T-VPb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="4YX-6x-DuM" id="HI8-C3-LrN"/>
+                        <outlet property="descriptionTextView" destination="EsN-Vu-bLT" id="cIe-oy-uhc"/>
+                        <outlet property="nameTextField" destination="rpv-og-1bt" id="J6s-Hg-HDN"/>
+                        <outlet property="uploadButton" destination="qCV-2v-eN9" id="I9l-oo-XbU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Erm-yG-C8t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3590" y="3192"/>
         </scene>
         <!--Privacy Notice View Controller-->
         <scene sceneID="IDm-D8-dSO">
@@ -1937,6 +2015,17 @@
                                     <constraint firstItem="o9C-Qd-WPm" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="hUF-85-fVI"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6C-F8-M04" customClass="MDCFloatingButton">
+                                <rect key="frame" x="356" y="820" width="56" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="YE8-zc-voB"/>
+                                    <constraint firstAttribute="width" constant="56" id="zIf-0k-5A5"/>
+                                </constraints>
+                                <state key="normal" image="ic-button-create"/>
+                                <connections>
+                                    <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7G7-4Z-gpZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9rc-8Z-DQe"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1946,6 +2035,8 @@
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="ddo-cc-nfp" secondAttribute="bottom" id="44e-4L-G3P"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="16" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
@@ -1957,6 +2048,7 @@
                     <tabBarItem key="tabBarItem" title="Item 1" id="kdK-fz-nwD"/>
                     <connections>
                         <outlet property="collectionView" destination="9q7-tN-q37" id="GAq-bv-IKB"/>
+                        <outlet property="createButton" destination="W6C-F8-M04" id="Uix-0T-wAV"/>
                         <outlet property="emptyListImageView" destination="vM6-Fd-wHr" id="uxv-By-NAa"/>
                         <outlet property="emptyListSubtitle" destination="o9C-Qd-WPm" id="IWI-Mz-46e"/>
                         <outlet property="emptyListTitle" destination="qbf-LQ-gvV" id="EHq-ol-yWz"/>
@@ -1966,11 +2058,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nZ-FS-cCQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2024.6376811594205" y="1672.7678571428571"/>
+            <point key="canvasLocation" x="2024.2990654205607" y="1672.354211663067"/>
         </scene>
     </scenes>
     <resources>
         <image name="alfresco-logo" width="92" height="92"/>
+        <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
         <image name="ic-image" width="24" height="24"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>

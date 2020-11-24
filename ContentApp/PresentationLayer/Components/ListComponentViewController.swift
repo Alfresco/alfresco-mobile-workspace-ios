@@ -25,6 +25,9 @@ protocol ListItemActionDelegate: class {
     func showPreview(from node: ListNode)
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate)
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -45,11 +48,15 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var createButton: MDCFloatingButton!
+
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +67,12 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.pageDelegate = self
 
         emptyListView.isHidden = true
+        createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
+
+        if listDataSource?.shouldDisplayCreateButton() == true {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
+        }
 
         // Set up progress view
         progressView.progress = 0
@@ -100,6 +113,14 @@ class ListComponentViewController: SystemThemableViewController {
             coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
+    // MARK: - IBActions
+
+    @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
+        listItemActionDelegate?.showNodeCreationSheet(delegate: self)
+    }
+
+    // MARK: - Public interface
+
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
@@ -107,10 +128,11 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
+
+        createButton.backgroundColor = currentTheme.primaryColor
+        createButton.tintColor = currentTheme.onPrimaryColor
         refreshControl?.tintColor = currentTheme.primaryColor
     }
-
-    // MARK: - Public interface
 
     func startLoading() {
         progressView.startAnimating()
@@ -150,7 +172,15 @@ class ListComponentViewController: SystemThemableViewController {
 
 // MARK: - UICollectionView DataSource & Delegate
 
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
+                                       UICollectionViewDataSource,
+                                       UICollectionViewDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard listDataSource?.shouldDisplayCreateButton() == true else { return }
+        let position = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+        createButton.isHidden = !(position.y > 0 )
+    }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -253,43 +283,60 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
     }
 }
 
-// MARK: - ActionMenuViewModel Delegate
+// MARK: - CreateNodeViewModel and ActionMenuViewModel Delegates
 
-extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode, error: Error?) {
-        var snackBarMessage: String?
-        var snackBarType: SnackBarType?
+extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
+
+    func createNode(node: ListNode?, error: Error?) {
         if let error = error {
-            snackBarType = .error
-            snackBarMessage = LocalizationConstants.Errors.errorUnknown
-            if error.code == kTimeoutSwaggerErrorCode {
-                snackBarMessage = LocalizationConstants.Errors.errorTimeout
-            }
+            self.display(error: error)
         } else {
+            displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
+                                         node?.truncateTailTitle() ?? ""),
+                            type: .approve)
+        }
+    }
+
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
+
+        if let error = error {
+            self.display(error: error)
+        } else {
+            var snackBarMessage: String?
             guard let action = action else { return }
             switch action.type {
             case .addFavorite:
                 snackBarMessage = LocalizationConstants.Approved.removedFavorites
-                snackBarType = .approve
             case .removeFavorite:
                 snackBarMessage = LocalizationConstants.Approved.addedFavorites
-                snackBarType = .approve
             case .moveTrash:
                 snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                         node.truncateTailTitle())
-                snackBarType = .approve
+                                         node?.truncateTailTitle() ?? "")
             case .restore:
                 snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                         node.truncateTailTitle())
-                snackBarType = .approve
+                                         node?.truncateTailTitle() ?? "")
             case .permanentlyDelete:
                 snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                         node.truncateTailTitle())
-                snackBarType = .approve
+                                         node?.truncateTailTitle() ?? "")
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
             default: break
             }
+
+            displaySnackbar(with: snackBarMessage, type: .approve)
         }
-        if let message = snackBarMessage, let type = snackBarType {
+    }
+
+    func display(error: Error) {
+        var snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        if error.code == kTimeoutSwaggerErrorCode {
+            snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        }
+        displaySnackbar(with: snackBarMessage, type: .error)
+    }
+
+    func displaySnackbar(with message: String?, type: SnackBarType?) {
+        if let message = message, let type = type {
             let snackBar = Snackbar(with: message, type: type)
             snackBar.snackBar.presentationHostViewOverride = view
             snackBar.show(completion: nil)

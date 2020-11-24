@@ -28,6 +28,7 @@ protocol ListComponentDataSourceProtocol: class {
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayMoreButton() -> Bool
+    func shouldDisplayCreateButton() -> Bool
     func shouldDisplayNodePath() -> Bool
     func refreshList()
     func emptyList() -> EmptyListProtocol

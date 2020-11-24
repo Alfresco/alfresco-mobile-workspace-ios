@@ -18,18 +18,17 @@
 
 import Foundation
 
-enum MoveEventType {
-    case moveToTrash
-    case restore
-    case permanentlyDelete
-    case created
-}
+struct ActionsMenuCreateFAB {
+    static func actions() -> [[ActionMenu]] {
+        var actions = [[ActionMenu]]()
 
-class MoveEvent: BaseNodeEvent {
-    var eventType: MoveEventType
-
-    init(node: ListNode, eventType: MoveEventType) {
-        self.eventType = eventType
-        super.init(node: node)
+        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
+                                   type: .createMSWord),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
+                                   type: .createMSPowerPoint),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
+                                   type: .createMSExcel)]
+        actions.append(actions1)
+        return actions
     }
 }

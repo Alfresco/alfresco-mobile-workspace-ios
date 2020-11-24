@@ -96,4 +96,11 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             actionMenuCoordinator = coordinator
         }
     }
+
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+    }
+
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
+    }
 }

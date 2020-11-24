@@ -18,6 +18,7 @@
 
 import UIKit
 import MaterialComponents.MaterialDialogs
+import MaterialComponents.MDCAlertController_ButtonForAction
 
 extension UIViewController {
     func showDialog(title: String?,
@@ -27,7 +28,7 @@ extension UIViewController {
                     completionHandler: @escaping () -> Void) -> MDCAlertController {
         let alertController = MDCAlertController(title: title,
                                                  message: message)
-        alertController.cornerRadius = dialogCornerRadius
+
         alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
 
         if let actions = actions {
@@ -47,7 +48,15 @@ extension UIViewController {
             alertController.titleColor = currentTheme.onSurfaceColor
             alertController.messageFont = currentTheme.body2TextStyle.font
             alertController.messageColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+            alertController.view.backgroundColor = currentTheme.surfaceColor
         }
+
+        for action in alertController.actions {
+            let button = alertController.button(for: action)
+            button?.isUppercaseTitle = false
+        }
+
+        alertController.cornerRadius = dialogCornerRadius
 
         self.present(alertController, animated: true, completion: completionHandler)
 

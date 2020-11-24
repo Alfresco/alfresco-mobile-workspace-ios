@@ -37,6 +37,7 @@ struct LocalizationConstants {
         static let yes = NSLocalizedString("yes", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
+        static let upload = NSLocalizedString("upload", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -48,6 +49,8 @@ struct LocalizationConstants {
         static let username = NSLocalizedString("username-or-email", comment: "")
         static let repository = NSLocalizedString("content-services-url", comment: "")
         static let password = NSLocalizedString("password", comment: "")
+        static let description = NSLocalizedString("description", comment: "")
+        static let name = NSLocalizedString("name", comment: "")
     }
 
     struct Labels {
@@ -99,6 +102,7 @@ struct LocalizationConstants {
         static let movedTrash = NSLocalizedString("approved-moved-trash", comment: "")
         static let restored = NSLocalizedString("approved-restored", comment: "")
         static let deleted = NSLocalizedString("approved-deleted", comment: "")
+        static let created = NSLocalizedString("approved-created", comment: "")
     }
 
     struct Theme {
@@ -159,12 +163,16 @@ struct LocalizationConstants {
         static let download = NSLocalizedString("action-menu-download", comment: "")
         static let restore = NSLocalizedString("action-menu-restore", comment: "")
         static let permanentlyDelete = NSLocalizedString("action-menu-permanently-delete", comment: "")
+        static let createMSword = NSLocalizedString("action-menu-create-ms-word", comment: "")
+        static let createMSexcel = NSLocalizedString("action-menu-create-ms-excel", comment: "")
+        static let createMSpowerpoint = NSLocalizedString("action-menu-create-ms-powerpoint", comment: "")
     }
 
     struct NodeActionsDialog {
         static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
         static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
         static let downloadMessage = NSLocalizedString("dialog-download-message", comment: "")
+        static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
     }
 
     struct EmptyLists {

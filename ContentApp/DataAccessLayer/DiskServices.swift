@@ -23,6 +23,8 @@ class DiskServices {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
+    // MARK: - Avatar
+
     static func saveAvatar(_ image: UIImage) {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         let fileManager = FileManager.default
@@ -42,21 +44,7 @@ class DiskServices {
         return nil
     }
 
-    static func saveVideo(named: String, data: Data) -> URL? {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        if let newDirectoryPath = create(directory: identifier) {
-            do {
-                let urlString = "file:///" + newDirectoryPath + "/" + named.filter { !$0.isWhitespace }
-                if let url = URL(string: urlString) {
-                    try data.write(to: url)
-                    return url
-                }
-            } catch {
-                AlfrescoLog.error("Problem saving video.")
-            }
-        }
-        return nil
-    }
+    // MARK: - Create user folder
 
     static func getDirectoryPath() -> String {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)

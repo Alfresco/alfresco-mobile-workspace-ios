@@ -33,6 +33,7 @@
 "yes" = "Yes";
 "cancel" = "Cancel";
 "delete" = "Delete";
+"upload" = "Upload";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
@@ -43,6 +44,8 @@
 "username-or-email" = "Username or email";
 "password" = "Password";
 "content-services-url" = "Content Services URL";
+"description" = "Description";
+"name" = "Name";
 
 // MARK: - Labels
 "transport-protocol" = "Transport protocol";
@@ -88,6 +91,7 @@
 "approved-moved-trash" = "%@ moved to trash";
 "approved-restored" = "%@ restored";
 "approved-deleted" = "%@ deleted";
+"approved-created" = "%@ was created";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -139,11 +143,15 @@
 "action-menu-download" = "Open with";
 "action-menu-restore" = "Restore";
 "action-menu-permanently-delete" = "Permanently Delete";
+"action-menu-create-ms-word" = "Word document";
+"action-menu-create-ms-excel" = "Excel spreadsheet";
+"action-menu-create-ms-powerpoint" = "PowerPoint presentation";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Delete";
 "dialog-delete-message" = "%@ will be permanently deleted.";
 "dialog-download-message" = "Downloading '%@'";
+"dialog-upload-message" = "Uploading '%@'";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";

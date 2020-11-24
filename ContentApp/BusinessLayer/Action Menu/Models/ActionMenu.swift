@@ -39,13 +39,21 @@ class ActionMenu {
 }
 
 enum ActionMenuType: String {
+    // MARK: - Generic
     case placeholder = "ic-placeholder"
     case node = "ic-node"
     case more = "ic-action-more"
+
+    // MARK: - Nodes
     case addFavorite = "ic-action-outline-favorite"
     case removeFavorite = "ic-action-fill-favorite"
     case moveTrash = "ic-action-delete"
     case download = "ic-action-download"
     case restore = "ic-restore"
     case permanentlyDelete = "ic-action-delete-forever"
+
+    // MARK: - Create
+    case createMSExcel = "ic-ms_spreadsheet"
+    case createMSWord = "ic-ms_document"
+    case createMSPowerPoint = "ic-ms_presentation"
 }

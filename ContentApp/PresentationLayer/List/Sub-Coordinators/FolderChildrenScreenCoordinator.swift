@@ -24,6 +24,7 @@ class FolderChildrenScreenCoordinator: Coordinator {
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -75,5 +76,28 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        let actions = ActionsMenuCreateFAB.actions()
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
+                                                      menuActions: actions)
+        let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsModel)
+        coordinator.start()
+        actionMenuCoordinator = coordinator
+    }
+
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
+        let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                     actionMenu: actionMenu,
+                                                     parentListNode: listNode,
+                                                     createNodeViewModelDelegate: delegate)
+        coordinator.start()
+        createNodeSheetCoordinator = coordinator
     }
 }
