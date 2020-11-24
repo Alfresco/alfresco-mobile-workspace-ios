@@ -39,6 +39,7 @@ protocol ListComponentActionDelegate: class {
 protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
+    func shouldDisplayCreateButton(enable: Bool)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -400,6 +401,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
                 scrollToSection(0)
             }
         }
+    }
+
+    func shouldDisplayCreateButton(enable: Bool) {
+        createButton.isHidden = !enable
     }
 }
 
