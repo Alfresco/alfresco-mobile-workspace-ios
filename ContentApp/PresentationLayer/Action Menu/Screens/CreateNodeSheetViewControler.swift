@@ -77,7 +77,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.createNodeViewModel?.createNode(with: nodeName,
-                                                             description: sSelf.descriptionTextView.text)
+                                                      description: sSelf.descriptionTextView.text)
             }
         }
     }
@@ -121,7 +121,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
+        let targetSize = CGSize(width: size.width,
+                                height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 }

@@ -289,7 +289,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
 
     func createNode(node: ListNode?, error: Error?) {
-        if let error = error {
+        if node == nil && error == nil {
+            return
+        } else if let error = error {
             self.display(error: error)
         } else {
             displaySnackbar(with: String(format: LocalizationConstants.Approved.created,

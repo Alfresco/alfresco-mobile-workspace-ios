@@ -126,20 +126,27 @@ class CreateNodeViewModel {
                 upload.responseJSON { response in
                     sSelf.uploadDialog?.dismiss(animated: true)
 
-                    if let data = response.data {
-                        let resultDecode = sSelf.decode(data: data)
-                        if let nodeEntry = resultDecode.0 {
-                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.createNode(node: listNode, error: nil)
-                            sSelf.publishEventBus(with: listNode)
+                    if let error = response.error {
+                        if response.error?.code == NSURLErrorNetworkConnectionLost ||
+                            response.error?.code == NSURLErrorCancelled {
+                            sSelf.delegate?.createNode(node: nil, error: nil)
+                            return
                         }
-                        if let error = resultDecode.1 {
-                            sSelf.delegate?.createNode(node: nil, error: error)
-                            AlfrescoLog.error(error)
-                        }
-                    } else if let error = response.error {
+
                         sSelf.delegate?.createNode(node: nil, error: error)
-                        AlfrescoLog.error(error)
+                    } else {
+                        if let data = response.data {
+                            let resultDecode = sSelf.decode(data: data)
+                            if let nodeEntry = resultDecode.0 {
+                                let listNode = NodeChildMapper.create(from: nodeEntry.entry)
+                                sSelf.delegate?.createNode(node: listNode, error: nil)
+                                sSelf.publishEventBus(with: listNode)
+                            }
+                            if let error = resultDecode.1 {
+                                sSelf.delegate?.createNode(node: nil, error: error)
+                                AlfrescoLog.error(error)
+                            }
+                        }
                     }
                 }
             case .failure(let encodingError):
