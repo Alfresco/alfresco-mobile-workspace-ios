@@ -1410,7 +1410,7 @@
                         <constraints>
                             <constraint firstItem="F0F-3a-ePc" firstAttribute="centerX" secondItem="FKD-KB-WFW" secondAttribute="centerX" id="1FJ-n9-ZTV"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
-                            <constraint firstItem="Pmp-xR-at1" firstAttribute="leading" secondItem="Nm8-k5-tkg" secondAttribute="leading" id="CaC-fp-hcv"/>
+                            <constraint firstItem="Pmp-xR-at1" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="CaC-fp-hcv"/>
                             <constraint firstItem="Nm8-k5-tkg" firstAttribute="bottom" secondItem="Pmp-xR-at1" secondAttribute="bottom" id="HSO-8q-C4q"/>
                             <constraint firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="Kyh-x1-Xub"/>
                             <constraint firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="L3T-gS-byg"/>
@@ -1422,7 +1422,7 @@
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="dLG-Wz-dlS"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="FKD-KB-WFW" secondAttribute="top" id="iJZ-jq-SmT"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
-                            <constraint firstItem="Pmp-xR-at1" firstAttribute="trailing" secondItem="Nm8-k5-tkg" secondAttribute="trailing" id="rbn-Nr-LJo"/>
+                            <constraint firstItem="Pmp-xR-at1" firstAttribute="trailing" secondItem="FKD-KB-WFW" secondAttribute="trailing" id="rbn-Nr-LJo"/>
                             <constraint firstItem="F0F-3a-ePc" firstAttribute="centerY" secondItem="FKD-KB-WFW" secondAttribute="centerY" id="v8x-mr-DeR"/>
                         </constraints>
                         <variation key="default">
