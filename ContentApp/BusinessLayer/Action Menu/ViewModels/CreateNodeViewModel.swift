@@ -106,8 +106,7 @@ class CreateNodeViewModel {
 
             if let dataTemplate = sSelf.dataFromTemplateFile(),
                let dataNodeType = nodeBody.nodeType.data(using: .utf8),
-               let dataAutoRename = "true".data(using: .utf8),
-               let dataDescription = (sSelf.nodeDescription ?? "").data(using: .utf8) {
+               let dataAutoRename = "true".data(using: .utf8) {
 
                 formData.append(dataTemplate,
                                 withName: "filedata",
@@ -115,6 +114,10 @@ class CreateNodeViewModel {
                                 mimeType: "")
                 formData.append(dataNodeType, withName: "nodeType")
                 formData.append(dataAutoRename, withName: "autoRename")
+
+            }
+            if let description = sSelf.nodeDescription,
+               let dataDescription = description.data(using: .utf8) {
                 formData.append(dataDescription, withName: "cm:description")
             }
         }, to: url,
@@ -253,6 +256,9 @@ class CreateNodeViewModel {
             delegate?.createNode(node: nil, error: nil)
             return
         }
+        delegate?.createNode(node: nil, error: error)
+        AlfrescoLog.error(error)
+    }
 
     private func nodeProperties() -> JSONValue? {
         guard let name = self.nodeName,
@@ -261,7 +267,5 @@ class CreateNodeViewModel {
         return JSONValue(dictionaryLiteral:
                             ("cm:title", JSONValue(stringLiteral: name)),
                          ("cm:description", JSONValue(stringLiteral: description)))
-        delegate?.createNode(node: nil, error: error)
-        AlfrescoLog.error(error)
     }
 }

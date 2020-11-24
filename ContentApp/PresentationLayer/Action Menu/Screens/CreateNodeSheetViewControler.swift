@@ -76,8 +76,11 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         if let nodeName = nameTextField.text {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.createNodeViewModel?.createNode(with: nodeName,
-                                                      description: sSelf.descriptionTextView.text)
+                var descriptionNode: String?
+                if sSelf.shouldDisplayPlaceholderInTextView == false {
+                    descriptionNode = sSelf.descriptionTextView.text
+                }
+                sSelf.createNodeViewModel?.createNode(with: nodeName, description: descriptionNode)
             }
         }
     }
