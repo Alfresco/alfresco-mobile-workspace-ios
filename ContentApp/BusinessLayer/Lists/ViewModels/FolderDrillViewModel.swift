@@ -213,7 +213,7 @@ extension FolderDrillViewModel {
         case .restore:
             refreshList()
         case .created:
-            if self.listNode?.guid == node.guid {
+            if self.listNode?.guid == node.guid || listNode == nil {
                 refreshList()
             }
         default: break
