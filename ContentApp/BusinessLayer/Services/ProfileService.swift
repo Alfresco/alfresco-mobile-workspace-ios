@@ -27,8 +27,6 @@ class ProfileService {
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
         if let avatar = DiskServices.getAvatar() {
             return avatar
-        } else {
-            featchAvatar(completionHandler: completionHandler)
         }
         return UIImage(named: "account-circle")
     }

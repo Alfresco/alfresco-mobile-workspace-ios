@@ -112,6 +112,15 @@ class ListNode: Hashable {
         return allowableOperations.contains(type)
     }
 
+    func hasPermissionToCreate() -> Bool {
+        if self.kind == .folder {
+            return hasPersmission(to: .create)
+        } else if self.kind == .site {
+            return !(hasRole(to: .consumer) || hasRole(to: .unknown))
+        }
+        return false
+    }
+
     func hasRole(to type: SiteRole) -> Bool {
         guard let siteRole = siteRole else { return false }
         return siteRole == type

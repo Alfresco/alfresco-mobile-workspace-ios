@@ -61,15 +61,18 @@ class CreateNodeViewModel {
             guard let sSelf = self else { return }
             sSelf.uploadRequest?.cancel()
         })
-        let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: parentListNode.guid,
-                                                                   nodeBodyCreate: nodeBody,
-                                                                   autoRename: true,
-                                                                   include: nil,
-                                                                   fields: nil)
-        switch actionMenu.type {
-        case .createMSWord, .createMSExcel, .createMSPowerPoint:
-            createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
-        default: break
+        updateNodeDetails { [weak self] (listNode, _) in
+            guard let sSelf = self, let listNode = listNode else { return }
+            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
+                                                                       nodeBodyCreate: nodeBody,
+                                                                       autoRename: true,
+                                                                       include: nil,
+                                                                       fields: nil)
+            switch sSelf.actionMenu.type {
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+            default: break
+            }
         }
     }
 
@@ -129,6 +132,27 @@ class CreateNodeViewModel {
     }
 
     // MARK: - Private Utils
+
+    private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
+        guard parentListNode.kind == .site else { return handle(parentListNode, nil)}
+        coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.getNode(nodeId: sSelf.parentListNode.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeIsFavoriteNode,
+                                       kAPIIncludeAllowableOperationsNode],
+                             relativePath: kAPIPathRelativeForSites) { (result, error) in
+                var listNode: ListNode? = nil
+                if let error = error {
+                    AlfrescoLog.error(error)
+                } else if let entry = result?.entry {
+                    listNode = NodeChildMapper.create(from: entry)
+                }
+                handle(listNode, error)
+            }
+        })
+    }
 
     private func decode(data: Data) -> (NodeEntry?, Error?) {
         let decodeResult: (decodableObj: NodeEntry?, error: Error?)
