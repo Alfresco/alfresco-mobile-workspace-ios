@@ -57,10 +57,12 @@ class CreateNodeViewModel {
 
         guard let nodeBody = self.nodeBody() else { return }
 
-        uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.uploadRequest?.cancel()
-        })
+        if actionMenu.type != .createFolder {
+            uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.uploadRequest?.cancel()
+            })
+        }
         updateNodeDetails { [weak self] (listNode, _) in
             guard let sSelf = self, let listNode = listNode else { return }
             let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
@@ -84,7 +86,6 @@ class CreateNodeViewModel {
     private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
         requestBuilder.execute { [weak self] (result, error) in
             guard let sSelf = self else { return }
-            sSelf.uploadDialog?.dismiss(animated: true)
             if let error = error {
                 sSelf.delegate?.createNode(node: nil, error: error)
                 AlfrescoLog.error(error)
