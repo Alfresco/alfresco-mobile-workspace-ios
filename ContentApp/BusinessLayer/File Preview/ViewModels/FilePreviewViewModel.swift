@@ -76,8 +76,7 @@ class FilePreviewViewModel: EventObservable {
 
         switch filePreviewType {
         case .video, .image, .gif, .audio:
-            viewModelDelegate?.enableFullscreenContentExperience()
-            size = kWindow.bounds.size
+            size = requestFullScreenExperience()
         default: break
         }
 
@@ -86,6 +85,9 @@ class FilePreviewViewModel: EventObservable {
             fetchRenditionURL(for: listNode.guid) { [weak self] url, isImageRendition in
                 guard let sSelf = self else { return }
 
+                if isImageRendition {
+                    size = sSelf.requestFullScreenExperience()
+                }
                 sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
             }
         } else if filePreviewType == .text { // Show text content
@@ -355,6 +357,11 @@ class FilePreviewViewModel: EventObservable {
             filePreview.passwordDelegate = self
             pdfRenderer = filePreview
         }
+    }
+
+    func requestFullScreenExperience() -> CGSize {
+        viewModelDelegate?.enableFullscreenContentExperience()
+        return kWindow.bounds.size
     }
 
     // MARK: - Event observable
