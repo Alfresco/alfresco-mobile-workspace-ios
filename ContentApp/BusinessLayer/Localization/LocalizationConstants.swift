@@ -93,6 +93,7 @@ struct LocalizationConstants {
         static let somethingWentWrong = NSLocalizedString("error-something-went-wrong", comment: "")
         static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
         static let errorTimeout = NSLocalizedString("error-timeout", comment: "")
+        static let errorFolderSameName = NSLocalizedString("error-folder-same-name", comment: "")
     }
 
     struct Approved {
@@ -166,6 +167,7 @@ struct LocalizationConstants {
         static let createMSword = NSLocalizedString("action-menu-create-ms-word", comment: "")
         static let createMSexcel = NSLocalizedString("action-menu-create-ms-excel", comment: "")
         static let createMSpowerpoint = NSLocalizedString("action-menu-create-ms-powerpoint", comment: "")
+        static let createFolder = NSLocalizedString("action-menu-create-folder", comment: "")
     }
 
     struct NodeActionsDialog {

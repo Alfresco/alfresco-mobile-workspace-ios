@@ -53,6 +53,7 @@ enum ActionMenuType: String {
     case permanentlyDelete = "ic-action-delete-forever"
 
     // MARK: - Create
+    case createFolder = "ic-action-create-folder"
     case createMSExcel = "ic-ms_spreadsheet"
     case createMSWord = "ic-ms_document"
     case createMSPowerPoint = "ic-ms_presentation"

@@ -319,7 +319,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
             case .permanentlyDelete:
                 snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                          node?.truncateTailTitle() ?? "")
-            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+            case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
                 listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
             default: break
             }
@@ -329,9 +329,14 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
     }
 
     func display(error: Error) {
-        var snackBarMessage = LocalizationConstants.Errors.errorUnknown
-        if error.code == kTimeoutSwaggerErrorCode {
+        var snackBarMessage = ""
+        switch error.code {
+        case kTimeoutSwaggerErrorCode:
             snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        case kNodeNameErrorCode:
+            snackBarMessage = LocalizationConstants.Errors.errorFolderSameName
+        default:
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
         }
         displaySnackbar(with: snackBarMessage, type: .error)
     }

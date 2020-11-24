@@ -22,7 +22,9 @@ struct ActionsMenuCreateFAB {
     static func actions() -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
-        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
+        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                   type: .createFolder),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
                                    type: .createMSWord),
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
                                    type: .createMSPowerPoint),
