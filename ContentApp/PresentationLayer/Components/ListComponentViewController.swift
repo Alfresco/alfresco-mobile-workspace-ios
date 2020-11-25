@@ -177,12 +177,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                                        UICollectionViewDataSource,
                                        UICollectionViewDelegate {
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard listDataSource?.shouldDisplayCreateButton() == true else { return }
-        let position = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        createButton.isHidden = !(position.y > 0 )
-    }
-
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
