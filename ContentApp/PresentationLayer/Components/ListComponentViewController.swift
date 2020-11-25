@@ -406,6 +406,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
 
     func shouldDisplayCreateButton(enable: Bool) {
         createButton.isHidden = !enable
+        if enable {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
+        }
     }
 }
 

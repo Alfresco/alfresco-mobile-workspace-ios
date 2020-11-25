@@ -26,6 +26,8 @@ target 'ContentApp' do
   pod 'MaterialComponents/TextControls+FilledTextFieldsTheming'
   pod 'MaterialComponents/TextControls+OutlinedTextFields'
   pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming'
+  pod 'MaterialComponents/TextControls+OutlinedTextAreas'
+  pod 'MaterialComponents/TextControls+OutlinedTextAreasTheming'
   pod 'MaterialComponents/BottomSheet'
   pod 'MaterialComponents/ActivityIndicator'
   pod 'MaterialComponents/Snackbar'

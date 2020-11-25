@@ -26,22 +26,11 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     @IBOutlet weak var titleCreate: UILabel!
     @IBOutlet weak var nameTextField: MDCOutlinedTextField!
-    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var descriptionTextArea: MDCOutlinedTextArea!
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
 
     var createNodeViewModel: CreateNodeViewModel?
-    var shouldDisplayPlaceholderInTextView: Bool = true {
-        didSet {
-            guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-            let textColor = (shouldDisplayPlaceholderInTextView) ?
-                currentTheme.onSurfaceColor.withAlphaComponent(0.6) : currentTheme.onSurfaceColor
-            let text = (shouldDisplayPlaceholderInTextView) ?
-                "  " + LocalizationConstants.TextFieldPlaceholders.description : ""
-            descriptionTextView.text = text
-            descriptionTextView.textColor = textColor
-        }
-    }
 
     var enableUploadButton: Bool = false {
         didSet {
@@ -78,10 +67,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
            nodeName != "" {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
-                var descriptionNode: String?
-                if sSelf.shouldDisplayPlaceholderInTextView == false {
-                    descriptionNode = sSelf.descriptionTextView.text
-                }
+                var descriptionNode = sSelf.descriptionTextArea.textView.text
+                descriptionNode = (descriptionNode == "") ? nil : descriptionNode
                 sSelf.createNodeViewModel?.createNode(with: nodeName, description: descriptionNode)
             }
         }
@@ -96,7 +83,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     func addLocalization() {
         uploadButton.setTitle(LocalizationConstants.Buttons.create, for: .normal)
         cancelButton.setTitle(LocalizationConstants.Buttons.cancel, for: .normal)
-        descriptionTextView.text = "  " + LocalizationConstants.TextFieldPlaceholders.description
+        descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
         titleCreate.text = createNodeViewModel?.createAction()
     }
@@ -124,11 +111,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
         nameTextField.trailingViewMode = .unlessEditing
 
-        descriptionTextView.applyStyleBody2OnSurface(theme: currentTheme)
-        descriptionTextView.textColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        descriptionTextView.layer.cornerRadius = dialogCornerRadius
-        descriptionTextView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.38).cgColor
-        descriptionTextView.layer.borderWidth = 1
+        descriptionTextArea.applyTheme(withScheme: loginTextFieldScheme)
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
@@ -141,24 +124,6 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 // MARK: - Storyboard Instantiable
 
 extension CreateNodeSheetViewControler: StoryboardInstantiable { }
-
-// MARK: - UITextView Delegate
-
-extension CreateNodeSheetViewControler: UITextViewDelegate {
-
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if shouldDisplayPlaceholderInTextView {
-            shouldDisplayPlaceholderInTextView = false
-        }
-        return true
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            shouldDisplayPlaceholderInTextView = true
-        }
-    }
-}
 
 // MARK: - UITextField Delegate
 
