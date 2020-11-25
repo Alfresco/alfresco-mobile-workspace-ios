@@ -1193,7 +1193,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCV-2v-eN9" customClass="MDCButton">
-                                <rect key="frame" x="373" y="314.33333333333331" width="47" height="48"/>
+                                <rect key="frame" x="373" y="274.33333333333331" width="47" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yVu-jJ-c6f"/>
                                 </constraints>
@@ -1203,7 +1203,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YX-6x-DuM" customClass="MDCButton">
-                                <rect key="frame" x="327" y="314.33333333333331" width="30" height="48"/>
+                                <rect key="frame" x="327" y="274.33333333333331" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ywA-u8-JDB"/>
                                 </constraints>
@@ -1212,10 +1212,10 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bu-tB-3Et" customClass="MDCOutlinedTextArea">
-                                <rect key="frame" x="24" y="198.33333333333334" width="380" height="100.00000000000003"/>
+                                <rect key="frame" x="24" y="198.33333333333334" width="380" height="60.000000000000028"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="7uK-D1-U6a"/>
+                                    <constraint firstAttribute="height" constant="60" id="7uK-D1-U6a"/>
                                 </constraints>
                             </view>
                         </subviews>

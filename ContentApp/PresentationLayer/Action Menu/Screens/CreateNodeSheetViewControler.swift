@@ -43,6 +43,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        descriptionTextArea.maximumNumberOfVisibleRows = 2
         uploadButton.isEnabled = false
         view.layer.cornerRadius = dialogCornerRadius
         addLocalization()
