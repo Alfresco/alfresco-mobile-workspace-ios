@@ -73,7 +73,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
-        if let nodeName = nameTextField.text, nodeName != "" {
+        if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+           nodeName != "" {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
                 var descriptionNode: String?
@@ -159,17 +160,57 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-
-        enableUploadButton = (textField.updatedText(for: range, replacementString: string) != "")
+        enableUploadButton(for: textField.updatedText(for: range, replacementString: string))
         return true
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        enableUploadButton = false
+        enableUploadButton(for: "")
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableUploadButton = (textField.text != "")
+        enableUploadButton(for: textField.text)
+    }
+
+    func enableUploadButton(for text: String?) {
+        guard let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
+        else { return }
+        if text?.hasSpecialCharacters() == true {
+            enableUploadButton = false
+            nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
+            let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
+                                 kSpecialCharacters)
+            nameTextField.leadingAssistiveLabel.text = message
+        } else if text != "" {
+            enableUploadButton = true
+            nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+            nameTextField.leadingAssistiveLabel.text = ""
+        } else {
+            enableUploadButton = false
+            nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+            nameTextField.leadingAssistiveLabel.text = ""
+        }
+
+        if text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            enableUploadButton = false
+        }
+
+        if createNodeViewModel?.creatingNewFolder() == true  {
+            let textTrimm = text?.trimmingCharacters(in: .whitespacesAndNewlines)
+            if textTrimm?.last == "." {
+                enableUploadButton = false
+                nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
+                let message = String(format: LocalizationConstants.Errors.errorFolderNameEndPeriod,
+                                     ".")
+                nameTextField.leadingAssistiveLabel.text = message
+            } else if textTrimm == "" && text?.count ?? 0 > 0 {
+                enableUploadButton = false
+                nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
+                let message = String(format: LocalizationConstants.Errors.errorFolderNameContainOnlySpaces,
+                                     ".")
+                nameTextField.leadingAssistiveLabel.text = message
+            }
+        }
     }
 }

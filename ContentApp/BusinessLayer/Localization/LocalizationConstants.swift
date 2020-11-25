@@ -94,6 +94,10 @@ struct LocalizationConstants {
         static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
         static let errorTimeout = NSLocalizedString("error-timeout", comment: "")
         static let errorFolderSameName = NSLocalizedString("error-folder-same-name", comment: "")
+        static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
+        static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
+        static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
+
     }
 
     struct Approved {

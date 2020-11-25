@@ -91,6 +91,7 @@ let kIndexPathZero = IndexPath(row: 0, section: 0)
 let kPlayerBackForWardTime: Double = 10
 let kToolbarFilePreviewNumberOfAction: Int = 3
 let kTruncateLimitTitleInSnackbar: Int = 20
+let kSpecialCharacters = "* \" < > \\ / ? : |"
 
 // MARK: - Preview Files
 let kMultiplerPreviewSizeImage: CGFloat = 1.0

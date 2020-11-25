@@ -169,6 +169,7 @@
 		E373675D25235D0E004FBCBD /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */; };
 		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
 		E37618062476912000DA13ED /* Mirror+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Description.swift */; };
+		E378D598256D9FDE00E08405 /* String+Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = E378D597256D9FDE00E08405 /* String+Range.swift */; };
 		E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA02493E874006373FD /* TabBarMainViewController.swift */; };
 		E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D1CA22493EB53006373FD /* TabBarScreenCoordinator.swift */; };
 		E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */; };
@@ -447,6 +448,7 @@
 		E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
 		E37618052476912000DA13ED /* Mirror+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Description.swift"; sourceTree = "<group>"; };
+		E378D597256D9FDE00E08405 /* String+Range.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Range.swift"; sourceTree = "<group>"; };
 		E378DC972550422900E96C99 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E378DC9B2550423200E96C99 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E378DC9C2550425900E96C99 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -819,6 +821,7 @@
 				E35FB7492476693C004674FD /* String+Encoding.swift */,
 				E3355FF224DAEAC900C2C8A5 /* String+LiveSearch.swift */,
 				E3A87A37251CBB2100AE8175 /* String+CompareVersions.swift */,
+				E378D597256D9FDE00E08405 /* String+Range.swift */,
 				E37618052476912000DA13ED /* Mirror+Description.swift */,
 				E3EFAB24248F8BB700635521 /* NSError+Mapper.swift */,
 				E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */,
@@ -1898,6 +1901,7 @@
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
 				E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */,
+				E378D598256D9FDE00E08405 /* String+Range.swift in Sources */,
 				B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */,
 				E3AE4EA1250675870095C76E /* ImagePreview.swift in Sources */,
 				E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */,

@@ -81,6 +81,10 @@ class CreateNodeViewModel {
         }
     }
 
+    func creatingNewFolder() -> Bool {
+        return actionMenu.type == .createFolder
+    }
+
     // MARK: - Create Nodes
 
     private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
