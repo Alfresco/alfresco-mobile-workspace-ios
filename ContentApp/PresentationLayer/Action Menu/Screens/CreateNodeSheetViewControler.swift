@@ -57,6 +57,9 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         uploadButton.isEnabled = false
         view.layer.cornerRadius = dialogCornerRadius
         addLocalization()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
         nameTextField.becomeFirstResponder()
     }
 
@@ -88,7 +91,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     }
 
     @IBAction func cancelButtonTapped(_ sender: MDCButton) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private Utils
