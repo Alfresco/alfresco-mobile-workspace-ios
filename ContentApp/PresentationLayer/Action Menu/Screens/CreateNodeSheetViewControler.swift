@@ -195,5 +195,6 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
         enableUploadButton = true
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
         nameTextField.leadingAssistiveLabel.text = ""
+        nameTextField.trailingView = nil
     }
 }
