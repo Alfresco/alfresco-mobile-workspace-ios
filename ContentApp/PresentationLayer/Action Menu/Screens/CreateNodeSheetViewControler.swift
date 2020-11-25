@@ -24,6 +24,7 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class CreateNodeSheetViewControler: SystemThemableViewController {
 
+    @IBOutlet weak var titleCreate: UILabel!
     @IBOutlet weak var nameTextField: MDCOutlinedTextField!
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var uploadButton: MDCButton!
@@ -97,6 +98,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         cancelButton.setTitle(LocalizationConstants.Buttons.cancel, for: .normal)
         descriptionTextView.text = "  " + LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
+        titleCreate.text = createNodeViewModel?.createAction()
     }
 
     override func applyComponentsThemes() {
@@ -116,7 +118,11 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         cancelButton.applyTextTheme(withScheme: buttonScheme)
         cancelButton.isUppercaseTitle = false
 
+        titleCreate.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleCreate.textAlignment = .center
+
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+
         descriptionTextView.applyStyleBody2OnSurface(theme: currentTheme)
         descriptionTextView.textColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         descriptionTextView.layer.cornerRadius = dialogCornerRadius

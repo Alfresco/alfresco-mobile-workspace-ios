@@ -85,6 +85,10 @@ class CreateNodeViewModel {
         return actionMenu.type == .createFolder
     }
 
+    func createAction() -> String {
+        return actionMenu.title
+    }
+
     // MARK: - Create Nodes
 
     private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
