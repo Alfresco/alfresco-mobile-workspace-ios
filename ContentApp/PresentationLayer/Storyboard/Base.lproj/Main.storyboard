@@ -1175,8 +1175,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Px-id-FVe">
+                                <rect key="frame" x="24" y="68" width="380" height="20.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-og-1bt" customClass="MDCOutlinedTextField">
-                                <rect key="frame" x="16" y="68" width="396" height="50"/>
+                                <rect key="frame" x="24" y="108.33333333333331" width="380" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xc7-Sd-Zzh"/>
                                 </constraints>
@@ -1186,21 +1192,8 @@
                                     <outlet property="delegate" destination="MGN-jE-qJc" id="b2G-9Y-kb7"/>
                                 </connections>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EsN-Vu-bLT">
-                                <rect key="frame" x="16" y="142" width="396" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="EmA-g1-n23"/>
-                                </constraints>
-                                <color key="textColor" systemColor="labelColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                <connections>
-                                    <outlet property="delegate" destination="MGN-jE-qJc" id="9cX-kc-NBU"/>
-                                </connections>
-                            </textView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCV-2v-eN9" customClass="MDCButton">
-                                <rect key="frame" x="382" y="258" width="30" height="48"/>
+                                <rect key="frame" x="390" y="274.33333333333331" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yVu-jJ-c6f"/>
                                 </constraints>
@@ -1209,7 +1202,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YX-6x-DuM" customClass="MDCButton">
-                                <rect key="frame" x="336" y="258" width="30" height="48"/>
+                                <rect key="frame" x="344" y="274.33333333333331" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ywA-u8-JDB"/>
                                 </constraints>
@@ -1217,27 +1210,38 @@
                                     <action selector="cancelButtonTapped:" destination="MGN-jE-qJc" eventType="touchUpInside" id="eDa-3E-KUp"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bu-tB-3Et" customClass="MDCOutlinedTextArea">
+                                <rect key="frame" x="24" y="198.33333333333334" width="380" height="60.000000000000028"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="7uK-D1-U6a"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oa6-wP-FHQ"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="rpv-og-1bt" firstAttribute="top" secondItem="oa6-wP-FHQ" secondAttribute="top" constant="24" id="7FV-cp-DJA"/>
                             <constraint firstItem="oa6-wP-FHQ" firstAttribute="bottom" secondItem="qCV-2v-eN9" secondAttribute="bottom" priority="250" id="H2b-ez-Rm6"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="1bu-tB-3Et" secondAttribute="trailing" priority="750" constant="24" id="HDy-08-KSh"/>
+                            <constraint firstItem="1bu-tB-3Et" firstAttribute="top" secondItem="rpv-og-1bt" secondAttribute="bottom" constant="40" id="MqV-Q4-aBb"/>
                             <constraint firstItem="4YX-6x-DuM" firstAttribute="centerY" secondItem="qCV-2v-eN9" secondAttribute="centerY" id="N3A-hO-bXY"/>
-                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="Otc-H1-XGI"/>
-                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="top" secondItem="rpv-og-1bt" secondAttribute="bottom" constant="24" id="VTb-4I-71y"/>
-                            <constraint firstItem="qCV-2v-eN9" firstAttribute="top" secondItem="EsN-Vu-bLT" secondAttribute="bottom" constant="16" id="Wuo-Eh-JkC"/>
+                            <constraint firstItem="1bu-tB-3Et" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" priority="750" constant="24" id="RLt-mR-Zr7"/>
+                            <constraint firstItem="0Px-id-FVe" firstAttribute="top" secondItem="oa6-wP-FHQ" secondAttribute="top" constant="24" id="Rqu-No-5u0"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="top" secondItem="1bu-tB-3Et" secondAttribute="bottom" constant="16" id="Wet-Tu-5ET"/>
                             <constraint firstItem="qCV-2v-eN9" firstAttribute="leadingMargin" secondItem="4YX-6x-DuM" secondAttribute="trailingMargin" constant="32" id="YV7-vb-1uF"/>
-                            <constraint firstItem="rpv-og-1bt" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" constant="16" id="Ywd-wQ-MAA"/>
-                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="16" id="cIo-22-xAp"/>
-                            <constraint firstItem="qCV-2v-eN9" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="ev6-rb-nb6"/>
-                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="leading" secondItem="rpv-og-1bt" secondAttribute="leading" id="h0i-1T-VPb"/>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" priority="750" constant="24" id="Ywd-wQ-MAA"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="0Px-id-FVe" secondAttribute="trailing" priority="750" constant="24" id="bfD-KQ-BN5"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" priority="750" constant="24" id="cIo-22-xAp"/>
+                            <constraint firstItem="0Px-id-FVe" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" priority="750" constant="24" id="dKU-Vn-Bta"/>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="top" secondItem="0Px-id-FVe" secondAttribute="bottom" constant="20" id="eTv-Tf-5gI"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="trailingMargin" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="8" id="ev6-rb-nb6"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="4YX-6x-DuM" id="HI8-C3-LrN"/>
-                        <outlet property="descriptionTextView" destination="EsN-Vu-bLT" id="cIe-oy-uhc"/>
+                        <outlet property="descriptionTextArea" destination="1bu-tB-3Et" id="AW5-no-nU2"/>
                         <outlet property="nameTextField" destination="rpv-og-1bt" id="J6s-Hg-HDN"/>
+                        <outlet property="titleCreate" destination="0Px-id-FVe" id="qvf-qE-eUX"/>
                         <outlet property="uploadButton" destination="qCV-2v-eN9" id="I9l-oo-XbU"/>
                     </connections>
                 </viewController>
@@ -2016,7 +2020,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6C-F8-M04" customClass="MDCFloatingButton">
-                                <rect key="frame" x="356" y="820" width="56" height="56"/>
+                                <rect key="frame" x="356" y="813" width="56" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="YE8-zc-voB"/>
                                     <constraint firstAttribute="width" constant="56" id="zIf-0k-5A5"/>
@@ -2036,7 +2040,7 @@
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
-                            <constraint firstAttribute="bottomMargin" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="16" id="TUs-8u-Qcm"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="23" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>

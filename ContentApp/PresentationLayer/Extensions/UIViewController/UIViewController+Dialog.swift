@@ -43,20 +43,21 @@ extension UIViewController {
 
         if let themingService =
             ApplicationBootstrap.shared().repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService, let currentTheme = themingService.activeTheme {
+
             alertController.applyTheme(withScheme: themingService.containerScheming(for: .pdfPasswordDialog))
             alertController.titleFont = currentTheme.subtitle1TextStyle.font
             alertController.titleColor = currentTheme.onSurfaceColor
             alertController.messageFont = currentTheme.body2TextStyle.font
             alertController.messageColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
             alertController.view.backgroundColor = currentTheme.surfaceColor
-        }
+            alertController.cornerRadius = dialogCornerRadius
 
-        for action in alertController.actions {
-            let button = alertController.button(for: action)
-            button?.isUppercaseTitle = false
+            for action in alertController.actions {
+                let button = alertController.button(for: action)
+                button?.isUppercaseTitle = false
+                button?.applyTextTheme(withScheme: themingService.containerScheming(for: .dialogButton))
+            }
         }
-
-        alertController.cornerRadius = dialogCornerRadius
 
         self.present(alertController, animated: true, completion: completionHandler)
 

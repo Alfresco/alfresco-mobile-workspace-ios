@@ -24,23 +24,13 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class CreateNodeSheetViewControler: SystemThemableViewController {
 
+    @IBOutlet weak var titleCreate: UILabel!
     @IBOutlet weak var nameTextField: MDCOutlinedTextField!
-    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var descriptionTextArea: MDCOutlinedTextArea!
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
 
     var createNodeViewModel: CreateNodeViewModel?
-    var shouldDisplayPlaceholderInTextView: Bool = true {
-        didSet {
-            guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-            let textColor = (shouldDisplayPlaceholderInTextView) ?
-                currentTheme.onSurfaceColor.withAlphaComponent(0.6) : currentTheme.onSurfaceColor
-            let text = (shouldDisplayPlaceholderInTextView) ?
-                "  " + LocalizationConstants.TextFieldPlaceholders.description : ""
-            descriptionTextView.text = text
-            descriptionTextView.textColor = textColor
-        }
-    }
 
     var enableUploadButton: Bool = false {
         didSet {
@@ -53,9 +43,13 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        descriptionTextArea.maximumNumberOfVisibleRows = 2
         uploadButton.isEnabled = false
         view.layer.cornerRadius = dialogCornerRadius
         addLocalization()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
         nameTextField.becomeFirstResponder()
     }
 
@@ -73,26 +67,29 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
-        if let nodeName = nameTextField.text {
+        if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+           nodeName != "" {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.createNodeViewModel?.createNode(with: nodeName,
-                                                             description: sSelf.descriptionTextView.text)
+                var descriptionNode = sSelf.descriptionTextArea.textView.text
+                descriptionNode = (descriptionNode == "") ? nil : descriptionNode
+                sSelf.createNodeViewModel?.createNode(with: nodeName, description: descriptionNode)
             }
         }
     }
 
     @IBAction func cancelButtonTapped(_ sender: MDCButton) {
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     // MARK: - Private Utils
 
     func addLocalization() {
-        uploadButton.setTitle(LocalizationConstants.Buttons.upload, for: .normal)
+        uploadButton.setTitle(LocalizationConstants.Buttons.create, for: .normal)
         cancelButton.setTitle(LocalizationConstants.Buttons.cancel, for: .normal)
-        descriptionTextView.text = "  " + LocalizationConstants.TextFieldPlaceholders.description
+        descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
+        titleCreate.text = createNodeViewModel?.createAction()
     }
 
     override func applyComponentsThemes() {
@@ -112,16 +109,18 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         cancelButton.applyTextTheme(withScheme: buttonScheme)
         cancelButton.isUppercaseTitle = false
 
+        titleCreate.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleCreate.textAlignment = .left
+
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
-        descriptionTextView.applyStyleBody2OnSurface(theme: currentTheme)
-        descriptionTextView.textColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        descriptionTextView.layer.cornerRadius = dialogCornerRadius
-        descriptionTextView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.38).cgColor
-        descriptionTextView.layer.borderWidth = 1
+        nameTextField.trailingViewMode = .unlessEditing
+
+        descriptionTextArea.applyTheme(withScheme: loginTextFieldScheme)
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
+        let targetSize = CGSize(width: size.width,
+                                height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 }
@@ -130,24 +129,6 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
 extension CreateNodeSheetViewControler: StoryboardInstantiable { }
 
-// MARK: - UITextView Delegate
-
-extension CreateNodeSheetViewControler: UITextViewDelegate {
-
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if shouldDisplayPlaceholderInTextView {
-            shouldDisplayPlaceholderInTextView = false
-        }
-        return true
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        if textView.text.isEmpty {
-            shouldDisplayPlaceholderInTextView = true
-        }
-    }
-}
-
 // MARK: - UITextField Delegate
 
 extension CreateNodeSheetViewControler: UITextFieldDelegate {
@@ -155,12 +136,66 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
+        enableUploadButton(for: textField.updatedText(for: range, replacementString: string))
+        return true
+    }
 
-        enableUploadButton = (textField.updatedText(for: range, replacementString: string) != "")
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        enableUploadButton(for: "")
         return true
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableUploadButton = (textField.text != "")
+        enableUploadButton(for: textField.text)
+    }
+
+    func enableUploadButton(for text: String?) {
+        if text?.hasSpecialCharacters() == true {
+            let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
+                                 kSpecialCharacters)
+            applyErrorOnTextField(with: message)
+        } else if text != "" {
+            disableErrorOnTextField()
+        } else {
+            enableUploadButton = false
+            disableErrorOnTextField()
+        }
+
+        if text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+            enableUploadButton = false
+        }
+
+        if createNodeViewModel?.creatingNewFolder() == true {
+            let textTrimm = text?.trimmingCharacters(in: .whitespacesAndNewlines)
+            if textTrimm?.last == "." {
+                let message = String(format: LocalizationConstants.Errors.errorFolderNameEndPeriod,
+                                     ".")
+                applyErrorOnTextField(with: message)
+            } else if textTrimm == "" && text?.count ?? 0 > 0 {
+                let message = String(format: LocalizationConstants.Errors.errorFolderNameContainOnlySpaces,
+                                     ".")
+                applyErrorOnTextField(with: message)
+            }
+        }
+    }
+
+    func applyErrorOnTextField(with message: String) {
+        guard let loginTextFieldScheme =
+                coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
+        else { return }
+        enableUploadButton = false
+        nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
+        nameTextField.leadingAssistiveLabel.text = message
+        nameTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
+    }
+
+    func disableErrorOnTextField() {
+        guard let loginTextFieldScheme =
+                coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
+        else { return }
+        enableUploadButton = true
+        nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+        nameTextField.leadingAssistiveLabel.text = ""
+        nameTextField.trailingView = nil
     }
 }

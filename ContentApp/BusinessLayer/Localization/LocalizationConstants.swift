@@ -37,7 +37,7 @@ struct LocalizationConstants {
         static let yes = NSLocalizedString("yes", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
-        static let upload = NSLocalizedString("upload", comment: "")
+        static let create = NSLocalizedString("create", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -94,6 +94,10 @@ struct LocalizationConstants {
         static let errorUnknown = NSLocalizedString("error-unknown", comment: "")
         static let errorTimeout = NSLocalizedString("error-timeout", comment: "")
         static let errorFolderSameName = NSLocalizedString("error-folder-same-name", comment: "")
+        static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
+        static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
+        static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
+
     }
 
     struct Approved {

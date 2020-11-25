@@ -33,7 +33,7 @@
 "yes" = "Yes";
 "cancel" = "Cancel";
 "delete" = "Delete";
-"upload" = "Upload";
+"create" = "Create";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
@@ -84,6 +84,9 @@
 "error-unknown" = "Unknown error occurred.";
 "error-timeout" = "This is taking longer than expected. Hang tight for a few moments.";
 "error-folder-same-name" = "There's already a folder with this name. Try a different name.";
+"error-node-name-special-characters" = "Name can't contain these characters %@";
+"error-folder-name-end-period" = "Folder name can't end with a period %@";
+"error-folder-name-contain-only-spaces" = "Folder name can't contain only spaces";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Changes to the configuration have been saved.";

@@ -177,12 +177,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                                        UICollectionViewDataSource,
                                        UICollectionViewDelegate {
 
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard listDataSource?.shouldDisplayCreateButton() == true else { return }
-        let position = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        createButton.isHidden = !(position.y > 0 )
-    }
-
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -289,7 +283,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
 
     func createNode(node: ListNode?, error: Error?) {
-        if let error = error {
+        if node == nil && error == nil {
+            return
+        } else if let error = error {
             self.display(error: error)
         } else {
             displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
@@ -410,6 +406,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
 
     func shouldDisplayCreateButton(enable: Bool) {
         createButton.isHidden = !enable
+        if enable {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
+        }
     }
 }
 

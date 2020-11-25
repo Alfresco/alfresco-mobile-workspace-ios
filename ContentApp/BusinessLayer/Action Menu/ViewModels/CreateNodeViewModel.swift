@@ -57,10 +57,12 @@ class CreateNodeViewModel {
 
         guard let nodeBody = self.nodeBody() else { return }
 
-        uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.uploadRequest?.cancel()
-        })
+        if actionMenu.type != .createFolder {
+            uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.uploadRequest?.cancel()
+            })
+        }
         updateNodeDetails { [weak self] (listNode, _) in
             guard let sSelf = self, let listNode = listNode else { return }
             let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
@@ -79,12 +81,19 @@ class CreateNodeViewModel {
         }
     }
 
+    func creatingNewFolder() -> Bool {
+        return actionMenu.type == .createFolder
+    }
+
+    func createAction() -> String {
+        return actionMenu.title
+    }
+
     // MARK: - Create Nodes
 
     private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
         requestBuilder.execute { [weak self] (result, error) in
             guard let sSelf = self else { return }
-            sSelf.uploadDialog?.dismiss(animated: true)
             if let error = error {
                 sSelf.delegate?.createNode(node: nil, error: error)
                 AlfrescoLog.error(error)
@@ -113,6 +122,11 @@ class CreateNodeViewModel {
                                 mimeType: "")
                 formData.append(dataNodeType, withName: "nodeType")
                 formData.append(dataAutoRename, withName: "autoRename")
+
+            }
+            if let description = sSelf.nodeDescription,
+               let dataDescription = description.data(using: .utf8) {
+                formData.append(dataDescription, withName: "cm:description")
             }
         }, to: url,
         headers: AlfrescoContentAPI.customHeaders,
@@ -125,26 +139,26 @@ class CreateNodeViewModel {
                 upload.responseJSON { response in
                     sSelf.uploadDialog?.dismiss(animated: true)
 
-                    if let data = response.data {
-                        let resultDecode = sSelf.decode(data: data)
-                        if let nodeEntry = resultDecode.0 {
-                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.createNode(node: listNode, error: nil)
-                            sSelf.publishEventBus(with: listNode)
+                    if let error = response.error {
+                        sSelf.handle(error: error)
+                    } else {
+                        if let data = response.data {
+                            let resultDecode = sSelf.decode(data: data)
+                            if let nodeEntry = resultDecode.0 {
+                                let listNode = NodeChildMapper.create(from: nodeEntry.entry)
+                                sSelf.delegate?.createNode(node: listNode, error: nil)
+                                sSelf.publishEventBus(with: listNode)
+                            }
+                            if let error = resultDecode.1 {
+                                sSelf.delegate?.createNode(node: nil, error: error)
+                                AlfrescoLog.error(error)
+                            }
                         }
-                        if let error = resultDecode.1 {
-                            sSelf.delegate?.createNode(node: nil, error: error)
-                            AlfrescoLog.error(error)
-                        }
-                    } else if let error = response.error {
-                        sSelf.delegate?.createNode(node: nil, error: error)
-                        AlfrescoLog.error(error)
                     }
                 }
             case .failure(let encodingError):
                 sSelf.uploadDialog?.dismiss(animated: true)
-                sSelf.delegate?.createNode(node: nil, error: encodingError)
-                AlfrescoLog.error(encodingError)
+                sSelf.handle(error: encodingError)
             }
         })
     }
@@ -233,15 +247,33 @@ class CreateNodeViewModel {
         else { return nil }
 
         let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
-
         return NodeBodyCreate(name: name + nodeExtension,
                               nodeType: nodeType,
                               aspectNames: nil,
-                              properties: nil,
+                              properties: nodeProperties(),
                               permissions: nil,
                               relativePath: nil,
                               association: nil,
                               secondaryChildren: nil,
                               targets: nil)
+    }
+
+    private func handle(error: Error) {
+        if error.code == NSURLErrorNetworkConnectionLost ||
+            error.code == NSURLErrorCancelled {
+            delegate?.createNode(node: nil, error: nil)
+            return
+        }
+        delegate?.createNode(node: nil, error: error)
+        AlfrescoLog.error(error)
+    }
+
+    private func nodeProperties() -> JSONValue? {
+        guard let name = self.nodeName,
+              let description = self.nodeDescription
+              else { return nil }
+        return JSONValue(dictionaryLiteral:
+                            ("cm:title", JSONValue(stringLiteral: name)),
+                         ("cm:description", JSONValue(stringLiteral: description)))
     }
 }
