@@ -37,7 +37,7 @@ struct LocalizationConstants {
         static let yes = NSLocalizedString("yes", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
-        static let upload = NSLocalizedString("upload", comment: "")
+        static let create = NSLocalizedString("create", comment: "")
     }
 
     struct TextFieldPlaceholders {

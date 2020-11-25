@@ -33,7 +33,7 @@
 "yes" = "Yes";
 "cancel" = "Cancel";
 "delete" = "Delete";
-"upload" = "Upload";
+"create" = "Create";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
