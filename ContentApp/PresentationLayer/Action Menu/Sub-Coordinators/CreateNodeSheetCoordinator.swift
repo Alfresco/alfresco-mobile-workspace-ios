@@ -51,6 +51,6 @@ class CreateNodeSheetCoordinator: Coordinator {
         viewController.transitioningDelegate = dialogTransitionController
         viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
         createNodeSheetViewController = viewController
-        presenter.present(viewController, animated: false)
+        presenter.present(viewController, animated: true)
     }
 }
