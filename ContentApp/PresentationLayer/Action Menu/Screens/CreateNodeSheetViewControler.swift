@@ -119,9 +119,10 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         cancelButton.isUppercaseTitle = false
 
         titleCreate.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        titleCreate.textAlignment = .center
+        titleCreate.textAlignment = .left
 
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+        nameTextField.trailingViewMode = .unlessEditing
 
         descriptionTextView.applyStyleBody2OnSurface(theme: currentTheme)
         descriptionTextView.textColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
@@ -180,43 +181,51 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     }
 
     func enableUploadButton(for text: String?) {
-        guard let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
-        else { return }
         if text?.hasSpecialCharacters() == true {
-            enableUploadButton = false
-            nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
             let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
                                  kSpecialCharacters)
-            nameTextField.leadingAssistiveLabel.text = message
+            applyErrorOnTextField(with: message)
         } else if text != "" {
-            enableUploadButton = true
-            nameTextField.applyTheme(withScheme: loginTextFieldScheme)
-            nameTextField.leadingAssistiveLabel.text = ""
+            disableErrorOnTextField()
         } else {
             enableUploadButton = false
-            nameTextField.applyTheme(withScheme: loginTextFieldScheme)
-            nameTextField.leadingAssistiveLabel.text = ""
+            disableErrorOnTextField()
         }
 
         if text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             enableUploadButton = false
         }
 
-        if createNodeViewModel?.creatingNewFolder() == true  {
+        if createNodeViewModel?.creatingNewFolder() == true {
             let textTrimm = text?.trimmingCharacters(in: .whitespacesAndNewlines)
             if textTrimm?.last == "." {
-                enableUploadButton = false
-                nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameEndPeriod,
                                      ".")
-                nameTextField.leadingAssistiveLabel.text = message
+                applyErrorOnTextField(with: message)
             } else if textTrimm == "" && text?.count ?? 0 > 0 {
-                enableUploadButton = false
-                nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameContainOnlySpaces,
                                      ".")
-                nameTextField.leadingAssistiveLabel.text = message
+                applyErrorOnTextField(with: message)
             }
         }
+    }
+
+    func applyErrorOnTextField(with message: String) {
+        guard let loginTextFieldScheme =
+                coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
+        else { return }
+        enableUploadButton = false
+        nameTextField.applyErrorTheme(withScheme: loginTextFieldScheme)
+        nameTextField.leadingAssistiveLabel.text = message
+        nameTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
+    }
+
+    func disableErrorOnTextField() {
+        guard let loginTextFieldScheme =
+                coordinatorServices?.themingService?.containerScheming(for: .loginTextField)
+        else { return }
+        enableUploadButton = true
+        nameTextField.applyTheme(withScheme: loginTextFieldScheme)
+        nameTextField.leadingAssistiveLabel.text = ""
     }
 }

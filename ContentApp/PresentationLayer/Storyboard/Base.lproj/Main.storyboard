@@ -1176,13 +1176,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Px-id-FVe">
-                                <rect key="frame" x="16" y="68" width="396" height="20.333333333333329"/>
+                                <rect key="frame" x="24" y="68" width="380" height="20.333333333333329"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-og-1bt" customClass="MDCOutlinedTextField">
-                                <rect key="frame" x="16" y="112.33333333333331" width="396" height="50"/>
+                                <rect key="frame" x="24" y="108.33333333333331" width="380" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xc7-Sd-Zzh"/>
                                 </constraints>
@@ -1193,7 +1193,7 @@
                                 </connections>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="EsN-Vu-bLT">
-                                <rect key="frame" x="16" y="198.33333333333334" width="396" height="100.00000000000003"/>
+                                <rect key="frame" x="24" y="191.33333333333334" width="380" height="100.00000000000003"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="EmA-g1-n23"/>
@@ -1206,16 +1206,17 @@
                                 </connections>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCV-2v-eN9" customClass="MDCButton">
-                                <rect key="frame" x="382" y="314.33333333333331" width="30" height="48"/>
+                                <rect key="frame" x="373" y="307.33333333333331" width="47" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yVu-jJ-c6f"/>
                                 </constraints>
+                                <state key="normal" title="upload"/>
                                 <connections>
                                     <action selector="uploadButtonTapped:" destination="MGN-jE-qJc" eventType="touchUpInside" id="SRp-MF-1JI"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YX-6x-DuM" customClass="MDCButton">
-                                <rect key="frame" x="336" y="314.33333333333331" width="30" height="48"/>
+                                <rect key="frame" x="327" y="307.33333333333331" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ywA-u8-JDB"/>
                                 </constraints>
@@ -1225,22 +1226,21 @@
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="oa6-wP-FHQ"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="0Px-id-FVe" firstAttribute="centerX" secondItem="Yt3-12-Wb8" secondAttribute="centerX" id="DSy-R8-peX"/>
+                            <constraint firstItem="0Px-id-FVe" firstAttribute="leading" secondItem="rpv-og-1bt" secondAttribute="leading" id="8PD-rO-JDM"/>
                             <constraint firstItem="oa6-wP-FHQ" firstAttribute="bottom" secondItem="qCV-2v-eN9" secondAttribute="bottom" priority="250" id="H2b-ez-Rm6"/>
+                            <constraint firstItem="0Px-id-FVe" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="K6S-OX-fds"/>
                             <constraint firstItem="4YX-6x-DuM" firstAttribute="centerY" secondItem="qCV-2v-eN9" secondAttribute="centerY" id="N3A-hO-bXY"/>
                             <constraint firstItem="EsN-Vu-bLT" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="Otc-H1-XGI"/>
                             <constraint firstItem="0Px-id-FVe" firstAttribute="top" secondItem="oa6-wP-FHQ" secondAttribute="top" constant="24" id="Rqu-No-5u0"/>
-                            <constraint firstItem="0Px-id-FVe" firstAttribute="leading" secondItem="rpv-og-1bt" secondAttribute="leading" id="TMo-U9-daH"/>
-                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="top" secondItem="rpv-og-1bt" secondAttribute="bottom" constant="36" id="VTb-4I-71y"/>
+                            <constraint firstItem="EsN-Vu-bLT" firstAttribute="top" secondItem="rpv-og-1bt" secondAttribute="bottom" constant="33" id="VTb-4I-71y"/>
                             <constraint firstItem="qCV-2v-eN9" firstAttribute="top" secondItem="EsN-Vu-bLT" secondAttribute="bottom" constant="16" id="Wuo-Eh-JkC"/>
                             <constraint firstItem="qCV-2v-eN9" firstAttribute="leadingMargin" secondItem="4YX-6x-DuM" secondAttribute="trailingMargin" constant="32" id="YV7-vb-1uF"/>
-                            <constraint firstItem="rpv-og-1bt" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" constant="16" id="Ywd-wQ-MAA"/>
-                            <constraint firstItem="0Px-id-FVe" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="aa7-Xj-GpQ"/>
-                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="16" id="cIo-22-xAp"/>
-                            <constraint firstItem="rpv-og-1bt" firstAttribute="top" secondItem="0Px-id-FVe" secondAttribute="bottom" constant="24" id="eTv-Tf-5gI"/>
-                            <constraint firstItem="qCV-2v-eN9" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" id="ev6-rb-nb6"/>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="leading" secondItem="oa6-wP-FHQ" secondAttribute="leading" constant="24" id="Ywd-wQ-MAA"/>
+                            <constraint firstItem="oa6-wP-FHQ" firstAttribute="trailing" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="24" id="cIo-22-xAp"/>
+                            <constraint firstItem="rpv-og-1bt" firstAttribute="top" secondItem="0Px-id-FVe" secondAttribute="bottom" constant="20" id="eTv-Tf-5gI"/>
+                            <constraint firstItem="qCV-2v-eN9" firstAttribute="trailingMargin" secondItem="rpv-og-1bt" secondAttribute="trailing" constant="8" id="ev6-rb-nb6"/>
                             <constraint firstItem="EsN-Vu-bLT" firstAttribute="leading" secondItem="rpv-og-1bt" secondAttribute="leading" id="h0i-1T-VPb"/>
                         </constraints>
                     </view>
