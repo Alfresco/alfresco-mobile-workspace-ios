@@ -91,8 +91,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     }
 
     func shouldDisplayCreateButton() -> Bool {
-        guard let listNode = listNode else { return true }
-        return listNode.hasPermissionToCreate()
+        return false
+//        guard let listNode = listNode else { return true }
+//        return listNode.hasPermissionToCreate()
     }
 
     func isEmpty() -> Bool {
