@@ -67,6 +67,10 @@ class ActivityIndicatorView: UIView {
         overlayView?.backgroundColor = currentTheme.surfaceColor
     }
 
+    func recalculateSize(_ size: CGSize) {
+        frame.size = size
+    }
+
     // MARK: - Private Helpers
 
     private func commonInit() {
