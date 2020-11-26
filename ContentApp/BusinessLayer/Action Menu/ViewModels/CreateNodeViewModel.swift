@@ -63,22 +63,27 @@ class CreateNodeViewModel {
                 sSelf.uploadRequest?.cancel()
             })
         }
-        updateNodeDetails { [weak self] (listNode, _) in
-            guard let sSelf = self, let listNode = listNode else { return }
-            let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
-            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
-                                                                       nodeBodyCreate: nodeBody,
-                                                                       autoRename: shouldAutorename,
-                                                                       include: nil,
-                                                                       fields: nil)
-            switch sSelf.actionMenu.type {
-            case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
-            case .createFolder:
-                sSelf.createNewFolder(with: requestBuilder)
-            default: break
+        let accountService = coordinatorServices?.accountService
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            sSelf.updateNodeDetails { (listNode, _) in
+                guard let sSelf = self, let listNode = listNode else { return }
+                let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
+                let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
+                                                                           nodeBodyCreate: nodeBody,
+                                                                           autoRename: shouldAutorename,
+                                                                           include: nil,
+                                                                           fields: nil)
+                switch sSelf.actionMenu.type {
+                case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                    sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+                case .createFolder:
+                    sSelf.createNewFolder(with: requestBuilder)
+                default: break
+                }
             }
-        }
+        })
     }
 
     func creatingNewFolder() -> Bool {
@@ -111,79 +116,82 @@ class CreateNodeViewModel {
 
         Alamofire.upload(multipartFormData: { [weak self] (formData) in
             guard let sSelf = self else { return }
-
-            if let dataTemplate = sSelf.dataFromTemplateFile(),
-               let dataNodeType = nodeBody.nodeType.data(using: .utf8),
-               let dataAutoRename = "true".data(using: .utf8) {
-
-                formData.append(dataTemplate,
-                                withName: "filedata",
-                                fileName: nodeBody.name,
-                                mimeType: "")
-                formData.append(dataNodeType, withName: "nodeType")
-                formData.append(dataAutoRename, withName: "autoRename")
-
-            }
-            if let description = sSelf.nodeDescription,
-               let dataDescription = description.data(using: .utf8) {
-                formData.append(dataDescription, withName: "cm:description")
-            }
+            sSelf.addData(in: formData, from: nodeBody)
         }, to: url,
         headers: AlfrescoContentAPI.customHeaders,
         encodingCompletion: { [weak self] encodingResult in
             guard let sSelf = self else { return }
+            sSelf.finishEncodingMultipart(with: encodingResult)
+        })
+    }
 
-            switch encodingResult {
-            case .success(let upload, _, _) :
-                sSelf.uploadRequest = upload
-                upload.responseJSON { response in
-                    sSelf.uploadDialog?.dismiss(animated: true)
+    private func finishEncodingMultipart(with encodingResult: SessionManager.MultipartFormDataEncodingResult) {
+        switch encodingResult {
+        case .success(let upload, _, _) :
+            uploadRequest = upload
+            upload.responseJSON { [weak self] response in
+                guard let sSelf = self else { return }
+                sSelf.uploadDialog?.dismiss(animated: true)
 
-                    if let error = response.error {
-                        sSelf.handle(error: error)
-                    } else {
-                        if let data = response.data {
-                            let resultDecode = sSelf.decode(data: data)
-                            if let nodeEntry = resultDecode.0 {
-                                let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                                sSelf.delegate?.createNode(node: listNode, error: nil)
-                                sSelf.publishEventBus(with: listNode)
-                            }
-                            if let error = resultDecode.1 {
-                                sSelf.delegate?.createNode(node: nil, error: error)
-                                AlfrescoLog.error(error)
-                            }
+                if let error = response.error {
+                    sSelf.handle(error: error)
+                } else {
+                    if let data = response.data {
+                        let resultDecode = sSelf.decode(data: data)
+                        if let nodeEntry = resultDecode.0 {
+                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
+                            sSelf.delegate?.createNode(node: listNode, error: nil)
+                            sSelf.publishEventBus(with: listNode)
+                        }
+                        if let error = resultDecode.1 {
+                            sSelf.delegate?.createNode(node: nil, error: error)
+                            AlfrescoLog.error(error)
                         }
                     }
                 }
-            case .failure(let encodingError):
-                sSelf.uploadDialog?.dismiss(animated: true)
-                sSelf.handle(error: encodingError)
             }
-        })
+        case .failure(let encodingError):
+            uploadDialog?.dismiss(animated: true)
+            handle(error: encodingError)
+        }
+    }
+
+    private func addData(in formData: MultipartFormData, from nodeBody: NodeBodyCreate) {
+        if let dataTemplate = dataFromTemplateFile(),
+           let dataNodeType = nodeBody.nodeType.data(using: .utf8),
+           let dataAutoRename = "true".data(using: .utf8) {
+
+            formData.append(dataTemplate,
+                            withName: "filedata",
+                            fileName: nodeBody.name,
+                            mimeType: "")
+            formData.append(dataNodeType, withName: "nodeType")
+            formData.append(dataAutoRename, withName: "autoRename")
+
+        }
+        if let description = nodeDescription,
+           let dataDescription = description.data(using: .utf8) {
+            formData.append(dataDescription, withName: "cm:description")
+        }
     }
 
     // MARK: - Private Utils
 
     private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
         guard parentListNode.kind == .site else { return handle(parentListNode, nil)}
-        coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: sSelf.parentListNode.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode],
-                             relativePath: kAPIPathRelativeForSites) { (result, error) in
-                var listNode: ListNode?
-                if let error = error {
-                    AlfrescoLog.error(error)
-                } else if let entry = result?.entry {
-                    listNode = NodeChildMapper.create(from: entry)
-                }
-                handle(listNode, error)
+        NodesAPI.getNode(nodeId: parentListNode.guid,
+                         include: [kAPIIncludePathNode,
+                                   kAPIIncludeIsFavoriteNode,
+                                   kAPIIncludeAllowableOperationsNode],
+                         relativePath: kAPIPathRelativeForSites) { (result, error) in
+            var listNode: ListNode?
+            if let error = error {
+                AlfrescoLog.error(error)
+            } else if let entry = result?.entry {
+                listNode = NodeChildMapper.create(from: entry)
             }
-        })
+            handle(listNode, error)
+        }
     }
 
     private func decode(data: Data) -> (NodeEntry?, Error?) {
