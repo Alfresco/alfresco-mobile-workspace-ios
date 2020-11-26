@@ -68,7 +68,7 @@ class ConnectViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationBar(hide: true)
-        splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
         activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
     }
 
@@ -96,6 +96,11 @@ class ConnectViewController: SystemThemableViewController {
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         activityIndicator?.applyTheme(coordinatorServices?.themingService?.activeTheme)
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        activityIndicator?.recalculateSize(size)
     }
 
     // MARK: - IBActions
@@ -256,7 +261,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
     func authServiceAvailable(for authType: AvailableAuthType) {
         activityIndicator?.state = .isIdle
-        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: false)
         errorShowInProgress = false
         connectTextFieldAddMaterialComponents()
         Snackbar.dimissAll()
@@ -284,6 +289,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
 extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
+        splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
         if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
             activityIndicator?.state = .isIdle
             errorShowInProgress = true
@@ -291,7 +297,6 @@ extension ConnectViewController: AimsViewModelDelegate {
             showError(message: error.mapToMessage())
         } else {
             activityIndicator?.state = .isIdle
-            splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
             errorShowInProgress = false
             connectTextFieldAddMaterialComponents()
             Snackbar.dimissAll()

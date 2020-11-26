@@ -182,7 +182,7 @@ class SplashViewController: SystemThemableViewController {
 extension SplashViewController: SplashScreenDelegate {
     func backPadButtonNeedsTo(hide: Bool) {
         if UIDevice.current.userInterfaceIdiom == .pad {
-            backButton.isHidden = !hide
+            backButton.isHidden = hide
         } else {
             backButton.isHidden = true
         }
