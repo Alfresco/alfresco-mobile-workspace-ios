@@ -85,7 +85,6 @@ let listBottomInset: CGFloat = 63.0
 // MARK: -
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
 let kPlayerBackForWardTime: Double = 10
