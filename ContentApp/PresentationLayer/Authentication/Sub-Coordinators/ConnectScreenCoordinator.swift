@@ -72,7 +72,7 @@ class ConnectScreenCoordinator: Coordinator {
     }
 
     func popViewController() {
-        self.containerViewNavigationController?.popViewController(animated: kPushAnimation)
+        self.containerViewNavigationController?.popViewController(animated: true)
     }
 }
 

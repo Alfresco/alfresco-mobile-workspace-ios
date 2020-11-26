@@ -164,8 +164,7 @@ class ConnectViewController: SystemThemableViewController {
         copyrightLabel.textAlignment = .center
         productLabel.textAlignment = .center
 
-        view.backgroundColor =
-            (UIDevice.current.userInterfaceIdiom == .pad) ? .clear : currentTheme.surfaceColor
+        view.backgroundColor = currentTheme.surfaceColor
 
         let image = UIImage(color: currentTheme.surfaceColor,
                             size: navigationController?.navigationBar.bounds.size)
