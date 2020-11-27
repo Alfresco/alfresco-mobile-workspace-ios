@@ -139,7 +139,7 @@ class FilePreviewViewModel: EventObservable {
 
     func updateNodeDetails() {
         guard let listNode = self.listNode else { return }
-        if listNode.shouldUpdate() == false {
+        if listNode.shouldUpdate() == false && listNode.nodeType != .fileLink {
             actionMenuViewModel = ActionMenuViewModel(with: coordinatorServices?.accountService,
                                                       listNode: listNode,
                                                       toolbarDivide: true)
@@ -152,10 +152,12 @@ class FilePreviewViewModel: EventObservable {
         coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: listNode.guid,
+            let guid = (listNode.nodeType == .fileLink) ? listNode.destionation ?? listNode.guid : listNode.guid
+            NodesAPI.getNode(nodeId: guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode]) { (result, error) in
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeProperties]) { (result, error) in
                 if let error = error {
                     sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
                 } else if let entry = result?.entry {

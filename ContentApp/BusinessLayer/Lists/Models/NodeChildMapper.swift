@@ -44,6 +44,7 @@ struct NodeChildMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
+                        nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations)
     }
@@ -57,6 +58,11 @@ struct NodeChildMapper {
             mimeType = node.nodeType
             kind = .folder
         }
+        var destination: String?
+        if case .object(let object) = node.properties,
+           case .string(let value) = object["cm:destination"] {
+            destination = value
+        }
 
         return ListNode(guid: node._id,
                         mimeType: mimeType,
@@ -64,7 +70,9 @@ struct NodeChildMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
+                        nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
-                        allowableOperations: node.allowableOperations)
+                        allowableOperations: node.allowableOperations,
+                        destionation: destination)
     }
 }

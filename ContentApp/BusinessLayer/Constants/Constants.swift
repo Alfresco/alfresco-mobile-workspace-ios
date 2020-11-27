@@ -43,6 +43,7 @@ let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/con
 let kAPIIncludePathNode = "path"
 let kAPIIncludeIsFavoriteNode = "isFavorite"
 let kAPIIncludeAllowableOperationsNode = "allowableOperations"
+let kAPIIncludeProperties = "properties"
 
 // MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"

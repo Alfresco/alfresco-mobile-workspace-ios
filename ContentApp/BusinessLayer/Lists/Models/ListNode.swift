@@ -19,6 +19,15 @@
 import Foundation
 import AlfrescoContent
 
+enum NodeType: String {
+    case site = "st:site"
+    case folder = "cm:folder"
+    case file = "cm:content"
+    case fileLink = "app:filelink"
+    case folderLink = "app:folderlink"
+    case unknown = ""
+}
+
 enum ElementKindType: String {
     case file
     case folder
@@ -46,11 +55,13 @@ typealias CreatedNodeType = (String, String, String)
 class ListNode: Hashable {
     var guid: String
     var siteID: String
+    var destionation: String?
     var mimeType: String?
     var title: String
     var path: String
     var modifiedAt: Date?
     var kind: ElementKindType
+    var nodeType: NodeType
     var favorite: Bool?
     var allowableOperations: [AllowableOperationsType]?
     var siteRole: SiteRole?
@@ -64,10 +75,12 @@ class ListNode: Hashable {
          title: String, path: String,
          modifiedAt: Date? = nil,
          kind: ElementKindType,
+         nodeType: NodeType,
          favorite: Bool? = nil,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
-         trashed: Bool = false) {
+         trashed: Bool = false,
+         destionation: String? = nil) {
 
         self.guid = guid
         self.siteID = siteID
@@ -76,10 +89,12 @@ class ListNode: Hashable {
         self.path = path
         self.modifiedAt = modifiedAt
         self.kind = kind
+        self.nodeType = nodeType
         self.favorite = favorite
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
+        self.destionation = destionation
     }
 
     // MARK: - Public Helpers

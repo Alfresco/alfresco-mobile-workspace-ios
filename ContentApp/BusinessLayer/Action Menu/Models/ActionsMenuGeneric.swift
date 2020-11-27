@@ -24,7 +24,7 @@ struct ActionsMenuGeneric {
 
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
-                                    icon: FileIcon.icon(for: node.mimeType))
+                                    icon: FileIcon.icon(for: node))
         let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,

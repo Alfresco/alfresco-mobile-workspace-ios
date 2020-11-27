@@ -53,6 +53,7 @@ class FilePreviewViewController: SystemThemableViewController {
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
+        title = filePreviewViewModel?.listNode?.title
         filePreviewViewModel?.updateNodeDetails()
     }
 
@@ -289,8 +290,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             addToolbarActions()
             filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
             filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.title
-            mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode?.mimeType)
-            title = filePreviewViewModel?.listNode?.title
+            mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode)
         }
     }
 }

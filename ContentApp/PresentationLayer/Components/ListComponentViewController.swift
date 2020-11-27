@@ -261,6 +261,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         cell?.delegate = self
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
+        if node.nodeType == .fileLink || node.nodeType == .folderLink {
+            cell?.moreButton.isHidden = true
+        }
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""
         }

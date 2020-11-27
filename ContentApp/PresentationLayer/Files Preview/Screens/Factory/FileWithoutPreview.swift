@@ -35,7 +35,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .clear
 
-        let imageView = UIImageView(image: FileIcon.icon(for: node?.mimeType))
+        let imageView = UIImageView(image: FileIcon.icon(for: node))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         self.iconImageView = imageView
         addSubview(imageView)

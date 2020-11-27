@@ -23,7 +23,7 @@ struct ActionsMenuTrashMoreButton {
         var actions = [[ActionMenu]]()
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
-                                    icon: FileIcon.icon(for: node.mimeType))
+                                    icon: FileIcon.icon(for: node))
         let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,
                                       type: .permanentlyDelete)
         let restoreAction = ActionMenu(title: LocalizationConstants.ActionMenu.restore,

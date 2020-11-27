@@ -46,7 +46,7 @@ class ActionMenuViewModel {
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
                                             type: .node,
-                                            icon: FileIcon.icon(for: listNode.mimeType))],
+                                            icon: FileIcon.icon(for: listNode))],
                                 [ActionMenu(title: "", type: .placeholder),
                                  ActionMenu(title: "", type: .placeholder)]]
             if toolbarDivide {
@@ -86,7 +86,8 @@ class ActionMenuViewModel {
                 NodesAPI.getNode(nodeId: listNode.guid,
                                  include: [kAPIIncludePathNode,
                                            kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeIsFavoriteNode],
+                                           kAPIIncludeIsFavoriteNode,
+                                           kAPIIncludeProperties],
                                  relativePath: nil,
                                  fields: nil) { (result, _) in
                     if let entry = result?.entry {
