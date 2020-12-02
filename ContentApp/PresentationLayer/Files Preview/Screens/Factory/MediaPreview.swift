@@ -74,6 +74,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
         actionsView.layer.borderWidth = 1.0
         actionsView.layer.masksToBounds = true
         playerControls(enable: false)
+        audioImageView.image = UIImage(named: "ic-audio")
     }
 
     deinit {
