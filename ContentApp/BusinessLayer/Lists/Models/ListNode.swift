@@ -55,7 +55,7 @@ typealias CreatedNodeType = (String, String, String)
 class ListNode: Hashable {
     var guid: String
     var siteID: String
-    var destionation: String?
+    var destination: String?
     var mimeType: String?
     var title: String
     var path: String
@@ -94,7 +94,7 @@ class ListNode: Hashable {
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
-        self.destionation = destionation
+        self.destination = destionation
     }
 
     // MARK: - Public Helpers

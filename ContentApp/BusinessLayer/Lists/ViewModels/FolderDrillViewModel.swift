@@ -46,7 +46,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            sSelf.checkToUpdateNodeDetails { (_) in
+            sSelf.updateNodeDetailsIfNecessary { (_) in
                 NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
                                           skipCount: skipCount,
                                           maxItems: maxItems,
@@ -151,7 +151,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
     // MARK: - Private Utils
 
-    private func checkToUpdateNodeDetails(handle: @escaping (Error?) -> Void) {
+    private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
         guard let listNode = self.listNode else {
             handle(nil)
             return
@@ -170,7 +170,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     private func updateDetails(for listNode: ListNode, handle: @escaping (Error?) -> Void) {
         var guid = listNode.guid
         if listNode.nodeType == .folderLink {
-            guid = listNode.destionation ?? listNode.guid
+            guid = listNode.destination ?? listNode.guid
         }
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }

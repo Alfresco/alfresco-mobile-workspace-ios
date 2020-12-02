@@ -152,7 +152,7 @@ class FilePreviewViewModel: EventObservable {
         coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let guid = (listNode.nodeType == .fileLink) ? listNode.destionation ?? listNode.guid : listNode.guid
+            let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
             NodesAPI.getNode(nodeId: guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
