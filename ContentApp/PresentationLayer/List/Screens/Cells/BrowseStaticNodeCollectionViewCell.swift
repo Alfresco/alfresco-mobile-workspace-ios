@@ -34,6 +34,6 @@ class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
         guard let currentTheme = currentTheme else { return }
         backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        iconImageView.tintColor = currentTheme.onSurface60Color
     }
 }

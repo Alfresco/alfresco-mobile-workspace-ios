@@ -27,9 +27,8 @@ import Foundation
 */
 enum MaterialComponentsThemingScene {
     case loginTextField
-    case loginButton
-    case loginAdvancedSettingsButton
-    case loginNeedHelpButton
+    case loginBigButton
+    case loginSmallButton
     case loginResetButton
     case loginSavePadButton
     case signOutButton

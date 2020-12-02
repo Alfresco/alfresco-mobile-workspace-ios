@@ -39,6 +39,6 @@ class RefreshIndicatorView: UIRefreshControl {
     }
 
     func applyTheme(_ theme: PresentationTheme?) {
-        refreshIndicatorView.cycleColors = [theme?.primaryVariantColor ?? .black]
+        refreshIndicatorView.cycleColors = [theme?.primaryVariantT1Color ?? .black]
     }
 }

@@ -36,13 +36,7 @@ extension UILabel {
     }
 
     func applyStyleCaptionOnSurface60(theme: PresentationTheme) {
-        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
-        self.font = theme.captionTextStyle.font
-        self.add(characterSpacing: theme.captionTextStyle.letterSpacing, lineHeight: theme.captionTextStyle.lineHeight)
-    }
-
-    func applyStyleCaptionSurface60(theme: PresentationTheme) {
-        self.textColor = theme.surfaceColor.withAlphaComponent(0.6)
+        self.textColor = theme.onSurface60Color
         self.font = theme.captionTextStyle.font
         self.add(characterSpacing: theme.captionTextStyle.letterSpacing, lineHeight: theme.captionTextStyle.lineHeight)
     }
@@ -66,7 +60,7 @@ extension UILabel {
     }
 
     func applyStyleBody2OnSurface60(theme: PresentationTheme) {
-        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.textColor = theme.onSurface60Color
         self.font = theme.body2TextStyle.font
         self.add(characterSpacing: theme.body2TextStyle.letterSpacing, lineHeight: theme.body2TextStyle.lineHeight)
     }
@@ -78,15 +72,9 @@ extension UILabel {
     }
 
     func applyStyleSubtitle2OnSurface60(theme: PresentationTheme) {
-        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.textColor = theme.onSurface60Color
         self.font = theme.subtitle2TextStyle.font
         self.add(characterSpacing: theme.subtitle2TextStyle.letterSpacing, lineHeight: theme.subtitle2TextStyle.lineHeight)
-    }
-
-    func applyStyleSubtitle1Divider(theme: PresentationTheme) {
-        self.textColor = theme.dividerColor
-        self.font = theme.subtitle1TextStyle.font
-        self.add(characterSpacing: theme.subtitle1TextStyle.letterSpacing, lineHeight: theme.subtitle1TextStyle.lineHeight)
     }
 
     func applyeStyleHeadline5OnSurface(theme: PresentationTheme) {
@@ -102,7 +90,7 @@ extension UILabel {
     }
 
     func applyeStyleHeadline6OnSurface60(theme: PresentationTheme) {
-        self.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+        self.textColor = theme.onSurface60Color
         self.font = theme.headline6TextStyle.font
         self.add(characterSpacing: theme.headline6TextStyle.letterSpacing, lineHeight: theme.headline6TextStyle.lineHeight)
     }

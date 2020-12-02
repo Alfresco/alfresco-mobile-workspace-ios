@@ -53,6 +53,6 @@ class ThemeModeTableViewCell: UITableViewCell {
     func applyThemingService(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
-        radioImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        radioImageView.tintColor = currentTheme.onSurface60Color
     }
 }

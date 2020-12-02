@@ -25,10 +25,10 @@ class DownloadDialog: UIView {
     func applyTheme(_ currentTheme: PresentationTheme?) {
         if let theme = currentTheme {
             self.backgroundColor = theme.surfaceColor
-            activityIndicator.cycleColors = [theme.primaryVariantColor]
+            activityIndicator.cycleColors = [theme.primaryVariantT1Color]
 
             messageLabel.font = theme.body2TextStyle.font
-            messageLabel.textColor = theme.onSurfaceColor.withAlphaComponent(0.6)
+            messageLabel.textColor = theme.onSurface60Color
             messageLabel.lineBreakMode = .byTruncatingTail
             messageLabel.textAlignment = .center
         }

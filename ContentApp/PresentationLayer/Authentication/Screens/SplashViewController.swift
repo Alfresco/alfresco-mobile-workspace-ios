@@ -111,7 +111,7 @@ class SplashViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
-        backButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        backButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
         whiteAlphaView.backgroundColor = currentTheme.surfaceColor
         containerView.backgroundColor =
