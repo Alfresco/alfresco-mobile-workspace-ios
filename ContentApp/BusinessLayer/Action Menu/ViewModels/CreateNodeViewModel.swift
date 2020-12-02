@@ -182,7 +182,8 @@ class CreateNodeViewModel {
         NodesAPI.getNode(nodeId: parentListNode.guid,
                          include: [kAPIIncludePathNode,
                                    kAPIIncludeIsFavoriteNode,
-                                   kAPIIncludeAllowableOperationsNode],
+                                   kAPIIncludeAllowableOperationsNode,
+                                   kAPIIncludeProperties],
                          relativePath: kAPIPathRelativeForSites) { (result, error) in
             var listNode: ListNode?
             if let error = error {

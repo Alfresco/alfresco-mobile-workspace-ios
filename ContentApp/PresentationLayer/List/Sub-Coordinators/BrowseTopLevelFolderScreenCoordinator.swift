@@ -99,7 +99,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let personalFilesNode = ListNode(guid: kAPIPathMy,
                                          title: "Personal files",
                                          path: "",
-                                         kind: .folder)
+                                         kind: .folder,
+                                         nodeType: .folder)
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
                                                      parentListNode: personalFilesNode,

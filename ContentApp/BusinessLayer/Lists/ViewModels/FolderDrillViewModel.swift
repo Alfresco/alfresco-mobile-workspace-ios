@@ -46,7 +46,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            sSelf.updateNodeDetails { (_) in
+            sSelf.updateNodeDetailsIfNecessary { (_) in
                 NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
                                           skipCount: skipCount,
                                           maxItems: maxItems,
@@ -54,7 +54,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
                                           _where: nil,
                                           include: [kAPIIncludeIsFavoriteNode,
                                                     kAPIIncludePathNode,
-                                                    kAPIIncludeAllowableOperationsNode],
+                                                    kAPIIncludeAllowableOperationsNode,
+                                                    kAPIIncludeProperties],
                                           relativePath: relativePath,
                                           includeSource: nil,
                                           fields: nil) { (result, error) in
@@ -150,23 +151,35 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
     // MARK: - Private Utils
 
-    private func updateNodeDetails(handle: @escaping (Error?) -> Void) {
-        guard let listNode = self.listNode, listNode.kind == .folder
-        else {
+    private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
+        guard let listNode = self.listNode else {
             handle(nil)
             return
         }
-        if listNode.shouldUpdate() == false {
+        if listNode.nodeType == .folderLink {
+            updateDetails(for: listNode, handle: handle)
+            return
+        }
+        if listNode.kind == .site || listNode.shouldUpdate() == false {
             handle(nil)
             return
+        }
+        updateDetails(for: listNode, handle: handle)
+    }
+
+    private func updateDetails(for listNode: ListNode, handle: @escaping (Error?) -> Void) {
+        var guid = listNode.guid
+        if listNode.nodeType == .folderLink {
+            guid = listNode.destination ?? listNode.guid
         }
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: listNode.guid,
+            NodesAPI.getNode(nodeId: guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode],
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeProperties],
                              relativePath: nil) { (result, error) in
                 if let error = error {
                     AlfrescoLog.error(error)

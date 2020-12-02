@@ -34,7 +34,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
             if let element = element {
                 title.text = element.title
                 subtitle.text = element.path
-                iconImageView.image = FileIcon.icon(for: element.mimeType)
+                iconImageView.image = FileIcon.icon(for: element)
             }
         }
     }

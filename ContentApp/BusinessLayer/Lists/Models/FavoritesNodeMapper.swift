@@ -49,6 +49,7 @@ struct FavoritesNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
+                        nodeType: NodeType(rawValue: node.nodeType ?? "") ?? .unknown,
                         favorite: true,
                         allowableOperations: node.allowableOperations)
     }
@@ -61,6 +62,7 @@ struct FavoritesNodeMapper {
                         path: "",
                         modifiedAt: nil,
                         kind: .site,
+                        nodeType: .site,
                         favorite: true,
                         siteRole: node.role?.rawValue)
     }

@@ -27,7 +27,9 @@ enum IconType: String {
     case database = "ic-database"
     case document = "ic-document"
     case email = "ic-email"
+    case fileLink = "ic-file_link"
     case folder = "ic-folder_full"
+    case folderLink = "ic-folder_link"
     case folderShared = "ic-folder_shared"
     case folderSmart = "ic-folder_smart"
     case forms = "ic-forms"
@@ -186,14 +188,25 @@ class FileIcon {
 
             "cm:folder": .folder,
             "st:sites": .folder,
-            "st:site": .site
+            "st:site": .site,
+            "app:filelink": .fileLink,
+            "app:folderlink": .folderLink
         ]
     }
 
-    static func icon(for mimetype: String?) -> UIImage? {
-        guard let mimetype = mimetype else {
+    static func icon(for listNode: ListNode?) -> UIImage? {
+        guard let listNode = listNode else {
             return UIImage(named: IconType.generic.rawValue)
         }
+        if listNode.nodeType == .fileLink || listNode.nodeType == .folderLink {
+            if let iconType = self.map[listNode.nodeType.rawValue] {
+                return UIImage(named: iconType.rawValue)
+            }
+        }
+        guard let mimetype = listNode.mimeType else {
+            return UIImage(named: IconType.generic.rawValue)
+        }
+
         if let iconType = self.map[mimetype] {
             return UIImage(named: iconType.rawValue)
         } else if mimetype.hasPrefix("video/") {

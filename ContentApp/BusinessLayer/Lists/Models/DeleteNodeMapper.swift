@@ -49,6 +49,7 @@ struct DeleteNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
+                        nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         trashed: true)
     }
 }

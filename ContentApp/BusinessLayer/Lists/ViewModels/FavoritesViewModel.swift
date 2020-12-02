@@ -48,7 +48,8 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
                                        orderBy: ["title ASC"],
                                        _where: sSelf.listCondition,
                                        include: [kAPIIncludePathNode,
-                                                 kAPIIncludeAllowableOperationsNode],
+                                                 kAPIIncludeAllowableOperationsNode,
+                                                 kAPIIncludeProperties],
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 
