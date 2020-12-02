@@ -69,6 +69,7 @@ class ActivityIndicatorView: UIView {
 
     func recalculateSize(_ size: CGSize) {
         frame.size = size
+        overlayView?.frame = frame
     }
 
     // MARK: - Private Helpers
