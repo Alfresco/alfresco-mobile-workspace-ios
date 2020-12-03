@@ -77,10 +77,15 @@ struct LocalizationConstants {
         static let browse = NSLocalizedString("browse", comment: "")
     }
 
-    struct Textviews {
-        static let serviceURLHint = NSLocalizedString("help-service-url-hint", comment: "")
-        static let advancedSettingsHint = NSLocalizedString("help-advanced-settings-hint", comment: "")
-        static let ssoHint = NSLocalizedString("help-sso-hint", comment: "")
+    struct Help {
+        static let connectTitleSection1 = NSLocalizedString("help-connect-title-section1", comment: "")
+        static let connectSection1Paragraph = NSLocalizedString("help-connect-section1-paragraph", comment: "")
+        static let connectTitleSection2 = NSLocalizedString("help-connect-title-section2", comment: "")
+        static let connectSection2Paragraph = NSLocalizedString("help-connect-section2-paragraph", comment: "")
+        static let advancedSettingsTitleSection1 = NSLocalizedString("help-advanced-settings-title-section1", comment: "")
+        static let advancedSettingsSection1Paragraph = NSLocalizedString("help-advanced-settings-section1-paragraph", comment: "")
+        static let ssoTitleSection1 = NSLocalizedString("help-sso-title-section1", comment: "")
+        static let ssoSection1Paragraph = NSLocalizedString("help-sso-section1-paragraph", comment: "")
     }
 
     struct Errors {

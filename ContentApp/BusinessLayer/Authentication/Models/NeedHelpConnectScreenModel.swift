@@ -19,6 +19,10 @@
 import Foundation
 
 struct NeedHelpConnectScreenModel: NeedHelpModelProtocol {
-    var titleText = LocalizationConstants.Labels.howToConnectTitle
-    var hintText = LocalizationConstants.Textviews.serviceURLHint
+    var sections: [NeedHelpSection] =
+        [NeedHelpSection(title: LocalizationConstants.Help.connectTitleSection1,
+                         paragraphs: LocalizationConstants.Help.connectSection1Paragraph),
+         NeedHelpSection(title: LocalizationConstants.Help.connectTitleSection2,
+                         paragraphs: LocalizationConstants.Help.connectSection2Paragraph)]
+    var title = LocalizationConstants.Labels.howToConnectTitle
 }
