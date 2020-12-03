@@ -28,6 +28,27 @@ struct NodeChildMapper {
         return nodes
     }
 
+    static func create(from node: Node) -> ListNode {
+        let path = node.path?.elements?.compactMap({ $0.name })
+            .joined(separator: " \u{203A} ") ?? ""
+        var mimeType = node.content?.mimeType
+        var kind = ElementKindType.file
+        if node.isFolder {
+            mimeType = node.nodeType
+            kind = .folder
+        }
+
+        return ListNode(guid: node._id,
+                        mimeType: mimeType,
+                        title: node.name,
+                        path: path,
+                        modifiedAt: node.modifiedAt,
+                        kind: kind,
+                        nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
+                        favorite: node.isFavorite,
+                        allowableOperations: node.allowableOperations)
+    }
+
     private static func create(from node: NodeChildAssociation) -> ListNode {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
@@ -37,12 +58,21 @@ struct NodeChildMapper {
             mimeType = node.nodeType
             kind = .folder
         }
+        var destination: String?
+        if case .object(let object) = node.properties,
+           case .string(let value) = object["cm:destination"] {
+            destination = value
+        }
+
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
                         kind: kind,
-                        favorite: node.isFavorite ?? false)
+                        nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
+                        favorite: node.isFavorite,
+                        allowableOperations: node.allowableOperations,
+                        destionation: destination)
     }
 }

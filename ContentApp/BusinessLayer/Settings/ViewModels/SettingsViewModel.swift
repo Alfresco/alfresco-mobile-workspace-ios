@@ -69,7 +69,8 @@ class SettingsViewModel {
     }
 
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
-        let alert = MDCAlertController(title: LocalizationConstants.Buttons.signOut, message: LocalizationConstants.Settings.signOutConfirmation)
+        let title = LocalizationConstants.Buttons.signOut
+        let message = LocalizationConstants.Settings.signOutConfirmation
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
             guard let sSelf = self else { return }
@@ -77,10 +78,12 @@ class SettingsViewModel {
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
 
-        alert.addAction(confirmAction)
-        alert.addAction(cancelAction)
-
-        viewController.present(alert, animated: true, completion: nil)
+        if let viewController = viewController as? SystemThemableViewController {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [confirmAction,
+                                                    cancelAction]) {}
+        }
     }
 
     // MARK: - Private methods
@@ -132,7 +135,7 @@ class SettingsViewModel {
         default:
             themeName = LocalizationConstants.Theme.auto
         }
-        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "theme"))
+        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "ic-theme"))
     }
 
     private func getVersionItem() -> SettingsItem {

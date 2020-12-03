@@ -29,7 +29,7 @@ class AIMSAccount: AccountProtocol, Equatable {
         return session.identifier
     }
     var apiBasePath: String {
-        return "\(session.parameters.fullContentURL)/\(session.parameters.serviceDocument)/\(kAPIPathBase)"
+        return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(kAPIPathBase)"
     }
     var session: AIMSSession
 

@@ -21,12 +21,12 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var listNode: ListNode?
 
-    var listNodeGuid: String = kAPIPathMy
-    var listNodeIsFolder: Bool = true
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -43,32 +43,36 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNodeIsFolder) ? nil : kAPIPathRelativeForSites
+            let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
-
-            NodesAPI.listNodeChildren(nodeId: sSelf.listNodeGuid,
-                                      skipCount: skipCount,
-                                      maxItems: maxItems,
-                                      orderBy: nil,
-                                      _where: nil,
-                                      include: ["isFavorite"],
-                                      relativePath: relativePath,
-                                      includeSource: nil,
-                                      fields: nil) { (result, error) in
-                var listNodes: [ListNode]?
-                if let entries = result?.list?.entries {
-                    listNodes = NodeChildMapper.map(entries)
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
+            sSelf.updateNodeDetailsIfNecessary { (_) in
+                NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
+                                          skipCount: skipCount,
+                                          maxItems: maxItems,
+                                          orderBy: nil,
+                                          _where: nil,
+                                          include: [kAPIIncludeIsFavoriteNode,
+                                                    kAPIIncludePathNode,
+                                                    kAPIIncludeAllowableOperationsNode,
+                                                    kAPIIncludeProperties],
+                                          relativePath: relativePath,
+                                          includeSource: nil,
+                                          fields: nil) { (result, error) in
+                    var listNodes: [ListNode]?
+                    if let entries = result?.list?.entries {
+                        listNodes = NodeChildMapper.map(entries)
+                    } else {
+                        if let error = error {
+                            AlfrescoLog.error(error)
+                        }
                     }
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list?.pagination)
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
                 }
-                let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
     }
@@ -79,8 +83,26 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     // MARK: - ListViewModelProtocol
 
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+//        guard let listNode = listNode else { return true }
+//        return listNode.hasPermissionToCreate()
+    }
+
     func isEmpty() -> Bool {
         return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
     }
 
     func shouldDisplaySections() -> Bool {
@@ -112,11 +134,103 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: nil)
     }
 
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    // MARK: - Private Utils
+
+    private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
+        guard let listNode = self.listNode else {
+            handle(nil)
+            return
+        }
+        if listNode.nodeType == .folderLink {
+            updateDetails(for: listNode, handle: handle)
+            return
+        }
+        if listNode.kind == .site || listNode.shouldUpdate() == false {
+            handle(nil)
+            return
+        }
+        updateDetails(for: listNode, handle: handle)
+    }
+
+    private func updateDetails(for listNode: ListNode, handle: @escaping (Error?) -> Void) {
+        var guid = listNode.guid
+        if listNode.nodeType == .folderLink {
+            guid = listNode.destination ?? listNode.guid
+        }
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.getNode(nodeId: guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeIsFavoriteNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeProperties],
+                             relativePath: nil) { (result, error) in
+                if let error = error {
+                    AlfrescoLog.error(error)
+                } else if let entry = result?.entry {
+                    sSelf.listNode = NodeChildMapper.create(from: entry)
+                    sSelf.pageUpdatingDelegate?
+                        .shouldDisplayCreateButton(enable: sSelf.shouldDisplayCreateButton())
+                }
+                handle(error)
+            }
+        })
+    }
+}
+
+// MARK: Event observable
+
+extension FolderDrillViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        case .created:
+            if self.listNode?.guid == node.guid || listNode == nil {
+                refreshList()
+            }
+        default: break
+        }
     }
 }

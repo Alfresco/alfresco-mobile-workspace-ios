@@ -1,0 +1,146 @@
+//
+// Copyright (C) 2005-2020 Alfresco Software Limited.
+//
+// This file is part of the Alfresco Content Mobile iOS App.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//  http://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
+"copyright-format" = "© %d Alfresco Software, Inc. Alle Rechte vorbehalten.";
+"product-name" = "Alfresco\nMobile Workspace";
+
+// MARK: - Buttons
+"connect" = "Verbinden";
+"advanced-settings" = "Erweiterte Einstellungen";
+"need-help" = "Benötigen Sie Hilfe?";
+"need-help-alfresco" = "Wie verbinden Sie sich mit Alfresco?";
+"reset-to-default" = "Auf Standard zurücksetzen";
+"save" = "Speichern";
+"sign-in" = "Anmelden";
+"sign-in-with-sso" = "Mit SSO anmelden";
+"sign-out" = "Abmelden";
+"retry" = "Wiederholen";
+"yes" = "Ja";
+"cancel" = "Abbrechen";
+"delete" = "Löschen";
+
+// MARK: - PlaceHolders
+"connect-to" = "Verbinden mit";
+"port" = "Port";
+"path" = "Pfad";
+"realm" = "Bereich";
+"client-id" = "Client-ID";
+"username-or-email" = "Benutzername oder E-Mail-Adresse";
+"password" = "Passwort";
+"content-services-url" = "Content Services-URL";
+
+// MARK: - Labels
+"transport-protocol" = "Transportprotokoll";
+"https" = "HTTPS";
+"alfresco-content-settings" = "Einstellungen für Alfresco Content Services";
+"authentication" = "Authentifizierung";
+"info-connect-to" = "Verbunden mit: ";
+"info-aims-connect-to"  = "Anmeldung bei: ";
+"login-allow-sso" = "Geben Sie die URL Ihrer Content Services-Umgebung an.";
+"help" = "Hilfe";
+"how-to-connect-to-alfresco" = "So verbinden Sie sich mit Alfresco";
+"connecting" = "Verbindung wird hergestellt";
+"signing-in" = "Anmeldung läuft";
+"session-expired" = "Sitzung abgelaufen.";
+"sesssion-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
+
+// MARK: - Screen Titles
+"settings" = "Einstellungen";
+"recent" = "Letzte";
+"favorites" = "Favoriten";
+"browse" = "Durchsuchen";
+
+// MARK: - Help Textviews
+"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services URL</font></p><p>Sie können die URL Ihrer Alfresco Content Services-Instanz eingeben. Dafür müssen Sie Ihren Benutzernamen und das Passwort eingeben.</p><p><font size=\"5\">Mit SSO anmelden</font></p><p>Sie können die URL Ihres Alfresco Identity Management Service eingeben, um sich beim Identitätsanbieter Ihres Unternehmens zu authentifizieren.</p><p>*Sie müssen anschließend die URL Ihrer Alfresco Content Services-Instanz eingeben.</p><p>Sprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.</p>";
+"help-advanced-settings-hint" = "<p><font size=\"6\">Authentifizierung mit Alfresco</font></p><p>Falls Sie keine standardmäßigen SSO-Einstellungen verwenden, können Sie Ihre Werte hier festlegen.</p><p>Falls Sie Hilfe benötigen, kontaktieren Sie Ihren Alfresco-Administrator.</p>";
+"help-sso-hint" = "<p><font size=\"6\">Speicherort des Inhaltsrepositorys</font></p><p>Alfresco Content Services-URL:</p><p>Dies ist die URL Ihrer Alfresco Content Services-Instanz.</p><p>Sprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.</p>";
+
+// MARK: - Snackbar errors
+"error-login-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe. Fehlercode: %d";
+"error-login-alfresco-url" = "An der angegebenen Alfresco-URL kann kein Authentifizierungsdienst gefunden werden.";
+"error-login-check-connect-url" = "Überprüfen Sie die URL unter \"Verbinden mit\".";
+"error-login-wrong-credential" = "Benutzername oder Passwort falsch.";
+"error-logjn-no-longer-authenticated" = "Sie sind nicht mehr authentifiziert. Melden Sie sich erneut an.";
+"error-something-went-wrong" = "Etwas ist schiefgelaufen!";
+"warning-login-path-empty" = "Der Pfad darf nicht leer sein. Öffnen Sie die erweiterten Einstellungen.";
+"error-unknown" = "Unbekannter Fehler aufgetreten.";
+
+// MARK: - Snackbar approved
+"approved-login-save-settings" = "Konfigurationsänderungen wurden gespeichert.";
+"approved-added-favorites" = "Zu Favoriten hinzugefügt";
+"approved-removed-favorites" = "Aus Favoriten entfernt";
+"approved-moved-trash" = "%@ in den Papierkorb verschoben";
+"approved-restored" = "%@ wiederhergestellt";
+"approved-deleted" = "%@ gelöscht";
+
+// MARK: - Settings Screen
+"theme" = "Aussehen";
+"auto" = "Systemstandard";
+"light" = "Hell";
+"dark" = "Dunkel";
+"failed-profile-info" = "Abruf der Profilinformationen für aktuellen Benutzer fehlgeschlagen.";
+"app-version" = "App-Version %@-%@";
+"sign-out-confirmation" = "Möchten Sie sich wirklich abmelden?";
+
+// MARK: - Search
+"empty-list" = "Ups...";
+"empty-list-subtitle" = "Wir können das von\nIhnen Gesuchte nicht finden.";
+"searching" = "Suche läuft...";
+"no-recent-search" = "Es gibt keine letzten Suchaufträge.";
+"recent-search" = "Letzte Suchaufträge";
+"files" = "Dateien";
+"folders" = "Ordner";
+"libraries" = "Bibliotheken";
+"file-and-folders" = "Dateien und Ordner";
+"search-in" = "in: ";
+
+// MARK: - Group List Section
+"today" = "Heute";
+"yesterday" = "Gestern";
+"this-week" = "Diese Woche";
+"last-week" = "Letzte Woche";
+"this-month" = "This month";
+"older" = "Älter";
+
+// MARK: - Browse Static List
+"personal-files" = "Persönliche Dateien";
+"my-libraries" = "Meine Bibliotheken";
+"shared" = "Freigegeben";
+"trash" = "Papierkorb";
+
+// MARK: - File Preview
+"no-preview" = "Vorschau nicht verfügbar.";
+"password-prompt" = "Datei gesperrt";
+"password-prompt-message" = "Geben Sie das Passwort ein, um die Datei freizugeben.";
+"password-prompt-fail" = "Falsches Passwort";
+"password-prompt-fail-message" = "Geben Sie das Passwort erneut ein, um die Datei freizugeben.";
+"password-prompt-submit"  = "Senden";
+"preparing-preview-message" = "Vorschau wird erstellt...";
+"loading-preview-message" = "Vorschau wird geladen...";
+
+// MARK: - Actions Menu Sheet
+"action-menu-add-favorite" = "Zu Favoriten hinzufügen";
+"action-menu-remove-favorite" = "Aus Favoriten entfernen";
+"action-menu-move-trash" = "In den Papierkorb bewegen";
+"action-menu-download" = "Herunterladen";
+"action-menu-restore" = "Wiederherstellen";
+"action-menu-permanently-delete" = "Dauerhaft löschen";
+
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "Lösche";
+"dialog-delete-message" = "%@ wird dauerhaft gelöscht.";

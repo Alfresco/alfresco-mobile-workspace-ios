@@ -27,7 +27,8 @@ struct ControllerRotation {
         }
     }
 
-    static func lockOrientation(_ orientation: UIInterfaceOrientationMask, andRotateTo rotateOrientation: UIInterfaceOrientation) {
+    static func lockOrientation(_ orientation: UIInterfaceOrientationMask,
+                                andRotateTo rotateOrientation: UIInterfaceOrientation) {
         self.lockOrientation(orientation)
 
         UIDevice.current.setValue(rotateOrientation.rawValue, forKey: "orientation")
@@ -36,7 +37,7 @@ struct ControllerRotation {
 }
 
 class SystemThemableViewController: UIViewController {
-    var themingService: MaterialDesignThemingService?
+    var coordinatorServices: CoordinatorServices?
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -46,9 +47,9 @@ class SystemThemableViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
+        coordinatorServices?.themingService?.activateUserSelectedTheme()
         applyComponentsThemes()
-        kWindow.backgroundColor = themingService?.activeTheme?.backgroundColor
+        kWindow.backgroundColor = coordinatorServices?.themingService?.activeTheme?.surfaceColor
     }
 
     func applyComponentsThemes() {

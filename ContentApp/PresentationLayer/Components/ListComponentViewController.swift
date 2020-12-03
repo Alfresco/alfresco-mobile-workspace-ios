@@ -21,15 +21,13 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
-protocol ListComponentDataSourceProtocol: class {
-    func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
-    func numberOfSections() -> Int
-    func numberOfItems(in section: Int) -> Int
-    func listNode(for indexPath: IndexPath) -> ListNode
-    func titleForSectionHeader(at indexPath: IndexPath) -> String
-    func shouldDisplayListLoadingIndicator() -> Bool
-    func refreshList()
+protocol ListItemActionDelegate: class {
+    func showPreview(from node: ListNode)
+    func showActionSheetForListItem(for node: ListNode,
+                                    delegate: NodeActionsViewModelDelegate)
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: class {
@@ -39,7 +37,9 @@ protocol ListComponentActionDelegate: class {
 }
 
 protocol ListComponentPageUpdatingDelegate: class {
-    func didUpdateList(error: Error?, pagination: Pagination?)
+    func didUpdateList(error: Error?,
+                       pagination: Pagination?)
+    func shouldDisplayCreateButton(enable: Bool)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -49,11 +49,15 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var createButton: MDCFloatingButton!
+
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+
+    // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +68,12 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.pageDelegate = self
 
         emptyListView.isHidden = true
+        createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
+
+        if listDataSource?.shouldDisplayCreateButton() == true {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
+        }
 
         // Set up progress view
         progressView.progress = 0
@@ -72,7 +82,8 @@ class ListComponentViewController: SystemThemableViewController {
         // Set up pull to refresh control
         let refreshControl = UIRefreshControl()//RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(handlePullToRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
+                                 for: .valueChanged)
         self.refreshControl = refreshControl
 
         // Register collection view footer and cell
@@ -80,41 +91,49 @@ class ListComponentViewController: SystemThemableViewController {
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                 withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier)
         let identifier = String(describing: ListElementCollectionViewCell.self)
-        collectionView?.register(UINib(nibName: identifier, bundle: nil), forCellWithReuseIdentifier: identifier)
-
-        addLocalization()
+        collectionView?.register(UINib(nibName: identifier,
+                                       bundle: nil),
+                                 forCellWithReuseIdentifier: identifier)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         collectionView.reloadData()
-        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
-        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor =
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        progressView.progressTintColor = themingService?.activeTheme?.primaryColor
-        progressView.trackTintColor = themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.trackTintColor =
+            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
     }
+
+    // MARK: - IBActions
+
+    @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
+        listItemActionDelegate?.showNodeCreationSheet(delegate: self)
+    }
+
+    // MARK: - Public interface
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let currentTheme = self.themingService?.activeTheme else { return }
-        emptyListSubtitle.applyeStyleHeadline5OnSurface(theme: currentTheme)
-        emptyListSubtitle.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
+
+        createButton.backgroundColor = currentTheme.primaryColor
+        createButton.tintColor = currentTheme.onPrimaryColor
         refreshControl?.tintColor = currentTheme.primaryColor
     }
-
-    func addLocalization() {
-        emptyListTitle.text = LocalizationConstants.Search.title
-        emptyListSubtitle.text = LocalizationConstants.Search.subtitle
-    }
-
-    // MARK: - Public interface
 
     func startLoading() {
         progressView.startAnimating()
@@ -131,8 +150,11 @@ class ListComponentViewController: SystemThemableViewController {
         let indexPath = IndexPath(item: 0, section: section)
         var pointToScroll = CGPoint.zero
         if collectionView.cellForItem(at: indexPath) != nil {
-            if let attributes = collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader, at: indexPath) {
-                pointToScroll = CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+            if let attributes =
+                collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                       at: indexPath) {
+                pointToScroll =
+                    CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
@@ -151,9 +173,13 @@ class ListComponentViewController: SystemThemableViewController {
 
 // MARK: - UICollectionView DataSource & Delegate
 
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
+                                       UICollectionViewDataSource,
+                                       UICollectionViewDelegate {
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
 
         if listDataSource?.shouldDisplaySections() ?? false {
             return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
@@ -166,7 +192,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         return listDataSource?.numberOfSections() ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
         return listDataSource?.numberOfItems(in: section) ?? 0
     }
 
@@ -174,11 +201,15 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let node = listDataSource?.listNode(for: indexPath)
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: listItemNodeCellHeight) }
-        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
+                             height: listItemNodeCellHeight) }
+        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
+                      height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForFooterInSection section: Int) -> CGSize {
         guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
 
         if dataSource.numberOfSections() - 1 == section {
@@ -186,7 +217,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
                 return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
             }
         }
-
         return CGSize(width: 0, height: 0)
     }
 
@@ -196,18 +226,20 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                                   withReuseIdentifier: identifier,
-                                                                                   for: indexPath) as? ListSectionCollectionReusableView else {
-                                                                                    fatalError("Invalid ListSectionCollectionReusableView type") }
+            guard let headerView =
+                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                    withReuseIdentifier: identifier,
+                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
+                fatalError("Invalid ListSectionCollectionReusableView type") }
             headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(themingService?.activeTheme)
+            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return headerView
 
         case UICollectionView.elementKindSectionFooter:
-            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier,
-                                                                             for: indexPath)
+            let footerView =
+                collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier,
+                                                                for: indexPath)
             return footerView
 
         default:
@@ -217,38 +249,112 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout, UICol
         return UICollectionReusableView()
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
 
         let identifier = String(describing: ListElementCollectionViewCell.self)
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as? ListElementCollectionViewCell
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
+                                               for: indexPath) as? ListElementCollectionViewCell
         cell?.element = node
         cell?.delegate = self
-        cell?.applyTheme(themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
+        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
+        if node.nodeType == .fileLink || node.nodeType == .folderLink {
+            cell?.moreButton.isHidden = true
+        }
+        if listDataSource?.shouldDisplayNodePath() == false {
+            cell?.subtitle.text = ""
+        }
         return cell ?? UICollectionViewCell()
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        listItemActionDelegate?.showPreview(from: node)
-        listActionDelegate?.elementTapped(node: node)
+        if node.trashed == false {
+            listItemActionDelegate?.showPreview(from: node)
+            listActionDelegate?.elementTapped(node: node)
+        } else {
+            listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
+        }
     }
 }
 
-// MARK: - ActionMenuViewModel Delegate
+// MARK: - CreateNodeViewModel and ActionMenuViewModel Delegates
 
-extension ListComponentViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with actionType: ActionMenuType, node: ListNode, error: Error?) {
+extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
+
+    func createNode(node: ListNode?, error: Error?) {
+        if node == nil && error == nil {
+            return
+        } else if let error = error {
+            self.display(error: error)
+        } else {
+            displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
+                                         node?.truncateTailTitle() ?? ""),
+                            type: .approve)
+        }
+    }
+
+    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
+
+        if let error = error {
+            self.display(error: error)
+        } else {
+            var snackBarMessage: String?
+            guard let action = action else { return }
+            switch action.type {
+            case .addFavorite:
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
+            case .removeFavorite:
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
+            case .moveTrash:
+                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
+                                         node?.truncateTailTitle() ?? "")
+            case .restore:
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored,
+                                         node?.truncateTailTitle() ?? "")
+            case .permanentlyDelete:
+                snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
+                                         node?.truncateTailTitle() ?? "")
+            case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
+                listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
+            default: break
+            }
+
+            displaySnackbar(with: snackBarMessage, type: .approve)
+        }
+    }
+
+    func display(error: Error) {
+        var snackBarMessage = ""
+        switch error.code {
+        case kTimeoutSwaggerErrorCode:
+            snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        case kNodeNameErrorCode:
+            snackBarMessage = LocalizationConstants.Errors.errorFolderSameName
+        default:
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        }
+        displaySnackbar(with: snackBarMessage, type: .error)
+    }
+
+    func displaySnackbar(with message: String?, type: SnackBarType?) {
+        if let message = message, let type = type {
+            let snackBar = Snackbar(with: message, type: type)
+            snackBar.snackBar.presentationHostViewOverride = view
+            snackBar.show(completion: nil)
+        }
     }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
-    func moreButtonTapped(for element: ListNode?) {
-        if let node = element {
-            listItemActionDelegate?.showActionSheetForListItem(node: node, delegate: self)
-        }
+    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
+        guard let node = element else { return }
+        listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
     }
 }
 
@@ -263,13 +369,22 @@ extension ListComponentViewController: PageFetchableDelegate {
 // MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
-    func didUpdateList(error: Error?, pagination: Pagination?) {
+    func didUpdateList(error: Error?,
+                       pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
         emptyListView.isHidden = !isDataSourceEmpty
+        if isDataSourceEmpty {
+            let emptyList = listDataSource?.emptyList()
+            emptyListImageView.image = emptyList?.icon
+            emptyListTitle.text = emptyList?.title
+            emptyListSubtitle.text = emptyList?.description
+        }
 
         // If loading the first page or missing pagination scroll to top
-        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil) && error == nil && !isDataSourceEmpty
+        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)
+            && error == nil
+            && !isDataSourceEmpty
 
         if error == nil {
             collectionView.reloadData()
@@ -289,6 +404,14 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             if scrollToTop {
                 scrollToSection(0)
             }
+        }
+    }
+
+    func shouldDisplayCreateButton(enable: Bool) {
+        createButton.isHidden = !enable
+        if enable {
+            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
+                                                       bottom: listBottomInset, right: 0)
         }
     }
 }

@@ -20,11 +20,14 @@ import UIKit
 
 protocol FilePreviewScreenCoordinatorDelegate: class {
     func navigateBack()
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
 }
 
 class FilePreviewScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
+    private var filePreviewViewController: FilePreviewViewController?
     private var listNode: ListNode
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -32,22 +35,38 @@ class FilePreviewScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let filePreviewViewModel = FilePreviewViewModel(node: listNode, with: accountService)
         let viewController = FilePreviewViewController.instantiateViewController()
-        viewController.filePreviewCoordinatorDelegate = self
 
-        filePreviewViewModel.viewModelDelegate = viewController
-        viewController.themingService = themingService
+        let filePreviewViewModel = FilePreviewViewModel(with: listNode,
+                                                        delegate: viewController,
+                                                        coordinatorServices: coordinatorServices)
+
+        viewController.filePreviewCoordinatorDelegate = self
+        viewController.coordinatorServices = coordinatorServices
         viewController.filePreviewViewModel = filePreviewViewModel
-        viewController.title = listNode.title
+
+        eventBusService?.register(observer: filePreviewViewModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file])
+
         presenter.pushViewController(viewController, animated: true)
+        filePreviewViewController = viewController
     }
 }
 
 extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
     func navigateBack() {
         presenter.popViewController(animated: true)
+    }
+
+    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
+        guard let filePreviewViewController = filePreviewViewController,
+              let actionMenuViewModel = filePreviewViewController.filePreviewViewModel?.actionMenuViewModel,
+              let nodeActionsViewModel = filePreviewViewController.filePreviewViewModel?.nodeActionsViewModel else { return }
+        let coordinator = ActionMenuScreenCoordinator(with: presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsViewModel)
+        coordinator.start()
+        actionMenuCoordinator = coordinator
     }
 }

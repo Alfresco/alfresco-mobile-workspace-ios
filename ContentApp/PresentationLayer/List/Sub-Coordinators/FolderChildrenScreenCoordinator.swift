@@ -18,17 +18,13 @@
 
 import UIKit
 
-protocol ListItemActionDelegate: class {
-    func showPreview(from node: ListNode)
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
-}
-
 class FolderChildrenScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private var listViewController: ListViewController?
     private var listNode: ListNode
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -36,41 +32,20 @@ class FolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
+        let viewModelFactory = FolderChildrenViewModelFactory()
+        viewModelFactory.coordinatorServices = coordinatorServices
+
+        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
+
         let viewController = ListViewController()
-
-        let listViewModel = self.listViewModel(with: listNode.guid,
-                                               and: listNode.kind.rawValue,
-                                               and: accountService)
-        let resultViewModel = ResultsViewModel()
-        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
-                                      type: .node, selected: true,
-                                      nodeID: listNode.guid)
-        contextualSearchViewModel.delegate = resultViewModel
-        contextualSearchViewModel.searchChipNode = chipNode
-        resultViewModel.delegate = contextualSearchViewModel
-
         viewController.title = listNode.title
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-        viewController.listViewModel = listViewModel
-        viewController.searchViewModel = contextualSearchViewModel
-        viewController.resultViewModel = resultViewModel
-        listViewController = viewController
-        presenter.pushViewController(viewController, animated: true)
-    }
+        viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel
+        viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
+        viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
 
-    private func listViewModel(with nodeID: String?,
-                               and nodeKind: String?,
-                               and accountService: AccountService?) -> ListViewModelProtocol {
-        let listViewModel = FolderDrillViewModel(with: accountService, listRequest: nil)
-        if let nodeID = nodeID, let nodeKind = nodeKind {
-            listViewModel.listNodeGuid = nodeID
-            listViewModel.listNodeIsFolder = (nodeKind == ElementKindType.folder.rawValue)
-        }
-        return listViewModel
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 
@@ -90,16 +65,39 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate) {
-        let menu = ActionsMenuGenericMoreButton(with: node)
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
-        let actionMenuViewModel = ActionMenuViewModel(with: menu)
+    func showActionSheetForListItem(for node: ListNode,
+                                    delegate: NodeActionsViewModelDelegate) {
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
         let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                    accountService: accountService,
-                                                    delegate: delegate)
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
+        actionMenuCoordinator = coordinator
+    }
+
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        let actions = ActionsMenuCreateFAB.actions()
+        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
+                                                      menuActions: actions)
+        let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
+                                                      actionMenuViewModel: actionMenuViewModel,
+                                                      nodeActionViewModel: nodeActionsModel)
+        coordinator.start()
+        actionMenuCoordinator = coordinator
+    }
+
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
+        let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                     actionMenu: actionMenu,
+                                                     parentListNode: listNode,
+                                                     createNodeViewModelDelegate: delegate)
+        coordinator.start()
+        createNodeSheetCoordinator = coordinator
     }
 }

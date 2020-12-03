@@ -23,7 +23,8 @@
 "connect" = "Connect";
 "advanced-settings" = "Advanced settings";
 "need-help" = "Need help?";
-"reset-to-default" = "Reset to Default";
+"need-help-alfresco" = "How to connect to Alfresco?";
+"reset-to-default" = "Reset to default";
 "save" = "Save";
 "sign-in" = "Sign in";
 "sign-in-with-sso" = "Sign in with SSO";
@@ -31,67 +32,84 @@
 "retry" = "Retry";
 "yes" = "Yes";
 "cancel" = "Cancel";
+"delete" = "Delete";
+"create" = "Create";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
 "port" = "Port";
-"service-document" = "Path";
+"path" = "Path";
 "realm" = "Realm";
 "client-id" = "Client ID";
-"username-or-email" = "Username or Email";
+"username-or-email" = "Username or email";
 "password" = "Password";
 "content-services-url" = "Content Services URL";
+"description" = "Description";
+"name" = "Name";
 
 // MARK: - Labels
-"transport-protocol" = "Transport Protocol";
+"transport-protocol" = "Transport protocol";
 "https" = "HTTPS";
-"alfresco-content-settings" = "Alfresco Content Services Settings";
+"alfresco-content-settings" = "Alfresco Content Services settings";
 "authentication" = "Authentication";
 "info-connect-to" = "Connected to: ";
 "info-aims-connect-to"  = "Signing in to: ";
 "login-allow-sso" = "Please provide the URL of your Content Services environment.";
 "help" = "Help";
+"how-to-connect-to-alfresco" = "How to connect to Alfresco";
 "connecting" = "Connecting";
-"signing-in" = "Signing In";
-"session-expired" = "Session Expired";
-"sesssion-expired-message" = "You are no longer signed in. Please Sign In again to continue.";
+"signing-in" = "Signing in";
+"session-expired" = "Session expired";
+"sesssion-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 
 // MARK: - Screen Titles
 "settings" = "Settings";
-"recent" = "Recents";
+"recent" = "Recent";
 "favorites" = "Favorites";
 "browse" = "Browse";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"6\">How to connect to Alfresco</font></p><p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
+"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
 "help-advanced-settings-hint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
 "help-sso-hint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
 
-// MARK: - Login Errors
+// MARK: - Snackbar errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";
 "error-login-alfresco-url" = "No authentication service can be found at the provided Alfresco URL.";
-"error-login-check-connect-url" = "Check your Connect to URL.";
+"error-login-check-connect-url" = "Check your \"Connect to\" URL.";
 "error-login-wrong-credential" = "Wrong username or password provided.";
 "error-logjn-no-longer-authenticated" = "You are no longer authenticated, please log in again.";
 "error-something-went-wrong" = "Something went wrong!";
+"warning-login-path-empty" = "Path shouldn't be empty, go to advanced settings.";
+"error-unknown" = "Unknown error occurred.";
+"error-timeout" = "This is taking longer than expected. Hang tight for a few moments.";
+"error-folder-same-name" = "There's already a folder with this name. Try a different name.";
+"error-node-name-special-characters" = "Name can't contain these characters %@";
+"error-folder-name-end-period" = "Folder name can't end with a period %@";
+"error-folder-name-contain-only-spaces" = "Folder name can't contain only spaces";
+
+// MARK: - Snackbar approved
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
-"warning-login-service-document-empty"= "Service Document shouldn't be empty, go to Advanced Settings.";
+"approved-added-favorites" = "Added to favorites";
+"approved-removed-favorites" = "Removed from favorites";
+"approved-moved-trash" = "%@ moved to trash";
+"approved-restored" = "%@ restored";
+"approved-deleted" = "%@ deleted";
+"approved-created" = "%@ was created";
 
 // MARK: - Settings Screen
-"theme" = "Theme Mode";
-"auto" = "Auto";
+"theme" = "Appearance";
+"auto" = "System default";
 "light" = "Light";
 "dark" = "Dark";
 "failed-profile-info" = "Failed to fetch profile information for current user.";
-"app-version" = "App Version %@-%@";
+"app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
 
 // MARK: - Search
-"empty-list" = "Oops...";
-"empty-list-subtitle" = "We can’t find what\n you’re looking for";
 "searching" = "Searching...";
 "no-recent-search" = "There is no recent searches.";
-"recent-search" = "Recent Searches";
+"recent-search" = "Recent searches";
 "files" = "Files";
 "folders" = "Folders";
 "libraries" = "Libraries";
@@ -101,9 +119,9 @@
 // MARK: - Group List Section
 "today" = "Today";
 "yesterday" = "Yesterday";
-"this-week" = "This Week";
-"last-week" = "Last Week";
-"this-month" = "This Month";
+"this-week" = "This week";
+"last-week" = "Last week";
+"this-month" = "This month";
 "older" = "Older";
 
 // MARK: - Browse Static List
@@ -113,10 +131,10 @@
 "trash" = "Trash";
 
 // MARK: - File Preview
-"no-preview" = "No preview for this file.";
-"password-prompt" = "File Locked";
+"no-preview" = "Preview not available.";
+"password-prompt" = "File locked";
 "password-prompt-message" = "Please enter the password to unlock the file.";
-"password-prompt-fail" = "Incorrect Password";
+"password-prompt-fail" = "Incorrect password";
 "password-prompt-fail-message" = "Please re-enter the password to unlock the file.";
 "password-prompt-submit"  = "Submit";
 "preparing-preview-message" = "Preparing preview...";
@@ -125,4 +143,33 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Add to Favorites";
 "action-menu-remove-favorite" = "Remove from Favorites";
-"action-menu-delete" = "Delete";
+"action-menu-move-trash" = "Move to Trash";
+"action-menu-download" = "Open with";
+"action-menu-restore" = "Restore";
+"action-menu-permanently-delete" = "Permanently Delete";
+"action-menu-create-ms-word" = "Word document";
+"action-menu-create-ms-excel" = "Excel spreadsheet";
+"action-menu-create-ms-powerpoint" = "PowerPoint presentation";
+"action-menu-create-folder" = "New folder";
+
+// MARK: - Node Actions Dialog
+"dialog-delete-title" = "Delete";
+"dialog-delete-message" = "%@ will be permanently deleted.";
+"dialog-download-message" = "Downloading '%@'";
+"dialog-upload-message" = "Uploading '%@'";
+
+// MARK: - Empty List
+"empty-recent-title" = "No recent files";
+"empty-recent-description" = "Files that you view and\n edit will show here.";
+"empty-favorites-files-folders-title" = "No favorite files or folders";
+"empty-favorites-libraries-title" = "No favorite libraries";
+"empty-favorites-description" = "Looks like you haven’t\n added anything.";
+"empty-folder-title" = "Folder is empty";
+"empty-folder-description" = "Looks like there is\n nothing here yet.";
+"empty-search-title" = "Oops!";
+"empty-search-description" = "We can’t find what\n you’re looking for.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace needs photos access";
+"privacy-photos-description" = "To save images or videos on your device, Mobile Workspace needs access to your photos.";
+"privacy-button" = "Review privacy settings";

@@ -44,9 +44,7 @@ class ConnectScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let loginService = serviceRepository.service(of: AuthenticationService.serviceIdentifier) as? AuthenticationService
-        let accountService = serviceRepository.service(of: AccountService.serviceIdentifier) as? AccountService
+        let loginService = repository.service(of: AuthenticationService.identifier) as? AuthenticationService
         let viewController = ConnectViewController.instantiateViewController()
         let containerViewNavigationController = UINavigationController(rootViewController: viewController)
         let viewModel = ConnectViewModel(with: loginService)
@@ -57,7 +55,7 @@ class ConnectScreenCoordinator: Coordinator {
         viewController.splashScreenDelegate = presenter
         viewController.connectScreenCoordinatorDelegate = self
         viewController.viewModel = viewModel
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         connectViewController = viewController
 
         presenter.addChild(containerViewNavigationController)
@@ -74,7 +72,7 @@ class ConnectScreenCoordinator: Coordinator {
     }
 
     func popViewController() {
-        self.containerViewNavigationController?.popViewController(animated: kPushAnimation)
+        self.containerViewNavigationController?.popViewController(animated: true)
     }
 }
 
@@ -114,7 +112,7 @@ extension ConnectScreenCoordinator: ConnectScreenCoordinatorDelegate {
     func showApplicationTabBar() {
         if let containerViewNavigationController = self.containerViewNavigationController {
             let tabBarCoordinator = TabBarScreenCoordinator(with: containerViewNavigationController)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            DispatchQueue.main.async {
                 tabBarCoordinator.start()
             }
             self.tabBarCoordinator = tabBarCoordinator

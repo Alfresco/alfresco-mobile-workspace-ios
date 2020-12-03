@@ -24,15 +24,26 @@ class DialogsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
         switch scene {
         case .pdfPasswordDialog:
             return pdfPasswordDialog(for: theme)
+        case .dialogButton:
+            return dialogButtonContainerScheme(for: theme)
         default: return nil
         }
     }
 
     private func pdfPasswordDialog(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
+
+        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
+        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
+
+        return containerScheme
+    }
+
+    private func dialogButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
+        let containerScheme = MDCContainerScheme()
         containerScheme.colorScheme.primaryColor = theme.primaryColor
-        containerScheme.colorScheme.surfaceColor = theme.surfaceColor
-        containerScheme.typographyScheme.caption = theme.body1TextStyle.font
+        containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
+        containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
         return containerScheme
     }

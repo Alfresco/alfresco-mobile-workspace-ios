@@ -21,9 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -76,6 +77,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }
@@ -100,6 +105,18 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
@@ -111,5 +128,43 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+}
+
+// MARK: - Event observable
+
+extension MyLibrariesViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if let indexOfMovedNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfMovedNode)
+            }
+        case .restore:
+            refreshList()
+        default: break
+        }
     }
 }

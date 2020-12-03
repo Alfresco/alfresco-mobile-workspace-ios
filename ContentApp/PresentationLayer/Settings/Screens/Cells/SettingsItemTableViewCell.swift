@@ -45,6 +45,7 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
 
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)

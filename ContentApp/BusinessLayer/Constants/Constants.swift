@@ -40,6 +40,10 @@ let kAPIPathIsContentServiceAvailable = "service/api/server"
 let kAPIPathRelativeForSites = "documentLibrary"
 let kAPIPathGetNodeContent = "\(kAPIPathVersion)/nodes/%@/content?attachment=false&alf_ticket=%@"
 let kAPIPathGetRenditionContent = "\(kAPIPathVersion)/nodes/%@/renditions/%@/content?attachment=false&alf_ticket=%@"
+let kAPIIncludePathNode = "path"
+let kAPIIncludeIsFavoriteNode = "isFavorite"
+let kAPIIncludeAllowableOperationsNode = "allowableOperations"
+let kAPIIncludeProperties = "properties"
 
 // MARK: - Querry Conditions
 let kWhereFavoritesFileFolderCondition = "(EXISTS(target/file) OR EXISTS(target/folder))"
@@ -61,6 +65,8 @@ let kFullScreenPreview = 0.5
 
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3
+let kTimeoutSwaggerErrorCode = 500
+let kNodeNameErrorCode = 409
 
 // MARK: - Height&Widhts
 let settingsThemeCellHeight: CGFloat = 44.0
@@ -74,13 +80,18 @@ let listBrowseSectionCellHeight: CGFloat = 1.0
 let chipSearchCellMinimHeight: CGFloat = 32.0
 let chipSearchCellMinimWidth: CGFloat = 52.0
 let actionMenuCellHeight: CGFloat = 63.0
+let dialogCornerRadius: CGFloat = 8.0
+let listBottomInset: CGFloat = 70.0
 
 // MARK: -
 let kDefaultLoginUnsecuredPort = "80"
 let kDefaultLoginSecuredPort = "443"
-let kPushAnimation = (UIDevice.current.userInterfaceIdiom != .pad)
 let kWindow =  UIApplication.shared.windows[0]
 let kIndexPathZero = IndexPath(row: 0, section: 0)
+let kPlayerBackForWardTime: Double = 10
+let kToolbarFilePreviewNumberOfAction: Int = 3
+let kTruncateLimitTitleInSnackbar: Int = 20
+let kSpecialCharacters = "* \" < > \\ / ? : |"
 
 // MARK: - Preview Files
 let kMultiplerPreviewSizeImage: CGFloat = 1.0

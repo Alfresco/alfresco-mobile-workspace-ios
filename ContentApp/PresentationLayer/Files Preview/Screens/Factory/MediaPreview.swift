@@ -20,18 +20,22 @@ import Foundation
 import UIKit
 import AVFoundation
 
+public typealias VideoPreviewHandler = (_ error: Error?) -> Void
+
 class MediaPreview: UIView, FilePreviewProtocol {
 
     weak var filePreviewDelegate: FilePreviewDelegate?
     @IBOutlet weak var videoPlayerTapGesture: UITapGestureRecognizer!
+    private var videoPreviewHandler: VideoPreviewHandler?
 
     @IBOutlet weak var videoPlayerView: UIView!
     @IBOutlet weak var actionsView: UIView!
     @IBOutlet weak var audioImageView: UIImageView!
 
     @IBOutlet weak var playPauseButton: UIButton!
-    @IBOutlet weak var bigPlayPauseButton: UIButton!
-    @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var backwardButton: UIButton!
+    @IBOutlet weak var forwardButton: UIButton!
+    @IBOutlet weak var videoSlider: UISlider!
     @IBOutlet weak var currentTimeMinutesLabel: UILabel!
     @IBOutlet weak var currentTimeSecondsLabel: UILabel!
     @IBOutlet weak var currentTimeClockLabel: UILabel!
@@ -48,32 +52,29 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     private var finishPlaying: Bool = false
     private var sliderIsMoving: Bool = false
+    private var jumpPlayer: Bool = false
     private var isFullScreen: Bool = false {
         didSet {
-            if !isAudioFile {
-                filePreviewDelegate?.enableFullScreen(isFullScreen)
-                apply(fade: isFullScreen, to: actionsView)
-            }
+            filePreviewDelegate?.enableFullScreen(isFullScreen)
+            apply(fade: isFullScreen, to: actionsView)
         }
     }
     private var isAudioFile: Bool = false {
         didSet {
             audioImageView.isHidden = !isAudioFile
-            if isAudioFile {
-                actionsView.isHidden = false
-                actionsView.alpha = 1.0
-                bigPlayPauseButton.alpha = 0.0
-            }
         }
     }
 
     override func awakeFromNib() {
-        videoPlayerTapGesture.isEnabled = false
         translatesAutoresizingMaskIntoConstraints = false
-        progressSlider.isUserInteractionEnabled = false
-        progressSlider.addTarget(self,
+        videoSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
+        actionsView.layer.cornerRadius = dialogCornerRadius
+        actionsView.layer.borderWidth = 1.0
+        actionsView.layer.masksToBounds = true
+        playerControls(enable: false)
+        audioImageView.image = UIImage(named: "ic-audio")
     }
 
     deinit {
@@ -86,12 +87,19 @@ class MediaPreview: UIView, FilePreviewProtocol {
         isFullScreen = !isFullScreen
     }
 
+    @IBAction func backwardButtonTapped(_ sender: UIButton) {
+        jumpPlayerTime(with: -kPlayerBackForWardTime)
+    }
+
+    @IBAction func forwardButtonTapped(_ sender: UIButton) {
+        jumpPlayerTime(with: kPlayerBackForWardTime)
+    }
+
     @IBAction func playPauseTapped(_ sender: UIButton) {
         guard let player = player else { return }
 
         if finishPlaying {
-            player.seek(to: CMTime(value: CMTimeValue(0.0), timescale: 1))
-            finishPlaying = false
+            resetPlayer()
         }
 
         player.isPlaying ? player.pause() : player.play()
@@ -100,18 +108,15 @@ class MediaPreview: UIView, FilePreviewProtocol {
         if let error = player.currentItem?.error as NSError? {
             showError(error)
         } else {
-            progressSlider.isUserInteractionEnabled = true
-            videoPlayerTapGesture.isEnabled = true
+            playerControls(enable: true)
             updatePlayerControls()
-            actionsView.isHidden = false
-            apply(fade: true, to: bigPlayPauseButton)
             apply(fade: false, to: actionsView)
         }
     }
 
     @IBAction func playbackSliderValueChanged(_ sender: UISlider) {
         guard let duration = player?.currentItem?.duration else { return }
-        let value = Double(progressSlider.value) * duration.seconds
+        let value = Double(videoSlider.value) * duration.seconds
         player?.seek(to: CMTime(value: CMTimeValue(value), timescale: 1))
 
         if player?.rate == 0 {
@@ -129,9 +134,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
                 updatePlayerControls()
             case .moved:
                 guard let currentItem = player?.currentItem else { return }
-                let currentTimeInSeconds = currentItem.duration.seconds * Double(progressSlider.value)
-                updateCurrentTime(from: timeFormatter(from: currentTimeInSeconds))
-                updateTotalTime(from: timeFormatter(from: currentTimeInSeconds - currentItem.duration.seconds))
+                updateCurrentTime(from: currentItem.duration.seconds * Double(videoSlider.value))
+                updateTotalTime(from: currentItem.duration.seconds)
             case .ended:
                 playbackSliderValueChanged(slider)
                 sliderIsMoving = false
@@ -145,7 +149,8 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Helpers
 
-    func play(from url: URL, isAudioFile: Bool) {
+    func play(from url: URL, isAudioFile: Bool, handler: @escaping VideoPreviewHandler) {
+        self.videoPreviewHandler = handler
         self.isAudioFile = isAudioFile
 
         let playerItem = AVPlayerItem(url: url)
@@ -157,24 +162,30 @@ class MediaPreview: UIView, FilePreviewProtocol {
         self.playerLayer = playerLayer
         self.player = player
 
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 0.01,
-                                                                          preferredTimescale: CMTimeScale(NSEC_PER_SEC)),
-                                                       queue: .main,
+        let intervalTime = CMTime(seconds: 0.01, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        timeObserver = player.addPeriodicTimeObserver(forInterval: intervalTime, queue: .main,
                                                        using: { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.updateVideoPlayerState()
+            guard let sSelf = self else { return }
+            sSelf.updatePlayerState()
         })
         rateObserver = player.observe(\AVPlayer.rate, changeHandler: { [weak self] _, _ in
             guard let sSelf = self else { return }
             sSelf.updatePlayerControls()
         })
-        statusObserver = playerItem.observe(\AVPlayerItem.status, changeHandler: { [weak self] playerItem, _ in
+        statusObserver = playerItem.observe(\AVPlayerItem.status,
+                                            changeHandler: { [weak self] cPlayerItem, _ in
             guard let sSelf = self else { return }
-            switch playerItem.status {
+            switch cPlayerItem.status {
             case .readyToPlay:
-                sSelf.updateTotalTime(from: sSelf.timeFormatter(from: playerItem.duration.seconds))
+                sSelf.playerControls(enable: true)
+                sSelf.updateTotalTime(from: cPlayerItem.duration.seconds)
+                if let handler = sSelf.videoPreviewHandler {
+                    handler(nil)
+                }
             case .failed:
-                sSelf.showError(playerItem.error)
+                if let handler = sSelf.videoPreviewHandler {
+                    handler(playerItem.error)
+                }
             default: break
             }
         })
@@ -182,18 +193,22 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     // MARK: - Private Helpers
 
+    private func playerControls(enable: Bool) {
+        videoPlayerTapGesture.isEnabled = enable
+        videoSlider.isUserInteractionEnabled = enable
+        actionsView.isHidden = !enable
+    }
+
     private func showError(_ error: Error?) {
         actionsView.isUserInteractionEnabled = false
         var message = LocalizationConstants.Errors.somethingWentWrong
         if let error = error as NSError? {
             message = error.localizedFailureReason ?? error.localizedDescription
         }
-        let snackbar = Snackbar(with: message, type: .error, automaticallyDismisses: true)
-        snackbar.show(completion: nil)
+        Snackbar.display(with: message, type: .error, finish: nil)
     }
 
     private func apply(fade: Bool, to object: UIView) {
-        guard !isAudioFile else { return }
         let fadeTo: CGFloat = (fade) ? 0.0 : 1.0
         UIView.animate(withDuration: animationFade) {
             object.alpha = fadeTo
@@ -202,63 +217,76 @@ class MediaPreview: UIView, FilePreviewProtocol {
 
     private func updatePlayerControls() {
         guard let player = player else { return }
-        var stringImage = player.isPlaying ? "pause" : "play"
+        var stringImage = (player.isPlaying || jumpPlayer) ? "ic-player-pause" : "ic-player-play"
         if player.currentItem?.error != nil {
-            stringImage = "play"
+            stringImage = "ic-player-play"
         }
         playPauseButton.setImage(UIImage(named: stringImage), for: .normal)
     }
 
-    private func updateVideoPlayerState() {
+    private func jumpPlayerTime(with seconds: Double) {
+        guard let currentTime = player?.currentTime(),
+              let currentItem = player?.currentItem else { return }
+
+        if currentTime.seconds + seconds >= currentItem.duration.seconds ||
+            currentTime.seconds + seconds < 0 {
+            return
+        }
+
+        playerControls(enable: true)
+        jumpPlayer = true
+        player?.pause()
+
+        let newTime =  CMTimeGetSeconds(currentTime).advanced(by: seconds)
+        player?.seek(to: CMTime(value: CMTimeValue(newTime), timescale: 1),
+                     completionHandler: { [weak self] (_) in
+            guard let sSelf = self else { return }
+            sSelf.player?.play()
+            sSelf.jumpPlayer = false
+            UIApplication.shared.isIdleTimerDisabled = true
+        })
+    }
+
+    private func updatePlayerState() {
         guard let currentTime = player?.currentTime(),
             let currentItem = player?.currentItem else { return }
         if let error = currentItem.error {
             showError(error)
         }
-        updateCurrentTime(from: timeFormatter(from: currentTime.seconds))
-        updateTotalTime(from: timeFormatter(from: currentTime.seconds - currentItem.duration.seconds))
+        updateCurrentTime(from: currentTime.seconds)
+        updateTotalTime(from: currentItem.duration.seconds)
 
         if !self.sliderIsMoving {
-            progressSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
+            videoSlider.value = Float(currentTime.seconds / currentItem.duration.seconds)
         }
-        if currentTime.seconds == currentItem.duration.seconds {
-            updatePlayerControls()
-            bigPlayPauseButton.alpha = 1.0
-            finishPlaying = true
+        if currentTime.seconds >= floor(currentItem.duration.seconds) {
+            resetPlayer()
         }
     }
 
-    private func updateCurrentTime(from text: String) {
-        let array = text.split(separator: ":")
+    private func resetPlayer() {
+        player?.pause()
+        player?.seek(to: CMTime(value: CMTimeValue(0.0), timescale: 1))
+        updatePlayerControls()
+        videoSlider.value = 0.0
+        updateCurrentTime(from: 0)
+        finishPlaying = false
+    }
+
+    private func updateCurrentTime(from seconds: Double) {
+        let array = seconds.split(by: .minutesAndSeconds).split(separator: ":")
         if array.count == 2 {
             currentTimeMinutesLabel.text = String(array[0])
             currentTimeSecondsLabel.text = String(array[1])
         }
     }
 
-    private func updateTotalTime(from text: String) {
-        let array = text.split(separator: ":")
+    private func updateTotalTime(from seconds: Double) {
+        let array = seconds.split(by: .minutesAndSeconds).split(separator: ":")
         if array.count == 2 {
             totalTimeMinutesLabel.text = String(array[0])
             totalTimeSecondsLabel.text = String(array[1])
         }
-    }
-
-    private func timeFormatter(from seconds: Double) -> String {
-        let mins = seconds / 60
-        let secs = seconds.truncatingRemainder(dividingBy: 60)
-        let timeformatter = NumberFormatter()
-        timeformatter.minimumIntegerDigits = 2
-        timeformatter.minimumFractionDigits = 0
-        timeformatter.roundingMode = .down
-        guard let minsStr = timeformatter.string(from: NSNumber(value: mins)),
-            let secsStr = timeformatter.string(from: NSNumber(value: secs))
-            else { return "00:00" }
-        let time = "\(minsStr):\(secsStr)".replacingOccurrences(of: "-", with: "")
-        if time.contains("NaN") {
-            return "00:00"
-        }
-        return time
     }
 
     // MARK: - FilePreviewProtocol
@@ -266,24 +294,33 @@ class MediaPreview: UIView, FilePreviewProtocol {
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
 
-        currentTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        currentTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeClockLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        currentTimeMinutesLabel.applyStyleBody2OnSurface(theme: currentTheme)
         currentTimeMinutesLabel.textAlignment = .right
-        currentTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        currentTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         currentTimeSecondsLabel.textAlignment = .left
 
-        totalTimeClockLabel.applyStyleCaptionSurface60(theme: currentTheme)
-        totalTimeMinutesLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeClockLabel.applyStyleBody2OnSurface(theme: currentTheme)
+        totalTimeMinutesLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeMinutesLabel.textAlignment = .right
-        totalTimeSecondsLabel.applyStyleCaptionSurface60(theme: currentTheme)
+        totalTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeSecondsLabel.textAlignment = .left
 
-        actionsView.backgroundColor = currentTheme.onSurfaceColor
-        playPauseButton.tintColor = currentTheme.surfaceColor
-        bigPlayPauseButton.tintColor = currentTheme.surfaceColor
-        progressSlider.tintColor = currentTheme.primaryColor
-        progressSlider.thumbTintColor = currentTheme.primaryVariantColor
-        audioImageView.tintColor = currentTheme.onSurfaceColor
+        videoSlider.tintColor = currentTheme.primaryColor
+        videoSlider.thumbTintColor = currentTheme.primaryColor
+        videoSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
+        videoSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
+
+        actionsView.backgroundColor = currentTheme.surfaceColor
+        actionsView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12).cgColor
+
+        backwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        forwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+
+        playPauseButton.tintColor = currentTheme.primaryColor
+        if isAudioFile {
+            backgroundColor = currentTheme.backgroundColor
+        }
     }
 
     func recalculateFrame(from size: CGSize) {
@@ -295,12 +332,12 @@ class MediaPreview: UIView, FilePreviewProtocol {
         player?.pause()
         player = nil
         playerLayer?.removeFromSuperlayer()
-        if let timeObserver = timeObserver {
-            player?.removeTimeObserver(timeObserver)
-        }
-        self.timeObserver = nil
-        self.statusObserver = nil
-        self.rateObserver = nil
+        player?.removeTimeObserver(timeObserver as Any)
+        player?.removeTimeObserver(statusObserver as Any)
+        player?.removeTimeObserver(rateObserver as Any)
+        timeObserver = nil
+        statusObserver = nil
+        rateObserver = nil
         UIApplication.shared.isIdleTimerDisabled = false
     }
 }

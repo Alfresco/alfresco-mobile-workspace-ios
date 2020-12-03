@@ -18,9 +18,13 @@
 
 import UIKit
 
-struct ActionMenu {
+class ActionMenu {
     var title: String
-    var type: ActionMenuType
+    var type: ActionMenuType {
+        didSet {
+            self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
+        }
+    }
     var icon: UIImage
 
     init(title: String, type: ActionMenuType, icon: UIImage? = nil) {
@@ -35,8 +39,22 @@ struct ActionMenu {
 }
 
 enum ActionMenuType: String {
+    // MARK: - Generic
+    case placeholder = "ic-placeholder"
+    case node = "ic-node"
+    case more = "ic-action-more"
+
+    // MARK: - Nodes
     case addFavorite = "ic-action-outline-favorite"
     case removeFavorite = "ic-action-fill-favorite"
-    case delete = "ic-action-delete"
-    case node = "ic-node"
+    case moveTrash = "ic-action-delete"
+    case download = "ic-action-download"
+    case restore = "ic-restore"
+    case permanentlyDelete = "ic-action-delete-forever"
+
+    // MARK: - Create
+    case createFolder = "ic-action-create-folder"
+    case createMSExcel = "ic-ms_spreadsheet"
+    case createMSWord = "ic-ms_document"
+    case createMSPowerPoint = "ic-ms_presentation"
 }

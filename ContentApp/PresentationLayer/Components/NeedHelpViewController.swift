@@ -35,6 +35,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.applyRoundedCorners(on: [.topLeft, .topRight], radius: dialogCornerRadius)
         view.isHidden = true
     }
 
@@ -65,7 +66,8 @@ class NeedHelpViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
-        guard let currentTheme = themingService?.activeTheme else { return }
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
                                                      font: currentTheme.subtitle2TextStyle.font)
@@ -75,7 +77,7 @@ class NeedHelpViewController: SystemThemableViewController {
         titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
 
         closeButton.setTitleColor(currentTheme.primaryVariantColor, for: .normal)
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
     }
 
     // MARK: - Actions

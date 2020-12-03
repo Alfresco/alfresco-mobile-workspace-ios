@@ -33,9 +33,8 @@ class AdvancedSettingsScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = AdvancedSettingsViewController.instantiateViewController()
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.advSettingsScreenCoordinatorDelegate = self
         advancedSettingsViewController = viewController
         presenter.pushViewController(viewController, animated: true)

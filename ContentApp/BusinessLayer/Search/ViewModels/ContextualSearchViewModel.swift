@@ -28,7 +28,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
     weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
-    private var lastSearchedString: String?
+    var lastSearchedString: String?
 
     // MARK: - Init
 

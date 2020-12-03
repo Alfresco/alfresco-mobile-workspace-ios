@@ -19,39 +19,153 @@
 import UIKit
 import AlfrescoContent
 
+protocol ActionMenuViewModelDelegate: class {
+    func finishProvideActions()
+}
+
 class ActionMenuViewModel {
-    private var menu: ActionsMenuProtocol?
+    private var accountService: AccountService?
+    private var listNode: ListNode?
+    private var toolbarActions: [ActionMenu]?
+    private var menuActions: [[ActionMenu]]
+    var toolbarDivide: Bool
+    weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
 
-    init(with menu: ActionsMenuProtocol?) {
-        self.menu = menu
+    init(with accountService: AccountService?,
+         menuActions: [[ActionMenu]] = [[ActionMenu]](),
+         listNode: ListNode? = nil,
+         toolbarDivide: Bool = false) {
+
+        self.accountService = accountService
+        self.listNode = listNode
+        self.toolbarDivide = toolbarDivide
+        self.menuActions = menuActions
+
+        if let listNode = listNode {
+            self.menuActions = [[ActionMenu(title: listNode.title,
+                                            type: .node,
+                                            icon: FileIcon.icon(for: listNode))],
+                                [ActionMenu(title: "", type: .placeholder),
+                                 ActionMenu(title: "", type: .placeholder)]]
+            if toolbarDivide {
+                self.createMenuActions()
+                self.divideForToolbarActions()
+            }
+        }
     }
 
     // MARK: - Public Helpers
 
-    func actions() -> [[ActionMenu]]? {
-        return menu?.actions
+    func fetchNodeInformation() {
+        guard let listNode = self.listNode else {
+            delegate?.finishProvideActions()
+            return
+        }
+        if toolbarDivide {
+            delegate?.finishProvideActions()
+            return
+        }
+        if listNode.shouldUpdate() == false {
+            createMenuActions()
+            return
+        }
+        accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            guard let sSelf = self else { return }
+            if listNode.kind == .site {
+                FavoritesAPI.getFavorite(personId: kAPIPathMe,
+                                         favoriteId: listNode.guid) { (_, error) in
+                    if error == nil {
+                        sSelf.listNode?.favorite = true
+                    }
+                    sSelf.createMenuActions()
+                }
+            } else {
+                NodesAPI.getNode(nodeId: listNode.guid,
+                                 include: [kAPIIncludePathNode,
+                                           kAPIIncludeAllowableOperationsNode,
+                                           kAPIIncludeIsFavoriteNode,
+                                           kAPIIncludeProperties],
+                                 relativePath: nil,
+                                 fields: nil) { (result, _) in
+                    if let entry = result?.entry {
+                        sSelf.listNode = NodeChildMapper.create(from: entry)
+                    }
+                    sSelf.createMenuActions()
+                }
+            }
+        })
+    }
+
+    func actions() -> [[ActionMenu]] {
+        return menuActions
+    }
+
+    func actionsForToolbar() -> [ActionMenu]? {
+        return toolbarActions
+    }
+
+    func indexInToolbar(for actionType: ActionMenuType) -> Int? {
+        guard let actions = toolbarActions else { return nil }
+        for index in 0...actions.count - 1 where actions[index].type == actionType {
+            return index
+        }
+        return nil
     }
 
     func numberOfActions() -> CGFloat {
-        guard let actions = self.menu?.actions else { return 0 }
         var numberOfActions = 0
-        for section in actions {
+        for section in menuActions {
             numberOfActions += section.count
         }
         return CGFloat(numberOfActions)
     }
 
     func shouldShowSectionSeparator(for indexPath: IndexPath) -> Bool {
-        guard let actions = menu?.actions else { return false }
-        if actions[indexPath.section][indexPath.row].type == .node {
+        if menuActions[indexPath.section][indexPath.row].type == .node {
             return false
         }
-        if indexPath.section != actions.count - 1 &&
-            indexPath.row == actions[indexPath.section].count - 1 {
+        if indexPath.section != menuActions.count - 1 &&
+            indexPath.row == menuActions[indexPath.section].count - 1 {
             return true
         }
         return false
+    }
+
+    // MARK: - Private Helpers
+
+    private func createMenuActions() {
+        guard let listNode = listNode else { return }
+        if listNode.trashed == true {
+            menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
+        } else {
+            menuActions = ActionsMenuGeneric.actions(for: listNode)
+        }
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.delegate?.finishProvideActions()
+        }
+    }
+
+    private func divideForToolbarActions() {
+        var toolActions = [ActionMenu]()
+        for index in 0...menuActions.count - 1 {
+            for action in menuActions[index] where action.type != .node {
+                toolActions.append(action)
+                if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
+                    addActionToOpenMenu(in: toolActions)
+                    return
+                }
+            }
+        }
+        addActionToOpenMenu(in: toolActions)
+    }
+
+    private func addActionToOpenMenu(in array: [ActionMenu]?) {
+        guard var array = array else { return }
+        array.append(ActionMenu(title: "", type: .more))
+        toolbarActions = array
     }
 }

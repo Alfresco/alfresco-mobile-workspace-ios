@@ -30,11 +30,10 @@ class NeedHelpCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let viewController = NeedHelpViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
 
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.model = model
         presenter.present(bottomSheet, animated: true, completion: nil)
         needHelpViewController = viewController

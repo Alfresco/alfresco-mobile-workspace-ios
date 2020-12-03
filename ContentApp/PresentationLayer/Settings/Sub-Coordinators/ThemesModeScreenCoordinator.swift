@@ -30,11 +30,10 @@ class ThemesModeScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
         let dialogTransitionController = MDCDialogTransitionController()
         let viewController = ThemesModeViewController.instantiateViewController()
 
-        viewController.themingService = themingService
+        viewController.coordinatorServices = coordinatorServices
         viewController.delegate = settingsViewController
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = dialogTransitionController

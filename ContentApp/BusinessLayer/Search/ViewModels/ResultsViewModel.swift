@@ -23,8 +23,40 @@ protocol ResultsViewModelDelegate: class {
     func refreshResults()
 }
 
-class ResultsViewModel: PageFetchingViewModel {
+class ResultsViewModel: PageFetchingViewModel, EventObservable {
+    var supportedNodeTypes: [ElementKindType]?
     weak var delegate: ResultsViewModelDelegate?
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    // MARK: Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            let node = publishedEvent.node
+            for listNode in results where listNode == node {
+                listNode.favorite = node.favorite
+            }
+        } else if let publishedEvent = event as? MoveEvent {
+            let node = publishedEvent.node
+            switch publishedEvent.eventType {
+            case .moveToTrash:
+                if node.kind == .file {
+                    if let indexOfMovedNode = results.firstIndex(of: node) {
+                        results.remove(at: indexOfMovedNode)
+                    }
+                } else {
+                    refreshList()
+                }
+            case .restore:
+                refreshList()
+            default: break
+            }
+        }
+    }
 }
 
 // MARK: - SearchViewModelDelegate
@@ -36,9 +68,14 @@ extension ResultsViewModel: SearchViewModelDelegate {
 }
 
 // MARK: - ListCcomponentDataSourceProtocol
+
 extension ResultsViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
     }
 
     func shouldDisplaySections() -> Bool {
@@ -65,8 +102,47 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()
+    }
+
+    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
+        guard let node = listNode else { return }
+        if node.kind == .site {
+            FavoritesAPI.getFavorite(personId: kAPIPathMe,
+                                     favoriteId: node.guid) { (_, error) in
+                if error == nil {
+                    node.favorite = true
+                }
+                completion(node, error)
+            }
+        } else {
+            NodesAPI.getNode(nodeId: node.guid,
+                             include: [kAPIIncludePathNode,
+                                       kAPIIncludeAllowableOperationsNode,
+                                       kAPIIncludeIsFavoriteNode],
+                             relativePath: nil,
+                             fields: nil) { (result, error) in
+                if let entry = result?.entry {
+                    let listNode = NodeChildMapper.create(from: entry)
+                    completion(listNode, error)
+                } else {
+                    completion(listNode, error)
+                }
+            }
+        }
     }
 }

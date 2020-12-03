@@ -40,7 +40,8 @@ class SettingsViewController: SystemThemableViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
 
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         tableView.reloadData()
     }
@@ -58,12 +59,23 @@ class SettingsViewController: SystemThemableViewController {
     }
 
     override func applyComponentsThemes() {
-        guard let currentTheme = self.themingService?.activeTheme else { return }
-        view.backgroundColor = currentTheme.backgroundColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
-                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+
+        view.backgroundColor = currentTheme.surfaceColor
+        let image = UIImage(color: currentTheme.surfaceColor,
+                            size: navigationController?.navigationBar.bounds.size)
+        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
+        navigationController?.navigationBar.tintColor =
+            currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+             NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 }
 
@@ -80,23 +92,28 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = viewModel?.items[indexPath.section][indexPath.row] else { return UITableViewCell() }
+        guard let item = viewModel?.items[indexPath.section][indexPath.row] else {
+            return UITableViewCell()
+        }
 
         var cell: SettingsTablewViewCellProtocol?
         switch item.type {
         case .account:
             let identifier = String(describing: SettingsAccountTableViewCell.self)
-            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsAccountTableViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier,
+                                                 for: indexPath) as? SettingsAccountTableViewCell
         case .theme:
             let identifier = String(describing: SettingsItemTableViewCell.self)
-            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsItemTableViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier,
+                                                 for: indexPath) as? SettingsItemTableViewCell
         case .label:
             let identifier = String(describing: SettingsLabelTableViewCell.self)
-            cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? SettingsLabelTableViewCell
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier,
+                                                 for: indexPath) as? SettingsLabelTableViewCell
         }
         cell?.item = item
         cell?.delegate = self
-        cell?.applyTheme(with: themingService)
+        cell?.applyTheme(with: coordinatorServices?.themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)
         } else {

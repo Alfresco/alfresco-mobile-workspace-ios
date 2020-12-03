@@ -21,9 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -45,7 +46,8 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
             SharedLinksAPI.listSharedLinks(skipCount: skipCount,
                                            maxItems: maxItems,
                                            _where: nil,
-                                           include: ["isFavorite"],
+                                           include: [kAPIIncludeIsFavoriteNode,
+                                                     kAPIIncludeAllowableOperationsNode],
                                            fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list.entries {
@@ -74,6 +76,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
     }
@@ -98,6 +104,18 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
@@ -109,5 +127,47 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+}
+
+// MARK: - Event observable
+
+extension SharedViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
+        }
     }
 }

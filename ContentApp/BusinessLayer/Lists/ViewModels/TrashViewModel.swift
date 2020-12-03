@@ -21,9 +21,10 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -44,7 +45,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
             TrashcanAPI.listDeletedNodes(skipCount: skipCount,
                                          maxItems: maxItems,
-                                         include: ["path"]) { (result, error) in
+                                         include: [kAPIIncludePathNode]) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = DeleteNodeMapper.map(entries)
@@ -72,8 +73,16 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
     func shouldDisplaySections() -> Bool {
         return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
     }
 
     func numberOfSections() -> Int {
@@ -96,6 +105,14 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
@@ -107,5 +124,52 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+}
+
+// MARK: Event Observable
+
+extension TrashViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .addToFavourite:
+            if results.contains(node) == false {
+                results.append(node)
+            }
+        case .removeFromFavourites:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
+            }
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if results.contains(node) == false {
+                results.append(node)
+            }
+        case .restore, .permanentlyDelete:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
+            }
+        case .created: break
+        }
     }
 }

@@ -19,7 +19,7 @@
 import UIKit
 
 protocol ListElementCollectionViewCellDelegate: class {
-    func moreButtonTapped(for element: ListNode?)
+    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell)
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
@@ -34,19 +34,15 @@ class ListElementCollectionViewCell: ListSelectableCell {
             if let element = element {
                 title.text = element.title
                 subtitle.text = element.path
-                iconImageView.image = FileIcon.icon(for: element.mimeType)
-                moreButton.isHidden = true
+                iconImageView.image = FileIcon.icon(for: element)
             }
         }
     }
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
-
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        title.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        backgroundColor = currentTheme.surfaceColor
+        title.applyStyleBody1OnSurface(theme: currentTheme)
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
@@ -54,6 +50,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
-        delegate?.moreButtonTapped(for: element)
+        delegate?.moreButtonTapped(for: element, in: self)
     }
 }

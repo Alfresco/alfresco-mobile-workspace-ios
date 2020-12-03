@@ -47,6 +47,7 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - Public Methods
 
     func cancelSearchMode() {
+        searchViewModel?.lastSearchedString = nil
         self.navigationItem.searchController?.searchBar.text = ""
         self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
     }
@@ -60,14 +61,8 @@ class SystemSearchViewController: SystemThemableViewController {
 
         // Back Button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "back-icon")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "back-icon")
-
-        // Remove navigation bar underline separator
-        navigationController?.navigationBar.barTintColor = .clear
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "ic-back")
+        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "ic-back")
     }
 
     // MARK: - IBActions
@@ -85,14 +80,21 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
+        let image = UIImage(color: currentTheme.surfaceColor,
+                            size: navigationController?.navigationBar.bounds.size)
+        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
         navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
-                                                                   NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
+        navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
+             NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
     private func addSearchButton() {
@@ -102,7 +104,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         searchButton.layer.masksToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
-        searchButton.setImage(UIImage(named: "search-icon"), for: .normal)
+        searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
@@ -115,7 +117,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
-        rvc.themingService = themingService
+        rvc.coordinatorServices = coordinatorServices
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = resultViewModel
         rvc.listItemActionDelegate = self.listItemActionDelegate
@@ -189,6 +191,9 @@ extension SystemSearchViewController: UISearchControllerDelegate {
                 sSelf.navigationController?.view.layoutIfNeeded()
             }
         }
+        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
+        rvc.clearDataSource()
+        searchViewModel?.lastSearchedString = nil
     }
 }
 
@@ -207,12 +212,13 @@ extension SystemSearchViewController: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
+        searchViewModel?.lastSearchedString = nil
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-
+            var searchViewModel = self.searchViewModel else { return }
+        searchViewModel.lastSearchedString = searchText
         searchViewModel.performLiveSearch(for: searchText)
         rvc.updateRecentSearches()
         if searchText.canPerformLiveSearch() {

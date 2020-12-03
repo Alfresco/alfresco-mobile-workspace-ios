@@ -19,27 +19,187 @@
 import Foundation
 import AlfrescoContent
 
-enum ElementKindType: String {
-    case file = "file"
-    case folder = "folder"
-    case site = "library"
+enum NodeType: String {
+    case site = "st:site"
+    case folder = "cm:folder"
+    case file = "cm:content"
+    case fileLink = "app:filelink"
+    case folderLink = "app:folderlink"
+    case unknown = ""
 }
 
-struct ListNode: Hashable {
+enum ElementKindType: String {
+    case file
+    case folder
+    case site
+}
+
+enum AllowableOperationsType: String {
+    case update
+    case create
+    case updatePermissions
+    case delete
+    case unknown
+}
+
+enum SiteRole: String {
+    case manager = "SiteManager"
+    case collaborator = "SiteCollaborator"
+    case contributor = "SiteContributor"
+    case consumer = "SiteConsumer"
+    case unknown = "unknown"
+}
+
+typealias CreatedNodeType = (String, String, String)
+
+class ListNode: Hashable {
     var guid: String
+    var siteID: String
+    var destination: String?
     var mimeType: String?
     var title: String
     var path: String
     var modifiedAt: Date?
     var kind: ElementKindType
-    var favorite: Bool
+    var nodeType: NodeType
+    var favorite: Bool?
+    var allowableOperations: [AllowableOperationsType]?
+    var siteRole: SiteRole?
+    var trashed: Bool?
+
+    // MARK: - Init
+
+    init(guid: String,
+         siteID: String = "",
+         mimeType: String? = nil,
+         title: String, path: String,
+         modifiedAt: Date? = nil,
+         kind: ElementKindType,
+         nodeType: NodeType,
+         favorite: Bool? = nil,
+         allowableOperations: [String]? = nil,
+         siteRole: String? = nil,
+         trashed: Bool = false,
+         destionation: String? = nil) {
+
+        self.guid = guid
+        self.siteID = siteID
+        self.mimeType = mimeType
+        self.title = title
+        self.path = path
+        self.modifiedAt = modifiedAt
+        self.kind = kind
+        self.nodeType = nodeType
+        self.favorite = favorite
+        self.allowableOperations = parse(allowableOperations)
+        self.siteRole = parse(siteRole)
+        self.trashed = trashed
+        self.destination = destionation
+    }
+
+    // MARK: - Public Helpers
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid &&
-            lhs.title == rhs.title &&
-            lhs.path == rhs.path &&
-            lhs.modifiedAt == rhs.modifiedAt &&
-            lhs.kind == rhs.kind &&
-            lhs.mimeType == rhs.mimeType
+        return lhs.guid == rhs.guid
+    }
+
+    func shouldUpdate() -> Bool {
+        if self.trashed == true {
+            return false
+        }
+        if self.kind == .site {
+            if self.siteRole == nil || self.favorite == nil {
+                return true
+            }
+        }
+
+        if self.kind == .file || self.kind == .folder {
+            if self.allowableOperations == nil ||
+                self.favorite == nil {
+                return true
+            }
+        }
+        return false
+    }
+
+    func hasPersmission(to type: AllowableOperationsType) -> Bool {
+        guard let allowableOperations = allowableOperations else { return false }
+        return allowableOperations.contains(type)
+    }
+
+    func hasPermissionToCreate() -> Bool {
+        if self.kind == .folder {
+            return hasPersmission(to: .create)
+        } else if self.kind == .site {
+            return !(hasRole(to: .consumer) || hasRole(to: .unknown))
+        }
+        return false
+    }
+
+    func hasRole(to type: SiteRole) -> Bool {
+        guard let siteRole = siteRole else { return false }
+        return siteRole == type
+    }
+
+    func truncateTailTitle() -> String {
+        let text = self.title.prefix(kTruncateLimitTitleInSnackbar)
+        if text == self.title {
+            return String(text)
+        }
+        return text + "..."
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(guid)
+    }
+
+    // MARK: - Creation
+
+    static private var mapExtensions: [ActionMenuType: CreatedNodeType] {
+        return [.createMSExcel: ("xlsx", "cm:content", "excel"),
+                .createMSWord: ("docx", "cm:content", "word"),
+                .createMSPowerPoint: ("pptx", "cm:content", "powerpoint"),
+                .createFolder: ("", "cm:folder", "")]
+    }
+
+    static func getExtension(from type: ActionMenuType?) -> String? {
+        guard let type = type else { return nil }
+        if let ext = ListNode.mapExtensions[type], ext.0 != "" {
+            return  "." + ext.0
+        }
+        return nil
+    }
+
+    static func nodeType(from type: ActionMenuType?) -> String? {
+        guard let type = type else { return nil }
+        if let ext = ListNode.mapExtensions[type] {
+            return ext.1
+        }
+        return nil
+    }
+
+    static func templateFileBundlePath(from type: ActionMenuType?) -> String? {
+        guard  let type = type,
+               let ext = ListNode.mapExtensions[type] else { return nil }
+        if let filePath = Bundle.main.path(forResource: ext.2, ofType: ext.0) {
+            return filePath
+        }
+        return nil
+    }
+
+    // MARK: - Private Helpers
+
+    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
+        guard let allowableOperations = allowableOperations else { return nil }
+        var allowableOperationsTypes = [AllowableOperationsType]()
+        for allowableOperation in allowableOperations {
+            allowableOperationsTypes.append(AllowableOperationsType(rawValue: allowableOperation) ?? .unknown)
+        }
+        return allowableOperationsTypes
+    }
+
+    private func parse(_ siteRole: String?) -> SiteRole {
+        guard let siteRole = siteRole else { return .unknown}
+        return SiteRole(rawValue: siteRole) ?? .unknown
     }
 }

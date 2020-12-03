@@ -28,34 +28,34 @@ enum SnackBarType {
 
 class Snackbar {
     private var type: SnackBarType
-    private var snackBar: MDCSnackbarMessage
-    private var buttonTitle: String
-    private var hideButton: Bool = false
+    var snackBar: MDCSnackbarMessage
 
-    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true, buttonTitle: String = LocalizationConstants.Buttons.snackbarConfirmation) {
+    static func display(with message: String,
+                        type: SnackBarType,
+                        automaticallyDismisses: Bool = true,
+                        finish: (() -> Void)?) {
+        let snackbar = Snackbar(with: message,
+                                type: type,
+                                automaticallyDismisses: automaticallyDismisses)
+        snackbar.show(completion: finish)
+    }
+
+    init(with message: String, type: SnackBarType, automaticallyDismisses: Bool = true) {
         self.type = type
-        self.buttonTitle = buttonTitle
-        self.hideButton = (buttonTitle == "")
         self.snackBar = MDCSnackbarMessage(text: message)
         self.snackBar.automaticallyDismisses = automaticallyDismisses
-        self.addButton()
         self.applyTheme()
     }
 
     // MARK: - Public methods
 
     func applyTheme() {
-        let serviceRepository = ApplicationBootstrap.shared().serviceRepository
-        let themingService = serviceRepository.service(of: MaterialDesignThemingService.serviceIdentifier) as? MaterialDesignThemingService
-        let currentTheme = themingService?.activeTheme
-        switch type {
-        case .error:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorColor
-        case .approve:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.primaryColor
-        case .warning:
-            MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme?.errorOnColor
-        }
+        let repository = ApplicationBootstrap.shared().repository
+        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        guard let currentTheme = themingService?.activeTheme else { return }
+        MDCSnackbarManager.default.snackbarMessageViewBackgroundColor = currentTheme.onSurfaceColor
+        MDCSnackbarManager.default.messageFont = currentTheme.body2TextStyle.font
+        MDCSnackbarManager.default.messageTextColor = currentTheme.surfaceColor
     }
 
     func show(completion: (() -> Void)?) {
@@ -69,25 +69,11 @@ class Snackbar {
         MDCSnackbarManager.default.show(snackBar)
     }
 
-    func hideButton(_ hidden: Bool) {
-        hideButton = false
-        snackBar.action = nil
-    }
-
     func dismiss() {
         MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: self.snackBar.category)
     }
 
     class func dimissAll() {
         MDCSnackbarManager.default.dismissAndCallCompletionBlocks(withCategory: nil)
-    }
-
-    // MARK: - Private methods
-
-    private func addButton() {
-        guard !hideButton  else { return }
-        let action = MDCSnackbarMessageAction()
-        action.title = buttonTitle
-        snackBar.action = action
     }
 }

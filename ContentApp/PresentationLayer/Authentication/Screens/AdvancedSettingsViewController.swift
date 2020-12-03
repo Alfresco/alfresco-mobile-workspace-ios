@@ -27,7 +27,8 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     @IBOutlet weak var backPadButton: UIButton!
     @IBOutlet weak var titlePadLabel: UILabel!
-    @IBOutlet weak var savePadButton: MDCButton!
+    @IBOutlet weak var resetToDefaultPadButton: MDCButton!
+    @IBOutlet weak var navigationPadBar: UIView!
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -40,13 +41,13 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     @IBOutlet weak var httpsSwitch: UISwitch!
 
     @IBOutlet weak var portTextField: MDCOutlinedTextField!
-    @IBOutlet weak var serviceDocumentsTextField: MDCOutlinedTextField!
+    @IBOutlet weak var pathTextField: MDCOutlinedTextField!
     @IBOutlet weak var realmTextField: MDCOutlinedTextField!
     @IBOutlet weak var clientIDTextField: MDCOutlinedTextField!
 
-    @IBOutlet weak var saveButton: UIBarButtonItem!
+    @IBOutlet weak var resetToDefaultButton: UIBarButtonItem!
     @IBOutlet weak var needHelpButton: MDCButton!
-    @IBOutlet weak var resetButton: MDCButton!
+    @IBOutlet weak var saveButton: MDCButton!
     @IBOutlet weak var copyrightLabel: UILabel!
 
     weak var advSettingsScreenCoordinatorDelegate: AdvancedSettingsScreenCoordinatorDelegate?
@@ -57,7 +58,6 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     var enableSaveButton: Bool = false {
         didSet {
             saveButton.isEnabled = enableSaveButton
-            savePadButton.isEnabled = enableSaveButton
         }
     }
 
@@ -82,38 +82,39 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         advSettingsScreenCoordinatorDelegate?.dismiss()
     }
 
-    @IBAction func savePadButtonTapped(_ sender: UIButton) {
-        self.view.endEditing(true)
-        saveFields()
-        enableSaveButton = false
+    @IBAction func resetToDefaultPadButtonTapped(_ sender: UIButton) {
+        viewModel.resetAuthParameters()
+        updateFields()
+        enableSaveButton = true
     }
 
     @IBAction func httpsSwitchTapped(_ sender: UISwitch) {
         self.view.endEditing(true)
-        guard let currentTheme = self.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         if httpsSwitch.isOn {
             httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         } else {
             httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
-        portTextField.text = (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        portTextField.text =
+            (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
+        enableSaveButton = (pathTextField.text != "")
     }
 
-    @IBAction func resetButtonTapped(_ sender: UIButton) {
-        viewModel.resetAuthParameters()
-        updateFields()
-        enableSaveButton = true
+    @IBAction func saveButtonTapped(_ sender: UIButton) {
+        view.endEditing(true)
+        saveFields()
+        enableSaveButton = false
     }
 
     @IBAction func needHelpButtonTapped(_ sender: UIButton) {
         advSettingsScreenCoordinatorDelegate?.showNeedHelpSheet()
     }
 
-    @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        self.view.endEditing(true)
-        saveFields()
-        enableSaveButton = false
+    @IBAction func resetToDefaultButtonTapped(_ sender: UIBarButtonItem) {
+        viewModel.resetAuthParameters()
+        updateFields()
+        enableSaveButton = true
     }
 
     @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
@@ -123,35 +124,37 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        self.titlePadLabel.text = LocalizationConstants.ScreenTitles.advancedSettings
-        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
-        self.savePadButton.setTitle(LocalizationConstants.Buttons.save, for: .disabled)
-
-        self.title = LocalizationConstants.ScreenTitles.advancedSettings
+        titlePadLabel.text = LocalizationConstants.ScreenTitles.advancedSettings
+        title = LocalizationConstants.ScreenTitles.advancedSettings
 
         transportProtocolLabel.text = LocalizationConstants.Labels.transportProtocol
         settingsLabel.text = LocalizationConstants.Labels.AlfrescoContentSettings
         authenticationLabel.text = LocalizationConstants.Labels.authentication
         httpsLabel.text = LocalizationConstants.Labels.https
-        copyrightLabel.text = String(format: LocalizationConstants.copyright, Calendar.current.component(.year, from: Date()))
+        copyrightLabel.text = String(format: LocalizationConstants.copyright,
+                                     Calendar.current.component(.year, from: Date()))
 
         portTextField.label.text = LocalizationConstants.TextFieldPlaceholders.port
-        serviceDocumentsTextField.label.text = LocalizationConstants.TextFieldPlaceholders.serviceDocuments + "*"
+        pathTextField.label.text = LocalizationConstants.TextFieldPlaceholders.path + "*"
         realmTextField.label.text = LocalizationConstants.TextFieldPlaceholders.realm
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
-        saveButton.title = LocalizationConstants.Buttons.save
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
-        resetButton.setTitle(LocalizationConstants.Buttons.resetToDefault, for: .normal)
+        saveButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
     }
 
     override func applyComponentsThemes() {
-        guard let themingService = self.themingService, let currentTheme = self.themingService?.activeTheme else { return }
+        super.applyComponentsThemes()
+        guard
+            let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
+            let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+            let advancedSettingsButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+            let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        portTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        serviceDocumentsTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        clientIDTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
-        realmTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
+        portTextField.applyTheme(withScheme: loginTextFieldScheme)
+        pathTextField.applyTheme(withScheme: loginTextFieldScheme)
+        clientIDTextField.applyTheme(withScheme: loginTextFieldScheme)
+        realmTextField.applyTheme(withScheme: loginTextFieldScheme)
 
         if viewModel.authParameters.https {
             httpsLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
@@ -161,47 +164,50 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         transportProtocolLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         settingsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         authenticationLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
-        titlePadLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        titlePadLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
-        resetButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginResetButton))
-        resetButton.isUppercaseTitle = false
+        saveButton.applyContainedTheme(withScheme: loginButtonScheme)
+        saveButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+                                      for: .disabled)
+        saveButton.isUppercaseTitle = false
+        saveButton.setShadowColor(.clear, for: .normal)
 
-        savePadButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginSavePadButton))
-        savePadButton.setTitleColor(currentTheme.dividerColor, for: .disabled)
-        savePadButton.isUppercaseTitle = false
+        resetToDefaultPadButton.backgroundColor = .clear
+        resetToDefaultPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        resetToDefaultButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
 
-        needHelpButton.applyTextTheme(withScheme: themingService.containerScheming(for: .loginNeedHelpButton))
+        backPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+
+        needHelpButton.applyTextTheme(withScheme: advancedSettingsButtonScheme)
         needHelpButton.isUppercaseTitle = false
 
-        saveButton.tintColor = currentTheme.primaryVariantColor
-        backPadButton.tintColor = currentTheme.primaryVariantColor
-
-        view.backgroundColor = currentTheme.backgroundColor
+        view.backgroundColor = currentTheme.surfaceColor
+        navigationPadBar.backgroundColor = currentTheme.surfaceColor
     }
 
     func updateFields() {
         httpsSwitch.isOn = viewModel.authParameters.https
         portTextField.text = viewModel.authParameters.port
-        serviceDocumentsTextField.text = viewModel.authParameters.serviceDocument
+        pathTextField.text = viewModel.authParameters.path
         realmTextField.text = viewModel.authParameters.realm
         clientIDTextField.text = viewModel.authParameters.clientID
     }
 
     func saveFields() {
-        if serviceDocumentsTextField.text == "" {
+        if pathTextField.text == "" {
             return
         }
         viewModel.saveFields(https: httpsSwitch.isOn,
                          port: portTextField.text,
-                         serviceDocuments: serviceDocumentsTextField.text,
+                         path: pathTextField.text,
                          realm: realmTextField.text,
                          clientID: clientIDTextField.text)
 
-        let snackbar = Snackbar(with: LocalizationConstants.Errors.saveSettings, type: .approve, automaticallyDismisses: true)
-        snackbar.hideButton(true)
-        snackbar.show(completion: nil)
+        Snackbar.display(with: LocalizationConstants.Approved.saveSettings,
+                         type: .approve,
+                         finish: nil)
     }
 }
 
@@ -210,19 +216,22 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        enableSaveButton = (pathTextField.text != "")
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        enableSaveButton = (serviceDocumentsTextField.text != "")
+        enableSaveButton = (pathTextField.text != "")
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == serviceDocumentsTextField {
-            enableSaveButton = (textField.updatedText(for: range, replacementString: string) != "")
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        if textField == pathTextField {
+            enableSaveButton = (textField.updatedText(for: range,
+                                                      replacementString: string) != "")
         } else {
-            enableSaveButton = (serviceDocumentsTextField.text != "")
+            enableSaveButton = (pathTextField.text != "")
         }
         return true
     }
@@ -231,8 +240,8 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
         var nextTextField = textField
         switch textField {
         case portTextField:
-            nextTextField = serviceDocumentsTextField
-        case serviceDocumentsTextField:
+            nextTextField = pathTextField
+        case pathTextField:
             nextTextField = realmTextField
         case realmTextField:
             nextTextField = clientIDTextField
@@ -246,7 +255,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        if textField == serviceDocumentsTextField {
+        if textField == pathTextField {
             enableSaveButton = false
         }
         return true

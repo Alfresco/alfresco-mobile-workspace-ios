@@ -81,7 +81,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void)) {
         let basicAuthCredentialProvider = BasicAuthenticationProvider(with: credentials)
 
-        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.serviceDocument))
+        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.path))
         _ = apiClient?.send(GetContentServicesProfile(with: basicAuthCredentialProvider), completion: { (result) in
             switch result {
             case .success(_):
@@ -93,7 +93,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     }
 
     func isContentServicesAvailable(handler: @escaping ((Result<Bool, APIError>) -> Void)) {
-        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.serviceDocument))
+        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.path))
         _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
             switch result {
             case .success(let response):

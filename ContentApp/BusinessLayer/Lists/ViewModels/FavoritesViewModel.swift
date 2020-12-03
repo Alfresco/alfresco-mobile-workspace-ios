@@ -21,11 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-
     var listCondition: String = kWhereFavoritesFileFolderCondition
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -45,9 +45,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
             FavoritesAPI.listFavorites(personId: kAPIPathMe,
                                        skipCount: paginationRequest?.skipCount,
                                        maxItems: kListPageSize,
-                                       orderBy: nil,
+                                       orderBy: ["title ASC"],
                                        _where: sSelf.listCondition,
-                                       include: ["path"],
+                                       include: [kAPIIncludePathNode,
+                                                 kAPIIncludeAllowableOperationsNode,
+                                                 kAPIIncludeProperties],
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 
@@ -60,10 +62,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                             }
                                         }
 
-                                        let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                                                  error: error,
-                                                                                  requestPagination: paginationRequest,
-                                                                                  responsePagination: result?.list.pagination)
+                                        let paginatedResponse =
+                                            PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list.pagination)
 
                                         sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
@@ -74,6 +77,13 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func isEmpty() -> Bool {
         return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        if listCondition == kWhereFavoritesFileFolderCondition {
+            return EmptyFavoritesFilesFolders()
+        }
+        return EmptyFavoritesLibraries()
     }
 
     func numberOfSections() -> Int {
@@ -109,11 +119,76 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
         favoritesList(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
+    override func handlePage(results: [ListNode]?,
+                             pagination: Pagination?,
+                             error: Error?) {
+        updateResults(results: results,
+                      pagination: pagination,
+                      error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+}
+
+// MARK: - Event observable
+
+extension FavoritesViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .addToFavourite:
+            refreshList()
+        case .removeFromFavourites:
+            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
+                results.remove(at: indexOfRemovedFavorite)
+            }
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
+        }
     }
 }

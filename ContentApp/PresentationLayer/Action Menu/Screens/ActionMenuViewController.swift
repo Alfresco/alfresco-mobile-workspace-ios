@@ -17,10 +17,12 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialActivityIndicator
 
 class ActionMenuViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewContraintHeight: NSLayoutConstraint!
+    private var activityIndicator = MDCActivityIndicator()
 
     var actionMenuModel: ActionMenuViewModel?
     var nodeActionsModel: NodeActionsViewModel?
@@ -29,13 +31,22 @@ class ActionMenuViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.layer.cornerRadius = dialogCornerRadius
         view.isHidden = true
+
+        actionMenuModel?.delegate = self
+        activityIndicator.startAnimating()
+        actionMenuModel?.fetchNodeInformation()
+        view.addSubview(activityIndicator)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
         collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        activityIndicator.center = CGPoint(x: view.center.x,
+                                           y: collectionViewContraintHeight.constant / 2)
         view.isHidden = false
     }
 
@@ -48,6 +59,17 @@ class ActionMenuViewController: SystemThemableViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         calculatePreferredSize(size)
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.collectionView?.collectionViewLayout.invalidateLayout()
+        }
+    }
+
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        collectionView.reloadData()
     }
 
     // MARK: - Private Utils
@@ -58,32 +80,39 @@ class ActionMenuViewController: SystemThemableViewController {
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
         collectionView.contentOffset = .zero
     }
+
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        view.backgroundColor = currentTheme.surfaceColor
+        activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+    }
 }
 
 // MARK: - UIColectionView Delegates
 
-extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+extension ActionMenuViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return actionMenuModel?.actions()?[section].count ?? 0
+        return actionMenuModel?.actions()[section].count ?? 0
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return actionMenuModel?.actions()?.count ?? 0
+        return actionMenuModel?.actions().count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let actionMenuModel = self.actionMenuModel,
-              let action = actionMenuModel.actions()?[indexPath.section][indexPath.row] else {
+        guard let actionMenuModel = self.actionMenuModel else {
             return UICollectionViewCell()
         }
+        let action = actionMenuModel.actions()[indexPath.section][indexPath.row]
         let identifier = String(describing: ActionMenuCollectionViewCell.self)
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
-        cell?.applyTheme(themingService?.activeTheme)
+        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
         return cell ?? UICollectionViewCell()
     }
@@ -91,16 +120,27 @@ extension ActionMenuViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: actionMenuCellHeight)
+        return CGSize(width: view.bounds.width, height: actionMenuCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let action = actionMenuModel?.actions()?[indexPath.section][indexPath.row] else { return }
-        nodeActionsModel?.tapped(on: action.type, finished: { [weak self] in
+        guard let action = actionMenuModel?.actions()[indexPath.section][indexPath.row] else { return }
+        nodeActionsModel?.tapped(on: action, finished: { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.dismiss(animated: true, completion: nil)
+            sSelf.dismiss(animated: true)
         })
+    }
+}
+
+// MARK: - ActionMenuViewModel Delegate
+
+extension ActionMenuViewController: ActionMenuViewModelDelegate {
+    func finishProvideActions() {
+        let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
+        collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
+        collectionView.reloadData()
+        activityIndicator.stopAnimating()
     }
 }
 

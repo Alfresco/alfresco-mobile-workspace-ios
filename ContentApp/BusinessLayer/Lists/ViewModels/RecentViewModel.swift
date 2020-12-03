@@ -21,10 +21,11 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
+    var supportedNodeTypes: [ElementKindType]?
 
     // MARK: - Init
 
@@ -69,6 +70,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return groupedLists.isEmpty
     }
 
+    func emptyList() -> EmptyListProtocol {
+        return EmptyRecents()
+    }
+
     func shouldDisplaySections() -> Bool {
         return true
     }
@@ -93,14 +98,28 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         recentsList(with: nil)
     }
 
-    override func updatedResults(results: [ListNode]) {
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
         addInGroupList(self.results)
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
     }
 
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -140,6 +159,43 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol {
             } else {
                 groupedLists.first?.list.append(element)
             }
+        }
+    }
+}
+
+// MARK: - Event observable
+
+extension RecentViewModel {
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.kind == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
         }
     }
 }
