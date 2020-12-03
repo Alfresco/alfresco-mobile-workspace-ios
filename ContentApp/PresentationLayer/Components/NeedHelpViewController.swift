@@ -73,7 +73,7 @@ class NeedHelpViewController: SystemThemableViewController {
             mAtrString.addAttributes([.foregroundColor: currentTheme.onSurfaceColor,
                                       .font: currentTheme.subtitle1TextStyle.font],
                                      range: (model.allText() as NSString).range(of: section.title))
-            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurfaceColor.withAlphaComponent(0.6),
+            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurface60Color,
                                       .font: currentTheme.body2TextStyle.font],
                                      range: (model.allText() as NSString).range(of: section.paragraphs))
         }
