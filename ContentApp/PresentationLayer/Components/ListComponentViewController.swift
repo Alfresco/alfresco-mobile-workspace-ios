@@ -100,18 +100,18 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
 
         collectionView.reloadData()
-        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
         progressView.trackTintColor =
-            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+            coordinatorServices?.themingService?.activeTheme?.primary30T1Color
     }
 
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryColor
+        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
         progressView.trackTintColor =
-            coordinatorServices?.themingService?.activeTheme?.primaryColor.withAlphaComponent(0.4)
+            coordinatorServices?.themingService?.activeTheme?.primary30T1Color
     }
 
     // MARK: - IBActions
@@ -130,9 +130,9 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
 
-        createButton.backgroundColor = currentTheme.primaryColor
+        createButton.backgroundColor = currentTheme.primaryT1Color
         createButton.tintColor = currentTheme.onPrimaryColor
-        refreshControl?.tintColor = currentTheme.primaryColor
+        refreshControl?.tintColor = currentTheme.primaryT1Color
     }
 
     func startLoading() {

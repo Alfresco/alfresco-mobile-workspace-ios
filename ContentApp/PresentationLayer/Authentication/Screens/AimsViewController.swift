@@ -105,19 +105,19 @@ class AimsViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
-              let needHelpButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+        guard let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
+              let smallButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginSmallButton),
               let repositoryTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
+        separator.backgroundColor = currentTheme.onSurface15Color
 
-        signInButton.applyContainedTheme(withScheme: loginButtonScheme)
-        signInButton.setBackgroundColor(currentTheme.dividerColor, for: .disabled)
+        signInButton.applyContainedTheme(withScheme: bigButtonScheme)
+        signInButton.setBackgroundColor(currentTheme.onSurface15Color, for: .disabled)
         signInButton.isUppercaseTitle = false
         signInButton.setShadowColor(.clear, for: .normal)
 
-        needHelpButton.applyTextTheme(withScheme: needHelpButtonScheme)
+        needHelpButton.applyTextTheme(withScheme: smallButtonScheme)
         needHelpButton.isUppercaseTitle = false
 
         repositoryTextField.applyTheme(withScheme: repositoryTextFieldScheme)

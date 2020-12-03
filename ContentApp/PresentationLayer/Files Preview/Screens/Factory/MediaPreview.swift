@@ -175,18 +175,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
         statusObserver = playerItem.observe(\AVPlayerItem.status,
                                             changeHandler: { [weak self] cPlayerItem, _ in
             guard let sSelf = self else { return }
-            switch cPlayerItem.status {
-            case .readyToPlay:
+            if let error = cPlayerItem.error {
+                handler(error)
+                sSelf.playerControls(enable: false)
+            } else {
+                handler(nil)
                 sSelf.playerControls(enable: true)
                 sSelf.updateTotalTime(from: cPlayerItem.duration.seconds)
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(nil)
-                }
-            case .failed:
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(playerItem.error)
-                }
-            default: break
             }
         })
     }
@@ -306,18 +301,18 @@ class MediaPreview: UIView, FilePreviewProtocol {
         totalTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeSecondsLabel.textAlignment = .left
 
-        videoSlider.tintColor = currentTheme.primaryColor
-        videoSlider.thumbTintColor = currentTheme.primaryColor
-        videoSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
+        videoSlider.tintColor = currentTheme.primaryT1Color
+        videoSlider.thumbTintColor = currentTheme.primaryT1Color
+        videoSlider.maximumTrackTintColor = currentTheme.primary30T1Color
         videoSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
 
         actionsView.backgroundColor = currentTheme.surfaceColor
-        actionsView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12).cgColor
+        actionsView.layer.borderColor = currentTheme.onSurface15Color.cgColor
 
-        backwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        forwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        backwardButton.tintColor = currentTheme.onSurface60Color
+        forwardButton.tintColor = currentTheme.onSurface60Color
 
-        playPauseButton.tintColor = currentTheme.primaryColor
+        playPauseButton.tintColor = currentTheme.primaryT1Color
         if isAudioFile {
             backgroundColor = currentTheme.backgroundColor
         }

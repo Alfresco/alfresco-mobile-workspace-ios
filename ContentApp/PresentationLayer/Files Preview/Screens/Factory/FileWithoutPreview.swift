@@ -58,8 +58,8 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 84),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -84)
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 77),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -77)
         ])
 
         let statuslabel = UILabel()

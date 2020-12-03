@@ -90,8 +90,8 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.viewWillAppear(animated)
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        progressView.progressTintColor = activeTheme?.primaryColor
-        progressView.trackTintColor = activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = activeTheme?.primaryT1Color
+        progressView.trackTintColor = activeTheme?.primary30T1Color
     }
 
     override func willTransition(to newCollection: UITraitCollection,
@@ -102,8 +102,8 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.willTransition(to: newCollection, with: coordinator)
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        progressView.progressTintColor = activeTheme?.primaryColor
-        progressView.trackTintColor = activeTheme?.primaryColor.withAlphaComponent(0.4)
+        progressView.progressTintColor = activeTheme?.primaryT1Color
+        progressView.trackTintColor = activeTheme?.primary30T1Color
     }
 
     override func viewWillTransition(to size: CGSize,
@@ -218,14 +218,14 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if let themeService = coordinatorServices?.themingService {
                 if chip.selected {
                     let scheme = themeService.containerScheming(for: .searchChipSelected)
-                    let backgroundColor = themeService.activeTheme?.primaryColor.withAlphaComponent(0.12)
+                    let backgroundColor = themeService.activeTheme?.primary15T1Color
 
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
                 } else {
                     let scheme = themeService.containerScheming(for: .searchChipUnselected)
                     let backgroundColor = themeService.activeTheme?.surfaceColor
-                    let borderColor = themeService.activeTheme?.onSurfaceColor.withAlphaComponent(0.12)
+                    let borderColor = themeService.activeTheme?.onSurface15Color
 
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
@@ -250,7 +250,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
 
                 let scheme = themeService.containerScheming(for: .searchChipSelected)
-                let backgroundColor = themeService.activeTheme?.primaryColor.withAlphaComponent(0.12)
+                let backgroundColor = themeService.activeTheme?.primary15T1Color
 
                 cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                 cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
@@ -272,7 +272,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
 
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
                 let backgroundColor = themeService.activeTheme?.surfaceColor
-                let borderColor = themeService.activeTheme?.onSurfaceColor.withAlphaComponent(0.12)
+                let borderColor = themeService.activeTheme?.onSurface15Color
 
                 cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                 cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)

@@ -70,7 +70,7 @@ class SettingsViewController: SystemThemableViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
         navigationController?.navigationBar.tintColor =
-            currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+            currentTheme.onSurface60Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
