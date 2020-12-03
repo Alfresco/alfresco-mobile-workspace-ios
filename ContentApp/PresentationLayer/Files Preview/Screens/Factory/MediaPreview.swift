@@ -175,18 +175,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
         statusObserver = playerItem.observe(\AVPlayerItem.status,
                                             changeHandler: { [weak self] cPlayerItem, _ in
             guard let sSelf = self else { return }
-            switch cPlayerItem.status {
-            case .readyToPlay:
+            if let error = cPlayerItem.error {
+                handler(error)
+                sSelf.playerControls(enable: false)
+            } else {
+                handler(nil)
                 sSelf.playerControls(enable: true)
                 sSelf.updateTotalTime(from: cPlayerItem.duration.seconds)
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(nil)
-                }
-            case .failed:
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(playerItem.error)
-                }
-            default: break
             }
         })
     }
