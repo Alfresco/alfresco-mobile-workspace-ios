@@ -69,9 +69,14 @@
 "browse" = "Browse";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services URL</font></p><p>You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.</p><p><font size=\"5\">Sign in with SSO</font></p><p>You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.</p><p>*You will have to provide the URL of your Alfresco Content Services instance afterwards</p><p>Talk to your Alfresco administrator if you require help.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Authenticating with Alfresco</font></p><p>If you are not using the default SSO settings, your values can be set here.</p><p>If you need help please contact your Alfresco administrator.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Content Repository Location</font></p><p>Alfresco Content Services URL:</p><p>This is the URL of your Alfresco Content Services instance.</p><p>Talk to your Alfresco administrator if you require help.</p>";
+"help-connect-title-section1" = "Alfresco Content Services URL";
+"help-connect-section1-paragraph" = "You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username &amp; password to authenticate.";
+"help-connect-title-section2" = "Sign in with SSO";
+"help-connect-section2-paragraph" = "You can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.\n\nYou will have to provide the URL of your Alfresco Content Services instance afterwards\n\nTalk to your Alfresco administrator if you require help.";
+"help-advanced-settings-title-section1" = "Authenticating with Alfresco";
+"help-advanced-settings-section1-paragraph" = "If you are not using the default SSO settings, your values can be set here.\n\nIf you need help please contact your Alfresco administrator.";
+"help-sso-title-section1" = "Content Repository Location";
+"help-sso-section1-paragraph" = "Alfresco Content Services URL:\n\nThis is the URL of your Alfresco Content Services instance.\n\nTalk to your Alfresco administrator if you require help.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Something went wrong. Contact your administrator for help. Error code: %d";

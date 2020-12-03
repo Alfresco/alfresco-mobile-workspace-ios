@@ -16,11 +16,29 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-struct NeedHelpAIMSModel: NeedHelpModelProtocol {
-    var sections: [NeedHelpSection] =
-        [NeedHelpSection(title: LocalizationConstants.Help.ssoTitleSection1,
-                         paragraphs: LocalizationConstants.Help.ssoSection1Paragraph)]
-    var title = LocalizationConstants.Labels.howToConnectTitle
+struct NeedHelpSection {
+    var title: String
+    var paragraphs: String
+
+    func allText() -> String {
+        return "\n" + title + "\n\n" + paragraphs + "\n"
+    }
+}
+
+protocol NeedHelpModelProtocol {
+    var title: String { get }
+    var sections: [NeedHelpSection] { get }
+    func allText() -> String
+}
+
+extension NeedHelpModelProtocol {
+    func allText() -> String {
+        var text = ""
+        for section in sections {
+            text += section.allText()
+        }
+        return text
+    }
 }
