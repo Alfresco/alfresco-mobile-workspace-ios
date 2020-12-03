@@ -125,7 +125,7 @@ class FavoritesViewController: SystemSearchViewController {
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         tabBar.applySurfaceTheme(withScheme: scheme)
         tabBar.backgroundColor = currentTheme.surfaceColor
-        tabBar.bottomDividerColor = currentTheme.dividerColor
+        tabBar.bottomDividerColor = currentTheme.onSurface15Color
         tabBar.enableRippleBehavior = true
         tabBar.rippleColor = currentTheme.surfaceColor
     }

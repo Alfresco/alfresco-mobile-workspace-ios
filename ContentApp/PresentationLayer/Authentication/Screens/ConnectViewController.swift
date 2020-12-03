@@ -146,20 +146,20 @@ class ConnectViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
-              let advancedSettingsButtonSceheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+        guard let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
+              let smallButtonSceheme = coordinatorServices?.themingService?.containerScheming(for: .loginSmallButton),
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        connectButton.applyContainedTheme(withScheme: loginButtonScheme)
-        connectButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+        connectButton.applyContainedTheme(withScheme: bigButtonScheme)
+        connectButton.setBackgroundColor(currentTheme.onSurface5Color,
                                          for: .disabled)
         connectButton.isUppercaseTitle = false
         connectButton.setShadowColor(.clear, for: .normal)
 
-        advancedSettingsButton.applyTextTheme(withScheme: advancedSettingsButtonSceheme)
+        advancedSettingsButton.applyTextTheme(withScheme: smallButtonSceheme)
         advancedSettingsButton.isUppercaseTitle = false
 
-        needHelpButton.applyTextTheme(withScheme: advancedSettingsButtonSceheme)
+        needHelpButton.applyTextTheme(withScheme: smallButtonSceheme)
         needHelpButton.isUppercaseTitle = false
 
         connectTextFieldAddMaterialComponents()
@@ -176,7 +176,7 @@ class ConnectViewController: SystemThemableViewController {
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
@@ -196,7 +196,7 @@ class ConnectViewController: SystemThemableViewController {
             connectTextField.applyTheme(withScheme: themingService.containerScheming(for: .loginTextField))
             connectTextField.leadingAssistiveLabel.text = ""
             connectTextField.trailingView = UIImageView(image: UIImage(named: "ic-connect-to-qr-code"))
-            connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurfaceColor.withAlphaComponent(0.6)
+            connectTextField.trailingView?.tintColor = themingService.activeTheme?.onSurface60Color
         }
     }
 

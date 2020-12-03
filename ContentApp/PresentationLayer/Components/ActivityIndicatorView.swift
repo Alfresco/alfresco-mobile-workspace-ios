@@ -61,7 +61,7 @@ class ActivityIndicatorView: UIView {
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+        activityIndicator.cycleColors = [currentTheme.primaryVariantT1Color]
         label.applyStyleBody2OnSurface60(theme: currentTheme)
         label.textAlignment = .center
         overlayView?.backgroundColor = currentTheme.surfaceColor

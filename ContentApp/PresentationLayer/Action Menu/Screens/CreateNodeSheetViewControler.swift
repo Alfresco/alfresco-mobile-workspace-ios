@@ -103,7 +103,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
         uploadButton.applyTextTheme(withScheme: buttonScheme)
         uploadButton.isUppercaseTitle = false
-        uploadButton.setTitleColor(currentTheme.onSurfaceColor.withAlphaComponent(0.4),
+        uploadButton.setTitleColor(currentTheme.onSurface30Color,
                                    for: .disabled)
 
         cancelButton.applyTextTheme(withScheme: buttonScheme)

@@ -33,11 +33,11 @@ class PrivacyNoticeViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         privacyButton.applyContainedTheme(withScheme: loginButtonScheme)
-        privacyButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+        privacyButton.setBackgroundColor(currentTheme.onSurface5Color,
                                          for: .disabled)
         privacyButton.isUppercaseTitle = false
         privacyButton.setShadowColor(.clear, for: .normal)

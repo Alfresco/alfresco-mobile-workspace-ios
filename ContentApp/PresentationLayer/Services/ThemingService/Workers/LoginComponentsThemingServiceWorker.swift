@@ -23,14 +23,12 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     func containerScheme(for scene: MaterialComponentsThemingScene, on theme: PresentationTheme) -> MDCContainerScheming? {
         switch scene {
-        case .loginButton:
+        case .loginBigButton:
             return loginButtonContainerScheme(for: theme)
         case .loginTextField:
             return loginTextFieldContainerScheme(for: theme)
-        case .loginAdvancedSettingsButton:
+        case .loginSmallButton:
             return loginAdvancedSettingsButtonContainerScheme(for: theme)
-        case .loginNeedHelpButton:
-            return loginNeedHelpButtonContainerScheme(for: theme)
         case .loginResetButton:
             return loginResetButtonContainerScheme(for: theme)
         case .loginSavePadButton:
@@ -43,7 +41,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     private func loginButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryColor
+        containerScheme.colorScheme.primaryColor = theme.primaryT1Color
         containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
         containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
@@ -52,15 +50,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     private func loginAdvancedSettingsButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
-        containerScheme.typographyScheme.button = theme.body2TextStyle.font
-
-        return containerScheme
-    }
-
-    private func loginNeedHelpButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
-        let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.onBackgroundColor.withAlphaComponent(0.6)
+        containerScheme.colorScheme.primaryColor = theme.primaryVariantT1Color
         containerScheme.typographyScheme.button = theme.body2TextStyle.font
 
         return containerScheme
@@ -68,7 +58,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     private func loginResetButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
+        containerScheme.colorScheme.primaryColor = theme.primaryVariantT1Color
         containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
         return containerScheme
@@ -76,7 +66,7 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     private func loginSavePadButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
+        containerScheme.colorScheme.primaryColor = theme.primaryVariantT1Color
         containerScheme.typographyScheme.button = theme.body1TextStyle.font
 
         return containerScheme
@@ -84,9 +74,9 @@ class LoginComponentsThemingServiceWorker: MaterialDesignThemingServiceWorkerPro
 
     private func loginTextFieldContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryColor
+        containerScheme.colorScheme.primaryColor = theme.primaryT1Color
         containerScheme.colorScheme.onSurfaceColor = theme.onSurfaceColor
-        containerScheme.colorScheme.backgroundColor = theme.onSurfaceColor.withAlphaComponent(0.12)
+        containerScheme.colorScheme.backgroundColor = theme.onSurface15Color
         containerScheme.colorScheme.errorColor = theme.errorColor
         containerScheme.typographyScheme.subtitle1 = theme.body1TextStyle.font
 
