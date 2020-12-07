@@ -33,6 +33,7 @@
 "yes" = "Sí";
 "cancel" = "Cancelar";
 "delete" = "Eliminar";
+"create" = "Crear";
 
 // MARK: - PlaceHolders
 "connect-to" = "Conectar a";
@@ -43,6 +44,8 @@
 "username-or-email" = "Nombre de usuario o correo electr.";
 "password" = "Contraseña";
 "content-services-url" = "URL de servicios de contenido";
+"description" = "Descripción";
+"name" = "Nombre";
 
 // MARK: - Labels
 "transport-protocol" = "Protocolo de transporte";
@@ -66,9 +69,14 @@
 "browse" = "Explorar";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">URL de Alfresco Content Services</font></p><p>Puede introducir la URL de su instancia de Alfresco Content Services. Tendrá que introducir su nombre de usuario y contraseña para autenticarse.</p><p><font size=\"5\">Iniciar sesión con SSO</font></p><p>Puede introducir la URL de Alfresco Identity Management Service para autenticarse con el proveedor de identidades de su organización.</p><p>*Deberá indicar la URL de su instancia de Alfresco Content Services más tarde</p><p>Hable con su administrador de Alfresco si necesita ayuda.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Autenticación con Alfresco</font></p><p>Si no utiliza la configuración de SSO predeterminada, puede establecer sus valores aquí.</p><p>Si necesita ayuda, contacte a su administrador de Alfresco.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Ubicación del repositorio de contenido</font></p><p>URL de Alfresco Content Services:</p><p>la URL de su instancia de Alfresco Content Services.</p><p>Hable con su administrador de Alfresco si necesita ayuda.</p>";
+"help-connect-title-section1" = "URL de Alfresco Content Services";
+"help-connect-section1-paragraph" = "Puede introducir la URL de su instancia de Alfresco Content Services. Tendrá que introducir su nombre de usuario y contraseña para autenticarse.";
+"help-connect-title-section2" = "Iniciar sesión con SSO";
+"help-connect-section2-paragraph" = "Puede introducir la URL de Alfresco Identity Management Service para autenticarse con el proveedor de identidades de su organización.\n\nDeberá indicar la URL de su instancia de Alfresco Content Services más tarde.\n\nHable con su administrador de Alfresco si necesita ayuda.";
+"help-advanced-settings-title-section1" = "Autenticación con Alfresco";
+"help-advanced-settings-section1-paragraph" = "Si no utiliza la configuración de SSO predeterminada, puede establecer sus valores aquí.\n\nSi necesita ayuda, contacte a su administrador de Alfresco.";
+"help-sso-title-section1" = "Ubicación del repositorio de contenido";
+"help-sso-section1-paragraph" = "URL de Alfresco Content Services:\n\nEsta es la URL de su instancia de Alfresco Content Services\n\nHable con su administrador de Alfresco si necesita ayuda.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Ha surgido un error. Contacte a su administrador para obtener ayuda. Cód. de error: %d";
@@ -79,6 +87,11 @@
 "error-something-went-wrong" = "Ha surgido un error.";
 "warning-login-path-empty" = "La ruta no puede estar vacía; vaya a Ajustes avanzados.";
 "error-unknown" = "Error desconocido.";
+"error-timeout" = "Esta acción está tardando más de lo esperado. Por favor, espere.";
+"error-folder-same-name" = "Ya existe una carpeta con este nombre. Pruebe con otro.";
+"error-node-name-special-characters" = "El nombre no puede contener estos caracteres %@";
+"error-folder-name-end-period" = "El nombre de la carpeta no puede terminar en punto %@";
+"error-folder-name-contain-only-spaces" = "El nombre de la carpeta no puede contener solo espacios";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Se han guardado los cambios de configuración.";
@@ -87,6 +100,7 @@
 "approved-moved-trash" = "%@ movido a papelera";
 "approved-restored" = "%@ restaurado";
 "approved-deleted" = "%@ eliminado";
+"approved-created" = "%@ se ha creado";
 
 // MARK: - Settings Screen
 "theme" = "Apariencia";
@@ -98,8 +112,6 @@
 "sign-out-confirmation" = "¿Seguro que desea cerrar sesión?";
 
 // MARK: - Search
-"empty-list" = "Vaya...";
-"empty-list-subtitle" = "No podemos encontrar\n lo que busca";
 "searching" = "Buscando...";
 "no-recent-search" = "No hay búsquedas actuales.";
 "recent-search" = "Búsquedas actuales";
@@ -137,10 +149,32 @@
 "action-menu-add-favorite" = "Añadir a favoritos";
 "action-menu-remove-favorite" = "Quitar de favoritos";
 "action-menu-move-trash" = "Mover a papelera";
-"action-menu-download" = "Descargar";
+"action-menu-download" = "Abrir con";
 "action-menu-restore" = "Restaurar";
 "action-menu-permanently-delete" = "Eliminar permanentemente";
+"action-menu-create-ms-word" = "Documento de Word";
+"action-menu-create-ms-excel" = "Hoja de cálculo de Excel";
+"action-menu-create-ms-powerpoint" = "Presentación de PowerPoint";
+"action-menu-create-folder" = "Nueva carpeta";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Eliminar";
 "dialog-delete-message" = "%@ se eliminará permanentemente.";
+"dialog-download-message" = "Descargando '%@'";
+"dialog-upload-message" = "Cargando '%@'";
+
+// MARK: - Empty List
+"empty-recent-title" = "No hay ficheros recientes";
+"empty-recent-description" = "Los ficheros que vea y\n edite se mostrarán aquí.";
+"empty-favorites-files-folders-title" = "No hay ficheros ni carpetas favoritos";
+"empty-favorites-libraries-title" = "No hay bibliotecas favoritas";
+"empty-favorites-description" = "Parece que no ha \n añadido ningún contenido.";
+"empty-folder-title" = "Esta carpeta está vacía";
+"empty-folder-description" = "Parece que no hay\n ningún contenido todavía.";
+"empty-search-title" = "¡Vaya!";
+"empty-search-description" = "No podemos encontrar\n lo que busca.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
+"privacy-photos-description" = "Para guardar imágenes o vídeos en su dispositivo, Mobile Workspace necesita acceso a sus fotos.";
+"privacy-button" = "Revisar ajustes de privacidad";

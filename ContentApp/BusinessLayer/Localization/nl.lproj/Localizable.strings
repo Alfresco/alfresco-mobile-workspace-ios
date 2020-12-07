@@ -33,6 +33,7 @@
 "yes" = "Ja";
 "cancel" = "Annuleren";
 "delete" = "Verwijderen";
+"create" = "Maken";
 
 // MARK: - PlaceHolders
 "connect-to" = "Verbinden met";
@@ -43,6 +44,8 @@
 "username-or-email" = "Gebruikersnaam of e-mailadres";
 "password" = "Wachtwoord";
 "content-services-url" = "URL contentservices";
+"description" = "Beschrijving";
+"name" = "Naam";
 
 // MARK: - Labels
 "transport-protocol" = "Transportprotocol";
@@ -66,9 +69,14 @@
 "browse" = "Bladeren";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services-URL</font></p><p>U kunt de URL van uw Alfresco Content Services-instance invoeren. Hiervoor moet u uw gebruikersnaam en wachtwoord opgeven voor verificatie.</p><p><font size=\"5\">Inloggen met SSO</font></p><p>U kunt de URL van uw Alfresco Identity Management Service invoeren voor verificatie met de identiteitsprovider van uw organisatie.</p><p>*U moet de URL van uw Alfresco Content Services-instance naderhand opgeven.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Verifiëren met Alfresco</font></p><p>Als u de standaard SSO-instellingen niet gebruikt, kunnen uw waarden hier worden ingesteld.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Locatie content-repository</font></p><p>Alfresco Content Services-URL:</p><p>Dit is de URL van uw Alfresco Content Services-instance.</p><p>Neem contact op met uw Alfresco-beheerder als u hulp nodig hebt.</p>";
+"help-connect-title-section1" = "Alfresco Content Services-URL";
+"help-connect-section1-paragraph" = "U kunt de URL van uw Alfresco Content Services-instance invoeren. Hiervoor moet u uw gebruikersnaam en wachtwoord opgeven voor verificatie.";
+"help-connect-title-section2" = "Inloggen met SSO";
+"help-connect-section2-paragraph" = "U kunt de URL van uw Alfresco Identity Management Service invoeren voor verificatie met de identiteitsprovider van uw organisatie.\n\nU moet de URL van uw Alfresco Content Services-instance naderhand opgeven.\n\nNeem contact op met uw Alfresco-beheerder als u hulp nodig hebt.";
+"help-advanced-settings-title-section1" = "Verifiëren met Alfresco";
+"help-advanced-settings-section1-paragraph" = "Als u de standaard SSO-instellingen niet gebruikt, kunnen uw waarden hier worden ingesteld.\n\nNeem contact op met uw Alfresco-beheerder als u hulp nodig hebt.";
+"help-sso-title-section1" = "Locatie content-repository";
+"help-sso-section1-paragraph" = "Alfresco Content Services-URL:\n\nDit is de URL van uw Alfresco Content Services-instance.\n\nNeem contact op met uw Alfresco-beheerder als u hulp nodig hebt.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Er is iets fout gegaan. Neem contact op met uw beheerder voor hulp. Foutcode: %d";
@@ -79,6 +87,11 @@
 "error-something-went-wrong" = "Er is iets fout gegaan!";
 "warning-login-path-empty" = "Pad mag niet leeg zijn, ga naar Geavanceerde instellingen.";
 "error-unknown" = "Onbekende fout opgetreden.";
+"error-timeout" = "Dit duurt langer dan verwacht. Een ogenblik geduld.";
+"error-folder-same-name" = "Er bestaat al een map met deze naam. Probeer een andere naam.";
+"error-node-name-special-characters" = "Naam mag deze tekens niet bevatten: %@";
+"error-folder-name-end-period" = "Mapnaam mag niet eindigen op een punt %@";
+"error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
@@ -87,6 +100,7 @@
 "approved-moved-trash" = "%@ verplaatst naar prullenmand";
 "approved-restored" = "%@ hersteld";
 "approved-deleted" = "%@ verwijderd";
+"approved-created" = "%@ is gemaakt";
 
 // MARK: - Settings Screen
 "theme" = "Weergave";
@@ -98,8 +112,6 @@
 "sign-out-confirmation" = "Weet u zeker dat u wilt uitloggen?";
 
 // MARK: - Search
-"empty-list" = "Oeps...";
-"empty-list-subtitle" = "Kan niet vinden wat\n u zoekt";
 "searching" = "Zoeken...";
 "no-recent-search" = "Er zijn geen recente zoekopdrachten.";
 "recent-search" = "Recente zoekopdrachten";
@@ -137,10 +149,32 @@
 "action-menu-add-favorite" = "Toevoegen aan Favorieten";
 "action-menu-remove-favorite" = "Verwijderen uit Favorieten";
 "action-menu-move-trash" = "Verplaatsen naar prullenmand";
-"action-menu-download" = "Downloaden";
+"action-menu-download" = "Openen met";
 "action-menu-restore" = "Herstellen";
 "action-menu-permanently-delete" = "Permanent verwijderen";
+"action-menu-create-ms-word" = "Word-document";
+"action-menu-create-ms-excel" = "Excel-spreadsheet";
+"action-menu-create-ms-powerpoint" = "PowerPoint-presentatie";
+"action-menu-create-folder" = "Nieuwe map";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Verwijderen";
 "dialog-delete-message" = "%@ wordt permanent verwijderd.";
+"dialog-download-message" = "'%@' wordt gedownload";
+"dialog-upload-message" = "'%@' wordt geüpload";
+
+// MARK: - Empty List
+"empty-recent-title" = "Geen recente bestanden";
+"empty-recent-description" = "Bestanden die u weergeeft en\n bewerkt worden hier weergegeven.";
+"empty-favorites-files-folders-title" = "Geen favoriete bestanden of mappen";
+"empty-favorites-libraries-title" = "Geen favoriete bibliotheken";
+"empty-favorites-description" = "Het lijkt erop dat u niets\n hebt toegevoegd.";
+"empty-folder-title" = "Map is leeg";
+"empty-folder-description" = "Het lijkt erop dat hier\n nog niets te vinden is.";
+"empty-search-title" = "Oeps!";
+"empty-search-description" = "We kunnen niet vinden wat\n u zoekt.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
+"privacy-photos-description" = "Om afbeeldingen of video's op uw apparaat op te slaan, heeft Mobile Workspace toegang tot uw foto's nodig.";
+"privacy-button" = "Privacy-instellingen bekijken";

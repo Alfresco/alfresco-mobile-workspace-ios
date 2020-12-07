@@ -33,6 +33,7 @@
 "yes" = "Ja";
 "cancel" = "Abbrechen";
 "delete" = "Löschen";
+"create" = "Erstellen";
 
 // MARK: - PlaceHolders
 "connect-to" = "Verbinden mit";
@@ -43,6 +44,8 @@
 "username-or-email" = "Benutzername oder E-Mail-Adresse";
 "password" = "Passwort";
 "content-services-url" = "Content Services-URL";
+"description" = "Beschreibung";
+"name" = "Name";
 
 // MARK: - Labels
 "transport-protocol" = "Transportprotokoll";
@@ -61,14 +64,19 @@
 
 // MARK: - Screen Titles
 "settings" = "Einstellungen";
-"recent" = "Letzte";
+"recent" = "Zuletzt";
 "favorites" = "Favoriten";
 "browse" = "Durchsuchen";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">Alfresco Content Services URL</font></p><p>Sie können die URL Ihrer Alfresco Content Services-Instanz eingeben. Dafür müssen Sie Ihren Benutzernamen und das Passwort eingeben.</p><p><font size=\"5\">Mit SSO anmelden</font></p><p>Sie können die URL Ihres Alfresco Identity Management Service eingeben, um sich beim Identitätsanbieter Ihres Unternehmens zu authentifizieren.</p><p>*Sie müssen anschließend die URL Ihrer Alfresco Content Services-Instanz eingeben.</p><p>Sprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Authentifizierung mit Alfresco</font></p><p>Falls Sie keine standardmäßigen SSO-Einstellungen verwenden, können Sie Ihre Werte hier festlegen.</p><p>Falls Sie Hilfe benötigen, kontaktieren Sie Ihren Alfresco-Administrator.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Speicherort des Inhaltsrepositorys</font></p><p>Alfresco Content Services-URL:</p><p>Dies ist die URL Ihrer Alfresco Content Services-Instanz.</p><p>Sprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.</p>";
+"help-connect-title-section1" = "Alfresco Content Services-URL";
+"help-connect-section1-paragraph" = "Sie können die URL Ihrer Alfresco Content Services-Instanz eingeben. Dafür müssen Sie Ihren Benutzernamen und das Passwort eingeben.";
+"help-connect-title-section2" = "Mit SSO anmelden";
+"help-connect-section2-paragraph" = "Sie können die URL Ihres Alfresco Identity Management Service eingeben, um sich beim Identitätsanbieter Ihres Unternehmens zu authentifizieren.\n\nSie müssen anschließend die URL Ihrer Alfresco Content Services-Instanz eingeben.\n\nSprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.";
+"help-advanced-settings-title-section1" = "Authentifizierung mit Alfresco";
+"help-advanced-settings-section1-paragraph" = "Falls Sie keine standardmäßigen SSO-Einstellungen verwenden, können Sie Ihre Werte hier festlegen.\n\nFalls Sie Hilfe benötigen, kontaktieren Sie Ihren Alfresco-Administrator.";
+"help-sso-title-section1" = "Speicherort des Inhaltsrepositorys";
+"help-sso-section1-paragraph" = "Alfresco Content Services-URL:\n\nDies ist die URL Ihrer Alfresco Content Services-Instanz.\n\nSprechen Sie mit Ihrem Alfresco-Administrator, wenn Sie Hilfe benötigen.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Etwas ist schiefgelaufen. Kontaktieren Sie Ihren Administrator für Hilfe. Fehlercode: %d";
@@ -79,6 +87,11 @@
 "error-something-went-wrong" = "Etwas ist schiefgelaufen!";
 "warning-login-path-empty" = "Der Pfad darf nicht leer sein. Öffnen Sie die erweiterten Einstellungen.";
 "error-unknown" = "Unbekannter Fehler aufgetreten.";
+"error-timeout" = "Das dauert länger als erwartet. Haben Sie noch etwas Geduld.";
+"error-folder-same-name" = "Es gibt bereits einen Ordner mit diesem Namen. Versuchen Sie es mit einem anderen Namen.";
+"error-node-name-special-characters" = "Der Name darf diese Zeichen nicht enthalten: &@";
+"error-folder-name-end-period" = "Der Ordnername darf nicht mit einem Punkt enden %@";
+"error-folder-name-contain-only-spaces" = "Der Ordnername darf nicht nur Leerzeichen enthalten.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Konfigurationsänderungen wurden gespeichert.";
@@ -87,6 +100,7 @@
 "approved-moved-trash" = "%@ in den Papierkorb verschoben";
 "approved-restored" = "%@ wiederhergestellt";
 "approved-deleted" = "%@ gelöscht";
+"approved-created" = "%@ wurde erstellt";
 
 // MARK: - Settings Screen
 "theme" = "Aussehen";
@@ -98,8 +112,6 @@
 "sign-out-confirmation" = "Möchten Sie sich wirklich abmelden?";
 
 // MARK: - Search
-"empty-list" = "Ups...";
-"empty-list-subtitle" = "Wir können das von\nIhnen Gesuchte nicht finden.";
 "searching" = "Suche läuft...";
 "no-recent-search" = "Es gibt keine letzten Suchaufträge.";
 "recent-search" = "Letzte Suchaufträge";
@@ -137,10 +149,32 @@
 "action-menu-add-favorite" = "Zu Favoriten hinzufügen";
 "action-menu-remove-favorite" = "Aus Favoriten entfernen";
 "action-menu-move-trash" = "In den Papierkorb bewegen";
-"action-menu-download" = "Herunterladen";
+"action-menu-download" = "Öffnen mit";
 "action-menu-restore" = "Wiederherstellen";
 "action-menu-permanently-delete" = "Dauerhaft löschen";
+"action-menu-create-ms-word" = "Word-Dokument";
+"action-menu-create-ms-excel" = "Excel-Arbeitsblatt";
+"action-menu-create-ms-powerpoint" = "PowerPoint-Präsentation";
+"action-menu-create-folder" = "Neuer Ordner";
 
 // MARK: - Node Actions Dialog
-"dialog-delete-title" = "Lösche";
+"dialog-delete-title" = "Löschen";
 "dialog-delete-message" = "%@ wird dauerhaft gelöscht.";
+"dialog-download-message" = "'%@' wird heruntergeladen";
+"dialog-upload-message" = "'%@' wird hochgeladen";
+
+// MARK: - Empty List
+"empty-recent-title" = "Keine benutzten Dateien";
+"empty-recent-description" = "Hier werden Dateien\naufgeführt, die Sie anzeigen und bearbeiten.";
+"empty-favorites-files-folders-title" = "Keine Dateien oder Ordner als Favoriten";
+"empty-favorites-libraries-title" = "Keine Bibliotheken als Favoriten";
+"empty-favorites-description" = "Sie haben scheinbar noch\nnichts hinzugefügt.";
+"empty-folder-title" = "Ordner ist leer";
+"empty-folder-description" = "Dieser Ordner ist\nnoch leer.";
+"empty-search-title" = "Hoppla!";
+"empty-search-description" = "Wir können das von\nIhnen Gesuchte nicht finden.";
+
+// MARK: - Privacy settings
+"privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";
+"privacy-photos-description" = "Um Bilder oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
+"privacy-button" = "Datenschutzeinstellungen prüfen";

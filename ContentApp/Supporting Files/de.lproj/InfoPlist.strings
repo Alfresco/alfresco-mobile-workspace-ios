@@ -16,5 +16,5 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
-NSPhotoLibraryAddUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
+NSPhotoLibraryUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotomediathek in diese App hochladen.";
+NSPhotoLibraryAddUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotomediathek in diese App hochladen.";
