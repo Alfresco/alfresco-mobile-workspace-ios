@@ -16,5 +16,5 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
-NSPhotoLibraryAddUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
+NSPhotoLibraryUsageDescription = "U kunt foto's en video's uit uw fotobibliotheek uploaden naar deze app.";
+NSPhotoLibraryAddUsageDescription = "U kunt foto's en video's uit uw fotobibliotheek uploaden naar deze app.";

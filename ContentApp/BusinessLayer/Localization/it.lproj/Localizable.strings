@@ -33,6 +33,7 @@
 "yes" = "Sì";
 "cancel" = "Annulla";
 "delete" = "Elimina";
+"create" = "Crea";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connetti a";
@@ -43,6 +44,8 @@
 "username-or-email" = "Nome utente o e-mail";
 "password" = "Password";
 "content-services-url" = "URL di Content Services";
+"description" = "Descrizione";
+"name" = "Nome";
 
 // MARK: - Labels
 "transport-protocol" = "Protocollo di trasporto";
@@ -66,9 +69,14 @@
 "browse" = "Sfoglia";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">URL di Alfresco Content Services</font></p><p>Puoi immettere l'URL della tua istanza di Alfresco Content Services. In questo caso, devi inserire il tuo nome utente e la password per autenticarti.</p><p><font size=\"5\">Accesso con SSO</font></p><p>Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.</p><p>*Dovrai quindi fornire l'URL della tua istanza di Alfresco Content Services</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Autenticazione con Alfresco</font></p><p>Se non utilizzi le impostazioni SSO di default, puoi impostare qui i tuoi valori.</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Percorso repository dei contenuti</font></p><p>URL di Alfresco Content Services:</p><p>Questo è l'URL della tua istanza di Alfresco Content Services.</p><p>Per richiedere assistenza, contatta l'amministratore di Alfresco.</p>";
+"help-connect-title-section1" = "URL di Alfresco Content Services";
+"help-connect-section1-paragraph" = "Puoi immettere l'URL della tua istanza di Alfresco Content Services. In questo caso, devi inserire il tuo nome utente e la password per autenticarti.";
+"help-connect-title-section2" = "Accesso con SSO";
+"help-connect-section2-paragraph" = "Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.\n\nDovrai quindi fornire l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
+"help-advanced-settings-title-section1" = "Autenticazione con Alfresco";
+"help-advanced-settings-section1-paragraph" = "Se non utilizzi le impostazioni SSO di default, puoi impostare qui i tuoi valori.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
+"help-sso-title-section1" = "Percorso repository dei contenuti";
+"help-sso-section1-paragraph" = "URL di Alfresco Content Services:\n\nQuesto è l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Si è verificato un problema. Per assistenza, contatta il tuo amministratore. Codice errore: %d";
@@ -80,6 +88,10 @@
 "warning-login-path-empty" = "Il percorso non può essere vuoto. Vai a Impostazioni avanzate.";
 "error-unknown" = "Si è verificato un errore sconosciuto.";
 "error-timeout" = "L'operazione sta richiedendo più tempo del previsto. Attendi qualche istante.";
+"error-folder-same-name" = "Esiste già una cartella con questo nome. Prova a usare un altro nome.";
+"error-node-name-special-characters" = "Il nome non può contenere questi caratteri %@";
+"error-folder-name-end-period" = "Il nome della cartella non può terminare con un punto %@";
+"error-folder-name-contain-only-spaces" = "Il nome della cartella non può contenere solo spazi";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
@@ -88,6 +100,7 @@
 "approved-moved-trash" = "%@ spostato nel cestino";
 "approved-restored" = "%@ ripristinato";
 "approved-deleted" = "%@ eliminato";
+"approved-created" = "%@ è stato creato";
 
 // MARK: - Settings Screen
 "theme" = "Aspetto";
@@ -139,11 +152,16 @@
 "action-menu-download" = "Apri con";
 "action-menu-restore" = "Ripristina";
 "action-menu-permanently-delete" = "Elimina definitivamente";
+"action-menu-create-ms-word" = "Documento Word";
+"action-menu-create-ms-excel" = "Foglio di calcolo di Excel";
+"action-menu-create-ms-powerpoint" = "Presentazione di PowerPoint";
+"action-menu-create-folder" = "Nuova cartella";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Elimina";
 "dialog-delete-message" = "%@ verrà eliminato definitivamente.";
 "dialog-download-message" = "Scarico '%@'";
+"dialog-upload-message" = "Carico '%@'";
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
