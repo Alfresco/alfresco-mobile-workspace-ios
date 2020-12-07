@@ -82,7 +82,7 @@ class NeedHelpViewController: SystemThemableViewController {
         titleLabel.text = model.title
         titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
 
-        closeButton.setTitleColor(currentTheme.primaryVariantT1Color, for: .normal)
+        closeButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
     }
 
