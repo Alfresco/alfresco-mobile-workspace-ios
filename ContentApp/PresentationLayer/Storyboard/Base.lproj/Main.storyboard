@@ -323,8 +323,8 @@
                                     <constraint firstAttribute="width" constant="50" id="wA3-h4-L4c"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="✕">
-                                    <color key="titleColor" red="0.098039215690000001" green="0.56470588239999997" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="ic-close">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="closeButtonTapped:" destination="kyq-zb-fNe" eventType="touchUpInside" id="I3W-1m-KuO"/>
@@ -2069,6 +2069,7 @@
         <image name="alfresco-logo" width="92" height="92"/>
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
+        <image name="ic-close" width="24" height="24"/>
         <image name="ic-image" width="24" height="24"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>
         <image name="ic-recent-searches" width="12" height="12"/>
