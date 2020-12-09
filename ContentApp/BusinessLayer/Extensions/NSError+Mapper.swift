@@ -32,8 +32,6 @@ extension APIError {
             return LocalizationConstants.Errors.checkConnectURL
         case ModuleErrorType.errorAuthenticationServiceNotFound.code:
             return LocalizationConstants.Errors.noAuthAlfrescoURL
-        case ModuleErrorType.errorUsernameNotEmpty.code, ModuleErrorType.errorPasswordNotEmpty.code:
-            return self.localizedDescription
         case 401:
             return LocalizationConstants.Errors.wrongCredentials
         default:

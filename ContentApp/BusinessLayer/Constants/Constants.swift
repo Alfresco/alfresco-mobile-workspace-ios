@@ -100,6 +100,7 @@ let kMultiplerPreviewSizeImage: CGFloat = 1.0
 let kMaxElemetsInRecentSearchesArray = 15
 let kMinCharactersForLiveSearch = 3
 let kListPageSize = 25
+let kDaysModifiedInterval = 30
 
 // MARK: - Identifiers
 let kCVLoadingIndicatorReuseIdentifier = "kCollectionViewLoadingIndicatorReuseIdentifier"

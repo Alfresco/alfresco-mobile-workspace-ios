@@ -97,7 +97,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
             switch result {
             case .success(let response):
-                handler(.success(response.isVersionOverMinium()))
+                handler(.success(response?.isVersionOverMinium() ?? false))
             case .failure(let error):
                 handler(.failure(error))
             }

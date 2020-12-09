@@ -335,7 +335,7 @@ class NodeActionsViewModel {
         clearController.view.backgroundColor = .clear
         clearController.modalPresentationStyle = .overCurrentContext
 
-        activityViewController.completionWithItemsHandler = { [weak self] (activity, success, items, error) in
+        activityViewController.completionWithItemsHandler = { [weak self] (activity, success, _, _) in
             guard let sSelf = self else { return }
 
             activityViewController.dismiss(animated: true)

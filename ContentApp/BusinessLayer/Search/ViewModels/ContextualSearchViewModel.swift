@@ -113,8 +113,10 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
-
+            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
+                                                                         chipFilters: sSelf.searchChips,
+                                                                         pagination: paginationRequest)
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
                 if let entries = result?.list?.entries {
                     sSelf.resultsList = ResultsNodeMapper.map(entries)
                 }

@@ -42,7 +42,8 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(pagination: paginationRequest)) { (result, error) in
+            let recentFilesRequest = SearchRequestBuilder.recentFilesRequest(pagination: paginationRequest)
+            SearchAPI.recentFiles(recentFilesRequest: recentFilesRequest) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)

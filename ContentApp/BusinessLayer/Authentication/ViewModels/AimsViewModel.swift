@@ -76,13 +76,16 @@ class AimsViewModel {
 }
 
 extension AimsViewModel: AlfrescoAuthDelegate {
-    func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
+    func didReceive(result: Result<AlfrescoCredential?, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(let aimsCredential):
+            guard let aimsCredential = aimsCredential  else { return }
             AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: aimsCredential))")
 
             if let authSession = session, let accountParams = authenticationService?.parameters {
-                let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
+                let accountSession = AIMSSession(with: authSession,
+                                                 parameters: accountParams,
+                                                 credential: aimsCredential)
                 let account = AIMSAccount(with: accountSession)
 
                 AlfrescoContentAPI.basePath = account.apiBasePath
@@ -93,7 +96,8 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 self.fetchProfileInformation()
             }
         case .failure(let error):
-            AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")
+            let contentURL = authenticationService?.parameters.contentURL
+            AlfrescoLog.error("Error \(String(describing: contentURL)) login with aims : \(error.localizedDescription)")
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.delegate?.logInFailed(with: error)
