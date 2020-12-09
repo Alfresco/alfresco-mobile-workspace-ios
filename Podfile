@@ -5,8 +5,6 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'ContentApp' do
-  pod 'AlfrescoAuth'
-  pod 'AlfrescoContent'
   pod 'SwiftLint'
   pod 'JWTDecode'
   pod 'Firebase/Crashlytics'

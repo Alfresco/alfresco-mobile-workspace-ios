@@ -261,6 +261,7 @@ class CreateNodeViewModel {
                               aspectNames: nil,
                               properties: nodeProperties(),
                               permissions: nil,
+                              definition: nil,
                               relativePath: nil,
                               association: nil,
                               secondaryChildren: nil,
