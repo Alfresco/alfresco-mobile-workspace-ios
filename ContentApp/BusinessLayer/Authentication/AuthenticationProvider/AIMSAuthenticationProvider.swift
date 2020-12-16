@@ -34,7 +34,7 @@ class AIMSAuthenticationProvider: AuthenticationProviderProtocol {
     func areCredentialsValid() -> Bool {
         guard let accesTokenExpiresIn = credential.accessTokenExpiresIn else { return false }
         let tokenExpireDate = Date(timeIntervalSince1970: TimeInterval(accesTokenExpiresIn))
-        //Substract sessionExpirationTimeIntervalCheck time
+        // Substract sessionExpirationTimeIntervalCheck time
         let currentDateThreshold = tokenExpireDate.addingTimeInterval(-TimeInterval(kSessionExpirationTimeIntervalCheck))
 
         if Date().compare(currentDateThreshold) == .orderedDescending ||

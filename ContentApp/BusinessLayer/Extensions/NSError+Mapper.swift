@@ -26,7 +26,7 @@ extension APIError {
 
         let genericError = String(format: LocalizationConstants.Errors.generic, self.responseCode)
         switch self.responseCode {
-        case 1000..<1999: //AlfrescoCore
+        case 1000..<1999: // AlfrescoCore
            return genericError
         case ModuleErrorType.errorIssuerNil.code:
             return LocalizationConstants.Errors.checkConnectURL

@@ -97,11 +97,11 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
 
     func scrollToTopOrPopToRoot(forScreen item: Int) {
         switch item {
-        case 0: //Recents
+        case 0: // Recents
             recentCoordinator?.scrollToTopOrPopToRoot()
-        case 1: //Favorites
+        case 1: // Favorites
             favoritesCoordinator?.scrollToTopOrPopToRoot()
-        case 2: //Browse
+        case 2: // Browse
             browseCoordinator?.scrollToTopOrPopToRoot()
         default:
             break

@@ -80,7 +80,7 @@ class ListComponentViewController: SystemThemableViewController {
         progressView.mode = .indeterminate
 
         // Set up pull to refresh control
-        let refreshControl = UIRefreshControl()//RefreshIndicatorView(theme: themingService?.activeTheme)
+        let refreshControl = UIRefreshControl()// RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
                                  for: .valueChanged)
