@@ -351,6 +351,7 @@ PODS:
   - nanopb/decode (2.30906.0)
   - nanopb/encode (2.30906.0)
   - Nuke (9.2.0)
+  - ObjectBox (1.4.1)
   - PromisesObjC (1.2.11)
   - SVGKit (2.1.1):
     - CocoaLumberjack (~> 3.0)
@@ -385,6 +386,7 @@ DEPENDENCIES:
   - "MaterialComponents/TextControls+OutlinedTextFields"
   - "MaterialComponents/TextControls+OutlinedTextFieldsTheming"
   - Nuke
+  - ObjectBox
   - SVGKit
   - SwiftLint
 
@@ -414,6 +416,7 @@ SPEC REPOS:
     - MotionInterchange
     - nanopb
     - Nuke
+    - ObjectBox
     - PromisesObjC
     - SVGKit
     - SwiftLint
@@ -443,10 +446,11 @@ SPEC CHECKSUMS:
   MotionInterchange: ead0e3ae1f3a5fb539e289debbc7ae036160a10d
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   Nuke: 1394e48b0940e01dd20f52ac56b121ab154e370d
+  ObjectBox: fcb0951dbf2b0570c7ea33f6a3ca2f239d3cf1bd
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 4fa9579c63416865179bc416f0a92d55f009600d
 
-PODFILE CHECKSUM: bf559dbee68d39a5f33b994de107778ebe7e8630
+PODFILE CHECKSUM: 459075e321c65aabd6c52616c44ad080e40b6d73
 
 COCOAPODS: 1.10.0

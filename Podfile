@@ -12,6 +12,7 @@ target 'ContentApp' do
   pod 'Nuke'
   pod 'Gifu'
   pod 'SVGKit'
+  pod 'ObjectBox'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'
