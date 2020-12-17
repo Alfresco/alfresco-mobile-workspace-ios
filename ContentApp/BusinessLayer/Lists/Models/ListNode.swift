@@ -122,6 +122,10 @@ class ListNode: Hashable {
         return false
     }
 
+    func isMarkedOffline() -> Bool {
+        return false
+    }
+
     func hasPersmission(to type: AllowableOperationsType) -> Bool {
         guard let allowableOperations = allowableOperations else { return false }
         return allowableOperations.contains(type)

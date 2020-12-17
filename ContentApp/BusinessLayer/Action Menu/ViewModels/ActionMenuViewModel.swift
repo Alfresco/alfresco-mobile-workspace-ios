@@ -152,12 +152,14 @@ class ActionMenuViewModel {
     private func divideForToolbarActions() {
         var toolActions = [ActionMenu]()
         for index in 0...menuActions.count - 1 {
-            for action in menuActions[index] where action.type != .node {
+            for action in menuActions[index] where
+                action.type == .removeFavorite ||
+                action.type == .addFavorite {
                 toolActions.append(action)
-                if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
-                    addActionToOpenMenu(in: toolActions)
-                    return
-                }
+            }
+            for action in menuActions[index] where
+                action.type == .download {
+                toolActions.append(action)
             }
         }
         addActionToOpenMenu(in: toolActions)

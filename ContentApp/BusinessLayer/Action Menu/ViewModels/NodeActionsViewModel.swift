@@ -77,12 +77,16 @@ class NodeActionsViewModel {
                 sSelf.requestRemoveFromFavorites()
             case .moveTrash:
                 sSelf.requestMoveToTrash()
-            case .restore :
+            case .restore:
                 sSelf.requestRestoreFromTrash()
             case .permanentlyDelete:
                 sSelf.requestPermanentlyDelete()
-            case .download :
+            case .download:
                 sSelf.requestDownload()
+            case .markOffline:
+                sSelf.requestMarkOffline()
+            case .removeOffline:
+                sSelf.requestRemoveOffline()
             default:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
                     sSelf.delegate?.nodeActionFinished(with: sSelf.action,
@@ -91,6 +95,14 @@ class NodeActionsViewModel {
                 })
             }
         })
+    }
+
+    private func requestMarkOffline() {
+        handleResponse(error: nil)
+    }
+
+    private func requestRemoveOffline() {
+        handleResponse(error: nil)
     }
 
     private func requestAddToFavorites() {

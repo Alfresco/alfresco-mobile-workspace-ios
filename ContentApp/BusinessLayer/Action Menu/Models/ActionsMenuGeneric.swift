@@ -25,6 +25,10 @@ struct ActionsMenuGeneric {
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node))
+        let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
+                                       type: .markOffline)
+        let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
+                                       type: .removeOffline)
         let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
@@ -35,6 +39,12 @@ struct ActionsMenuGeneric {
                                       type: .download)
 
         var actions2: [ActionMenu] = []
+
+        if node.isMarkedOffline() {
+            actions2.append(removeOffAction)
+        } else {
+            actions2.append(markOffAction)
+        }
 
         if node.favorite == true {
             actions2.append(removeFavAction)

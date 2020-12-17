@@ -75,6 +75,7 @@ struct LocalizationConstants {
         static let recent = NSLocalizedString("recent", comment: "")
         static let favorites = NSLocalizedString("favorites", comment: "")
         static let browse = NSLocalizedString("browse", comment: "")
+        static let offline = NSLocalizedString("offline", comment: "")
     }
 
     struct Help {
@@ -113,6 +114,8 @@ struct LocalizationConstants {
         static let restored = NSLocalizedString("approved-restored", comment: "")
         static let deleted = NSLocalizedString("approved-deleted", comment: "")
         static let created = NSLocalizedString("approved-created", comment: "")
+        static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
+        static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
     }
 
     struct Theme {
@@ -177,6 +180,8 @@ struct LocalizationConstants {
         static let createMSexcel = NSLocalizedString("action-menu-create-ms-excel", comment: "")
         static let createMSpowerpoint = NSLocalizedString("action-menu-create-ms-powerpoint", comment: "")
         static let createFolder = NSLocalizedString("action-menu-create-folder", comment: "")
+        static let markOffline = NSLocalizedString("action-menu-mark-offline", comment: "")
+        static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
     }
 
     struct NodeActionsDialog {

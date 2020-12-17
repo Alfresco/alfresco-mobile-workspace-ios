@@ -297,8 +297,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
         }
     }
 
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
-
+    func nodeActionFinished(with action: ActionMenu?,
+                            node: ListNode?,
+                            error: Error?) {
         if let error = error {
             self.display(error: error)
         } else {
@@ -320,6 +321,12 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
                                          node?.truncateTailTitle() ?? "")
             case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
                 listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
+            case .markOffline:
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                         node?.truncateTailTitle() ?? "")
+            case .removeOffline:
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                         node?.truncateTailTitle() ?? "")
             default: break
             }
 

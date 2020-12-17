@@ -54,6 +54,7 @@ class TabBarMainViewController: UITabBarController {
 
         tabBarCoordinatorDelegate?.showRecentScreen()
         tabBarCoordinatorDelegate?.showFavoritesScreen()
+        tabBarCoordinatorDelegate?.showOfflineScreen()
         tabBarCoordinatorDelegate?.showBrowseScreen()
         addLocalization()
         addBottomNavigationBar()

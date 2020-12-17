@@ -51,6 +51,8 @@ enum ActionMenuType: String {
     case download = "ic-action-download"
     case restore = "ic-restore"
     case permanentlyDelete = "ic-action-delete-forever"
+    case markOffline = "ic-action-outline-offline"
+    case removeOffline = "ic-action-fill-offline"
 
     // MARK: - Create
     case createFolder = "ic-action-create-folder"

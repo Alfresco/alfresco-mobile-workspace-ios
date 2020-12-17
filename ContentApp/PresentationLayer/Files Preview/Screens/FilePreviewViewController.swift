@@ -298,14 +298,14 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 // MARK: - ActionMenuViewModel Delegate
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
+
+    func nodeActionFinished(with action: ActionMenu?,
+                            node: ListNode?,
+                            error: Error?) {
         if let error = error {
-            var snackBarMessage = LocalizationConstants.Errors.errorUnknown
-            if error.code == kTimeoutSwaggerErrorCode {
-                snackBarMessage = LocalizationConstants.Errors.errorTimeout
-            }
-            Snackbar.display(with: snackBarMessage, type: .error, finish: nil)
+            self.display(error: error)
         } else {
+            var snackBarMessage: String?
             guard let action = action else { return }
             switch action.type {
             case .more:
@@ -313,12 +313,11 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                     filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
                                                                                delegate: self)
                 }
+                return
             case .addFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
-                                 type: .approve, finish: nil)
+                snackBarMessage = LocalizationConstants.Approved.removedFavorites
             case .removeFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
-                                 type: .approve, finish: nil)
+                snackBarMessage = LocalizationConstants.Approved.addedFavorites
             case .moveTrash:
                 filePreviewCoordinatorDelegate?.navigateBack()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
@@ -326,8 +325,39 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                                                   node?.truncateTailTitle() ?? ""),
                                      type: .approve, finish: nil)
                 })
+                return
+            case .restore:
+                snackBarMessage = String(format: LocalizationConstants.Approved.restored,
+                                         node?.truncateTailTitle() ?? "")
+            case .markOffline:
+                snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                         node?.truncateTailTitle() ?? "")
+            case .removeOffline:
+                snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                         node?.truncateTailTitle() ?? "")
             default: break
             }
+
+            displaySnackbar(with: snackBarMessage, type: .approve)
+        }
+    }
+
+    func display(error: Error) {
+        var snackBarMessage = ""
+        switch error.code {
+        case kTimeoutSwaggerErrorCode:
+            snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        default:
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        }
+        displaySnackbar(with: snackBarMessage, type: .error)
+    }
+
+    func displaySnackbar(with message: String?, type: SnackBarType?) {
+        if let message = message, let type = type {
+            let snackBar = Snackbar(with: message, type: type)
+            snackBar.snackBar.presentationHostViewOverride = view
+            snackBar.show(completion: nil)
         }
     }
 }
