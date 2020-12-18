@@ -25,7 +25,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
     var listRequest: SearchRequest?
     var accountService: AccountService?
     var listCondition: String = kWhereFavoritesFileFolderCondition
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
@@ -179,7 +179,7 @@ extension FavoritesViewModel {
         let node = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.kind == .file {
+            if node.nodeType == .file {
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
                 }

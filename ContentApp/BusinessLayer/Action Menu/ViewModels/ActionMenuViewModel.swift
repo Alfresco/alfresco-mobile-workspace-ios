@@ -74,7 +74,7 @@ class ActionMenuViewModel {
         accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             guard let sSelf = self else { return }
-            if listNode.kind == .site {
+            if listNode.nodeType == .site {
                 FavoritesAPI.getFavorite(personId: kAPIPathMe,
                                          favoriteId: listNode.guid) { (_, error) in
                     if error == nil {

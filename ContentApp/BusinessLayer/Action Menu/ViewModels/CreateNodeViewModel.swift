@@ -178,7 +178,7 @@ class CreateNodeViewModel {
     // MARK: - Private Utils
 
     private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
-        guard parentListNode.kind == .site else { return handle(parentListNode, nil)}
+        guard parentListNode.nodeType == .site else { return handle(parentListNode, nil)}
         NodesAPI.getNode(nodeId: parentListNode.guid,
                          include: [kAPIIncludePathNode,
                                    kAPIIncludeIsFavoriteNode,

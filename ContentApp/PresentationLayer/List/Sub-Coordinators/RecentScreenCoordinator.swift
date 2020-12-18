@@ -65,19 +65,21 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 extension RecentScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
-            switch node.kind {
-            case .folder, .site:
+            switch node.nodeType {
+            case .folder, .folderLink, .site:
                 let folderDrillDownCoordinator =
                     FolderChildrenScreenCoordinator(with: navigationViewController,
                                                     listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
-            case .file:
+            case .file, .fileLink:
                 let filePreviewCoordinator =
                     FilePreviewScreenCoordinator(with: navigationViewController,
                                                  listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
+            default:
+                AlfrescoLog.error("Unable to show preview for unknown node type")
             }
         }
     }

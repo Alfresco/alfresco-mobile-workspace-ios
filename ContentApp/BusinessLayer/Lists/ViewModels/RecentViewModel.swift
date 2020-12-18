@@ -25,7 +25,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var accountService: AccountService?
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
@@ -187,7 +187,7 @@ extension RecentViewModel {
         let node = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.kind == .file {
+            if node.nodeType == .file {
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
                 }

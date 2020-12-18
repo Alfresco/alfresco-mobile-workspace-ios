@@ -51,19 +51,21 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        switch node.kind {
-        case .folder, .site:
+        switch node.nodeType {
+        case .folder, .folderLink, .site:
             let folderDrillDownCoordinator =
                 FolderChildrenScreenCoordinator(with: self.presenter,
                                                 listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
-        case .file:
+        case .file, .fileLink:
             let filePreviewCoordinator =
                 FilePreviewScreenCoordinator(with: self.presenter,
                                              listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
+        default:
+            AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
 
@@ -99,7 +101,6 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let personalFilesNode = ListNode(guid: kAPIPathMy,
                                          title: "Personal files",
                                          path: "",
-                                         kind: .folder,
                                          nodeType: .folder)
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,

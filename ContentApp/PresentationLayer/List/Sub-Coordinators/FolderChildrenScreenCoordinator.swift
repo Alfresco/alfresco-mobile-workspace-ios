@@ -51,17 +51,19 @@ class FolderChildrenScreenCoordinator: Coordinator {
 
 extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        switch node.kind {
-        case .folder, .site:
+        switch node.nodeType {
+        case .site, .folder, .folderLink:
             let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter,
                                                                              listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
-        case .file:
+        case .file, .fileLink:
             let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter,
                                                                       listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
+        default:
+            AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
 

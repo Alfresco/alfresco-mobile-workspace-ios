@@ -204,7 +204,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
                              height: listItemNodeCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+                      height: (node.nodeType == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,

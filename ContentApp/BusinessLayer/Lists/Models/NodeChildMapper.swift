@@ -32,10 +32,8 @@ struct NodeChildMapper {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
-        var kind = ElementKindType.file
         if node.isFolder {
             mimeType = node.nodeType
-            kind = .folder
         }
 
         return ListNode(guid: node._id,
@@ -43,7 +41,6 @@ struct NodeChildMapper {
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
-                        kind: kind,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations)
@@ -53,10 +50,8 @@ struct NodeChildMapper {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
-        var kind = ElementKindType.file
         if node.isFolder {
             mimeType = node.nodeType
-            kind = .folder
         }
         var destination: String?
         if case .object(let object) = node.properties,
@@ -69,7 +64,6 @@ struct NodeChildMapper {
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
-                        kind: kind,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations,

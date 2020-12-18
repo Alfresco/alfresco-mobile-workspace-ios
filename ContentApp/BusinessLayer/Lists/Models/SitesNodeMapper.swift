@@ -43,7 +43,6 @@ struct SitesNodeMapper {
                         title: node.title,
                         path: "",
                         modifiedAt: nil,
-                        kind: .site,
                         nodeType: .site,
                         siteRole: node.role?.rawValue)
     }

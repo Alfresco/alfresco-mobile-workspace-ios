@@ -52,12 +52,13 @@ struct ActionsMenuGeneric {
             actions2.append(addFavAction)
         }
 
-        if node.kind == .site {
+        if node.nodeType == .site {
             if node.hasRole(to: .manager) {
                 actions2.append(deleteAction)
             }
         } else {
-            if node.kind == .file {
+            if node.nodeType == .file ||
+                node.nodeType == .fileLink {
                 actions2.append(downloadAction)
             }
             if node.hasPersmission(to: .delete) {

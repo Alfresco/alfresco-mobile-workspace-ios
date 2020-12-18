@@ -24,7 +24,7 @@ protocol ResultsViewModelDelegate: class {
 }
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
     weak var delegate: ResultsViewModelDelegate?
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
@@ -44,7 +44,7 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
             let node = publishedEvent.node
             switch publishedEvent.eventType {
             case .moveToTrash:
-                if node.kind == .file {
+                if node.nodeType == .file {
                     if let indexOfMovedNode = results.firstIndex(of: node) {
                         results.remove(at: indexOfMovedNode)
                     }
@@ -121,7 +121,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
 
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
-        if node.kind == .site {
+        if node.nodeType == .site {
             FavoritesAPI.getFavorite(personId: kAPIPathMe,
                                      favoriteId: node.guid) { (_, error) in
                 if error == nil {

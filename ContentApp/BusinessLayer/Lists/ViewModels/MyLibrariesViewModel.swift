@@ -24,7 +24,7 @@ import AlfrescoContent
 class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 

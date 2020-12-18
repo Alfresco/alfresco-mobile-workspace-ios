@@ -32,13 +32,8 @@ struct ResultsNodeMapper {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
-        var kind = ElementKindType.file
         if node.isFolder {
             mimeType = node.nodeType
-            kind = .folder
-            if node.nodeType == "st:site" {
-                kind = .site
-            }
         }
 
         return ListNode(guid: node._id,
@@ -46,7 +41,6 @@ struct ResultsNodeMapper {
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
-                        kind: kind,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations)

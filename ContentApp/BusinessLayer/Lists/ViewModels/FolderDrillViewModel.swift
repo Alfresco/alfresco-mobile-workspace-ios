@@ -26,7 +26,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     var accountService: AccountService?
     var listNode: ListNode?
 
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
@@ -43,7 +43,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNode?.kind == .site) ? kAPIPathRelativeForSites : nil
+            let relativePath = (sSelf.listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
             let skipCount = paginationRequest?.skipCount
             let maxItems = paginationRequest?.maxItems ?? kListPageSize
             sSelf.updateNodeDetailsIfNecessary { (_) in
@@ -160,7 +160,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
             updateDetails(for: listNode, handle: handle)
             return
         }
-        if listNode.kind == .site || listNode.shouldUpdate() == false {
+        if listNode.nodeType == .site || listNode.shouldUpdate() == false {
             handle(nil)
             return
         }
@@ -217,7 +217,7 @@ extension FolderDrillViewModel {
         let node = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.kind == .file {
+            if node.nodeType == .file {
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
                 }

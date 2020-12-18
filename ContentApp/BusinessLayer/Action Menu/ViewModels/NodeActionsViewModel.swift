@@ -108,7 +108,7 @@ class NodeActionsViewModel {
     private func requestAddToFavorites() {
         guard let node = self.node else { return }
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
-        let jsonFolder = JSONValue(dictionaryLiteral: (node.kind.rawValue, jsonGuid))
+        let jsonFolder = JSONValue(dictionaryLiteral: (node.nodeType.plainType(), jsonGuid))
         let jsonBody = FavoriteBodyCreate(target: jsonFolder)
 
         FavoritesAPI.createFavorite(personId: kAPIPathMe,
@@ -148,7 +148,7 @@ class NodeActionsViewModel {
 
     private func requestMoveToTrash() {
         guard let node = self.node else { return }
-        if node.kind == .site {
+        if node.nodeType == .site {
             SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {

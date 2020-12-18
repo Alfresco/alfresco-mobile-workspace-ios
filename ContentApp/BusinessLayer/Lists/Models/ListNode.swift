@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoContent
+import ObjectBox
 
 enum NodeType: String {
     case site = "st:site"
@@ -26,12 +27,19 @@ enum NodeType: String {
     case fileLink = "app:filelink"
     case folderLink = "app:folderlink"
     case unknown = ""
-}
 
-enum ElementKindType: String {
-    case file
-    case folder
-    case site
+    func plainType() -> String {
+        switch self {
+        case .file:
+            return "file"
+        case .folder:
+            return "folder"
+        case .site:
+            return "site"
+        default:
+            return ""
+        }
+    }
 }
 
 enum AllowableOperationsType: String {
@@ -52,7 +60,8 @@ enum SiteRole: String {
 
 typealias CreatedNodeType = (String, String, String)
 
-class ListNode: Hashable {
+class ListNode: Hashable, Entity {
+    var id: Id = 0 // swiftlint:disable:this identifier_name
     var guid: String
     var siteID: String
     var destination: String?
@@ -60,21 +69,24 @@ class ListNode: Hashable {
     var title: String
     var path: String
     var modifiedAt: Date?
-    var kind: ElementKindType
-    var nodeType: NodeType
     var favorite: Bool?
-    var allowableOperations: [AllowableOperationsType]?
-    var siteRole: SiteRole?
     var trashed: Bool?
+
+    // objectbox: convert = { "default": ".unknown" }
+    var nodeType: NodeType
+    // objectbox: convert = { "default": ".unknown" }
+    var siteRole: SiteRole = .unknown
+    // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
+    var allowableOperations: [AllowableOperationsType] = []
 
     // MARK: - Init
 
     init(guid: String,
          siteID: String = "",
          mimeType: String? = nil,
-         title: String, path: String,
+         title: String,
+         path: String,
          modifiedAt: Date? = nil,
-         kind: ElementKindType,
          nodeType: NodeType,
          favorite: Bool? = nil,
          allowableOperations: [String]? = nil,
@@ -88,13 +100,22 @@ class ListNode: Hashable {
         self.title = title
         self.path = path
         self.modifiedAt = modifiedAt
-        self.kind = kind
         self.nodeType = nodeType
         self.favorite = favorite
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
         self.destination = destionation
+    }
+
+    init() {
+        guid = ""
+        siteID = ""
+        title = ""
+        path = ""
+        nodeType = .unknown
+        allowableOperations = []
+        siteRole = .unknown
     }
 
     // MARK: - Public Helpers
@@ -107,15 +128,14 @@ class ListNode: Hashable {
         if self.trashed == true {
             return false
         }
-        if self.kind == .site {
-            if self.siteRole == nil || self.favorite == nil {
+        if self.nodeType == .site {
+            if self.favorite == nil {
                 return true
             }
         }
 
-        if self.kind == .file || self.kind == .folder {
-            if self.allowableOperations == nil ||
-                self.favorite == nil {
+        if self.nodeType == .file || self.nodeType == .folder {
+            if self.favorite == nil {
                 return true
             }
         }
@@ -127,21 +147,19 @@ class ListNode: Hashable {
     }
 
     func hasPersmission(to type: AllowableOperationsType) -> Bool {
-        guard let allowableOperations = allowableOperations else { return false }
         return allowableOperations.contains(type)
     }
 
     func hasPermissionToCreate() -> Bool {
-        if self.kind == .folder {
+        if self.nodeType == .folder {
             return hasPersmission(to: .create)
-        } else if self.kind == .site {
+        } else if self.nodeType == .site {
             return !(hasRole(to: .consumer) || hasRole(to: .unknown))
         }
         return false
     }
 
     func hasRole(to type: SiteRole) -> Bool {
-        guard let siteRole = siteRole else { return false }
         return siteRole == type
     }
 
@@ -193,17 +211,44 @@ class ListNode: Hashable {
 
     // MARK: - Private Helpers
 
-    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
-        guard let allowableOperations = allowableOperations else { return nil }
+    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType] {
+        guard let allowableOperations = allowableOperations else { return [] }
         var allowableOperationsTypes = [AllowableOperationsType]()
-        for allowableOperation in allowableOperations {
-            allowableOperationsTypes.append(AllowableOperationsType(rawValue: allowableOperation) ?? .unknown)
+
+        _ = allowableOperations.map {
+            allowableOperationsTypes.append(AllowableOperationsType(rawValue: $0) ?? .unknown)
         }
+
         return allowableOperationsTypes
     }
 
     private func parse(_ siteRole: String?) -> SiteRole {
         guard let siteRole = siteRole else { return .unknown}
         return SiteRole(rawValue: siteRole) ?? .unknown
+    }
+}
+
+class AllowableOperationsConverter {
+    static func convert(_ enumerated: [AllowableOperationsType]) -> String {
+        var convertedString = ""
+        _ = enumerated.enumerated().map {(index, element) in
+            if index == enumerated.count - 1 {
+                convertedString.append(String(format: "%@", element.rawValue))
+            } else {
+                convertedString.append(String(format: "%@,", element.rawValue))
+            }
+        }
+
+        return convertedString
+    }
+
+    static func convert(_ string: String?) -> [AllowableOperationsType] {
+        guard let string = string else { return [AllowableOperationsType.unknown] }
+        var operations: [AllowableOperationsType] = []
+        _ = string.split(separator: ",").map {
+            operations.append(AllowableOperationsType(rawValue: String($0)) ?? .unknown)
+        }
+
+        return operations
     }
 }

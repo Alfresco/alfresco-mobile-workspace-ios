@@ -48,7 +48,7 @@ typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel: EventObservable {
     var listNode: ListNode?
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
