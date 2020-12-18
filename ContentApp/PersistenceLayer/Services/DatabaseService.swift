@@ -41,4 +41,26 @@ class DatabaseService: Service {
             AlfrescoLog.error("Unable to initialize persistence store: \(error)")
         }
     }
+
+    func store<E>(entity: ObjectBox.Box<E>.EntityType) {
+        let entityBox = store?.box(for: E.self)
+
+        do {
+            _ = try entityBox?.put(entity)
+        } catch let error {
+            AlfrescoLog.error("Unable to persist entity \(E.Type.self). Reason: \(error.localizedDescription)")
+        }
+    }
+
+    func query<E>(entity: ObjectBox.Box<E>.EntityType) -> [E]? {
+        let entityBox = store?.box(for: E.self)
+
+        do {
+            return try entityBox?.all()
+        } catch let error {
+            AlfrescoLog.error("Unable to feth entities \(E.Type.self). Reason: \(error.localizedDescription)")
+        }
+
+        return nil
+    }
 }
