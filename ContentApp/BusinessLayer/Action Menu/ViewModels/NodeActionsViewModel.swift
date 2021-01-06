@@ -27,9 +27,9 @@ let kSheetDismissDelay = 0.5
 let kSaveToCameraRollAction = "com.apple.UIKit.activity.SaveToCameraRoll"
 
 protocol NodeActionsViewModelDelegate: class {
-    func nodeActionFinished(with action: ActionMenu?,
-                            node: ListNode?,
-                            error: Error?)
+    func handleFinishedAction(with action: ActionMenu?,
+                              node: ListNode?,
+                              error: Error?)
 }
 
 class NodeActionsViewModel {
@@ -70,31 +70,36 @@ class NodeActionsViewModel {
                     handler()
                 }
             }
-            switch action.type {
-            case .addFavorite:
-                sSelf.requestAddToFavorites()
-            case .removeFavorite:
-                sSelf.requestRemoveFromFavorites()
-            case .moveTrash:
-                sSelf.requestMoveToTrash()
-            case .restore:
-                sSelf.requestRestoreFromTrash()
-            case .permanentlyDelete:
-                sSelf.requestPermanentlyDelete()
-            case .download:
-                sSelf.requestDownload()
-            case .markOffline:
-                sSelf.requestMarkOffline()
-            case .removeOffline:
-                sSelf.requestRemoveOffline()
-            default:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                    sSelf.delegate?.nodeActionFinished(with: sSelf.action,
-                                                       node: sSelf.node,
-                                                       error: nil)
-                })
-            }
+            sSelf.handle(action: action)
         })
+    }
+
+    private func handle(action: ActionMenu) {
+        switch action.type {
+        case .addFavorite:
+            requestAddToFavorites()
+        case .removeFavorite:
+            requestRemoveFromFavorites()
+        case .moveTrash:
+            requestMoveToTrash()
+        case .restore:
+            requestRestoreFromTrash()
+        case .permanentlyDelete:
+            requestPermanentlyDelete()
+        case .download:
+            requestDownload()
+        case .markOffline:
+            requestMarkOffline()
+        case .removeOffline:
+            requestRemoveOffline()
+        default:
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.delegate?.handleFinishedAction(with: sSelf.action,
+                                                   node: sSelf.node,
+                                                   error: nil)
+            })
+        }
     }
 
     private func requestMarkOffline() {
@@ -258,7 +263,7 @@ class NodeActionsViewModel {
         }
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.delegate?.nodeActionFinished(with: sSelf.action, node: sSelf.node, error: error)
+            sSelf.delegate?.handleFinishedAction(with: sSelf.action, node: sSelf.node, error: error)
         }
     }
 

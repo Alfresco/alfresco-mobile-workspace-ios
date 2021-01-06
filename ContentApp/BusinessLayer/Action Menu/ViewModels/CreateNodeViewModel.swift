@@ -22,7 +22,7 @@ import Alamofire
 import MaterialComponents.MaterialDialogs
 
 protocol CreateNodeViewModelDelegate: class {
-    func createNode(node: ListNode?, error: Error?)
+    func handleCreatedNode(node: ListNode?, error: Error?)
 }
 
 class CreateNodeViewModel {
@@ -100,11 +100,11 @@ class CreateNodeViewModel {
         requestBuilder.execute { [weak self] (result, error) in
             guard let sSelf = self else { return }
             if let error = error {
-                sSelf.delegate?.createNode(node: nil, error: error)
+                sSelf.delegate?.handleCreatedNode(node: nil, error: error)
                 AlfrescoLog.error(error)
             } else if let node = result?.body?.entry {
                 let listNode = NodeChildMapper.create(from: node)
-                sSelf.delegate?.createNode(node: listNode, error: nil)
+                sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                 sSelf.publishEventBus(with: listNode)
             }
         }
@@ -140,11 +140,11 @@ class CreateNodeViewModel {
                         let resultDecode = sSelf.decode(data: data)
                         if let nodeEntry = resultDecode.0 {
                             let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.createNode(node: listNode, error: nil)
+                            sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                             sSelf.publishEventBus(with: listNode)
                         }
                         if let error = resultDecode.1 {
-                            sSelf.delegate?.createNode(node: nil, error: error)
+                            sSelf.delegate?.handleCreatedNode(node: nil, error: error)
                             AlfrescoLog.error(error)
                         }
                     }
@@ -271,10 +271,10 @@ class CreateNodeViewModel {
     private func handle(error: Error) {
         if error.code == NSURLErrorNetworkConnectionLost ||
             error.code == NSURLErrorCancelled {
-            delegate?.createNode(node: nil, error: nil)
+            delegate?.handleCreatedNode(node: nil, error: nil)
             return
         }
-        delegate?.createNode(node: nil, error: error)
+        delegate?.handleCreatedNode(node: nil, error: error)
         AlfrescoLog.error(error)
     }
 

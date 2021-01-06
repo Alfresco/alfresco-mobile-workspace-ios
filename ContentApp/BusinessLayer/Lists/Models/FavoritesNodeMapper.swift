@@ -38,15 +38,17 @@ struct FavoritesNodeMapper {
         let path = node.path?.elements?.compactMap({ $0.name })
             .joined(separator: " \u{203A} ") ?? ""
         var mimeType = node.content?.mimeType
+        var nodeType = NodeType.file
         if node.isFolder {
             mimeType = "cm:folder"
+            nodeType = NodeType.folder
         }
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,
                         modifiedAt: node.modifiedAt,
-                        nodeType: NodeType(rawValue: node.nodeType ?? "") ?? .unknown,
+                        nodeType: nodeType,
                         favorite: true,
                         allowableOperations: node.allowableOperations)
     }
