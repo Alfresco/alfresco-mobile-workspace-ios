@@ -87,7 +87,8 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                          coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)

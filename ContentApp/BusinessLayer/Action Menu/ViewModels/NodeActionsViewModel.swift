@@ -70,6 +70,7 @@ class NodeActionsViewModel {
                     handler()
                 }
             }
+            
             sSelf.handle(action: action)
         })
     }
@@ -104,10 +105,20 @@ class NodeActionsViewModel {
 
     private func requestMarkOffline() {
         handleResponse(error: nil)
+
+        if let node = self.node {
+            let dataAccessor = ListNodeDataAccessor()
+            dataAccessor.store(node: node)
+        }
     }
 
     private func requestRemoveOffline() {
         handleResponse(error: nil)
+
+        if let node = self.node {
+            let dataAccessor = ListNodeDataAccessor()
+            dataAccessor.remove(node: node)
+        }
     }
 
     private func requestAddToFavorites() {

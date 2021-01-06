@@ -52,7 +52,22 @@ class DatabaseService: Service {
         }
     }
 
-    func query<E>(entity: ObjectBox.Box<E>.EntityType) -> [E]? {
+    func remove<E>(entity: ObjectBox.Box<E>.EntityType) {
+        let entityBox = store?.box(for: E.self)
+        do {
+            _ = try entityBox?.remove(entity)
+        } catch let error {
+            AlfrescoLog.error("Unable to remove entity \(E.Type.self). Reason: \(error.localizedDescription)")
+        }
+    }
+
+    func box<E>(entity: E.Type = E.self) -> ObjectBox.Box<E>?  where E: ObjectBox.EntityInspectable,
+                                                                     E: ObjectBox.__EntityRelatable,
+                                                                     E == E.EntityBindingType.EntityType {
+        return store?.box(for: E.self)
+    }
+
+    func queryAll<E>(entity: ObjectBox.Box<E>.EntityType) -> [E]? {
         let entityBox = store?.box(for: E.self)
 
         do {

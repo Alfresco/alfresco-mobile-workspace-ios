@@ -140,9 +140,9 @@ class FilePreviewViewModel: EventObservable {
     func updateNodeDetails() {
         guard let listNode = self.listNode else { return }
         if listNode.shouldUpdate() == false && listNode.nodeType != .fileLink {
-            actionMenuViewModel = ActionMenuViewModel(with: coordinatorServices?.accountService,
-                                                      listNode: listNode,
-                                                      toolbarDivide: true)
+            actionMenuViewModel = ActionMenuViewModel(node: listNode,
+                                                      toolbarDivide: true,
+                                                      coordinatorServices: coordinatorServices)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
                                                         coordinatorServices: coordinatorServices)
@@ -151,6 +151,7 @@ class FilePreviewViewModel: EventObservable {
         }
         coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
+
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
             NodesAPI.getNode(nodeId: guid,
@@ -164,9 +165,9 @@ class FilePreviewViewModel: EventObservable {
                     let listNode = NodeChildMapper.create(from: entry)
                     sSelf.listNode = listNode
                     sSelf.actionMenuViewModel =
-                        ActionMenuViewModel(with: sSelf.coordinatorServices?.accountService,
-                                            listNode: listNode,
-                                            toolbarDivide: true)
+                        ActionMenuViewModel(node: listNode,
+                                            toolbarDivide: true,
+                                            coordinatorServices: sSelf.coordinatorServices)
                     sSelf.nodeActionsViewModel =
                         NodeActionsViewModel(node: listNode,
                                              delegate: nil,

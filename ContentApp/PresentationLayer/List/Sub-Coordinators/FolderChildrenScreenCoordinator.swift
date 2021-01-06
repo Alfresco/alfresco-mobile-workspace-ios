@@ -69,7 +69,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
 
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
-        let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+        let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                      coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
@@ -82,8 +83,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
-        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
-                                                      menuActions: actions)
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,

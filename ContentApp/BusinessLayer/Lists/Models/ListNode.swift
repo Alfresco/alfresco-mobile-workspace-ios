@@ -143,7 +143,8 @@ class ListNode: Hashable, Entity {
     }
 
     func isMarkedOffline() -> Bool {
-        return false
+        let dataAccessor = ListNodeDataAccessor()
+        return dataAccessor.isNodeMarkedAsOffline(node: self)
     }
 
     func hasPersmission(to type: AllowableOperationsType) -> Bool {
