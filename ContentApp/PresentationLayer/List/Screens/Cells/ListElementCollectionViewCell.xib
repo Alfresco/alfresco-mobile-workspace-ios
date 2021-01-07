@@ -54,7 +54,7 @@
                             <action selector="moreButtonTapped:" destination="TZI-a9-K3a" eventType="touchUpInside" id="lrA-ho-yVK"/>
                         </connections>
                     </button>
-                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-action-fill-offline" translatesAutoresizingMaskIntoConstraints="NO" id="3o2-1v-beg">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-marked-offline" translatesAutoresizingMaskIntoConstraints="NO" id="3o2-1v-beg">
                         <rect key="frame" x="340" y="26" width="12" height="12"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="McW-BM-3gc"/>
@@ -86,8 +86,8 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="ic-action-fill-offline" width="24" height="24"/>
         <image name="ic-action-more" width="24" height="24"/>
+        <image name="ic-marked-offline" width="12" height="12"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

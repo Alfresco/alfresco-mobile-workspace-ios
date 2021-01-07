@@ -48,7 +48,7 @@ class SettingsItemTableViewCell: UITableViewCell, SettingsTablewViewCellProtocol
         backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
-        iconImageView.tintColor = currentTheme.onSurface60Color
+        iconImageView.tintColor = currentTheme.onSurfaceColor
     }
 
     func shouldHideSeparator(hidden: Bool) {
