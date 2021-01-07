@@ -35,6 +35,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
         let offlineDataSource = offlineViewModelFactory.offlineDataSource()
 
         let viewController = ListViewController()
+        viewController.isPaginationEnabled = false
         viewController.title = LocalizationConstants.ScreenTitles.offline
         viewController.coordinatorServices = coordinatorServices
         viewController.listViewModel = offlineDataSource.offlineViewModel

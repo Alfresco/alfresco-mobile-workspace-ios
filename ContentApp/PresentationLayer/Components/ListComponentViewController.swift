@@ -54,6 +54,8 @@ class ListComponentViewController: SystemThemableViewController {
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
+    var isPaginationEnabled: Bool?
+
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
@@ -66,6 +68,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.pageDelegate = self
+        collectionView.isPaginationEnabled = isPaginationEnabled
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
