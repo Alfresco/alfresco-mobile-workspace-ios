@@ -20,7 +20,7 @@ import UIKit
 
 class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
-    private var offlineViewController: OfflineViewController?
+    private var offlineViewController: ListViewController?
     private var navigationViewController: UINavigationController?
 
     init(with presenter: TabBarMainViewController) {
@@ -28,10 +28,17 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let viewController = OfflineViewController.instantiateViewController()
+        let offlineViewModelFactory = OfflineViewModelFactory()
+        let offlineDataSource = offlineViewModelFactory.offlineDataSource()
+
+        let viewController = ListViewController()
         viewController.title = LocalizationConstants.ScreenTitles.offline
         viewController.coordinatorServices = coordinatorServices
+        viewController.listViewModel = offlineDataSource.offlineViewModel
         viewController.tabBarScreenDelegate = presenter
+//        viewController.listItemActionDelegate = self
+        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
+        viewController.resultViewModel = offlineDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         self.presenter.viewControllers?.append(navigationViewController)

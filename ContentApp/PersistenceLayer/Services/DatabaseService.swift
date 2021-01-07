@@ -67,7 +67,9 @@ class DatabaseService: Service {
         return store?.box(for: E.self)
     }
 
-    func queryAll<E>(entity: ObjectBox.Box<E>.EntityType) -> [E]? {
+    func queryAll<E>(entity: E.Type = E.self) -> [E]? where E: ObjectBox.EntityInspectable,
+                                                            E: ObjectBox.__EntityRelatable,
+                                                            E == E.EntityBindingType.EntityType {
         let entityBox = store?.box(for: E.self)
 
         do {

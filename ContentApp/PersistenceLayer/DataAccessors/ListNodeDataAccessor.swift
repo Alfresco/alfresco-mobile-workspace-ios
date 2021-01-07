@@ -58,6 +58,10 @@ class ListNodeDataAccessor {
         return nil
     }
 
+    func querryAll() -> [ListNode]? {
+        databaseService?.queryAll(entity: ListNode.self)
+    }
+
     func isNodeMarkedAsOffline(node: ListNode) -> Bool {
         return query(node: node) == nil ? false : true
     }

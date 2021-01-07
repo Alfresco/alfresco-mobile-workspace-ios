@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -19,37 +19,45 @@
 import Foundation
 import AlfrescoContent
 
-protocol ResultsViewModelDelegate: class {
-    func refreshResults()
-}
-
-class ResultsViewModel: PageFetchingViewModel, EventObservable {
+class OfflineViewModel: ListViewModelProtocol {
+    weak var pageUpdatingDelegate: ListComponentPageUpdatingDelegate?
+    var results: [ListNode] = []
     var supportedNodeTypes: [NodeType]?
-    weak var delegate: ResultsViewModelDelegate?
 
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
+    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        if let offlineNodes = listNodeDataAccessor.querryAll() {
+            results = offlineNodes
+        }
     }
-}
 
-// MARK: - SearchViewModelDelegate
-
-extension ResultsViewModel: SearchViewModelDelegate {
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
+    func shouldDisplaySettingsButton() -> Bool {
+        return false
     }
-}
 
-// MARK: - ListComponentDataSourceProtocol
+    func fetchNextListPage(index: IndexPath, userInfo: Any?) {
+    }
 
-extension ResultsViewModel: ListComponentDataSourceProtocol {
+    // MARK: - ListViewModelProtocol
+
+    func shouldDisplayNodePath() -> Bool {
+        return true
+    }
+
+    func shouldDisplayMoreButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
     func isEmpty() -> Bool {
         return results.isEmpty
     }
 
     func emptyList() -> EmptyListProtocol {
-        return EmptySearch()
+        return EmptyFolder()
     }
 
     func shouldDisplaySections() -> Bool {
@@ -73,60 +81,17 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
         return false
     }
 
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
     func refreshList() {
-        currentPage = 1
-        delegate?.refreshResults()
-    }
 
-    func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
-        guard let node = listNode else { return }
-        if node.nodeType == .site {
-            FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                     favoriteId: node.guid) { (_, error) in
-                if error == nil {
-                    node.favorite = true
-                }
-                completion(node, error)
-            }
-        } else {
-            NodesAPI.getNode(nodeId: node.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeIsFavoriteNode],
-                             relativePath: nil,
-                             fields: nil) { (result, error) in
-                if let entry = result?.entry {
-                    let listNode = NodeChildMapper.create(from: entry)
-                    completion(listNode, error)
-                } else {
-                    completion(listNode, error)
-                }
-            }
-        }
     }
 }
 
-// MARK: - Event observable
+// MARK: Event observable
 
-extension ResultsViewModel {
-
-    // MARK: Event observable
-
+extension OfflineViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -157,6 +122,7 @@ extension ResultsViewModel {
             }
         case .restore:
             refreshList()
+
         default: break
         }
     }

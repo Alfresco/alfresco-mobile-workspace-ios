@@ -70,6 +70,7 @@ class NodeActionsViewModel {
                     handler()
                 }
             }
+
             sSelf.handle(action: action)
         })
     }
