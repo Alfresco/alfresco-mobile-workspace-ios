@@ -22,6 +22,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private let presenter: TabBarMainViewController
     private var offlineViewController: ListViewController?
     private var navigationViewController: UINavigationController?
+    private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -38,7 +39,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
         viewController.coordinatorServices = coordinatorServices
         viewController.listViewModel = offlineDataSource.offlineViewModel
         viewController.tabBarScreenDelegate = presenter
-//        viewController.listItemActionDelegate = self
+        viewController.listItemActionDelegate = self
         viewController.searchViewModel = offlineDataSource.globalSearchViewModel
         viewController.resultViewModel = offlineDataSource.resultsViewModel
 
@@ -55,5 +56,34 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
+    }
+}
+
+extension OfflineScreenCoordinator: ListItemActionDelegate {
+    func showPreview(from node: ListNode) {
+        // Do nothing
+    }
+
+    func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
+        if let navigationViewController = self.navigationViewController {
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                          coordinatorServices: coordinatorServices)
+            let nodeActionsModel = NodeActionsViewModel(node: node,
+                                                        delegate: delegate,
+                                                        coordinatorServices: coordinatorServices)
+            let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
+                                                          actionMenuViewModel: actionMenuViewModel,
+                                                          nodeActionViewModel: nodeActionsModel)
+            coordinator.start()
+            actionMenuCoordinator = coordinator
+        }
+    }
+
+    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        // Do nothing
+    }
+
+    func showNodeCreationDialog(with actionMenu: ActionMenu, delegate: CreateNodeViewModelDelegate?) {
+        // Do nothing
     }
 }

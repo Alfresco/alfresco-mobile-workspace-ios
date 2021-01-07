@@ -19,23 +19,16 @@
 import Foundation
 import AlfrescoContent
 
-class OfflineViewModel: ListViewModelProtocol {
-    weak var pageUpdatingDelegate: ListComponentPageUpdatingDelegate?
-    var results: [ListNode] = []
+class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.querryAll() {
-            results = offlineNodes
-        }
+        super.init()
+        refreshList()
     }
 
     func shouldDisplaySettingsButton() -> Bool {
         return true
-    }
-
-    func fetchNextListPage(index: IndexPath, userInfo: Any?) {
     }
 
     // MARK: - ListViewModelProtocol
@@ -85,7 +78,29 @@ class OfflineViewModel: ListViewModelProtocol {
     }
 
     func refreshList() {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        if let offlineNodes = listNodeDataAccessor.querryAll() {
+            results = offlineNodes
+        }
 
+        handlePage(results: results,
+                   pagination: nil,
+                   error: nil)
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
+        refreshList()
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
     }
 }
 
@@ -128,9 +143,6 @@ extension OfflineViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let node = event.node
-        if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
-        }
+        refreshList()
     }
 }
