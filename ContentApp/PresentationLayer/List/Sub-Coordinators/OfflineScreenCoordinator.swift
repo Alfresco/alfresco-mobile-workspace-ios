@@ -29,6 +29,8 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
     func start() {
         let offlineViewModelFactory = OfflineViewModelFactory()
+        offlineViewModelFactory.coordinatorServices = coordinatorServices
+
         let offlineDataSource = offlineViewModelFactory.offlineDataSource()
 
         let viewController = ListViewController()

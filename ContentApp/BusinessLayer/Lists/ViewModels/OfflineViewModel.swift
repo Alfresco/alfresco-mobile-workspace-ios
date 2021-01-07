@@ -32,7 +32,7 @@ class OfflineViewModel: ListViewModelProtocol {
     }
 
     func shouldDisplaySettingsButton() -> Bool {
-        return false
+        return true
     }
 
     func fetchNextListPage(index: IndexPath, userInfo: Any?) {
