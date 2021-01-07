@@ -35,6 +35,7 @@ class ApplicationBootstrap {
         self.repository.register(service: applicationRouter())
         self.repository.register(service: eventBusService())
         self.repository.register(service: operationQueueService())
+        self.repository.register(service: databaseService())
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -67,5 +68,9 @@ class ApplicationBootstrap {
 
     private func operationQueueService() -> OperationQueueService {
         return OperationQueueService()
+    }
+
+    private func databaseService() -> DatabaseService {
+        return DatabaseService()
     }
 }

@@ -17,8 +17,8 @@
 //
 
 import UIKit
-import MaterialComponents.MaterialTabs
-import MaterialComponents.MaterialTabs_Theming
+import MaterialComponents.MaterialTabs_TabBarView
+import MaterialComponents.MaterialTabs_TabBarViewTheming
 import MaterialComponents.MaterialTypographyScheme
 import AlfrescoContent
 
@@ -30,7 +30,7 @@ class FavoritesViewController: SystemSearchViewController {
     var librariesListViewModel: ListViewModelProtocol?
 
     lazy var scrollView: UIScrollView = setupScrollView()
-    lazy var tabBar: MDCTabBar = setupTabBarView()
+    lazy var tabBar: MDCTabBarView = setupTabBarView()
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
@@ -62,6 +62,7 @@ class FavoritesViewController: SystemSearchViewController {
         ])
 
         setupScrollingContent()
+        tabBar.selectedItem = tabBar.items.first
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -126,25 +127,19 @@ class FavoritesViewController: SystemSearchViewController {
         tabBar.applySurfaceTheme(withScheme: scheme)
         tabBar.backgroundColor = currentTheme.surfaceColor
         tabBar.bottomDividerColor = currentTheme.onSurface15Color
-        tabBar.enableRippleBehavior = true
-        tabBar.rippleColor = currentTheme.surfaceColor
+        tabBar.rippleColor = .clear
     }
 
-    func setupTabBarView() -> MDCTabBar {
-        let tabBar = MDCTabBar()
+    func setupTabBarView() -> MDCTabBarView {
+        let tabBar = MDCTabBarView()
         tabBar.delegate = self
-
         tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
                                      image: nil,
                                      tag: 0),
                         UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
                                      image: nil,
                                      tag: 1)]
-
-        tabBar.itemAppearance = .titles
-        tabBar.setAlignment(.justified, animated: false)
         tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
-        tabBar.displaysUppercaseTitles = false
         tabBar.translatesAutoresizingMaskIntoConstraints = false
 
         return tabBar
@@ -228,8 +223,8 @@ class FavoritesViewController: SystemSearchViewController {
 
 // MARK: - MDCTabBar Delegate
 
-extension FavoritesViewController: MDCTabBarDelegate {
-    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+extension FavoritesViewController: MDCTabBarViewDelegate {
+    func tabBar(_ tabBar: MDCTabBarView, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
 }
@@ -287,10 +282,10 @@ extension FavoritesViewController: ListComponentActionDelegate {
     }
 }
 
-class FavoritesTabBarIndicator: NSObject, MDCTabBarIndicatorTemplate {
-    func indicatorAttributes(for context: MDCTabBarIndicatorContext) -> MDCTabBarIndicatorAttributes {
+class FavoritesTabBarIndicator: NSObject, MDCTabBarViewIndicatorTemplate {
+    func indicatorAttributes(for context: MDCTabBarViewIndicatorContext) -> MDCTabBarViewIndicatorAttributes {
         let bounds = context.contentFrame
-        let attr = MDCTabBarIndicatorAttributes()
+        let attr = MDCTabBarViewIndicatorAttributes()
         let overflow: CGFloat = 30
         let frame = CGRect(x: bounds.minX - overflow / 2,
                            y: context.bounds.maxY - 2,

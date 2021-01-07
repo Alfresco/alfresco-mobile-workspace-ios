@@ -298,36 +298,94 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 // MARK: - ActionMenuViewModel Delegate
 
 extension FilePreviewViewController: NodeActionsViewModelDelegate {
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
+
+    func handleFinishedAction(with action: ActionMenu?,
+                              node: ListNode?,
+                              error: Error?) {
         if let error = error {
-            var snackBarMessage = LocalizationConstants.Errors.errorUnknown
-            if error.code == kTimeoutSwaggerErrorCode {
-                snackBarMessage = LocalizationConstants.Errors.errorTimeout
-            }
-            Snackbar.display(with: snackBarMessage, type: .error, finish: nil)
+            self.display(error: error)
         } else {
             guard let action = action else { return }
-            switch action.type {
-            case .more:
-                if let node = node {
-                    filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
-                                                                               delegate: self)
-                }
-            case .addFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.removedFavorites,
-                                 type: .approve, finish: nil)
-            case .removeFavorite:
-                Snackbar.display(with: LocalizationConstants.Approved.addedFavorites,
-                                 type: .approve, finish: nil)
-            case .moveTrash:
-                filePreviewCoordinatorDelegate?.navigateBack()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                    Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                                  node?.truncateTailTitle() ?? ""),
-                                     type: .approve, finish: nil)
-                })
-            default: break
+
+            if action.type.isGenericActions {
+                handleGeneric(action: action, node: node)
+            } else if action.type.isFavoriteActions {
+                handleFavorite(action: action)
+            } else if action.type.isMoveActions {
+                handleMove(action: action, node: node)
+            } else if action.type.isDownloadActions {
+                handleDownload(action: action, node: node)
             }
+        }
+    }
+
+    func handleGeneric(action: ActionMenu, node: ListNode?) {
+        guard let node = node else { return }
+        switch action.type {
+        case .more:
+            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
+                                                                       delegate: self)
+        default: break
+        }
+    }
+
+    func handleFavorite(action: ActionMenu) {
+        var snackBarMessage: String?
+        switch action.type {
+        case .addFavorite:
+            snackBarMessage = LocalizationConstants.Approved.removedFavorites
+        case .removeFavorite:
+            snackBarMessage = LocalizationConstants.Approved.addedFavorites
+        default: break
+        }
+        displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+
+    func handleMove(action: ActionMenu, node: ListNode?) {
+        guard let node = node else { return }
+        switch action.type {
+        case .moveTrash:
+            filePreviewCoordinatorDelegate?.navigateBack()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
+                                              node.truncateTailTitle()),
+                                 type: .approve, finish: nil)
+            })
+        default: break
+        }
+    }
+
+    func handleDownload(action: ActionMenu, node: ListNode?) {
+        guard let node = node else { return }
+        var snackBarMessage: String?
+        switch action.type {
+        case .markOffline:
+            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                     node.truncateTailTitle())
+        case .removeOffline:
+            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                     node.truncateTailTitle())
+        default: break
+        }
+        displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+
+    func display(error: Error) {
+        var snackBarMessage = ""
+        switch error.code {
+        case kTimeoutSwaggerErrorCode:
+            snackBarMessage = LocalizationConstants.Errors.errorTimeout
+        default:
+            snackBarMessage = LocalizationConstants.Errors.errorUnknown
+        }
+        displaySnackbar(with: snackBarMessage, type: .error)
+    }
+
+    func displaySnackbar(with message: String?, type: SnackBarType?) {
+        if let message = message, let type = type {
+            let snackBar = Snackbar(with: message, type: type)
+            snackBar.snackBar.presentationHostViewOverride = view
+            snackBar.show(completion: nil)
         }
     }
 }

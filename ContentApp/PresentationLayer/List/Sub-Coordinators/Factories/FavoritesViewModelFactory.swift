@@ -49,6 +49,10 @@ class FavoritesViewModelFactory {
                                   foldersAndFilesViewModel: foldersAndFilesViewModel,
                                   librariesViewModel: librariesViewModel)
 
+        registerForOfflineEvent(resultViewModel: resultViewModel,
+                                foldersAndFilesViewModel: foldersAndFilesViewModel,
+                                librariesViewModel: librariesViewModel)
+
         return (foldersAndFilesViewModel, librariesViewModel, globalSearchViewModel, resultViewModel)
     }
 
@@ -82,5 +86,18 @@ class FavoritesViewModelFactory {
         eventBusService?.register(observer: librariesViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.site])
+    }
+
+    private func registerForOfflineEvent(resultViewModel: ResultsViewModel,
+                                         foldersAndFilesViewModel: FavoritesViewModel,
+                                         librariesViewModel: FavoritesViewModel) {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
     }
 }

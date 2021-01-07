@@ -24,24 +24,25 @@ protocol ActionMenuViewModelDelegate: class {
 }
 
 class ActionMenuViewModel {
-    private var accountService: AccountService?
     private var listNode: ListNode?
     private var toolbarActions: [ActionMenu]?
     private var menuActions: [[ActionMenu]]
+    private var coordinatorServices: CoordinatorServices?
+
     var toolbarDivide: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
 
-    init(with accountService: AccountService?,
-         menuActions: [[ActionMenu]] = [[ActionMenu]](),
-         listNode: ListNode? = nil,
-         toolbarDivide: Bool = false) {
+    init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
+         node: ListNode? = nil,
+         toolbarDivide: Bool = false,
+         coordinatorServices: CoordinatorServices?) {
 
-        self.accountService = accountService
-        self.listNode = listNode
+        self.listNode = node
         self.toolbarDivide = toolbarDivide
         self.menuActions = menuActions
+        self.coordinatorServices = coordinatorServices
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -71,10 +72,10 @@ class ActionMenuViewModel {
             createMenuActions()
             return
         }
-        accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
+        coordinatorServices?.accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             guard let sSelf = self else { return }
-            if listNode.kind == .site {
+            if listNode.nodeType == .site {
                 FavoritesAPI.getFavorite(personId: kAPIPathMe,
                                          favoriteId: listNode.guid) { (_, error) in
                     if error == nil {
@@ -152,12 +153,14 @@ class ActionMenuViewModel {
     private func divideForToolbarActions() {
         var toolActions = [ActionMenu]()
         for index in 0...menuActions.count - 1 {
-            for action in menuActions[index] where action.type != .node {
+            for action in menuActions[index] where
+                action.type == .removeFavorite ||
+                action.type == .addFavorite {
                 toolActions.append(action)
-                if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
-                    addActionToOpenMenu(in: toolActions)
-                    return
-                }
+            }
+            for action in menuActions[index] where
+                action.type == .download {
+                toolActions.append(action)
             }
         }
         addActionToOpenMenu(in: toolActions)

@@ -48,6 +48,9 @@ class FolderChildrenViewModelFactory {
         eventBusService?.register(observer: folderDrillViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: folderDrillViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
@@ -55,6 +58,9 @@ class FolderChildrenViewModelFactory {
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return (folderDrillViewModel, resultViewModel, contextualSearchViewModel)
     }

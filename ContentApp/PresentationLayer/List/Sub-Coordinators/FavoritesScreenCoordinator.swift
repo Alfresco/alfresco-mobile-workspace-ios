@@ -66,19 +66,22 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
         if let navigationViewController = self.navigationViewController {
-            switch node.kind {
-            case .folder, .site:
+            switch node.nodeType {
+            case .folder, .site, .folderLink:
                 let folderDrillDownCoordinator =
                     FolderChildrenScreenCoordinator(with: navigationViewController,
                                                     listNode: node)
                 folderDrillDownCoordinator.start()
                 self.folderDrillDownCoordinator = folderDrillDownCoordinator
-            case .file:
+            case .file, .fileLink:
                 let filePreviewCoordinator =
                     FilePreviewScreenCoordinator(with: navigationViewController,
                                                  listNode: node)
                 filePreviewCoordinator.start()
                 self.filePreviewCoordinator = filePreviewCoordinator
+
+            default:
+                AlfrescoLog.error("Unable to show preview for unknown node type")
             }
         }
     }
@@ -86,7 +89,8 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                          coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)

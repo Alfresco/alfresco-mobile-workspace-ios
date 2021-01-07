@@ -51,26 +51,28 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        switch node.kind {
-        case .folder, .site:
+        switch node.nodeType {
+        case .folder, .folderLink, .site:
             let folderDrillDownCoordinator =
                 FolderChildrenScreenCoordinator(with: self.presenter,
                                                 listNode: node)
             folderDrillDownCoordinator.start()
             self.folderDrillDownCoordinator = folderDrillDownCoordinator
-        case .file:
+        case .file, .fileLink:
             let filePreviewCoordinator =
                 FilePreviewScreenCoordinator(with: self.presenter,
                                              listNode: node)
             filePreviewCoordinator.start()
             self.filePreviewCoordinator = filePreviewCoordinator
+        default:
+            AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
 
     func showActionSheetForListItem(for node: ListNode,
                                     delegate: NodeActionsViewModelDelegate) {
-        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
-                                                      listNode: node)
+        let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                      coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
@@ -83,8 +85,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
-        let actionMenuViewModel = ActionMenuViewModel(with: accountService,
-                                                      menuActions: actions)
+        let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
+                                                      coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
@@ -99,7 +101,6 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let personalFilesNode = ListNode(guid: kAPIPathMy,
                                          title: "Personal files",
                                          path: "",
-                                         kind: .folder,
                                          nodeType: .folder)
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,

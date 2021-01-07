@@ -12,6 +12,7 @@ target 'ContentApp' do
   pod 'Nuke'
   pod 'Gifu'
   pod 'SVGKit'
+  pod 'ObjectBox'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'
@@ -35,10 +36,9 @@ target 'ContentApp' do
   pod 'MaterialComponents/BottomNavigation+Theming'
   pod 'MaterialComponents/Chips'
   pod 'MaterialComponents/Chips+Theming'
-  pod 'MaterialComponents/Tabs'
   pod 'MaterialComponents/ProgressView'
-  pod 'MaterialComponents/Tabs+TypographyThemer'
-  pod 'MaterialComponents/Tabs+Theming'
+  pod 'MaterialComponents/Tabs+TabBarView'
+  pod 'MaterialComponents/Tabs+TabBarViewTheming'
 
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -62,11 +62,12 @@
 "session-expired" = "Session expired";
 "sesssion-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 
-// MARK: - Screen Titles
+// MARK: - Tabs Titles
 "settings" = "Settings";
 "recent" = "Recent";
 "favorites" = "Favorites";
 "browse" = "Browse";
+"offline" = "Offline";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";
@@ -101,6 +102,8 @@
 "approved-restored" = "%@ restored";
 "approved-deleted" = "%@ deleted";
 "approved-created" = "%@ was created";
+"approved-mark-offline" = "%@ will be made available offline.";
+"approved-remove-offline" = "%@ will no longer be available offline.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -156,6 +159,8 @@
 "action-menu-create-ms-excel" = "Excel spreadsheet";
 "action-menu-create-ms-powerpoint" = "PowerPoint presentation";
 "action-menu-create-folder" = "New folder";
+"action-menu-mark-offline" = "Make available offline";
+"action-menu-remove-offline" = "Remove offline";
 
 // MARK: - Node Actions Dialog
 "dialog-delete-title" = "Delete";

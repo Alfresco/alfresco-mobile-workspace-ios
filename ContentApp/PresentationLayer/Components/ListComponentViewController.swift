@@ -54,6 +54,8 @@ class ListComponentViewController: SystemThemableViewController {
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
+    var isPaginationEnabled: Bool?
+
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
@@ -66,6 +68,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.pageDelegate = self
+        collectionView.isPaginationEnabled = isPaginationEnabled
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
@@ -80,7 +83,7 @@ class ListComponentViewController: SystemThemableViewController {
         progressView.mode = .indeterminate
 
         // Set up pull to refresh control
-        let refreshControl = UIRefreshControl()//RefreshIndicatorView(theme: themingService?.activeTheme)
+        let refreshControl = UIRefreshControl()// RefreshIndicatorView(theme: themingService?.activeTheme)
         collectionView.addSubview(refreshControl)
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
                                  for: .valueChanged)
@@ -204,7 +207,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
                              height: listItemNodeCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (node.kind == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+                      height: (node.nodeType == .site) ? listSiteCellHeight : listItemNodeCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -285,7 +288,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 
 extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
 
-    func createNode(node: ListNode?, error: Error?) {
+    func handleCreatedNode(node: ListNode?, error: Error?) {
         if node == nil && error == nil {
             return
         } else if let error = error {
@@ -297,34 +300,78 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
         }
     }
 
-    func nodeActionFinished(with action: ActionMenu?, node: ListNode?, error: Error?) {
-
+    func handleFinishedAction(with action: ActionMenu?,
+                              node: ListNode?,
+                              error: Error?) {
         if let error = error {
             self.display(error: error)
         } else {
-            var snackBarMessage: String?
             guard let action = action else { return }
-            switch action.type {
-            case .addFavorite:
-                snackBarMessage = LocalizationConstants.Approved.removedFavorites
-            case .removeFavorite:
-                snackBarMessage = LocalizationConstants.Approved.addedFavorites
-            case .moveTrash:
-                snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                         node?.truncateTailTitle() ?? "")
-            case .restore:
-                snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                         node?.truncateTailTitle() ?? "")
-            case .permanentlyDelete:
-                snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                         node?.truncateTailTitle() ?? "")
-            case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
-                listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
-            default: break
-            }
 
-            displaySnackbar(with: snackBarMessage, type: .approve)
+            if action.type.isFavoriteActions {
+                handleFavorite(action: action)
+            } else if action.type.isMoveActions {
+                handleMove(action: action, node: node)
+            } else if action.type.isCreateActions {
+                handleSheetCreate(action: action)
+            } else if action.type.isDownloadActions {
+                handleDownload(action: action, node: node)
+            }
         }
+    }
+
+    func handleFavorite(action: ActionMenu) {
+        var snackBarMessage: String?
+        switch action.type {
+        case .addFavorite:
+            snackBarMessage = LocalizationConstants.Approved.removedFavorites
+        case .removeFavorite:
+            snackBarMessage = LocalizationConstants.Approved.addedFavorites
+        default: break
+        }
+        displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+
+    func handleMove(action: ActionMenu, node: ListNode?) {
+        var snackBarMessage: String?
+        guard let node = node else { return }
+        switch action.type {
+        case .moveTrash:
+            snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
+                                     node.truncateTailTitle())
+        case .restore:
+            snackBarMessage = String(format: LocalizationConstants.Approved.restored,
+                                     node.truncateTailTitle())
+        case .permanentlyDelete:
+            snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
+                                     node.truncateTailTitle())
+        default: break
+        }
+        displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+
+    func handleSheetCreate(action: ActionMenu) {
+        switch action.type {
+        case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
+            listItemActionDelegate?.showNodeCreationDialog(with: action,
+                                                           delegate: self)
+        default: break
+        }
+    }
+
+    func handleDownload(action: ActionMenu, node: ListNode?) {
+        var snackBarMessage: String?
+        guard let node = node else { return }
+        switch action.type {
+        case .markOffline:
+            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+                                     node.truncateTailTitle())
+        case .removeOffline:
+            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+                                     node.truncateTailTitle())
+        default: break
+        }
+        displaySnackbar(with: snackBarMessage, type: .approve)
     }
 
     func display(error: Error) {

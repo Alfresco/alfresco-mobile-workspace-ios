@@ -24,7 +24,7 @@ protocol EventBusServiceProtocol {
      - Parameter eventType: Event type for which the observer is registered
      - Parameter nodeTypes: Node types for which the observer is registered
      */
-    func register(observer: EventObservable, for eventType: BaseNodeEvent.Type, nodeTypes: [ElementKindType])
+    func register(observer: EventObservable, for eventType: BaseNodeEvent.Type, nodeTypes: [NodeType])
 
     /** Publishes an event on the bus to be handled by available subscribers. If no subscribers can handle the event, then no action
      is taken by the event bus.
@@ -38,7 +38,7 @@ class EventBusService: EventBusServiceProtocol, Service {
     /// The event bus is comprised of events acting as keys and weak references to event observers
     private var eventObserverAssociation: [HashableNodeEvent<BaseNodeEvent>: NSPointerArray] = [:]
 
-    func register(observer: EventObservable, for eventType: BaseNodeEvent.Type, nodeTypes: [ElementKindType]) {
+    func register(observer: EventObservable, for eventType: BaseNodeEvent.Type, nodeTypes: [NodeType]) {
         if let observers = eventObserverAssociation[eventType] {
             observer.supportedNodeTypes = nodeTypes
             observers.addObject(observer)
@@ -57,7 +57,7 @@ class EventBusService: EventBusServiceProtocol, Service {
                 if let registeredObserver = observers.object(at: idx) as? EventObservable {
 
                     if let supportedNoteTypes = registeredObserver.supportedNodeTypes {
-                        if supportedNoteTypes.contains(event.node.kind) {
+                        if supportedNoteTypes.contains(event.node.nodeType) {
                             var dispatchQueue: DispatchQueue
 
                             switch queue {

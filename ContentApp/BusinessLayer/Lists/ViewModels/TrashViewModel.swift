@@ -24,7 +24,7 @@ import AlfrescoContent
 class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var accountService: AccountService?
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
@@ -137,24 +137,8 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
 extension TrashViewModel {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        if let publishedEvent = event as? FavouriteEvent {
-            handleFavorite(event: publishedEvent)
-        } else if let publishedEvent = event as? MoveEvent {
+        if let publishedEvent = event as? MoveEvent {
             handleMove(event: publishedEvent)
-        }
-    }
-
-    private func handleFavorite(event: FavouriteEvent) {
-        let node = event.node
-        switch event.eventType {
-        case .addToFavourite:
-            if results.contains(node) == false {
-                results.append(node)
-            }
-        case .removeFromFavourites:
-            if let indexOfRemovedFavorite = results.firstIndex(of: node) {
-                results.remove(at: indexOfRemovedFavorite)
-            }
         }
     }
 
