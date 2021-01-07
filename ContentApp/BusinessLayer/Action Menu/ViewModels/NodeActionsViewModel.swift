@@ -70,36 +70,58 @@ class NodeActionsViewModel {
                     handler()
                 }
             }
-            
             sSelf.handle(action: action)
         })
     }
 
     private func handle(action: ActionMenu) {
-        switch action.type {
-        case .addFavorite:
-            requestAddToFavorites()
-        case .removeFavorite:
-            requestRemoveFromFavorites()
-        case .moveTrash:
-            requestMoveToTrash()
-        case .restore:
-            requestRestoreFromTrash()
-        case .permanentlyDelete:
-            requestPermanentlyDelete()
-        case .download:
-            requestDownload()
-        case .markOffline:
-            requestMarkOffline()
-        case .removeOffline:
-            requestRemoveOffline()
-        default:
+        if action.type.isFavoriteActions {
+            handleFavorite(action: action)
+        } else if action.type.isMoveActions {
+            handleMove(action: action)
+        } else if action.type.isDownloadActions {
+            handleDownload(action: action)
+        } else {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.delegate?.handleFinishedAction(with: sSelf.action,
                                                    node: sSelf.node,
                                                    error: nil)
             })
+        }
+    }
+
+    private func handleFavorite(action: ActionMenu) {
+        switch action.type {
+        case .addFavorite:
+            requestAddToFavorites()
+        case .removeFavorite:
+            requestRemoveFromFavorites()
+        default: break
+        }
+    }
+
+    private func handleMove(action: ActionMenu) {
+        switch action.type {
+        case .moveTrash:
+            requestMoveToTrash()
+        case .restore:
+            requestRestoreFromTrash()
+        case .permanentlyDelete:
+            requestPermanentlyDelete()
+        default: break
+        }
+    }
+
+    private func handleDownload(action: ActionMenu) {
+        switch action.type {
+        case .download:
+            requestDownload()
+        case .markOffline:
+            requestMarkOffline()
+        case .removeOffline:
+            requestRemoveOffline()
+        default: break
         }
     }
 
