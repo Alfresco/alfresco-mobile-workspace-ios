@@ -173,6 +173,8 @@ extension RecentViewModel {
             handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
             handleMove(event: publishedEvent)
+        } else if let publishedEvent = event as? OfflineEvent {
+            handleOffline(event: publishedEvent)
         }
     }
 
@@ -197,6 +199,13 @@ extension RecentViewModel {
         case .restore:
             refreshList()
         default: break
+        }
+    }
+
+    private func handleOffline(event: OfflineEvent) {
+        let node = event.node
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            results[indexOfOfflineNode] = node
         }
     }
 }

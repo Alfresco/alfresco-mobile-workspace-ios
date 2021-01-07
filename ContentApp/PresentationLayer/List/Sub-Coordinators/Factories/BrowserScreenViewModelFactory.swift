@@ -42,6 +42,9 @@ class BrowseViewModelFactory {
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return (browseViewModel, resultViewModel, globalSearchViewModel)
     }

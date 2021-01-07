@@ -28,6 +28,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var offlineImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
     var element: ListNode? {
         didSet {
@@ -35,6 +36,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element)
+                offlineImageView.isHidden = !element.isMarkedOffline()
             }
         }
     }
@@ -48,6 +50,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.lineBreakMode = .byTruncatingHead
         iconImageView.tintColor = currentTheme.onSurface60Color
         moreButton.tintColor = currentTheme.onSurface60Color
+        offlineImageView.tintColor = currentTheme.onSurface60Color
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {

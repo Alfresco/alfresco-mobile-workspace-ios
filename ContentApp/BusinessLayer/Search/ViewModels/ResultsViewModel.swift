@@ -31,32 +31,6 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
-
-    // MARK: Event observable
-
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-            for listNode in results where listNode == node {
-                listNode.favorite = node.favorite
-            }
-        } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if node.nodeType == .file {
-                    if let indexOfMovedNode = results.firstIndex(of: node) {
-                        results.remove(at: indexOfMovedNode)
-                    }
-                } else {
-                    refreshList()
-                }
-            case .restore:
-                refreshList()
-            default: break
-            }
-        }
-    }
 }
 
 // MARK: - SearchViewModelDelegate
@@ -146,3 +120,52 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         }
     }
 }
+
+// MARK: - Event observable
+
+extension ResultsViewModel {
+
+    // MARK: Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        } else if let publishedEvent = event as? OfflineEvent {
+            handleOffline(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.nodeType == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
+        }
+    }
+
+    private func handleOffline(event: OfflineEvent) {
+        let node = event.node
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            results[indexOfOfflineNode] = node
+        }
+    }
+}
+

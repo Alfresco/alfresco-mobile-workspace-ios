@@ -109,6 +109,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             dataAccessor.store(node: node)
+            let offlineEvent = OfflineEvent(node: node, eventType: .marked)
+            let eventBusService = coordinatorServices?.eventBusService
+            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
         }
     }
 
@@ -118,6 +121,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             dataAccessor.remove(node: node)
+            let offlineEvent = OfflineEvent(node: node, eventType: .removed)
+            let eventBusService = coordinatorServices?.eventBusService
+            eventBusService?.publish(event: offlineEvent, on: .mainQueue)
         }
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -54,13 +54,22 @@
                             <action selector="moreButtonTapped:" destination="TZI-a9-K3a" eventType="touchUpInside" id="lrA-ho-yVK"/>
                         </connections>
                     </button>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-action-fill-offline" translatesAutoresizingMaskIntoConstraints="NO" id="3o2-1v-beg">
+                        <rect key="frame" x="340" y="26" width="12" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="McW-BM-3gc"/>
+                            <constraint firstAttribute="width" constant="12" id="SOO-AD-8YS"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="3o2-1v-beg" firstAttribute="leading" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="5" id="2SO-iH-8CB"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="3Xe-Cq-IYQ"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="leading" secondItem="5U9-6I-Aoy" secondAttribute="trailing" constant="24" id="5jr-G8-6nt"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" constant="24" id="9zI-jq-c4P"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="leadingMargin" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="24" id="ESQ-LN-QhT"/>
                     <constraint firstAttribute="trailing" secondItem="YfJ-2w-APk" secondAttribute="trailingMargin" constant="24" id="Imx-ML-NnS"/>
+                    <constraint firstItem="3o2-1v-beg" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="bGo-BO-Hm8"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="iDa-6v-qzU"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="jiv-k9-Ifw"/>
                 </constraints>
@@ -69,6 +78,7 @@
             <connections>
                 <outlet property="iconImageView" destination="5U9-6I-Aoy" id="z4N-k4-OX1"/>
                 <outlet property="moreButton" destination="YfJ-2w-APk" id="7XB-ik-Rl2"/>
+                <outlet property="offlineImageView" destination="3o2-1v-beg" id="BRj-Ev-qcK"/>
                 <outlet property="subtitle" destination="dbq-hM-j4M" id="Tbm-Pq-VNJ"/>
                 <outlet property="title" destination="MzF-td-FzW" id="Ewd-8Z-lzG"/>
             </connections>
@@ -76,6 +86,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="ic-action-fill-offline" width="24" height="24"/>
         <image name="ic-action-more" width="24" height="24"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -101,6 +101,9 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return resultViewModel
     }
@@ -116,6 +119,9 @@ class TopLevelBrowseViewModelFactory {
                                   nodeTypes: [.file, .folder])
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
         return viewModel
     }
@@ -143,6 +149,9 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 
@@ -166,6 +175,9 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 }

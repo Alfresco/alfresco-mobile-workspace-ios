@@ -51,6 +51,13 @@ class RecentViewModelFactory {
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
 
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: recentViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+
         return (recentViewModel, resultViewModel, globalSearchViewModel)
     }
 }
