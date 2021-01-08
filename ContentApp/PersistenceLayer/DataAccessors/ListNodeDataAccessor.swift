@@ -73,18 +73,18 @@ class ListNodeDataAccessor {
         return nil
     }
 
-    func querryAll() -> [ListNode]? {
+    func queryAll() -> [ListNode]? {
         databaseService?.queryAll(entity: ListNode.self)
     }
 
-    func querryMarkedOffline() -> [ListNode]? {
+    func queryMarkedOffline() -> [ListNode]? {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
-                let querry: Query<ListNode> = try listBox.query {
+                let query: Query<ListNode> = try listBox.query {
                     ListNode.offline == true
                 }.build()
-                let count = try querry.count()
-                return try querry.find(offset: 0, limit: UInt64(count))
+                let count = try query.count()
+                return try query.find(offset: 0, limit: UInt64(count))
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
             }
@@ -142,11 +142,10 @@ class ListNodeDataAccessor {
     private func children(of node: ListNode) -> [ListNode]? {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
-                let querry: Query<ListNode> = try listBox.query {
+                let query: Query<ListNode> = try listBox.query {
                     ListNode.parentGuid == node.guid
                 }.build()
-                let count = try querry.count()
-                return try querry.find(offset: 0, limit: UInt64(count))
+                return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve children node information.")
             }
