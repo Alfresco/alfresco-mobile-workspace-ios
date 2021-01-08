@@ -25,51 +25,66 @@ struct ActionsMenuGeneric {
         let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node))
-        let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
-                                       type: .markOffline)
-        let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
-                                       type: .removeOffline)
+
+        var actions2: [ActionMenu] = []
+
+        if let action = offlineAction(for: node) {
+            actions2.append(action)
+        }
+        actions2.append(favoriteAction(for: node))
+
+        if let action = downloadAction(for: node) {
+            actions2.append(action)
+        }
+
+        if let action = deleteAction(for: node) {
+            actions2.append(action)
+        }
+
+        actions.append([infoAction])
+        actions.append(actions2)
+
+        return actions
+    }
+
+    // MARK: Private Helpers
+
+    static private func favoriteAction(for node: ListNode) -> ActionMenu {
         let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
                                          type: .removeFavorite)
-        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
-                                      type: .moveTrash)
+        return (node.favorite == true) ? removeFavAction : addFavAction
+    }
+
+    static private func offlineAction(for node: ListNode) -> ActionMenu? {
+        let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
+                                       type: .markOffline)
+        let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
+                                       type: .removeOffline)
+        if node.nodeType == .file || node.nodeType == .folder {
+            return node.isMarkedOffline() ? removeOffAction : markOffAction
+        }
+        return nil
+    }
+
+    static private func downloadAction(for node: ListNode) -> ActionMenu? {
         let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
                                       type: .download)
-
-        var actions2: [ActionMenu] = []
-
-        if node.isMarkedOffline() {
-            actions2.append(removeOffAction)
-        } else {
-            actions2.append(markOffAction)
+        if node.nodeType == .file || node.nodeType == .fileLink {
+            return downloadAction
         }
+        return nil
+    }
 
-        if node.favorite == true {
-            actions2.append(removeFavAction)
-        } else {
-            actions2.append(addFavAction)
+    static private func deleteAction(for node: ListNode) -> ActionMenu? {
+        let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
+                                      type: .moveTrash)
+        switch node.nodeType {
+        case .site:
+            return node.hasRole(to: .manager) ? deleteAction : nil
+        default:
+            return node.hasPersmission(to: .delete) ? deleteAction : nil
         }
-
-        if node.nodeType == .site {
-            if node.hasRole(to: .manager) {
-                actions2.append(deleteAction)
-            }
-        } else {
-            if node.nodeType == .file ||
-                node.nodeType == .fileLink {
-                actions2.append(downloadAction)
-            }
-            if node.hasPersmission(to: .delete) {
-                actions2.append(deleteAction)
-            }
-        }
-        let actions1 = [infoAction]
-
-        actions.append(actions1)
-        actions.append(actions2)
-
-        return actions
     }
 }
