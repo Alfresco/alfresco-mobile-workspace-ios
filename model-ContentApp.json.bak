@@ -61,7 +61,8 @@
         },
         {
           "id": "12:7364912097151763200",
-          "name": "allowableOperations"
+          "name": "allowableOperations",
+          "type": 9
         },
         {
           "id": "13:7254106165676034048",

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4787515528091542272",
-      "lastPropertyId": "14:6548674364965640960",
+      "lastPropertyId": "16:7140424165584772096",
       "name": "ListNode",
       "properties": [
         {
@@ -72,6 +72,16 @@
         {
           "id": "14:6548674364965640960",
           "name": "trashed",
+          "type": 1
+        },
+        {
+          "id": "15:5941047176527043840",
+          "name": "parentGuid",
+          "type": 9
+        },
+        {
+          "id": "16:7140424165584772096",
+          "name": "offline",
           "type": 1
         }
       ],
