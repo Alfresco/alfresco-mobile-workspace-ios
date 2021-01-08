@@ -62,6 +62,7 @@ typealias CreatedNodeType = (String, String, String)
 
 class ListNode: Hashable, Entity {
     var id: Id = 0 // swiftlint:disable:this identifier_name
+    var parentGuid: String?
     var guid: String
     var siteID: String
     var destination: String?
@@ -71,6 +72,7 @@ class ListNode: Hashable, Entity {
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
+    var offline: Bool?
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType
@@ -83,6 +85,7 @@ class ListNode: Hashable, Entity {
 
     init(guid: String,
          siteID: String = "",
+         parentGuid: String? = nil,
          mimeType: String? = nil,
          title: String,
          path: String,
@@ -92,16 +95,19 @@ class ListNode: Hashable, Entity {
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
+         offline: Bool = false,
          destionation: String? = nil) {
 
         self.guid = guid
         self.siteID = siteID
+        self.parentGuid = parentGuid
         self.mimeType = mimeType
         self.title = title
         self.path = path
         self.modifiedAt = modifiedAt
         self.nodeType = nodeType
         self.favorite = favorite
+        self.offline = offline
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed

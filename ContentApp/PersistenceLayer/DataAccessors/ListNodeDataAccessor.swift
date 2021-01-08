@@ -18,27 +18,43 @@
 
 import Foundation
 import ObjectBox
+import AlfrescoContent
+
+let kMaxCount = 100
 
 class ListNodeDataAccessor {
     private var databaseService: DatabaseService?
+    private var accountService: AccountService?
 
     init() {
         let repository = ApplicationBootstrap.shared().repository
-        let identifier = DatabaseService.identifier
-        databaseService = repository.service(of: identifier) as? DatabaseService
+        databaseService = repository.service(of: DatabaseService.identifier) as? DatabaseService
+        accountService = repository.service(of: AccountService.identifier) as? AccountService
     }
 
     func store(node: ListNode) {
+        node.offline = true
+        if let node = query(node: node) {
+            databaseService?.remove(entity: node)
+        }
         databaseService?.store(entity: node)
+
+        if node.nodeType == .folder {
+            storeChildren(of: node, paginationRequest: nil)
+        }
     }
 
     func remove(node: ListNode) {
         if node.id == 0 {
             if let queriedNode = query(node: node) {
+                node.offline = false
                 databaseService?.remove(entity: queriedNode)
+                removeChildren(of: node)
             }
         } else {
+            node.offline = false
             databaseService?.remove(entity: node)
+            removeChildren(of: node)
         }
     }
 
@@ -54,15 +70,85 @@ class ListNodeDataAccessor {
                 AlfrescoLog.error("Unable to retrieve node information.")
             }
         }
-
         return nil
     }
 
-    func querryAll() -> [ListNode]? {
+    func queryAll() -> [ListNode]? {
         databaseService?.queryAll(entity: ListNode.self)
     }
 
+    func queryMarkedOffline() -> [ListNode]? {
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                    ListNode.offline == true
+                }.build()
+                return try query.find()
+            } catch {
+                AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
+            }
+        }
+        return nil
+    }
+
     func isNodeMarkedAsOffline(node: ListNode) -> Bool {
-        return query(node: node) == nil ? false : true
+        guard let node = query(node: node) else { return false }
+        return node.offline ?? false
+    }
+
+    // MARK: Private Helpers
+
+    private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            NodesAPI.listNodeChildren(nodeId: node.guid,
+                                      skipCount: paginationRequest?.skipCount,
+                                      maxItems: paginationRequest?.maxItems ?? kMaxCount) { (result, _) in
+                if let entries = result?.list?.entries {
+                    let listNodes = NodeChildMapper.map(entries)
+                    for listNode in listNodes {
+                        if sSelf.query(node: listNode) == nil {
+                            sSelf.databaseService?.store(entity: listNode)
+                        }
+                        if listNode.nodeType == .folder {
+                            sSelf.storeChildren(of: listNode, paginationRequest: nil)
+                        }
+                    }
+                    if let pagination = result?.list?.pagination {
+                        if pagination.totalItems ?? 0 != Int64(listNodes.count) + pagination.skipCount {
+                            let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                           skipCount: Int(pagination.skipCount))
+                            sSelf.storeChildren(of: node, paginationRequest: reqPag)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private func removeChildren(of node: ListNode) {
+        if let children = children(of: node) {
+            for listNode in children where listNode.offline == false {
+                if listNode.nodeType == .folder {
+                    removeChildren(of: listNode)
+                }
+                databaseService?.remove(entity: listNode)
+            }
+        }
+    }
+
+    private func children(of node: ListNode) -> [ListNode]? {
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                    ListNode.parentGuid == node.guid
+                }.build()
+                return try query.find()
+            } catch {
+                AlfrescoLog.error("Unable to retrieve children node information.")
+            }
+        }
+        return nil
     }
 }

@@ -132,7 +132,7 @@ class FavoritesViewController: SystemSearchViewController {
 
     func setupTabBarView() -> MDCTabBarView {
         let tabBar = MDCTabBarView()
-        tabBar.delegate = self
+        tabBar.tabBarDelegate = self
         tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
                                      image: nil,
                                      tag: 0),
@@ -224,7 +224,7 @@ class FavoritesViewController: SystemSearchViewController {
 // MARK: - MDCTabBar Delegate
 
 extension FavoritesViewController: MDCTabBarViewDelegate {
-    func tabBar(_ tabBar: MDCTabBarView, didSelect item: UITabBarItem) {
+    func tabBarView(_ tabBarView: MDCTabBarView, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
 }

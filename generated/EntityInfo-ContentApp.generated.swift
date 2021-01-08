@@ -27,6 +27,7 @@ extension ListNode: ObjectBox.EntityInspectable {
     fileprivate static func buildEntity(modelBuilder: ObjectBox.ModelBuilder) throws {
         let entityBuilder = try modelBuilder.entityBuilder(for: ListNode.self, id: 1, uid: 4787515528091542272)
         try entityBuilder.addProperty(name: "id", type: Id.entityPropertyType, flags: [.id], id: 1, uid: 6291738575692826112)
+        try entityBuilder.addProperty(name: "parentGuid", type: String.entityPropertyType, id: 15, uid: 5941047176527043840)
         try entityBuilder.addProperty(name: "guid", type: String.entityPropertyType, id: 2, uid: 6072982276334486528)
         try entityBuilder.addProperty(name: "siteID", type: String.entityPropertyType, id: 3, uid: 6504946368521243136)
         try entityBuilder.addProperty(name: "destination", type: String.entityPropertyType, id: 4, uid: 2325907641381107456)
@@ -36,11 +37,12 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "modifiedAt", type: Date.entityPropertyType, id: 8, uid: 5604197784113814784)
         try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 11, uid: 6507941571178712320)
         try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 14, uid: 6548674364965640960)
+        try entityBuilder.addProperty(name: "offline", type: Bool.entityPropertyType, id: 16, uid: 7140424165584772096)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 10, uid: 5852693191752956672)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 13, uid: 7254106165676034048)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 12, uid: 7364912097151763200)
 
-        try entityBuilder.lastProperty(id: 14, uid: 6548674364965640960)
+        try entityBuilder.lastProperty(id: 16, uid: 7140424165584772096)
     }
 }
 
@@ -51,6 +53,12 @@ extension ListNode {
     ///
     ///     box.query { ListNode.id == myId }
     internal static var id: Property<ListNode, Id, Id> { return Property<ListNode, Id, Id>(propertyId: 1, isPrimaryKey: true) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.parentGuid.startsWith("X") }
+    internal static var parentGuid: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 15, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -109,6 +117,12 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { ListNode.offline > 1234 }
+    internal static var offline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 16, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { ListNode.nodeType.startsWith("X") }
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 10, isPrimaryKey: false) }
     /// Generated entity property information.
@@ -137,6 +151,14 @@ extension ObjectBox.Property where E == ListNode {
     ///     box.query { .id == myId }
 
     internal static var id: Property<ListNode, Id, Id> { return Property<ListNode, Id, Id>(propertyId: 1, isPrimaryKey: true) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .parentGuid.startsWith("X") }
+
+    internal static var parentGuid: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 15, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -214,6 +236,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .offline > 1234 }
+
+    internal static var offline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 16, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .nodeType.startsWith("X") }
 
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 10, isPrimaryKey: false) }
@@ -256,6 +286,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
 
     internal func collect(fromEntity entity: EntityType, id: ObjectBox.Id,
                                   propertyCollector: ObjectBox.FlatBufferBuilder, store: ObjectBox.Store) throws {
+        let propertyOffset_parentGuid = propertyCollector.prepare(string: entity.parentGuid)
         let propertyOffset_guid = propertyCollector.prepare(string: entity.guid)
         let propertyOffset_siteID = propertyCollector.prepare(string: entity.siteID)
         let propertyOffset_destination = propertyCollector.prepare(string: entity.destination)
@@ -270,6 +301,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(entity.modifiedAt, at: 2 + 2 * 8)
         propertyCollector.collect(entity.favorite, at: 2 + 2 * 11)
         propertyCollector.collect(entity.trashed, at: 2 + 2 * 14)
+        propertyCollector.collect(entity.offline, at: 2 + 2 * 16)
+        propertyCollector.collect(dataOffset: propertyOffset_parentGuid, at: 2 + 2 * 15)
         propertyCollector.collect(dataOffset: propertyOffset_guid, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 3)
         propertyCollector.collect(dataOffset: propertyOffset_destination, at: 2 + 2 * 4)
@@ -285,6 +318,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let entity = ListNode()
 
         entity.id = entityReader.read(at: 2 + 2 * 1)
+        entity.parentGuid = entityReader.read(at: 2 + 2 * 15)
         entity.guid = entityReader.read(at: 2 + 2 * 2)
         entity.siteID = entityReader.read(at: 2 + 2 * 3)
         entity.destination = entityReader.read(at: 2 + 2 * 4)
@@ -294,6 +328,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.modifiedAt = entityReader.read(at: 2 + 2 * 8)
         entity.favorite = entityReader.read(at: 2 + 2 * 11)
         entity.trashed = entityReader.read(at: 2 + 2 * 14)
+        entity.offline = entityReader.read(at: 2 + 2 * 16)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 10)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 12))

@@ -60,6 +60,7 @@ struct NodeChildMapper {
         }
 
         return ListNode(guid: node._id,
+                        parentGuid: node.parentId,
                         mimeType: mimeType,
                         title: node.name,
                         path: path,
