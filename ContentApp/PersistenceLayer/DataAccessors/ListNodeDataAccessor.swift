@@ -83,8 +83,7 @@ class ListNodeDataAccessor {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.offline == true
                 }.build()
-                let count = try query.count()
-                return try query.find(offset: 0, limit: UInt64(count))
+                return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
             }
