@@ -61,6 +61,10 @@ enum ActionMenuType: String {
                 .createFolder].contains(self)
     }
 
+    var isMoreAction: Bool {
+        return [.more].contains(self)
+    }
+
     // MARK: - Generic
     case placeholder = "ic-placeholder"
     case node = "ic-node"
