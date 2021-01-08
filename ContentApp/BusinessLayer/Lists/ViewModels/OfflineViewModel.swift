@@ -79,7 +79,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func refreshList() {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.querryAll() {
+        if let offlineNodes = listNodeDataAccessor.querryMarkedOffline() {
             results = offlineNodes
         }
 
