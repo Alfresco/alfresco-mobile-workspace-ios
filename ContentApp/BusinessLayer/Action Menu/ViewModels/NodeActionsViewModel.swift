@@ -83,7 +83,8 @@ class NodeActionsViewModel {
         } else if action.type.isDownloadActions {
             handleDownload(action: action)
         } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: { [weak self] in
+            let delay = action.type.isMoreAction ? 0.0 : 1.0
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.delegate?.handleFinishedAction(with: sSelf.action,
                                                    node: sSelf.node,
@@ -132,6 +133,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             dataAccessor.store(node: node)
+            action?.type = .removeOffline
+            action?.title = LocalizationConstants.ActionMenu.removeOffline
+
             let offlineEvent = OfflineEvent(node: node, eventType: .marked)
             let eventBusService = coordinatorServices?.eventBusService
             eventBusService?.publish(event: offlineEvent, on: .mainQueue)
@@ -144,6 +148,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             dataAccessor.remove(node: node)
+            action?.type = .markOffline
+            action?.title = LocalizationConstants.ActionMenu.markOffline
+
             let offlineEvent = OfflineEvent(node: node, eventType: .removed)
             let eventBusService = coordinatorServices?.eventBusService
             eventBusService?.publish(event: offlineEvent, on: .mainQueue)
