@@ -75,6 +75,10 @@
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
 		B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AD24813BAF004833BC /* UITextview+Size.swift */; };
+		B9B7530525AC422B004F16E5 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530425AC422B004F16E5 /* SyncService.swift */; };
+		B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530A25AC8543004F16E5 /* AsyncOperation.swift */; };
+		B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */; };
+		B9B7531625AC9062004F16E5 /* SyncOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7531525AC9062004F16E5 /* SyncOperationFactory.swift */; };
 		B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B908DE2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift */; };
 		B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9DBB21A256537840098CF18 /* OperationQueueService.swift */; };
 		B9E7D603249119370056292B /* AccountProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D602249119370056292B /* AccountProtocol.swift */; };
@@ -357,6 +361,10 @@
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
 		B9B630AD24813BAF004833BC /* UITextview+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextview+Size.swift"; sourceTree = "<group>"; };
+		B9B7530425AC422B004F16E5 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
+		B9B7530A25AC8543004F16E5 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
+		B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncClosureOperation.swift; sourceTree = "<group>"; };
+		B9B7531525AC9062004F16E5 /* SyncOperationFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncOperationFactory.swift; sourceTree = "<group>"; };
 		B9B908DE2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PDFRenderer+FilePreviewProtocol.swift"; sourceTree = "<group>"; };
 		B9DBB21A256537840098CF18 /* OperationQueueService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationQueueService.swift; sourceTree = "<group>"; };
 		B9E7D602249119370056292B /* AccountProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountProtocol.swift; sourceTree = "<group>"; };
@@ -727,6 +735,7 @@
 		B959CCCE2476B14400811F15 /* DataAccessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				B9B7530925AC8422004F16E5 /* AsyncOperation */,
 				E3AD23EE249A28E0008B9712 /* KeychainWrapper */,
 				B96B9AF52480FCAA0035AE97 /* ApplicationBootstrap */,
 				B91A5E46247825CF0063E938 /* ServiceRepository */,
@@ -891,6 +900,7 @@
 				E3F1AEE224D1DFFF009DC5F9 /* ProfileService.swift */,
 				B9ECECFE254302EF0097DB3F /* EventBusService.swift */,
 				B9DBB21A256537840098CF18 /* OperationQueueService.swift */,
+				B9B7530425AC422B004F16E5 /* SyncService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -980,6 +990,23 @@
 				B944AB1E255BD9E200965709 /* Download Dialog */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B9B7530925AC8422004F16E5 /* AsyncOperation */ = {
+			isa = PBXGroup;
+			children = (
+				B9B7530A25AC8543004F16E5 /* AsyncOperation.swift */,
+				B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */,
+			);
+			path = AsyncOperation;
+			sourceTree = "<group>";
+		};
+		B9B7531425AC8F95004F16E5 /* Sync */ = {
+			isa = PBXGroup;
+			children = (
+				B9B7531525AC9062004F16E5 /* SyncOperationFactory.swift */,
+			);
+			path = Sync;
 			sourceTree = "<group>";
 		};
 		B9CCA30D24BF3AE700F1AD5C /* List */ = {
@@ -1353,6 +1380,7 @@
 		E3A2A8FE247E7D950046582C /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				B9B7531425AC8F95004F16E5 /* Sync */,
 				B9ECECF8254301F10097DB3F /* EventDelivery */,
 				B9E7D5FF249115BA0056292B /* Session */,
 				B96B9AEB2480F76E0035AE97 /* Authentication */,
@@ -1862,6 +1890,7 @@
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
+				B9B7531625AC9062004F16E5 /* SyncOperationFactory.swift in Sources */,
 				B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */,
 				E3429F4125627F57004EBD2F /* EmptyFavoritesFilesFolders.swift in Sources */,
 				E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */,
@@ -1897,6 +1926,7 @@
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
+				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
 				E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */,
@@ -1915,6 +1945,7 @@
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
 				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
 				E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */,
+				B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				E3A433A22566CAA7000DD886 /* CreateNodeSheetCoordinator.swift in Sources */,
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
@@ -1963,6 +1994,7 @@
 				E3CF862D24E69EDF001C86B5 /* FilePreviewViewModel.swift in Sources */,
 				E3ABECE725519C4B005F0A66 /* MoveEvent.swift in Sources */,
 				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,
+				B9B7530525AC422B004F16E5 /* SyncService.swift in Sources */,
 				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
 				E3ADD05C249279D8006DF519 /* SettingsItemTableViewCell.swift in Sources */,

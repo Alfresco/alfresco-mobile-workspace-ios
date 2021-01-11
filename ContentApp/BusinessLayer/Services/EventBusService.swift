@@ -19,18 +19,20 @@
 import UIKit
 
 protocol EventBusServiceProtocol {
-    /** Registers  observer with the current event bus for a given event type.
-     - Parameter observer: Observer object able to handle a subset of events
-     - Parameter eventType: Event type for which the observer is registered
-     - Parameter nodeTypes: Node types for which the observer is registered
-     */
+    ///
+    /// Registers  observer with the current event bus for a given event type.
+    /// - Parameters:
+    ///   - observer: Observer object able to handle a subset of events
+    ///   - eventType: Event type for which the observer is registered
+    ///   - nodeTypes: Node types for which the observer is registered
     func register(observer: EventObservable, for eventType: BaseNodeEvent.Type, nodeTypes: [NodeType])
 
-    /** Publishes an event on the bus to be handled by available subscribers. If no subscribers can handle the event, then no action
-     is taken by the event bus.
-     - Parameter event: Event object passed to subscribers
-     - Parameter queue: Queue on which events will be delivered
-     */
+    ///
+    /// Publishes an event on the bus to be handled by available subscribers. If no subscribers can handle the event, then no action
+    /// is taken by the event bus.
+    /// - Parameters:
+    ///   - event: Event object passed to subscribers
+    ///   - queue: Queue on which events will be delivered
     func publish<E: BaseNodeEvent>(event: E, on queue: EventQueueType)
 }
 

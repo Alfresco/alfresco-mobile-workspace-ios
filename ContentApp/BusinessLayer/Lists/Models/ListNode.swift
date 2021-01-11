@@ -69,11 +69,13 @@ class ListNode: Hashable, Entity {
     var mimeType: String?
     var title: String
     var path: String
+    var localPath: String?
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
     var markedAsOffline: Bool? = false
     var markedForDeletion: Bool? = false
+    var markedForDownload: Bool? = false
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType

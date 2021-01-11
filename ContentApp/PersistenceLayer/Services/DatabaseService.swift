@@ -42,6 +42,9 @@ class DatabaseService: Service {
         }
     }
 
+    ///
+    /// Stores an entity in the database
+    /// - Parameter entity: Entity to be stored in the database
     func store<E>(entity: ObjectBox.Box<E>.EntityType) {
         let entityBox = store?.box(for: E.self)
 
@@ -52,6 +55,11 @@ class DatabaseService: Service {
         }
     }
 
+    ///
+    /// Removes an entity from the database.
+    /// - Note: Entity must exist in the database to be removed. That means the *id* property of the object to be removed must be
+    ///  different than 0.
+    /// - Parameter entity: Entity to be removed from the database
     func remove<E>(entity: ObjectBox.Box<E>.EntityType) {
         let entityBox = store?.box(for: E.self)
         do {
@@ -61,12 +69,20 @@ class DatabaseService: Service {
         }
     }
 
+    ///
+    /// Fetches database managed context for a specific entity
+    /// - Parameter entity: Entity for which the managed context is fetched
+    /// - Returns: Database managed object context
     func box<E>(entity: E.Type = E.self) -> ObjectBox.Box<E>?  where E: ObjectBox.EntityInspectable,
                                                                      E: ObjectBox.__EntityRelatable,
                                                                      E == E.EntityBindingType.EntityType {
         return store?.box(for: E.self)
     }
 
+    ///
+    ///  Fetches all entities from the databse given an entity type
+    /// - Parameter entity: Entity type for which the query is executed
+    /// - Returns: An array of entities from the databse matching the entity type
     func queryAll<E>(entity: E.Type = E.self) -> [E]? where E: ObjectBox.EntityInspectable,
                                                             E: ObjectBox.__EntityRelatable,
                                                             E == E.EntityBindingType.EntityType {

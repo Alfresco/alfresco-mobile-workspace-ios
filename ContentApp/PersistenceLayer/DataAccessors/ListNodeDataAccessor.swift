@@ -34,10 +34,15 @@ class ListNodeDataAccessor {
 
     func store(node: ListNode) {
         node.markedAsOffline = true
-        if let node = query(node: node) {
-            databaseService?.remove(entity: node)
+
+        if node.id == 0 {
+            if let queriedNode = query(node: node) {
+                update(node: queriedNode, with: node)
+                databaseService?.store(entity: queriedNode)
+            }
+        } else {
+            databaseService?.store(entity: node)
         }
-        databaseService?.store(entity: node)
 
         if node.nodeType == .folder {
             storeChildren(of: node, paginationRequest: nil)
@@ -177,5 +182,18 @@ class ListNodeDataAccessor {
             }
         }
         return nil
+    }
+
+    func update(node: ListNode, with newVersion: ListNode) {
+        node.parentGuid = newVersion.parentGuid
+        node.siteID = newVersion.siteID
+        node.destination = newVersion.destination
+        node.mimeType = newVersion.mimeType
+        node.title = newVersion.title
+        node.path = newVersion.path
+        node.modifiedAt = newVersion.modifiedAt
+        node.favorite = newVersion.favorite
+        node.nodeType = newVersion.nodeType
+        node.allowableOperations = newVersion.allowableOperations
     }
 }
