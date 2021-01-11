@@ -33,7 +33,7 @@ class ListNodeDataAccessor {
     }
 
     func store(node: ListNode) {
-        node.offline = true
+        node.markedAsOffline = true
         if let node = query(node: node) {
             databaseService?.remove(entity: node)
         }
@@ -47,13 +47,15 @@ class ListNodeDataAccessor {
     func remove(node: ListNode) {
         if node.id == 0 {
             if let queriedNode = query(node: node) {
-                node.offline = false
-                databaseService?.remove(entity: queriedNode)
-                removeChildren(of: node)
+                queriedNode.markedAsOffline = false
+                queriedNode.markedForDeletion = true
+                databaseService?.store(entity: queriedNode)
+                removeChildren(of: queriedNode)
             }
         } else {
-            node.offline = false
-            databaseService?.remove(entity: node)
+            node.markedAsOffline = false
+            node.markedForDeletion = true
+            databaseService?.store(entity: node)
             removeChildren(of: node)
         }
     }
@@ -81,8 +83,23 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.offline == true
-                }.build()
+                    ListNode.markedAsOffline == true
+                }.ordered(by: ListNode.title).build()
+                return try query.find()
+            } catch {
+                AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
+            }
+        }
+        return nil
+    }
+
+    func querryOfflineChildren(for parentNode: ListNode?) -> [ListNode]? {
+        guard let node = parentNode else { return nil }
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                    ListNode.parentGuid == node.guid
+                }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
@@ -93,7 +110,7 @@ class ListNodeDataAccessor {
 
     func isNodeMarkedAsOffline(node: ListNode) -> Bool {
         guard let node = query(node: node) else { return false }
-        return node.offline ?? false
+        return node.markedAsOffline ?? false
     }
 
     // MARK: Private Helpers
@@ -104,7 +121,11 @@ class ListNodeDataAccessor {
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             NodesAPI.listNodeChildren(nodeId: node.guid,
                                       skipCount: paginationRequest?.skipCount,
-                                      maxItems: paginationRequest?.maxItems ?? kMaxCount) { (result, _) in
+                                      maxItems: paginationRequest?.maxItems ?? kMaxCount,
+                                      include: [kAPIIncludeIsFavoriteNode,
+                                                kAPIIncludePathNode,
+                                                kAPIIncludeAllowableOperationsNode,
+                                                kAPIIncludeProperties]) { (result, _) in
                 if let entries = result?.list?.entries {
                     let listNodes = NodeChildMapper.map(entries)
                     for listNode in listNodes {
@@ -116,9 +137,10 @@ class ListNodeDataAccessor {
                         }
                     }
                     if let pagination = result?.list?.pagination {
-                        if pagination.totalItems ?? 0 != Int64(listNodes.count) + pagination.skipCount {
+                        let skipCount = Int64(listNodes.count) + pagination.skipCount
+                        if pagination.totalItems ?? 0 != skipCount {
                             let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                           skipCount: Int(pagination.skipCount))
+                                                           skipCount: Int(skipCount))
                             sSelf.storeChildren(of: node, paginationRequest: reqPag)
                         }
                     }
@@ -129,11 +151,16 @@ class ListNodeDataAccessor {
 
     private func removeChildren(of node: ListNode) {
         if let children = children(of: node) {
-            for listNode in children where listNode.offline == false {
+            for listNode in children where listNode.markedAsOffline == false {
                 if listNode.nodeType == .folder {
                     removeChildren(of: listNode)
                 }
-                databaseService?.remove(entity: listNode)
+                if let queryNode = query(node: listNode),
+                   queryNode.markedForDeletion == false {
+                    queryNode.markedAsOffline = false
+                    queryNode.markedForDeletion = true
+                    databaseService?.store(entity: queryNode)
+                }
             }
         }
     }

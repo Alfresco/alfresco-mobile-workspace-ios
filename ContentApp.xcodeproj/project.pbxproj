@@ -109,6 +109,9 @@
 		E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */; };
 		E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DB247C01470044BE0D /* AimsViewModel.swift */; };
 		E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */; };
+		E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */; };
+		E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */; };
+		E315151B25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E315151A25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift */; };
 		E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */; };
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
 		E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E319AA73250782F00072DFFE /* FilePreviewFactory.swift */; };
@@ -387,6 +390,9 @@
 		E31184D9247BFE5A0044BE0D /* BasicAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicAuthViewModel.swift; sourceTree = "<group>"; };
 		E31184DB247C01470044BE0D /* AimsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AimsViewModel.swift; sourceTree = "<group>"; };
 		E31184DD247C06BE0044BE0D /* AdvancedSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsViewModel.swift; sourceTree = "<group>"; };
+		E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
+		E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFoldreDrillViewModel.swift; sourceTree = "<group>"; };
+		E315151A25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineFolderChildrenViewModelFactory.swift; sourceTree = "<group>"; };
 		E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeTableViewCell.swift; sourceTree = "<group>"; };
 		E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeScreenCoordinator.swift; sourceTree = "<group>"; };
 		E319AA73250782F00072DFFE /* FilePreviewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewFactory.swift; sourceTree = "<group>"; };
@@ -664,6 +670,7 @@
 				B90E383C255AAD7D00FAFB81 /* RecentViewModelFactory.swift */,
 				B944AADC255AB99F00965709 /* FavoritesViewModelFactory.swift */,
 				B9233FBF25A708D1006EA4DA /* OfflineViewModelFactory.swift */,
+				E315151A25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift */,
 			);
 			path = Factories;
 			sourceTree = "<group>";
@@ -1214,6 +1221,7 @@
 				E3E2BDA324CC280B00D8A7EC /* TrashViewModel.swift */,
 				B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */,
 				B9233FC425A70ADC006EA4DA /* OfflineViewModel.swift */,
+				E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1286,6 +1294,7 @@
 				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
 				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 				E3A7F32C258A5B880089734D /* OfflineScreenCoordinator.swift */,
+				E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */,
 				E3E9ED3E24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift */,
 				E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */,
 				E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */,
@@ -1837,6 +1846,7 @@
 				B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
+				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
@@ -1889,6 +1899,7 @@
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
+				E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
 				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
 				E308A42A2566961B00A1D01E /* ActionsMenuCreateFAB.swift in Sources */,
@@ -1962,6 +1973,7 @@
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
 				B93E08FA25665297009732C3 /* PrivacyNoticeViewController.swift in Sources */,
+				E315151B25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				B9ECECFA254302420097DB3F /* NodeEvent.swift in Sources */,
 				E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */,
