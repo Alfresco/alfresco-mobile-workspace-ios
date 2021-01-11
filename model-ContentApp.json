@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4787515528091542272",
-      "lastPropertyId": "16:7140424165584772096",
+      "lastPropertyId": "19:269961487045141504",
       "name": "ListNode",
       "properties": [
         {
@@ -80,8 +80,13 @@
           "type": 9
         },
         {
-          "id": "16:7140424165584772096",
-          "name": "offline",
+          "id": "18:6010654626593675520",
+          "name": "markedAsOffline",
+          "type": 1
+        },
+        {
+          "id": "19:269961487045141504",
+          "name": "markedForDeletion",
           "type": 1
         }
       ],
@@ -97,7 +102,9 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    3883288365655867136
+    3883288365655867136,
+    908245655234196480,
+    7140424165584772096
   ],
   "retiredRelationUids": [],
   "version": 1

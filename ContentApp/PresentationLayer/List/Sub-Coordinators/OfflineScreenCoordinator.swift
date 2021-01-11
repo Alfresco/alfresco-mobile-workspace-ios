@@ -23,6 +23,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var offlineViewController: ListViewController?
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -62,7 +63,12 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        // Do nothing
+        if node.nodeType == .folder, let navigationViewController = self.navigationViewController {
+            let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
+                                                                     listNode: node)
+            coordinator.start()
+            self.offlineFolderChildrenScreenCoordinator = coordinator
+        }
     }
 
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {

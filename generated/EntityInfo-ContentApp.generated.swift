@@ -37,12 +37,13 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "modifiedAt", type: Date.entityPropertyType, id: 8, uid: 5604197784113814784)
         try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 11, uid: 6507941571178712320)
         try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 14, uid: 6548674364965640960)
-        try entityBuilder.addProperty(name: "offline", type: Bool.entityPropertyType, id: 16, uid: 7140424165584772096)
+        try entityBuilder.addProperty(name: "markedAsOffline", type: Bool.entityPropertyType, id: 18, uid: 6010654626593675520)
+        try entityBuilder.addProperty(name: "markedForDeletion", type: Bool.entityPropertyType, id: 19, uid: 269961487045141504)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 10, uid: 5852693191752956672)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 13, uid: 7254106165676034048)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 12, uid: 7364912097151763200)
 
-        try entityBuilder.lastProperty(id: 16, uid: 7140424165584772096)
+        try entityBuilder.lastProperty(id: 19, uid: 269961487045141504)
     }
 }
 
@@ -117,8 +118,14 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.offline > 1234 }
-    internal static var offline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 16, isPrimaryKey: false) }
+    ///     box.query { ListNode.markedAsOffline > 1234 }
+    internal static var markedAsOffline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 18, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.markedForDeletion > 1234 }
+    internal static var markedForDeletion: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 19, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -236,9 +243,17 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .offline > 1234 }
+    ///     box.query { .markedAsOffline > 1234 }
 
-    internal static var offline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 16, isPrimaryKey: false) }
+    internal static var markedAsOffline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 18, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .markedForDeletion > 1234 }
+
+    internal static var markedForDeletion: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 19, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -301,7 +316,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(entity.modifiedAt, at: 2 + 2 * 8)
         propertyCollector.collect(entity.favorite, at: 2 + 2 * 11)
         propertyCollector.collect(entity.trashed, at: 2 + 2 * 14)
-        propertyCollector.collect(entity.offline, at: 2 + 2 * 16)
+        propertyCollector.collect(entity.markedAsOffline, at: 2 + 2 * 18)
+        propertyCollector.collect(entity.markedForDeletion, at: 2 + 2 * 19)
         propertyCollector.collect(dataOffset: propertyOffset_parentGuid, at: 2 + 2 * 15)
         propertyCollector.collect(dataOffset: propertyOffset_guid, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 3)
@@ -328,7 +344,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.modifiedAt = entityReader.read(at: 2 + 2 * 8)
         entity.favorite = entityReader.read(at: 2 + 2 * 11)
         entity.trashed = entityReader.read(at: 2 + 2 * 14)
-        entity.offline = entityReader.read(at: 2 + 2 * 16)
+        entity.markedAsOffline = entityReader.read(at: 2 + 2 * 18)
+        entity.markedForDeletion = entityReader.read(at: 2 + 2 * 19)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 10)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 12))

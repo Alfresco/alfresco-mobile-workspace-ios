@@ -72,7 +72,8 @@ class ListNode: Hashable, Entity {
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
-    var offline: Bool?
+    var markedAsOffline: Bool? = false
+    var markedForDeletion: Bool? = false
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType
@@ -95,7 +96,6 @@ class ListNode: Hashable, Entity {
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
-         offline: Bool = false,
          destionation: String? = nil) {
 
         self.guid = guid
@@ -107,7 +107,6 @@ class ListNode: Hashable, Entity {
         self.modifiedAt = modifiedAt
         self.nodeType = nodeType
         self.favorite = favorite
-        self.offline = offline
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
