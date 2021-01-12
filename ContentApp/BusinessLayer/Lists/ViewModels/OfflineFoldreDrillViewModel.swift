@@ -144,6 +144,9 @@ extension OfflineFoldreDrillViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        refreshList()
+        let node = event.node
+        if let indexOfNode = results.firstIndex(of: node) {
+            results[indexOfNode] = node
+        }
     }
 }
