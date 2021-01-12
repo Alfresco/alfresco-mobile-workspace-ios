@@ -143,6 +143,14 @@ extension OfflineViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        refreshList()
+        let node = event.node
+        switch event.eventType {
+        case .marked:
+            refreshList()
+        case .removed:
+            if let indexOfNode = results.firstIndex(of: node) {
+                results.remove(at: indexOfNode)
+            }
+        }
     }
 }
