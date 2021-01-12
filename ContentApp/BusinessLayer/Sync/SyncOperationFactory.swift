@@ -44,18 +44,18 @@ class SyncOperationFactory {
                     } else if let entry = result?.entry {
                         let onlineListNode = NodeChildMapper.create(from: entry)
 
-                        var markForDownload = false
-                        if onlineListNode.modifiedAt != node.modifiedAt {
-                            
-                        } else if node.localPath == nil {
-                            markForDownload = true
-                        }
+                        if onlineListNode.modifiedAt != node.modifiedAt ||
+                            node.localPath == nil {
+                            onlineListNode.markedForDownload = true
 
+                            let dataAccessor = ListNodeDataAccessor()
+                            dataAccessor.store(node: onlineListNode)
+                        }
                     }
+
+                    completion()
                 }
             })
-
-            completion()
         }
 
         return operation

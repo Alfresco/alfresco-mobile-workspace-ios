@@ -35,13 +35,21 @@ class ListNodeDataAccessor {
     func store(node: ListNode) {
         node.markedAsOffline = true
 
+        var nodeToBeStored: ListNode?
+
         if node.id == 0 {
             if let queriedNode = query(node: node) {
                 update(node: queriedNode, with: node)
-                databaseService?.store(entity: queriedNode)
+                nodeToBeStored = queriedNode
+            } else {
+                nodeToBeStored = node
             }
         } else {
-            databaseService?.store(entity: node)
+            nodeToBeStored = node
+        }
+
+        if let nodeToBeStored = nodeToBeStored {
+            databaseService?.store(entity: nodeToBeStored)
         }
 
         if node.nodeType == .folder {
@@ -195,5 +203,8 @@ class ListNodeDataAccessor {
         node.favorite = newVersion.favorite
         node.nodeType = newVersion.nodeType
         node.allowableOperations = newVersion.allowableOperations
+        node.markedForDownload = newVersion.markedForDownload
+        node.markedAsOffline = newVersion.markedAsOffline
+        node.markedForDeletion = newVersion.markedForDeletion
     }
 }

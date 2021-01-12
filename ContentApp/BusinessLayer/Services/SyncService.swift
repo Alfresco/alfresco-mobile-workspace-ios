@@ -39,15 +39,17 @@ protocol SyncServiceDelegate: class {
 
 class SyncService: Service, SyncServiceProtocol {
     let syncOperationQueue: OperationQueue
+    let syncOperationFactory: SyncOperationFactory
 
-    init() {
+    init(accountService: AccountService?) {
         syncOperationQueue = OperationQueue()
         syncOperationQueue.maxConcurrentOperationCount = 1
+        syncOperationFactory = SyncOperationFactory(accountService: accountService)
     }
 
     func sync(nodeList: [ListNode]) {
-        for node in nodeList {
-            let nodeDetailsOperation = SyncOperationFactory.nodeDetailsOperation(node: node)
+        for node in nodeList where node.nodeType == .file {
+            let nodeDetailsOperation = syncOperationFactory.nodeDetailsOperation(node: node)
             syncOperationQueue.addOperation(nodeDetailsOperation)
         }
     }

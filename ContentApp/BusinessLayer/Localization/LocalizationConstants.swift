@@ -38,6 +38,7 @@ struct LocalizationConstants {
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
+        static let syncAll = NSLocalizedString("sync-all", comment: "")
     }
 
     struct TextFieldPlaceholders {

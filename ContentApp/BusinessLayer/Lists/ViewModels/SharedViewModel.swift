@@ -133,6 +133,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+
+    func performListAction() {
+        // Do nothing
+    }
 }
 
 // MARK: - Event observable

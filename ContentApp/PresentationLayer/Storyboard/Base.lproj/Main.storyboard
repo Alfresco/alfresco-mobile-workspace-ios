@@ -2019,6 +2019,13 @@
                                     <constraint firstItem="o9C-Qd-WPm" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="hUF-85-fVI"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mp9-wt-XHA" customClass="MDCFloatingButton">
+                                <rect key="frame" x="199" y="824" width="30" height="34"/>
+                                <connections>
+                                    <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="XC4-1i-hoI"/>
+                                    <action selector="listActionButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7oS-ZR-NSA"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W6C-F8-M04" customClass="MDCFloatingButton">
                                 <rect key="frame" x="356" y="813" width="56" height="56"/>
                                 <constraints>
@@ -2044,7 +2051,9 @@
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
+                            <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerX" secondItem="9rc-8Z-DQe" secondAttribute="centerX" id="byi-XX-C5V"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="pr0-Ue-eN0"/>
+                            <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerY" secondItem="W6C-F8-M04" secondAttribute="centerY" id="rDL-1Q-ZwM"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="weR-Sh-vAF"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="9q7-tN-q37" secondAttribute="trailing" id="zHv-6Z-X6B"/>
                         </constraints>
@@ -2057,6 +2066,7 @@
                         <outlet property="emptyListSubtitle" destination="o9C-Qd-WPm" id="IWI-Mz-46e"/>
                         <outlet property="emptyListTitle" destination="qbf-LQ-gvV" id="EHq-ol-yWz"/>
                         <outlet property="emptyListView" destination="ddo-cc-nfp" id="Bia-uS-1QO"/>
+                        <outlet property="listActionButton" destination="Mp9-wt-XHA" id="Ktg-dX-9lh"/>
                         <outlet property="progressView" destination="Auu-tI-yd0" id="I3y-1e-e3K"/>
                     </connections>
                 </viewController>

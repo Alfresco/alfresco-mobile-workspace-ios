@@ -19,9 +19,11 @@
 import Foundation
 import AlfrescoContent
 
-class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
     var parentListNode: ListNode?
+
+    // MARK: - ListViewModelProtocol
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         super.init()
@@ -32,7 +34,11 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         return false
     }
 
-    // MARK: - ListViewModelProtocol
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - ListComponentDataSourceProtocol
 
     func shouldDisplayNodePath() -> Bool {
         return false
@@ -89,6 +95,8 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
                    error: nil)
     }
 
+    // MARK: - PageFetchingViewModel
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -107,7 +115,7 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
 // MARK: Event observable
 
-extension OfflineFoldreDrillViewModel: EventObservable {
+extension OfflineFolderDrillViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)

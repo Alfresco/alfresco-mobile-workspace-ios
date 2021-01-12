@@ -21,53 +21,21 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - Init
+    // MARK: - ListViewModelProtocol
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
 
-    // MARK: - Public methods
-
-    func request(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            TrashcanAPI.listDeletedNodes(skipCount: skipCount,
-                                         maxItems: maxItems,
-                                         include: [kAPIIncludePathNode]) { (result, error) in
-                var listNodes: [ListNode]?
-                if let entries = result?.list?.entries {
-                    listNodes = DeleteNodeMapper.map(entries)
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                }
-                let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
-            }
-        })
-    }
-
     func shouldDisplaySettingsButton() -> Bool {
         return false
     }
-
-    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -118,6 +86,12 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         request(with: nil)
     }
 
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
+
     override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
         request(with: requestPagination)
     }
@@ -130,11 +104,41 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+
+    // MARK: - Public interface
+
+    func request(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let skipCount = paginationRequest?.skipCount
+            let maxItems = paginationRequest?.maxItems ?? kListPageSize
+            TrashcanAPI.listDeletedNodes(skipCount: skipCount,
+                                         maxItems: maxItems,
+                                         include: [kAPIIncludePathNode]) { (result, error) in
+                var listNodes: [ListNode]?
+                if let entries = result?.list?.entries {
+                    listNodes = DeleteNodeMapper.map(entries)
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        })
+    }
 }
 
 // MARK: Event Observable
 
-extension TrashViewModel {
+extension TrashViewModel: EventObservable {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? MoveEvent {

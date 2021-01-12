@@ -131,6 +131,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         updateResults(results: results, pagination: pagination, error: error)
     }
 
+    func performListAction() {
+        // Do nothing
+    }
+
     // MARK: - Private methods
 
     private func add(element: ListNode, inGroupType type: GroupedListType) {

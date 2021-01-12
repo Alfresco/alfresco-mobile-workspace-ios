@@ -262,7 +262,12 @@ extension FavoritesViewController: UIScrollViewDelegate {
 // MARK: - ListComponentActionDelegate
 
 extension FavoritesViewController: ListComponentActionDelegate {
+    func performListAction() {
+        // Do nothing
+    }
+
     func elementTapped(node: ListNode) {
+        // Do nothing
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {

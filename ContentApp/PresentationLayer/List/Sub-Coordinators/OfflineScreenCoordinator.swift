@@ -90,7 +90,8 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         // Do nothing
     }
 
-    func showNodeCreationDialog(with actionMenu: ActionMenu, delegate: CreateNodeViewModelDelegate?) {
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
         // Do nothing
     }
 }

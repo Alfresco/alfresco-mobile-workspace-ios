@@ -18,7 +18,7 @@
 
 import Foundation
 
-typealias OfflineFolderChildrenDataSource = (offlineViewModel: OfflineFoldreDrillViewModel,
+typealias OfflineFolderChildrenDataSource = (offlineViewModel: OfflineFolderDrillViewModel,
                                              resultsViewModel: ResultsViewModel,
                                              globalSearchViewModel: GlobalSearchViewModel)
 
@@ -29,9 +29,9 @@ class OfflineFolderChildrenViewModelFactory {
         let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
-        let offlineFoldreDrillViewModel = OfflineFoldreDrillViewModel(with: accountService,
+        let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(with: accountService,
                                                            listRequest: nil)
-        offlineFoldreDrillViewModel.parentListNode = listNode
+        offlineFolderDrillViewModel.parentListNode = listNode
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: accountService)
@@ -43,24 +43,24 @@ class OfflineFolderChildrenViewModelFactory {
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineFoldreDrillViewModel,
+        eventBusService?.register(observer: offlineFolderDrillViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineFoldreDrillViewModel,
+        eventBusService?.register(observer: offlineFolderDrillViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: offlineFoldreDrillViewModel,
+        eventBusService?.register(observer: offlineFolderDrillViewModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
-        return (offlineFoldreDrillViewModel, resultViewModel, globalSearchViewModel)
+        return (offlineFolderDrillViewModel, resultViewModel, globalSearchViewModel)
     }
 }

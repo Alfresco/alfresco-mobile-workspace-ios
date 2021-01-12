@@ -26,4 +26,5 @@ protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
     init(with accountService: AccountService?, listRequest: SearchRequest?)
     func shouldDisplaySettingsButton() -> Bool
     func fetchNextListPage(index: IndexPath, userInfo: Any?)
+    func performListAction()
 }

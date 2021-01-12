@@ -34,6 +34,7 @@ protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
     func didUpdateList(error: Error?, pagination: Pagination?)
     func fetchNextListPage(for itemAtIndexPath: IndexPath)
+    func performListAction()
 }
 
 protocol ListComponentPageUpdatingDelegate: class {
@@ -50,6 +51,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var createButton: MDCFloatingButton!
+    @IBOutlet weak var listActionButton: MDCFloatingButton!
 
     var refreshControl: UIRefreshControl?
 
@@ -72,8 +74,12 @@ class ListComponentViewController: SystemThemableViewController {
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
+        listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
+        listActionButton.mode = .expanded
+        listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
 
-        if listDataSource?.shouldDisplayCreateButton() == true {
+        if listDataSource?.shouldDisplayCreateButton() == true ||
+            listDataSource?.shouldDisplayListActionButton() == true {
             collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                        bottom: listBottomInset, right: 0)
         }
@@ -123,6 +129,10 @@ class ListComponentViewController: SystemThemableViewController {
         listItemActionDelegate?.showNodeCreationSheet(delegate: self)
     }
 
+    @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
+        listActionDelegate?.performListAction()
+    }
+
     // MARK: - Public interface
 
     override func applyComponentsThemes() {
@@ -135,6 +145,8 @@ class ListComponentViewController: SystemThemableViewController {
 
         createButton.backgroundColor = currentTheme.primaryT1Color
         createButton.tintColor = currentTheme.onPrimaryColor
+        listActionButton.backgroundColor = currentTheme.primaryT1Color
+        listActionButton.tintColor = currentTheme.onPrimaryColor
         refreshControl?.tintColor = currentTheme.primaryT1Color
     }
 

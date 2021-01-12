@@ -21,59 +21,18 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
     var listCondition: String = kWhereFavoritesFileFolderCondition
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - Init
+    // MARK: - ListViewModelProtocol
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
-
-    // MARK: - Public interface
-
-    func favoritesList(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            FavoritesAPI.listFavorites(personId: kAPIPathMe,
-                                       skipCount: paginationRequest?.skipCount,
-                                       maxItems: kListPageSize,
-                                       orderBy: ["title ASC"],
-                                       _where: sSelf.listCondition,
-                                       include: [kAPIIncludePathNode,
-                                                 kAPIIncludeAllowableOperationsNode,
-                                                 kAPIIncludeProperties],
-                                       fields: nil) { [weak self] (result, error) in
-                                        guard let sSelf = self else { return }
-
-                                        var listNodes: [ListNode]?
-                                        if let entries = result?.list {
-                                            listNodes = FavoritesNodeMapper.map(entries.entries)
-                                        } else {
-                                            if let error = error {
-                                                AlfrescoLog.error(error)
-                                            }
-                                        }
-
-                                        let paginatedResponse =
-                                            PaginatedResponse(results: listNodes,
-                                                              error: error,
-                                                              requestPagination: paginationRequest,
-                                                              responsePagination: result?.list.pagination)
-
-                                        sSelf.handlePaginatedResponse(response: paginatedResponse)
-            }
-        })
-    }
-
-    // MARK: - ListViewModelProtocol Methods
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -131,6 +90,12 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         return true
     }
 
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -149,12 +114,50 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+
+    // MARK: - Public interface
+
+    func favoritesList(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            FavoritesAPI.listFavorites(personId: kAPIPathMe,
+                                       skipCount: paginationRequest?.skipCount,
+                                       maxItems: kListPageSize,
+                                       orderBy: ["title ASC"],
+                                       _where: sSelf.listCondition,
+                                       include: [kAPIIncludePathNode,
+                                                 kAPIIncludeAllowableOperationsNode,
+                                                 kAPIIncludeProperties],
+                                       fields: nil) { [weak self] (result, error) in
+                                        guard let sSelf = self else { return }
+
+                                        var listNodes: [ListNode]?
+                                        if let entries = result?.list {
+                                            listNodes = FavoritesNodeMapper.map(entries.entries)
+                                        } else {
+                                            if let error = error {
+                                                AlfrescoLog.error(error)
+                                            }
+                                        }
+
+                                        let paginatedResponse =
+                                            PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list.pagination)
+
+                                        sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        })
+    }
 }
 
 // MARK: - Event observable
 
-extension FavoritesViewModel {
-
+extension FavoritesViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)

@@ -34,6 +34,7 @@
 "cancel" = "Cancel";
 "delete" = "Delete";
 "create" = "Create";
+"sync-all" = "Sync all";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";

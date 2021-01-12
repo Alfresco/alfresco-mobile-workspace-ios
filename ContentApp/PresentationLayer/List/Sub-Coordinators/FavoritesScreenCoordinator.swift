@@ -103,9 +103,11 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        // Do nothing
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?) {
+        // Do nothing
     }
 }

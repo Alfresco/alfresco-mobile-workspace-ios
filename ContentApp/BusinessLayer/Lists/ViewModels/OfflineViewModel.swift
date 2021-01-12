@@ -22,6 +22,8 @@ import AlfrescoContent
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
 
+    // MARK: - ListViewModelProtocol
+
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         super.init()
         refreshList()
@@ -30,8 +32,6 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     func shouldDisplaySettingsButton() -> Bool {
         return true
     }
-
-    // MARK: - ListViewModelProtocol
 
     func shouldDisplayNodePath() -> Bool {
         return true
@@ -43,6 +43,14 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func shouldDisplayCreateButton() -> Bool {
         return false
+    }
+
+    func shouldDisplayListActionButton() -> Bool {
+        return true
+    }
+
+    func listActionTitle() -> String? {
+        return LocalizationConstants.Buttons.syncAll
     }
 
     func isEmpty() -> Bool {
@@ -88,6 +96,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
                    error: nil)
     }
 
+    func performListAction() {
+        print("start sync")
+    }
+
+    // MARK: - PageFetchingViewModel
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -104,7 +118,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 }
 
-// MARK: Event observable
+// MARK: - Event observable
 
 extension OfflineViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {

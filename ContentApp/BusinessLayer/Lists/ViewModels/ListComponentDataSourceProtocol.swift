@@ -29,7 +29,19 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayMoreButton() -> Bool
     func shouldDisplayCreateButton() -> Bool
+    func shouldDisplayListActionButton() -> Bool
+    func listActionTitle() -> String?
     func shouldDisplayNodePath() -> Bool
     func refreshList()
     func emptyList() -> EmptyListProtocol
+}
+
+extension ListComponentDataSourceProtocol {
+    func shouldDisplayListActionButton() -> Bool {
+        return false
+    }
+
+    func listActionTitle() -> String? {
+        return nil
+    }
 }

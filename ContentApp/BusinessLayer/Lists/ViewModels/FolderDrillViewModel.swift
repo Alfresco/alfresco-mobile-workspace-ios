@@ -21,67 +21,23 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
     var listNode: ListNode?
 
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - Init
+    // MARK: - ListViewModelProtocol
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
 
-    // MARK: - Public methods
-
-    func request(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
-            let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            sSelf.updateNodeDetailsIfNecessary { (_) in
-                NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
-                                          skipCount: skipCount,
-                                          maxItems: maxItems,
-                                          orderBy: nil,
-                                          _where: nil,
-                                          include: [kAPIIncludeIsFavoriteNode,
-                                                    kAPIIncludePathNode,
-                                                    kAPIIncludeAllowableOperationsNode,
-                                                    kAPIIncludeProperties],
-                                          relativePath: relativePath,
-                                          includeSource: nil,
-                                          fields: nil) { (result, error) in
-                    var listNodes: [ListNode]?
-                    if let entries = result?.list?.entries {
-                        listNodes = NodeChildMapper.map(entries)
-                    } else {
-                        if let error = error {
-                            AlfrescoLog.error(error)
-                        }
-                    }
-                    let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                              error: error,
-                                                              requestPagination: paginationRequest,
-                                                              responsePagination: result?.list?.pagination)
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                }
-            }
-        })
-    }
-
     func shouldDisplaySettingsButton() -> Bool {
         return false
     }
-
-    // MARK: - ListViewModelProtocol
 
     func shouldDisplayNodePath() -> Bool {
         return false
@@ -134,6 +90,12 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         request(with: nil)
     }
 
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
+
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
                              completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -147,6 +109,48 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
+    }
+
+    // MARK: - Public methods
+
+    func request(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let relativePath = (sSelf.listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
+            let skipCount = paginationRequest?.skipCount
+            let maxItems = paginationRequest?.maxItems ?? kListPageSize
+            sSelf.updateNodeDetailsIfNecessary { (_) in
+                NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
+                                          skipCount: skipCount,
+                                          maxItems: maxItems,
+                                          orderBy: nil,
+                                          _where: nil,
+                                          include: [kAPIIncludeIsFavoriteNode,
+                                                    kAPIIncludePathNode,
+                                                    kAPIIncludeAllowableOperationsNode,
+                                                    kAPIIncludeProperties],
+                                          relativePath: relativePath,
+                                          includeSource: nil,
+                                          fields: nil) { (result, error) in
+                    var listNodes: [ListNode]?
+                    if let entries = result?.list?.entries {
+                        listNodes = NodeChildMapper.map(entries)
+                    } else {
+                        if let error = error {
+                            AlfrescoLog.error(error)
+                        }
+                    }
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list?.pagination)
+                    sSelf.handlePaginatedResponse(response: paginatedResponse)
+                }
+            }
+        })
     }
 
     // MARK: - Private Utils
@@ -196,7 +200,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
 // MARK: Event observable
 
-extension FolderDrillViewModel {
+extension FolderDrillViewModel: EventObservable {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
