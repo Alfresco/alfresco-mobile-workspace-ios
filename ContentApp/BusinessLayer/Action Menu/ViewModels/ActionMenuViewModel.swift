@@ -30,7 +30,6 @@ class ActionMenuViewModel {
     private var coordinatorServices: CoordinatorServices?
 
     var toolbarDisplayed: Bool
-    var offlineTabDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
@@ -38,13 +37,11 @@ class ActionMenuViewModel {
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          node: ListNode? = nil,
          toolbarDisplayed: Bool = false,
-         offlineTabDisplayed: Bool = false,
          coordinatorServices: CoordinatorServices?) {
 
         self.listNode = node
-        self.toolbarDisplayed = toolbarDisplayed
-        self.offlineTabDisplayed = offlineTabDisplayed
         self.menuActions = menuActions
+        self.toolbarDisplayed = toolbarDisplayed
         self.coordinatorServices = coordinatorServices
 
         if let listNode = listNode {
@@ -95,7 +92,7 @@ class ActionMenuViewModel {
                                  relativePath: nil,
                                  fields: nil) { (result, _) in
                     if let entry = result?.entry {
-                        sSelf.listNode = NodeChildMapper.create(from: entry)
+                        sSelf.listNode?.update(with: NodeChildMapper.create(from: entry))
                     }
                     sSelf.createMenuActions()
                 }
@@ -145,8 +142,7 @@ class ActionMenuViewModel {
         if listNode.trashed == true {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {
-            menuActions = ActionsMenuGeneric.actions(for: listNode,
-                                                     offlineTabDisplayed: offlineTabDisplayed)
+            menuActions = ActionsMenuGeneric.actions(for: listNode)
         }
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }

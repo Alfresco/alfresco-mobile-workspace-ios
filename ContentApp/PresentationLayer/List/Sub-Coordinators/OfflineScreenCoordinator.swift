@@ -87,7 +87,6 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                                   offlineTabDisplayed: true,
                                                           coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,

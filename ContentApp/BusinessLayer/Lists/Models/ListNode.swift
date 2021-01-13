@@ -127,6 +127,22 @@ class ListNode: Hashable, Entity {
 
     // MARK: - Public Helpers
 
+    func update(with newVersion: ListNode) {
+        self.parentGuid = newVersion.parentGuid
+        self.siteID = newVersion.siteID
+        self.destination = newVersion.destination
+        self.mimeType = newVersion.mimeType
+        self.title = newVersion.title
+        self.path = newVersion.path
+        self.modifiedAt = newVersion.modifiedAt
+        self.favorite = newVersion.favorite
+        self.nodeType = newVersion.nodeType
+        self.allowableOperations = newVersion.allowableOperations
+        self.markedForDownload = newVersion.markedForDownload
+        self.markedAsOffline = newVersion.markedAsOffline
+        self.markedForDeletion = newVersion.markedForDeletion
+    }
+
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid
     }

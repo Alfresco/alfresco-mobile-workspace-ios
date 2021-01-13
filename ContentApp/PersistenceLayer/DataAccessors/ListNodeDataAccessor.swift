@@ -39,7 +39,7 @@ class ListNodeDataAccessor {
 
         if node.id == 0 {
             if let queriedNode = query(node: node) {
-                update(node: queriedNode, with: node)
+                queriedNode.update(with: node)
                 nodeToBeStored = queriedNode
             } else {
                 nodeToBeStored = node
@@ -190,21 +190,5 @@ class ListNodeDataAccessor {
             }
         }
         return nil
-    }
-
-    func update(node: ListNode, with newVersion: ListNode) {
-        node.parentGuid = newVersion.parentGuid
-        node.siteID = newVersion.siteID
-        node.destination = newVersion.destination
-        node.mimeType = newVersion.mimeType
-        node.title = newVersion.title
-        node.path = newVersion.path
-        node.modifiedAt = newVersion.modifiedAt
-        node.favorite = newVersion.favorite
-        node.nodeType = newVersion.nodeType
-        node.allowableOperations = newVersion.allowableOperations
-        node.markedForDownload = newVersion.markedForDownload
-        node.markedAsOffline = newVersion.markedAsOffline
-        node.markedForDeletion = newVersion.markedForDeletion
     }
 }

@@ -19,8 +19,7 @@
 import Foundation
 
 struct ActionsMenuGeneric {
-    static func actions(for node: ListNode,
-                        offlineTabDisplayed: Bool = false) -> [[ActionMenu]] {
+    static func actions(for node: ListNode) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
         let infoAction = ActionMenu(title: node.title,
@@ -38,7 +37,7 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
 
-        if let action = deleteAction(for: node), offlineTabDisplayed == false {
+        if let action = deleteAction(for: node) {
             actions2.append(action)
         }
 
@@ -81,6 +80,7 @@ struct ActionsMenuGeneric {
     static private func deleteAction(for node: ListNode) -> ActionMenu? {
         let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
                                       type: .moveTrash)
+        guard node.id == 0 else { return nil}
         switch node.nodeType {
         case .site:
             return node.hasRole(to: .manager) ? deleteAction : nil
