@@ -178,8 +178,8 @@
 "empty-folder-description" = "Looks like there is\n nothing here yet.";
 "empty-search-title" = "Oops!";
 "empty-search-description" = "We can’t find what\n you’re looking for.";
-"empty-offline-title" = "No offline files or folders";
-"empty-offline-description" = "Looks like you haven’t\n marked anything.";
+"empty-offline-title" = "No offline content";
+"empty-offline-description" = "Content that you make\n available offline will show up here.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";
