@@ -58,6 +58,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
         } else {
             navigationViewController?.popToRootViewController(animated: true)
         }
+        offlineViewController?.cancelSearchMode()
     }
 }
 
