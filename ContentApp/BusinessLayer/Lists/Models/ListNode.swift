@@ -151,14 +151,13 @@ class ListNode: Hashable, Entity {
         if self.trashed == true {
             return false
         }
-        if self.nodeType == .site {
-            if self.favorite == nil {
-                return true
-            }
+        if self.favorite == nil {
+            return true
         }
-
-        if self.nodeType == .file || self.nodeType == .folder {
-            if self.favorite == nil {
+        switch self.nodeType {
+        case .site: break
+        default:
+            if self.allowableOperations.count == 0 {
                 return true
             }
         }
