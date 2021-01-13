@@ -169,7 +169,7 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
 
         toolbar.barTintColor = currentTheme.surfaceColor
-        toolbar.tintColor = currentTheme.onSurfaceColor
+        toolbar.tintColor = currentTheme.onSurface60Color
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
