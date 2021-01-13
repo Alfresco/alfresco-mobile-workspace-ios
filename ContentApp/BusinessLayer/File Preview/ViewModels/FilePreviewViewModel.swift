@@ -47,7 +47,6 @@ enum FilePreviewError: Error {
 typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel: EventObservable {
-    var isOfflinePreview: Bool
     var listNode: ListNode?
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
@@ -65,13 +64,11 @@ class FilePreviewViewModel: EventObservable {
 
     init(with listNode: ListNode,
          delegate: FilePreviewViewModelDelegate?,
-         coordinatorServices: CoordinatorServices,
-         offlinePreview: Bool = false) {
+         coordinatorServices: CoordinatorServices) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
         self.coordinatorServices = coordinatorServices
-        self.isOfflinePreview = offlinePreview
     }
 
     func requestUpdateNodeDetails() {
@@ -108,7 +105,7 @@ class FilePreviewViewModel: EventObservable {
 
     func requestFilePreview(with size: CGSize?) {
         guard var size = size, let listNode = listNode else { return }
-        if isOfflinePreview == true {
+        if listNode.localPath != nil {
             previewOffline(with: size)
             return
         }
@@ -170,7 +167,7 @@ class FilePreviewViewModel: EventObservable {
         guard let listNode = self.listNode else { return false}
         if listNode.shouldUpdate() == false &&
             listNode.nodeType != .fileLink ||
-            isOfflinePreview == true {
+            listNode.localPath != nil {
 
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
                                                       toolbarDivide: true,

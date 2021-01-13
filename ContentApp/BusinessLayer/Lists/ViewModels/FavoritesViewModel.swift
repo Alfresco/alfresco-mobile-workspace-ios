@@ -200,7 +200,9 @@ extension FavoritesViewModel: EventObservable {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
+            let listNode = results[indexOfOfflineNode]
+            listNode .markedAsOffline = node.markedAsOffline
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

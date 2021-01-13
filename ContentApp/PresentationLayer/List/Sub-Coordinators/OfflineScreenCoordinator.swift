@@ -64,7 +64,6 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-
         if let navigationViewController = self.navigationViewController {
             switch node.nodeType {
             case .folder:
@@ -74,8 +73,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                 self.offlineFolderChildrenScreenCoordinator = coordinator
             case .file, .fileLink:
                 let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                               listNode: node,
-                                                               offlinePreview: true)
+                                                               listNode: node)
                 coordinator.start()
                 self.filePreviewCoordinator = coordinator
 

@@ -28,14 +28,11 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var filePreviewViewController: FilePreviewViewController?
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
-    private var isOfflinePreview: Bool
 
     init(with presenter: UINavigationController,
-         listNode: ListNode,
-         offlinePreview: Bool = false) {
+         listNode: ListNode) {
         self.presenter = presenter
         self.listNode = listNode
-        self.isOfflinePreview = offlinePreview
     }
 
     func start() {
@@ -43,8 +40,7 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
-                                                        coordinatorServices: coordinatorServices,
-                                                        offlinePreview: isOfflinePreview)
+                                                        coordinatorServices: coordinatorServices)
 
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices
