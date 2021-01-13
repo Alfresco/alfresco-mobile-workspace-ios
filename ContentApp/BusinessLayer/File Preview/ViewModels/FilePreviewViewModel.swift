@@ -141,7 +141,7 @@ class FilePreviewViewModel: EventObservable {
         guard let listNode = self.listNode else { return }
         if listNode.shouldUpdate() == false && listNode.nodeType != .fileLink {
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
-                                                      toolbarDivide: true,
+                                                      toolbarDisplayed: true,
                                                       coordinatorServices: coordinatorServices)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
@@ -166,7 +166,7 @@ class FilePreviewViewModel: EventObservable {
                     sSelf.listNode = listNode
                     sSelf.actionMenuViewModel =
                         ActionMenuViewModel(node: listNode,
-                                            toolbarDivide: true,
+                                            toolbarDisplayed: true,
                                             coordinatorServices: sSelf.coordinatorServices)
                     sSelf.nodeActionsViewModel =
                         NodeActionsViewModel(node: listNode,

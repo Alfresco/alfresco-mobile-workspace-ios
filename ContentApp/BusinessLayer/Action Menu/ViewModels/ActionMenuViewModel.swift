@@ -29,18 +29,21 @@ class ActionMenuViewModel {
     private var menuActions: [[ActionMenu]]
     private var coordinatorServices: CoordinatorServices?
 
-    var toolbarDivide: Bool
+    var toolbarDisplayed: Bool
+    var offlineTabDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
 
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          node: ListNode? = nil,
-         toolbarDivide: Bool = false,
+         toolbarDisplayed: Bool = false,
+         offlineTabDisplayed: Bool = false,
          coordinatorServices: CoordinatorServices?) {
 
         self.listNode = node
-        self.toolbarDivide = toolbarDivide
+        self.toolbarDisplayed = toolbarDisplayed
+        self.offlineTabDisplayed =          offlineTabDisplayed
         self.menuActions = menuActions
         self.coordinatorServices = coordinatorServices
 
@@ -50,7 +53,7 @@ class ActionMenuViewModel {
                                             icon: FileIcon.icon(for: listNode))],
                                 [ActionMenu(title: "", type: .placeholder),
                                  ActionMenu(title: "", type: .placeholder)]]
-            if toolbarDivide {
+            if toolbarDisplayed {
                 self.createMenuActions()
                 self.divideForToolbarActions()
             }
@@ -64,7 +67,7 @@ class ActionMenuViewModel {
             delegate?.finishProvideActions()
             return
         }
-        if toolbarDivide {
+        if toolbarDisplayed {
             delegate?.finishProvideActions()
             return
         }
@@ -142,7 +145,8 @@ class ActionMenuViewModel {
         if listNode.trashed == true {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {
-            menuActions = ActionsMenuGeneric.actions(for: listNode)
+            menuActions = ActionsMenuGeneric.actions(for: listNode,
+                                                     offlineTabDisplayed: offlineTabDisplayed)
         }
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
