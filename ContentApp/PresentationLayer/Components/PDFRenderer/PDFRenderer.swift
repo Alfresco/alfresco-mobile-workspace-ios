@@ -84,6 +84,13 @@ class PDFRenderer: UIView {
         loadPDF(at: pdfURL)
     }
 
+    convenience init(with frame: CGRect, localPDFURL: URL) {
+        self.init(frame: frame)
+        self.pdfURL = localPDFURL
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.loadPDFUsingNativeRenderer()
+    }
+
     func enableLogging() {
         webView?.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
     }

@@ -54,7 +54,7 @@ class FilePreviewViewController: SystemThemableViewController {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
         title = filePreviewViewModel?.listNode?.title
-        filePreviewViewModel?.updateNodeDetails()
+        filePreviewViewModel?.requestUpdateNodeDetails()
     }
 
     override func viewWillAppear(_ animated: Bool) {
