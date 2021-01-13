@@ -42,7 +42,7 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         guard let currentTheme = currentTheme else { return }
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         titleLabel.lineBreakMode = .byTruncatingTail
-        imageView.tintColor = currentTheme.onSurfaceColor
+        imageView.tintColor = currentTheme.onSurface60Color
         separator.backgroundColor = currentTheme.onSurface15Color
         sectionSeparator.backgroundColor = currentTheme.onSurface15Color
     }
