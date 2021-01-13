@@ -19,7 +19,8 @@
 import Foundation
 
 struct ActionsMenuGeneric {
-    static func actions(for node: ListNode) -> [[ActionMenu]] {
+    static func actions(for node: ListNode,
+                        offlineTabDisplayed: Bool = false) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
         let infoAction = ActionMenu(title: node.title,
@@ -37,7 +38,7 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
 
-        if let action = deleteAction(for: node) {
+        if let action = deleteAction(for: node), offlineTabDisplayed == false {
             actions2.append(action)
         }
 

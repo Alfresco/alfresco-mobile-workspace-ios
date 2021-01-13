@@ -61,6 +61,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
 
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                               offlineTabDisplayed: true,
                                                       coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
