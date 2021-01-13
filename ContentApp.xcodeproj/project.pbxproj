@@ -115,6 +115,7 @@
 		E316309A2493723C00D90975 /* ThemeModeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */; };
 		E316981824938DBD00D2B56A /* ThemesModeScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */; };
 		E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E319AA73250782F00072DFFE /* FilePreviewFactory.swift */; };
+		E31CF0A925AF06D800620ADA /* EmptyOffline.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31CF0A825AF06D800620ADA /* EmptyOffline.swift */; };
 		E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */; };
 		E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */; };
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
@@ -396,6 +397,7 @@
 		E31630992493723C00D90975 /* ThemeModeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeTableViewCell.swift; sourceTree = "<group>"; };
 		E316981724938DBD00D2B56A /* ThemesModeScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeScreenCoordinator.swift; sourceTree = "<group>"; };
 		E319AA73250782F00072DFFE /* FilePreviewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewFactory.swift; sourceTree = "<group>"; };
+		E31CF0A825AF06D800620ADA /* EmptyOffline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyOffline.swift; sourceTree = "<group>"; };
 		E3208D362541C4E8005DAFB4 /* UIView+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+RoundCorners.swift"; sourceTree = "<group>"; };
 		E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		E321380D24C6F2C60025A833 /* UILabel+Theming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Theming.swift"; sourceTree = "<group>"; };
@@ -1032,6 +1034,33 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		E31CF0A625AF06B300620ADA /* EmptyList */ = {
+			isa = PBXGroup;
+			children = (
+				E3429F1525627B66004EBD2F /* EmptyListProtocol.swift */,
+				E3429F3B25627BFE004EBD2F /* EmptyRecents.swift */,
+				E363E3572562867200CB5338 /* EmptySearch.swift */,
+				E363E3522562865000CB5338 /* EmptyFolder.swift */,
+				E3429F4025627F57004EBD2F /* EmptyFavoritesFilesFolders.swift */,
+				E363E34D256285DA00CB5338 /* EmptyFavoritesLibraries.swift */,
+				E31CF0A825AF06D800620ADA /* EmptyOffline.swift */,
+			);
+			path = EmptyList;
+			sourceTree = "<group>";
+		};
+		E31CF0A725AF06C400620ADA /* Mappers */ = {
+			isa = PBXGroup;
+			children = (
+				E3E9ED3C24CB056300F1A2C2 /* SitesNodeMapper.swift */,
+				E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */,
+				E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */,
+				E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */,
+				E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */,
+				E3E2BDA724CC2B3D00D8A7EC /* DeleteNodeMapper.swift */,
+			);
+			path = Mappers;
+			sourceTree = "<group>";
+		};
 		E32975B62567BB5B00533A2F /* Files Templates */ = {
 			isa = PBXGroup;
 			children = (
@@ -1232,18 +1261,8 @@
 				E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */,
 				E3B1EAE824C194DA00E72712 /* GroupedList.swift */,
 				E32B642624B326EB00085472 /* ListNode.swift */,
-				E3E9ED3C24CB056300F1A2C2 /* SitesNodeMapper.swift */,
-				E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */,
-				E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */,
-				E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */,
-				E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */,
-				E3E2BDA724CC2B3D00D8A7EC /* DeleteNodeMapper.swift */,
-				E3429F1525627B66004EBD2F /* EmptyListProtocol.swift */,
-				E3429F3B25627BFE004EBD2F /* EmptyRecents.swift */,
-				E363E3572562867200CB5338 /* EmptySearch.swift */,
-				E363E3522562865000CB5338 /* EmptyFolder.swift */,
-				E3429F4025627F57004EBD2F /* EmptyFavoritesFilesFolders.swift */,
-				E363E34D256285DA00CB5338 /* EmptyFavoritesLibraries.swift */,
+				E31CF0A725AF06C400620ADA /* Mappers */,
+				E31CF0A625AF06B300620ADA /* EmptyList */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1853,6 +1872,7 @@
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
+				E31CF0A925AF06D800620ADA /* EmptyOffline.swift in Sources */,
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
