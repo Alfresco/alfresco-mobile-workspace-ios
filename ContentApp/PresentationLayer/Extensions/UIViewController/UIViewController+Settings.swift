@@ -40,7 +40,6 @@ extension UIViewController {
         settingsButton.layer.cornerRadius = accountSettingsButtonHeight / 2
         settingsButton.layer.masksToBounds = true
         settingsButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
-        applyTheme()
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
         let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
@@ -60,12 +59,5 @@ extension UIViewController {
             }
         })
         settingsButton.setImage(avatarImage, for: .normal)
-    }
-
-    func applyTheme() {
-        let repository = ApplicationBootstrap.shared().repository
-        let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        guard let currentTheme = themingService?.activeTheme else { return }
-        settingsButton.tintColor = currentTheme.onSurface60Color
     }
 }
