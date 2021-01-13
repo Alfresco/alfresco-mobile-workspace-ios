@@ -41,16 +41,33 @@ class SyncService: Service, SyncServiceProtocol {
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
 
+    // MARK: - Public interface
+
     init(accountService: AccountService?) {
         syncOperationQueue = OperationQueue()
         syncOperationQueue.maxConcurrentOperationCount = 1
-        syncOperationFactory = SyncOperationFactory(accountService: accountService)
+
+        let nodeOperations = NodeOperations(accountService: accountService)
+        syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations)
     }
 
     func sync(nodeList: [ListNode]) {
+        let processMarkedNodesOperation = BlockOperation { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.processMarkedNodes()
+        }
+        // Fetch details for existing nodes and decide whether they should be marked for download
         for node in nodeList where node.nodeType == .file {
             let nodeDetailsOperation = syncOperationFactory.nodeDetailsOperation(node: node)
             syncOperationQueue.addOperation(nodeDetailsOperation)
         }
+
+        syncOperationQueue.addOperation(processMarkedNodesOperation)
+    }
+
+    // MARK: - Private interface
+
+    private func processMarkedNodes() {
+
     }
 }

@@ -18,12 +18,13 @@
 
 import Foundation
 import AlfrescoContent
+import AlfrescoCore
 
 class SyncOperationFactory {
-    var accountService: AccountService?
+    let nodeOperations: NodeOperations
 
-    required init(accountService: AccountService?) {
-        self.accountService = accountService
+    init(nodeOperations: NodeOperations) {
+        self.nodeOperations = nodeOperations
     }
 
     func nodeDetailsOperation(node: ListNode) -> AsyncClosureOperation {
@@ -31,31 +32,48 @@ class SyncOperationFactory {
             guard let sSelf = self else { return }
 
             let guid = node.guid
-            sSelf.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-                NodesAPI.getNode(nodeId: guid,
-                                 include: [kAPIIncludePathNode,
-                                           kAPIIncludeIsFavoriteNode,
-                                           kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeProperties],
-                                 relativePath: nil) { (result, error) in
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    } else if let entry = result?.entry {
-                        let onlineListNode = NodeChildMapper.create(from: entry)
-
-                        if onlineListNode.modifiedAt != node.modifiedAt ||
-                            node.localPath == nil {
-                            onlineListNode.markedForDownload = true
-
-                            let dataAccessor = ListNodeDataAccessor()
-                            dataAccessor.store(node: onlineListNode)
-                        }
+            sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
+                if let error = error {
+                    if error.code == StatusCodes.code404NotFound.rawValue {
+                        node.markedForDeletion = true
+                    } else {
+                        AlfrescoLog.error("Unexpected sync process error: \(error)")
                     }
+                } else if let entry = result?.entry {
+                    let onlineListNode = NodeChildMapper.create(from: entry)
 
-                    completion()
+                    if onlineListNode.modifiedAt != node.modifiedAt ||
+                        node.localPath == nil {
+                        onlineListNode.markedForDownload = true
+
+                        let dataAccessor = ListNodeDataAccessor()
+                        dataAccessor.store(node: onlineListNode)
+                    }
                 }
-            })
+
+                completion()
+            }
+        }
+
+        return operation
+    }
+
+    func deleteMarkedNodesOperation(nodes: [ListNode]?) -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { completion in
+
+            let dataAccessor = ListNodeDataAccessor()
+            let nodesToBeRemoved = dataAccessor.queryMarkedForDeletion()
+
+            completion()
+        }
+
+        return operation
+    }
+
+    func downloadMarkedNodesOperation(nodes: [ListNode]?) -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { completion in
+
+            completion()
         }
 
         return operation

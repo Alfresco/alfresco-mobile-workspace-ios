@@ -28,9 +28,11 @@ class OfflineViewModelFactory {
     func offlineDataSource() -> OfflineDataSource {
         let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
+        let syncService = coordinatorServices?.syncService
 
         let offlineViewModel = OfflineViewModel(with: accountService,
                                                 listRequest: nil)
+        offlineViewModel.syncService = syncService
         let resultViewModel = ResultsViewModel()
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: accountService)

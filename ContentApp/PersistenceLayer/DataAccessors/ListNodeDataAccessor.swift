@@ -106,6 +106,21 @@ class ListNodeDataAccessor {
         return nil
     }
 
+    func queryMarkedForDeletion() -> [ListNode]? {
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                    ListNode.markedForDeletion == true
+                }.ordered(by: ListNode.title).build()
+                return try query.find()
+            } catch {
+                AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
+            }
+        }
+
+        return nil
+    }
+
     func querryOfflineChildren(for parentNode: ListNode?) -> [ListNode]? {
         guard let node = parentNode else { return nil }
         if let listBox = databaseService?.box(entity: ListNode.self) {

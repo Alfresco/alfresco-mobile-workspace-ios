@@ -24,6 +24,7 @@ import AlfrescoContent
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var accountService: AccountService?
+    let nodeOperations: NodeOperations
     var listNode: ListNode?
 
     var supportedNodeTypes: [NodeType]?
@@ -33,6 +34,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
+        self.nodeOperations = NodeOperations(accountService: accountService)
     }
 
     func shouldDisplaySettingsButton() -> Bool {
@@ -176,25 +178,19 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         if listNode.nodeType == .folderLink {
             guid = listNode.destination ?? listNode.guid
         }
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+
+        nodeOperations.fetchNodeDetails(for: guid) { [weak self] (result, error) in
             guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeProperties],
-                             relativePath: nil) { (result, error) in
-                if let error = error {
-                    AlfrescoLog.error(error)
-                } else if let entry = result?.entry {
-                    sSelf.listNode = NodeChildMapper.create(from: entry)
-                    sSelf.pageUpdatingDelegate?
-                        .shouldDisplayCreateButton(enable: sSelf.shouldDisplayCreateButton())
-                }
-                handle(error)
+
+            if let error = error {
+                AlfrescoLog.error(error)
+            } else if let entry = result?.entry {
+                sSelf.listNode = NodeChildMapper.create(from: entry)
+                sSelf.pageUpdatingDelegate?
+                    .shouldDisplayCreateButton(enable: sSelf.shouldDisplayCreateButton())
             }
-        })
+            handle(error)
+        }
     }
 }
 

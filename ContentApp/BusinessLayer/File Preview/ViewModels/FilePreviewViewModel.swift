@@ -50,6 +50,7 @@ class FilePreviewViewModel: EventObservable {
     var listNode: ListNode?
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
+    let nodeOperations: NodeOperations
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     var actionMenuViewModel: ActionMenuViewModel?
@@ -69,38 +70,31 @@ class FilePreviewViewModel: EventObservable {
         self.listNode = listNode
         self.viewModelDelegate = delegate
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
     }
 
     func requestUpdateNodeDetails() {
         guard let listNode = self.listNode, shouldUpdateNode() == true else { return }
-        let accountService = coordinatorServices?.accountService
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
+        let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
 
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
-            NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeProperties]) { (result, error) in
-                if let error = error {
-                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
-                } else if let entry = result?.entry {
-                    let listNode = NodeChildMapper.create(from: entry)
-                    sSelf.listNode = listNode
-                    sSelf.actionMenuViewModel =
-                        ActionMenuViewModel(node: listNode,
-                                            toolbarDisplayed: true,
-                                            coordinatorServices: sSelf.coordinatorServices)
-                    sSelf.nodeActionsViewModel =
-                        NodeActionsViewModel(node: listNode,
-                                             delegate: nil,
-                                             coordinatorServices: sSelf.coordinatorServices)
-                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
-                }
+        nodeOperations.fetchNodeDetails(for: guid) {[weak self] (result, error) in
+            guard let sSelf = self else { return }
+            if let error = error {
+                sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
+            } else if let entry = result?.entry {
+                let listNode = NodeChildMapper.create(from: entry)
+                sSelf.listNode = listNode
+                sSelf.actionMenuViewModel =
+                    ActionMenuViewModel(node: listNode,
+                                        toolbarDisplayed: true,
+                                        coordinatorServices: sSelf.coordinatorServices)
+                sSelf.nodeActionsViewModel =
+                    NodeActionsViewModel(node: listNode,
+                                         delegate: nil,
+                                         coordinatorServices: sSelf.coordinatorServices)
+                sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
             }
-        })
+        }
     }
 
     func requestFilePreview(with size: CGSize?) {

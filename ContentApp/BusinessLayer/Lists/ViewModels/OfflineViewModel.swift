@@ -21,6 +21,7 @@ import AlfrescoContent
 
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
+    var syncService: SyncService?
 
     // MARK: - ListViewModelProtocol
 
@@ -86,8 +87,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func refreshList() {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.queryMarkedOffline() {
+        if let offlineNodes = offlineMarkedNodes() {
             results = offlineNodes
         }
 
@@ -97,7 +97,9 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func performListAction() {
-        print("start sync")
+        if let offlineNodes = offlineMarkedNodes() {
+            syncService?.sync(nodeList: offlineNodes)
+        }
     }
 
     // MARK: - PageFetchingViewModel
@@ -115,6 +117,13 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
+    }
+
+    // MARK: - Private interface
+
+    func offlineMarkedNodes() -> [ListNode]? {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        return listNodeDataAccessor.queryMarkedOffline()
     }
 }
 

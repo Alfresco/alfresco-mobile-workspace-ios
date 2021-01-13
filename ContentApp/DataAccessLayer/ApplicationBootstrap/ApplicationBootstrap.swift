@@ -31,11 +31,13 @@ class ApplicationBootstrap {
         self.repository = ServiceRepository()
         self.repository.register(service: themingService())
         self.repository.register(service: authenticationService())
-        self.repository.register(service: accountService())
         self.repository.register(service: applicationRouter())
         self.repository.register(service: eventBusService())
         self.repository.register(service: operationQueueService())
         self.repository.register(service: databaseService())
+        let accountService = self.accountService()
+        self.repository.register(service: accountService)
+        self.repository.register(service: syncService(with: accountService))
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -72,5 +74,9 @@ class ApplicationBootstrap {
 
     private func databaseService() -> DatabaseService {
         return DatabaseService()
+    }
+
+    private func syncService(with accountService: AccountService) -> SyncService {
+        return SyncService(accountService: accountService)
     }
 }

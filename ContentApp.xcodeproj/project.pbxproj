@@ -50,6 +50,7 @@
 		B97391A62519205F00CB2ECA /* viewer-inlined.html in Resources */ = {isa = PBXBuildFile; fileRef = B97391A52519205F00CB2ECA /* viewer-inlined.html */; };
 		B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */; };
 		B97A124D258A2B4D00C052AA /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97A124C258A2B4D00C052AA /* DatabaseService.swift */; };
+		B982949F25AF28E700EAA689 /* NodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = B982949E25AF28E700EAA689 /* NodeOperations.swift */; };
 		B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */; };
 		B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */; };
 		B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0724D852590058BCE1 /* FavoritesViewController.swift */; };
@@ -321,6 +322,7 @@
 		B97391A52519205F00CB2ECA /* viewer-inlined.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "viewer-inlined.html"; path = "pdfjs-library/viewer-inlined.html"; sourceTree = "<group>"; };
 		B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
 		B97A124C258A2B4D00C052AA /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		B982949E25AF28E700EAA689 /* NodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeOperations.swift; sourceTree = "<group>"; };
 		B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRequestBuilder.swift; sourceTree = "<group>"; };
 		B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSelectableCell.swift; sourceTree = "<group>"; };
 		B9958E0724D852590058BCE1 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -1007,6 +1009,7 @@
 			isa = PBXGroup;
 			children = (
 				B9B7531525AC9062004F16E5 /* SyncOperationFactory.swift */,
+				B982949E25AF28E700EAA689 /* NodeOperations.swift */,
 			);
 			path = Sync;
 			sourceTree = "<group>";
@@ -1955,6 +1958,7 @@
 				E308A42A2566961B00A1D01E /* ActionsMenuCreateFAB.swift in Sources */,
 				B936A14424BDBE04003C9A95 /* ListViewModelProtocol.swift in Sources */,
 				E335E73C2538677D0036E090 /* ActionMenu.swift in Sources */,
+				B982949F25AF28E700EAA689 /* NodeOperations.swift in Sources */,
 				E3429F3C25627BFE004EBD2F /* EmptyRecents.swift in Sources */,
 				E3E2BDA224CC280100D8A7EC /* SharedViewModel.swift in Sources */,
 				E35FB748247665C7004674FD /* AuthenticationParameters.swift in Sources */,
