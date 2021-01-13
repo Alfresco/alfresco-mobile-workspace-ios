@@ -1,15 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "ic-action-fill-offline.pdf",
+      "filename" : "Group 1515.pdf",
       "idiom" : "universal"
     }
   ],
   "info" : {
     "author" : "xcode",
     "version" : 1
-  },
-  "properties" : {
-    "template-rendering-intent" : "template"
   }
 }

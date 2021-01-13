@@ -58,7 +58,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
+        return EmptyOffline()
     }
 
     func shouldDisplaySections() -> Bool {

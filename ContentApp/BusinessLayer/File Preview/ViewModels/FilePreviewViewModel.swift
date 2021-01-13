@@ -91,7 +91,7 @@ class FilePreviewViewModel: EventObservable {
                     sSelf.listNode = listNode
                     sSelf.actionMenuViewModel =
                         ActionMenuViewModel(node: listNode,
-                                            toolbarDivide: true,
+                                            toolbarDisplayed: true,
                                             coordinatorServices: sSelf.coordinatorServices)
                     sSelf.nodeActionsViewModel =
                         NodeActionsViewModel(node: listNode,
@@ -170,7 +170,7 @@ class FilePreviewViewModel: EventObservable {
             listNode.localPath != nil {
 
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
-                                                      toolbarDivide: true,
+                                                      toolbarDisplayed: true,
                                                       coordinatorServices: coordinatorServices)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,

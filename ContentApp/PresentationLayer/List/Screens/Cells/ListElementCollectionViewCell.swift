@@ -48,9 +48,9 @@ class ListElementCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
-        iconImageView.tintColor = currentTheme.onSurfaceColor
-        moreButton.tintColor = currentTheme.onSurfaceColor
-        offlineImageView.tintColor = currentTheme.onSurfaceColor
+        iconImageView.tintColor = currentTheme.onSurface60Color
+        moreButton.tintColor = currentTheme.onSurface60Color
+        offlineImageView.tintColor = currentTheme.onSurface60Color
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
