@@ -68,15 +68,13 @@ class ProfileService {
     }
 
     static func featchPersonalFilesID() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: kAPIPathMy) { (entry, error) in
-                if let node = entry {
-                    UserProfile.persistPersonalFilesID(nodeID: node.entry._id)
-                } else if let error = error {
-                    AlfrescoLog.error(error)
-                }
+        let nodeOperations = NodeOperations(accountService: accountService)
+        nodeOperations.fetchNodeDetails(for: kAPIPathMy) { (result, error) in
+            if let node = result {
+                UserProfile.persistPersonalFilesID(nodeID: node.entry._id)
+            } else if let error = error {
+                AlfrescoLog.error(error)
             }
-        })
+        }
     }
 }

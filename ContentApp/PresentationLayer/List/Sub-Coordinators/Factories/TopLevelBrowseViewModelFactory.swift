@@ -94,7 +94,7 @@ class TopLevelBrowseViewModelFactory {
     func resultsViewModel() -> ResultsViewModel {
         let eventBusService = coordinatorServices?.eventBusService
 
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: coordinatorServices?.accountService)
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])

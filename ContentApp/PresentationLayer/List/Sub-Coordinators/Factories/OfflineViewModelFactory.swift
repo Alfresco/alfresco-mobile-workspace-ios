@@ -33,7 +33,7 @@ class OfflineViewModelFactory {
         let offlineViewModel = OfflineViewModel(with: accountService,
                                                 listRequest: nil)
         offlineViewModel.syncService = syncService
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel

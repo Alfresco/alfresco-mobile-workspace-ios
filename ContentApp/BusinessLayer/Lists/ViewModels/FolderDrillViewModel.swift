@@ -117,42 +117,29 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func request(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+        let relativePath = (listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
+        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kListPageSize,
+                                              skipCount: paginationRequest?.skipCount)
+        updateNodeDetailsIfNecessary { [weak self] (_) in
             guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
-            let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            sSelf.updateNodeDetailsIfNecessary { (_) in
-                NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
-                                          skipCount: skipCount,
-                                          maxItems: maxItems,
-                                          orderBy: nil,
-                                          _where: nil,
-                                          include: [kAPIIncludeIsFavoriteNode,
-                                                    kAPIIncludePathNode,
-                                                    kAPIIncludeAllowableOperationsNode,
-                                                    kAPIIncludeProperties],
-                                          relativePath: relativePath,
-                                          includeSource: nil,
-                                          fields: nil) { (result, error) in
-                    var listNodes: [ListNode]?
-                    if let entries = result?.list?.entries {
-                        listNodes = NodeChildMapper.map(entries)
-                    } else {
-                        if let error = error {
-                            AlfrescoLog.error(error)
-                        }
+            sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? kAPIPathMy,
+                                                   pagination: reqPagination,
+                                                   relativePath: relativePath) { (result, error) in
+                var listNodes: [ListNode]?
+                if let entries = result?.list?.entries {
+                    listNodes = NodeChildMapper.map(entries)
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
                     }
-                    let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                              error: error,
-                                                              requestPagination: paginationRequest,
-                                                              responsePagination: result?.list?.pagination)
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
                 }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
-        })
+        }
     }
 
     // MARK: - Private Utils

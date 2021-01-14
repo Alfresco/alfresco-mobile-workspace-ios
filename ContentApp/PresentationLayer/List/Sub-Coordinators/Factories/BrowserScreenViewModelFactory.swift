@@ -30,7 +30,7 @@ class BrowseViewModelFactory {
         let eventBusService = coordinatorServices?.eventBusService
 
         let browseViewModel = BrowseViewModel()
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
 
         globalSearchViewModel.delegate = resultViewModel

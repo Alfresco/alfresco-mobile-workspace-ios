@@ -27,6 +27,7 @@ protocol CreateNodeViewModelDelegate: class {
 
 class CreateNodeViewModel {
     private var coordinatorServices: CoordinatorServices?
+    private let nodeOperations: NodeOperations
     private var actionMenu: ActionMenu
     private var parentListNode: ListNode
     private var nodeName: String?
@@ -44,6 +45,7 @@ class CreateNodeViewModel {
          delegate: CreateNodeViewModelDelegate?) {
 
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.delegate = delegate
@@ -63,27 +65,22 @@ class CreateNodeViewModel {
                 sSelf.uploadRequest?.cancel()
             })
         }
-        let accountService = coordinatorServices?.accountService
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            sSelf.updateNodeDetails { (listNode, _) in
-                guard let sSelf = self, let listNode = listNode else { return }
-                let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
-                let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
-                                                                           nodeBodyCreate: nodeBody,
-                                                                           autoRename: shouldAutorename,
-                                                                           include: nil,
-                                                                           fields: nil)
-                switch sSelf.actionMenu.type {
-                case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                    sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
-                case .createFolder:
-                    sSelf.createNewFolder(with: requestBuilder)
-                default: break
-                }
+        updateNodeDetails { [weak self] (listNode, _) in
+            guard let sSelf = self, let listNode = listNode else { return }
+            let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
+            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
+                                                                       nodeBodyCreate: nodeBody,
+                                                                       autoRename: shouldAutorename,
+                                                                       include: nil,
+                                                                       fields: nil)
+            switch sSelf.actionMenu.type {
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+            case .createFolder:
+                sSelf.createNewFolder(with: requestBuilder)
+            default: break
             }
-        })
+        }
     }
 
     func creatingNewFolder() -> Bool {
@@ -179,12 +176,8 @@ class CreateNodeViewModel {
 
     private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
         guard parentListNode.nodeType == .site else { return handle(parentListNode, nil)}
-        NodesAPI.getNode(nodeId: parentListNode.guid,
-                         include: [kAPIIncludePathNode,
-                                   kAPIIncludeIsFavoriteNode,
-                                   kAPIIncludeAllowableOperationsNode,
-                                   kAPIIncludeProperties],
-                         relativePath: kAPIPathRelativeForSites) { (result, error) in
+        nodeOperations.fetchNodeDetails(for: parentListNode.guid,
+                                        relativePath: kAPIPathRelativeForSites) { (result, error) in
             var listNode: ListNode?
             if let error = error {
                 AlfrescoLog.error(error)

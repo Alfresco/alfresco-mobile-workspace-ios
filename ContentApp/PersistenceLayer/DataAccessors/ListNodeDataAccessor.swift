@@ -25,11 +25,13 @@ let kMaxCount = 100
 class ListNodeDataAccessor {
     private var databaseService: DatabaseService?
     private var accountService: AccountService?
+    private let nodeOperations: NodeOperations
 
     init() {
         let repository = ApplicationBootstrap.shared().repository
         databaseService = repository.service(of: DatabaseService.identifier) as? DatabaseService
         accountService = repository.service(of: AccountService.identifier) as? AccountService
+        self.nodeOperations = NodeOperations(accountService: accountService)
     }
 
     func store(node: ListNode) {
@@ -144,37 +146,33 @@ class ListNodeDataAccessor {
     // MARK: Private Helpers
 
     private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.listNodeChildren(nodeId: node.guid,
-                                      skipCount: paginationRequest?.skipCount,
-                                      maxItems: paginationRequest?.maxItems ?? kMaxCount,
-                                      include: [kAPIIncludeIsFavoriteNode,
-                                                kAPIIncludePathNode,
-                                                kAPIIncludeAllowableOperationsNode,
-                                                kAPIIncludeProperties]) { (result, _) in
-                if let entries = result?.list?.entries {
-                    let listNodes = NodeChildMapper.map(entries)
-                    for listNode in listNodes {
-                        if sSelf.query(node: listNode) == nil {
-                            sSelf.databaseService?.store(entity: listNode)
-                        }
-                        if listNode.nodeType == .folder {
-                            sSelf.storeChildren(of: listNode, paginationRequest: nil)
-                        }
+        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
+                                              skipCount: paginationRequest?.skipCount)
+        nodeOperations.fetchNodeChildren(for: node.guid,
+                                         pagination: reqPagination) { (result, _) in
+//            guard let sSelf = self else { return }
+            // TODO: sSelf is strong, in order to get list of childre
+            let sSelf = self
+            if let entries = result?.list?.entries {
+                let listNodes = NodeChildMapper.map(entries)
+                for listNode in listNodes {
+                    if sSelf.query(node: listNode) == nil {
+                        sSelf.databaseService?.store(entity: listNode)
                     }
-                    if let pagination = result?.list?.pagination {
-                        let skipCount = Int64(listNodes.count) + pagination.skipCount
-                        if pagination.totalItems ?? 0 != skipCount {
-                            let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                           skipCount: Int(skipCount))
-                            sSelf.storeChildren(of: node, paginationRequest: reqPag)
-                        }
+                    if listNode.nodeType == .folder {
+                        sSelf.storeChildren(of: listNode, paginationRequest: nil)
+                    }
+                }
+                if let pagination = result?.list?.pagination {
+                    let skipCount = Int64(listNodes.count) + pagination.skipCount
+                    if pagination.totalItems ?? 0 != skipCount {
+                        let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                       skipCount: Int(skipCount))
+                        sSelf.storeChildren(of: node, paginationRequest: reqPag)
                     }
                 }
             }
-        })
+        }
     }
 
     private func removeChildren(of node: ListNode) {

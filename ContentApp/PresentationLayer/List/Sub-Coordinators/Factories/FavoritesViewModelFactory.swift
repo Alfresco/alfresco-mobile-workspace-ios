@@ -29,7 +29,7 @@ class FavoritesViewModelFactory {
     func favoritesDataSource() -> FavoritesDataSource {
         let accountService = coordinatorServices?.accountService
 
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
                                                                listRequest: nil)
         let librariesViewModel = FavoritesViewModel.init(with: accountService,

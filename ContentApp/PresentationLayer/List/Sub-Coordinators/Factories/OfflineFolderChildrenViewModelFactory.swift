@@ -32,7 +32,7 @@ class OfflineFolderChildrenViewModelFactory {
         let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(with: accountService,
                                                            listRequest: nil)
         offlineFolderDrillViewModel.parentListNode = listNode
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel

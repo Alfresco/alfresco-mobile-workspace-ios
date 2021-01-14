@@ -298,7 +298,7 @@ class NodeActionsViewModel {
 
                 downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
                                                                        to: downloadURL,
-                                                                       completionHandler: { destinationURL, error in
+                                                                       completion: { destinationURL, error in
                     mainQueue?.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
                         downloadDialog?.dismiss(animated: true,
                                                 completion: {

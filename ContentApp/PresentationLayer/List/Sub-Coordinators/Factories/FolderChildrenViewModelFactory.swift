@@ -33,7 +33,7 @@ class FolderChildrenViewModelFactory {
                                                         listRequest: nil)
         folderDrillViewModel.listNode = listNode
 
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,

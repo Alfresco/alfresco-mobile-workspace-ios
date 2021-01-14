@@ -26,6 +26,13 @@ protocol ResultsViewModelDelegate: class {
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [NodeType]?
     weak var delegate: ResultsViewModelDelegate?
+    var accountService: AccountService?
+    let nodeOperations: NodeOperations
+
+    init(with accountService: AccountService?) {
+        self.accountService = accountService
+        self.nodeOperations = NodeOperations(accountService: accountService)
+    }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
@@ -96,20 +103,14 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
         if node.nodeType == .site {
-            FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                     favoriteId: node.guid) { (_, error) in
+            nodeOperations.fetchNodeIsFavorite(for: node.guid) { (_, error) in
                 if error == nil {
                     node.favorite = true
                 }
                 completion(node, error)
             }
         } else {
-            NodesAPI.getNode(nodeId: node.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeIsFavoriteNode],
-                             relativePath: nil,
-                             fields: nil) { (result, error) in
+            nodeOperations.fetchNodeDetails(for: node.guid) { (result, error) in
                 if let entry = result?.entry {
                     let listNode = NodeChildMapper.create(from: entry)
                     completion(listNode, error)

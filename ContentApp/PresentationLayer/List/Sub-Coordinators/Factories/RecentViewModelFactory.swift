@@ -31,7 +31,7 @@ class RecentViewModelFactory {
 
         let recentViewModel = RecentViewModel(with: accountService,
                                             listRequest: nil)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: accountService)
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: accountService)
         globalSearchViewModel.delegate = resultViewModel
