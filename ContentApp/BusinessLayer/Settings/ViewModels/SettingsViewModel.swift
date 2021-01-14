@@ -109,19 +109,17 @@ class SettingsViewModel {
         if let displayName = userProfile.displayName {
             profileName = displayName
         }
-        var avatar = DiskServices.getAvatar()
-        if avatar == nil {
-            avatar = UIImage(named: "account-circle")
-        }
+        let avatar = localAvatarImage()
+
         UserProfile.persistUserProfile(person: userProfile)
-        return SettingsItem(type: .account, title: profileName, subtitle: userProfile.email, icon: avatar)
+        return SettingsItem(type: .account,
+                            title: profileName,
+                            subtitle: userProfile.email,
+                            icon: avatar)
     }
 
     private func getLocalProfileItem() -> SettingsItem? {
-        var avatar = DiskServices.getAvatar()
-        if avatar == nil {
-            avatar = UIImage(named: "account-circle")
-        }
+        let avatar = localAvatarImage()
         return SettingsItem(type: .account, title: UserProfile.getProfileName(), subtitle: UserProfile.getEmail(), icon: avatar)
     }
 
@@ -135,12 +133,17 @@ class SettingsViewModel {
         default:
             themeName = LocalizationConstants.Theme.auto
         }
-        return SettingsItem(type: .theme, title: LocalizationConstants.Theme.theme, subtitle: themeName, icon: UIImage(named: "ic-theme"))
+        return SettingsItem(type: .theme,
+                            title: LocalizationConstants.Theme.theme,
+                            subtitle: themeName,
+                            icon: UIImage(named: "ic-theme"))
     }
 
     private func getVersionItem() -> SettingsItem {
         if let version = Bundle.main.releaseVersionNumber, let build = Bundle.main.buildVersionNumber {
-            return SettingsItem(type: .label, title: String(format: LocalizationConstants.Settings.appVersion, version, build), subtitle: "", icon: nil)
+            return SettingsItem(type: .label,
+                                title: String(format: LocalizationConstants.Settings.appVersion, version, build),
+                                subtitle: "", icon: nil)
         }
         return SettingsItem(type: .label, title: "", subtitle: "", icon: nil)
     }
@@ -167,5 +170,10 @@ class SettingsViewModel {
                 }
             }
         }
+    }
+
+    private func localAvatarImage() -> UIImage? {
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return nil }
+        return DiskService.getAvatar(for: accountIdentifier)
     }
 }

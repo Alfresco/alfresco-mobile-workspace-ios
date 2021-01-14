@@ -18,6 +18,8 @@
 
 import Foundation
 import AlfrescoContent
+import AlfrescoCore
+import Alamofire
 
 class NodeOperations {
     var accountService: AccountService?
@@ -41,5 +43,45 @@ class NodeOperations {
 
             }
         })
+    }
+
+    func downloadContent(for node: ListNode,
+                         to destinationURL: URL,
+                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
+        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
+        let downloadURL = URL(string: requestBuilder.URLString)
+
+        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
+            return (destinationURL, [.removePreviousFile])
+        }
+
+        if let url = downloadURL {
+            return Alamofire.download(url,
+                                      parameters: requestBuilder.parameters,
+                                      headers: AlfrescoContentAPI.customHeaders,
+                                      to: destination).response { response in
+                                        if let destinationUrl = response.destinationURL,
+                                           let httpURLResponse = response.response {
+                                            if (200...299).contains(httpURLResponse.statusCode) {
+                                                completionHandler(destinationUrl, nil)
+                                            } else {
+                                                let error = APIError(domain: "",
+                                                                     code: httpURLResponse.statusCode)
+                                                completionHandler(nil, error)
+                                            }
+                                        } else {
+                                            if response.error?.code == NSURLErrorNetworkConnectionLost ||
+                                                response.error?.code == NSURLErrorCancelled {
+                                                completionHandler(nil, nil)
+                                            } else {
+                                                let error = APIError(domain: "",
+                                                                     error: response.error)
+                                                completionHandler(nil, error)
+                                            }
+                                        }
+                                      }
+        }
+
+        return nil
     }
 }

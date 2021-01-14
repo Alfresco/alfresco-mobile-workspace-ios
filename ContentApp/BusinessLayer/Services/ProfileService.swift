@@ -25,10 +25,10 @@ class ProfileService {
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.getAvatar() {
-            return avatar
-        }
-        return UIImage(named: "account-circle")
+        let defaultImage = UIImage(named: "account-circle")
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return defaultImage }
+
+        return DiskService.getAvatar(for: accountIdentifier)
     }
 
     static func getPersonalFilesID() -> String? {
@@ -40,16 +40,16 @@ class ProfileService {
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
+            guard let accountIdentifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getAvatarImage(personId: identifier) { (data, error) in
+            PeopleAPI.getAvatarImage(personId: accountIdentifier) { (data, error) in
                 if let error = error {
                     AlfrescoLog.error(error)
                 } else if let data = data {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             completionHandler(image)
-                            DiskServices.saveAvatar(image)
+                            DiskService.saveAvatar(image, for: accountIdentifier)
                         }
                     }
                 }

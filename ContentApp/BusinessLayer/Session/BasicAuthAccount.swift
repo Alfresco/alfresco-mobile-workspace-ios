@@ -58,7 +58,8 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func removeDiskFolder() {
-        DiskServices.delete(directory: identifier)
+        let path = DiskService.documentsDirectoryPath(for: identifier)
+        _ = DiskService.delete(directoryPath: path)
     }
 
     func unregister() {
