@@ -68,6 +68,12 @@ class SyncService: Service, SyncServiceProtocol {
     // MARK: - Private interface
 
     private func processMarkedNodes() {
+        // Generate download operations for marked nodes
+        let dataAccessor = ListNodeDataAccessor()
+        let nodesToBeDownloaded = dataAccessor.queryMarkedForDownload()
+        let downloadOperations = syncOperationFactory.downloadMarkedNodesOperation(nodes: nodesToBeDownloaded)
 
+        syncOperationQueue.addOperations(downloadOperations,
+                                         waitUntilFinished: false)
     }
 }

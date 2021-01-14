@@ -43,9 +43,10 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "markedForDownload", type: Bool.entityPropertyType, id: 21, uid: 9108148447639355648)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 10, uid: 5852693191752956672)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 13, uid: 7254106165676034048)
+        try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 22, uid: 3164935005194304768)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 12, uid: 7364912097151763200)
 
-        try entityBuilder.lastProperty(id: 21, uid: 9108148447639355648)
+        try entityBuilder.lastProperty(id: 22, uid: 3164935005194304768)
     }
 }
 
@@ -152,6 +153,12 @@ extension ListNode {
     ///
     ///     box.query { ListNode.siteRole.startsWith("X") }
     internal static var siteRole: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 13, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.syncStatus.startsWith("X") }
+    internal static var syncStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -305,6 +312,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .syncStatus.startsWith("X") }
+
+    internal static var syncStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .allowableOperations.startsWith("X") }
 
     internal static var allowableOperations: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 12, isPrimaryKey: false) }
@@ -341,6 +356,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_localPath = propertyCollector.prepare(string: entity.localPath)
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
+        let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
         let propertyOffset_allowableOperations = propertyCollector.prepare(string: AllowableOperationsConverter.convert(entity.allowableOperations))
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
@@ -360,6 +376,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_localPath, at: 2 + 2 * 20)
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 10)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 13)
+        propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 22)
         propertyCollector.collect(dataOffset: propertyOffset_allowableOperations, at: 2 + 2 * 12)
     }
 
@@ -383,6 +400,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.markedForDownload = entityReader.read(at: 2 + 2 * 21)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 10)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
+        entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 22)) ?? .undefined
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 12))
 
         return entity

@@ -32,13 +32,20 @@ class NodeOperations {
 
     // MARK: - Public Helpers
 
+    func sessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            completionHandler(authenticationProvider)
+        })
+    }
+
     func fetchNodeChildren(for guid: String,
                            pagination: RequestPagination,
                            relativePath: String? = nil,
                            completion: @escaping ((_ data: NodeChildAssociationPaging?,
                                                    _ error: Error?) -> Void)) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+        sessionForCurrentAccount { _ in
             NodesAPI.listNodeChildren(nodeId: guid,
                                       skipCount: pagination.skipCount,
                                       maxItems: pagination.maxItems,
@@ -49,27 +56,25 @@ class NodeOperations {
                                       relativePath: relativePath) { (result, error) in
                 completion(result, error)
             }
-        })
+        }
     }
 
     func fetchNodeIsFavorite(for guid: String,
                              completion: @escaping ((_ data: FavoriteEntry?,
                                                             _ error: Error?) -> Void)) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+        sessionForCurrentAccount { _ in
             FavoritesAPI.getFavorite(personId: kAPIPathMe,
                                      favoriteId: guid) { (result, error) in
                 completion(result, error)
             }
-        })
+        }
     }
 
     func fetchNodeDetails(for guid: String,
                           relativePath: String? = nil,
                           completion: @escaping ((_ data: NodeEntry?,
                                                          _ error: Error?) -> Void)) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+        sessionForCurrentAccount { _ in
             NodesAPI.getNode(nodeId: guid,
                              include: [kAPIIncludePathNode,
                                        kAPIIncludeIsFavoriteNode,
@@ -79,12 +84,12 @@ class NodeOperations {
                 completion(result, error)
 
             }
-        })
+        }
     }
 
     func downloadContent(for node: ListNode,
                          to destinationURL: URL,
-                         completion: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
+                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
         let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
         let downloadURL = URL(string: requestBuilder.URLString)
 
@@ -100,20 +105,20 @@ class NodeOperations {
                                         if let destinationUrl = response.destinationURL,
                                            let httpURLResponse = response.response {
                                             if (200...299).contains(httpURLResponse.statusCode) {
-                                                completion(destinationUrl, nil)
+                                                completionHandler(destinationUrl, nil)
                                             } else {
                                                 let error = APIError(domain: "",
                                                                      code: httpURLResponse.statusCode)
-                                                completion(nil, error)
+                                                completionHandler(nil, error)
                                             }
                                         } else {
                                             if response.error?.code == NSURLErrorNetworkConnectionLost ||
                                                 response.error?.code == NSURLErrorCancelled {
-                                                completion(nil, nil)
+                                                completionHandler(nil, nil)
                                             } else {
                                                 let error = APIError(domain: "",
                                                                      error: response.error)
-                                                completion(nil, error)
+                                                completionHandler(nil, error)
                                             }
                                         }
                                       }

@@ -41,14 +41,15 @@ class SyncOperationFactory {
                     }
                 } else if let entry = result?.entry {
                     let onlineListNode = NodeChildMapper.create(from: entry)
+                    onlineListNode.syncStatus = .inProgress
 
                     if onlineListNode.modifiedAt != node.modifiedAt ||
                         node.localPath == nil {
                         onlineListNode.markedForDownload = true
-
-                        let dataAccessor = ListNodeDataAccessor()
-                        dataAccessor.store(node: onlineListNode)
                     }
+
+                    let dataAccessor = ListNodeDataAccessor()
+                    dataAccessor.store(node: onlineListNode)
                 }
 
                 completion()
@@ -70,12 +71,32 @@ class SyncOperationFactory {
         return operation
     }
 
-    func downloadMarkedNodesOperation(nodes: [ListNode]?) -> AsyncClosureOperation {
-        let operation = AsyncClosureOperation { completion in
+    func downloadMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
+        guard let nodes = nodes else { return [] }
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return [] }
+        var downloadOperations: [AsyncClosureOperation] = []
 
-            completion()
+        for node in nodes {
+            let operation = AsyncClosureOperation { [weak self] completion in
+                guard let sSelf = self else { return }
+
+                let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+                var downloadURL = URL(fileURLWithPath: downloadPath)
+                downloadURL.appendPathComponent(node.title)
+
+                sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                    _ = sSelf.nodeOperations.downloadContent(for: node,
+                                                             to: downloadURL) { (destinationURL, error) in
+                        node.localPath = destinationURL?.absoluteString
+
+                        completion()
+                    }
+                }
+            }
+
+            downloadOperations.append(operation)
         }
 
-        return operation
+        return downloadOperations
     }
 }

@@ -50,6 +50,14 @@ enum AllowableOperationsType: String {
     case unknown
 }
 
+enum SyncStatus: String {
+    case pending
+    case inProgress
+    case synced
+    case error
+    case undefined
+}
+
 enum SiteRole: String {
     case manager = "SiteManager"
     case collaborator = "SiteCollaborator"
@@ -81,6 +89,8 @@ class ListNode: Hashable, Entity {
     var nodeType: NodeType
     // objectbox: convert = { "default": ".unknown" }
     var siteRole: SiteRole = .unknown
+    // objectbox: convert = { "default": ".undefined" }
+    var syncStatus: SyncStatus
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = []
 
@@ -95,6 +105,7 @@ class ListNode: Hashable, Entity {
          modifiedAt: Date? = nil,
          nodeType: NodeType,
          favorite: Bool? = nil,
+         syncStatus: SyncStatus = .undefined,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
@@ -109,6 +120,7 @@ class ListNode: Hashable, Entity {
         self.modifiedAt = modifiedAt
         self.nodeType = nodeType
         self.favorite = favorite
+        self.syncStatus = syncStatus
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
@@ -123,6 +135,7 @@ class ListNode: Hashable, Entity {
         nodeType = .unknown
         allowableOperations = []
         siteRole = .unknown
+        syncStatus = .undefined
     }
 
     // MARK: - Public Helpers

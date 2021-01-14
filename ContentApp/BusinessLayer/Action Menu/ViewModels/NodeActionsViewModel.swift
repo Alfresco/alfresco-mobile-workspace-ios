@@ -134,6 +134,7 @@ class NodeActionsViewModel {
 
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
+            node.syncStatus = .pending
             dataAccessor.store(node: node)
             action?.type = .removeOffline
             action?.title = LocalizationConstants.ActionMenu.removeOffline
@@ -282,24 +283,24 @@ class NodeActionsViewModel {
         guard let accountIdentifier = coordinatorServices?.accountService?.activeAccount?.identifier else { return }
         guard let node = self.node else { return }
 
-        let mainQueue = coordinatorServices?.operationQueueService?.main
-        let workerQueue = coordinatorServices?.operationQueueService?.worker
+        let mainQueue = DispatchQueue.main
+        let workerQueue = OperationQueueService.worker
 
-        mainQueue?.async { [weak self] in
+        mainQueue.async { [weak self] in
             guard let sSelf = self else { return }
             downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
                 downloadRequest?.cancel()
             })
 
-            workerQueue?.async {
+            workerQueue.async {
                 let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
                 var downloadURL = URL(fileURLWithPath: downloadPath)
                 downloadURL.appendPathComponent(node.title)
 
                 downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
                                                                        to: downloadURL,
-                                                                       completion: { destinationURL, error in
-                    mainQueue?.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+                                                                       completionHandler: { destinationURL, error in
+                    mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
                         downloadDialog?.dismiss(animated: true,
                                                 completion: {
                                                     sSelf.handleResponse(error: error)

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4787515528091542272",
-      "lastPropertyId": "19:269961487045141504",
+      "lastPropertyId": "21:9108148447639355648",
       "name": "ListNode",
       "properties": [
         {
@@ -87,6 +87,16 @@
         {
           "id": "19:269961487045141504",
           "name": "markedForDeletion",
+          "type": 1
+        },
+        {
+          "id": "20:3324245441029626112",
+          "name": "localPath",
+          "type": 9
+        },
+        {
+          "id": "21:9108148447639355648",
+          "name": "markedForDownload",
           "type": 1
         }
       ],
