@@ -36,11 +36,13 @@ class DiskService {
         let fileManager = FileManager.default
         let imagePath = documentsDirectoryPath(for: accountIdentifier) + "/" + kProfileAvatarImageFileName
 
+        var avatar: UIImage?
         if fileManager.fileExists(atPath: imagePath) {
-            let avatar = UIImage(contentsOfFile: imagePath)
-            if avatar == nil {
-                return UIImage(named: "account-circle")
-            }
+            avatar = UIImage(contentsOfFile: imagePath)
+        }
+
+        if avatar == nil {
+            return UIImage(named: "account-circle")
         }
 
         return nil
