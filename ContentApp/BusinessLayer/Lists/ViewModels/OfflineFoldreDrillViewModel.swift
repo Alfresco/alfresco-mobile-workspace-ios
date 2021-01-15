@@ -23,34 +23,14 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
     var supportedNodeTypes: [NodeType]?
     var parentListNode: ListNode?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         super.init()
         refreshList()
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
-
-    func performListAction() {
-        // Do nothing
-    }
-
-    // MARK: - ListComponentDataSourceProtocol
-
-    func shouldDisplayNodePath() -> Bool {
-        return false
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -60,28 +40,12 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         return EmptyFolder()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
         return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return false
     }
 
     func refreshList() {
@@ -95,6 +59,14 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
                    error: nil)
     }
 
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
     func shouldPreview(node: ListNode) -> Bool {
         if node.nodeType == .folder {
             return true
@@ -104,6 +76,10 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
             return true
         }
         return false
+    }
+
+    func performListAction() {
+        // Do nothing
     }
 
     // MARK: - PageFetchingViewModel

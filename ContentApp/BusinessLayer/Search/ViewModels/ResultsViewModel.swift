@@ -59,10 +59,6 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return EmptySearch()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
@@ -75,28 +71,8 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
-        return true
     }
 
     func refreshList() {

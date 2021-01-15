@@ -33,6 +33,54 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         self.listRequest = listRequest
     }
 
+    // MARK: - ListViewModelProtocol
+
+    func isEmpty() -> Bool {
+        return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
+    func numberOfSections() -> Int {
+        return (results.count == 0) ? 0 : 1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        request(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    func performListAction() {
+        // Do nothing
+    }
+
     // MARK: - Public methods
 
     func request(with paginationRequest: RequestPagination?) {
@@ -64,82 +112,6 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
-
-    // MARK: - ListViewModelProtocol
-
-    func isEmpty() -> Bool {
-        return results.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
-        return true
-    }
-
-    func refreshList() {
-        currentPage = 1
-        request(with: nil)
-    }
-
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
-        request(with: requestPagination)
-    }
-
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
-
-    func performListAction() {
-        // Do nothing
     }
 }
 

@@ -26,16 +26,14 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var accountService: AccountService?
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -43,14 +41,6 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
     }
 
     func numberOfSections() -> Int {
@@ -65,24 +55,8 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
-        return true
     }
 
     func refreshList() {

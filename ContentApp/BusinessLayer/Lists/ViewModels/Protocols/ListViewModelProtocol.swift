@@ -28,3 +28,9 @@ protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
     func fetchNextListPage(index: IndexPath, userInfo: Any?)
     func performListAction()
 }
+
+extension ListViewModelProtocol {
+    func shouldDisplaySettingsButton() -> Bool {
+        return false
+    }
+}

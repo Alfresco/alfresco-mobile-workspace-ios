@@ -1255,6 +1255,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		E350AFDD25B1D90200527D02 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E3817B5025544B6B007E0772 /* ListComponentDataSourceProtocol.swift */,
+				B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		E3522E252507BC3E0040AE3F /* Factory */ = {
 			isa = PBXGroup;
 			children = (
@@ -1272,8 +1281,8 @@
 		E35583F124BF409C007011EF /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E3817B5025544B6B007E0772 /* ListComponentDataSourceProtocol.swift */,
-				B936A14324BDBE04003C9A95 /* ListViewModelProtocol.swift */,
+				E350AFDD25B1D90200527D02 /* Protocols */,
+				B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */,
 				E300204E24A0EC90004FB12D /* RecentViewModel.swift */,
 				E303CE2024C876DF00E0BF5F /* FavoritesViewModel.swift */,
 				E3E9ED4424CB25FF00F1A2C2 /* BrowseViewModel.swift */,
@@ -1281,7 +1290,6 @@
 				E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */,
 				E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */,
 				E3E2BDA324CC280B00D8A7EC /* TrashViewModel.swift */,
-				B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */,
 				B9233FC425A70ADC006EA4DA /* OfflineViewModel.swift */,
 				E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */,
 			);

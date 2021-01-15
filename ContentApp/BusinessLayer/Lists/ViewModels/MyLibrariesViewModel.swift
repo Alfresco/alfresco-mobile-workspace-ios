@@ -26,16 +26,14 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var accountService: AccountService?
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -43,10 +41,6 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
     }
 
     func numberOfSections() -> Int {
@@ -57,37 +51,17 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.count
     }
 
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
-        return true
-    }
-
-    func refreshList() {
-        currentPage = 1
-        request(with: nil)
     }
 
     func performListAction() {

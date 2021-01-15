@@ -29,7 +29,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
@@ -37,23 +37,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         self.nodeOperations = NodeOperations(accountService: accountService)
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return false
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-//        guard let listNode = listNode else { return true }
-//        return listNode.hasPermissionToCreate()
-    }
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -61,14 +45,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
-        return true
     }
 
     func numberOfSections() -> Int {
@@ -79,21 +55,27 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.count
     }
 
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+//        guard let listNode = listNode else { return true }
+//        return listNode.hasPermissionToCreate()
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func refreshList() {
-        currentPage = 1
-        request(with: nil)
     }
 
     func performListAction() {

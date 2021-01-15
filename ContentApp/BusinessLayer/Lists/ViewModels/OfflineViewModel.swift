@@ -23,36 +23,14 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
     var syncService: SyncService?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         super.init()
         refreshList()
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayListActionButton() -> Bool {
-        return true
-    }
-
-    func listActionTitle() -> String? {
-        return LocalizationConstants.Buttons.syncAll
-    }
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -62,28 +40,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return EmptyOffline()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
         return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return false
     }
 
     func refreshList() {
@@ -96,10 +58,20 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
                    error: nil)
     }
 
-    func performListAction() {
-        if let offlineNodes = offlineMarkedNodes() {
-            syncService?.sync(nodeList: offlineNodes)
-        }
+    func listActionTitle() -> String? {
+        return LocalizationConstants.Buttons.syncAll
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayListActionButton() -> Bool {
+        return true
     }
 
     func shouldPreview(node: ListNode) -> Bool {
@@ -111,6 +83,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
             return true
         }
         return false
+    }
+
+    func performListAction() {
+        if let offlineNodes = offlineMarkedNodes() {
+            syncService?.sync(nodeList: offlineNodes)
+        }
     }
 
     // MARK: - PageFetchingViewModel

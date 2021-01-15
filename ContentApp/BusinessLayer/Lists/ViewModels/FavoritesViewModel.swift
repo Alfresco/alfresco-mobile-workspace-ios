@@ -27,12 +27,14 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listCondition: String = kWhereFavoritesFileFolderCondition
     var supportedNodeTypes: [NodeType]?
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - Init
 
     required init(with accountService: AccountService?, listRequest: SearchRequest?) {
         self.accountService = accountService
         self.listRequest = listRequest
     }
+
+    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -53,44 +55,20 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.count
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
+    func refreshList() {
+        currentPage = 1
+        favoritesList(with: nil)
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func refreshList() {
-        currentPage = 1
-        favoritesList(with: nil)
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldPreview(node: ListNode) -> Bool {
         return true
     }
 
