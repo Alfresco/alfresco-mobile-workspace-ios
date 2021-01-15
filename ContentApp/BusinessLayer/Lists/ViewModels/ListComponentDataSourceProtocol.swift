@@ -34,6 +34,7 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayNodePath() -> Bool
     func refreshList()
     func emptyList() -> EmptyListProtocol
+    func shouldPreview(node: ListNode) -> Bool
 }
 
 extension ListComponentDataSourceProtocol {
@@ -44,4 +45,5 @@ extension ListComponentDataSourceProtocol {
     func listActionTitle() -> String? {
         return nil
     }
+    
 }

@@ -156,6 +156,21 @@ class ListNode: Hashable, Entity {
         self.markedForDeletion = newVersion.markedForDeletion
     }
 
+    func syncStatusIcon() -> UIImage? {
+        switch self.syncStatus {
+        case .error:
+            return UIImage(named: "ic-sync-status-error")
+        case .pending:
+            return UIImage(named: "ic-sync-status-pending")
+        case .inProgress:
+            return UIImage(named: "ic-sync-status-in-progress")
+        case .synced:
+            return UIImage(named: "ic-sync-status-synced")
+        case .undefined:
+            return UIImage(named: "ic-sync-status-pending")
+        }
+    }
+
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid
     }

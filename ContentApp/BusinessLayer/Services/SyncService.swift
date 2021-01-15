@@ -40,15 +40,20 @@ protocol SyncServiceDelegate: class {
 class SyncService: Service, SyncServiceProtocol {
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
+    let eventBusService: EventBusService?
 
     // MARK: - Public interface
 
-    init(accountService: AccountService?) {
+    init(accountService: AccountService?,
+         eventBusService: EventBusService?) {
+
+        self.eventBusService = eventBusService
         syncOperationQueue = OperationQueue()
         syncOperationQueue.maxConcurrentOperationCount = 1
 
         let nodeOperations = NodeOperations(accountService: accountService)
-        syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations)
+        syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
+                                                    eventBusService: eventBusService)
     }
 
     func sync(nodeList: [ListNode]) {

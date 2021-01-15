@@ -161,6 +161,7 @@
 		E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */; };
 		E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34984C62493603500A8A440 /* ThemesModeViewController.swift */; };
 		E34984C92493621100A8A440 /* ThemesModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E34984C82493621100A8A440 /* ThemesModeViewModel.swift */; };
+		E350AFD625B1C12C00527D02 /* SyncStatusEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350AFD525B1C12C00527D02 /* SyncStatusEvent.swift */; };
 		E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */; };
 		E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */; };
 		E350BD46249CBDC4008E381F /* Bundle+VersionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */; };
@@ -457,6 +458,7 @@
 		E348EDE22498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponentsThemingServiceWorker.swift; sourceTree = "<group>"; };
 		E34984C62493603500A8A440 /* ThemesModeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeViewController.swift; sourceTree = "<group>"; };
 		E34984C82493621100A8A440 /* ThemesModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesModeViewModel.swift; sourceTree = "<group>"; };
+		E350AFD525B1C12C00527D02 /* SyncStatusEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatusEvent.swift; sourceTree = "<group>"; };
 		E350BD41249C981A008E381F /* SettingsTableViewCellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCellProtocol.swift; sourceTree = "<group>"; };
 		E350BD43249CB836008E381F /* SettingsLabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelTableViewCell.swift; sourceTree = "<group>"; };
 		E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+VersionString.swift"; sourceTree = "<group>"; };
@@ -1042,6 +1044,7 @@
 				B9318AAD254893090023689D /* FavouriteEvent.swift */,
 				E3ABECE625519C4B005F0A66 /* MoveEvent.swift */,
 				E30FCD8325A6F73500C4ABAF /* OfflineEvent.swift */,
+				E350AFD525B1C12C00527D02 /* SyncStatusEvent.swift */,
 			);
 			path = EventDelivery;
 			sourceTree = "<group>";
@@ -1911,6 +1914,7 @@
 				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
 				B9ECED3A25432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift in Sources */,
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
+				E350AFD625B1C12C00527D02 /* SyncStatusEvent.swift in Sources */,
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
 				B9B7531625AC9062004F16E5 /* SyncOperationFactory.swift in Sources */,

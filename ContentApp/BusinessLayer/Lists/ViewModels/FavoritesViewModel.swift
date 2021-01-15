@@ -90,6 +90,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func performListAction() {
         // Do nothing
     }

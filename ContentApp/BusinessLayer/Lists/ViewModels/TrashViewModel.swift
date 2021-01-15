@@ -81,6 +81,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)

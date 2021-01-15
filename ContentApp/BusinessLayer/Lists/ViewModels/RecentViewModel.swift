@@ -111,6 +111,10 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return true
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         recentsList(with: nil)

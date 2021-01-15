@@ -67,6 +67,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }

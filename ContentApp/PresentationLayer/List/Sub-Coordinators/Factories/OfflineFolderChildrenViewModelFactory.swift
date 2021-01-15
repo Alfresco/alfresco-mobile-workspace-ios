@@ -61,6 +61,10 @@ class OfflineFolderChildrenViewModelFactory {
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
+        eventBusService?.register(observer: offlineFolderDrillViewModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+
         return (offlineFolderDrillViewModel, resultViewModel, globalSearchViewModel)
     }
 }

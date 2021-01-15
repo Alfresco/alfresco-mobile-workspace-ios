@@ -95,6 +95,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return true
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         delegate?.refreshResults()

@@ -60,6 +60,10 @@ class OfflineViewModelFactory {
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
+        eventBusService?.register(observer: offlineViewModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
+
         return (offlineViewModel, resultViewModel, globalSearchViewModel)
     }
 }

@@ -22,9 +22,12 @@ import AlfrescoCore
 
 class SyncOperationFactory {
     let nodeOperations: NodeOperations
+    let eventBusService: EventBusService?
 
-    init(nodeOperations: NodeOperations) {
+    init(nodeOperations: NodeOperations,
+         eventBusService: EventBusService?) {
         self.nodeOperations = nodeOperations
+        self.eventBusService = eventBusService
     }
 
     func nodeDetailsOperation(node: ListNode) -> AsyncClosureOperation {
@@ -42,6 +45,7 @@ class SyncOperationFactory {
                 } else if let entry = result?.entry {
                     let onlineListNode = NodeChildMapper.create(from: entry)
                     onlineListNode.syncStatus = .inProgress
+                    sSelf.publishSyncStatusEvent(for: onlineListNode)
 
                     if onlineListNode.modifiedAt != node.modifiedAt ||
                         node.localPath == nil {
@@ -98,5 +102,12 @@ class SyncOperationFactory {
         }
 
         return downloadOperations
+    }
+
+    // MARK: - Private Helpers
+
+    private func publishSyncStatusEvent(for listNode: ListNode) {
+        let syncStatusEvent = SyncStatusEvent(node: listNode)
+        eventBusService?.publish(event: syncStatusEvent, on: .mainQueue)
     }
 }

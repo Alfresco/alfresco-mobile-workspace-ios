@@ -95,6 +95,17 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
                    error: nil)
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        if node.nodeType == .folder {
+            return true
+        }
+        if node.markedAsOffline == true &&
+            node.localPath != nil {
+            return true
+        }
+        return false
+    }
+
     // MARK: - PageFetchingViewModel
 
     override func fetchItems(with requestPagination: RequestPagination,
@@ -123,22 +134,24 @@ extension OfflineFolderDrillViewModel: EventObservable {
             handleMove(event: publishedEvent)
         } else if let publishedEvent = event as? OfflineEvent {
             handleOffline(event: publishedEvent)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
         }
     }
 
     private func handleFavorite(event: FavouriteEvent) {
-        let node = event.node
-        for listNode in results where listNode == node {
-            listNode.favorite = node.favorite
+        let eventNode = event.node
+        for listNode in results where listNode == eventNode {
+            listNode.favorite = eventNode.favorite
         }
     }
 
     private func handleMove(event: MoveEvent) {
-        let node = event.node
+        let eventNode = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: node) {
+            if eventNode.nodeType == .file {
+                if let indexOfMovedNode = results.firstIndex(of: eventNode) {
                     results.remove(at: indexOfMovedNode)
                 }
             } else {
@@ -152,9 +165,18 @@ extension OfflineFolderDrillViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let node = event.node
-        if let indexOfNode = results.firstIndex(of: node) {
-            results[indexOfNode] = node
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            results[indexOfNode] = eventNode
+        }
+    }
+
+    private func handleSyncStatus(event: SyncStatusEvent) {
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            let copyNode = results[indexOfNode]
+            copyNode.syncStatus = eventNode.syncStatus
+            results[indexOfNode] = copyNode
         }
     }
 }

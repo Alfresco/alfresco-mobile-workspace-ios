@@ -116,6 +116,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return true
     }
 
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
     func refreshList() {
         currentPage = 1
         request(with: nil)
