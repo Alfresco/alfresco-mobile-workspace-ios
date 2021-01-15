@@ -30,70 +30,102 @@ class SyncOperationFactory {
         self.eventBusService = eventBusService
     }
 
-    func nodeDetailsOperation(node: ListNode) -> AsyncClosureOperation {
-        let operation = AsyncClosureOperation { [weak self] completion in
-            guard let sSelf = self else { return }
+    func nodeDetailsOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
+        guard let nodes = nodes else { return [] }
+        var detailsOperations: [AsyncClosureOperation] = []
 
-            let guid = node.guid
-            sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
-                if let error = error {
-                    if error.code == StatusCodes.code404NotFound.rawValue {
-                        node.markedForDeletion = true
-                    } else {
-                        AlfrescoLog.error("Unexpected sync process error: \(error)")
+        for node in nodes where node.nodeType == .file {
+            let operation = AsyncClosureOperation { [weak self] completion in
+                guard let sSelf = self else { return }
+
+                let guid = node.guid
+                let dataAccessor = ListNodeDataAccessor()
+
+                sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
+                    if let error = error {
+                        if error.code == StatusCodes.code404NotFound.rawValue {
+                            node.markedForDeletion = true
+                            dataAccessor.store(node: node)
+                        } else {
+                            AlfrescoLog.error("Unexpected sync process error: \(error)")
+                        }
+                    } else if let entry = result?.entry {
+                        let onlineListNode = NodeChildMapper.create(from: entry)
+
+                        if onlineListNode.modifiedAt != node.modifiedAt ||
+                            node.localPath == nil {
+                            onlineListNode.syncStatus = .inProgress
+                            onlineListNode.markedForDownload = true
+                        } else {
+                            onlineListNode.syncStatus = .synced
+                        }
+
+                        sSelf.publishSyncStatusEvent(for: onlineListNode)
+                        dataAccessor.store(node: onlineListNode)
                     }
-                } else if let entry = result?.entry {
-                    let onlineListNode = NodeChildMapper.create(from: entry)
-                    onlineListNode.syncStatus = .inProgress
-                    sSelf.publishSyncStatusEvent(for: onlineListNode)
 
-                    if onlineListNode.modifiedAt != node.modifiedAt ||
-                        node.localPath == nil {
-                        onlineListNode.markedForDownload = true
-                    }
-
-                    let dataAccessor = ListNodeDataAccessor()
-                    dataAccessor.store(node: onlineListNode)
+                    completion()
                 }
+            }
+
+            detailsOperations.append(operation)
+        }
+
+        return detailsOperations
+    }
+
+    func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
+        guard let nodes = nodes else { return [] }
+        var deleteOperations: [AsyncClosureOperation] = []
+
+        for node in nodes {
+            let operation = AsyncClosureOperation { [weak self] completion in
+                guard let sSelf = self else { return }
+                if let nodeURL = sSelf.localPath(for: node) {
+                    _ = DiskService.delete(itemAtPath: nodeURL.path)
+                }
+
+                let dataAccessor = ListNodeDataAccessor()
+                dataAccessor.remove(node: node)
 
                 completion()
             }
+
+            deleteOperations.append(operation)
         }
 
-        return operation
-    }
-
-    func deleteMarkedNodesOperation(nodes: [ListNode]?) -> AsyncClosureOperation {
-        let operation = AsyncClosureOperation { completion in
-
-            let dataAccessor = ListNodeDataAccessor()
-            let nodesToBeRemoved = dataAccessor.queryMarkedForDeletion()
-
-            completion()
-        }
-
-        return operation
+        return deleteOperations
     }
 
     func downloadMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
         guard let nodes = nodes else { return [] }
-        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return [] }
+
         var downloadOperations: [AsyncClosureOperation] = []
 
         for node in nodes {
             let operation = AsyncClosureOperation { [weak self] completion in
                 guard let sSelf = self else { return }
+                if let downloadURL = sSelf.localPath(for: node) {
+                    let parentDirectoryURL = downloadURL.deletingLastPathComponent()
+                    _ = DiskService.create(directoryPath: parentDirectoryURL.path)
 
-                let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
-                var downloadURL = URL(fileURLWithPath: downloadPath)
-                downloadURL.appendPathComponent(node.title)
+                    sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                        _ = sSelf.nodeOperations.downloadContent(for: node,
+                                                                 to: downloadURL) { (destinationURL, error) in
+                            if error != nil {
+                                node.syncStatus = .error
+                            } else {
+                                node.localPath = destinationURL?.path
+                                node.syncStatus = .synced
+                            }
 
-                sSelf.nodeOperations.sessionForCurrentAccount { _ in
-                    _ = sSelf.nodeOperations.downloadContent(for: node,
-                                                             to: downloadURL) { (destinationURL, error) in
-                        node.localPath = destinationURL?.absoluteString
+                            sSelf.publishSyncStatusEvent(for: node)
 
-                        completion()
+                            let dataAccessor = ListNodeDataAccessor()
+                            dataAccessor.store(node: node)
+
+                            completion()
+                        }
                     }
                 }
             }
@@ -104,7 +136,16 @@ class SyncOperationFactory {
         return downloadOperations
     }
 
-    // MARK: - Private Helpers
+    private func localPath(for node: ListNode) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(node.guid)
+
+        return localURL
+    }
+
+    // MARK: - Event bus
 
     private func publishSyncStatusEvent(for listNode: ListNode) {
         let syncStatusEvent = SyncStatusEvent(node: listNode)

@@ -150,7 +150,13 @@ class NodeActionsViewModel {
 
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
-            dataAccessor.remove(node: node)
+            if let queriedNode = dataAccessor.query(node: node),
+               let nodeLocalPath = queriedNode.localPath {
+                _ = DiskService.delete(itemAtPath: nodeLocalPath)
+
+                dataAccessor.remove(node: queriedNode)
+            }
+
             action?.type = .markOffline
             action?.title = LocalizationConstants.ActionMenu.markOffline
 

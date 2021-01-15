@@ -37,10 +37,24 @@ protocol SyncServiceDelegate: class {
 
 }
 
+enum SyncServiceStatus {
+    case idle
+    case fetchingNodeDetails
+    case processingMarkedNodes
+}
+
 class SyncService: Service, SyncServiceProtocol {
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
     let eventBusService: EventBusService?
+
+    var syncServiceStatus: SyncServiceStatus = .idle
+
+    private var kvoToken: NSKeyValueObservation?
+
+    deinit {
+        kvoToken?.invalidate()
+    }
 
     // MARK: - Public interface
 
@@ -49,36 +63,59 @@ class SyncService: Service, SyncServiceProtocol {
 
         self.eventBusService = eventBusService
         syncOperationQueue = OperationQueue()
-        syncOperationQueue.maxConcurrentOperationCount = 1
+        syncOperationQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
 
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
                                                     eventBusService: eventBusService)
+        observeOperationQueue()
     }
 
     func sync(nodeList: [ListNode]) {
-        let processMarkedNodesOperation = BlockOperation { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.processMarkedNodes()
-        }
         // Fetch details for existing nodes and decide whether they should be marked for download
-        for node in nodeList where node.nodeType == .file {
-            let nodeDetailsOperation = syncOperationFactory.nodeDetailsOperation(node: node)
-            syncOperationQueue.addOperation(nodeDetailsOperation)
-        }
-
-        syncOperationQueue.addOperation(processMarkedNodesOperation)
+        syncServiceStatus = .fetchingNodeDetails
+        let nodeDetailsOperations = syncOperationFactory.nodeDetailsOperation(nodes: nodeList)
+        syncOperationQueue.addOperations(nodeDetailsOperations,
+                                         waitUntilFinished: false)
     }
 
     // MARK: - Private interface
 
     private func processMarkedNodes() {
-        // Generate download operations for marked nodes
+        // Generate download and delete operations for marked nodes
+        syncServiceStatus = .processingMarkedNodes
         let dataAccessor = ListNodeDataAccessor()
         let nodesToBeDownloaded = dataAccessor.queryMarkedForDownload()
+        let nodesToBeDeleted = dataAccessor.queryMarkedForDeletion()
         let downloadOperations = syncOperationFactory.downloadMarkedNodesOperation(nodes: nodesToBeDownloaded)
+        let deleteOperations = syncOperationFactory.deleteMarkedNodesOperation(nodes: nodesToBeDeleted)
 
-        syncOperationQueue.addOperations(downloadOperations,
-                                         waitUntilFinished: false)
+        if downloadOperations.count == 0 &&
+            deleteOperations.count == 0 {
+            syncServiceStatus = .idle
+        } else {
+            if downloadOperations.count > 0 {
+                syncOperationQueue.addOperations(downloadOperations,
+                                                 waitUntilFinished: false)
+            }
+
+            if deleteOperations.count > 0 {
+                syncOperationQueue.addOperations(deleteOperations,
+                                                 waitUntilFinished: false)
+            }
+        }
+    }
+
+    func observeOperationQueue() {
+        kvoToken = syncOperationQueue.observe(\.operations, options: .new) { [weak self] (newValue, _) in
+            guard let sSelf = self else { return }
+            if newValue.operations.count == 0 {
+                if sSelf.syncServiceStatus == .fetchingNodeDetails {
+                    sSelf.processMarkedNodes()
+                } else if sSelf.syncServiceStatus == .processingMarkedNodes {
+                    sSelf.syncServiceStatus = .idle
+                }
+            }
+        }
     }
 }

@@ -18,6 +18,9 @@
 
 import Foundation
 import UIKit
+import var CommonCrypto.CC_MD5_DIGEST_LENGTH
+import func CommonCrypto.CC_MD5
+import typealias CommonCrypto.CC_LONG
 
 class DiskService {
 
@@ -48,20 +51,7 @@ class DiskService {
         return nil
     }
 
-    // MARK: - Create user folder
-
-    static func documentsDirectoryPath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
-    }
-
-    static func documentsDirectoryPath(for accountIdentifier: String) -> String {
-        let documentsPath = self.documentsDirectoryPath() as NSString
-        let accountDocumentsPath = documentsPath.appendingPathComponent(accountIdentifier)
-
-        return accountDocumentsPath
-    }
+    // MARK: - Disk operations
 
     static func create(directoryPath: String) -> Bool {
         let fileManager = FileManager.default
@@ -80,16 +70,56 @@ class DiskService {
         return false
     }
 
-    static func delete(directoryPath: String) -> Bool {
+    static func delete(itemAtPath: String) -> Bool {
         let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: directoryPath) {
+        if fileManager.fileExists(atPath: itemAtPath) {
             do {
-                try fileManager.removeItem(atPath: directoryPath)
+                try fileManager.removeItem(atPath: itemAtPath)
             } catch {
-                AlfrescoLog.error("Failed to delete item at path: \(directoryPath).")
+                AlfrescoLog.error("Failed to delete item at path: \(itemAtPath).")
             }
         }
 
         return false
+    }
+
+    // MARK: - Path creation
+
+    static func documentsDirectoryPath() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
+    }
+
+    static func documentsDirectoryPath(for accountIdentifier: String) -> String {
+        let documentsPath = self.documentsDirectoryPath() as NSString
+        let md5Path = MD5Path(path: accountIdentifier)
+        let accountDocumentsPath = documentsPath.appendingPathComponent(md5Path)
+
+        return accountDocumentsPath
+    }
+
+    static func MD5(string: String) -> Data {
+        let length = Int(CC_MD5_DIGEST_LENGTH)
+        let messageData = string.data(using: .utf8)!
+        var digestData = Data(count: length)
+
+        _ = digestData.withUnsafeMutableBytes { digestBytes -> UInt8 in
+            messageData.withUnsafeBytes { messageBytes -> UInt8 in
+                if let messageBytesBaseAddress = messageBytes.baseAddress,
+                   let digestBytesBlindMemory = digestBytes.bindMemory(to: UInt8.self).baseAddress {
+                    let messageLength = CC_LONG(messageData.count)
+                    CC_MD5(messageBytesBaseAddress, messageLength, digestBytesBlindMemory)
+                }
+                return 0
+            }
+        }
+        return digestData
+    }
+
+    static func MD5Path(path: String) -> String {
+        let md5Data = MD5(string: path)
+        let md5Hex =  md5Data.map { String(format: "%02hhx", $0) }.joined()
+        return md5Hex
     }
 }

@@ -64,7 +64,7 @@ class AIMSAccount: AccountProtocol, Equatable {
 
     func removeDiskFolder() {
         let path = DiskService.documentsDirectoryPath(for: identifier)
-        _ = DiskService.delete(directoryPath: path)
+        _ = DiskService.delete(itemAtPath: path)
     }
 
     func unregister() {
