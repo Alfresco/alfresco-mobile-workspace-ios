@@ -62,15 +62,11 @@ class ListNodeDataAccessor {
     func remove(node: ListNode) {
         if node.id == 0 {
             if let queriedNode = query(node: node) {
-                queriedNode.markedAsOffline = false
-                queriedNode.markedForDeletion = true
-                databaseService?.store(entity: queriedNode)
+                databaseService?.remove(entity: queriedNode)
                 removeChildren(of: queriedNode)
             }
         } else {
-            node.markedAsOffline = false
-            node.markedForDeletion = true
-            databaseService?.store(entity: node)
+            databaseService?.remove(entity: node)
             removeChildren(of: node)
         }
     }
