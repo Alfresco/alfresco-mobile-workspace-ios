@@ -58,6 +58,7 @@ class SyncOperationFactory {
                             onlineListNode.markedForDownload = true
                         } else {
                             onlineListNode.syncStatus = .synced
+                            onlineListNode.localPath = node.localPath
                         }
 
                         sSelf.publishSyncStatusEvent(for: onlineListNode)
@@ -117,6 +118,7 @@ class SyncOperationFactory {
                             } else {
                                 node.localPath = destinationURL?.path
                                 node.syncStatus = .synced
+                                node.markedForDownload = false
                             }
 
                             sSelf.publishSyncStatusEvent(for: node)
