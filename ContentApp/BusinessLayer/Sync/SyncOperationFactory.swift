@@ -141,6 +141,7 @@ class SyncOperationFactory {
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: localPath)
         localURL.appendPathComponent(node.guid)
+        localURL.appendPathExtension(URL(fileURLWithPath: node.title).pathExtension)
 
         return localURL
     }
