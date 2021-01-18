@@ -34,7 +34,8 @@ protocol SyncServiceProtocol {
 }
 
 protocol SyncServiceDelegate: class {
-    func finishSyncOperation()
+    func syncDidStarted()
+    func syncDidFinished()
 }
 
 enum SyncServiceStatus {
@@ -74,6 +75,7 @@ class SyncService: Service, SyncServiceProtocol {
 
     func sync(nodeList: [ListNode]) {
         // Fetch details for existing nodes and decide whether they should be marked for download
+        delegate?.syncDidStarted()
         syncServiceStatus = .fetchingNodeDetails
         let nodeDetailsOperations = syncOperationFactory.nodeDetailsOperation(nodes: nodeList)
         syncOperationQueue.addOperations(nodeDetailsOperations,
@@ -94,6 +96,7 @@ class SyncService: Service, SyncServiceProtocol {
         if downloadOperations.count == 0 &&
             deleteOperations.count == 0 {
             syncServiceStatus = .idle
+            delegate?.syncDidFinished()
         } else {
             if downloadOperations.count > 0 {
                 syncOperationQueue.addOperations(downloadOperations,
@@ -115,7 +118,7 @@ class SyncService: Service, SyncServiceProtocol {
                     sSelf.processMarkedNodes()
                 } else if sSelf.syncServiceStatus == .processingMarkedNodes {
                     sSelf.syncServiceStatus = .idle
-                    sSelf.delegate?.finishSyncOperation()
+                    sSelf.delegate?.syncDidFinished()
                 }
             }
         }

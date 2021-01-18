@@ -41,7 +41,7 @@ protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
     func shouldDisplayCreateButton(enable: Bool)
-    func enableListButton()
+    func didUpdateListActionState(enable: Bool)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -131,7 +131,6 @@ class ListComponentViewController: SystemThemableViewController {
     }
 
     @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
-        listActionButton.isEnabled = false
         listActionDelegate?.performListAction()
     }
 
@@ -477,8 +476,8 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
         }
     }
 
-    func enableListButton() {
-        listActionButton.isEnabled = true
+    func didUpdateListActionState(enable: Bool) {
+        listActionButton.isEnabled = enable
     }
 }
 

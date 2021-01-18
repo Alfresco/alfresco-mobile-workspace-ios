@@ -119,8 +119,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: - SyncServiceDelegate
 
 extension OfflineViewModel: SyncServiceDelegate {
-    func finishSyncOperation() {
-        pageUpdatingDelegate?.enableListButton()
+    func syncDidStarted() {
+        pageUpdatingDelegate?.didUpdateListActionState(enable: false)
+    }
+
+    func syncDidFinished() {
+        pageUpdatingDelegate?.didUpdateListActionState(enable: true)
     }
 }
 
