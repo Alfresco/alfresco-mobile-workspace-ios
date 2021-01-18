@@ -41,6 +41,7 @@ protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
     func shouldDisplayCreateButton(enable: Bool)
+    func enableListButton()
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -130,6 +131,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
 
     @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
+        listActionButton.isEnabled = false
         listActionDelegate?.performListAction()
     }
 
@@ -428,6 +430,7 @@ extension ListComponentViewController: PageFetchableDelegate {
 // MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
+
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
@@ -472,6 +475,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                        bottom: listBottomInset, right: 0)
         }
+    }
+
+    func enableListButton() {
+        listActionButton.isEnabled = true
     }
 }
 

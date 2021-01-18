@@ -34,7 +34,7 @@ protocol SyncServiceProtocol {
 }
 
 protocol SyncServiceDelegate: class {
-
+    func finishSyncOperation()
 }
 
 enum SyncServiceStatus {
@@ -49,6 +49,7 @@ class SyncService: Service, SyncServiceProtocol {
     let eventBusService: EventBusService?
 
     var syncServiceStatus: SyncServiceStatus = .idle
+    weak var delegate: SyncServiceDelegate?
 
     private var kvoToken: NSKeyValueObservation?
 
@@ -114,6 +115,7 @@ class SyncService: Service, SyncServiceProtocol {
                     sSelf.processMarkedNodes()
                 } else if sSelf.syncServiceStatus == .processingMarkedNodes {
                     sSelf.syncServiceStatus = .idle
+                    sSelf.delegate?.finishSyncOperation()
                 }
             }
         }
