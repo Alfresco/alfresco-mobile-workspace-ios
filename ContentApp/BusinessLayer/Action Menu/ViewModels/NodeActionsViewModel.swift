@@ -150,10 +150,10 @@ class NodeActionsViewModel {
 
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
-            if let queriedNode = dataAccessor.query(node: node),
-               let nodeLocalPath = queriedNode.localPath {
-                _ = DiskService.delete(itemAtPath: nodeLocalPath)
-
+            if let queriedNode = dataAccessor.query(node: node) {
+                if let nodeLocalPath = queriedNode.localPath {
+                    _ = DiskService.delete(itemAtPath: nodeLocalPath)
+                }
                 dataAccessor.remove(node: queriedNode)
             }
 
