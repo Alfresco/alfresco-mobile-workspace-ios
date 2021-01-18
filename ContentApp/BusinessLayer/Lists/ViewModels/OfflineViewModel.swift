@@ -171,9 +171,7 @@ extension OfflineViewModel: EventObservable {
     private func handleSyncStatus(event: SyncStatusEvent) {
         let eventNode = event.node
         if let indexOfNode = results.firstIndex(of: eventNode) {
-            let copyNode = results[indexOfNode]
-            copyNode.syncStatus = eventNode.syncStatus
-            results[indexOfNode] = copyNode
+            results[indexOfNode] = eventNode
         }
     }
 }
