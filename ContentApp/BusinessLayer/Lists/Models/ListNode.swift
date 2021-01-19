@@ -151,6 +151,7 @@ class ListNode: Hashable, Entity {
         self.favorite = newVersion.favorite
         self.nodeType = newVersion.nodeType
         self.allowableOperations = newVersion.allowableOperations
+        self.syncStatus = newVersion.syncStatus
         self.markedForDownload = newVersion.markedForDownload
         self.markedAsOffline = newVersion.markedAsOffline
         self.markedForDeletion = newVersion.markedForDeletion
