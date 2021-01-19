@@ -37,8 +37,17 @@ class ListElementCollectionViewCell: ListSelectableCell {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element)
+
                 syncStatusImageView.isHidden = !element.isMarkedOffline()
                 syncStatusImageView.image = element.syncStatusIcon()
+
+                switch element.syncStatus {
+                case .error:
+                    subtitle.text = LocalizationConstants.Labels.syncFailed
+                case .inProgress:
+                    subtitle.text = LocalizationConstants.Labels.syncing
+                default: break
+                }
             }
         }
     }
