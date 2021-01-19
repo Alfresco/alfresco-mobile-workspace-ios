@@ -140,15 +140,18 @@ class ListComponentViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
 
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme
+              else { return }
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
 
         createButton.backgroundColor = currentTheme.primaryT1Color
         createButton.tintColor = currentTheme.onPrimaryColor
+
         listActionButton.backgroundColor = currentTheme.primaryT1Color
         listActionButton.tintColor = currentTheme.onPrimaryColor
+
         refreshControl?.tintColor = currentTheme.primaryT1Color
     }
 

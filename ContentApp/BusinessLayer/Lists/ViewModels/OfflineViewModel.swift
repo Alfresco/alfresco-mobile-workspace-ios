@@ -146,6 +146,7 @@ extension OfflineViewModel: SyncServiceDelegate {
     }
 
     func syncDidFinished() {
+        refreshList()
         pageUpdatingDelegate?.didUpdateListActionState(enable: true)
     }
 }
