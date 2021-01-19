@@ -19,32 +19,18 @@
 import Foundation
 import AlfrescoContent
 
-class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
     var parentListNode: ListNode?
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    // MARK: - Init
+
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
         super.init()
         refreshList()
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
-
     // MARK: - ListViewModelProtocol
-
-    func shouldDisplayNodePath() -> Bool {
-        return false
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -54,28 +40,12 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         return EmptyFolder()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
         return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return false
     }
 
     func refreshList() {
@@ -88,6 +58,31 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
                    pagination: nil,
                    error: nil)
     }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
+    func shouldPreview(node: ListNode) -> Bool {
+        if node.nodeType == .folder {
+            return true
+        }
+        if node.markedAsOffline == true &&
+            node.localPath != nil {
+            return true
+        }
+        return false
+    }
+
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
 
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
@@ -107,7 +102,7 @@ class OfflineFoldreDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
 // MARK: Event observable
 
-extension OfflineFoldreDrillViewModel: EventObservable {
+extension OfflineFolderDrillViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -115,22 +110,24 @@ extension OfflineFoldreDrillViewModel: EventObservable {
             handleMove(event: publishedEvent)
         } else if let publishedEvent = event as? OfflineEvent {
             handleOffline(event: publishedEvent)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
         }
     }
 
     private func handleFavorite(event: FavouriteEvent) {
-        let node = event.node
-        for listNode in results where listNode == node {
-            listNode.favorite = node.favorite
+        let eventNode = event.node
+        for listNode in results where listNode == eventNode {
+            listNode.favorite = eventNode.favorite
         }
     }
 
     private func handleMove(event: MoveEvent) {
-        let node = event.node
+        let eventNode = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: node) {
+            if eventNode.nodeType == .file {
+                if let indexOfMovedNode = results.firstIndex(of: eventNode) {
                     results.remove(at: indexOfMovedNode)
                 }
             } else {
@@ -144,9 +141,18 @@ extension OfflineFoldreDrillViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let node = event.node
-        if let indexOfNode = results.firstIndex(of: node) {
-            results[indexOfNode] = node
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            results[indexOfNode] = eventNode
+        }
+    }
+
+    private func handleSyncStatus(event: SyncStatusEvent) {
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            let copyNode = results[indexOfNode]
+            copyNode.syncStatus = eventNode.syncStatus
+            results[indexOfNode] = copyNode
         }
     }
 }

@@ -50,6 +50,14 @@ enum AllowableOperationsType: String {
     case unknown
 }
 
+enum SyncStatus: String {
+    case pending
+    case inProgress
+    case synced
+    case error
+    case undefined
+}
+
 enum SiteRole: String {
     case manager = "SiteManager"
     case collaborator = "SiteCollaborator"
@@ -69,16 +77,20 @@ class ListNode: Hashable, Entity {
     var mimeType: String?
     var title: String
     var path: String
+    var localPath: String?
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
     var markedAsOffline: Bool? = false
     var markedForDeletion: Bool? = false
+    var markedForDownload: Bool? = false
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType
     // objectbox: convert = { "default": ".unknown" }
     var siteRole: SiteRole = .unknown
+    // objectbox: convert = { "default": ".undefined" }
+    var syncStatus: SyncStatus
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = []
 
@@ -93,6 +105,7 @@ class ListNode: Hashable, Entity {
          modifiedAt: Date? = nil,
          nodeType: NodeType,
          favorite: Bool? = nil,
+         syncStatus: SyncStatus = .undefined,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
@@ -107,6 +120,7 @@ class ListNode: Hashable, Entity {
         self.modifiedAt = modifiedAt
         self.nodeType = nodeType
         self.favorite = favorite
+        self.syncStatus = syncStatus
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
@@ -121,9 +135,42 @@ class ListNode: Hashable, Entity {
         nodeType = .unknown
         allowableOperations = []
         siteRole = .unknown
+        syncStatus = .undefined
     }
 
     // MARK: - Public Helpers
+
+    func update(with newVersion: ListNode) {
+        self.parentGuid = newVersion.parentGuid
+        self.siteID = newVersion.siteID
+        self.destination = newVersion.destination
+        self.mimeType = newVersion.mimeType
+        self.title = newVersion.title
+        self.path = newVersion.path
+        self.modifiedAt = newVersion.modifiedAt
+        self.favorite = newVersion.favorite
+        self.nodeType = newVersion.nodeType
+        self.allowableOperations = newVersion.allowableOperations
+        self.syncStatus = newVersion.syncStatus
+        self.markedForDownload = newVersion.markedForDownload
+        self.markedAsOffline = newVersion.markedAsOffline
+        self.markedForDeletion = newVersion.markedForDeletion
+    }
+
+    func syncStatusIcon() -> UIImage? {
+        switch self.syncStatus {
+        case .error:
+            return UIImage(named: "ic-sync-status-error")
+        case .pending:
+            return UIImage(named: "ic-sync-status-pending")
+        case .inProgress:
+            return UIImage(named: "ic-sync-status-in-progress")
+        case .synced:
+            return UIImage(named: "ic-sync-status-synced")
+        case .undefined:
+            return UIImage(named: "ic-sync-status-pending")
+        }
+    }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid
@@ -133,14 +180,13 @@ class ListNode: Hashable, Entity {
         if self.trashed == true {
             return false
         }
-        if self.nodeType == .site {
-            if self.favorite == nil {
-                return true
-            }
+        if self.favorite == nil {
+            return true
         }
-
-        if self.nodeType == .file || self.nodeType == .folder {
-            if self.favorite == nil {
+        switch self.nodeType {
+        case .site: break
+        default:
+            if self.allowableOperations.count == 0 {
                 return true
             }
         }

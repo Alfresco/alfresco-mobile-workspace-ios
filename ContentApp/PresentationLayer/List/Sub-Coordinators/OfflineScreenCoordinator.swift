@@ -24,6 +24,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -64,18 +65,28 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        if node.nodeType == .folder, let navigationViewController = self.navigationViewController {
-            let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                     listNode: node)
-            coordinator.start()
-            self.offlineFolderChildrenScreenCoordinator = coordinator
+        if let navigationViewController = self.navigationViewController {
+            switch node.nodeType {
+            case .folder:
+                let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
+                                                                         listNode: node)
+                coordinator.start()
+                self.offlineFolderChildrenScreenCoordinator = coordinator
+            case .file, .fileLink:
+                let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                               listNode: node)
+                coordinator.start()
+                self.filePreviewCoordinator = coordinator
+
+            default:
+                AlfrescoLog.error("Unable to show preview for unknown node type")
+            }
         }
     }
 
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                                   offlineTabDisplayed: true,
                                                           coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
@@ -92,7 +103,8 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         // Do nothing
     }
 
-    func showNodeCreationDialog(with actionMenu: ActionMenu, delegate: CreateNodeViewModelDelegate?) {
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
         // Do nothing
     }
 }

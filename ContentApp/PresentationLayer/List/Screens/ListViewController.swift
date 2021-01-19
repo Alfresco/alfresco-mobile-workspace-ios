@@ -96,6 +96,7 @@ class ListViewController: SystemSearchViewController {
 
 extension ListViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
+        // Do nothing
     }
 
     func didUpdateList(error: Error?, pagination: Pagination?) {
@@ -104,5 +105,9 @@ extension ListViewController: ListComponentActionDelegate {
 
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
         listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+    }
+
+    func performListAction() {
+        listViewModel?.performListAction()
     }
 }

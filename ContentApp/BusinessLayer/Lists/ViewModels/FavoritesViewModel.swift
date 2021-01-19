@@ -21,24 +21,87 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     var listCondition: String = kWhereFavoritesFileFolderCondition
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
+    }
+
+    // MARK: - ListViewModelProtocol
+
+    func isEmpty() -> Bool {
+        return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        if listCondition == kWhereFavoritesFileFolderCondition {
+            return EmptyFavoritesFilesFolders()
+        }
+        return EmptyFavoritesLibraries()
+    }
+
+    func numberOfSections() -> Int {
+        return (results.count == 0) ? 0 : 1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func refreshList() {
+        currentPage = 1
+        favoritesList(with: nil)
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
+
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
+        favoritesList(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?,
+                             pagination: Pagination?,
+                             error: Error?) {
+        updateResults(results: results,
+                      pagination: pagination,
+                      error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
     }
 
     // MARK: - Public interface
 
     func favoritesList(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-
+        let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -72,89 +135,11 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObs
             }
         })
     }
-
-    // MARK: - ListViewModelProtocol Methods
-
-    func isEmpty() -> Bool {
-        return results.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
-        if listCondition == kWhereFavoritesFileFolderCondition {
-            return EmptyFavoritesFilesFolders()
-        }
-        return EmptyFavoritesLibraries()
-    }
-
-    func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func refreshList() {
-        currentPage = 1
-        favoritesList(with: nil)
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    override func fetchItems(with requestPagination: RequestPagination,
-                             userInfo: Any?,
-                             completionHandler: @escaping PagedResponseCompletionHandler) {
-        favoritesList(with: requestPagination)
-    }
-
-    override func handlePage(results: [ListNode]?,
-                             pagination: Pagination?,
-                             error: Error?) {
-        updateResults(results: results,
-                      pagination: pagination,
-                      error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
 }
 
 // MARK: - Event observable
 
-extension FavoritesViewModel {
-
+extension FavoritesViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -197,7 +182,9 @@ extension FavoritesViewModel {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
+            let listNode = results[indexOfOfflineNode]
+            listNode .markedAsOffline = node.markedAsOffline
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

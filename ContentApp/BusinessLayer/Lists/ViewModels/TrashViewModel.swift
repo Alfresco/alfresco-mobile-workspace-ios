@@ -21,23 +21,73 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
     }
 
-    // MARK: - Public methods
+    // MARK: - ListViewModelProtocol
+
+    func isEmpty() -> Bool {
+        return results.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
+
+    func numberOfSections() -> Int {
+        return (results.count == 0) ? 0 : 1
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return results.count
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - PageFetchingViewModel
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        request(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    // MARK: - Public interface
 
     func request(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-
+        let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -62,79 +112,11 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserva
             }
         })
     }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
-    }
-
-    // MARK: - ListViewModelProtocol
-
-    func isEmpty() -> Bool {
-        return results.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        return results.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func refreshList() {
-        currentPage = 1
-        request(with: nil)
-    }
-
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
-        request(with: requestPagination)
-    }
-
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
 }
 
 // MARK: Event Observable
 
-extension TrashViewModel {
+extension TrashViewModel: EventObservable {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? MoveEvent {

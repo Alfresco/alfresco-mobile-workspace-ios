@@ -26,15 +26,15 @@ class FolderChildrenViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
-        let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
-        let folderDrillViewModel = FolderDrillViewModel(with: accountService,
+        let folderDrillViewModel = FolderDrillViewModel(with: coordinatorServices,
                                                         listRequest: nil)
         folderDrillViewModel.listNode = listNode
 
-        let resultViewModel = ResultsViewModel()
-        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+        let contextualSearchViewModel =
+            ContextualSearchViewModel(accountService: coordinatorServices?.accountService)
         let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,
                                       nodeID: listNode.guid)

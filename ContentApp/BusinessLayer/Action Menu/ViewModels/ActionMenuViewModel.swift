@@ -28,9 +28,9 @@ class ActionMenuViewModel {
     private var toolbarActions: [ActionMenu]?
     private var menuActions: [[ActionMenu]]
     private var coordinatorServices: CoordinatorServices?
+    private let nodeOperations: NodeOperations
 
     var toolbarDisplayed: Bool
-    var offlineTabDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
@@ -38,14 +38,13 @@ class ActionMenuViewModel {
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          node: ListNode? = nil,
          toolbarDisplayed: Bool = false,
-         offlineTabDisplayed: Bool = false,
          coordinatorServices: CoordinatorServices?) {
 
         self.listNode = node
-        self.toolbarDisplayed = toolbarDisplayed
-        self.offlineTabDisplayed =          offlineTabDisplayed
         self.menuActions = menuActions
+        self.toolbarDisplayed = toolbarDisplayed
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -75,32 +74,23 @@ class ActionMenuViewModel {
             createMenuActions()
             return
         }
-        coordinatorServices?.accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            guard let sSelf = self else { return }
-            if listNode.nodeType == .site {
-                FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                         favoriteId: listNode.guid) { (_, error) in
-                    if error == nil {
-                        sSelf.listNode?.favorite = true
-                    }
-                    sSelf.createMenuActions()
+        if listNode.nodeType == .site {
+            nodeOperations.fetchNodeIsFavorite(for: listNode.guid) { [weak self] (_, error) in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    sSelf.listNode?.favorite = true
                 }
-            } else {
-                NodesAPI.getNode(nodeId: listNode.guid,
-                                 include: [kAPIIncludePathNode,
-                                           kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeIsFavoriteNode,
-                                           kAPIIncludeProperties],
-                                 relativePath: nil,
-                                 fields: nil) { (result, _) in
-                    if let entry = result?.entry {
-                        sSelf.listNode = NodeChildMapper.create(from: entry)
-                    }
-                    sSelf.createMenuActions()
-                }
+                sSelf.createMenuActions()
             }
-        })
+        } else {
+            nodeOperations.fetchNodeDetails(for: listNode.guid) { [weak self] (result, _) in
+                guard let sSelf = self else { return }
+                if let entry = result?.entry {
+                    sSelf.listNode?.update(with: NodeChildMapper.create(from: entry))
+                }
+                sSelf.createMenuActions()
+            }
+        }
     }
 
     func actions() -> [[ActionMenu]] {
@@ -145,8 +135,7 @@ class ActionMenuViewModel {
         if listNode.trashed == true {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {
-            menuActions = ActionsMenuGeneric.actions(for: listNode,
-                                                     offlineTabDisplayed: offlineTabDisplayed)
+            menuActions = ActionsMenuGeneric.actions(for: listNode)
         }
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }

@@ -62,7 +62,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         zoomImageView.contentInsetAdjustmentBehavior = .never
         addSubview(zoomImageView)
         let tapGesture = UITapGestureRecognizer(target: self,
-                                                action: #selector(ImagePreview.zoomImageTapGestureRecognizer(_:)))
+                                                action: #selector(zoomImageGesture(_:)))
         zoomImageView.addGestureRecognizer(tapGesture)
 
         self.zoomImageView = zoomImageView
@@ -74,13 +74,15 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - Public Utils
 
-    func display(for imagePreview: FilePreviewType, from url: URL, handler: @escaping ImagePreviewHandler) {
-
+    func display(for imagePreview: FilePreviewType,
+                 from url: URL,
+                 handler: @escaping ImagePreviewHandler) {
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView else { return }
         isRendering = true
         let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
                                  height: imageView.bounds.height * kMultiplerPreviewSizeImage)
-        let imageRequest = ImageRequest(url: url, processors: [ImageProcessors.Resize(size: resizeImage)])
+        let imageRequest = ImageRequest(url: url,
+                                        processors: [ImageProcessors.Resize(size: resizeImage)])
 
         if let imageCachedContainer = ImagePipeline.shared.cachedImage(for: imageRequest) {
             if imagePreview == .gif {
@@ -107,9 +109,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     // MARK: - Private Helpers
 
-    @objc private func zoomImageTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc private func zoomImageGesture(_ gestureRecognizer: UIGestureRecognizer) {
         numberOfTaps += 1
-        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: kFullScreenPreview, repeats: false, block: { [weak self] (_) in
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: kFullScreenPreview,
+                                               repeats: false,
+                                               block: { [weak self] (_) in
             guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }
             sSelf.isFullScreen = !sSelf.isFullScreen
             sSelf.numberOfTaps = 0
@@ -153,10 +157,12 @@ class ImagePreview: UIView, FilePreviewProtocol {
     }
 
     private func displayGIF() {
-        guard let imageRequest = self.imageRequest, let handler = imagePreviewHandler else { return }
+        guard let imageRequest = self.imageRequest,
+              let handler = imagePreviewHandler else { return }
 
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Default() }
-        task = ImagePipeline.shared.loadImage(with: imageRequest, completion: { [weak self] result in
+        task = ImagePipeline.shared.loadImage(with: imageRequest,
+                                              completion: { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .success(let response):
@@ -174,7 +180,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
         guard let url = self.imageRequest?.urlRequest.url,
               let handler = imagePreviewHandler else { return }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
-        task = ImagePipeline.shared.loadImage(with: url, completion: { [weak self] result in
+        task = ImagePipeline.shared.loadImage(with: url,
+                                              completion: { [weak self] result in
             guard let sSelf = self else { return }
             switch result {
             case .failure(let error):
@@ -201,9 +208,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
         let heightRatio = frame.height / size.height
 
         if widthRatio > heightRatio {
-            return CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
+            return CGSize(width: size.width * heightRatio,
+                          height: size.height * heightRatio)
         } else {
-            return CGSize(width: size.width * widthRatio, height: size.height * widthRatio)
+            return CGSize(width: size.width * widthRatio,
+                          height: size.height * widthRatio)
         }
     }
 

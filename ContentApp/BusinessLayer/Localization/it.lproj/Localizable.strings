@@ -59,8 +59,6 @@
 "how-to-connect-to-alfresco" = "Come connettersi ad Alfresco";
 "connecting" = "Connetto";
 "signing-in" = "Accedo";
-"session-expired" = "Sessione scaduta";
-"sesssion-expired-message" = "Non sei più connesso. Accedi di nuovo per continuare.";
 
 // MARK: - Screen Titles
 "settings" = "Impostazioni";
@@ -162,6 +160,8 @@
 "dialog-delete-message" = "%@ verrà eliminato definitivamente.";
 "dialog-download-message" = "Scarico '%@'";
 "dialog-upload-message" = "Carico '%@'";
+"dialog-session-expired-title" = "Sessione scaduta";
+"dialog-session-expired-message" = "Non sei più connesso. Accedi di nuovo per continuare.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";

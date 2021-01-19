@@ -59,8 +59,6 @@
 "how-to-connect-to-alfresco" = "Cómo conectarse a Alfresco";
 "connecting" = "Conectando";
 "signing-in" = "Iniciando sesión";
-"session-expired" = "Sesión caducada.";
-"sesssion-expired-message" = "Su sesión ya no está abierta. Vuelva a iniciar sesión para continuar.";
 
 // MARK: - Screen Titles
 "settings" = "Ajustes";
@@ -157,11 +155,13 @@
 "action-menu-create-ms-powerpoint" = "Presentación de PowerPoint";
 "action-menu-create-folder" = "Nueva carpeta";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
 "dialog-delete-message" = "%@ se eliminará permanentemente.";
 "dialog-download-message" = "Descargando '%@'";
 "dialog-upload-message" = "Cargando '%@'";
+"dialog-session-expired-title" = "Sesión caducada.";
+"dialog-session-expired-message" = "Su sesión ya no está abierta. Vuelva a iniciar sesión para continuar.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";

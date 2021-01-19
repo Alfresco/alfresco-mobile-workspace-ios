@@ -50,6 +50,7 @@ class FilePreviewViewModel: EventObservable {
     var listNode: ListNode?
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
+    let nodeOperations: NodeOperations
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     var actionMenuViewModel: ActionMenuViewModel?
@@ -65,50 +66,65 @@ class FilePreviewViewModel: EventObservable {
     init(with listNode: ListNode,
          delegate: FilePreviewViewModelDelegate?,
          coordinatorServices: CoordinatorServices) {
+
         self.listNode = listNode
         self.viewModelDelegate = delegate
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
+    }
+
+    func requestUpdateNodeDetails() {
+        guard let listNode = self.listNode, shouldUpdateNode() == true else { return }
+        let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
+
+        nodeOperations.fetchNodeDetails(for: guid) {[weak self] (result, error) in
+            guard let sSelf = self else { return }
+            if let error = error {
+                sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
+            } else if let entry = result?.entry {
+                let listNode = NodeChildMapper.create(from: entry)
+                sSelf.listNode = listNode
+                sSelf.actionMenuViewModel =
+                    ActionMenuViewModel(node: listNode,
+                                        toolbarDisplayed: true,
+                                        coordinatorServices: sSelf.coordinatorServices)
+                sSelf.nodeActionsViewModel =
+                    NodeActionsViewModel(node: listNode,
+                                         delegate: nil,
+                                         coordinatorServices: sSelf.coordinatorServices)
+                sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
+            }
+        }
     }
 
     func requestFilePreview(with size: CGSize?) {
         guard var size = size, let listNode = listNode else { return }
+        if listNode.localPath != nil {
+            previewOffline(with: size)
+            return
+        }
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
 
         switch filePreviewType {
         case .video, .image, .gif, .audio:
             size = requestFullScreenExperience()
-        default: break
-        }
-
-        // Fetch or generate a rendition preview
-        if filePreviewType == .rendition {
+            if let contentURL =
+                contentURL(for: coordinatorServices?.accountService?.activeAccount?.getTicket()) {
+                previewFile(type: filePreviewType, at: contentURL, with: size)
+            }
+        case .rendition:
             fetchRenditionURL(for: listNode.guid) { [weak self] url, isImageRendition in
                 guard let sSelf = self else { return }
-
                 if isImageRendition {
                     size = sSelf.requestFullScreenExperience()
                 }
-                sSelf.previewFile(type: (isImageRendition ? .image : .rendition), at: url, with: size)
+                sSelf.previewFile(type: (isImageRendition ? .image : .rendition),
+                                  at: url,
+                                  with: size)
             }
-        } else if filePreviewType == .text { // Show text content
-            contentText { [weak self] (text, error) in
-                guard let sSelf = self else { return }
-                if let text = text {
-                    let preview = FilePreviewFactory.getPlainTextPreview(with: text, on: size)
-                    sSelf.filePreview = preview
-                    sSelf.viewModelDelegate?.display(previewContainer: preview)
-                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
-                } else {
-                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
-                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
-                                                                  node: sSelf.listNode,
-                                                                  size: size)
-                    sSelf.filePreview = noPreview
-                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
-                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
-                }
-            }
-        } else { // Show the actual content from URL
+        case .text:
+            previewContentFileText(with: size)
+        default:
             if let contentURL =
                 contentURL(for: coordinatorServices?.accountService?.activeAccount?.getTicket()) {
                 previewFile(type: filePreviewType, at: contentURL, with: size)
@@ -128,6 +144,8 @@ class FilePreviewViewModel: EventObservable {
         renditionTimer?.invalidate()
     }
 
+    // MARK: - Analytics
+
     func sendAnalyticsForPreviewFile(success: Bool) {
         guard let listNode = listNode else { return }
         let fileExtension = listNode.title.split(separator: ".").last
@@ -137,9 +155,14 @@ class FilePreviewViewModel: EventObservable {
                                         AnalyticsConstants.Parameters.previewSuccess: success])
     }
 
-    func updateNodeDetails() {
-        guard let listNode = self.listNode else { return }
-        if listNode.shouldUpdate() == false && listNode.nodeType != .fileLink {
+    // MARK: - Private Helpers
+
+    private func shouldUpdateNode() -> Bool {
+        guard let listNode = self.listNode else { return false}
+        if listNode.shouldUpdate() == false &&
+            listNode.nodeType != .fileLink ||
+            listNode.localPath != nil {
+
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
                                                       toolbarDisplayed: true,
                                                       coordinatorServices: coordinatorServices)
@@ -147,47 +170,126 @@ class FilePreviewViewModel: EventObservable {
                                                         delegate: nil,
                                                         coordinatorServices: coordinatorServices)
             viewModelDelegate?.didFinishNodeDetails(error: nil)
+            return false
+        }
+        return true
+    }
+
+    private func requestFullScreenExperience() -> CGSize {
+        viewModelDelegate?.enableFullscreenContentExperience()
+        return kWindow.bounds.size
+    }
+
+    // MARK: - Preview
+
+    private func previewOffline(with size: CGSize) {
+        guard let listNode = listNode else { return }
+        let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
+        var size = size
+        let url = URL(fileURLWithPath: listNode.localPath ?? "")
+
+        switch filePreviewType {
+        case .video, .image, .gif, .audio:
+            size = requestFullScreenExperience()
+        default: break
+        }
+
+        let preview = FilePreviewFactory.getPreview(for: filePreviewType,
+                                                    node: listNode,
+                                                    url: url,
+                                                    size: size) { [weak self] (error) in
+            guard let sSelf = self else { return }
+            sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+        }
+
+        filePreview = preview
+        viewModelDelegate?.display(previewContainer: preview)
+
+        // Set delegate for password requesting PDF renditions
+        if let filePreview = preview as? PDFRenderer {
+            filePreview.passwordDelegate = self
+            pdfRenderer = filePreview
+        }
+    }
+
+    private func previewFile(type: FilePreviewType, at url: URL?, with size: CGSize) {
+        guard let renditionURL = url else {
+            viewModelDelegate?.enableFullscreenContentExperience()
+            let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                          node: listNode,
+                                                          size: size)
+            filePreview = noPreview
+            viewModelDelegate?.display(previewContainer: noPreview)
+            let error = FilePreviewError.invalidRenditionURL("No rendition URL provided")
+            viewModelDelegate?.didFinishLoadingPreview(error: error)
+
             return
         }
-        coordinatorServices?.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
 
+        let preview = FilePreviewFactory.getPreview(for: type,
+                                                    node: listNode,
+                                                    url: renditionURL,
+                                                    size: size) { [weak self] (error) in
+            guard let sSelf = self, let listNode = sSelf.listNode else { return }
+
+            if let error = error {
+                if type != .pdf || type != .rendition {
+                    sSelf.fetchRenditionURL(for: listNode.guid) { url, isImageRendition in
+                        sSelf.previewFile(type: (isImageRendition ? .image : .rendition),
+                                          at: url,
+                                          with: size)
+                    }
+                } else {
+                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                                  node: sSelf.listNode,
+                                                                  size: size)
+                    sSelf.filePreview = noPreview
+                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
+                }
+            } else {
+                sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+            }
+        }
+
+        filePreview = preview
+        viewModelDelegate?.display(previewContainer: preview)
+
+        // Set delegate for password requesting PDF renditions
+        if let filePreview = preview as? PDFRenderer {
+            filePreview.passwordDelegate = self
+            pdfRenderer = filePreview
+        }
+    }
+
+    // MARK: - Content
+
+    private func previewContentFileText(with size: CGSize) {
+        guard let listNode = listNode else { return }
+        let accountService = coordinatorServices?.accountService
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let guid = (listNode.nodeType == .fileLink) ? listNode.destination ?? listNode.guid : listNode.guid
-            NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeProperties]) { (result, error) in
-                if let error = error {
-                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
-                } else if let entry = result?.entry {
-                    let listNode = NodeChildMapper.create(from: entry)
-                    sSelf.listNode = listNode
-                    sSelf.actionMenuViewModel =
-                        ActionMenuViewModel(node: listNode,
-                                            toolbarDisplayed: true,
-                                            coordinatorServices: sSelf.coordinatorServices)
-                    sSelf.nodeActionsViewModel =
-                        NodeActionsViewModel(node: listNode,
-                                             delegate: nil,
-                                             coordinatorServices: sSelf.coordinatorServices)
-                    sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
+
+            NodesAPI.getNodeContent(nodeId: listNode.guid) { (data, error) in
+                if let text = data {
+                    let preview = FilePreviewFactory.getPlainTextPreview(with: text, on: size)
+                    sSelf.filePreview = preview
+                    sSelf.viewModelDelegate?.display(previewContainer: preview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+                } else if let error = error {
+                    AlfrescoLog.error(error)
+                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
+                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
+                                                                  node: sSelf.listNode,
+                                                                  size: size)
+                    sSelf.filePreview = noPreview
+                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
                 }
             }
         })
-    }
-
-    // MARK: - Private interface
-
-    private func contentText(_ completionHandler: @escaping (Data?, Error?) -> Void) {
-        guard let listNode = listNode else { return }
-        NodesAPI.getNodeContent(nodeId: listNode.guid) { (data, error) in
-            if let error = error {
-                AlfrescoLog.error(error)
-            }
-            completionHandler(data, error)
-        }
     }
 
     private func contentURL(for ticket: String?) -> URL? {
@@ -199,6 +301,8 @@ class FilePreviewViewModel: EventObservable {
         else { return nil }
         return previewURL
     }
+
+    // MARK: - Rendtion
 
     private func renditionURL(for renditionId: String, ticket: String?) -> URL? {
         guard let ticket = ticket,
@@ -309,62 +413,6 @@ class FilePreviewViewModel: EventObservable {
                     }
                 })
             }
-    }
-
-    private func previewFile(type: FilePreviewType, at url: URL?, with size: CGSize) {
-        guard let renditionURL = url else {
-            viewModelDelegate?.enableFullscreenContentExperience()
-            let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
-                                                          node: listNode,
-                                                          size: size)
-            filePreview = noPreview
-            viewModelDelegate?.display(previewContainer: noPreview)
-            let error = FilePreviewError.invalidRenditionURL("No rendition URL provided")
-            viewModelDelegate?.didFinishLoadingPreview(error: error)
-
-            return
-        }
-
-        let preview = FilePreviewFactory.getPreview(for: type,
-                                                    node: listNode,
-                                                    url: renditionURL,
-                                                    size: size) { [weak self] (error) in
-            guard let sSelf = self, let listNode = sSelf.listNode else { return }
-
-            if let error = error {
-                if type != .pdf || type != .rendition {
-                    sSelf.fetchRenditionURL(for: listNode.guid) { url, isImageRendition in
-                        sSelf.previewFile(type: (isImageRendition ? .image : .rendition),
-                                          at: url,
-                                          with: size)
-                    }
-                } else {
-                    sSelf.viewModelDelegate?.enableFullscreenContentExperience()
-                    let noPreview = FilePreviewFactory.getPreview(for: .noPreview,
-                                                                  node: sSelf.listNode,
-                                                                  size: size)
-                    sSelf.filePreview = noPreview
-                    sSelf.viewModelDelegate?.display(previewContainer: noPreview)
-                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
-                }
-            } else {
-                sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
-            }
-        }
-
-        filePreview = preview
-        viewModelDelegate?.display(previewContainer: preview)
-
-        // Set delegate for password requesting PDF renditions
-        if let filePreview = preview as? PDFRenderer {
-            filePreview.passwordDelegate = self
-            pdfRenderer = filePreview
-        }
-    }
-
-    func requestFullScreenExperience() -> CGSize {
-        viewModelDelegate?.enableFullscreenContentExperience()
-        return kWindow.bounds.size
     }
 
     // MARK: - Event observable

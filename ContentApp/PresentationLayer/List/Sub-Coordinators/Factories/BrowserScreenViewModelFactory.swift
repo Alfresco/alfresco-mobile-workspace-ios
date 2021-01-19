@@ -26,12 +26,12 @@ class BrowseViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func browseDataSource() -> BrowseDataSource {
-        let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
         let browseViewModel = BrowseViewModel()
-        let resultViewModel = ResultsViewModel()
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+        let globalSearchViewModel =
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
 
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel

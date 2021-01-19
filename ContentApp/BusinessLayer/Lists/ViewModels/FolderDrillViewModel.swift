@@ -21,81 +21,23 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
+class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
+    let nodeOperations: NodeOperations
     var listNode: ListNode?
 
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
-    }
-
-    // MARK: - Public methods
-
-    func request(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let relativePath = (sSelf.listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
-            let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            sSelf.updateNodeDetailsIfNecessary { (_) in
-                NodesAPI.listNodeChildren(nodeId: sSelf.listNode?.guid ?? kAPIPathMy,
-                                          skipCount: skipCount,
-                                          maxItems: maxItems,
-                                          orderBy: nil,
-                                          _where: nil,
-                                          include: [kAPIIncludeIsFavoriteNode,
-                                                    kAPIIncludePathNode,
-                                                    kAPIIncludeAllowableOperationsNode,
-                                                    kAPIIncludeProperties],
-                                          relativePath: relativePath,
-                                          includeSource: nil,
-                                          fields: nil) { (result, error) in
-                    var listNodes: [ListNode]?
-                    if let entries = result?.list?.entries {
-                        listNodes = NodeChildMapper.map(entries)
-                    } else {
-                        if let error = error {
-                            AlfrescoLog.error(error)
-                        }
-                    }
-                    let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                              error: error,
-                                                              requestPagination: paginationRequest,
-                                                              responsePagination: result?.list?.pagination)
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                }
-            }
-        })
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
     }
 
     // MARK: - ListViewModelProtocol
-
-    func shouldDisplayNodePath() -> Bool {
-        return false
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-//        guard let listNode = listNode else { return true }
-//        return listNode.hasPermissionToCreate()
-    }
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -103,10 +45,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
 
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
     }
 
     func numberOfSections() -> Int {
@@ -117,22 +55,34 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         return results.count
     }
 
+    func refreshList() {
+        currentPage = 1
+        request(with: nil)
+    }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+//        guard let listNode = listNode else { return true }
+//        return listNode.hasPermissionToCreate()
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func refreshList() {
-        currentPage = 1
-        request(with: nil)
+    func performListAction() {
+        // Do nothing
     }
+
+    // MARK: - PageFetchingViewModel
 
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
@@ -147,6 +97,35 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
+    }
+
+    // MARK: - Public methods
+
+    func request(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+        let relativePath = (listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
+        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kListPageSize,
+                                              skipCount: paginationRequest?.skipCount)
+        updateNodeDetailsIfNecessary { [weak self] (_) in
+            guard let sSelf = self else { return }
+            sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? kAPIPathMy,
+                                                   pagination: reqPagination,
+                                                   relativePath: relativePath) { (result, error) in
+                var listNodes: [ListNode]?
+                if let entries = result?.list?.entries {
+                    listNodes = NodeChildMapper.map(entries)
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        }
     }
 
     // MARK: - Private Utils
@@ -172,31 +151,25 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol, EventO
         if listNode.nodeType == .folderLink {
             guid = listNode.destination ?? listNode.guid
         }
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+
+        nodeOperations.fetchNodeDetails(for: guid) { [weak self] (result, error) in
             guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeProperties],
-                             relativePath: nil) { (result, error) in
-                if let error = error {
-                    AlfrescoLog.error(error)
-                } else if let entry = result?.entry {
-                    sSelf.listNode = NodeChildMapper.create(from: entry)
-                    sSelf.pageUpdatingDelegate?
-                        .shouldDisplayCreateButton(enable: sSelf.shouldDisplayCreateButton())
-                }
-                handle(error)
+
+            if let error = error {
+                AlfrescoLog.error(error)
+            } else if let entry = result?.entry {
+                sSelf.listNode = NodeChildMapper.create(from: entry)
+                sSelf.pageUpdatingDelegate?
+                    .shouldDisplayCreateButton(enable: sSelf.shouldDisplayCreateButton())
             }
-        })
+            handle(error)
+        }
     }
 }
 
 // MARK: Event observable
 
-extension FolderDrillViewModel {
+extension FolderDrillViewModel: EventObservable {
 
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
@@ -239,7 +212,9 @@ extension FolderDrillViewModel {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
+            let listNode = results[indexOfOfflineNode]
+            listNode .markedAsOffline = node.markedAsOffline
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

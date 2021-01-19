@@ -19,8 +19,7 @@
 import Foundation
 
 struct ActionsMenuGeneric {
-    static func actions(for node: ListNode,
-                        offlineTabDisplayed: Bool = false) -> [[ActionMenu]] {
+    static func actions(for node: ListNode) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
         let infoAction = ActionMenu(title: node.title,
@@ -38,7 +37,7 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
 
-        if let action = deleteAction(for: node), offlineTabDisplayed == false {
+        if let action = deleteAction(for: node) {
             actions2.append(action)
         }
 
@@ -63,7 +62,7 @@ struct ActionsMenuGeneric {
                                        type: .markOffline)
         let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
                                        type: .removeOffline)
-        if node.nodeType == .file || node.nodeType == .folder {
+        if node.nodeType == .file {
             return node.isMarkedOffline() ? removeOffAction : markOffAction
         }
         return nil

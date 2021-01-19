@@ -26,6 +26,13 @@ protocol ResultsViewModelDelegate: class {
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [NodeType]?
     weak var delegate: ResultsViewModelDelegate?
+    var coordinatorServices: CoordinatorServices?
+    let nodeOperations: NodeOperations
+
+    init(with coordinatorServices: CoordinatorServices?) {
+        self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
+    }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
@@ -52,10 +59,6 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return EmptySearch()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func numberOfSections() -> Int {
         return (results.count == 0) ? 0 : 1
     }
@@ -68,24 +71,8 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
     }
 
     func refreshList() {
@@ -96,20 +83,14 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
         if node.nodeType == .site {
-            FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                     favoriteId: node.guid) { (_, error) in
+            nodeOperations.fetchNodeIsFavorite(for: node.guid) { (_, error) in
                 if error == nil {
                     node.favorite = true
                 }
                 completion(node, error)
             }
         } else {
-            NodesAPI.getNode(nodeId: node.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeIsFavoriteNode],
-                             relativePath: nil,
-                             fields: nil) { (result, error) in
+            nodeOperations.fetchNodeDetails(for: node.guid) { (result, error) in
                 if let entry = result?.entry {
                     let listNode = NodeChildMapper.create(from: entry)
                     completion(listNode, error)
@@ -164,7 +145,9 @@ extension ResultsViewModel {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
+            let listNode = results[indexOfOfflineNode]
+            listNode .markedAsOffline = node.markedAsOffline
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

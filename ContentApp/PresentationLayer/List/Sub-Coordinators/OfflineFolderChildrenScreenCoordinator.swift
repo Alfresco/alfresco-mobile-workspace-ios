@@ -24,6 +24,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     private var listNode: ListNode
     private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -51,17 +52,25 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 
 extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(from node: ListNode) {
-        if node.nodeType == .folder {
+        switch node.nodeType {
+        case .folder:
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,
                                                                      listNode: node)
             coordinator.start()
             self.offlineFolderChildrenScreenCoordinator = coordinator
+        case .file, .fileLink:
+            let coordinator = FilePreviewScreenCoordinator(with: presenter,
+                                                           listNode: node)
+            coordinator.start()
+            self.filePreviewCoordinator = coordinator
+
+        default:
+            AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
 
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                               offlineTabDisplayed: true,
                                                       coordinatorServices: coordinatorServices)
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,

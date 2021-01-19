@@ -23,7 +23,14 @@ import AlfrescoAuth
 protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
     var pageUpdatingDelegate: ListComponentPageUpdatingDelegate? { get set }
 
-    init(with accountService: AccountService?, listRequest: SearchRequest?)
+    init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?)
     func shouldDisplaySettingsButton() -> Bool
     func fetchNextListPage(index: IndexPath, userInfo: Any?)
+    func performListAction()
+}
+
+extension ListViewModelProtocol {
+    func shouldDisplaySettingsButton() -> Bool {
+        return false
+    }
 }

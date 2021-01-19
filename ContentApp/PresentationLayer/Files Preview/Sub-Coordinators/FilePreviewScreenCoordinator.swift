@@ -29,7 +29,8 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
-    init(with presenter: UINavigationController, listNode: ListNode) {
+    init(with presenter: UINavigationController,
+         listNode: ListNode) {
         self.presenter = presenter
         self.listNode = listNode
     }

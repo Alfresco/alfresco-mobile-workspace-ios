@@ -34,16 +34,19 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "mimeType", type: String.entityPropertyType, id: 5, uid: 2111228495610437376)
         try entityBuilder.addProperty(name: "title", type: String.entityPropertyType, id: 6, uid: 80770848759604480)
         try entityBuilder.addProperty(name: "path", type: String.entityPropertyType, id: 7, uid: 2355487130584533248)
+        try entityBuilder.addProperty(name: "localPath", type: String.entityPropertyType, id: 20, uid: 3324245441029626112)
         try entityBuilder.addProperty(name: "modifiedAt", type: Date.entityPropertyType, id: 8, uid: 5604197784113814784)
         try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 11, uid: 6507941571178712320)
         try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 14, uid: 6548674364965640960)
         try entityBuilder.addProperty(name: "markedAsOffline", type: Bool.entityPropertyType, id: 18, uid: 6010654626593675520)
         try entityBuilder.addProperty(name: "markedForDeletion", type: Bool.entityPropertyType, id: 19, uid: 269961487045141504)
+        try entityBuilder.addProperty(name: "markedForDownload", type: Bool.entityPropertyType, id: 21, uid: 9108148447639355648)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 10, uid: 5852693191752956672)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 13, uid: 7254106165676034048)
+        try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 22, uid: 3164935005194304768)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 12, uid: 7364912097151763200)
 
-        try entityBuilder.lastProperty(id: 19, uid: 269961487045141504)
+        try entityBuilder.lastProperty(id: 22, uid: 3164935005194304768)
     }
 }
 
@@ -100,6 +103,12 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { ListNode.localPath.startsWith("X") }
+    internal static var localPath: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 20, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { ListNode.modifiedAt > 1234 }
     internal static var modifiedAt: Property<ListNode, Date?, Void> { return Property<ListNode, Date?, Void>(propertyId: 8, isPrimaryKey: false) }
     /// Generated entity property information.
@@ -130,6 +139,12 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { ListNode.markedForDownload > 1234 }
+    internal static var markedForDownload: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 21, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { ListNode.nodeType.startsWith("X") }
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 10, isPrimaryKey: false) }
     /// Generated entity property information.
@@ -138,6 +153,12 @@ extension ListNode {
     ///
     ///     box.query { ListNode.siteRole.startsWith("X") }
     internal static var siteRole: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 13, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.syncStatus.startsWith("X") }
+    internal static var syncStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -219,6 +240,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .localPath.startsWith("X") }
+
+    internal static var localPath: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 20, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .modifiedAt > 1234 }
 
     internal static var modifiedAt: Property<ListNode, Date?, Void> { return Property<ListNode, Date?, Void>(propertyId: 8, isPrimaryKey: false) }
@@ -259,6 +288,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .markedForDownload > 1234 }
+
+    internal static var markedForDownload: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 21, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .nodeType.startsWith("X") }
 
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 10, isPrimaryKey: false) }
@@ -270,6 +307,14 @@ extension ObjectBox.Property where E == ListNode {
     ///     box.query { .siteRole.startsWith("X") }
 
     internal static var siteRole: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 13, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .syncStatus.startsWith("X") }
+
+    internal static var syncStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -308,8 +353,10 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_mimeType = propertyCollector.prepare(string: entity.mimeType)
         let propertyOffset_title = propertyCollector.prepare(string: entity.title)
         let propertyOffset_path = propertyCollector.prepare(string: entity.path)
+        let propertyOffset_localPath = propertyCollector.prepare(string: entity.localPath)
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
+        let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
         let propertyOffset_allowableOperations = propertyCollector.prepare(string: AllowableOperationsConverter.convert(entity.allowableOperations))
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
@@ -318,6 +365,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(entity.trashed, at: 2 + 2 * 14)
         propertyCollector.collect(entity.markedAsOffline, at: 2 + 2 * 18)
         propertyCollector.collect(entity.markedForDeletion, at: 2 + 2 * 19)
+        propertyCollector.collect(entity.markedForDownload, at: 2 + 2 * 21)
         propertyCollector.collect(dataOffset: propertyOffset_parentGuid, at: 2 + 2 * 15)
         propertyCollector.collect(dataOffset: propertyOffset_guid, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 3)
@@ -325,8 +373,10 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_mimeType, at: 2 + 2 * 5)
         propertyCollector.collect(dataOffset: propertyOffset_title, at: 2 + 2 * 6)
         propertyCollector.collect(dataOffset: propertyOffset_path, at: 2 + 2 * 7)
+        propertyCollector.collect(dataOffset: propertyOffset_localPath, at: 2 + 2 * 20)
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 10)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 13)
+        propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 22)
         propertyCollector.collect(dataOffset: propertyOffset_allowableOperations, at: 2 + 2 * 12)
     }
 
@@ -341,13 +391,16 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.mimeType = entityReader.read(at: 2 + 2 * 5)
         entity.title = entityReader.read(at: 2 + 2 * 6)
         entity.path = entityReader.read(at: 2 + 2 * 7)
+        entity.localPath = entityReader.read(at: 2 + 2 * 20)
         entity.modifiedAt = entityReader.read(at: 2 + 2 * 8)
         entity.favorite = entityReader.read(at: 2 + 2 * 11)
         entity.trashed = entityReader.read(at: 2 + 2 * 14)
         entity.markedAsOffline = entityReader.read(at: 2 + 2 * 18)
         entity.markedForDeletion = entityReader.read(at: 2 + 2 * 19)
+        entity.markedForDownload = entityReader.read(at: 2 + 2 * 21)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 10)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
+        entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 22)) ?? .undefined
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 12))
 
         return entity

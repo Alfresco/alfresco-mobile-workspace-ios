@@ -68,17 +68,15 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             switch node.nodeType {
             case .folder, .site, .folderLink:
-                let folderDrillDownCoordinator =
-                    FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                    listNode: node)
-                folderDrillDownCoordinator.start()
-                self.folderDrillDownCoordinator = folderDrillDownCoordinator
+                let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                                  listNode: node)
+                coordinator.start()
+                self.folderDrillDownCoordinator = coordinator
             case .file, .fileLink:
-                let filePreviewCoordinator =
-                    FilePreviewScreenCoordinator(with: navigationViewController,
-                                                 listNode: node)
-                filePreviewCoordinator.start()
-                self.filePreviewCoordinator = filePreviewCoordinator
+                let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                               listNode: node)
+                coordinator.start()
+                self.filePreviewCoordinator = coordinator
 
             default:
                 AlfrescoLog.error("Unable to show preview for unknown node type")
@@ -103,9 +101,11 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        // Do nothing
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?) {
+        // Do nothing
     }
 }

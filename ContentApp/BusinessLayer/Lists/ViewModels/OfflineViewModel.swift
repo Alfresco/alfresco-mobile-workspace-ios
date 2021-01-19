@@ -18,32 +18,21 @@
 
 import Foundation
 import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
+    var coordinatorServices: CoordinatorServices?
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    // MARK: - Init
+
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
         super.init()
+        self.coordinatorServices = coordinatorServices
         refreshList()
     }
 
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
     // MARK: - ListViewModelProtocol
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
 
     func isEmpty() -> Bool {
         return results.isEmpty
@@ -51,10 +40,6 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptyOffline()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
     }
 
     func numberOfSections() -> Int {
@@ -65,21 +50,8 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.count
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return false
-    }
-
     func refreshList() {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.queryMarkedOffline() {
+        if let offlineNodes = offlineMarkedNodes() {
             results = offlineNodes
         }
 
@@ -87,6 +59,45 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
                    pagination: nil,
                    error: nil)
     }
+
+    func listActionTitle() -> String? {
+        return LocalizationConstants.Buttons.syncAll
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return results[indexPath.row]
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
+    func shouldDisplayListActionButton() -> Bool {
+        return true
+    }
+
+    func shouldPreview(node: ListNode) -> Bool {
+        if node.nodeType == .folder {
+            return true
+        }
+        if node.markedAsOffline == true &&
+            node.localPath != nil {
+            return true
+        }
+        return false
+    }
+
+    func performListAction() {
+        if Connectivity.status == .cellular {
+            showNoSyncInCellularDataDialog()
+        } else {
+            if let offlineNodes = offlineMarkedNodes() {
+                coordinatorServices?.syncService?.sync(nodeList: offlineNodes)
+            }
+        }
+    }
+
+    // MARK: - PageFetchingViewModel
 
     override func fetchItems(with requestPagination: RequestPagination,
                              userInfo: Any?,
@@ -102,9 +113,44 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
+
+    // MARK: - Private interface
+
+    func offlineMarkedNodes() -> [ListNode]? {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        return listNodeDataAccessor.queryMarkedOffline()
+    }
+
+    private func showNoSyncInCellularDataDialog() {
+        let title = LocalizationConstants.Dialog.noSyncCelluarDataTitle
+        let message = LocalizationConstants.Dialog.noSyncCelluarDataMessage
+
+        let okAction = MDCAlertAction(title: LocalizationConstants.Buttons.ok)
+
+        DispatchQueue.main.async {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
+                _ = presentationContext.showDialog(title: title,
+                                                   message: message,
+                                                   actions: [okAction],
+                                                   completionHandler: {})
+            }
+        }
+    }
 }
 
-// MARK: Event observable
+// MARK: - SyncServiceDelegate
+
+extension OfflineViewModel: SyncServiceDelegate {
+    func syncDidStarted() {
+        pageUpdatingDelegate?.didUpdateListActionState(enable: false)
+    }
+
+    func syncDidFinished() {
+        pageUpdatingDelegate?.didUpdateListActionState(enable: true)
+    }
+}
+
+// MARK: - Event observable
 
 extension OfflineViewModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
@@ -114,22 +160,24 @@ extension OfflineViewModel: EventObservable {
             handleMove(event: publishedEvent)
         } else if let publishedEvent = event as? OfflineEvent {
             handleOffline(event: publishedEvent)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
         }
     }
 
     private func handleFavorite(event: FavouriteEvent) {
-        let node = event.node
-        for listNode in results where listNode == node {
-            listNode.favorite = node.favorite
+        let eventNode = event.node
+        for listNode in results where listNode == eventNode {
+            listNode.favorite = eventNode.favorite
         }
     }
 
     private func handleMove(event: MoveEvent) {
-        let node = event.node
+        let eventNode = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: node) {
+            if eventNode.nodeType == .file {
+                if let indexOfMovedNode = results.firstIndex(of: eventNode) {
                     results.remove(at: indexOfMovedNode)
                 }
             } else {
@@ -143,14 +191,21 @@ extension OfflineViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let node = event.node
+        let eventNode = event.node
         switch event.eventType {
         case .marked:
             refreshList()
         case .removed:
-            if let indexOfNode = results.firstIndex(of: node) {
+            if let indexOfNode = results.firstIndex(of: eventNode) {
                 results.remove(at: indexOfNode)
             }
+        }
+    }
+
+    private func handleSyncStatus(event: SyncStatusEvent) {
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            results[indexOfNode] = eventNode
         }
     }
 }

@@ -319,6 +319,10 @@ extension ResultViewController: ListComponentActionDelegate {
     func fetchNextListPage(for itemAtIndexPath: IndexPath) {
         self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndexPath)
     }
+
+    func performListAction() {
+        // Do nothing
+    }
 }
 
 // MARK: - Storyboard Instantiable

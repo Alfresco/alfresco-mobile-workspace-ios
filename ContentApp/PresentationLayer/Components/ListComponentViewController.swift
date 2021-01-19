@@ -34,12 +34,14 @@ protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
     func didUpdateList(error: Error?, pagination: Pagination?)
     func fetchNextListPage(for itemAtIndexPath: IndexPath)
+    func performListAction()
 }
 
 protocol ListComponentPageUpdatingDelegate: class {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
     func shouldDisplayCreateButton(enable: Bool)
+    func didUpdateListActionState(enable: Bool)
 }
 
 class ListComponentViewController: SystemThemableViewController {
@@ -50,6 +52,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var createButton: MDCFloatingButton!
+    @IBOutlet weak var listActionButton: MDCFloatingButton!
 
     var refreshControl: UIRefreshControl?
 
@@ -72,8 +75,13 @@ class ListComponentViewController: SystemThemableViewController {
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
+        listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
+        listActionButton.mode = .expanded
+        listActionButton.isUppercaseTitle = false
+        listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
 
-        if listDataSource?.shouldDisplayCreateButton() == true {
+        if listDataSource?.shouldDisplayCreateButton() == true ||
+            listDataSource?.shouldDisplayListActionButton() == true {
             collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                        bottom: listBottomInset, right: 0)
         }
@@ -123,6 +131,10 @@ class ListComponentViewController: SystemThemableViewController {
         listItemActionDelegate?.showNodeCreationSheet(delegate: self)
     }
 
+    @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
+        listActionDelegate?.performListAction()
+    }
+
     // MARK: - Public interface
 
     override func applyComponentsThemes() {
@@ -135,6 +147,8 @@ class ListComponentViewController: SystemThemableViewController {
 
         createButton.backgroundColor = currentTheme.primaryT1Color
         createButton.tintColor = currentTheme.onPrimaryColor
+        listActionButton.backgroundColor = currentTheme.primaryT1Color
+        listActionButton.tintColor = currentTheme.onPrimaryColor
         refreshControl?.tintColor = currentTheme.primaryT1Color
     }
 
@@ -263,7 +277,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         cell?.element = node
         cell?.delegate = self
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton() ?? false)
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
             cell?.moreButton.isHidden = true
         }
@@ -275,6 +288,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let node = listDataSource?.listNode(for: indexPath) else { return }
+        if listDataSource?.shouldPreview(node: node) == false { return }
         if node.trashed == false {
             listItemActionDelegate?.showPreview(from: node)
             listActionDelegate?.elementTapped(node: node)
@@ -416,6 +430,7 @@ extension ListComponentViewController: PageFetchableDelegate {
 // MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
+
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
@@ -426,6 +441,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
+        }
+
+        if listDataSource?.shouldDisplayListActionButton() == true {
+            listActionButton.isHidden = isDataSourceEmpty
         }
 
         // If loading the first page or missing pagination scroll to top
@@ -460,6 +479,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                        bottom: listBottomInset, right: 0)
         }
+    }
+
+    func didUpdateListActionState(enable: Bool) {
+        listActionButton.isEnabled = enable
     }
 }
 

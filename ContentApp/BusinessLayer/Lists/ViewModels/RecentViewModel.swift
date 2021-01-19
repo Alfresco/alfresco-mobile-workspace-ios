@@ -24,21 +24,83 @@ import AlfrescoContent
 class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
+    }
+
+    // MARK: - ListViewModelProtocol
+
+    func isEmpty() -> Bool {
+        return groupedLists.isEmpty
+    }
+
+    func emptyList() -> EmptyListProtocol {
+        return EmptyRecents()
+    }
+
+    func numberOfSections() -> Int {
+        return groupedLists.count
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return groupedLists[section].list.count
+    }
+
+    func refreshList() {
+        currentPage = 1
+        recentsList(with: nil)
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode {
+        return groupedLists[indexPath.section].list[indexPath.row]
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return groupedLists[indexPath.section].titleGroup
+    }
+
+    func shouldDisplaySections() -> Bool {
+        return true
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func shouldDisplaySettingsButton() -> Bool {
+        return true
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        groupedLists = []
+        addInGroupList(self.results)
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
+        recentsList(with: requestPagination)
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    func performListAction() {
+        // Do nothing
     }
 
     // MARK: - Public methods
 
     func recentsList(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-
+        let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
@@ -59,76 +121,6 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         })
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
-    }
-
-    // MARK: - ListViewModelProtocol
-
-    func isEmpty() -> Bool {
-        return groupedLists.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
-        return EmptyRecents()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return true
-    }
-
-    func numberOfSections() -> Int {
-        return groupedLists.count
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        return groupedLists[section].list.count
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return groupedLists[indexPath.section].list[indexPath.row]
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return groupedLists[indexPath.section].titleGroup
-    }
-
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
-    }
-
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func refreshList() {
-        currentPage = 1
-        recentsList(with: nil)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        groupedLists = []
-        addInGroupList(self.results)
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
-
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
-        recentsList(with: requestPagination)
-    }
-
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
     }
 
     // MARK: - Private methods
@@ -205,7 +197,9 @@ extension RecentViewModel {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results[indexOfOfflineNode] = node
+            let listNode = results[indexOfOfflineNode]
+            listNode .markedAsOffline = node.markedAsOffline
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

@@ -31,9 +31,11 @@
 "sign-out" = "Sign out";
 "retry" = "Retry";
 "yes" = "Yes";
+"ok" = "Ok";
 "cancel" = "Cancel";
 "delete" = "Delete";
 "create" = "Create";
+"sync-all" = "Sync all";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connect to";
@@ -59,8 +61,8 @@
 "how-to-connect-to-alfresco" = "How to connect to Alfresco";
 "connecting" = "Connecting";
 "signing-in" = "Signing in";
-"session-expired" = "Session expired";
-"sesssion-expired-message" = "You are no longer signed in. Please sign in again to continue.";
+"syncing" = "Syncing...";
+"sync-failed" = "Sync failed";
 
 // MARK: - Tabs Titles
 "settings" = "Settings";
@@ -162,11 +164,15 @@
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Delete";
 "dialog-delete-message" = "%@ will be permanently deleted.";
 "dialog-download-message" = "Downloading '%@'";
 "dialog-upload-message" = "Uploading '%@'";
+"dialog-session-expired-title" = "Session expired";
+"dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
+"dialog-no-sync-cellular-data-title" = "Sync unavailable";
+"dialog-no-sync-cellular-data-message" = "You cannot sync content over cellular data.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";

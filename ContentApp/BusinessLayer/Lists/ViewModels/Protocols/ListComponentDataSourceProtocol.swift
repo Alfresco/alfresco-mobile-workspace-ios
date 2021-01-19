@@ -21,15 +21,55 @@ import AlfrescoContent
 
 protocol ListComponentDataSourceProtocol: class {
     func isEmpty() -> Bool
-    func shouldDisplaySections() -> Bool
+    func emptyList() -> EmptyListProtocol
+
     func numberOfSections() -> Int
     func numberOfItems(in section: Int) -> Int
+    func refreshList()
+
     func listNode(for indexPath: IndexPath) -> ListNode
     func titleForSectionHeader(at indexPath: IndexPath) -> String
+    func listActionTitle() -> String?
+
+    func shouldDisplaySections() -> Bool
     func shouldDisplayListLoadingIndicator() -> Bool
-    func shouldDisplayMoreButton() -> Bool
     func shouldDisplayCreateButton() -> Bool
     func shouldDisplayNodePath() -> Bool
-    func refreshList()
-    func emptyList() -> EmptyListProtocol
+    func shouldDisplayListActionButton() -> Bool
+    func shouldPreview(node: ListNode) -> Bool
+}
+
+extension ListComponentDataSourceProtocol {
+
+    func shouldDisplaySections() -> Bool {
+        return false
+    }
+
+    func shouldDisplayCreateButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayListActionButton() -> Bool {
+        return false
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        true
+    }
+
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        return false
+    }
+
+    func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
+    func listActionTitle() -> String? {
+        return nil
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
 }

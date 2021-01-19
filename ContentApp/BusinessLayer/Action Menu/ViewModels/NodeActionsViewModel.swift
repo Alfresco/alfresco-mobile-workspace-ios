@@ -19,8 +19,8 @@
 import UIKit
 import AlfrescoContent
 import MaterialComponents.MaterialDialogs
-import Alamofire
 import AlfrescoCore
+import Alamofire
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
 let kSheetDismissDelay = 0.5
@@ -37,6 +37,7 @@ class NodeActionsViewModel {
     private var node: ListNode?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
     private var coordinatorServices: CoordinatorServices?
+    private let nodeOperations: NodeOperations
     weak var delegate: NodeActionsViewModelDelegate?
 
     // MARK: Init
@@ -47,6 +48,7 @@ class NodeActionsViewModel {
         self.node = node
         self.delegate = delegate
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
     }
 
     // MARK: - Public Helpers
@@ -132,6 +134,7 @@ class NodeActionsViewModel {
 
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
+            node.syncStatus = .pending
             dataAccessor.store(node: node)
             action?.type = .removeOffline
             action?.title = LocalizationConstants.ActionMenu.removeOffline
@@ -147,7 +150,13 @@ class NodeActionsViewModel {
 
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
-            dataAccessor.remove(node: node)
+            if let queriedNode = dataAccessor.query(node: node) {
+                if let nodeLocalPath = queriedNode.localPath {
+                    _ = DiskService.delete(itemAtPath: nodeLocalPath)
+                }
+                dataAccessor.remove(node: queriedNode)
+            }
+
             action?.type = .markOffline
             action?.title = LocalizationConstants.ActionMenu.markOffline
 
@@ -170,8 +179,8 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = true
                 sSelf.action?.type = .removeFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
-                let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
 
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
@@ -188,9 +197,8 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = false
                 sSelf.action?.type = .addFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.addFavorite
-                let favouriteEvent = FavouriteEvent(node: node,
-                                                    eventType: .removeFromFavourites)
 
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
@@ -205,8 +213,8 @@ class NodeActionsViewModel {
                 guard let sSelf = self else { return }
                 if error == nil {
                     sSelf.node?.trashed = true
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -217,8 +225,14 @@ class NodeActionsViewModel {
                 guard let sSelf = self else { return }
                 if error == nil {
                     sSelf.node?.trashed = true
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
+                    let dataAccessor = ListNodeDataAccessor()
+                    if let queriedNode = dataAccessor.query(node: node) {
+                        queriedNode.markedForDeletion = true
+                        dataAccessor.store(node: queriedNode)
+                    }
+
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -233,8 +247,14 @@ class NodeActionsViewModel {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.node?.trashed = false
-                let moveEvent = MoveEvent(node: node, eventType: .restore)
 
+                let dataAccessor = ListNodeDataAccessor()
+                if let queriedNode = dataAccessor.query(node: node) {
+                    queriedNode.markedForDeletion = false
+                    dataAccessor.store(node: queriedNode)
+                }
+
+                let moveEvent = MoveEvent(node: node, eventType: .restore)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
@@ -244,8 +264,8 @@ class NodeActionsViewModel {
 
     private func requestPermanentlyDelete() {
         guard let node = self.node else { return }
-        let title = LocalizationConstants.NodeActionsDialog.deleteTitle
-        let message = String(format: LocalizationConstants.NodeActionsDialog.deleteMessage,
+        let title = LocalizationConstants.Dialog.deleteTitle
+        let message = String(format: LocalizationConstants.Dialog.deleteMessage,
                              node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
@@ -254,8 +274,16 @@ class NodeActionsViewModel {
 
             TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { (_, error) in
                 if error == nil {
-                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
 
+                    let dataAccessor = ListNodeDataAccessor()
+                    if let queriedNode = dataAccessor.query(node: node) {
+                        if let nodeLocalPath = queriedNode.localPath {
+                            _ = DiskService.delete(itemAtPath: nodeLocalPath)
+                        }
+                        dataAccessor.remove(node: queriedNode)
+                    }
+
+                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -277,18 +305,27 @@ class NodeActionsViewModel {
         var downloadDialog: MDCAlertController?
         var downloadRequest: DownloadRequest?
 
-        let mainQueue = coordinatorServices?.operationQueueService?.main
-        let workerQueue = coordinatorServices?.operationQueueService?.worker
+        guard let accountIdentifier = coordinatorServices?.accountService?.activeAccount?.identifier else { return }
+        guard let node = self.node else { return }
 
-        mainQueue?.async { [weak self] in
+        let mainQueue = DispatchQueue.main
+        let workerQueue = OperationQueueService.worker
+
+        mainQueue.async { [weak self] in
             guard let sSelf = self else { return }
             downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
                 downloadRequest?.cancel()
             })
 
-            workerQueue?.async {
-                downloadRequest = sSelf.downloadNodeContent { destinationURL, error in
-                    mainQueue?.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+            workerQueue.async {
+                let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+                var downloadURL = URL(fileURLWithPath: downloadPath)
+                downloadURL.appendPathComponent(node.title)
+
+                downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
+                                                                       to: downloadURL,
+                                                                       completionHandler: { destinationURL, error in
+                    mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
                         downloadDialog?.dismiss(animated: true,
                                                 completion: {
                                                     sSelf.handleResponse(error: error)
@@ -298,7 +335,7 @@ class NodeActionsViewModel {
                                                 })
                     })
                 }
-            }
+            )}
         }
     }
 
@@ -320,7 +357,7 @@ class NodeActionsViewModel {
         if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
-                String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
+                String(format: LocalizationConstants.Dialog.downloadMessage,
                        node?.title ?? "")
             downloadDialogView.activityIndicator.startAnimating()
             downloadDialogView.applyTheme(themingService?.activeTheme)
@@ -339,49 +376,6 @@ class NodeActionsViewModel {
 
                 return downloadDialog
             }
-        }
-
-        return nil
-    }
-
-    private func downloadNodeContent(completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        guard let node = self.node else { return nil}
-        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
-        let downloadURL = URL(string: requestBuilder.URLString)
-
-        var documentsURL = FileManager.default.urls(for: .documentDirectory,
-                                                    in: .userDomainMask)[0]
-        documentsURL.appendPathComponent(node.title)
-
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            return (documentsURL, [.removePreviousFile])
-        }
-
-        if let url = downloadURL {
-            return Alamofire.download(url,
-                                      parameters: requestBuilder.parameters,
-                                      headers: AlfrescoContentAPI.customHeaders,
-                                      to: destination).response { response in
-                                        if let destinationUrl = response.destinationURL,
-                                           let httpURLResponse = response.response {
-                                            if (200...299).contains(httpURLResponse.statusCode) {
-                                                completionHandler(destinationUrl, nil)
-                                            } else {
-                                                let error = APIError(domain: "",
-                                                                     code: httpURLResponse.statusCode)
-                                                completionHandler(nil, error)
-                                            }
-                                        } else {
-                                            if response.error?.code == NSURLErrorNetworkConnectionLost ||
-                                                response.error?.code == NSURLErrorCancelled {
-                                                completionHandler(nil, nil)
-                                            } else {
-                                                let error = APIError(domain: "",
-                                                                     error: response.error)
-                                                completionHandler(nil, error)
-                                            }
-                                        }
-                                      }
         }
 
         return nil

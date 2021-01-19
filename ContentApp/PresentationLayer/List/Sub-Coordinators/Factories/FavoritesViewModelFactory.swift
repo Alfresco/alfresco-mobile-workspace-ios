@@ -27,14 +27,14 @@ class FavoritesViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func favoritesDataSource() -> FavoritesDataSource {
-        let accountService = coordinatorServices?.accountService
 
-        let resultViewModel = ResultsViewModel()
-        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+        let foldersAndFilesViewModel = FavoritesViewModel.init(with: coordinatorServices,
                                                                listRequest: nil)
-        let librariesViewModel = FavoritesViewModel.init(with: accountService,
+        let librariesViewModel = FavoritesViewModel.init(with: coordinatorServices,
                                                          listRequest: nil)
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        let globalSearchViewModel =
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
 
         foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
         librariesViewModel.listCondition = kWhereFavoritesSiteCondition

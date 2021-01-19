@@ -28,15 +28,26 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
-    @IBOutlet weak var offlineImageView: UIImageView!
+    @IBOutlet weak var syncStatusImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
+
     var element: ListNode? {
         didSet {
             if let element = element {
                 title.text = element.title
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element)
-                offlineImageView.isHidden = !element.isMarkedOffline()
+
+                syncStatusImageView.isHidden = !element.isMarkedOffline()
+                syncStatusImageView.image = element.syncStatusIcon()
+
+                switch element.syncStatus {
+                case .error:
+                    subtitle.text = LocalizationConstants.Labels.syncFailed
+                case .inProgress:
+                    subtitle.text = LocalizationConstants.Labels.syncing
+                default: break
+                }
             }
         }
     }
@@ -50,7 +61,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         subtitle.lineBreakMode = .byTruncatingHead
         iconImageView.tintColor = currentTheme.onSurface60Color
         moreButton.tintColor = currentTheme.onSurface60Color
-        offlineImageView.tintColor = currentTheme.onSurface60Color
+        syncStatusImageView.tintColor = currentTheme.onSurface60Color
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {

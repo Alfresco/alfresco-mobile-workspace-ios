@@ -26,14 +26,13 @@ class OfflineViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func offlineDataSource() -> OfflineDataSource {
-        let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
-        let offlineViewModel = OfflineViewModel(with: accountService,
+        let offlineViewModel = OfflineViewModel(with: coordinatorServices,
                                                 listRequest: nil)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
         let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: accountService)
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 
@@ -57,6 +56,10 @@ class OfflineViewModelFactory {
         eventBusService?.register(observer: offlineViewModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
+
+        eventBusService?.register(observer: offlineViewModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file])
 
         return (offlineViewModel, resultViewModel, globalSearchViewModel)
     }
