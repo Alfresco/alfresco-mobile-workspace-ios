@@ -80,7 +80,6 @@ struct ActionsMenuGeneric {
     static private func deleteAction(for node: ListNode) -> ActionMenu? {
         let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
                                       type: .moveTrash)
-        guard node.id == 0 else { return nil}
         switch node.nodeType {
         case .site:
             return node.hasRole(to: .manager) ? deleteAction : nil

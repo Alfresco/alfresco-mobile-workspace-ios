@@ -179,8 +179,8 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = true
                 sSelf.action?.type = .removeFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
-                let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
 
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
@@ -197,9 +197,8 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = false
                 sSelf.action?.type = .addFavorite
                 sSelf.action?.title = LocalizationConstants.ActionMenu.addFavorite
-                let favouriteEvent = FavouriteEvent(node: node,
-                                                    eventType: .removeFromFavourites)
 
+                let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
@@ -214,8 +213,8 @@ class NodeActionsViewModel {
                 guard let sSelf = self else { return }
                 if error == nil {
                     sSelf.node?.trashed = true
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -226,8 +225,14 @@ class NodeActionsViewModel {
                 guard let sSelf = self else { return }
                 if error == nil {
                     sSelf.node?.trashed = true
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
 
+                    let dataAccessor = ListNodeDataAccessor()
+                    if let queriedNode = dataAccessor.query(node: node) {
+                        queriedNode.markedForDeletion = true
+                        dataAccessor.store(node: queriedNode)
+                    }
+
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
@@ -242,8 +247,14 @@ class NodeActionsViewModel {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.node?.trashed = false
-                let moveEvent = MoveEvent(node: node, eventType: .restore)
 
+                let dataAccessor = ListNodeDataAccessor()
+                if let queriedNode = dataAccessor.query(node: node) {
+                    queriedNode.markedForDeletion = false
+                    dataAccessor.store(node: queriedNode)
+                }
+
+                let moveEvent = MoveEvent(node: node, eventType: .restore)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
@@ -263,8 +274,16 @@ class NodeActionsViewModel {
 
             TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { (_, error) in
                 if error == nil {
-                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
 
+                    let dataAccessor = ListNodeDataAccessor()
+                    if let queriedNode = dataAccessor.query(node: node) {
+                        if let nodeLocalPath = queriedNode.localPath {
+                            _ = DiskService.delete(itemAtPath: nodeLocalPath)
+                        }
+                        dataAccessor.remove(node: queriedNode)
+                    }
+
+                    let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
