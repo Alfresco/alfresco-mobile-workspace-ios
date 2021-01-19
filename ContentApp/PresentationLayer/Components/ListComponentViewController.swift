@@ -77,6 +77,7 @@ class ListComponentViewController: SystemThemableViewController {
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
         listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
         listActionButton.mode = .expanded
+        listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
 
         if listDataSource?.shouldDisplayCreateButton() == true ||
@@ -440,6 +441,10 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
+        }
+
+        if listDataSource?.shouldDisplayListActionButton() == true {
+            listActionButton.isHidden = isDataSourceEmpty
         }
 
         // If loading the first page or missing pagination scroll to top
