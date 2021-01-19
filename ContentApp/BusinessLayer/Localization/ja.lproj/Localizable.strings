@@ -56,7 +56,7 @@
 "connecting" = "Connecting";
 "signing-in" = "Signing in";
 "session-expired" = "Session expired";
-"sesssion-expired-message" = "You are no longer signed in. Please sign in again to continue.";
+"session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 
 // MARK: - Screen Titles
 "settings" = "Settings";

@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,21 +16,31 @@
 //  limitations under the License.
 //
 
-import UIKit
-import AlfrescoContent
-import AlfrescoAuth
+import Foundation
+import Alamofire
 
-protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
-    var pageUpdatingDelegate: ListComponentPageUpdatingDelegate? { get set }
-
-    init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?)
-    func shouldDisplaySettingsButton() -> Bool
-    func fetchNextListPage(index: IndexPath, userInfo: Any?)
-    func performListAction()
+enum ConnectivityStatus {
+    case unknown
+    case noConnection
+    case wifi
+    case cellular
 }
 
-extension ListViewModelProtocol {
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
+class Connectivity {
+
+    class var status: ConnectivityStatus {
+        if NetworkReachabilityManager()?.isReachable == false {
+            return .noConnection
+        }
+
+        if NetworkReachabilityManager()?.isReachableOnEthernetOrWiFi == true {
+            return .wifi
+        }
+
+        if NetworkReachabilityManager()?.isReachableOnWWAN == true {
+            return .cellular
+        }
+
+        return .unknown
     }
 }

@@ -253,8 +253,8 @@ class NodeActionsViewModel {
 
     private func requestPermanentlyDelete() {
         guard let node = self.node else { return }
-        let title = LocalizationConstants.NodeActionsDialog.deleteTitle
-        let message = String(format: LocalizationConstants.NodeActionsDialog.deleteMessage,
+        let title = LocalizationConstants.Dialog.deleteTitle
+        let message = String(format: LocalizationConstants.Dialog.deleteMessage,
                              node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
@@ -338,7 +338,7 @@ class NodeActionsViewModel {
         if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
-                String(format: LocalizationConstants.NodeActionsDialog.downloadMessage,
+                String(format: LocalizationConstants.Dialog.downloadMessage,
                        node?.title ?? "")
             downloadDialogView.activityIndicator.startAnimating()
             downloadDialogView.applyTheme(themingService?.activeTheme)

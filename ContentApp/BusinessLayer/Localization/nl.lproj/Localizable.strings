@@ -59,8 +59,6 @@
 "how-to-connect-to-alfresco" = "Verbinding maken met Alfresco";
 "connecting" = "Verbinden";
 "signing-in" = "Inloggen";
-"session-expired" = "Sessie verlopen.";
-"sesssion-expired-message" = "U bent niet meer ingelogd. Log opnieuw in om door te gaan.";
 
 // MARK: - Screen Titles
 "settings" = "Instellingen";
@@ -157,11 +155,13 @@
 "action-menu-create-ms-powerpoint" = "PowerPoint-presentatie";
 "action-menu-create-folder" = "Nieuwe map";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
 "dialog-delete-message" = "%@ wordt permanent verwijderd.";
 "dialog-download-message" = "'%@' wordt gedownload";
 "dialog-upload-message" = "'%@' wordt geüpload";
+"dialog-session-expired-title" = "Sessie verlopen.";
+"dialog-session-expired-message" = "U bent niet meer ingelogd. Log opnieuw in om door te gaan.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";

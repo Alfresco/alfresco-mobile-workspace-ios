@@ -59,8 +59,8 @@ class ApplicationCoordinator: Coordinator {
         let viewController =
             window.rootViewController?.presentedViewController ?? window.rootViewController
 
-        let title = LocalizationConstants.Labels.sessionExpiredTitle
-        let message = LocalizationConstants.Labels.sesssionExpiredMessage
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }

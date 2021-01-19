@@ -23,7 +23,7 @@ import AlfrescoContent
 
 class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations
     var listNode: ListNode?
 
@@ -31,10 +31,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
-        self.nodeOperations = NodeOperations(accountService: accountService)
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
     }
 
     // MARK: - ListViewModelProtocol

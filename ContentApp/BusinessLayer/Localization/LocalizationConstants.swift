@@ -35,6 +35,7 @@ struct LocalizationConstants {
         static let signOut = NSLocalizedString("sign-out", comment: "")
         static let retry = NSLocalizedString("retry", comment: "")
         static let yes = NSLocalizedString("yes", comment: "")
+        static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
@@ -66,8 +67,8 @@ struct LocalizationConstants {
         static let howToConnectTitle = NSLocalizedString("how-to-connect-to-alfresco", comment: "")
         static let conneting = NSLocalizedString("connecting", comment: "")
         static let signingIn = NSLocalizedString("signing-in", comment: "")
-        static let sessionExpiredTitle =  NSLocalizedString("session-expired", comment: "")
-        static let sesssionExpiredMessage =  NSLocalizedString("sesssion-expired-message", comment: "")
+        static let syncing = NSLocalizedString("syncing", comment: "")
+        static let syncFailed = NSLocalizedString("sync-failed", comment: "")
     }
 
     struct ScreenTitles {
@@ -104,7 +105,6 @@ struct LocalizationConstants {
         static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
         static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
         static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
-
     }
 
     struct Approved {
@@ -185,11 +185,15 @@ struct LocalizationConstants {
         static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
     }
 
-    struct NodeActionsDialog {
+    struct Dialog {
         static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
         static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
         static let downloadMessage = NSLocalizedString("dialog-download-message", comment: "")
         static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
+        static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
+        static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
+        static let noSyncCelluarDataTitle =  NSLocalizedString("dialog-no-sync-cellular-data-title", comment: "")
+        static let noSyncCelluarDataMessage =  NSLocalizedString("dialog-no-sync-cellular-data-message", comment: "")
     }
 
     struct EmptyLists {

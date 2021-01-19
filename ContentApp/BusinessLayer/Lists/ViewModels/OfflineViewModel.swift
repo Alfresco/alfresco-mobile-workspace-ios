@@ -18,15 +18,17 @@
 
 import Foundation
 import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
-    var syncService: SyncService?
+    var coordinatorServices: CoordinatorServices?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
         super.init()
+        self.coordinatorServices = coordinatorServices
         refreshList()
     }
 
@@ -86,8 +88,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func performListAction() {
-        if let offlineNodes = offlineMarkedNodes() {
-            syncService?.sync(nodeList: offlineNodes)
+        if Connectivity.status == .cellular {
+            showNoSyncInCellularDataDialog()
+        } else {
+            if let offlineNodes = offlineMarkedNodes() {
+                coordinatorServices?.syncService?.sync(nodeList: offlineNodes)
+            }
         }
     }
 
@@ -113,6 +119,22 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     func offlineMarkedNodes() -> [ListNode]? {
         let listNodeDataAccessor = ListNodeDataAccessor()
         return listNodeDataAccessor.queryMarkedOffline()
+    }
+
+    private func showNoSyncInCellularDataDialog() {
+        let title = LocalizationConstants.Dialog.noSyncCelluarDataTitle
+        let message = LocalizationConstants.Dialog.noSyncCelluarDataMessage
+
+        let okAction = MDCAlertAction(title: LocalizationConstants.Buttons.ok)
+
+        DispatchQueue.main.async {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
+                _ = presentationContext.showDialog(title: title,
+                                                   message: message,
+                                                   actions: [okAction],
+                                                   completionHandler: {})
+            }
+        }
     }
 }
 

@@ -221,7 +221,7 @@ class CreateNodeViewModel {
             let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
             let nodeNameWithExtension = ( nodeName ?? "" ) + nodeExtension
             uploadDialogView.messageLabel.text =
-                String(format: LocalizationConstants.NodeActionsDialog.uploadMessage,
+                String(format: LocalizationConstants.Dialog.uploadMessage,
                        nodeNameWithExtension)
             uploadDialogView.activityIndicator.startAnimating()
             uploadDialogView.applyTheme(themingService?.activeTheme)

@@ -26,12 +26,12 @@ protocol ResultsViewModelDelegate: class {
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
     var supportedNodeTypes: [NodeType]?
     weak var delegate: ResultsViewModelDelegate?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations
 
-    init(with accountService: AccountService?) {
-        self.accountService = accountService
-        self.nodeOperations = NodeOperations(accountService: accountService)
+    init(with coordinatorServices: CoordinatorServices?) {
+        self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
     }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {

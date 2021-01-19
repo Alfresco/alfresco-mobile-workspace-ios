@@ -26,15 +26,14 @@ class OfflineFolderChildrenViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func offlineDataSource(for listNode: ListNode) -> OfflineFolderChildrenDataSource {
-        let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
-        let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(with: accountService,
+        let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(with: coordinatorServices,
                                                            listRequest: nil)
         offlineFolderDrillViewModel.parentListNode = listNode
-        let resultViewModel = ResultsViewModel(with: accountService)
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
         let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: accountService)
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
         globalSearchViewModel.delegate = resultViewModel
         globalSearchViewModel.displaySearchBar = false
         globalSearchViewModel.displaySearchButton = false

@@ -25,7 +25,7 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
         super.init()
         refreshList()
     }

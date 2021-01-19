@@ -23,13 +23,13 @@ import AlfrescoContent
 
 class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
-    var accountService: AccountService?
+    var coordinatorServices: CoordinatorServices?
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
     }
 
@@ -87,7 +87,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func request(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-
+        let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()

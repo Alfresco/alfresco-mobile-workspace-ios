@@ -59,8 +59,6 @@
 "how-to-connect-to-alfresco" = "So verbinden Sie sich mit Alfresco";
 "connecting" = "Verbindung wird hergestellt";
 "signing-in" = "Anmeldung läuft";
-"session-expired" = "Sitzung abgelaufen.";
-"sesssion-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
 
 // MARK: - Screen Titles
 "settings" = "Einstellungen";
@@ -157,11 +155,13 @@
 "action-menu-create-ms-powerpoint" = "PowerPoint-Präsentation";
 "action-menu-create-folder" = "Neuer Ordner";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Löschen";
 "dialog-delete-message" = "%@ wird dauerhaft gelöscht.";
 "dialog-download-message" = "'%@' wird heruntergeladen";
 "dialog-upload-message" = "'%@' wird hochgeladen";
+"dialog-session-expired-title" = "Sitzung abgelaufen.";
+"dialog-session-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Keine benutzten Dateien";
