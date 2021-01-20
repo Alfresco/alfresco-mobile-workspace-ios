@@ -77,7 +77,6 @@ class ListNode: Hashable, Entity {
     var mimeType: String?
     var title: String
     var path: String
-    var localPath: String?
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
@@ -109,7 +108,7 @@ class ListNode: Hashable, Entity {
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
-         destionation: String? = nil) {
+         destination: String? = nil) {
 
         self.guid = guid
         self.siteID = siteID
@@ -124,7 +123,7 @@ class ListNode: Hashable, Entity {
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
-        self.destination = destionation
+        self.destination = destination
     }
 
     init() {

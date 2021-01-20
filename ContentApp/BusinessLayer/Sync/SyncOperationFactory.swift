@@ -53,12 +53,11 @@ class SyncOperationFactory {
                         let onlineListNode = NodeChildMapper.create(from: entry)
 
                         if onlineListNode.modifiedAt != node.modifiedAt ||
-                            node.localPath == nil {
+                            !dataAccessor.isContentDownloaded(for: node) {
                             onlineListNode.syncStatus = .inProgress
                             onlineListNode.markedForDownload = true
                         } else {
                             onlineListNode.syncStatus = .synced
-                            onlineListNode.localPath = node.localPath
                         }
 
                         sSelf.publishSyncStatusEvent(for: onlineListNode)
@@ -78,11 +77,11 @@ class SyncOperationFactory {
     func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
         guard let nodes = nodes else { return [] }
         var deleteOperations: [AsyncClosureOperation] = []
+        let dataAccessor = ListNodeDataAccessor()
 
         for node in nodes {
-            let operation = AsyncClosureOperation { [weak self] completion in
-                guard let sSelf = self else { return }
-                if let nodeURL = sSelf.localPath(for: node) {
+            let operation = AsyncClosureOperation { completion in
+                if let nodeURL = dataAccessor.fileLocalPath(for: node) {
                     _ = DiskService.delete(itemAtPath: nodeURL.path)
                 }
 
@@ -100,52 +99,89 @@ class SyncOperationFactory {
 
     func downloadMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
         guard let nodes = nodes else { return [] }
-
         var downloadOperations: [AsyncClosureOperation] = []
 
         for node in nodes {
-            let operation = AsyncClosureOperation { [weak self] completion in
-                guard let sSelf = self else { return }
-                if let downloadURL = sSelf.localPath(for: node) {
-                    let parentDirectoryURL = downloadURL.deletingLastPathComponent()
-                    _ = DiskService.create(directoryPath: parentDirectoryURL.path)
+            let originalFileDownloadOperation = downloadNodeContentOperation(node: node)
+            downloadOperations.append(originalFileDownloadOperation)
 
-                    sSelf.nodeOperations.sessionForCurrentAccount { _ in
-                        _ = sSelf.nodeOperations.downloadContent(for: node,
-                                                                 to: downloadURL) { (destinationURL, error) in
-                            if error != nil {
-                                node.syncStatus = .error
-                            } else {
-                                node.localPath = destinationURL?.path
-                                node.syncStatus = .synced
-                                node.markedForDownload = false
-                            }
-
-                            sSelf.publishSyncStatusEvent(for: node)
-
-                            let dataAccessor = ListNodeDataAccessor()
-                            dataAccessor.store(node: node)
-
-                            completion()
-                        }
-                    }
-                }
+            if let renditionDownloadOperation = downloadNodeRenditionOperation(node: node) {
+                downloadOperations.append(renditionDownloadOperation)
             }
-
-            downloadOperations.append(operation)
         }
 
         return downloadOperations
     }
 
-    private func localPath(for node: ListNode) -> URL? {
-        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
-        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
-        var localURL = URL(fileURLWithPath: localPath)
-        localURL.appendPathComponent(node.guid)
-        localURL.appendPathExtension(URL(fileURLWithPath: node.title).pathExtension)
+    // MARK: - Private interface
 
-        return localURL
+    private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
+        let dataAccessor = ListNodeDataAccessor()
+
+        let operation = AsyncClosureOperation { [weak self] completion in
+            guard let sSelf = self else { return }
+            if let downloadURL = dataAccessor.fileLocalPath(for: node) {
+                let parentDirectoryURL = downloadURL.deletingLastPathComponent()
+                _ = DiskService.create(directoryPath: parentDirectoryURL.path)
+
+                sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                    _ = sSelf.nodeOperations.downloadContent(for: node,
+                                                             to: downloadURL) { (_, error) in
+                        if error != nil {
+                            node.syncStatus = .error
+                        } else {
+                            node.syncStatus = .synced
+                            node.markedForDownload = false
+                        }
+
+                        sSelf.publishSyncStatusEvent(for: node)
+
+                        let dataAccessor = ListNodeDataAccessor()
+                        dataAccessor.store(node: node)
+
+                        completion()
+                    }
+                }
+            }
+        }
+
+        return operation
+    }
+
+    private func downloadNodeRenditionOperation(node: ListNode) -> AsyncClosureOperation? {
+        let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
+        if filePreviewType == .rendition {
+            let dataAccessor = ListNodeDataAccessor()
+
+            let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion in
+                guard let sSelf = self else { return }
+
+                sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                    sSelf.nodeOperations.fetchRenditionURL(for: node.guid, completionHandler: { (renditionURL, isImageRendition) in
+                        if let url = renditionURL {
+                            if let downloadURL = dataAccessor.renditionLocalPath(for: node, isImageRendition: isImageRendition) {
+                                let parentDirectoryURL = downloadURL.deletingLastPathComponent()
+                                _ = DiskService.create(directoryPath: parentDirectoryURL.path)
+
+                                _ = sSelf.nodeOperations.downloadContent(from: url, to: downloadURL, completionHandler: { (_, error) in
+                                    if error != nil {
+                                        AlfrescoLog.error("Unexpected sync process error while fetching the rendition for node: \(node.guid) . Reason: \(String(describing: error))")
+                                    }
+
+                                    completion()
+                                })
+                            }
+                        } else {
+                            completion()
+                        }
+                    })
+                }
+            }
+
+            return renditionDownloadOperation
+        }
+
+        return nil
     }
 
     // MARK: - Event bus

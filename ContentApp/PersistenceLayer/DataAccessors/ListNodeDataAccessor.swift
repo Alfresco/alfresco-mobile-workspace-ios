@@ -154,6 +154,34 @@ class ListNodeDataAccessor {
         return node.markedAsOffline ?? false
     }
 
+    func fileLocalPath(for node: ListNode) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(node.guid)
+        localURL.appendPathExtension(URL(fileURLWithPath: node.title).pathExtension)
+
+        return localURL
+    }
+
+    func renditionLocalPath(for node: ListNode, isImageRendition: Bool) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(String(format: "%@-rendition", node.guid))
+        localURL.appendPathExtension(isImageRendition ? "png" : "pdf")
+
+        return localURL
+    }
+
+    func isContentDownloaded(for node: ListNode) -> Bool {
+        if let contentPath = fileLocalPath(for: node)?.path {
+            return FileManager.default.fileExists(atPath: contentPath)
+        }
+
+        return false
+    }
+
     // MARK: Private Helpers
 
     private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
