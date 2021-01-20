@@ -135,7 +135,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             node.syncStatus = .pending
+            node.markedAsOffline = true
             dataAccessor.store(node: node)
+
             action?.type = .removeOffline
             action?.title = LocalizationConstants.ActionMenu.removeOffline
 
@@ -151,10 +153,9 @@ class NodeActionsViewModel {
         if let node = self.node {
             let dataAccessor = ListNodeDataAccessor()
             if let queriedNode = dataAccessor.query(node: node) {
-                if let nodeLocalPath = queriedNode.localPath {
-                    _ = DiskService.delete(itemAtPath: nodeLocalPath)
-                }
-                dataAccessor.remove(node: queriedNode)
+                queriedNode.markedAsOffline = false
+                queriedNode.markedForStatus = .delete
+                dataAccessor.store(node: queriedNode)
             }
 
             action?.type = .markOffline
@@ -228,7 +229,7 @@ class NodeActionsViewModel {
 
                     let dataAccessor = ListNodeDataAccessor()
                     if let queriedNode = dataAccessor.query(node: node) {
-                        queriedNode.markedForDeletion = true
+                        queriedNode.markedForStatus = .delete
                         dataAccessor.store(node: queriedNode)
                     }
 
@@ -250,7 +251,7 @@ class NodeActionsViewModel {
 
                 let dataAccessor = ListNodeDataAccessor()
                 if let queriedNode = dataAccessor.query(node: node) {
-                    queriedNode.markedForDeletion = false
+                    queriedNode.markedForStatus = .undefined
                     dataAccessor.store(node: queriedNode)
                 }
 
@@ -277,9 +278,6 @@ class NodeActionsViewModel {
 
                     let dataAccessor = ListNodeDataAccessor()
                     if let queriedNode = dataAccessor.query(node: node) {
-                        if let nodeLocalPath = queriedNode.localPath {
-                            _ = DiskService.delete(itemAtPath: nodeLocalPath)
-                        }
                         dataAccessor.remove(node: queriedNode)
                     }
 
