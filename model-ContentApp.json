@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4787515528091542272",
-      "lastPropertyId": "22:3164935005194304768",
+      "lastPropertyId": "25:3118208438412810240",
       "name": "ListNode",
       "properties": [
         {
@@ -80,29 +80,24 @@
           "type": 9
         },
         {
-          "id": "18:6010654626593675520",
-          "name": "markedAsOffline",
-          "type": 1
-        },
-        {
-          "id": "19:269961487045141504",
-          "name": "markedForDeletion",
-          "type": 1
-        },
-        {
           "id": "20:3324245441029626112",
           "name": "localPath",
           "type": 9
         },
         {
-          "id": "21:9108148447639355648",
-          "name": "markedForDownload",
-          "type": 1
-        },
-        {
           "id": "22:3164935005194304768",
           "name": "syncStatus",
           "type": 9
+        },
+        {
+          "id": "24:6555279771709774592",
+          "name": "markedForStatus",
+          "type": 9
+        },
+        {
+          "id": "25:3118208438412810240",
+          "name": "markedAsOffline",
+          "type": 1
         }
       ],
       "relations": []
@@ -119,7 +114,11 @@
   "retiredPropertyUids": [
     3883288365655867136,
     908245655234196480,
-    7140424165584772096
+    7140424165584772096,
+    9108148447639355648,
+    6010654626593675520,
+    269961487045141504,
+    2641774802303683072
   ],
   "retiredRelationUids": [],
   "version": 1

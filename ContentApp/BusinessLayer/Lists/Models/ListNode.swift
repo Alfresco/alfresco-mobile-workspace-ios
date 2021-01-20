@@ -58,6 +58,12 @@ enum SyncStatus: String {
     case undefined
 }
 
+enum MarkedForStatus: String {
+    case download
+    case delete
+    case undefined
+}
+
 enum SiteRole: String {
     case manager = "SiteManager"
     case collaborator = "SiteCollaborator"
@@ -82,8 +88,6 @@ class ListNode: Hashable, Entity {
     var favorite: Bool?
     var trashed: Bool?
     var markedAsOffline: Bool? = false
-    var markedForDeletion: Bool? = false
-    var markedForDownload: Bool? = false
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType
@@ -91,6 +95,8 @@ class ListNode: Hashable, Entity {
     var siteRole: SiteRole = .unknown
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus
+    // objectbox: convert = { "default": ".undefined" }
+    var markedForStatus: MarkedForStatus
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = []
 
@@ -106,6 +112,7 @@ class ListNode: Hashable, Entity {
          nodeType: NodeType,
          favorite: Bool? = nil,
          syncStatus: SyncStatus = .undefined,
+         markedOfflineStatus: MarkedForStatus = .undefined,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
@@ -121,6 +128,7 @@ class ListNode: Hashable, Entity {
         self.nodeType = nodeType
         self.favorite = favorite
         self.syncStatus = syncStatus
+        self.markedForStatus = markedOfflineStatus
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
@@ -136,6 +144,7 @@ class ListNode: Hashable, Entity {
         allowableOperations = []
         siteRole = .unknown
         syncStatus = .undefined
+        markedForStatus = .undefined
     }
 
     // MARK: - Public Helpers
@@ -152,9 +161,8 @@ class ListNode: Hashable, Entity {
         self.nodeType = newVersion.nodeType
         self.allowableOperations = newVersion.allowableOperations
         self.syncStatus = newVersion.syncStatus
-        self.markedForDownload = newVersion.markedForDownload
         self.markedAsOffline = newVersion.markedAsOffline
-        self.markedForDeletion = newVersion.markedForDeletion
+        self.markedForStatus = newVersion.markedForStatus
     }
 
     func syncStatusIcon() -> UIImage? {
