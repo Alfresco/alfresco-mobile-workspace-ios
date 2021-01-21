@@ -195,15 +195,18 @@ class FilePreviewViewModel {
         case .video, .image, .gif, .audio:
             size = requestFullScreenExperience()
         case .rendition:
-            let renditionType = listNodeDataAccessor.localRenditionType(for: listNode)
+            if let renditionType = listNodeDataAccessor.localRenditionType(for: listNode) {
+                if renditionType == .imagePreview {
+                    size = requestFullScreenExperience()
+                }
 
-            if renditionType == .imagePreview {
-                size = requestFullScreenExperience()
+                let isImageRendition = renditionType == .imagePreview ? true : false
+                previewURL = listNodeDataAccessor.renditionLocalPath(for: listNode,
+                                                                     isImageRendition: isImageRendition)
+            } else {
+                previewURL = nil
             }
 
-            let isImageRendition = renditionType == .imagePreview ? true : false
-            previewURL = listNodeDataAccessor.renditionLocalPath(for: listNode,
-                                                                 isImageRendition: isImageRendition)
         default: break
         }
 
