@@ -34,6 +34,8 @@ class ListNodeDataAccessor {
         self.nodeOperations = NodeOperations(accountService: accountService)
     }
 
+    // MARK: - Database operations
+
     func store(node: ListNode) {
         node.markedAsOffline = true
 
@@ -154,6 +156,8 @@ class ListNodeDataAccessor {
         return node.markedAsOffline ?? false
     }
 
+    // MARK: - Path construction
+
     func fileLocalPath(for node: ListNode) -> URL? {
         guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
@@ -175,11 +179,36 @@ class ListNodeDataAccessor {
     }
 
     func isContentDownloaded(for node: ListNode) -> Bool {
-        if let contentPath = fileLocalPath(for: node)?.path {
-            return FileManager.default.fileExists(atPath: contentPath)
+        if let fileLocalPath = fileLocalPath(for: node)?.path,
+           let imageRenditionPath = renditionLocalPath(for: node, isImageRendition: true)?.path,
+           let pdfRenditionPath = renditionLocalPath(for: node, isImageRendition: false)?.path {
+            let fileManager = FileManager.default
+
+            let doesOriginalFileExists = fileManager.fileExists(atPath: fileLocalPath)
+            let doesImagerenditionExists = fileManager.fileExists(atPath: imageRenditionPath)
+            let doesPDFRenditionExists = fileManager.fileExists(atPath: pdfRenditionPath)
+
+            if doesOriginalFileExists || doesImagerenditionExists || doesPDFRenditionExists {
+                return true
+            }
         }
 
         return false
+    }
+
+    func localRenditionType(for node: ListNode) -> RenditionType? {
+        if let imageRenditionPath = renditionLocalPath(for: node, isImageRendition: true)?.path,
+           let pdfRenditionPath = renditionLocalPath(for: node, isImageRendition: false)?.path {
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: imageRenditionPath) {
+                return .imagePreview
+            } else if fileManager.fileExists(atPath: pdfRenditionPath) {
+                return .pdf
+            }
+        }
+
+        return nil
     }
 
     // MARK: Private Helpers

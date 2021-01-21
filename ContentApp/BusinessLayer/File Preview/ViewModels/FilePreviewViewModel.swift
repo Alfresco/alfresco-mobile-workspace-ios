@@ -186,18 +186,30 @@ class FilePreviewViewModel {
 
     private func previewOffline(with size: CGSize) {
         guard let listNode = listNode else { return }
-        let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
         var size = size
+
+        let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
+        var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
 
         switch filePreviewType {
         case .video, .image, .gif, .audio:
             size = requestFullScreenExperience()
+        case .rendition:
+            let renditionType = listNodeDataAccessor.localRenditionType(for: listNode)
+
+            if renditionType == .imagePreview {
+                size = requestFullScreenExperience()
+            }
+
+            let isImageRendition = renditionType == .imagePreview ? true : false
+            previewURL = listNodeDataAccessor.renditionLocalPath(for: listNode,
+                                                                 isImageRendition: isImageRendition)
         default: break
         }
 
         let preview = FilePreviewFactory.getPreview(for: filePreviewType,
                                                     node: listNode,
-                                                    url: listNodeDataAccessor.fileLocalPath(for: listNode),
+                                                    url: previewURL,
                                                     size: size) { [weak self] (error) in
             guard let sSelf = self else { return }
             sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
