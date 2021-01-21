@@ -34,7 +34,7 @@ class SettingsScreenCoordinator: Coordinator {
 
     func start() {
         let viewController = SettingsViewController.instantiateViewController()
-        let viewModel = SettingsViewModel(themingService: themingService, accountService: accountService)
+        let viewModel = SettingsViewModel(with: coordinatorServices)
 
         viewController.coordinatorServices = coordinatorServices
         viewModel.viewModelDelegate = viewController
@@ -47,14 +47,17 @@ class SettingsScreenCoordinator: Coordinator {
 
 extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     func showLoginScreen() {
-        NotificationCenter.default.post(Notification.init(name: Notification.Name(rawValue: kShowLoginScreenNotification)))
+        let notificationName = Notification.Name(rawValue: kShowLoginScreenNotification)
+        let notification = Notification.init(name: notificationName)
+        NotificationCenter.default.post(notification)
     }
 
     func showThemesModeScreen() {
         if let settingsViewController = self.settingsViewController {
-            let themesModeCoordinator = ThemesModeScreenCoordinator(with: self.presenter, settingsScreen: settingsViewController)
-            themesModeCoordinator.start()
-            self.themesModeCoordinator = themesModeCoordinator
+            let coordinator = ThemesModeScreenCoordinator(with: self.presenter,
+                                                          settingsScreen: settingsViewController)
+            coordinator.start()
+            self.themesModeCoordinator = coordinator
         }
     }
 }

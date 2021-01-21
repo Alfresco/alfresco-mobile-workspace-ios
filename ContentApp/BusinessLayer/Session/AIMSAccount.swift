@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol AIMSAccountDelegate: class {
-    func didReSignIn()
+    func didReSignIn(check oldAccountIdentifier: String)
 }
 
 class AIMSAccount: AccountProtocol, Equatable {
@@ -120,7 +120,8 @@ class AIMSAccount: AccountProtocol, Equatable {
                 } else {
                     // Retry again in one minute
                     if sSelf.ticketTimer == nil {
-                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60,
+                                                                 repeats: true) { _ in
                             sSelf.createTicket()
                         }
                     }
@@ -131,8 +132,16 @@ class AIMSAccount: AccountProtocol, Equatable {
 }
 
 extension AIMSAccount: AIMSAccountDelegate {
-    func didReSignIn() {
+    func didReSignIn(check oldAccountIdentifier: String) {
         createTicket()
         ProfileService.featchPersonalFilesID()
+
+        if oldAccountIdentifier != identifier {
+            let path = DiskService.documentsDirectoryPath(for: oldAccountIdentifier)
+            _ = DiskService.delete(itemAtPath: path)
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.removeAllNodes()
+        }
     }
 }

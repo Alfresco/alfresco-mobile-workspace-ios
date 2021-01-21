@@ -25,19 +25,7 @@ class AIMSSession {
     weak var delegate: AIMSAccountDelegate?
 
     var identifier: String {
-        guard let token = credential?.accessToken else { return "" }
-
-        do {
-            let jwt = try decode(jwt: token)
-            let claim = jwt.claim(name: "preferred_username")
-            if let preferredusername = claim.string {
-                return preferredusername
-            }
-        } catch {
-            AlfrescoLog.error("Unable to decode account token for extracting account identifier")
-        }
-
-        return ""
+        return extractUsername(from: credential?.accessToken)
     }
 
     private (set) var session: AlfrescoAuthSession?
@@ -52,6 +40,8 @@ class AIMSSession {
     private var refreshTimer: Timer?
     private var logoutHandler: LogoutHandler?
 
+    // MARK: - Init
+
     init(with session: AlfrescoAuthSession,
          parameters: AuthenticationParameters,
          credential: AlfrescoCredential) {
@@ -62,6 +52,8 @@ class AIMSSession {
         self.alfrescoAuth = AlfrescoAuth.init(configuration: authConfig)
         scheduleSessionRefresh()
     }
+
+    // MARK: - Public Helpers
 
     func persistAuthenticationCredentials() {
         do {
@@ -126,6 +118,8 @@ class AIMSSession {
         alfrescoAuth?.pkceAuth(onViewController: viewController, delegate: self)
     }
 
+    // MARK: - Private Helpers
+
     private func scheduleSessionRefresh() {
         if let accessTokenExpiresIn = self.credential?.accessTokenExpiresIn {
             let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn)
@@ -155,12 +149,32 @@ class AIMSSession {
         }
         refreshGroupRequestCount = 0
     }
+
+    private func extractUsername(from accessToken: String?) -> String {
+        guard let token = accessToken else { return "" }
+
+        do {
+            let jwt = try decode(jwt: token)
+            let claim = jwt.claim(name: "preferred_username")
+            if let preferredusername = claim.string {
+                return preferredusername
+            }
+        } catch {
+            AlfrescoLog.error("Unable to decode account token for extracting account identifier")
+        }
+
+        return ""
+    }
 }
 
+// MARK: - AlfrescoAuth Delegate
+
 extension AIMSSession: AlfrescoAuthDelegate {
-    func didReceive(result: Result<AlfrescoCredential?, APIError>, session: AlfrescoAuthSession?) {
+    func didReceive(result: Result<AlfrescoCredential?, APIError>,
+                    session: AlfrescoAuthSession?) {
         switch result {
         case .success(let credential):
+            let oldCredential = self.credential
             if let refreshedSession = session {
                 self.session = refreshedSession
                 self.credential = credential
@@ -170,7 +184,8 @@ extension AIMSSession: AlfrescoAuthDelegate {
 
             // Check if the new credentials are part of a resign-in action
             if refreshGroupRequestCount == 0 {
-                delegate?.didReSignIn()
+                let oldIdentifier = extractUsername(from: oldCredential?.accessToken)
+                delegate?.didReSignIn(check: oldIdentifier)
             }
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")

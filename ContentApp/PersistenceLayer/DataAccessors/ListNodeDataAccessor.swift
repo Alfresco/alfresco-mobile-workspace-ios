@@ -150,6 +150,16 @@ class ListNodeDataAccessor {
         return node.markedAsOffline ?? false
     }
 
+    func removeAllNodes() {
+        if let listBox = databaseService?.box(entity: ListNode.self) {
+            do {
+                try listBox.removeAll()
+            } catch {
+                AlfrescoLog.error("Unable to remove all ListNode entity.")
+            }
+        }
+    }
+
     // MARK: Private Helpers
 
     private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
