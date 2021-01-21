@@ -37,24 +37,15 @@ class ListNodeDataAccessor {
     // MARK: - Database operations
 
     func store(node: ListNode) {
-        node.markedAsOffline = true
-
-        var nodeToBeStored: ListNode?
+        var nodeToBeStored = node
 
         if node.id == 0 {
             if let queriedNode = query(node: node) {
                 queriedNode.update(with: node)
                 nodeToBeStored = queriedNode
-            } else {
-                nodeToBeStored = node
             }
-        } else {
-            nodeToBeStored = node
         }
-
-        if let nodeToBeStored = nodeToBeStored {
-            databaseService?.store(entity: nodeToBeStored)
-        }
+        databaseService?.store(entity: nodeToBeStored)
 
         if node.nodeType == .folder {
             storeChildren(of: node, paginationRequest: nil)
@@ -62,14 +53,27 @@ class ListNodeDataAccessor {
     }
 
     func remove(node: ListNode) {
+        var nodeToBeDeleted = node
+
         if node.id == 0 {
             if let queriedNode = query(node: node) {
-                databaseService?.remove(entity: queriedNode)
-                removeChildren(of: queriedNode)
+                nodeToBeDeleted = queriedNode
             }
-        } else {
-            databaseService?.remove(entity: node)
-            removeChildren(of: node)
+        }
+
+        databaseService?.remove(entity: nodeToBeDeleted)
+        removeChildren(of: nodeToBeDeleted)
+
+        if let nodeLocalURL = fileLocalPath(for: nodeToBeDeleted) {
+            _ = DiskService.delete(itemAtPath: nodeLocalURL.path)
+        }
+
+        if let renditionType = localRenditionType(for: nodeToBeDeleted) {
+            let isImageRendition = renditionType == .imagePreview ? true : false
+            if let renditionLocalURL = renditionLocalPath(for: nodeToBeDeleted,
+                                                           isImageRendition: isImageRendition) {
+                _ = DiskService.delete(itemAtPath: renditionLocalURL.path)
+            }
         }
     }
 
@@ -96,7 +100,8 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedAsOffline == true
+                    ListNode.markedAsOffline == true &&
+                        ListNode.markedForStatus != MarkedForStatus.delete.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -110,7 +115,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForDeletion == true
+                    ListNode.markedForStatus == MarkedForStatus.delete.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -125,7 +130,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForDownload == true
+                    ListNode.markedForStatus == MarkedForStatus.download.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -249,10 +254,9 @@ class ListNodeDataAccessor {
                 if listNode.nodeType == .folder {
                     removeChildren(of: listNode)
                 }
-                if let queryNode = query(node: listNode),
-                   queryNode.markedForDeletion == false {
+                if let queryNode = query(node: listNode) {
                     queryNode.markedAsOffline = false
-                    queryNode.markedForDeletion = true
+                    queryNode.markedForStatus = .delete
                     databaseService?.store(entity: queryNode)
                 }
             }

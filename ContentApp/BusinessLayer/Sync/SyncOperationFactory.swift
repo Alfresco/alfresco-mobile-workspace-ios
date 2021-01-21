@@ -44,7 +44,7 @@ class SyncOperationFactory {
                 sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
                     if let error = error {
                         if error.code == StatusCodes.code404NotFound.rawValue {
-                            node.markedForDeletion = true
+                            node.markedForStatus = .delete
                             dataAccessor.store(node: node)
                         } else {
                             AlfrescoLog.error("Unexpected sync process error: \(error)")
@@ -55,11 +55,11 @@ class SyncOperationFactory {
                         if onlineListNode.modifiedAt != node.modifiedAt ||
                             !dataAccessor.isContentDownloaded(for: node) {
                             onlineListNode.syncStatus = .inProgress
-                            onlineListNode.markedForDownload = true
+                            onlineListNode.markedForStatus = .download
                         } else {
                             onlineListNode.syncStatus = .synced
                         }
-
+                        onlineListNode.markedAsOffline = node.markedAsOffline
                         sSelf.publishSyncStatusEvent(for: onlineListNode)
                         dataAccessor.store(node: onlineListNode)
                     }
@@ -131,7 +131,7 @@ class SyncOperationFactory {
                             node.syncStatus = .error
                         } else {
                             node.syncStatus = .synced
-                            node.markedForDownload = false
+                            node.markedForStatus = .undefined
                         }
 
                         sSelf.publishSyncStatusEvent(for: node)

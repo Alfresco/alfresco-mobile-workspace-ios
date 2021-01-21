@@ -73,7 +73,8 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         if node.nodeType == .folder {
             return true
         }
-        if node.markedAsOffline == true &&
+
+        if node.markedForStatus != .undefined &&
             listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
