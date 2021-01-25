@@ -68,11 +68,14 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
     }
 
     func shouldPreview(node: ListNode) -> Bool {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+
         if node.nodeType == .folder {
             return true
         }
+
         if node.markedForStatus != .undefined &&
-            node.localPath != nil {
+            listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
         return false

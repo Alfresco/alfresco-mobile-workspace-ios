@@ -34,6 +34,8 @@ class ListNodeDataAccessor {
         self.nodeOperations = NodeOperations(accountService: accountService)
     }
 
+    // MARK: - Database operations
+
     func store(node: ListNode) {
         var nodeToBeStored = node
 
@@ -61,8 +63,17 @@ class ListNodeDataAccessor {
 
         databaseService?.remove(entity: nodeToBeDeleted)
         removeChildren(of: nodeToBeDeleted)
-        if let nodeLocalPath = nodeToBeDeleted.localPath {
-            _ = DiskService.delete(itemAtPath: nodeLocalPath)
+
+        if let nodeLocalURL = fileLocalPath(for: nodeToBeDeleted) {
+            _ = DiskService.delete(itemAtPath: nodeLocalURL.path)
+        }
+
+        if let renditionType = localRenditionType(for: nodeToBeDeleted) {
+            let isImageRendition = renditionType == .imagePreview ? true : false
+            if let renditionLocalURL = renditionLocalPath(for: nodeToBeDeleted,
+                                                           isImageRendition: isImageRendition) {
+                _ = DiskService.delete(itemAtPath: renditionLocalURL.path)
+            }
         }
     }
 
@@ -148,6 +159,61 @@ class ListNodeDataAccessor {
     func isNodeMarkedAsOffline(node: ListNode) -> Bool {
         guard let node = query(node: node) else { return false }
         return node.markedAsOffline ?? false
+    }
+
+    // MARK: - Path construction
+
+    func fileLocalPath(for node: ListNode) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(node.guid)
+        localURL.appendPathExtension(URL(fileURLWithPath: node.title).pathExtension)
+
+        return localURL
+    }
+
+    func renditionLocalPath(for node: ListNode, isImageRendition: Bool) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(String(format: "%@-rendition", node.guid))
+        localURL.appendPathExtension(isImageRendition ? "png" : "pdf")
+
+        return localURL
+    }
+
+    func isContentDownloaded(for node: ListNode) -> Bool {
+        if let fileLocalPath = fileLocalPath(for: node)?.path,
+           let imageRenditionPath = renditionLocalPath(for: node, isImageRendition: true)?.path,
+           let pdfRenditionPath = renditionLocalPath(for: node, isImageRendition: false)?.path {
+            let fileManager = FileManager.default
+
+            let doesOriginalFileExists = fileManager.fileExists(atPath: fileLocalPath)
+            let doesImagerenditionExists = fileManager.fileExists(atPath: imageRenditionPath)
+            let doesPDFRenditionExists = fileManager.fileExists(atPath: pdfRenditionPath)
+
+            if doesOriginalFileExists || doesImagerenditionExists || doesPDFRenditionExists {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    func localRenditionType(for node: ListNode) -> RenditionType? {
+        if let imageRenditionPath = renditionLocalPath(for: node, isImageRendition: true)?.path,
+           let pdfRenditionPath = renditionLocalPath(for: node, isImageRendition: false)?.path {
+            let fileManager = FileManager.default
+
+            if fileManager.fileExists(atPath: imageRenditionPath) {
+                return .imagePreview
+            } else if fileManager.fileExists(atPath: pdfRenditionPath) {
+                return .pdf
+            }
+        }
+
+        return nil
     }
 
     func removeAllNodes() {

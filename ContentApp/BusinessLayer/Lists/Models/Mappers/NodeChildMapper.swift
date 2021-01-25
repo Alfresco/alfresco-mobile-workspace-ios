@@ -68,6 +68,6 @@ struct NodeChildMapper {
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations,
-                        destionation: destination)
+                        destination: destination)
     }
 }
