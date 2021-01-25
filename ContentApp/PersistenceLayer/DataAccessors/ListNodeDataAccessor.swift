@@ -168,7 +168,7 @@ class ListNodeDataAccessor {
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: localPath)
         localURL.appendPathComponent(node.guid)
-        localURL.appendPathExtension(URL(fileURLWithPath: node.title).pathExtension)
+        localURL.appendPathComponent(node.title)
 
         return localURL
     }
@@ -177,7 +177,8 @@ class ListNodeDataAccessor {
         guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: localPath)
-        localURL.appendPathComponent(String(format: "%@-rendition", node.guid))
+        localURL.appendPathComponent(node.guid)
+        localURL.appendPathComponent(String(format: "%@-rendition", node.title))
         localURL.appendPathExtension(isImageRendition ? "png" : "pdf")
 
         return localURL
