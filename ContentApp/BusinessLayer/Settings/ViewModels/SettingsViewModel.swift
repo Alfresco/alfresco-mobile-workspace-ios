@@ -39,6 +39,11 @@ class SettingsViewModel {
         self.coordinatorServices = coordinatorServices
         reloadDataSource()
         reloadRequests()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(kReSignInNotification),
+                                               object: nil)
     }
 
     // MARK: - Public methods
@@ -83,6 +88,12 @@ class SettingsViewModel {
                                           message: message,
                                           actions: [confirmAction, cancelAction]) {}
         }
+    }
+
+    // MARK: - ReSignin
+
+    @objc private func handleReSignIn(notification: Notification) {
+        reloadRequests()
     }
 
     // MARK: - Private methods

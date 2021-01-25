@@ -75,6 +75,29 @@ class AIMSSession {
         }
     }
 
+    func persist(oldCredentials: AlfrescoCredential) {
+        do {
+            let credentialData = try JSONEncoder().encode(oldCredentials)
+            let credentialKey = "oldCredentials-\(String(describing: AlfrescoCredential.self))"
+            _ = Keychain.set(value: credentialData, forKey: credentialKey)
+        } catch {
+            AlfrescoLog.error("Unable to persist credentials to Keychain.")
+        }
+    }
+
+    func oldIdentifier() -> String {
+        if let data = Keychain.data(forKey: "oldCredentials-\(String(describing: AlfrescoCredential.self))") {
+            do {
+                let decoder = JSONDecoder()
+                let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: data)
+                return extractUsername(from: aimsCredential.accessToken)
+            } catch {
+                AlfrescoLog.error("Unable to deserialize session information")
+            }
+        }
+        return ""
+    }
+
     func refreshSession(completionHandler: ((AlfrescoCredential) -> Void)?) {
         queueRefreshOperationRequest()
 
@@ -172,9 +195,11 @@ class AIMSSession {
 extension AIMSSession: AlfrescoAuthDelegate {
     func didReceive(result: Result<AlfrescoCredential?, APIError>,
                     session: AlfrescoAuthSession?) {
+        if let credential = self.credential {
+            persist(oldCredentials: credential)
+        }
         switch result {
         case .success(let credential):
-            let oldCredential = self.credential
             if let refreshedSession = session {
                 self.session = refreshedSession
                 self.credential = credential
@@ -184,8 +209,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
 
             // Check if the new credentials are part of a resign-in action
             if refreshGroupRequestCount == 0 {
-                let oldIdentifier = extractUsername(from: oldCredential?.accessToken)
-                delegate?.didReSignIn(check: oldIdentifier)
+                delegate?.didReSignIn(check: self.oldIdentifier())
             }
         case .failure(let error):
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")

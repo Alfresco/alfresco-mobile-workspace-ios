@@ -105,6 +105,12 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView?.register(UINib(nibName: identifier,
                                        bundle: nil),
                                  forCellWithReuseIdentifier: identifier)
+
+        // ReSignIn Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(kReSignInNotification),
+                                               object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -188,6 +194,10 @@ class ListComponentViewController: SystemThemableViewController {
 
             sSelf.listDataSource?.refreshList()
         }
+    }
+
+    @objc private func handleReSignIn(notification: Notification) {
+        listDataSource?.refreshList()
     }
 }
 
