@@ -38,6 +38,7 @@ class NodeActionsViewModel {
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
+    private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
 
     // MARK: Init
@@ -133,10 +134,9 @@ class NodeActionsViewModel {
         handleResponse(error: nil)
 
         if let node = self.node {
-            let dataAccessor = ListNodeDataAccessor()
             node.syncStatus = .pending
             node.markedAsOffline = true
-            dataAccessor.store(node: node)
+            listNodeDataAccessor.store(node: node)
 
             action?.type = .removeOffline
             action?.title = LocalizationConstants.ActionMenu.removeOffline
@@ -151,11 +151,10 @@ class NodeActionsViewModel {
         handleResponse(error: nil)
 
         if let node = self.node {
-            let dataAccessor = ListNodeDataAccessor()
-            if let queriedNode = dataAccessor.query(node: node) {
+            if let queriedNode = listNodeDataAccessor.query(node: node) {
                 queriedNode.markedAsOffline = false
                 queriedNode.markedForStatus = .delete
-                dataAccessor.store(node: queriedNode)
+                listNodeDataAccessor.store(node: queriedNode)
             }
 
             action?.type = .markOffline
@@ -227,10 +226,9 @@ class NodeActionsViewModel {
                 if error == nil {
                     sSelf.node?.trashed = true
 
-                    let dataAccessor = ListNodeDataAccessor()
-                    if let queriedNode = dataAccessor.query(node: node) {
+                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
                         queriedNode.markedForStatus = .delete
-                        dataAccessor.store(node: queriedNode)
+                        sSelf.listNodeDataAccessor.store(node: queriedNode)
                     }
 
                     let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
@@ -249,10 +247,9 @@ class NodeActionsViewModel {
             if error == nil {
                 sSelf.node?.trashed = false
 
-                let dataAccessor = ListNodeDataAccessor()
-                if let queriedNode = dataAccessor.query(node: node) {
+                if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
                     queriedNode.markedForStatus = .undefined
-                    dataAccessor.store(node: queriedNode)
+                    sSelf.listNodeDataAccessor.store(node: queriedNode)
                 }
 
                 let moveEvent = MoveEvent(node: node, eventType: .restore)
@@ -270,15 +267,12 @@ class NodeActionsViewModel {
                              node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
-        let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { [weak self] _ in
-            guard let sSelf = self else { return }
-
-            TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { (_, error) in
+        let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { _ in
+            TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
+                guard let sSelf = self else { return }
                 if error == nil {
-
-                    let dataAccessor = ListNodeDataAccessor()
-                    if let queriedNode = dataAccessor.query(node: node) {
-                        dataAccessor.remove(node: queriedNode)
+                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
+                        sSelf.listNodeDataAccessor.remove(node: queriedNode)
                     }
 
                     let moveEvent = MoveEvent(node: node, eventType: .permanentlyDelete)
@@ -309,31 +303,40 @@ class NodeActionsViewModel {
         let mainQueue = DispatchQueue.main
         let workerQueue = OperationQueueService.worker
 
-        mainQueue.async { [weak self] in
-            guard let sSelf = self else { return }
-            downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
-                downloadRequest?.cancel()
-            })
-
-            workerQueue.async {
-                let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
-                var downloadURL = URL(fileURLWithPath: downloadPath)
-                downloadURL.appendPathComponent(node.title)
-
-                downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
-                                                                       to: downloadURL,
-                                                                       completionHandler: { destinationURL, error in
-                    mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
-                        downloadDialog?.dismiss(animated: true,
-                                                completion: {
-                                                    sSelf.handleResponse(error: error)
-                                                    if let url = destinationURL {
-                                                        sSelf.displayActivityViewController(for: url)
-                                                    }
-                                                })
-                    })
+        if node.markedAsOffline ?? false == true {
+            if let localURL = listNodeDataAccessor.fileLocalPath(for: node) {
+                mainQueue.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.displayActivityViewController(for: localURL)
                 }
-            )}
+            }
+        } else {
+            mainQueue.async { [weak self] in
+                guard let sSelf = self else { return }
+                downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
+                    downloadRequest?.cancel()
+                })
+
+                workerQueue.async {
+                    let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+                    var downloadURL = URL(fileURLWithPath: downloadPath)
+                    downloadURL.appendPathComponent(node.title)
+
+                    downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
+                                                                           to: downloadURL,
+                                                                           completionHandler: { destinationURL, error in
+                        mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+                            downloadDialog?.dismiss(animated: true,
+                                                    completion: {
+                                                        sSelf.handleResponse(error: error)
+                                                        if let url = destinationURL {
+                                                            sSelf.displayActivityViewController(for: url)
+                                                        }
+                                                    })
+                        })
+                    }
+                )}
+            }
         }
     }
 

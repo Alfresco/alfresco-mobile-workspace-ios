@@ -86,9 +86,9 @@ class DiskService {
     // MARK: - Path creation
 
     static func documentsDirectoryPath() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                          in: .userDomainMask)[0]
+        return documentsDirectory.path
     }
 
     static func documentsDirectoryPath(for accountIdentifier: String) -> String {
