@@ -52,6 +52,7 @@ let kWhereFavoritesSiteCondition = "(EXISTS(target/site))"
 // MARK: - Notification Keys
 let kShowLoginScreenNotification = "kShowLoginScreenNotification"
 let kAPIUnauthorizedRequestNotification = "kAPIUnauthorizedRequestNotification"
+let kReSignInNotification = "kReSignInNotification"
 
 // MARK: - Animations Time
 let kAnimationSplashScreenLogo = 0.0

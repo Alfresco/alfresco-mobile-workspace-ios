@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 
 protocol AIMSAccountDelegate: class {
-    func didReSignIn()
+    func didReSignIn(check oldAccountIdentifier: String)
 }
 
 class AIMSAccount: AccountProtocol, Equatable {
@@ -120,7 +120,8 @@ class AIMSAccount: AccountProtocol, Equatable {
                 } else {
                     // Retry again in one minute
                     if sSelf.ticketTimer == nil {
-                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { _ in
+                        sSelf.ticketTimer = Timer.scheduledTimer(withTimeInterval: 60,
+                                                                 repeats: true) { _ in
                             sSelf.createTicket()
                         }
                     }
@@ -131,8 +132,29 @@ class AIMSAccount: AccountProtocol, Equatable {
 }
 
 extension AIMSAccount: AIMSAccountDelegate {
-    func didReSignIn() {
+    func didReSignIn(check oldAccountIdentifier: String) {
         createTicket()
         ProfileService.featchPersonalFilesID()
+
+        if oldAccountIdentifier != identifier && oldAccountIdentifier != "" {
+            UserDefaults.standard.set(identifier, forKey: kActiveAccountIdentifier)
+            UserDefaults.standard.synchronize()
+            session.parameters.save(for: identifier)
+
+            let path = DiskService.documentsDirectoryPath(for: oldAccountIdentifier)
+            _ = DiskService.delete(itemAtPath: path)
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.removeAllNodes()
+
+            Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoCredential.self))")
+            Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))")
+            session.parameters.remove(for: oldAccountIdentifier)
+        }
+
+        let notification = NSNotification.Name(rawValue: kReSignInNotification)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
     }
 }

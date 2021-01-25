@@ -29,18 +29,21 @@ protocol SettingsViewModelDelegate: class {
 
 class SettingsViewModel {
     var items: [[SettingsItem]] = []
-    var themingService: MaterialDesignThemingService?
-    var accountService: AccountService?
     var userProfile: PersonEntry?
+    var coordinatorServices: CoordinatorServices?
     weak var viewModelDelegate: SettingsViewModelDelegate?
 
     // MARK: - Init
 
-    init(themingService: MaterialDesignThemingService?, accountService: AccountService?) {
-        self.themingService = themingService
-        self.accountService = accountService
+    init(with coordinatorServices: CoordinatorServices?) {
+        self.coordinatorServices = coordinatorServices
         reloadDataSource()
         reloadRequests()
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(kReSignInNotification),
+                                               object: nil)
     }
 
     // MARK: - Public methods
@@ -71,30 +74,44 @@ class SettingsViewModel {
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
         let title = LocalizationConstants.Buttons.signOut
         let message = LocalizationConstants.Settings.signOutConfirmation
+        let confirmButtonTitle = LocalizationConstants.Buttons.yes
+        let cancelButtonTitle = LocalizationConstants.Buttons.cancel
 
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.yes) { [weak self] _ in
+        let confirmAction = MDCAlertAction(title: confirmButtonTitle) { [weak self] _ in
             guard let sSelf = self else { return }
             sSelf.logOutForCurrentAccount(in: viewController)
         }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+        let cancelAction = MDCAlertAction(title: cancelButtonTitle) { _ in }
 
         if let viewController = viewController as? SystemThemableViewController {
             _ = viewController.showDialog(title: title,
                                           message: message,
-                                          actions: [confirmAction,
-                                                    cancelAction]) {}
+                                          actions: [confirmAction, cancelAction]) {}
         }
+    }
+
+    // MARK: - ReSignin
+
+    @objc private func handleReSignIn(notification: Notification) {
+        reloadRequests()
     }
 
     // MARK: - Private methods
 
     private func logOutForCurrentAccount(in viewController: UIViewController) {
-        accountService?.logOutFromCurrentAccount(viewController: viewController, completionHandler: { [weak self] (error) in
-            guard let sSelf = self, let currentAccount = sSelf.accountService?.activeAccount else { return }
+        let accountService = coordinatorServices?.accountService
+        accountService?.logOutFromCurrentAccount(viewController: viewController,
+                                                 completionHandler: { [weak self] (error) in
+            guard let sSelf = self, let currentAccount = accountService?.activeAccount
+            else { return }
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
                 currentAccount.removeDiskFolder()
+
+                let listNodeDataAccessor = ListNodeDataAccessor()
+                listNodeDataAccessor.removeAllNodes()
+
                 UserProfile.removeUserProfile(withAccountIdentifier: currentAccount.identifier)
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
@@ -120,11 +137,16 @@ class SettingsViewModel {
 
     private func getLocalProfileItem() -> SettingsItem? {
         let avatar = localAvatarImage()
-        return SettingsItem(type: .account, title: UserProfile.getProfileName(), subtitle: UserProfile.getEmail(), icon: avatar)
+        return SettingsItem(type: .account,
+                            title: UserProfile.getProfileName(),
+                            subtitle: UserProfile.getEmail(),
+                            icon: avatar)
     }
 
     private func getThemeItem() -> SettingsItem {
+        let themingService = coordinatorServices?.themingService
         var themeName = LocalizationConstants.Theme.auto
+
         switch themingService?.getThemeMode() {
         case .light:
              themeName = LocalizationConstants.Theme.light
@@ -140,12 +162,18 @@ class SettingsViewModel {
     }
 
     private func getVersionItem() -> SettingsItem {
-        if let version = Bundle.main.releaseVersionNumber, let build = Bundle.main.buildVersionNumber {
+        if let version = Bundle.main.releaseVersionNumber,
+           let build = Bundle.main.buildVersionNumber {
             return SettingsItem(type: .label,
-                                title: String(format: LocalizationConstants.Settings.appVersion, version, build),
-                                subtitle: "", icon: nil)
+                                title: String(format: LocalizationConstants.Settings.appVersion,
+                                              version, build),
+                                subtitle: "",
+                                icon: nil)
         }
-        return SettingsItem(type: .label, title: "", subtitle: "", icon: nil)
+        return SettingsItem(type: .label,
+                            title: "",
+                            subtitle: "",
+                            icon: nil)
     }
 
     private func fetchAvatar() {
@@ -173,7 +201,9 @@ class SettingsViewModel {
     }
 
     private func localAvatarImage() -> UIImage? {
-        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return nil }
+        let accountService = coordinatorServices?.accountService
+        guard let accountIdentifier = accountService?.activeAccount?.identifier
+        else { return nil }
         return DiskService.getAvatar(for: accountIdentifier)
     }
 }
