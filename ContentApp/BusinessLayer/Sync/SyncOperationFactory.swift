@@ -126,12 +126,12 @@ class SyncOperationFactory {
 
                 sSelf.nodeOperations.sessionForCurrentAccount { _ in
                     _ = sSelf.nodeOperations.downloadContent(for: node,
-                                                             to: downloadURL) { (_, error) in
-                        if error != nil {
-                            node.syncStatus = .error
-                        } else {
+                                                             to: downloadURL) { (url, _) in
+                        if url != nil {
                             node.syncStatus = .synced
                             node.markedForStatus = .undefined
+                        } else {
+                            node.syncStatus = .error
                         }
 
                         sSelf.publishSyncStatusEvent(for: node)
