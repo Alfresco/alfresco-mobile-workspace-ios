@@ -26,21 +26,54 @@ enum ConnectivityStatus {
     case cellular
 }
 
-class Connectivity {
+protocol ConnectivityServiceService {
+    /// Status used to display ConnectionType
+    var status: ConnectivityStatus { get }
 
-    class var status: ConnectivityStatus {
+    /// Start an observer to trigger ConnectionType was changed
+    func startNetworkReachabilityObserver()
+}
+
+class ConnectivityService: Service, ConnectivityServiceService {
+
+    private let network: NetworkReachabilityManager?
+    private let syncTriggerService: SyncTriggersService?
+
+    var status: ConnectivityStatus {
         if NetworkReachabilityManager()?.isReachable == false {
             return .noConnection
         }
-
         if NetworkReachabilityManager()?.isReachableOnEthernetOrWiFi == true {
             return .wifi
         }
-
         if NetworkReachabilityManager()?.isReachableOnWWAN == true {
             return .cellular
         }
-
         return .unknown
+    }
+
+    // MARK: - Public interface
+
+    init(with syncTriggerService: SyncTriggersService?) {
+        self.syncTriggerService = syncTriggerService
+        self.network = NetworkReachabilityManager()
+    }
+
+    func startNetworkReachabilityObserver() {
+        network?.listener = { status in
+            switch status {
+            case .reachable(NetworkReachabilityManager.ConnectionType.ethernetOrWiFi):
+                self.triggerSync()
+            default:
+                break
+            }
+        }
+        network?.startListening()
+    }
+
+    // MARK: - Private interface
+
+    private func triggerSync() {
+        syncTriggerService?.triggerSync(when: .connectedToWIFI)
     }
 }

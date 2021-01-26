@@ -41,8 +41,13 @@ class ApplicationBootstrap {
         let eventBusService = self.eventBusService()
         self.repository.register(service: eventBusService)
 
-        self.repository.register(service: syncService(with: accountService,
-                                                      and: eventBusService))
+        let syncService = self.syncService(with: accountService, and: eventBusService)
+        self.repository.register(service: syncService)
+
+        let syncTriggersService = self.syncTriggersService(with: syncService, and: accountService)
+        self.repository.register(service: syncTriggersService)
+
+        self.repository.register(service: self.connectivityService(with: syncTriggersService))
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -84,5 +89,14 @@ class ApplicationBootstrap {
     private func syncService(with accountService: AccountService,
                              and eventBusService: EventBusService) -> SyncService {
         return SyncService(accountService: accountService, eventBusService: eventBusService)
+    }
+
+    private func syncTriggersService(with syncService: SyncService,
+                                     and accountService: AccountService) -> SyncTriggersService {
+        return SyncTriggersService(syncService: syncService, accountService: accountService)
+    }
+
+    private func connectivityService(with syncTriggersService: SyncTriggersService) -> ConnectivityService {
+        return ConnectivityService(with: syncTriggersService)
     }
 }

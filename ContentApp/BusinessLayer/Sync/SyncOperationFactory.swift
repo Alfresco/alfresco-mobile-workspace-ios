@@ -42,6 +42,7 @@ class SyncOperationFactory {
                 let dataAccessor = ListNodeDataAccessor()
 
                 sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
+                    AlfrescoLog.info("### \(node.guid)")
                     if let error = error {
                         if error.code == StatusCodes.code404NotFound.rawValue {
                             node.markedForStatus = .delete

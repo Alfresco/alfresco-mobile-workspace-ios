@@ -107,6 +107,7 @@ class SettingsViewModel {
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 currentAccount.removeAuthenticationCredentials()
+                currentAccount.removeAuthenticationParameters()
                 currentAccount.removeDiskFolder()
 
                 let listNodeDataAccessor = ListNodeDataAccessor()

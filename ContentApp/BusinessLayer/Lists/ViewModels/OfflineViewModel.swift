@@ -90,7 +90,8 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func performListAction() {
-        if Connectivity.status == .cellular {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.status == .cellular {
             showNoSyncInCellularDataDialog()
         } else {
             if let offlineNodes = offlineMarkedNodes() {
