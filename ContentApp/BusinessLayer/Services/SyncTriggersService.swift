@@ -25,6 +25,7 @@ enum SyncTriggersType: String {
     case connectedToWIFI
     case userReAuthenticated
     case timer
+    case syncButtonTapped
 }
 
 protocol SyncTriggersServiceProtocol {
@@ -38,12 +39,14 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private let syncService: SyncService?
     private let accountService: AccountService?
     private var triggerTimer: Timer?
+    private var throttleTimer: Timer?
     private var kvoSyncStatus: NSKeyValueObservation?
     private var tiggerType: SyncTriggersType?
 
     deinit {
         kvoSyncStatus?.invalidate()
         triggerTimer?.invalidate()
+        throttleTimer?.invalidate()
     }
 
     // MARK: - Public interface
@@ -56,10 +59,27 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     func triggerSync(when type: SyncTriggersType) {
         self.tiggerType = type
-        startSyncOperation()
+        if type == .syncButtonTapped {
+            startThrottleTimer()
+            startSyncOperation()
+        } else {
+            if throttleTimer?.isValid == nil ||
+                throttleTimer?.isValid == false {
+                startThrottleTimer()
+                startSyncOperation()
+            }
+        }
     }
 
     // MARK: - Private interface
+
+    private func startThrottleTimer() {
+        throttleTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(kSyncTriggerTimerBuffer),
+                                             repeats: false,
+                                             block: { (timer) in
+                                                timer.invalidate()
+                                             })
+    }
 
     private func startSyncOperation() {
         guard let syncService = self.syncService,

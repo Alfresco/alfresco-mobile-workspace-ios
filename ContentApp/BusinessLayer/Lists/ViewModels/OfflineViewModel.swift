@@ -94,9 +94,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         if connectivityService?.status == .cellular {
             showNoSyncInCellularDataDialog()
         } else {
-            if let offlineNodes = offlineMarkedNodes() {
-                coordinatorServices?.syncService?.sync(nodeList: offlineNodes)
-            }
+            coordinatorServices?.syncTriggersService?.triggerSync(when: .syncButtonTapped)
         }
     }
 
