@@ -82,6 +82,10 @@ class SyncService: Service, SyncServiceProtocol {
                                          waitUntilFinished: false)
     }
 
+    func stopSync() {
+        syncOperationQueue.cancelAllOperations()
+    }
+
     // MARK: - Private interface
 
     private func processMarkedNodes() {
