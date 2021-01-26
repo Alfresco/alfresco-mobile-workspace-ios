@@ -106,7 +106,10 @@ class SettingsViewModel {
             else { return }
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                sSelf.coordinatorServices?.syncService?.stopSync()
+
                 currentAccount.removeAuthenticationCredentials()
+                currentAccount.removeAuthenticationParameters()
                 currentAccount.removeDiskFolder()
 
                 let listNodeDataAccessor = ListNodeDataAccessor()
