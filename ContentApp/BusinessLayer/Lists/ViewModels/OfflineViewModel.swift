@@ -23,6 +23,7 @@ import MaterialComponents.MaterialDialogs
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
+    private var shouldEnableListButton: Bool = true
 
     // MARK: - Init
 
@@ -74,6 +75,10 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func shouldDisplayListActionButton() -> Bool {
         return true
+    }
+
+    func shouldEnableListActionButton() -> Bool {
+        return shouldEnableListButton
     }
 
     func shouldPreview(node: ListNode) -> Bool {
@@ -145,6 +150,7 @@ extension OfflineViewModel: SyncServiceDelegate {
     func syncDidStarted() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
+            sSelf.shouldEnableListButton = false
             sSelf.pageUpdatingDelegate?.didUpdateListActionState(enable: false)
         }
     }
@@ -153,6 +159,7 @@ extension OfflineViewModel: SyncServiceDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.refreshList()
+            sSelf.shouldEnableListButton = true
             sSelf.pageUpdatingDelegate?.didUpdateListActionState(enable: true)
         }
     }

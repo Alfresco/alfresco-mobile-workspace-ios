@@ -55,30 +55,33 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
          accountService: AccountService?) {
         self.syncService = syncService
         self.accountService = accountService
+        self.startTimeTrigger()
     }
 
     func triggerSync(when type: SyncTriggersType) {
+        guard accountService?.activeAccount != nil else { return }
         self.tiggerType = type
-        if type == .syncButtonTapped {
+
+        if type == .syncButtonTapped ||
+            throttleTimer?.isValid == nil ||
+            throttleTimer?.isValid == false {
+
             startThrottleTimer()
             startSyncOperation()
-        } else {
-            if throttleTimer?.isValid == nil ||
-                throttleTimer?.isValid == false {
-                startThrottleTimer()
-                startSyncOperation()
-            }
         }
     }
 
     // MARK: - Private interface
 
     private func startThrottleTimer() {
-        throttleTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(kSyncTriggerTimerBuffer),
-                                             repeats: false,
-                                             block: { (timer) in
-                                                timer.invalidate()
-                                             })
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.throttleTimer = nil
+            sSelf.throttleTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimerBuffer,
+                                                 repeats: false,
+                                                 block: { (_) in
+                                                 })
+        }
     }
 
     private func startSyncOperation() {
@@ -98,24 +101,29 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     }
 
     private func observeSyncStatusOperation() {
-        kvoSyncStatus = syncService?.observe(\.syncServiceStatus,
-                                             options: [.new],
-                                             changeHandler: { [weak self] (newValue, _) in
+        kvoSyncStatus =
+            syncService?.observe(\.syncServiceStatus,
+                                 options: [.new],
+                                 changeHandler: { [weak self] (newValue, _) in
+                                    guard let sSelf = self,
+                                          newValue.syncServiceStatus == .idle
+                                    else { return }
 
-                                                guard let sSelf = self,
-                                                      newValue.syncServiceStatus == .idle
-                                                else { return }
-                                                sSelf.startTimeTrigger()
-                                             })
+                                    sSelf.startTimeTrigger()
+                                 })
     }
 
     private func startTimeTrigger() {
-        triggerTimer = Timer.scheduledTimer(withTimeInterval: TimeInterval(kSyncTriggerTimer),
-                                            repeats: true,
-                                            block: { [weak self] (timer) in
-                                                guard let sSelf = self else { return }
-                                                timer.invalidate()
-                                                sSelf.triggerSync(when: .timer)
-                                            })
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.triggerTimer?.invalidate()
+            sSelf.triggerTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimer,
+                                                repeats: true,
+                                                block: { (_) in
+                                                    sSelf.triggerTimer?.invalidate()
+                                                    sSelf.triggerSync(when: .timer)
+                                                })
+        }
+
     }
 }
