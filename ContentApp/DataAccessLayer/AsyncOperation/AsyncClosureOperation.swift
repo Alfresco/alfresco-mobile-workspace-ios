@@ -19,7 +19,7 @@
 import Foundation
 
 class AsyncClosureOperation: AsyncOperation {
-    typealias AsyncClosure = (@escaping () -> Void) -> Void
+    typealias AsyncClosure = (@escaping () -> Void, AsyncOperation) -> Void
 
     let closure: AsyncClosure
 
@@ -29,8 +29,9 @@ class AsyncClosureOperation: AsyncOperation {
     }
 
     override func asyncStart() {
-        closure { [weak self] in
-            self?.asyncFinish()
-        }
+        closure({ [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.asyncFinish()
+        }, self)
     }
 }
