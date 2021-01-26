@@ -35,14 +35,19 @@ class SyncOperationFactory {
         var detailsOperations: [AsyncClosureOperation] = []
 
         for node in nodes where node.nodeType == .file {
-            let operation = AsyncClosureOperation { [weak self] completion in
+            let operation = AsyncClosureOperation { [weak self] completion, operation  in
                 guard let sSelf = self else { return }
 
                 let guid = node.guid
                 let dataAccessor = ListNodeDataAccessor()
 
                 sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
-                    AlfrescoLog.info("### \(node.guid)")
+                    if operation.isCancelled {
+                        completion()
+
+                        return
+                    }
+
                     if let error = error {
                         if error.code == StatusCodes.code404NotFound.rawValue {
                             node.markedForStatus = .delete
@@ -81,7 +86,7 @@ class SyncOperationFactory {
         let dataAccessor = ListNodeDataAccessor()
 
         for node in nodes {
-            let operation = AsyncClosureOperation { completion in
+            let operation = AsyncClosureOperation { completion, _  in
                 if let nodeURL = dataAccessor.fileLocalPath(for: node) {
                     _ = DiskService.delete(itemAtPath: nodeURL.path)
                 }
@@ -119,7 +124,7 @@ class SyncOperationFactory {
     private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
         let dataAccessor = ListNodeDataAccessor()
 
-        let operation = AsyncClosureOperation { [weak self] completion in
+        let operation = AsyncClosureOperation { [weak self] completion, operation  in
             guard let sSelf = self else { return }
             if let downloadURL = dataAccessor.fileLocalPath(for: node) {
                 let parentDirectoryURL = downloadURL.deletingLastPathComponent()
@@ -128,6 +133,13 @@ class SyncOperationFactory {
                 sSelf.nodeOperations.sessionForCurrentAccount { _ in
                     _ = sSelf.nodeOperations.downloadContent(for: node,
                                                              to: downloadURL) { (url, _) in
+                        if operation.isCancelled {
+                            _ = DiskService.delete(itemAtPath: downloadURL.path)
+                            completion()
+
+                            return
+                        }
+
                         if url != nil {
                             node.syncStatus = .synced
                             node.markedForStatus = .undefined
@@ -154,7 +166,7 @@ class SyncOperationFactory {
         if filePreviewType == .rendition {
             let dataAccessor = ListNodeDataAccessor()
 
-            let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion in
+            let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion, operation  in
                 guard let sSelf = self else { return }
 
                 sSelf.nodeOperations.sessionForCurrentAccount { _ in
@@ -165,6 +177,13 @@ class SyncOperationFactory {
                                 _ = DiskService.create(directoryPath: parentDirectoryURL.path)
 
                                 _ = sSelf.nodeOperations.downloadContent(from: url, to: downloadURL, completionHandler: { (_, error) in
+                                    if operation.isCancelled {
+                                        _ = DiskService.delete(itemAtPath: downloadURL.path)
+                                        completion()
+
+                                        return
+                                    }
+
                                     if error != nil {
                                         AlfrescoLog.error("Unexpected sync process error while fetching the rendition for node: \(node.guid) . Reason: \(String(describing: error))")
                                     }

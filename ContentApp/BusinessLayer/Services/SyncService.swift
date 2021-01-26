@@ -90,6 +90,10 @@ protocol SyncServiceDelegate: class {
         }
     }
 
+    func stopSync() {
+        syncOperationQueue.cancelAllOperations()
+    }
+
     // MARK: - Private interface
 
     private func processMarkedNodes() {
