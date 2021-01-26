@@ -42,7 +42,7 @@ class OfflineViewModelFactory {
                                   nodeTypes: [.file, .folder, .site])
         eventBusService?.register(observer: offlineViewModel,
                                   for: FavouriteEvent.self,
-                                  nodeTypes: [.file])
+                                  nodeTypes: [.file, .folder])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
@@ -60,7 +60,7 @@ class OfflineViewModelFactory {
 
         eventBusService?.register(observer: offlineViewModel,
                                   for: SyncStatusEvent.self,
-                                  nodeTypes: [.file])
+                                  nodeTypes: [.file, .folder])
 
         return (offlineViewModel, resultViewModel, globalSearchViewModel)
     }
