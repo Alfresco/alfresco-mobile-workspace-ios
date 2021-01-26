@@ -24,6 +24,8 @@ class SyncOperationFactory {
     let nodeOperations: NodeOperations
     let eventBusService: EventBusService?
 
+    private var nodeDetailsGroup = DispatchGroup()
+
     init(nodeOperations: NodeOperations,
          eventBusService: EventBusService?) {
         self.nodeOperations = nodeOperations
@@ -34,48 +36,17 @@ class SyncOperationFactory {
         guard let nodes = nodes else { return [] }
         var detailsOperations: [AsyncClosureOperation] = []
 
-        for node in nodes where node.nodeType == .file {
-            let operation = AsyncClosureOperation { [weak self] completion, operation  in
-                guard let sSelf = self else { return }
-
-                let guid = node.guid
-                let dataAccessor = ListNodeDataAccessor()
-
-                sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
-                    if operation.isCancelled {
-                        completion()
-
-                        return
-                    }
-
-                    if let error = error {
-                        if error.code == StatusCodes.code404NotFound.rawValue {
-                            node.markedForStatus = .delete
-                            dataAccessor.store(node: node)
-                        } else {
-                            AlfrescoLog.error("Unexpected sync process error: \(error)")
-                        }
-                    } else if let entry = result?.entry {
-                        let onlineListNode = NodeChildMapper.create(from: entry)
-
-                        if onlineListNode.modifiedAt != node.modifiedAt ||
-                            !dataAccessor.isContentDownloaded(for: node) {
-                            onlineListNode.syncStatus = .inProgress
-                            onlineListNode.markedForStatus = .download
-                        } else {
-                            onlineListNode.syncStatus = .synced
-                        }
-                        onlineListNode.markedAsOffline = node.markedAsOffline
-                        sSelf.publishSyncStatusEvent(for: onlineListNode)
-                        dataAccessor.store(node: onlineListNode)
-                    }
-
-                    completion()
-                }
+        for node in nodes {
+            if node.nodeType == .file {
+                let fileNodeOperation = fetchFileNodeDetailsOperation(node: node)
+                detailsOperations.append(fileNodeOperation)
+            } else {
+                fetchChildrenNodeDetailsOperations(of: node,
+                                                   paginationRequest: nil)
             }
-
-            detailsOperations.append(operation)
         }
+
+        nodeDetailsGroup.wait()
 
         return detailsOperations
     }
@@ -83,16 +54,15 @@ class SyncOperationFactory {
     func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
         guard let nodes = nodes else { return [] }
         var deleteOperations: [AsyncClosureOperation] = []
-        let dataAccessor = ListNodeDataAccessor()
+        let listNodeDataAccessor = ListNodeDataAccessor()
 
         for node in nodes {
             let operation = AsyncClosureOperation { completion, _  in
-                if let nodeURL = dataAccessor.fileLocalPath(for: node) {
+                if let nodeURL = listNodeDataAccessor.fileLocalPath(for: node) {
                     _ = DiskService.delete(itemAtPath: nodeURL.path)
                 }
 
-                let dataAccessor = ListNodeDataAccessor()
-                dataAccessor.remove(node: node)
+                listNodeDataAccessor.remove(node: node)
 
                 completion()
             }
@@ -121,12 +91,96 @@ class SyncOperationFactory {
 
     // MARK: - Private interface
 
-    private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
-        let dataAccessor = ListNodeDataAccessor()
-
+    private func fetchFileNodeDetailsOperation(node: ListNode) -> AsyncClosureOperation {
         let operation = AsyncClosureOperation { [weak self] completion, operation  in
             guard let sSelf = self else { return }
-            if let downloadURL = dataAccessor.fileLocalPath(for: node) {
+
+            let guid = node.guid
+
+            sSelf.nodeOperations.fetchNodeDetails(for: guid) { (result, error) in
+                if operation.isCancelled {
+                    completion()
+
+                    return
+                }
+
+                let listNodeDataAccessor = ListNodeDataAccessor()
+
+                if let error = error {
+                    if error.code == StatusCodes.code404NotFound.rawValue {
+                        node.markedForStatus = .delete
+                        listNodeDataAccessor.store(node: node)
+                    } else {
+                        AlfrescoLog.error("Unexpected sync process error: \(error)")
+                    }
+                } else if let entry = result?.entry {
+                    let onlineListNode = NodeChildMapper.create(from: entry)
+
+                    if onlineListNode.modifiedAt != node.modifiedAt ||
+                        !listNodeDataAccessor.isContentDownloaded(for: node) {
+                        onlineListNode.syncStatus = .inProgress
+                        onlineListNode.markedForStatus = .download
+                    } else {
+                        onlineListNode.syncStatus = .synced
+                    }
+                    onlineListNode.markedAsOffline = node.markedAsOffline
+                    sSelf.publishSyncStatusEvent(for: onlineListNode)
+                    listNodeDataAccessor.store(node: onlineListNode)
+                }
+
+                completion()
+            }
+        }
+
+        return operation
+    }
+
+    private func fetchChildrenNodeDetailsOperations(of node: ListNode,
+                                                    paginationRequest: RequestPagination?) {
+        nodeDetailsGroup.enter()
+
+        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
+                                              skipCount: paginationRequest?.skipCount)
+        nodeOperations.fetchNodeChildren(for: node.guid,
+                                               pagination: reqPagination) { [weak self] (result, _) in
+            guard let sSelf = self else { return }
+
+            if let entries = result?.list?.entries {
+                let nodes = NodeChildMapper.map(entries)
+                let listNodeDataAccessor = ListNodeDataAccessor()
+
+                for node in nodes {
+                    listNodeDataAccessor.store(node: node)
+
+                    if node.nodeType == .folder {
+                        sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                 paginationRequest: nil)
+                    }
+                }
+
+                if let pagination = result?.list?.pagination {
+                    let skipCount = Int64(nodes.count) + pagination.skipCount
+                    if pagination.totalItems ?? 0 != skipCount {
+                        let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                       skipCount: Int(skipCount))
+                        sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                 paginationRequest: reqPag)
+                    }
+                }
+
+                sSelf.nodeDetailsGroup.leave()
+            }
+        }
+
+    }
+
+    private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { [weak self] completion, operation  in
+            guard let sSelf = self else { return }
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+
+            if let downloadURL = listNodeDataAccessor.fileLocalPath(for: node) {
                 let parentDirectoryURL = downloadURL.deletingLastPathComponent()
                 _ = DiskService.create(directoryPath: parentDirectoryURL.path)
 
@@ -148,9 +202,7 @@ class SyncOperationFactory {
                         }
 
                         sSelf.publishSyncStatusEvent(for: node)
-
-                        let dataAccessor = ListNodeDataAccessor()
-                        dataAccessor.store(node: node)
+                        listNodeDataAccessor.store(node: node)
 
                         completion()
                     }
@@ -164,15 +216,15 @@ class SyncOperationFactory {
     private func downloadNodeRenditionOperation(node: ListNode) -> AsyncClosureOperation? {
         let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
         if filePreviewType == .rendition {
-            let dataAccessor = ListNodeDataAccessor()
-
             let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion, operation  in
                 guard let sSelf = self else { return }
 
                 sSelf.nodeOperations.sessionForCurrentAccount { _ in
                     sSelf.nodeOperations.fetchRenditionURL(for: node.guid, completionHandler: { (renditionURL, isImageRendition) in
                         if let url = renditionURL {
-                            if let downloadURL = dataAccessor.renditionLocalPath(for: node, isImageRendition: isImageRendition) {
+                            let listNodeDataAccessor = ListNodeDataAccessor()
+
+                            if let downloadURL = listNodeDataAccessor.renditionLocalPath(for: node, isImageRendition: isImageRendition) {
                                 let parentDirectoryURL = downloadURL.deletingLastPathComponent()
                                 _ = DiskService.create(directoryPath: parentDirectoryURL.path)
 

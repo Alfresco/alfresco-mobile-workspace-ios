@@ -64,9 +64,9 @@ class EventBusService: EventBusServiceProtocol, Service {
 
                             switch queue {
                             case .backgroundQueue:
-                                dispatchQueue = DispatchQueue.global(qos: .userInitiated)
+                                dispatchQueue = OperationQueueService.worker
                             case .mainQueue:
-                                dispatchQueue = DispatchQueue.main
+                                dispatchQueue = OperationQueueService.main
                             }
 
                             dispatchQueue.async {

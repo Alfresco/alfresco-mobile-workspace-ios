@@ -62,7 +62,8 @@ struct ActionsMenuGeneric {
                                        type: .markOffline)
         let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
                                        type: .removeOffline)
-        if node.nodeType == .file {
+        if node.nodeType == .file ||
+            node.nodeType == .folder {
             return node.isMarkedOffline() ? removeOffAction : markOffAction
         }
         return nil

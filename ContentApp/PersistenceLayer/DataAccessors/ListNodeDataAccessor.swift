@@ -46,10 +46,6 @@ class ListNodeDataAccessor {
             }
         }
         databaseService?.store(entity: nodeToBeStored)
-
-        if node.nodeType == .folder {
-            storeChildren(of: node, paginationRequest: nil)
-        }
     }
 
     func remove(node: ListNode) {
@@ -228,36 +224,6 @@ class ListNodeDataAccessor {
     }
 
     // MARK: Private Helpers
-
-    private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
-        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
-                                              skipCount: paginationRequest?.skipCount)
-        nodeOperations.fetchNodeChildren(for: node.guid,
-                                         pagination: reqPagination) { (result, _) in
-//            guard let sSelf = self else { return }
-            // TODO: sSelf is strong, in order to get list of childre
-            let sSelf = self
-            if let entries = result?.list?.entries {
-                let listNodes = NodeChildMapper.map(entries)
-                for listNode in listNodes {
-                    if sSelf.query(node: listNode) == nil {
-                        sSelf.databaseService?.store(entity: listNode)
-                    }
-                    if listNode.nodeType == .folder {
-                        sSelf.storeChildren(of: listNode, paginationRequest: nil)
-                    }
-                }
-                if let pagination = result?.list?.pagination {
-                    let skipCount = Int64(listNodes.count) + pagination.skipCount
-                    if pagination.totalItems ?? 0 != skipCount {
-                        let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                       skipCount: Int(skipCount))
-                        sSelf.storeChildren(of: node, paginationRequest: reqPag)
-                    }
-                }
-            }
-        }
-    }
 
     private func removeChildren(of node: ListNode) {
         if let children = children(of: node) {
