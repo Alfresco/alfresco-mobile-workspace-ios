@@ -94,6 +94,10 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shoulDisplayOfflineIcon() -> Bool {
+        return false
+    }
+
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.status == .cellular {

@@ -81,6 +81,10 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         return false
     }
 
+    func shoulDisplayOfflineIcon() -> Bool {
+        return false
+    }
+
     func performListAction() {
         // Do nothing
     }

@@ -44,7 +44,10 @@ protocol SyncServiceDelegate: class {
     case processingMarkedNodes
 }
 
+let maxConcurrentSyncOperationCount = 3
+
 @objc class SyncService: NSObject, Service, SyncServiceProtocol {
+
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
     let eventBusService: EventBusService?
@@ -65,7 +68,7 @@ protocol SyncServiceDelegate: class {
 
         self.eventBusService = eventBusService
         syncOperationQueue = OperationQueue()
-        syncOperationQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+        syncOperationQueue.maxConcurrentOperationCount = maxConcurrentSyncOperationCount
 
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
