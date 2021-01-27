@@ -37,6 +37,7 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayNodePath() -> Bool
     func shouldDisplayListActionButton() -> Bool
     func shouldPreview(node: ListNode) -> Bool
+    func shoulDisplayOfflineIcon() -> Bool
 }
 
 extension ListComponentDataSourceProtocol {
@@ -62,6 +63,10 @@ extension ListComponentDataSourceProtocol {
     }
 
     func shouldPreview(node: ListNode) -> Bool {
+        return true
+    }
+
+    func shoulDisplayOfflineIcon() -> Bool {
         return true
     }
 
