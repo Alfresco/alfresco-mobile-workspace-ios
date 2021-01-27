@@ -44,6 +44,8 @@ enum SyncServiceStatus {
     case processingMarkedNodes
 }
 
+let maxConcurrentSyncOperationCount = 3
+
 class SyncService: Service, SyncServiceProtocol {
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
@@ -65,7 +67,7 @@ class SyncService: Service, SyncServiceProtocol {
 
         self.eventBusService = eventBusService
         syncOperationQueue = OperationQueue()
-        syncOperationQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+        syncOperationQueue.maxConcurrentOperationCount = maxConcurrentSyncOperationCount
 
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
