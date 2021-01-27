@@ -89,6 +89,10 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
+    func shoulDisplayOfflineIcon() -> Bool {
+        return false
+    }
+
     func performListAction() {
         if Connectivity.status == .cellular {
             showNoSyncInCellularDataDialog()
