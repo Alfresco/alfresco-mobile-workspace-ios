@@ -38,7 +38,7 @@ protocol SyncServiceDelegate: class {
     func syncDidFinished()
 }
 
-enum SyncServiceStatus {
+@objc enum SyncServiceStatus: Int {
     case idle
     case fetchingNodeDetails
     case processingMarkedNodes
@@ -46,12 +46,13 @@ enum SyncServiceStatus {
 
 let maxConcurrentSyncOperationCount = 3
 
-class SyncService: Service, SyncServiceProtocol {
+@objc class SyncService: NSObject, Service, SyncServiceProtocol {
+
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
     let eventBusService: EventBusService?
 
-    var syncServiceStatus: SyncServiceStatus = .idle
+    @objc dynamic var syncServiceStatus: SyncServiceStatus = .idle
     weak var delegate: SyncServiceDelegate?
 
     private var kvoToken: NSKeyValueObservation?
@@ -72,6 +73,9 @@ class SyncService: Service, SyncServiceProtocol {
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
                                                     eventBusService: eventBusService)
+
+        super.init()
+
         observeOperationQueue()
     }
 
@@ -82,6 +86,11 @@ class SyncService: Service, SyncServiceProtocol {
         let nodeDetailsOperations = syncOperationFactory.nodeDetailsOperation(nodes: nodeList)
         syncOperationQueue.addOperations(nodeDetailsOperations,
                                          waitUntilFinished: false)
+
+        if nodeDetailsOperations.isEmpty {
+            syncServiceStatus = .idle
+            delegate?.syncDidFinished()
+        }
     }
 
     func stopSync() {

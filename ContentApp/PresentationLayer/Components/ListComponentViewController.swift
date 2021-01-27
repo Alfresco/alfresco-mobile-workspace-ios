@@ -115,7 +115,7 @@ class ListComponentViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
         collectionView.reloadData()
         progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
         progressView.trackTintColor =

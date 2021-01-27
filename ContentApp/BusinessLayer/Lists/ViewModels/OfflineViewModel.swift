@@ -23,6 +23,7 @@ import MaterialComponents.MaterialDialogs
 class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
+    private var shouldEnableListButton: Bool = true
 
     // MARK: - Init
 
@@ -76,6 +77,10 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
+    func shouldEnableListActionButton() -> Bool {
+        return shouldEnableListButton
+    }
+
     func shouldPreview(node: ListNode) -> Bool {
         let listNodeDataAccessor = ListNodeDataAccessor()
 
@@ -94,12 +99,11 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func performListAction() {
-        if Connectivity.status == .cellular {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.status == .cellular {
             showNoSyncInCellularDataDialog()
         } else {
-            if let offlineNodes = offlineMarkedNodes() {
-                coordinatorServices?.syncService?.sync(nodeList: offlineNodes)
-            }
+            coordinatorServices?.syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
     }
 
@@ -150,6 +154,7 @@ extension OfflineViewModel: SyncServiceDelegate {
     func syncDidStarted() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
+            sSelf.shouldEnableListButton = false
             sSelf.pageUpdatingDelegate?.didUpdateListActionState(enable: false)
         }
     }
@@ -158,6 +163,7 @@ extension OfflineViewModel: SyncServiceDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.refreshList()
+            sSelf.shouldEnableListButton = true
             sSelf.pageUpdatingDelegate?.didUpdateListActionState(enable: true)
         }
     }
