@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         accountService?.activeAccount?.createTicket()
 
         let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
-        syncTriggerService?.triggerSync(when: .applicationDidOpening)
+        syncTriggerService?.triggerSync(when: .applicationDidFinishedLaunching)
     }
 
     func application(_ app: UIApplication,

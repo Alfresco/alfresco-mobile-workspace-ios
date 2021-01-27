@@ -18,51 +18,61 @@
 
 import Foundation
 
-enum SyncTriggersType: String {
-    case applicationDidOpening
-    case markedNodeOffline
-    case removeNodeOffline
-    case connectedToWIFI
+enum SyncTriggerType: String {
+    case applicationDidFinishedLaunching
+    case nodeMarkedOffline
+    case nodeRemovedFromOffline
+    case reachableOverWifi
     case userReAuthenticated
-    case timer
-    case syncButtonTapped
+    case poolingTimer
+    case userDidInitiateSync
 }
 
 protocol SyncTriggersServiceProtocol {
     /// Start a sync operation when a tigger is display
     /// - Parameters type:  Type of trigger
-    func triggerSync(when type: SyncTriggersType)
+    func triggerSync(when type: SyncTriggerType)
 }
 
 class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
+    private var tiggerType: SyncTriggerType?
+
     private let syncService: SyncService?
     private let accountService: AccountService?
-    private var triggerTimer: Timer?
+    private var connectivityService: ConnectivityService?
+
+    private var poolingTimer: Timer?
     private var throttleTimer: Timer?
+
     private var kvoSyncStatus: NSKeyValueObservation?
-    private var tiggerType: SyncTriggersType?
+    private var kvoConnectivity: NSKeyValueObservation?
 
     deinit {
         kvoSyncStatus?.invalidate()
-        triggerTimer?.invalidate()
+        kvoConnectivity?.invalidate()
+        poolingTimer?.invalidate()
         throttleTimer?.invalidate()
     }
 
     // MARK: - Public interface
 
     init(syncService: SyncService?,
-         accountService: AccountService?) {
+         accountService: AccountService?,
+         connectivityService: ConnectivityService) {
+
         self.syncService = syncService
         self.accountService = accountService
+        self.connectivityService = connectivityService
         self.startTimeTrigger()
+        self.observeConnectivity()
     }
 
-    func triggerSync(when type: SyncTriggersType) {
+    func triggerSync(when type: SyncTriggerType) {
         guard accountService?.activeAccount != nil else { return }
         self.tiggerType = type
 
-        if type == .syncButtonTapped ||
+        if type == .userDidInitiateSync ||
             throttleTimer?.isValid == nil ||
             throttleTimer?.isValid == false {
 
@@ -93,10 +103,16 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
            syncService.syncServiceStatus == .idle &&
             accountService?.activeAccount != nil {
 
-            triggerTimer?.invalidate()
-            AlfrescoLog.info("--- SYNC operation started, with TRIGGER \(type.rawValue) ---")
-            syncService.sync(nodeList: nodes)
-            observeSyncStatusOperation()
+            accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
+                guard let sSelf = self else { return }
+
+                if authenticationProvider.areCredentialsValid() {
+                    sSelf.poolingTimer?.invalidate()
+                    AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
+                    syncService.sync(nodeList: nodes)
+                    sSelf.observeSyncStatusOperation()
+                }
+            })
         }
     }
 
@@ -113,15 +129,28 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                  })
     }
 
+    private func observeConnectivity() {
+        kvoConnectivity =
+            connectivityService?.observe(\.status,
+                                         options: [.new],
+                                         changeHandler: { [weak self] (newValue, _) in
+                                            guard let sSelf = self,
+                                                  newValue.status == .wifi
+                                            else { return }
+
+                                            sSelf.triggerSync(when: .reachableOverWifi)
+                                         })
+    }
+
     private func startTimeTrigger() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.triggerTimer?.invalidate()
-            sSelf.triggerTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimer,
+            sSelf.poolingTimer?.invalidate()
+            sSelf.poolingTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimer,
                                                 repeats: true,
                                                 block: { (_) in
-                                                    sSelf.triggerTimer?.invalidate()
-                                                    sSelf.triggerSync(when: .timer)
+                                                    sSelf.poolingTimer?.invalidate()
+                                                    sSelf.triggerSync(when: .poolingTimer)
                                                 })
         }
 

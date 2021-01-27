@@ -19,61 +19,53 @@
 import Foundation
 import Alamofire
 
-enum ConnectivityStatus {
+@objc enum ConnectivityStatus: Int {
     case unknown
     case noConnection
     case wifi
     case cellular
 }
 
-protocol ConnectivityServiceService {
-    /// Status used to display ConnectionType
-    var status: ConnectivityStatus { get }
+protocol ConnectivityServiceProtocol {
 
     /// Start an observer to trigger ConnectionType was changed
     func startNetworkReachabilityObserver()
 }
 
-class ConnectivityService: Service, ConnectivityServiceService {
+@objc class ConnectivityService: NSObject, Service, ConnectivityServiceProtocol {
 
-    private let network: NetworkReachabilityManager?
-    private let syncTriggerService: SyncTriggersService?
-
-    var status: ConnectivityStatus {
-        if NetworkReachabilityManager()?.isReachable == false {
-            return .noConnection
-        }
-        if NetworkReachabilityManager()?.isReachableOnEthernetOrWiFi == true {
-            return .wifi
-        }
-        if NetworkReachabilityManager()?.isReachableOnWWAN == true {
-            return .cellular
-        }
-        return .unknown
-    }
+    private let reachabilityManager: NetworkReachabilityManager?
+    @objc dynamic var status: ConnectivityStatus
 
     // MARK: - Public interface
 
-    init(with syncTriggerService: SyncTriggersService?) {
-        self.syncTriggerService = syncTriggerService
-        self.network = NetworkReachabilityManager()
+    override init() {
+        self.reachabilityManager = NetworkReachabilityManager()
+
+        if NetworkReachabilityManager()?.isReachable == false {
+            self.status =  .noConnection
+        } else if NetworkReachabilityManager()?.isReachableOnEthernetOrWiFi == true {
+            self.status = .wifi
+        } else if NetworkReachabilityManager()?.isReachableOnWWAN == true {
+            self.status = .cellular
+        } else {
+            self.status = .unknown
+        }
     }
 
     func startNetworkReachabilityObserver() {
-        network?.listener = { status in
+        reachabilityManager?.listener = { status in
             switch status {
             case .reachable(NetworkReachabilityManager.ConnectionType.ethernetOrWiFi):
-                self.triggerSync()
+                self.status = .wifi
+            case .reachable(NetworkReachabilityManager.ConnectionType.wwan):
+                self.status = .cellular
+            case .notReachable:
+                self.status = .noConnection
             default:
-                break
+                self.status = .unknown
             }
         }
-        network?.startListening()
-    }
-
-    // MARK: - Private interface
-
-    private func triggerSync() {
-        syncTriggerService?.triggerSync(when: .connectedToWIFI)
+        reachabilityManager?.startListening()
     }
 }

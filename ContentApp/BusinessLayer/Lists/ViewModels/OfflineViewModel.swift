@@ -99,7 +99,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         if connectivityService?.status == .cellular {
             showNoSyncInCellularDataDialog()
         } else {
-            coordinatorServices?.syncTriggersService?.triggerSync(when: .syncButtonTapped)
+            coordinatorServices?.syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
     }
 

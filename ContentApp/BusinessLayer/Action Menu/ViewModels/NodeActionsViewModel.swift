@@ -145,7 +145,7 @@ class NodeActionsViewModel {
             let eventBusService = coordinatorServices?.eventBusService
             eventBusService?.publish(event: offlineEvent, on: .mainQueue)
 
-            coordinatorServices?.syncTriggersService?.triggerSync(when: .markedNodeOffline)
+            coordinatorServices?.syncTriggersService?.triggerSync(when: .nodeMarkedOffline)
         }
     }
 
@@ -166,7 +166,7 @@ class NodeActionsViewModel {
             let eventBusService = coordinatorServices?.eventBusService
             eventBusService?.publish(event: offlineEvent, on: .mainQueue)
 
-            coordinatorServices?.syncTriggersService?.triggerSync(when: .removeNodeOffline)
+            coordinatorServices?.syncTriggersService?.triggerSync(when: .nodeRemovedFromOffline)
         }
     }
 
