@@ -63,6 +63,8 @@ let kAIMSAccessTokenRefreshTimeBuffer = 20.0
 let kSessionExpirationTimeIntervalCheck = 20
 let kSearchTimerBuffer = 0.7
 let kFullScreenPreview = 0.5
+let kSyncTriggerTimer = 15 * 60.0
+let kSyncTriggerTimerBuffer = 60.0
 
 // MARK: - Error codes
 let kLoginAIMSCancelWebViewErrorCode = -3

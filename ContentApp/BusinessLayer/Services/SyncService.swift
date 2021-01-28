@@ -38,18 +38,21 @@ protocol SyncServiceDelegate: class {
     func syncDidFinished()
 }
 
-enum SyncServiceStatus {
+@objc enum SyncServiceStatus: Int {
     case idle
     case fetchingNodeDetails
     case processingMarkedNodes
 }
 
-class SyncService: Service, SyncServiceProtocol {
+let maxConcurrentSyncOperationCount = 3
+
+@objc class SyncService: NSObject, Service, SyncServiceProtocol {
+
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
     let eventBusService: EventBusService?
 
-    var syncServiceStatus: SyncServiceStatus = .idle
+    @objc dynamic var syncServiceStatus: SyncServiceStatus = .idle
     weak var delegate: SyncServiceDelegate?
 
     private var kvoToken: NSKeyValueObservation?
@@ -65,15 +68,19 @@ class SyncService: Service, SyncServiceProtocol {
 
         self.eventBusService = eventBusService
         syncOperationQueue = OperationQueue()
-        syncOperationQueue.maxConcurrentOperationCount = OperationQueue.defaultMaxConcurrentOperationCount
+        syncOperationQueue.maxConcurrentOperationCount = maxConcurrentSyncOperationCount
 
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
                                                     eventBusService: eventBusService)
+
+        super.init()
+
         observeOperationQueue()
     }
 
     func sync(nodeList: [ListNode]) {
+
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
@@ -85,6 +92,11 @@ class SyncService: Service, SyncServiceProtocol {
                                                    waitUntilFinished: false)
             sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
                                                                            on: sSelf.syncOperationQueue)
+
+            if nodeDetailsOperations.isEmpty {
+                sSelf.syncServiceStatus = .idle
+                sSelf.delegate?.syncDidFinished()
+            }
         }
     }
 

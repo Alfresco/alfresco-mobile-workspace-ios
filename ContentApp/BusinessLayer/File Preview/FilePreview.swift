@@ -35,6 +35,17 @@ class FilePreview {
     static private var map: [String: FilePreviewType] {
         return [
             "image/gif": .gif,
+
+            "image/bmp": .image,
+            "image/jpeg": .image,
+            "image/png": .image,
+            "image/tiff": .image,
+            "image/x-portable-bitmap": .image,
+            "image/x-portable-graymap": .image,
+            "image/x-portable-pixmap": .image,
+            "image/vnd.adobe.photoshop": .image,
+            "image/heic": .image,
+            "image/heif": .image,
             "image/svg+xml": .svg,
             "application/pdf": .pdf
         ]
@@ -44,6 +55,9 @@ class FilePreview {
         guard let mimetype = mimetype else {
             return .rendition
         }
+        if #available(iOS 14, *), mimetype == "image/webp" {
+            return .image
+        }
         if let previewType = self.map[mimetype] {
             return previewType
         } else if mimetype.hasPrefix("video/") {
@@ -52,8 +66,6 @@ class FilePreview {
             return .audio
         } else if mimetype.hasPrefix("text/") {
             return .text
-        } else if mimetype.hasPrefix("image/") {
-            return .image
         } else {
             return .rendition
         }

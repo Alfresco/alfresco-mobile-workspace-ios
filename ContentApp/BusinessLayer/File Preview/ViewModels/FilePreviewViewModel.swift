@@ -108,8 +108,7 @@ class FilePreviewViewModel {
         switch filePreviewType {
         case .video, .image, .gif, .audio:
             size = requestFullScreenExperience()
-            if let contentURL =
-                contentURL(for: coordinatorServices?.accountService?.activeAccount?.getTicket()) {
+            if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
                 previewFile(type: filePreviewType, at: contentURL, with: size)
             }
         case .rendition:
@@ -126,8 +125,7 @@ class FilePreviewViewModel {
         case .text:
             previewContentFileText(with: size)
         default:
-            if let contentURL =
-                contentURL(for: coordinatorServices?.accountService?.activeAccount?.getTicket()) {
+            if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
                 previewFile(type: filePreviewType, at: contentURL, with: size)
             }
         }
@@ -187,6 +185,7 @@ class FilePreviewViewModel {
     private func previewOffline(with size: CGSize) {
         guard let listNode = listNode else { return }
         var size = size
+        var isImageRendition = false
 
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
@@ -200,7 +199,7 @@ class FilePreviewViewModel {
                     size = requestFullScreenExperience()
                 }
 
-                let isImageRendition = renditionType == .imagePreview ? true : false
+                isImageRendition = renditionType == .imagePreview ? true : false
                 previewURL = listNodeDataAccessor.renditionLocalPath(for: listNode,
                                                                      isImageRendition: isImageRendition)
             } else {
@@ -210,7 +209,7 @@ class FilePreviewViewModel {
         default: break
         }
 
-        let preview = FilePreviewFactory.getPreview(for: filePreviewType,
+        let preview = FilePreviewFactory.getPreview(for: (isImageRendition ? .image : filePreviewType),
                                                     node: listNode,
                                                     url: previewURL,
                                                     size: size) { [weak self] (error) in
@@ -304,16 +303,6 @@ class FilePreviewViewModel {
                 }
             }
         }
-    }
-
-    private func contentURL(for ticket: String?) -> URL? {
-        guard let ticket = ticket,
-              let basePathURL = coordinatorServices?.accountService?.activeAccount?.apiBasePath,
-              let listNode = listNode,
-              let previewURL = URL(string: basePathURL + "/" +
-                                    String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
-        else { return nil }
-        return previewURL
     }
 }
 

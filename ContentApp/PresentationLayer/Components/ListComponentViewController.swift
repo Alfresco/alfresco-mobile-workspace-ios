@@ -115,7 +115,7 @@ class ListComponentViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
         collectionView.reloadData()
         progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
         progressView.trackTintColor =
@@ -295,6 +295,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         }
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""
+        }
+        if listDataSource?.shoulDisplayOfflineIcon() == true {
+            cell?.syncStatusImageView.image = UIImage(named: "ic-sync-status-synced")
         }
         return cell ?? UICollectionViewCell()
     }

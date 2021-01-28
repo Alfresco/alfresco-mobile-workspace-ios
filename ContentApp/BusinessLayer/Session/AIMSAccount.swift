@@ -156,5 +156,9 @@ extension AIMSAccount: AIMSAccountDelegate {
         NotificationCenter.default.post(name: notification,
                                         object: nil,
                                         userInfo: nil)
+
+        let repository = ApplicationBootstrap.shared().repository
+        let syncTriggerService = repository.service(of: SyncTriggersService.identifier) as? SyncTriggersService
+        syncTriggerService?.triggerSync(when: .userReAuthenticated)
     }
 }
