@@ -111,6 +111,7 @@ class SettingsViewModel {
                 currentAccount.removeAuthenticationCredentials()
                 currentAccount.removeAuthenticationParameters()
                 currentAccount.removeDiskFolder()
+                currentAccount.unregister()
 
                 let listNodeDataAccessor = ListNodeDataAccessor()
                 listNodeDataAccessor.removeAllNodes()
