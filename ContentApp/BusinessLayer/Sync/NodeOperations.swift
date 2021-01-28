@@ -137,6 +137,16 @@ class NodeOperations {
 
     }
 
+    func fetchContentURL(for node: ListNode?) -> URL? {
+        guard let ticket = accountService?.activeAccount?.getTicket(),
+              let basePathURL = accountService?.activeAccount?.apiBasePath,
+              let listNode = node,
+              let previewURL = URL(string: basePathURL + "/" +
+                                    String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
+        else { return nil }
+        return previewURL
+    }
+
     // MARK: - Rendition
 
     func fetchRenditionURL(for nodeId: String,
