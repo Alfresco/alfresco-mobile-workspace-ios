@@ -24,31 +24,33 @@ class SyncOperationFactory {
     let nodeOperations: NodeOperations
     let eventBusService: EventBusService?
 
-    private var nodeDetailsGroup = DispatchGroup()
-
     init(nodeOperations: NodeOperations,
          eventBusService: EventBusService?) {
         self.nodeOperations = nodeOperations
         self.eventBusService = eventBusService
     }
 
-    func nodeDetailsOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
+    func fileNodeDetailsOperations(nodes: [ListNode]?) -> [AsyncClosureOperation] {
         guard let nodes = nodes else { return [] }
         var detailsOperations: [AsyncClosureOperation] = []
 
-        for node in nodes {
-            if node.nodeType == .file {
-                let fileNodeOperation = fetchFileNodeDetailsOperation(node: node)
-                detailsOperations.append(fileNodeOperation)
-            } else {
-                fetchChildrenNodeDetailsOperations(of: node,
-                                                   paginationRequest: nil)
-            }
+        for node in nodes where node.nodeType == .file {
+            let fileNodeOperation = fetchFileNodeDetailsOperation(node: node)
+            detailsOperations.append(fileNodeOperation)
         }
 
-        nodeDetailsGroup.wait()
-
         return detailsOperations
+    }
+
+    func scheduleFolderNodeDetailsOperations(for nodes: [ListNode]?,
+                                             on operationQueue: OperationQueue) {
+        guard let nodes = nodes else { return }
+
+        for node in nodes where node.nodeType == .folder {
+            fetchChildrenNodeDetailsOperations(of: node,
+                                               paginationRequest: nil,
+                                               on: operationQueue)
+        }
     }
 
     func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
@@ -136,42 +138,48 @@ class SyncOperationFactory {
     }
 
     private func fetchChildrenNodeDetailsOperations(of node: ListNode,
-                                                    paginationRequest: RequestPagination?) {
-        nodeDetailsGroup.enter()
-
-        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
-                                              skipCount: paginationRequest?.skipCount)
-        nodeOperations.fetchNodeChildren(for: node.guid,
-                                               pagination: reqPagination) { [weak self] (result, _) in
+                                                    paginationRequest: RequestPagination?,
+                                                    on queue: OperationQueue) {
+        let operation = AsyncClosureOperation { [weak self] (completion, _) in
             guard let sSelf = self else { return }
 
-            if let entries = result?.list?.entries {
-                let nodes = NodeChildMapper.map(entries)
-                let listNodeDataAccessor = ListNodeDataAccessor()
+            let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
+                                                  skipCount: paginationRequest?.skipCount)
+            sSelf.nodeOperations.fetchNodeChildren(for: node.guid,
+                                                   pagination: reqPagination) { (result, _) in
+                guard let sSelf = self else { return }
 
-                for node in nodes {
-                    listNodeDataAccessor.store(node: node)
+                if let entries = result?.list?.entries {
+                    let nodes = NodeChildMapper.map(entries)
+                    let listNodeDataAccessor = ListNodeDataAccessor()
 
-                    if node.nodeType == .folder {
-                        sSelf.fetchChildrenNodeDetailsOperations(of: node,
-                                                                 paginationRequest: nil)
+                    for node in nodes {
+                        listNodeDataAccessor.store(node: node)
+
+                        if node.nodeType == .folder {
+                            sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                     paginationRequest: nil,
+                                                                     on: queue)
+                        }
                     }
-                }
 
-                if let pagination = result?.list?.pagination {
-                    let skipCount = Int64(nodes.count) + pagination.skipCount
-                    if pagination.totalItems ?? 0 != skipCount {
-                        let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                       skipCount: Int(skipCount))
-                        sSelf.fetchChildrenNodeDetailsOperations(of: node,
-                                                                 paginationRequest: reqPag)
+                    if let pagination = result?.list?.pagination {
+                        let skipCount = Int64(nodes.count) + pagination.skipCount
+                        if pagination.totalItems ?? 0 != skipCount {
+                            let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                           skipCount: Int(skipCount))
+                            sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                     paginationRequest: reqPag,
+                                                                     on: queue)
+                        }
                     }
-                }
 
-                sSelf.nodeDetailsGroup.leave()
+                    completion()
+                }
             }
         }
 
+        queue.addOperation(operation)
     }
 
     private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
