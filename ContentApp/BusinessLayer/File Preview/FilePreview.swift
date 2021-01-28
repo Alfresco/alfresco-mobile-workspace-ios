@@ -44,7 +44,8 @@ class FilePreview {
             "image/x-portable-graymap": .image,
             "image/x-portable-pixmap": .image,
             "image/vnd.adobe.photoshop": .image,
-            
+            "image/heic": .image,
+            "image/heif": .image,
             "image/svg+xml": .svg,
             "application/pdf": .pdf
         ]
