@@ -97,7 +97,7 @@ class ListNodeDataAccessor {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedAsOffline == true &&
-                        ListNode.markedForStatus != MarkedForStatus.delete.rawValue
+                        ListNode.markedFor != MarkedForStatus.removal.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -111,7 +111,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForStatus == MarkedForStatus.delete.rawValue
+                    ListNode.markedFor == MarkedForStatus.removal.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -126,7 +126,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForStatus == MarkedForStatus.download.rawValue
+                    ListNode.markedFor == MarkedForStatus.download.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -137,7 +137,7 @@ class ListNodeDataAccessor {
         return nil
     }
 
-    func querryOfflineChildren(for parentNode: ListNode?) -> [ListNode]? {
+    func querryChildren(for parentNode: ListNode?) -> [ListNode]? {
         guard let node = parentNode else { return nil }
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
@@ -233,7 +233,7 @@ class ListNodeDataAccessor {
                 }
                 if let queryNode = query(node: listNode) {
                     queryNode.markedAsOffline = false
-                    queryNode.markedForStatus = .delete
+                    queryNode.markedFor = .removal
                     databaseService?.store(entity: queryNode)
                 }
             }

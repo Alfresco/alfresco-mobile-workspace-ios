@@ -106,28 +106,12 @@ class SyncOperationFactory {
                     return
                 }
 
-                let listNodeDataAccessor = ListNodeDataAccessor()
-
                 if let error = error {
-                    if error.code == StatusCodes.code404NotFound.rawValue {
-                        node.markedForStatus = .delete
-                        listNodeDataAccessor.store(node: node)
-                    } else {
-                        AlfrescoLog.error("Unexpected sync process error: \(error)")
-                    }
+                    sSelf.handle(error: error, for: node)
                 } else if let entry = result?.entry {
                     let onlineListNode = NodeChildMapper.create(from: entry)
 
-                    if onlineListNode.modifiedAt != node.modifiedAt ||
-                        !listNodeDataAccessor.isContentDownloaded(for: node) {
-                        onlineListNode.syncStatus = .inProgress
-                        onlineListNode.markedForStatus = .download
-                    } else {
-                        onlineListNode.syncStatus = .synced
-                    }
-                    onlineListNode.markedAsOffline = node.markedAsOffline
-                    sSelf.publishSyncStatusEvent(for: onlineListNode)
-                    listNodeDataAccessor.store(node: onlineListNode)
+                    sSelf.compareAndUpdate(queriedNode: node, with: onlineListNode)
                 }
 
                 completion()
@@ -146,35 +130,47 @@ class SyncOperationFactory {
             let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
                                                   skipCount: paginationRequest?.skipCount)
             sSelf.nodeOperations.fetchNodeChildren(for: node.guid,
-                                                   pagination: reqPagination) { (result, _) in
+                                                   pagination: reqPagination) { (result, error) in
                 guard let sSelf = self else { return }
+                let listNodeDataAccessor = ListNodeDataAccessor()
 
-                if let entries = result?.list?.entries {
-                    let nodes = NodeChildMapper.map(entries)
-                    let listNodeDataAccessor = ListNodeDataAccessor()
+                if let error = error {
+                    sSelf.handle(error: error, for: node)
+                } else {
+                    if let entries = result?.list?.entries {
+                        let onlineNodes = NodeChildMapper.map(entries)
 
-                    for node in nodes {
-                        listNodeDataAccessor.store(node: node)
+                        let querriedNodeChildren = listNodeDataAccessor.querryChildren(for: node)
+                        sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
+                                               with: onlineNodes)
 
-                        if node.nodeType == .folder {
-                            sSelf.fetchChildrenNodeDetailsOperations(of: node,
-                                                                     paginationRequest: nil,
-                                                                     on: queue)
+                        for onlineNode in onlineNodes {
+                            if onlineNode.nodeType == .folder {
+                                listNodeDataAccessor.store(node: onlineNode)
+
+                                sSelf.fetchChildrenNodeDetailsOperations(of: onlineNode,
+                                                                         paginationRequest: nil,
+                                                                         on: queue)
+                            } else if onlineNode.nodeType == .file {
+                                let queriedNode = listNodeDataAccessor.query(node: onlineNode)
+
+                                sSelf.compareAndUpdate(queriedNode: queriedNode, with: onlineNode)
+                            }
                         }
-                    }
 
-                    if let pagination = result?.list?.pagination {
-                        let skipCount = Int64(nodes.count) + pagination.skipCount
-                        if pagination.totalItems ?? 0 != skipCount {
-                            let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                           skipCount: Int(skipCount))
-                            sSelf.fetchChildrenNodeDetailsOperations(of: node,
-                                                                     paginationRequest: reqPag,
-                                                                     on: queue)
+                        if let pagination = result?.list?.pagination {
+                            let skipCount = Int64(onlineNodes.count) + pagination.skipCount
+                            if pagination.totalItems ?? 0 != skipCount {
+                                let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                               skipCount: Int(skipCount))
+                                sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                         paginationRequest: reqPag,
+                                                                         on: queue)
+                            }
                         }
-                    }
 
-                    completion()
+                        completion()
+                    }
                 }
             }
         }
@@ -204,7 +200,7 @@ class SyncOperationFactory {
 
                         if url != nil {
                             node.syncStatus = .synced
-                            node.markedForStatus = .undefined
+                            node.markedFor = .undefined
                         } else {
                             node.syncStatus = .error
                         }
@@ -262,6 +258,47 @@ class SyncOperationFactory {
         }
 
         return nil
+    }
+
+    private func handle(error: Error, for node: ListNode) {
+        if error.code == StatusCodes.code404NotFound.rawValue {
+            node.markedFor = .removal
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.store(node: node)
+        } else {
+            AlfrescoLog.error("Unexpected sync process error: \(error)")
+        }
+    }
+
+    private func compareAndUpdate(queriedNode: ListNode?, with onlineNode: ListNode) {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+
+        if onlineNode.modifiedAt != queriedNode?.modifiedAt ||
+            !listNodeDataAccessor.isContentDownloaded(for: onlineNode) {
+            onlineNode.syncStatus = .inProgress
+            onlineNode.markedFor = .download
+        } else {
+            onlineNode.syncStatus = .synced
+        }
+
+        onlineNode.markedAsOffline = queriedNode?.markedAsOffline
+        publishSyncStatusEvent(for: onlineNode)
+        listNodeDataAccessor.store(node: onlineNode)
+    }
+
+    private func compareAndUpdate(queriedNodeChildren: [ListNode]?,
+                                  with onlineNodeChildren: [ListNode]) {
+        guard let queriedNodes = queriedNodeChildren else { return }
+        var queriedSet = Set(queriedNodes)
+
+        queriedSet.subtract(Set(onlineNodeChildren))
+
+        for node in queriedSet {
+            node.markedFor = .removal
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.store(node: node)
+        }
     }
 
     // MARK: - Event bus
