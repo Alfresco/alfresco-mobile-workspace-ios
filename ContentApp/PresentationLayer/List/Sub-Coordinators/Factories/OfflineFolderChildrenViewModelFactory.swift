@@ -44,7 +44,7 @@ class OfflineFolderChildrenViewModelFactory {
                                   nodeTypes: [.file, .folder, .site])
         eventBusService?.register(observer: offlineFolderDrillViewModel,
                                   for: FavouriteEvent.self,
-                                  nodeTypes: [.file])
+                                  nodeTypes: [.file, .folder])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
@@ -62,7 +62,7 @@ class OfflineFolderChildrenViewModelFactory {
 
         eventBusService?.register(observer: offlineFolderDrillViewModel,
                                   for: SyncStatusEvent.self,
-                                  nodeTypes: [.file])
+                                  nodeTypes: [.file, .folder])
 
         return (offlineFolderDrillViewModel, resultViewModel, globalSearchViewModel)
     }

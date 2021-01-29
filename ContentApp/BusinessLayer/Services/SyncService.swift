@@ -80,16 +80,17 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func sync(nodeList: [ListNode]) {
-        // Fetch details for existing nodes and decide whether they should be marked for download
-        delegate?.syncDidStarted()
-        syncServiceStatus = .fetchingNodeDetails
-        let nodeDetailsOperations = syncOperationFactory.nodeDetailsOperation(nodes: nodeList)
-        syncOperationQueue.addOperations(nodeDetailsOperations,
-                                         waitUntilFinished: false)
+        OperationQueueService.worker.async { [weak self] in
+            guard let sSelf = self else { return }
 
-        if nodeDetailsOperations.isEmpty {
-            syncServiceStatus = .idle
-            delegate?.syncDidFinished()
+            // Fetch details for existing nodes and decide whether they should be marked for download
+            sSelf.delegate?.syncDidStarted()
+            sSelf.syncServiceStatus = .fetchingNodeDetails
+            let nodeDetailsOperations = sSelf.syncOperationFactory.fileNodeDetailsOperations(nodes: nodeList)
+            sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
+                                                   waitUntilFinished: false)
+            sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
+                                                                           on: sSelf.syncOperationQueue)
         }
     }
 

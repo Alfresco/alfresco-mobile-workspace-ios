@@ -50,7 +50,7 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
     func refreshList() {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.querryOfflineChildren(for: parentListNode) {
+        if let offlineNodes = listNodeDataAccessor.querryChildren(for: parentListNode) {
             results = offlineNodes
         }
 
@@ -74,10 +74,10 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
             return true
         }
 
-        if node.markedForStatus != .undefined &&
-            listNodeDataAccessor.isContentDownloaded(for: node) {
+        if listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
+
         return false
     }
 

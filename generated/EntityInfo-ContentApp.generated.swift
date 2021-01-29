@@ -41,10 +41,10 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 13, uid: 6370314685970737664)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 14, uid: 8122952080249357824)
         try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 15, uid: 4676429062915184384)
-        try entityBuilder.addProperty(name: "markedForStatus", type: String.entityPropertyType, id: 16, uid: 1132591789422262528)
+        try entityBuilder.addProperty(name: "markedFor", type: String.entityPropertyType, id: 18, uid: 1597269330570867456)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 17, uid: 186580639668120576)
 
-        try entityBuilder.lastProperty(id: 17, uid: 186580639668120576)
+        try entityBuilder.lastProperty(id: 18, uid: 1597269330570867456)
     }
 }
 
@@ -143,8 +143,8 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.markedForStatus.startsWith("X") }
-    internal static var markedForStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 16, isPrimaryKey: false) }
+    ///     box.query { ListNode.markedFor.startsWith("X") }
+    internal static var markedFor: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 18, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -282,9 +282,9 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .markedForStatus.startsWith("X") }
+    ///     box.query { .markedFor.startsWith("X") }
 
-    internal static var markedForStatus: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 16, isPrimaryKey: false) }
+    internal static var markedFor: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 18, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -326,7 +326,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
-        let propertyOffset_markedForStatus = propertyCollector.prepare(string: entity.markedForStatus.rawValue)
+        let propertyOffset_markedFor = propertyCollector.prepare(string: entity.markedFor.rawValue)
         let propertyOffset_allowableOperations = propertyCollector.prepare(string: AllowableOperationsConverter.convert(entity.allowableOperations))
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
@@ -344,7 +344,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 13)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 14)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 15)
-        propertyCollector.collect(dataOffset: propertyOffset_markedForStatus, at: 2 + 2 * 16)
+        propertyCollector.collect(dataOffset: propertyOffset_markedFor, at: 2 + 2 * 18)
         propertyCollector.collect(dataOffset: propertyOffset_allowableOperations, at: 2 + 2 * 17)
     }
 
@@ -366,7 +366,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 14)) ?? .unknown
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 15)) ?? .undefined
-        entity.markedForStatus = optConstruct(MarkedForStatus.self, rawValue: entityReader.read(at: 2 + 2 * 16)) ?? .undefined
+        entity.markedFor = optConstruct(MarkedForStatus.self, rawValue: entityReader.read(at: 2 + 2 * 18)) ?? .undefined
         entity.allowableOperations = AllowableOperationsConverter.convert(entityReader.read(at: 2 + 2 * 17))
 
         return entity

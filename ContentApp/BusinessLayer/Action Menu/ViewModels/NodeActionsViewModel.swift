@@ -155,7 +155,7 @@ class NodeActionsViewModel {
         if let node = self.node {
             if let queriedNode = listNodeDataAccessor.query(node: node) {
                 queriedNode.markedAsOffline = false
-                queriedNode.markedForStatus = .delete
+                queriedNode.markedFor = .removal
                 listNodeDataAccessor.store(node: queriedNode)
             }
 
@@ -231,7 +231,7 @@ class NodeActionsViewModel {
                     sSelf.node?.trashed = true
 
                     if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
-                        queriedNode.markedForStatus = .delete
+                        queriedNode.markedFor = .removal
                         sSelf.listNodeDataAccessor.store(node: queriedNode)
                     }
 
@@ -252,7 +252,7 @@ class NodeActionsViewModel {
                 sSelf.node?.trashed = false
 
                 if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
-                    queriedNode.markedForStatus = .undefined
+                    queriedNode.markedFor = .undefined
                     sSelf.listNodeDataAccessor.store(node: queriedNode)
                 }
 

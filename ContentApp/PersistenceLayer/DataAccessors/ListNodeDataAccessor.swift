@@ -46,10 +46,6 @@ class ListNodeDataAccessor {
             }
         }
         databaseService?.store(entity: nodeToBeStored)
-
-        if node.nodeType == .folder {
-            storeChildren(of: node, paginationRequest: nil)
-        }
     }
 
     func remove(node: ListNode) {
@@ -61,19 +57,11 @@ class ListNodeDataAccessor {
             }
         }
 
-        databaseService?.remove(entity: nodeToBeDeleted)
         removeChildren(of: nodeToBeDeleted)
+        databaseService?.remove(entity: nodeToBeDeleted)
 
-        if let nodeLocalURL = fileLocalPath(for: nodeToBeDeleted) {
-            _ = DiskService.delete(itemAtPath: nodeLocalURL.path)
-        }
-
-        if let renditionType = localRenditionType(for: nodeToBeDeleted) {
-            let isImageRendition = renditionType == .imagePreview ? true : false
-            if let renditionLocalURL = renditionLocalPath(for: nodeToBeDeleted,
-                                                           isImageRendition: isImageRendition) {
-                _ = DiskService.delete(itemAtPath: renditionLocalURL.path)
-            }
+        if let nodeURL = fileLocalPath(for: node) {
+            _ = DiskService.delete(itemAtPath: nodeURL.deletingLastPathComponent().path)
         }
     }
 
@@ -101,7 +89,7 @@ class ListNodeDataAccessor {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedAsOffline == true &&
-                        ListNode.markedForStatus != MarkedForStatus.delete.rawValue
+                        ListNode.markedFor != MarkedForStatus.removal.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -115,7 +103,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForStatus == MarkedForStatus.delete.rawValue
+                    ListNode.markedFor == MarkedForStatus.removal.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -130,7 +118,7 @@ class ListNodeDataAccessor {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
                 let query: Query<ListNode> = try listBox.query {
-                    ListNode.markedForStatus == MarkedForStatus.download.rawValue
+                    ListNode.markedFor == MarkedForStatus.download.rawValue
                 }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
@@ -141,7 +129,7 @@ class ListNodeDataAccessor {
         return nil
     }
 
-    func querryOfflineChildren(for parentNode: ListNode?) -> [ListNode]? {
+    func querryChildren(for parentNode: ListNode?) -> [ListNode]? {
         guard let node = parentNode else { return nil }
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
@@ -229,46 +217,17 @@ class ListNodeDataAccessor {
 
     // MARK: Private Helpers
 
-    private func storeChildren(of node: ListNode, paginationRequest: RequestPagination?) {
-        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kMaxCount,
-                                              skipCount: paginationRequest?.skipCount)
-        nodeOperations.fetchNodeChildren(for: node.guid,
-                                         pagination: reqPagination) { (result, _) in
-//            guard let sSelf = self else { return }
-            // TODO: sSelf is strong, in order to get list of childre
-            let sSelf = self
-            if let entries = result?.list?.entries {
-                let listNodes = NodeChildMapper.map(entries)
-                for listNode in listNodes {
-                    if sSelf.query(node: listNode) == nil {
-                        sSelf.databaseService?.store(entity: listNode)
-                    }
-                    if listNode.nodeType == .folder {
-                        sSelf.storeChildren(of: listNode, paginationRequest: nil)
-                    }
-                }
-                if let pagination = result?.list?.pagination {
-                    let skipCount = Int64(listNodes.count) + pagination.skipCount
-                    if pagination.totalItems ?? 0 != skipCount {
-                        let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                       skipCount: Int(skipCount))
-                        sSelf.storeChildren(of: node, paginationRequest: reqPag)
-                    }
-                }
-            }
-        }
-    }
-
     private func removeChildren(of node: ListNode) {
         if let children = children(of: node) {
-            for listNode in children where listNode.markedAsOffline == false {
+            for listNode in children where listNode.markedAsOffline == false || listNode.markedAsOffline == nil {
                 if listNode.nodeType == .folder {
                     removeChildren(of: listNode)
-                }
-                if let queryNode = query(node: listNode) {
-                    queryNode.markedAsOffline = false
-                    queryNode.markedForStatus = .delete
-                    databaseService?.store(entity: queryNode)
+                } else {
+                    if let nodeURL = fileLocalPath(for: listNode) {
+                        _ = DiskService.delete(itemAtPath: nodeURL.deletingLastPathComponent().path)
+                    }
+
+                    databaseService?.remove(entity: listNode)
                 }
             }
         }

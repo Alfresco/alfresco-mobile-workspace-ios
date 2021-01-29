@@ -47,7 +47,11 @@ class EventBusService: EventBusServiceProtocol, Service {
             eventObserverAssociation[eventType] = observers
         } else {
             let array = NSPointerArray.weakObjects()
-            observer.supportedNodeTypes = nodeTypes
+
+            if (observer.supportedNodeTypes?.contains(where: nodeTypes.contains)) == nil {
+                observer.supportedNodeTypes?.append(contentsOf: nodeTypes)
+            }
+
             array.addObject(observer)
             eventObserverAssociation[eventType] = array
         }
@@ -64,9 +68,9 @@ class EventBusService: EventBusServiceProtocol, Service {
 
                             switch queue {
                             case .backgroundQueue:
-                                dispatchQueue = DispatchQueue.global(qos: .userInitiated)
+                                dispatchQueue = OperationQueueService.worker
                             case .mainQueue:
-                                dispatchQueue = DispatchQueue.main
+                                dispatchQueue = OperationQueueService.main
                             }
 
                             dispatchQueue.async {

@@ -60,7 +60,7 @@ enum SyncStatus: String {
 
 enum MarkedForStatus: String {
     case download
-    case delete
+    case removal
     case undefined
 }
 
@@ -95,7 +95,7 @@ class ListNode: Hashable, Entity {
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus
     // objectbox: convert = { "default": ".undefined" }
-    var markedForStatus: MarkedForStatus
+    var markedFor: MarkedForStatus
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = [.unknown]
 
@@ -127,7 +127,7 @@ class ListNode: Hashable, Entity {
         self.nodeType = nodeType
         self.favorite = favorite
         self.syncStatus = syncStatus
-        self.markedForStatus = markedOfflineStatus
+        self.markedFor = markedOfflineStatus
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
@@ -143,7 +143,7 @@ class ListNode: Hashable, Entity {
         allowableOperations = [.unknown]
         siteRole = .unknown
         syncStatus = .undefined
-        markedForStatus = .undefined
+        markedFor = .undefined
     }
 
     // MARK: - Public Helpers
@@ -161,7 +161,7 @@ class ListNode: Hashable, Entity {
         self.allowableOperations = newVersion.allowableOperations
         self.syncStatus = newVersion.syncStatus
         self.markedAsOffline = newVersion.markedAsOffline
-        self.markedForStatus = newVersion.markedForStatus
+        self.markedFor = newVersion.markedFor
     }
 
     func syncStatusIcon() -> UIImage? {
