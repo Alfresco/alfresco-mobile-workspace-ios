@@ -97,7 +97,7 @@ class ListNode: Hashable, Entity {
     // objectbox: convert = { "default": ".undefined" }
     var markedForStatus: MarkedForStatus
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
-    var allowableOperations: [AllowableOperationsType] = []
+    var allowableOperations: [AllowableOperationsType] = [.unknown]
 
     // MARK: - Init
 
@@ -140,7 +140,7 @@ class ListNode: Hashable, Entity {
         title = ""
         path = ""
         nodeType = .unknown
-        allowableOperations = []
+        allowableOperations = [.unknown]
         siteRole = .unknown
         syncStatus = .undefined
         markedForStatus = .undefined
@@ -189,13 +189,6 @@ class ListNode: Hashable, Entity {
         }
         if self.favorite == nil {
             return true
-        }
-        switch self.nodeType {
-        case .site: break
-        default:
-            if self.allowableOperations.count == 0 {
-                return true
-            }
         }
         return false
     }
@@ -271,11 +264,13 @@ class ListNode: Hashable, Entity {
     // MARK: - Private Helpers
 
     private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType] {
-        guard let allowableOperations = allowableOperations else { return [] }
+        guard let allowableOperations = allowableOperations else { return [.unknown] }
         var allowableOperationsTypes = [AllowableOperationsType]()
 
         _ = allowableOperations.map {
-            allowableOperationsTypes.append(AllowableOperationsType(rawValue: $0) ?? .unknown)
+            if let type = AllowableOperationsType(rawValue: $0) {
+                allowableOperationsTypes.append(type)
+            }
         }
 
         return allowableOperationsTypes
