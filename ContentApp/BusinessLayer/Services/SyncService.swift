@@ -80,7 +80,6 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func sync(nodeList: [ListNode]) {
-
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
@@ -92,11 +91,6 @@ let maxConcurrentSyncOperationCount = 3
                                                    waitUntilFinished: false)
             sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
                                                                            on: sSelf.syncOperationQueue)
-
-            if nodeDetailsOperations.isEmpty {
-                sSelf.syncServiceStatus = .idle
-                sSelf.delegate?.syncDidFinished()
-            }
         }
     }
 

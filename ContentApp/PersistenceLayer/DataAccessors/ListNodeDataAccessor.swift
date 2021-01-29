@@ -57,19 +57,11 @@ class ListNodeDataAccessor {
             }
         }
 
-        databaseService?.remove(entity: nodeToBeDeleted)
         removeChildren(of: nodeToBeDeleted)
+        databaseService?.remove(entity: nodeToBeDeleted)
 
-        if let nodeLocalURL = fileLocalPath(for: nodeToBeDeleted) {
-            _ = DiskService.delete(itemAtPath: nodeLocalURL.path)
-        }
-
-        if let renditionType = localRenditionType(for: nodeToBeDeleted) {
-            let isImageRendition = renditionType == .imagePreview ? true : false
-            if let renditionLocalURL = renditionLocalPath(for: nodeToBeDeleted,
-                                                           isImageRendition: isImageRendition) {
-                _ = DiskService.delete(itemAtPath: renditionLocalURL.path)
-            }
+        if let nodeURL = fileLocalPath(for: node) {
+            _ = DiskService.delete(itemAtPath: nodeURL.deletingLastPathComponent().path)
         }
     }
 
@@ -227,14 +219,15 @@ class ListNodeDataAccessor {
 
     private func removeChildren(of node: ListNode) {
         if let children = children(of: node) {
-            for listNode in children where listNode.markedAsOffline == false {
+            for listNode in children where listNode.markedAsOffline == false || listNode.markedAsOffline == nil {
                 if listNode.nodeType == .folder {
                     removeChildren(of: listNode)
-                }
-                if let queryNode = query(node: listNode) {
-                    queryNode.markedAsOffline = false
-                    queryNode.markedFor = .removal
-                    databaseService?.store(entity: queryNode)
+                } else {
+                    if let nodeURL = fileLocalPath(for: listNode) {
+                        _ = DiskService.delete(itemAtPath: nodeURL.deletingLastPathComponent().path)
+                    }
+
+                    databaseService?.remove(entity: listNode)
                 }
             }
         }

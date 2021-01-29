@@ -60,10 +60,6 @@ class SyncOperationFactory {
 
         for node in nodes {
             let operation = AsyncClosureOperation { completion, _  in
-                if let nodeURL = listNodeDataAccessor.fileLocalPath(for: node) {
-                    _ = DiskService.delete(itemAtPath: nodeURL.path)
-                }
-
                 listNodeDataAccessor.remove(node: node)
 
                 completion()
