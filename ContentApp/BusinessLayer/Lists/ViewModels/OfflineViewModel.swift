@@ -87,7 +87,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         if node.nodeType == .folder {
             return true
         }
-        if node.markedAsOffline == true &&
+        if listNodeDataAccessor.isNodeMarkedAsOffline(node: node) &&
             listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
