@@ -134,7 +134,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         let title = LocalizationConstants.Dialog.noSyncCelluarDataTitle
         let message = LocalizationConstants.Dialog.noSyncCelluarDataMessage
 
-        let okAction = MDCAlertAction(title: LocalizationConstants.Buttons.ok)
+        let okAction = MDCAlertAction(title: LocalizationConstants.General.ok)
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {

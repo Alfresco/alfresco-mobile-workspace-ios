@@ -70,6 +70,17 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         createTicket()
     }
 
+    func delete() {
+        removeDiskFolder()
+        removeAuthenticationParameters()
+        removeAuthenticationCredentials()
+
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        listNodeDataAccessor.removeAllNodes()
+
+        UserProfile.removeUserProfile(withAccountIdentifier: identifier)
+    }
+
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         let basicAuthenticationProvider = BasicAuthenticationProvider(with: credential)
         completionHandler(basicAuthenticationProvider)

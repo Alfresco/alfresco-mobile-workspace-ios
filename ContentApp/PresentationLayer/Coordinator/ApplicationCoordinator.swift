@@ -68,7 +68,7 @@ class ApplicationCoordinator: Coordinator {
                 sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
             }
         }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
 
         _ = viewController?.showDialog(title: title,
                                        message: message,

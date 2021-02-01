@@ -140,7 +140,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
-        saveButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
+        saveButton.setTitle(LocalizationConstants.General.save, for: .normal)
     }
 
     override func applyComponentsThemes() {

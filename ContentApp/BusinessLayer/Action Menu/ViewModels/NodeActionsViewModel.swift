@@ -270,8 +270,8 @@ class NodeActionsViewModel {
         let message = String(format: LocalizationConstants.Dialog.deleteMessage,
                              node.title)
 
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel)
-        let deleteAction = MDCAlertAction(title: LocalizationConstants.Buttons.delete) { _ in
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
+        let deleteAction = MDCAlertAction(title: LocalizationConstants.General.delete) { _ in
             TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
@@ -369,7 +369,7 @@ class NodeActionsViewModel {
             downloadDialogView.applyTheme(themingService?.activeTheme)
 
             let cancelAction =
-                MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in
+                MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
             }
 

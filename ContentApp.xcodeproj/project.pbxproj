@@ -132,6 +132,9 @@
 		E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */; };
 		E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */; };
 		E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */; };
+		E32C697825C4519D000FA6BD /* ChooseItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */; };
+		E32C698025C45834000FA6BD /* ChooseDialogScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */; };
+		E32C698525C45A9E000FA6BD /* ThemeModeDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */; };
 		E32DE5302578F43C001A31EC /* NeedHelpModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32DE52F2578F43C001A31EC /* NeedHelpModelProtocol.swift */; };
 		E3337DCA25BF105400C7B5C8 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */; };
 		E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C03F24755D8E00F74880 /* AppDelegate.swift */; };
@@ -217,6 +220,8 @@
 		E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */; };
 		E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */; };
 		E3AE4EA1250675870095C76E /* ImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4EA0250675870095C76E /* ImagePreview.swift */; };
+		E3AF925525C444740016F8A9 /* ChooseDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */; };
+		E3AF925A25C445070016F8A9 /* ChooseDialogViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */; };
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
@@ -425,6 +430,9 @@
 		E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSearchViewModel.swift; sourceTree = "<group>"; };
 		E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListElementCollectionViewCell.swift; sourceTree = "<group>"; };
 		E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListElementCollectionViewCell.xib; sourceTree = "<group>"; };
+		E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogScreenCoordinator.swift; sourceTree = "<group>"; };
+		E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeDialogViewModel.swift; sourceTree = "<group>"; };
 		E32DE52F2578F43C001A31EC /* NeedHelpModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpModelProtocol.swift; sourceTree = "<group>"; };
 		E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
 		E334C03C24755D8E00F74880 /* ContentApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContentApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -531,6 +539,8 @@
 		E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomImageView.swift; sourceTree = "<group>"; };
 		E3AE4EA0250675870095C76E /* ImagePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreview.swift; sourceTree = "<group>"; };
+		E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogViewController.swift; sourceTree = "<group>"; };
+		E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogViewModelProtocol.swift; sourceTree = "<group>"; };
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -1477,6 +1487,11 @@
 				E3C1280C2498EBD000AE832F /* Cells */,
 				E3ADD05724926F5C006DF519 /* SettingsViewController.swift */,
 				E34984C62493603500A8A440 /* ThemesModeViewController.swift */,
+				E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */,
+				E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */,
+				E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */,
+				E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */,
+				E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -2004,6 +2019,7 @@
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
+				E3AF925A25C445070016F8A9 /* ChooseDialogViewModelProtocol.swift in Sources */,
 				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				E3337DCA25BF105400C7B5C8 /* SyncTriggersService.swift in Sources */,
 				E3A4339D2566C1E6000DD886 /* CreateNodeSheetViewControler.swift in Sources */,
@@ -2023,8 +2039,10 @@
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
+				E32C697825C4519D000FA6BD /* ChooseItemCollectionViewCell.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
+				E32C698025C45834000FA6BD /* ChooseDialogScreenCoordinator.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
@@ -2096,6 +2114,7 @@
 				E335E731253865CF0036E090 /* ActionMenuViewModel.swift in Sources */,
 				E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */,
 				E34984C72493603500A8A440 /* ThemesModeViewController.swift in Sources */,
+				E3AF925525C444740016F8A9 /* ChooseDialogViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				E3E2BDA824CC2B3D00D8A7EC /* DeleteNodeMapper.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
@@ -2113,6 +2132,7 @@
 				B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */,
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,
+				E32C698525C45A9E000FA6BD /* ThemeModeDialogViewModel.swift in Sources */,
 				E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */,
 				E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */,

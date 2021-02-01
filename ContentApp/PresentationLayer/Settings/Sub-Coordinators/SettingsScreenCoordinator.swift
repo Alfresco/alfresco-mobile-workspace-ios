@@ -26,7 +26,7 @@ protocol SettingsScreenCoordinatorDelegate: class {
 class SettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var settingsViewController: SettingsViewController?
-    private var themesModeCoordinator: ThemesModeScreenCoordinator?
+    private var themesModeCoordinator: ChooseDialogScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -53,11 +53,10 @@ extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     }
 
     func showThemesModeScreen() {
-        if let settingsViewController = self.settingsViewController {
-            let coordinator = ThemesModeScreenCoordinator(with: self.presenter,
-                                                          settingsScreen: settingsViewController)
-            coordinator.start()
-            self.themesModeCoordinator = coordinator
-        }
+        let viewModel = ThemeModeDialogViewModel(with: coordinatorServices.themingService)
+        viewModel.chooseDialogDelegate = settingsViewController?.viewModel
+        let coordinator = ChooseDialogScreenCoordinator(with: presenter, model: viewModel)
+        coordinator.start()
+        self.themesModeCoordinator = coordinator
     }
 }

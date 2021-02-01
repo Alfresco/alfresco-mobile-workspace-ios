@@ -101,7 +101,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let identifier = String(describing: SettingsAccountTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsAccountTableViewCell
-        case .theme:
+        case .theme, .syncOverMobileData:
             let identifier = String(describing: SettingsItemTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsItemTableViewCell

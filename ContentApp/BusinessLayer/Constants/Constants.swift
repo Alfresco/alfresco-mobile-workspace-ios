@@ -28,6 +28,7 @@ let kSaveDiplayProfileName = "kSaveDiplayProfileName"
 let kSaveEmailProfile = "kSaveEmailProfile"
 let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 let kSavePersonalFilesID = "kSavePersonalFilesID"
+let kSaveOptionToSyncOverMobileData = "kSaveOptionToSyncOverMobileData"
 
 // MARK: - API Paths
 let kAPIMinimumVersion = "5.2.2"

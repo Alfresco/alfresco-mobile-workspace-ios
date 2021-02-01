@@ -233,7 +233,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
                 sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
             }
         let cancelAction =
-            MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { [weak self] _ in
+            MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
                 guard let sSelf = self else { return }
 
                 alertController?.dismiss(animated: true, completion: nil)

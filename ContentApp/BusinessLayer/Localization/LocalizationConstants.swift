@@ -22,23 +22,27 @@ struct LocalizationConstants {
     static let copyright = NSLocalizedString("copyright-format", comment: "")
     static let productName = NSLocalizedString("product-name", comment: "")
 
+    struct General {
+        static let retry = NSLocalizedString("retry", comment: "")
+        static let yes = NSLocalizedString("yes", comment: "")
+        static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
+        static let on = NSLocalizedString("on", comment: "") // swiftlint:disable:this identifier_name
+        static let off = NSLocalizedString("off", comment: "")
+        static let cancel = NSLocalizedString("cancel", comment: "")
+        static let delete = NSLocalizedString("delete", comment: "")
+        static let create = NSLocalizedString("create", comment: "")
+        static let save = NSLocalizedString("save", comment: "")
+    }
+
     struct Buttons {
         static let connect = NSLocalizedString("connect", comment: "")
         static let advancedSetting = NSLocalizedString("advanced-settings", comment: "")
         static let needHelp = NSLocalizedString("need-help", comment: "")
         static let needHelpAlfresco = NSLocalizedString("need-help-alfresco", comment: "")
         static let resetToDefault = NSLocalizedString("reset-to-default", comment: "")
-        static let save = NSLocalizedString("save", comment: "")
         static let signin = NSLocalizedString("sign-in", comment: "")
         static let signInWithSSO = NSLocalizedString("sign-in-with-sso", comment: "")
-        static let snackbarConfirmation = "x"
         static let signOut = NSLocalizedString("sign-out", comment: "")
-        static let retry = NSLocalizedString("retry", comment: "")
-        static let yes = NSLocalizedString("yes", comment: "")
-        static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
-        static let cancel = NSLocalizedString("cancel", comment: "")
-        static let delete = NSLocalizedString("delete", comment: "")
-        static let create = NSLocalizedString("create", comment: "")
         static let syncAll = NSLocalizedString("sync-all", comment: "")
     }
 
@@ -130,6 +134,7 @@ struct LocalizationConstants {
         static let failedProfileInfo = NSLocalizedString("failed-profile-info", comment: "")
         static let appVersion = NSLocalizedString("app-version", comment: "")
         static let signOutConfirmation = NSLocalizedString("sign-out-confirmation", comment: "")
+        static let syncOverMobileDataTitle = NSLocalizedString("sync-over-mobile-data-title", comment: "")
     }
 
     struct Search {

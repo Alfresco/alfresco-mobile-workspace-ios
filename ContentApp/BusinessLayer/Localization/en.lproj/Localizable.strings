@@ -19,22 +19,26 @@
 "copyright-format" = "© %d Alfresco Software, Inc. All rights reserved.";
 "product-name" = "Alfresco\nMobile Workspace";
 
+// MARK: - General
+"retry" = "Retry";
+"yes" = "Yes";
+"ok" = "Ok";
+"on" = "On";
+"Off" = "Off";
+"cancel" = "Cancel";
+"delete" = "Delete";
+"create" = "Create";
+"save" = "Save";
+
 // MARK: - Buttons
 "connect" = "Connect";
 "advanced-settings" = "Advanced settings";
 "need-help" = "Need help?";
 "need-help-alfresco" = "How to connect to Alfresco?";
 "reset-to-default" = "Reset to default";
-"save" = "Save";
 "sign-in" = "Sign in";
 "sign-in-with-sso" = "Sign in with SSO";
 "sign-out" = "Sign out";
-"retry" = "Retry";
-"yes" = "Yes";
-"ok" = "Ok";
-"cancel" = "Cancel";
-"delete" = "Delete";
-"create" = "Create";
 "sync-all" = "Sync all";
 
 // MARK: - PlaceHolders
@@ -115,6 +119,7 @@
 "failed-profile-info" = "Failed to fetch profile information for current user.";
 "app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
+"sync-over-mobile-data-title" = "Sync over mobile data";
 
 // MARK: - Search
 "searching" = "Searching...";
