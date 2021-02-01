@@ -126,6 +126,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch item.type {
         case .theme:
             settingsScreenCoordinatorDelegate?.showThemesModeScreen()
+        case .syncOverMobileData:
+            settingsScreenCoordinatorDelegate?.showSyncOverMobileDataScreen()
         default: break
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -149,6 +151,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
     }
 
     func didUpdateDataSource() {
+        applyComponentsThemes()
         tableView.reloadData()
     }
 }
@@ -156,13 +159,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
 extension SettingsViewController: SettingsTableViewCellDelegate {
     func signOutButtonTapped(for item: SettingsItem) {
         self.viewModel?.performLogOutForCurrentAccount(in: self)
-    }
-}
-
-extension SettingsViewController: ThemesModeScrenDelegate {
-    func changeThemeMode() {
-        applyComponentsThemes()
-        viewModel?.reloadDataSource()
     }
 }
 

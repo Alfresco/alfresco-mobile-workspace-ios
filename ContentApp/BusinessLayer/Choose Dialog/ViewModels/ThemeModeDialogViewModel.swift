@@ -22,6 +22,7 @@ class ThemeModeDialogViewModel: ChooseDialogViewModelProtocol {
 
     weak var chooseDialogDelegate: ChooseDialogViewModelDelegate?
     var titleDialog = LocalizationConstants.Theme.theme
+    var questionType = ChooseQuestionType.theme
     var items: [ChooseItem]
     var themingService: MaterialDesignThemingService?
 
@@ -44,12 +45,13 @@ class ThemeModeDialogViewModel: ChooseDialogViewModelProtocol {
         self.items = [systemItem, darkItem, lightItem]
     }
 
-    func perfomAction(for item: ChooseItem) {
+    func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void)) {
         switch item.guid {
         case 0: themingService?.saveTheme(mode: ThemeModeType.auto)
         case 1: themingService?.saveTheme(mode: ThemeModeType.dark)
         case 2: themingService?.saveTheme(mode: ThemeModeType.light)
         default: break
         }
+        completion()
     }
 }

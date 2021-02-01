@@ -25,6 +25,7 @@ struct LocalizationConstants {
     struct General {
         static let retry = NSLocalizedString("retry", comment: "")
         static let yes = NSLocalizedString("yes", comment: "")
+        static let no = NSLocalizedString("no", comment: "") // swiftlint:disable:this identifier_name
         static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
         static let on = NSLocalizedString("on", comment: "") // swiftlint:disable:this identifier_name
         static let off = NSLocalizedString("off", comment: "")
@@ -197,8 +198,7 @@ struct LocalizationConstants {
         static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
         static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
         static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
-        static let noSyncCelluarDataTitle =  NSLocalizedString("dialog-no-sync-cellular-data-title", comment: "")
-        static let noSyncCelluarDataMessage =  NSLocalizedString("dialog-no-sync-cellular-data-message", comment: "")
+        static let syncOverMobileDataMessage =  NSLocalizedString("dialog-sync-over-mobile-data-message", comment: "")
     }
 
     struct EmptyLists {

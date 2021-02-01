@@ -18,31 +18,21 @@
 
 import UIKit
 
-class ChooseItem: Equatable {
-    var guid: Int
-    var selected: Bool
-    var title: String
-
-    init(guid: Int, title: String, selected: Bool = false) {
-        self.guid = guid
-        self.title = title
-        self.selected = selected
-    }
-
-    static func == (lhs: ChooseItem, rhs: ChooseItem) -> Bool {
-        return lhs.guid == rhs.guid
-    }
+enum ChooseQuestionType {
+    case theme
+    case syncOverMobileData
 }
 
 protocol ChooseDialogViewModelDelegate: class {
-    func chosen(item: ChooseItem)
+    func chosen(item: ChooseItem, for questionType: ChooseQuestionType)
 }
 
 protocol ChooseDialogViewModelProtocol {
     var titleDialog: String { get }
     var items: [ChooseItem] { get set }
+    var questionType: ChooseQuestionType { get }
     var chooseDialogDelegate: ChooseDialogViewModelDelegate? { get set }
-    func perfomAction(for item: ChooseItem)
+    func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void))
 }
 
 extension ChooseDialogViewModelProtocol {
@@ -51,6 +41,6 @@ extension ChooseDialogViewModelProtocol {
         for cItem in items where cItem != item {
             cItem.selected = false
         }
-        self.chooseDialogDelegate?.chosen(item: item)
+        self.chooseDialogDelegate?.chosen(item: item, for: questionType)
     }
 }

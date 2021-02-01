@@ -104,16 +104,18 @@ extension ChooseDialogViewController: UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: 44)
+        return CGSize(width: view.bounds.width, height: kChooseItemCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let item = self.viewModel?.items[indexPath.row] else { return }
-        viewModel?.select(item: item)
-        viewModel?.perfomAction(for: item)
-        collectionView.reloadData()
-        self.dismiss(animated: true, completion: nil)
+        viewModel?.perfomAction(for: item, completion: { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.viewModel?.select(item: item)
+            collectionView.reloadData()
+            sSelf.dismiss(animated: true, completion: nil)
+        })
     }
 }
 

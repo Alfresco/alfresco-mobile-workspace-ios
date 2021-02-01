@@ -199,7 +199,7 @@ class SettingsViewModel {
 }
 
 extension SettingsViewModel: ChooseDialogViewModelDelegate {
-    func chosen(item: ChooseItem) {
+    func chosen(item: ChooseItem, for questionType: ChooseQuestionType) {
         reloadDataSource()
     }
 }

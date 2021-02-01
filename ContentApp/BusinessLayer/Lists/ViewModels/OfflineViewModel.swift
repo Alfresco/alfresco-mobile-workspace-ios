@@ -99,10 +99,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
-        if connectivityService?.status == .cellular {
-            showNoSyncInCellularDataDialog()
+        let syncOverMobileData = UserProfile.getOptionToSyncOverMobileData()
+        if connectivityService?.status == .cellular && syncOverMobileData == false {
+            showSyncOverMovbileDataDialog()
         } else {
-            coordinatorServices?.syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+            let syncTriggersService = coordinatorServices?.syncTriggersService
+            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
     }
 
@@ -130,17 +132,22 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return listNodeDataAccessor.queryMarkedOffline()
     }
 
-    private func showNoSyncInCellularDataDialog() {
-        let title = LocalizationConstants.Dialog.noSyncCelluarDataTitle
-        let message = LocalizationConstants.Dialog.noSyncCelluarDataMessage
+    private func showSyncOverMovbileDataDialog() {
+        let title = LocalizationConstants.Settings.syncOverMobileDataTitle
+        let message = LocalizationConstants.Dialog.syncOverMobileDataMessage
 
-        let okAction = MDCAlertAction(title: LocalizationConstants.General.ok)
+        let yesAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
+            guard let sSelf = self else { return }
+            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
+            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+        }
+        let noAction = MDCAlertAction(title: LocalizationConstants.General.no)
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
-                                                   actions: [okAction],
+                                                   actions: [yesAction, noAction],
                                                    completionHandler: {})
             }
         }
