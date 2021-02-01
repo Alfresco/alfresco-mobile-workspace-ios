@@ -120,7 +120,9 @@
 "failed-profile-info" = "Failed to fetch profile information for current user.";
 "app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
-"sync-over-mobile-data-title" = "Sync over mobile data";
+"sync-data-title" = "Sync plan";
+"sync-wifi-mobile-data" = "Wi-fi and celullar data";
+"sync-only-wifi" = "Wi-fi only";
 
 // MARK: - Search
 "searching" = "Searching...";
@@ -177,7 +179,7 @@
 "dialog-upload-message" = "Uploading '%@'";
 "dialog-session-expired-title" = "Session expired";
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
-"dialog-no-sync-cellular-data-message" = "You cannot sync content over cellular data.";
+"dialog-sync-over-mobile-data-title" = "Sync over mobile data";
 "dialog-sync-over-mobile-data-message" = "Do you want to sync files over cellular data just one time? Go to Settings to enable sync over celullar data.";
 
 // MARK: - Empty List

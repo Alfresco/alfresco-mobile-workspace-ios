@@ -125,7 +125,7 @@
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
 		E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+InterFont.swift */; };
 		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
-		E32A369C25C7E73A00F873CB /* SyncOverMobileDataDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32A369B25C7E73A00F873CB /* SyncOverMobileDataDialogViewModel.swift */; };
+		E32A369C25C7E73A00F873CB /* SyncPlanDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */; };
 		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
 		E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */; };
@@ -421,7 +421,7 @@
 		E32975B72567BB7200533A2F /* excel.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = excel.xlsx; sourceTree = "<group>"; };
 		E32975B82567BB7200533A2F /* word.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = word.docx; sourceTree = "<group>"; };
 		E32975B92567BC1400533A2F /* powerpoint.pptx */ = {isa = PBXFileReference; lastKnownFileType = file; path = powerpoint.pptx; sourceTree = "<group>"; };
-		E32A369B25C7E73A00F873CB /* SyncOverMobileDataDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncOverMobileDataDialogViewModel.swift; sourceTree = "<group>"; };
+		E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncPlanDialogViewModel.swift; sourceTree = "<group>"; };
 		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSearchViewModel.swift; sourceTree = "<group>"; };
@@ -1406,7 +1406,7 @@
 			children = (
 				E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */,
 				E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */,
-				E32A369B25C7E73A00F873CB /* SyncOverMobileDataDialogViewModel.swift */,
+				E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */,
 				E386BAF225C7DEEB005F3503 /* Models */,
 			);
 			path = ViewModels;
@@ -2032,7 +2032,7 @@
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
-				E32A369C25C7E73A00F873CB /* SyncOverMobileDataDialogViewModel.swift in Sources */,
+				E32A369C25C7E73A00F873CB /* SyncPlanDialogViewModel.swift in Sources */,
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,

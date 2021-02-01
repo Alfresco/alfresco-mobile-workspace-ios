@@ -135,7 +135,9 @@ struct LocalizationConstants {
         static let failedProfileInfo = NSLocalizedString("failed-profile-info", comment: "")
         static let appVersion = NSLocalizedString("app-version", comment: "")
         static let signOutConfirmation = NSLocalizedString("sign-out-confirmation", comment: "")
-        static let syncOverMobileDataTitle = NSLocalizedString("sync-over-mobile-data-title", comment: "")
+        static let syncDataPlanTitle = NSLocalizedString("sync-data-title", comment: "")
+        static let syncOnlyWifi = NSLocalizedString("sync-only-wifi", comment: "")
+        static let syncWifiAndMobileData = NSLocalizedString("sync-wifi-mobile-data", comment: "")
     }
 
     struct Search {
@@ -198,6 +200,7 @@ struct LocalizationConstants {
         static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
         static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
         static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
+        static let syncOverMobileDataTitle =  NSLocalizedString("dialog-sync-over-mobile-data-title", comment: "")
         static let syncOverMobileDataMessage =  NSLocalizedString("dialog-sync-over-mobile-data-message", comment: "")
     }
 

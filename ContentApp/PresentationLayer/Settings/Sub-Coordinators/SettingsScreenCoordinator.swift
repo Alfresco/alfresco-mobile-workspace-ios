@@ -62,7 +62,7 @@ extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     }
 
     func showSyncOverMobileDataScreen() {
-        let viewModel = SyncOverMobileDataDialogViewModel()
+        let viewModel = SyncPlanDialogViewModel()
         viewModel.chooseDialogDelegate = settingsViewController?.viewModel
         let coordinator = ChooseDialogScreenCoordinator(with: presenter, model: viewModel)
         coordinator.start()

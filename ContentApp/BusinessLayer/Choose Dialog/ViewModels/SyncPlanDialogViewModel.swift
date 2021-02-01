@@ -18,29 +18,30 @@
 
 import UIKit
 
-class SyncOverMobileDataDialogViewModel: ChooseDialogViewModelProtocol {
+class SyncPlanDialogViewModel: ChooseDialogViewModelProtocol {
 
     weak var chooseDialogDelegate: ChooseDialogViewModelDelegate?
-    var titleDialog = LocalizationConstants.Settings.syncOverMobileDataTitle
+    var titleDialog = LocalizationConstants.Settings.syncDataPlanTitle
     var questionType = ChooseQuestionType.syncOverMobileData
     var items: [ChooseItem]
 
     init() {
-        let onItem = ChooseItem(guid: 0, title: LocalizationConstants.General.on)
-        let offItem = ChooseItem(guid: 1, title: LocalizationConstants.General.off)
+        let onlyWifiItem = ChooseItem(guid: 0, title: LocalizationConstants.Settings.syncOnlyWifi)
+        let allItem = ChooseItem(guid: 1, title: LocalizationConstants.Settings.syncWifiAndMobileData)
 
         if UserProfile.getOptionToSyncOverMobileData() == true {
-            onItem.selected = true
+            allItem.selected = true
         } else {
-            offItem.selected = true
+            onlyWifiItem.selected = true
         }
 
-        self.items = [onItem, offItem]
+        self.items = [onlyWifiItem, allItem]
     }
 
     func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void)) {
         switch item.guid {
-        case 0: UserProfile.persistOptionToSyncOverMobileData(true)
+        case 0: UserProfile.persistOptionToSyncOverMobileData(false)
+        case 1: UserProfile.persistOptionToSyncOverMobileData(true)
         default: UserProfile.persistOptionToSyncOverMobileData(false)
         }
         completion()

@@ -133,21 +133,21 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     private func showSyncOverMovbileDataDialog() {
-        let title = LocalizationConstants.Settings.syncOverMobileDataTitle
+        let title = LocalizationConstants.Dialog.syncOverMobileDataTitle
         let message = LocalizationConstants.Dialog.syncOverMobileDataMessage
 
-        let yesAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
+        let okAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
             guard let sSelf = self else { return }
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
-        let noAction = MDCAlertAction(title: LocalizationConstants.General.no)
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
-                                                   actions: [yesAction, noAction],
+                                                   actions: [okAction, cancelAction],
                                                    completionHandler: {})
             }
         }

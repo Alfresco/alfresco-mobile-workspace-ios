@@ -95,25 +95,26 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     }
 
     private func startSyncOperation() {
-        guard let syncService = self.syncService,
-              let type = self.tiggerType else { return }
         let listNodeDataAccessor = ListNodeDataAccessor()
+        guard let syncService = self.syncService,
+              let type = self.tiggerType,
+              let nodes = listNodeDataAccessor.queryMarkedOffline(),
+              syncService.syncServiceStatus == .idle,
+              accountService?.activeAccount != nil else { return }
 
-        if let nodes = listNodeDataAccessor.queryMarkedOffline(),
-           syncService.syncServiceStatus == .idle &&
-            accountService?.activeAccount != nil {
+        if UserProfile.getOptionToSyncOverMobileData() == false &&
+            connectivityService?.status == .cellular { return }
 
-            accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
-                guard let sSelf = self else { return }
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
+            guard let sSelf = self else { return }
 
-                if authenticationProvider.areCredentialsValid() {
-                    sSelf.poolingTimer?.invalidate()
-                    AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
-                    syncService.sync(nodeList: nodes)
-                    sSelf.observeSyncStatusOperation()
-                }
-            })
-        }
+            if authenticationProvider.areCredentialsValid() {
+                sSelf.poolingTimer?.invalidate()
+                AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
+                syncService.sync(nodeList: nodes)
+                sSelf.observeSyncStatusOperation()
+            }
+        })
     }
 
     private func observeSyncStatusOperation() {
@@ -153,6 +154,5 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                                     sSelf.triggerSync(when: .poolingTimer)
                                                 })
         }
-
     }
 }

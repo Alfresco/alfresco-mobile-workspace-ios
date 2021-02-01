@@ -103,9 +103,10 @@ class SettingsViewModel {
 
     private func getSyncOverMobileDataItem() -> SettingsItem {
         let option = UserProfile.getOptionToSyncOverMobileData()
-        let subtitle = (option) ? LocalizationConstants.General.on : LocalizationConstants.General.off
+        let subtitle = (option) ? LocalizationConstants.Settings.syncWifiAndMobileData :
+            LocalizationConstants.Settings.syncOnlyWifi
         return SettingsItem(type: .syncOverMobileData,
-                            title: LocalizationConstants.Settings.syncOverMobileDataTitle,
+                            title: LocalizationConstants.Settings.syncDataPlanTitle,
                             subtitle: subtitle)
     }
 

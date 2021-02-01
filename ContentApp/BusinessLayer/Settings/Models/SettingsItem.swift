@@ -23,7 +23,7 @@ enum SettingsItemType: String {
     case account = "avatar"
     case label = "label"
     case theme = "ic-theme"
-    case syncOverMobileData = "ic-mobile-data"
+    case syncOverMobileData = "ic-sync-plan-data"
 }
 
 class SettingsItem: Equatable {
