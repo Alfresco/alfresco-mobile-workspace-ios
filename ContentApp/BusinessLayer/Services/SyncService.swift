@@ -41,6 +41,7 @@ protocol SyncServiceDelegate: class {
 @objc enum SyncServiceStatus: Int {
     case idle
     case fetchingNodeDetails
+    case processNodeDetails
     case processingMarkedNodes
 }
 
@@ -73,10 +74,10 @@ let maxConcurrentSyncOperationCount = 3
         let nodeOperations = NodeOperations(accountService: accountService)
         syncOperationFactory = SyncOperationFactory(nodeOperations: nodeOperations,
                                                     eventBusService: eventBusService)
-
         super.init()
 
         observeOperationQueue()
+        syncOperationFactory.delegate = self
     }
 
     func sync(nodeList: [ListNode]) {
@@ -99,6 +100,11 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     // MARK: - Private interface
+
+    private func processNodeDetails() {
+        syncServiceStatus = .processNodeDetails
+        syncOperationQueue.addOperation(syncOperationFactory.processNodeChildren())
+    }
 
     private func processMarkedNodes() {
         // Generate download and delete operations for marked nodes
@@ -130,13 +136,26 @@ let maxConcurrentSyncOperationCount = 3
         kvoToken = syncOperationQueue.observe(\.operations, options: .new) { [weak self] (newValue, _) in
             guard let sSelf = self else { return }
             if newValue.operations.count == 0 {
-                if sSelf.syncServiceStatus == .fetchingNodeDetails {
+                switch sSelf.syncServiceStatus {
+                case .fetchingNodeDetails:
+                    sSelf.processNodeDetails()
+                case .processNodeDetails:
                     sSelf.processMarkedNodes()
-                } else if sSelf.syncServiceStatus == .processingMarkedNodes {
+                case .processingMarkedNodes:
                     sSelf.syncServiceStatus = .idle
                     sSelf.delegate?.syncDidFinished()
+                case .idle:
+                    AlfrescoLog.debug("-- SYNC is now idle")
                 }
             }
         }
+    }
+}
+
+extension SyncService: SyncOperationFactoryDelegate {
+    func didComplete(with error: Error) {
+        stopSync()
+        syncServiceStatus = .idle
+        delegate?.syncDidFinished()
     }
 }
