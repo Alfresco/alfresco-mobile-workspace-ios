@@ -30,6 +30,13 @@ enum SyncTriggerType: String {
 }
 
 protocol SyncTriggersServiceProtocol {
+
+    /// Register observers and timers for triggers
+    func registerTriggers()
+
+    /// Invalidate all the triggers
+    func invalidateTriggers()
+
     /// Start a sync operation when a tigger is display
     /// - Parameters type:  Type of trigger
     func triggerSync(when type: SyncTriggerType)
@@ -65,8 +72,18 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         self.syncService = syncService
         self.accountService = accountService
         self.connectivityService = connectivityService
+    }
+
+    func registerTriggers() {
         self.startPoolingTrigger()
         self.observeConnectivity()
+    }
+
+    func invalidateTriggers() {
+        kvoSyncStatus?.invalidate()
+        kvoConnectivity?.invalidate()
+        poolingTimer?.invalidate()
+        throttleTimer?.invalidate()
     }
 
     func triggerSync(when type: SyncTriggerType) {

@@ -160,6 +160,7 @@ class SettingsViewModel {
             else { return }
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)
                 sSelf.viewModelDelegate?.logOutWithSuccess()
