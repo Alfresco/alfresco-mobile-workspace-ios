@@ -26,7 +26,6 @@ enum SyncTriggerType: String {
     case userReAuthenticated
     case poolingTimer
     case userDidInitiateSync
-    case userOverrideSyncOverCellularData
 }
 
 protocol SyncTriggersServiceProtocol {
@@ -71,10 +70,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     func triggerSync(when type: SyncTriggerType) {
         guard accountService?.activeAccount != nil,
-              isUserOverrideSyncOnCellularData(for: type) == true else { return }
+              isUserOverrideSyncOnCellularData() == true else { return }
 
         if type == .userDidInitiateSync ||
-            type == .userOverrideSyncOverCellularData ||
             throttleTimer?.isValid == nil ||
             throttleTimer?.isValid == false {
 
@@ -106,9 +104,10 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             guard let sSelf = self else { return }
 
             if authenticationProvider.areCredentialsValid() {
+                AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
+                UserProfile.persistOptionToOverrideSyncOnlyOnceCellularData(false)
                 sSelf.tiggerType = type
                 sSelf.poolingTimer?.invalidate()
-                AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
                 sSelf.startThrottleTimer()
                 syncService.sync(nodeList: nodes)
                 sSelf.observeSyncStatusOperation()
@@ -157,20 +156,18 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         case .wifi:
             triggerSync(when: .reachableOverWifi)
         case .cellular:
-            if isUserOverrideSyncOnCellularData(for: self.tiggerType) == false {
+            if isUserOverrideSyncOnCellularData() == false {
                 syncService?.stopSync()
             }
         default: break
         }
     }
 
-    private func isUserOverrideSyncOnCellularData(for type: SyncTriggerType?) -> Bool {
-        guard let type = type else { return false }
-        if UserProfile.getOptionToSyncOverCellularData() == false &&
-            connectivityService?.status == .cellular &&
-            type != .userOverrideSyncOverCellularData {
-            return false
+    private func isUserOverrideSyncOnCellularData() -> Bool {
+        guard connectivityService?.status == .cellular else { return true }
+        if UserProfile.getOptionToOverrideSyncCellularData() || UserProfile.getOptionToOverrideSyncOnlyOnceCellularData() {
+            return true
         }
-        return true
+        return false
     }
 }

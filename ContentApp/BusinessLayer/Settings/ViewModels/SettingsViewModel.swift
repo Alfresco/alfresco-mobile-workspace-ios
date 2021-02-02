@@ -102,7 +102,7 @@ class SettingsViewModel {
     // MARK: - Get Settings Items
 
     private func getSyncPlanItem() -> SettingsItem {
-        let option = UserProfile.getOptionToSyncOverCellularData()
+        let option = UserProfile.getOptionToOverrideSyncCellularData()
         let subtitle = (option) ? LocalizationConstants.Settings.syncWifiAndCellularData :
             LocalizationConstants.Settings.syncOnlyWifi
         return SettingsItem(type: .syncPlanData,

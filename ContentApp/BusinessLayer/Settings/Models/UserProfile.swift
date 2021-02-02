@@ -48,10 +48,17 @@ class UserProfile {
         defaults.synchronize()
     }
 
-    static func persistOptionToSyncOverCellularData(_ option: Bool) {
+    static func persistOptionToOverrideSyncCellularData(_ option: Bool) {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         let defaults = UserDefaults.standard
-        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToSyncOverCellularData)")
+        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)")
+        defaults.synchronize()
+    }
+
+    static func persistOptionToOverrideSyncOnlyOnceCellularData(_ option: Bool) {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
+        let defaults = UserDefaults.standard
+        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)")
         defaults.synchronize()
     }
 
@@ -62,7 +69,8 @@ class UserProfile {
         defaults.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
         defaults.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
         defaults.removeObject(forKey: "\(identifier)-\(kSavePersonalFilesID)")
-        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToSyncOverCellularData)")
+        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)")
+        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)")
     }
 
     // MARK: - Get Data
@@ -85,9 +93,15 @@ class UserProfile {
         return UserDefaults.standard.object(forKey: key) as? String ?? ""
     }
 
-    static func getOptionToSyncOverCellularData() -> Bool {
+    static func getOptionToOverrideSyncCellularData() -> Bool {
         let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveOptionToSyncOverCellularData)"
+        let key = "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)"
+        return UserDefaults.standard.object(forKey: key) as? Bool ?? false
+    }
+
+    static func getOptionToOverrideSyncOnlyOnceCellularData() -> Bool {
+        let identifier = accountService?.activeAccount?.identifier ?? ""
+        let key = "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)"
         return UserDefaults.standard.object(forKey: key) as? Bool ?? false
     }
 }
