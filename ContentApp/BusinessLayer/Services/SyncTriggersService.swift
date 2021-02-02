@@ -23,6 +23,7 @@ enum SyncTriggerType: String {
     case nodeMarkedOffline
     case nodeRemovedFromOffline
     case reachableOverWifi
+    case reachableOverCellularData
     case userReAuthenticated
     case poolingTimer
     case userDidInitiateSync
@@ -156,7 +157,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         case .wifi:
             triggerSync(when: .reachableOverWifi)
         case .cellular:
-            if isUserOverrideSyncOnCellularData() == false {
+            if isUserOverrideSyncOnCellularData() {
+                triggerSync(when: .reachableOverCellularData)
+            } else {
                 syncService?.stopSync()
             }
         default: break
