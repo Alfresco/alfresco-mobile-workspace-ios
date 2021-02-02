@@ -23,10 +23,79 @@ class UserProfile {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
+    static var displayName: String {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveDiplayProfileName)"
+            return UserDefaults.standard.object(forKey: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveDiplayProfileName)"
+            UserDefaults.standard.set(newValue, forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    static var email: String {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveEmailProfile)"
+            return UserDefaults.standard.object(forKey: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveEmailProfile)"
+            UserDefaults.standard.set(newValue, forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    static var personalFilesID: String? {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSavePersonalFilesID)"
+            return UserDefaults.standard.object(forKey: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSavePersonalFilesID)"
+            UserDefaults.standard.set(newValue, forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    static var allowSyncOverCellularData: Bool {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveAllowSyncOverCellularData)"
+            return UserDefaults.standard.object(forKey: key) as? Bool ?? false
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveAllowSyncOverCellularData)"
+            UserDefaults.standard.set(newValue, forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    static var allowOnceSyncOverCellularData: Bool {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveAllowOnceSyncOverCellularData)"
+            return UserDefaults.standard.object(forKey: key) as? Bool ?? false
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(kSaveAllowOnceSyncOverCellularData)"
+            UserDefaults.standard.set(newValue, forKey: key)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
     // MARK: - Persist Data
 
     static func persistUserProfile(person: Person) {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
         var profileName = person.firstName
         if let lastName = person.lastName {
             profileName = "\(profileName) \(lastName)"
@@ -34,74 +103,19 @@ class UserProfile {
         if let displayName = person.displayName {
             profileName = displayName
         }
-
-        let defaults = UserDefaults.standard
-        defaults.set(profileName, forKey: "\(identifier)-\(kSaveDiplayProfileName)")
-        defaults.set(person.email, forKey: "\(identifier)-\(kSaveEmailProfile)")
-        defaults.synchronize()
-    }
-
-    static func persistPersonalFilesID(nodeID: String) {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let defaults = UserDefaults.standard
-        defaults.set(nodeID, forKey: "\(identifier)-\(kSavePersonalFilesID)")
-        defaults.synchronize()
-    }
-
-    static func persistOptionToOverrideSyncCellularData(_ option: Bool) {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let defaults = UserDefaults.standard
-        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)")
-        defaults.synchronize()
-    }
-
-    static func persistOptionToOverrideSyncOnlyOnceCellularData(_ option: Bool) {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let defaults = UserDefaults.standard
-        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)")
-        defaults.synchronize()
+        UserProfile.displayName = profileName
+        UserProfile.email = person.email
     }
 
     // MARK: - Remove Data
 
-    static func removeUserProfile(withAccountIdentifier identifier: String) {
+    static func removeUserProfile(forAccountIdentifier identifier: String) {
         let defaults = UserDefaults.standard
         defaults.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
         defaults.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
         defaults.removeObject(forKey: "\(identifier)-\(kSavePersonalFilesID)")
-        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)")
-        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)")
-    }
-
-    // MARK: - Get Data
-
-    static func getPersonalFilesID() -> String? {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSavePersonalFilesID)"
-        return UserDefaults.standard.object(forKey: key) as? String
-    }
-
-    static func getProfileName() -> String {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveDiplayProfileName)"
-        return UserDefaults.standard.object(forKey: key) as? String ?? ""
-    }
-
-    static func getEmail() -> String {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveEmailProfile)"
-        return UserDefaults.standard.object(forKey: key) as? String ?? ""
-    }
-
-    static func getOptionToOverrideSyncCellularData() -> Bool {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveOptionToOverrideSyncCellularData)"
-        return UserDefaults.standard.object(forKey: key) as? Bool ?? false
-    }
-
-    static func getOptionToOverrideSyncOnlyOnceCellularData() -> Bool {
-        let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveOptionToOverrideSyncOnlyOnceCellularData)"
-        return UserDefaults.standard.object(forKey: key) as? Bool ?? false
+        defaults.removeObject(forKey: "\(identifier)-\(kSaveAllowSyncOverCellularData)")
+        defaults.removeObject(forKey: "\(identifier)-\(kSaveAllowOnceSyncOverCellularData)")
+        defaults.synchronize()
     }
 }

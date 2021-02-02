@@ -125,14 +125,14 @@
 		E321380E24C6F2C60025A833 /* UILabel+Theming.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321380D24C6F2C60025A833 /* UILabel+Theming.swift */; };
 		E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E321BAD2248111F400BE938E /* UIFont+InterFont.swift */; };
 		E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
-		E32A369C25C7E73A00F873CB /* SyncPlanDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */; };
+		E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32A369B25C7E73A00F873CB /* DataPlanDialogViewModel.swift */; };
 		E32B642724B326EB00085472 /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642B24B358FD00085472 /* ResultViewController.swift */; };
 		E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */; };
 		E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */; };
 		E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */; };
-		E32C697825C4519D000FA6BD /* ChooseItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */; };
-		E32C698025C45834000FA6BD /* ChooseDialogScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */; };
+		E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697725C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift */; };
+		E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C697F25C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift */; };
 		E32C698525C45A9E000FA6BD /* ThemeModeDialogViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */; };
 		E32DE5302578F43C001A31EC /* NeedHelpModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32DE52F2578F43C001A31EC /* NeedHelpModelProtocol.swift */; };
 		E3337DCA25BF105400C7B5C8 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */; };
@@ -194,7 +194,7 @@
 		E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */; };
 		E3817B5125544B6B007E0772 /* ListComponentDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3817B5025544B6B007E0772 /* ListComponentDataSourceProtocol.swift */; };
 		E382C59D251A40820000D561 /* GetContentServicesServerInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E382C59C251A40820000D561 /* GetContentServicesServerInformation.swift */; };
-		E386BAF425C7DF10005F3503 /* ChooseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E386BAF325C7DF10005F3503 /* ChooseItem.swift */; };
+		E386BAF425C7DF10005F3503 /* MultipleChoiceItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E386BAF325C7DF10005F3503 /* MultipleChoiceItem.swift */; };
 		E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E387387B24D1D1820028F76B /* SystemSearchViewController.swift */; };
 		E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */; };
 		E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */; };
@@ -218,8 +218,8 @@
 		E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */; };
 		E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */; };
 		E3AE4EA1250675870095C76E /* ImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AE4EA0250675870095C76E /* ImagePreview.swift */; };
-		E3AF925525C444740016F8A9 /* ChooseDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */; };
-		E3AF925A25C445070016F8A9 /* ChooseDialogViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */; };
+		E3AF925525C444740016F8A9 /* MultipleChoiceDialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925425C444740016F8A9 /* MultipleChoiceDialogViewController.swift */; };
+		E3AF925A25C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925925C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift */; };
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
 		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
@@ -421,14 +421,14 @@
 		E32975B72567BB7200533A2F /* excel.xlsx */ = {isa = PBXFileReference; lastKnownFileType = file; path = excel.xlsx; sourceTree = "<group>"; };
 		E32975B82567BB7200533A2F /* word.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = word.docx; sourceTree = "<group>"; };
 		E32975B92567BC1400533A2F /* powerpoint.pptx */ = {isa = PBXFileReference; lastKnownFileType = file; path = powerpoint.pptx; sourceTree = "<group>"; };
-		E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncPlanDialogViewModel.swift; sourceTree = "<group>"; };
+		E32A369B25C7E73A00F873CB /* DataPlanDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataPlanDialogViewModel.swift; sourceTree = "<group>"; };
 		E32B642624B326EB00085472 /* ListNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNode.swift; sourceTree = "<group>"; };
 		E32B642B24B358FD00085472 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		E32B642D24B35C2100085472 /* GlobalSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalSearchViewModel.swift; sourceTree = "<group>"; };
 		E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListElementCollectionViewCell.swift; sourceTree = "<group>"; };
 		E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListElementCollectionViewCell.xib; sourceTree = "<group>"; };
-		E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseItemCollectionViewCell.swift; sourceTree = "<group>"; };
-		E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogScreenCoordinator.swift; sourceTree = "<group>"; };
+		E32C697725C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		E32C697F25C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiseDialogScreenCoordinator.swift; sourceTree = "<group>"; };
 		E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeModeDialogViewModel.swift; sourceTree = "<group>"; };
 		E32DE52F2578F43C001A31EC /* NeedHelpModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpModelProtocol.swift; sourceTree = "<group>"; };
 		E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
@@ -511,7 +511,7 @@
 		E3817BD6255469FA007E0772 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E3817BD725546A0D007E0772 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E382C59C251A40820000D561 /* GetContentServicesServerInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServicesServerInformation.swift; sourceTree = "<group>"; };
-		E386BAF325C7DF10005F3503 /* ChooseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseItem.swift; sourceTree = "<group>"; };
+		E386BAF325C7DF10005F3503 /* MultipleChoiceItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceItem.swift; sourceTree = "<group>"; };
 		E387387B24D1D1820028F76B /* SystemSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSearchViewController.swift; sourceTree = "<group>"; };
 		E3A1B885249BADE90038D56D /* SettingsAccountTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsAccountTableViewCell.swift; sourceTree = "<group>"; };
 		E3A2A8FA247E7D230046582C /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
@@ -535,8 +535,8 @@
 		E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderChildrenScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomImageView.swift; sourceTree = "<group>"; };
 		E3AE4EA0250675870095C76E /* ImagePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreview.swift; sourceTree = "<group>"; };
-		E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogViewController.swift; sourceTree = "<group>"; };
-		E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseDialogViewModelProtocol.swift; sourceTree = "<group>"; };
+		E3AF925425C444740016F8A9 /* MultipleChoiceDialogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceDialogViewController.swift; sourceTree = "<group>"; };
+		E3AF925925C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewModelProtocol.swift; sourceTree = "<group>"; };
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
 		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
@@ -1371,7 +1371,7 @@
 		E386BAED25C7DE9E005F3503 /* Sub-Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				E32C697F25C45834000FA6BD /* ChooseDialogScreenCoordinator.swift */,
+				E32C697F25C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -1380,7 +1380,7 @@
 			isa = PBXGroup;
 			children = (
 				E386BAEF25C7DEAE005F3503 /* Cells */,
-				E3AF925425C444740016F8A9 /* ChooseDialogViewController.swift */,
+				E3AF925425C444740016F8A9 /* MultipleChoiceDialogViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1388,7 +1388,7 @@
 		E386BAEF25C7DEAE005F3503 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				E32C697725C4519D000FA6BD /* ChooseItemCollectionViewCell.swift */,
+				E32C697725C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1404,9 +1404,9 @@
 		E386BAF125C7DEE5005F3503 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				E3AF925925C445070016F8A9 /* ChooseDialogViewModelProtocol.swift */,
+				E3AF925925C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift */,
 				E32C698425C45A9E000FA6BD /* ThemeModeDialogViewModel.swift */,
-				E32A369B25C7E73A00F873CB /* SyncPlanDialogViewModel.swift */,
+				E32A369B25C7E73A00F873CB /* DataPlanDialogViewModel.swift */,
 				E386BAF225C7DEEB005F3503 /* Models */,
 			);
 			path = ViewModels;
@@ -1415,7 +1415,7 @@
 		E386BAF225C7DEEB005F3503 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E386BAF325C7DF10005F3503 /* ChooseItem.swift */,
+				E386BAF325C7DF10005F3503 /* MultipleChoiceItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1993,7 +1993,7 @@
 				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
 				B9ECED3A25432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift in Sources */,
 				E37D1CA12493E874006373FD /* TabBarMainViewController.swift in Sources */,
-				E386BAF425C7DF10005F3503 /* ChooseItem.swift in Sources */,
+				E386BAF425C7DF10005F3503 /* MultipleChoiceItem.swift in Sources */,
 				E350AFD625B1C12C00527D02 /* SyncStatusEvent.swift in Sources */,
 				E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */,
 				E348EDDD2498A2DE00F489B4 /* DefaultTheme.swift in Sources */,
@@ -2032,7 +2032,7 @@
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
-				E32A369C25C7E73A00F873CB /* SyncPlanDialogViewModel.swift in Sources */,
+				E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */,
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
@@ -2070,7 +2070,7 @@
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
-				E3AF925A25C445070016F8A9 /* ChooseDialogViewModelProtocol.swift in Sources */,
+				E3AF925A25C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift in Sources */,
 				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				E3337DCA25BF105400C7B5C8 /* SyncTriggersService.swift in Sources */,
 				E3A4339D2566C1E6000DD886 /* CreateNodeSheetViewControler.swift in Sources */,
@@ -2090,10 +2090,10 @@
 				B992CE7824BDE82200A97664 /* SearchRequestBuilder.swift in Sources */,
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
-				E32C697825C4519D000FA6BD /* ChooseItemCollectionViewCell.swift in Sources */,
+				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
-				E32C698025C45834000FA6BD /* ChooseDialogScreenCoordinator.swift in Sources */,
+				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
@@ -2163,7 +2163,7 @@
 				E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */,
 				E335E731253865CF0036E090 /* ActionMenuViewModel.swift in Sources */,
 				E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */,
-				E3AF925525C444740016F8A9 /* ChooseDialogViewController.swift in Sources */,
+				E3AF925525C444740016F8A9 /* MultipleChoiceDialogViewController.swift in Sources */,
 				E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */,
 				E3E2BDA824CC2B3D00D8A7EC /* DeleteNodeMapper.swift in Sources */,
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,

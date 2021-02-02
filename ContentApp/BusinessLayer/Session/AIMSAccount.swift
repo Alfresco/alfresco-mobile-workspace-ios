@@ -76,17 +76,6 @@ class AIMSAccount: AccountProtocol, Equatable {
         createTicket()
     }
 
-    func delete() {
-        removeDiskFolder()
-        removeAuthenticationParameters()
-        removeAuthenticationCredentials()
-
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        listNodeDataAccessor.removeAllNodes()
-
-        UserProfile.removeUserProfile(withAccountIdentifier: identifier)
-    }
-
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
         // Check if existing credentials are valid and return them if true
         if let credential = session.credential {
@@ -161,7 +150,7 @@ extension AIMSAccount: AIMSAccountDelegate {
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoCredential.self))")
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))")
 
-            UserProfile.removeUserProfile(withAccountIdentifier: identifier)
+            UserProfile.removeUserProfile(forAccountIdentifier: identifier)
 
             session.parameters.remove(for: oldAccountIdentifier)
         }

@@ -50,9 +50,6 @@ protocol AccountProtocol: class {
     /// Cleanup session for this account
     func unregister()
 
-    /// Delete all data for this account
-    func delete()
-
     /// Returns a valid cached session or recreates one.
     /// - Parameter completionHandler: Authentication provider containing  session credentials
     func getSession(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void))

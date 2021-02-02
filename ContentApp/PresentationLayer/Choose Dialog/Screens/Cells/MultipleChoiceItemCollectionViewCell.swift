@@ -18,11 +18,11 @@
 
 import UIKit
 
-class ChooseItemCollectionViewCell: UICollectionViewCell {
+class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    var item: ChooseItem? {
+    var item: MultipleChoiceItem? {
         didSet {
             if let item = item {
                 titleLabel.text = item.title

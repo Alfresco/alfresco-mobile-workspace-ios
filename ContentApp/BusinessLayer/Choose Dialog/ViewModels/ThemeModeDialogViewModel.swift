@@ -18,20 +18,20 @@
 
 import UIKit
 
-class ThemeModeDialogViewModel: ChooseDialogViewModelProtocol {
+class ThemeModeDialogViewModel: MultipleChoiceViewModelProtocol {
 
-    weak var chooseDialogDelegate: ChooseDialogViewModelDelegate?
+    weak var multipleChoiceViewModelDelegate: MultipleChoiceViewModelDelegate?
     var titleDialog = LocalizationConstants.Theme.theme
-    var questionType = ChooseQuestionType.theme
-    var items: [ChooseItem]
+    var dialogType = MultipleChoiceDialogType.theme
+    var items: [MultipleChoiceItem]
     var themingService: MaterialDesignThemingService?
 
     init(with themingService: MaterialDesignThemingService?) {
         self.themingService = themingService
 
-        let systemItem = ChooseItem(guid: 0, title: LocalizationConstants.Theme.auto)
-        let darkItem = ChooseItem(guid: 1, title: LocalizationConstants.Theme.dark)
-        let lightItem = ChooseItem(guid: 2, title: LocalizationConstants.Theme.light)
+        let systemItem = MultipleChoiceItem(guid: 0, title: LocalizationConstants.Theme.auto)
+        let darkItem = MultipleChoiceItem(guid: 1, title: LocalizationConstants.Theme.dark)
+        let lightItem = MultipleChoiceItem(guid: 2, title: LocalizationConstants.Theme.light)
 
         guard let theme = themingService?.getThemeMode() else {
             self.items = [systemItem, darkItem, lightItem]
@@ -45,7 +45,7 @@ class ThemeModeDialogViewModel: ChooseDialogViewModelProtocol {
         self.items = [systemItem, darkItem, lightItem]
     }
 
-    func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void)) {
+    func perfomAction(for item: MultipleChoiceItem, completion: @escaping (() -> Void)) {
         switch item.guid {
         case 0: themingService?.saveTheme(mode: ThemeModeType.auto)
         case 1: themingService?.saveTheme(mode: ThemeModeType.dark)

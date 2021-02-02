@@ -112,4 +112,25 @@ class AccountService: AccountServiceProtocol, Service {
             accounts?.remove(at: index)
         }
     }
+
+    func delete(account: AccountProtocol) {
+        if let index = accounts?.firstIndex(where: { account === $0 }) {
+            let defaults = UserDefaults.standard
+            if account.identifier == activeAccount?.identifier {
+                defaults.removeObject(forKey: kActiveAccountIdentifier)
+            }
+            account.unregister()
+
+            account.removeDiskFolder()
+            account.removeAuthenticationParameters()
+            account.removeAuthenticationCredentials()
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.removeAllNodes()
+
+            UserProfile.removeUserProfile(forAccountIdentifier: identifier)
+
+            accounts?.remove(at: index)
+        }
+    }
 }

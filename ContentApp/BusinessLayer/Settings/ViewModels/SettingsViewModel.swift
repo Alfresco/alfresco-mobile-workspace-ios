@@ -102,8 +102,8 @@ class SettingsViewModel {
     // MARK: - Get Settings Items
 
     private func getSyncPlanItem() -> SettingsItem {
-        let option = UserProfile.getOptionToOverrideSyncCellularData()
-        let subtitle = (option) ? LocalizationConstants.Settings.syncWifiAndCellularData :
+        let subtitle = (UserProfile.allowSyncOverCellularData) ?
+            LocalizationConstants.Settings.syncWifiAndCellularData :
             LocalizationConstants.Settings.syncOnlyWifi
         return SettingsItem(type: .syncPlanData,
                             title: LocalizationConstants.Settings.syncDataPlanTitle,
@@ -118,8 +118,8 @@ class SettingsViewModel {
     private func getLocalProfileItem() -> SettingsItem {
         let avatar = localAvatarImage()
         return SettingsItem(type: .account,
-                            title: UserProfile.getProfileName(),
-                            subtitle: UserProfile.getEmail(),
+                            title: UserProfile.displayName,
+                            subtitle: UserProfile.email,
                             icon: avatar)
     }
 
@@ -161,7 +161,7 @@ class SettingsViewModel {
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
                 sSelf.coordinatorServices?.syncService?.stopSync()
-                currentAccount.delete()
+                accountService?.delete(account: currentAccount)
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
@@ -199,10 +199,10 @@ class SettingsViewModel {
     }
 }
 
-// MARK: - ChooseDialogViewModel Delegate
+// MARK: - MultipleChoiceViewModel Delegate
 
-extension SettingsViewModel: ChooseDialogViewModelDelegate {
-    func chosen(item: ChooseItem, for questionType: ChooseQuestionType) {
+extension SettingsViewModel: MultipleChoiceViewModelDelegate {
+    func chose(item: MultipleChoiceItem, for type: MultipleChoiceDialogType) {
         reloadDataSource()
     }
 }

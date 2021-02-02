@@ -18,7 +18,7 @@
 
 import UIKit
 
-class ChooseItem: Equatable {
+class MultipleChoiceItem: Equatable {
     var guid: Int
     var selected: Bool
     var title: String
@@ -29,7 +29,7 @@ class ChooseItem: Equatable {
         self.selected = selected
     }
 
-    static func == (lhs: ChooseItem, rhs: ChooseItem) -> Bool {
+    static func == (lhs: MultipleChoiceItem, rhs: MultipleChoiceItem) -> Bool {
         return lhs.guid == rhs.guid
     }
 }

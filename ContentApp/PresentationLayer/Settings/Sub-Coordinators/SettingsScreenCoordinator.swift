@@ -20,14 +20,14 @@ import UIKit
 
 protocol SettingsScreenCoordinatorDelegate: class {
     func showThemesModeScreen()
-    func showSyncPlanDataScreen()
+    func showDataPlanDialog()
     func showLoginScreen()
 }
 
 class SettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var settingsViewController: SettingsViewController?
-    private var themesModeCoordinator: ChooseDialogScreenCoordinator?
+    private var themesModeCoordinator: MultipleChoiceDialogScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -55,16 +55,16 @@ extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
 
     func showThemesModeScreen() {
         let viewModel = ThemeModeDialogViewModel(with: coordinatorServices.themingService)
-        viewModel.chooseDialogDelegate = settingsViewController?.viewModel
-        let coordinator = ChooseDialogScreenCoordinator(with: presenter, model: viewModel)
+        viewModel.multipleChoiceViewModelDelegate = settingsViewController?.viewModel
+        let coordinator = MultipleChoiceDialogScreenCoordinator(with: presenter, model: viewModel)
         coordinator.start()
         self.themesModeCoordinator = coordinator
     }
 
-    func showSyncPlanDataScreen() {
-        let viewModel = SyncPlanDialogViewModel()
-        viewModel.chooseDialogDelegate = settingsViewController?.viewModel
-        let coordinator = ChooseDialogScreenCoordinator(with: presenter, model: viewModel)
+    func showDataPlanDialog() {
+        let viewModel = DataPlanDialogViewModel()
+        viewModel.multipleChoiceViewModelDelegate = settingsViewController?.viewModel
+        let coordinator = MultipleChoiceDialogScreenCoordinator(with: presenter, model: viewModel)
         coordinator.start()
         self.themesModeCoordinator = coordinator
     }

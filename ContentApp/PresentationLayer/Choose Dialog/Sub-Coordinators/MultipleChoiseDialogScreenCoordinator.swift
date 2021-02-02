@@ -19,26 +19,26 @@
 import UIKit
 import MaterialComponents.MaterialDialogs
 
-class ChooseDialogScreenCoordinator: Coordinator {
+class MultipleChoiceDialogScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private var chooseDialogViewController: ChooseDialogViewController?
-    private var chooseDialogViewModel: ChooseDialogViewModelProtocol
+    private var multipleChoiceDialogViewController: MultipleChoiceDialogViewController?
+    private var multipleChoiceDialogViewModel: MultipleChoiceViewModelProtocol
 
-    init(with presenter: UINavigationController, model: ChooseDialogViewModelProtocol) {
+    init(with presenter: UINavigationController, model: MultipleChoiceViewModelProtocol) {
         self.presenter = presenter
-        self.chooseDialogViewModel = model
+        self.multipleChoiceDialogViewModel = model
     }
 
     func start() {
         let dialogTransitionController = MDCDialogTransitionController()
-        let viewController = ChooseDialogViewController.instantiateViewController()
+        let viewController = MultipleChoiceDialogViewController.instantiateViewController()
 
         viewController.coordinatorServices = coordinatorServices
-        viewController.viewModel = chooseDialogViewModel
+        viewController.viewModel = multipleChoiceDialogViewModel
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = dialogTransitionController
 
-        chooseDialogViewController = viewController
+        multipleChoiceDialogViewController = viewController
         presenter.present(viewController, animated: true)
     }
 }

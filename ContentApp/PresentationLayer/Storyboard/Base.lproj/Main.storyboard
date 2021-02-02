@@ -1172,13 +1172,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Px-id-FVe">
-                                <rect key="frame" x="24" y="68" width="380" height="20.333333333333329"/>
+                                <rect key="frame" x="24" y="68" width="380" height="20.666666666666671"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="rpv-og-1bt" customClass="MDCOutlinedTextField">
-                                <rect key="frame" x="24" y="108.33333333333331" width="380" height="50"/>
+                                <rect key="frame" x="24" y="108.66666666666669" width="380" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="xc7-Sd-Zzh"/>
                                 </constraints>
@@ -1189,7 +1189,7 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCV-2v-eN9" customClass="MDCButton">
-                                <rect key="frame" x="390" y="282.33333333333331" width="30" height="48"/>
+                                <rect key="frame" x="390" y="282.66666666666669" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="yVu-jJ-c6f"/>
                                 </constraints>
@@ -1198,7 +1198,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4YX-6x-DuM" customClass="MDCButton">
-                                <rect key="frame" x="344" y="282.33333333333331" width="30" height="48"/>
+                                <rect key="frame" x="344" y="282.66666666666669" width="30" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="ywA-u8-JDB"/>
                                 </constraints>
@@ -1207,7 +1207,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bu-tB-3Et" customClass="MDCOutlinedTextArea">
-                                <rect key="frame" x="24" y="206.33333333333334" width="380" height="60.000000000000028"/>
+                                <rect key="frame" x="24" y="206.66666666666666" width="380" height="59.999999999999972"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="7uK-D1-U6a"/>
@@ -2073,22 +2073,22 @@
             </objects>
             <point key="canvasLocation" x="2024.2990654205607" y="1672.354211663067"/>
         </scene>
-        <!--Choose Dialog View Controller-->
+        <!--Multiple Choice Dialog View Controller-->
         <scene sceneID="OCG-n6-TZc">
             <objects>
-                <viewController storyboardIdentifier="ChooseDialogViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fIs-Dl-Yfw" customClass="ChooseDialogViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MultipleChoiceDialogViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fIs-Dl-Yfw" customClass="MultipleChoiceDialogViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="Itx-BQ-IHC">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2EK-RA-oPk">
-                                <rect key="frame" x="24" y="60.000000000000007" width="380" height="20.333333333333336"/>
+                                <rect key="frame" x="24" y="59.999999999999993" width="380" height="20.666666666666664"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="8T5-qd-L4u">
-                                <rect key="frame" x="24" y="100.33333333333331" width="380" height="150"/>
+                                <rect key="frame" x="24" y="100.66666666666669" width="380" height="150"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="150" id="rV6-9v-zqN"/>
@@ -2100,7 +2100,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ChooseItemCollectionViewCell" id="abX-7l-csB" customClass="ChooseItemCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MultipleChoiceItemCollectionViewCell" id="abX-7l-csB" customClass="MultipleChoiceItemCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="380" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Ywt-cH-p8E">
@@ -2144,7 +2144,7 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQA-fy-OcS">
-                                <rect key="frame" x="0.0" y="250.33333333333337" width="428" height="16"/>
+                                <rect key="frame" x="0.0" y="250.66666666666663" width="428" height="16"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="t7e-oF-xIM"/>

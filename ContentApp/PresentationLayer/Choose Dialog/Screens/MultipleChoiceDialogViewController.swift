@@ -18,14 +18,14 @@
 
 import UIKit
 
-let kChooseItemCellHeight: CGFloat = 44.0
+let kMultipleChoiceItemCellHeight: CGFloat = 44.0
 
-class ChooseDialogViewController: SystemThemableViewController {
+class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
 
-    var viewModel: ChooseDialogViewModelProtocol?
+    var viewModel: MultipleChoiceViewModelProtocol?
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
 
     // MARK: - View Life Cycle
@@ -39,7 +39,7 @@ class ChooseDialogViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let numberOfItems = viewModel?.items.count ?? 2
-        collectionViewHeightConstraint.constant = CGFloat(numberOfItems) * kChooseItemCellHeight
+        collectionViewHeightConstraint.constant = CGFloat(numberOfItems) * kMultipleChoiceItemCellHeight
     }
 
     override func viewDidLayoutSubviews() {
@@ -80,7 +80,7 @@ class ChooseDialogViewController: SystemThemableViewController {
 
 // MARK: - UICollectionView Delegates
 
-extension ChooseDialogViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MultipleChoiceDialogViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
@@ -92,10 +92,10 @@ extension ChooseDialogViewController: UICollectionViewDataSource, UICollectionVi
         guard let viewModel = self.viewModel else {
             return UICollectionViewCell()
         }
-        let identifier = String(describing: ChooseItemCollectionViewCell.self)
+        let identifier = String(describing: MultipleChoiceItemCollectionViewCell.self)
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
-                                               for: indexPath) as? ChooseItemCollectionViewCell
+                                               for: indexPath) as? MultipleChoiceItemCollectionViewCell
         cell?.item = viewModel.items[indexPath.row]
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
@@ -104,7 +104,7 @@ extension ChooseDialogViewController: UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: kChooseItemCellHeight)
+        return CGSize(width: view.bounds.width, height: kMultipleChoiceItemCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -121,4 +121,4 @@ extension ChooseDialogViewController: UICollectionViewDataSource, UICollectionVi
 
 // MARK: - Storyboard Instantiable
 
-extension ChooseDialogViewController: StoryboardInstantiable { }
+extension MultipleChoiceDialogViewController: StoryboardInstantiable { }

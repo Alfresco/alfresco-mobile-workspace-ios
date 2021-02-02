@@ -28,8 +28,8 @@ let kSaveDiplayProfileName = "kSaveDiplayProfileName"
 let kSaveEmailProfile = "kSaveEmailProfile"
 let kSaveRecentSearchesArray = "kSaveRecentSearchesArray"
 let kSavePersonalFilesID = "kSavePersonalFilesID"
-let kSaveOptionToOverrideSyncCellularData = "kSaveOptionToOverrideSyncCellularData"
-let kSaveOptionToOverrideSyncOnlyOnceCellularData = "kSaveOptionToOverrideSyncOnlyOnceCellularData"
+let kSaveAllowSyncOverCellularData = "kSaveAllowSyncOverCellularData"
+let kSaveAllowOnceSyncOverCellularData = "kSaveAllowOnceSyncOverCellularData"
 
 // MARK: - API Paths
 let kAPIMinimumVersion = "5.2.2"

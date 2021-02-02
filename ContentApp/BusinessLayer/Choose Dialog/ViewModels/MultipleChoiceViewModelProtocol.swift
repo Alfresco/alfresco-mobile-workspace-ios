@@ -18,30 +18,30 @@
 
 import UIKit
 
-enum ChooseQuestionType {
+enum MultipleChoiceDialogType {
     case theme
     case syncPlanData
     case genericQuestion
 }
 
-protocol ChooseDialogViewModelDelegate: class {
-    func chosen(item: ChooseItem, for questionType: ChooseQuestionType)
+protocol MultipleChoiceViewModelDelegate: class {
+    func chose(item: MultipleChoiceItem, for type: MultipleChoiceDialogType)
 }
 
-protocol ChooseDialogViewModelProtocol {
+protocol MultipleChoiceViewModelProtocol {
     var titleDialog: String { get }
-    var items: [ChooseItem] { get set }
-    var questionType: ChooseQuestionType { get }
-    var chooseDialogDelegate: ChooseDialogViewModelDelegate? { get set }
-    func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void))
+    var items: [MultipleChoiceItem] { get set }
+    var dialogType: MultipleChoiceDialogType { get }
+    var multipleChoiceViewModelDelegate: MultipleChoiceViewModelDelegate? { get set }
+    func perfomAction(for item: MultipleChoiceItem, completion: @escaping (() -> Void))
 }
 
-extension ChooseDialogViewModelProtocol {
-    func select(item: ChooseItem) {
+extension MultipleChoiceViewModelProtocol {
+    func select(item: MultipleChoiceItem) {
         item.selected = true
         for cItem in items where cItem != item {
             cItem.selected = false
         }
-        self.chooseDialogDelegate?.chosen(item: item, for: questionType)
+        self.multipleChoiceViewModelDelegate?.chose(item: item, for: dialogType)
     }
 }

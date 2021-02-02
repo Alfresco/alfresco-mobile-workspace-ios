@@ -99,8 +99,8 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
-        let syncingCellularData = UserProfile.getOptionToOverrideSyncCellularData()
-        if connectivityService?.status == .cellular && syncingCellularData == false {
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
             showOverrideSyncOnCellularDataDialog()
         } else {
             let syncTriggersService = coordinatorServices?.syncTriggersService
@@ -138,7 +138,7 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
             guard let sSelf = self else { return }
-            UserProfile.persistOptionToOverrideSyncOnlyOnceCellularData(true)
+            UserProfile.allowOnceSyncOverCellularData = true
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }

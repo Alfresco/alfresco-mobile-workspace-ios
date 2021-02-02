@@ -71,7 +71,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     func triggerSync(when type: SyncTriggerType) {
         guard accountService?.activeAccount != nil,
-              isUserOverrideSyncOnCellularData() == true else { return }
+              isSyncAllowedOverCellularData() == true else { return }
 
         if type == .userDidInitiateSync ||
             throttleTimer?.isValid == nil ||
@@ -106,7 +106,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
             if authenticationProvider.areCredentialsValid() {
                 AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
-                UserProfile.persistOptionToOverrideSyncOnlyOnceCellularData(false)
+                UserProfile.allowOnceSyncOverCellularData = false
                 sSelf.tiggerType = type
                 sSelf.poolingTimer?.invalidate()
                 sSelf.startThrottleTimer()
@@ -157,7 +157,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         case .wifi:
             triggerSync(when: .reachableOverWifi)
         case .cellular:
-            if isUserOverrideSyncOnCellularData() {
+            if isSyncAllowedOverCellularData() {
                 triggerSync(when: .reachableOverCellularData)
             } else {
                 syncService?.stopSync()
@@ -166,9 +166,10 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
     }
 
-    private func isUserOverrideSyncOnCellularData() -> Bool {
+    private func isSyncAllowedOverCellularData() -> Bool {
         guard connectivityService?.status == .cellular else { return true }
-        if UserProfile.getOptionToOverrideSyncCellularData() || UserProfile.getOptionToOverrideSyncOnlyOnceCellularData() {
+        if UserProfile.allowSyncOverCellularData ||
+            UserProfile.allowOnceSyncOverCellularData {
             return true
         }
         return false

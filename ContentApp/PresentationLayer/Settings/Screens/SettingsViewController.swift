@@ -127,7 +127,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         case .theme:
             settingsScreenCoordinatorDelegate?.showThemesModeScreen()
         case .syncPlanData:
-            settingsScreenCoordinatorDelegate?.showSyncPlanDataScreen()
+            settingsScreenCoordinatorDelegate?.showDataPlanDialog()
         default: break
         }
         tableView.deselectRow(at: indexPath, animated: true)

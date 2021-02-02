@@ -58,7 +58,7 @@ class TopLevelBrowseViewModelFactory {
 
         switch type {
         case .personalFiles:
-            if let nodeID = UserProfile.getPersonalFilesID() {
+            if let nodeID = UserProfile.personalFilesID {
                 searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""),
                                             type: .node,
                                             selected: true,
