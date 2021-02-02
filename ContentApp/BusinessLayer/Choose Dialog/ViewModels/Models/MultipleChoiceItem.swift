@@ -23,13 +23,16 @@ class MultipleChoiceItem: Equatable {
     var selected: Bool
     var title: String
 
-    init(guid: Int, title: String, selected: Bool = false) {
+    init(guid: Int,
+         title: String,
+         selected: Bool = false) {
         self.guid = guid
         self.title = title
         self.selected = selected
     }
 
-    static func == (lhs: MultipleChoiceItem, rhs: MultipleChoiceItem) -> Bool {
+    static func == (lhs: MultipleChoiceItem,
+                    rhs: MultipleChoiceItem) -> Bool {
         return lhs.guid == rhs.guid
     }
 }

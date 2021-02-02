@@ -38,8 +38,8 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let numberOfItems = viewModel?.items.count ?? 2
-        collectionViewHeightConstraint.constant = CGFloat(numberOfItems) * kMultipleChoiceItemCellHeight
+        let numberOfItems = CGFloat(viewModel?.items.count ?? 2)
+        collectionViewHeightConstraint.constant = numberOfItems * kMultipleChoiceItemCellHeight
     }
 
     override func viewDidLayoutSubviews() {
@@ -67,20 +67,22 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme =  coordinatorServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
     }
 
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width, height: UIView.layoutFittingCompressedSize.height)
+        let targetSize = CGSize(width: size.width,
+                                height: UIView.layoutFittingCompressedSize.height)
         preferredContentSize = view.systemLayoutSizeFitting(targetSize)
     }
 }
 
 // MARK: - UICollectionView Delegates
 
-extension MultipleChoiceDialogViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension MultipleChoiceDialogViewController: UICollectionViewDataSource,
+                                              UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
