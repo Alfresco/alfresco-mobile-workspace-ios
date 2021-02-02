@@ -33,7 +33,6 @@ protocol NodeActionsViewModelDelegate: class {
 }
 
 class NodeActionsViewModel {
-    private var action: ActionMenu?
     private var node: ListNode?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
     private var coordinatorServices: CoordinatorServices?
@@ -57,16 +56,15 @@ class NodeActionsViewModel {
     func tapped(on action: ActionMenu,
                 finished: @escaping ActionFinishedCompletionHandler) {
         self.actionFinishedHandler = finished
-        self.action = action
-        requestAction()
+        request(action: action)
     }
 
     // MARK: - Actions Request Helpers
 
-    private func requestAction() {
+    private func request(action: ActionMenu) {
         let accountService = coordinatorServices?.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self, let action = sSelf.action else { return }
+            guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             if let handler = sSelf.actionFinishedHandler {
                 DispatchQueue.main.async {
@@ -89,9 +87,9 @@ class NodeActionsViewModel {
             let delay = action.type.isMoreAction ? 0.0 : 1.0
             DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.delegate?.handleFinishedAction(with: sSelf.action,
-                                                   node: sSelf.node,
-                                                   error: nil)
+                sSelf.delegate?.handleFinishedAction(with: action,
+                                                     node: sSelf.node,
+                                                     error: nil)
             })
         }
     }
@@ -99,9 +97,9 @@ class NodeActionsViewModel {
     private func handleFavorite(action: ActionMenu) {
         switch action.type {
         case .addFavorite:
-            requestAddToFavorites()
+            requestAddToFavorites(action: action)
         case .removeFavorite:
-            requestRemoveFromFavorites()
+            requestRemoveFromFavorites(action: action)
         default: break
         }
     }
@@ -109,11 +107,11 @@ class NodeActionsViewModel {
     private func handleMove(action: ActionMenu) {
         switch action.type {
         case .moveTrash:
-            requestMoveToTrash()
+            requestMoveToTrash(action: action)
         case .restore:
-            requestRestoreFromTrash()
+            requestRestoreFromTrash(action: action)
         case .permanentlyDelete:
-            requestPermanentlyDelete()
+            requestPermanentlyDelete(action: action)
         default: break
         }
     }
@@ -121,25 +119,25 @@ class NodeActionsViewModel {
     private func handleDownload(action: ActionMenu) {
         switch action.type {
         case .download:
-            requestDownload()
+            requestDownload(action: action)
         case .markOffline:
-            requestMarkOffline()
+            requestMarkOffline(action: action)
         case .removeOffline:
-            requestRemoveOffline()
+            requestRemoveOffline(action: action)
         default: break
         }
     }
 
-    private func requestMarkOffline() {
-        handleResponse(error: nil)
+    private func requestMarkOffline(action: ActionMenu) {
+        handleResponse(error: nil, action: action)
 
         if let node = self.node {
             node.syncStatus = .pending
             node.markedAsOffline = true
             listNodeDataAccessor.store(node: node)
 
-            action?.type = .removeOffline
-            action?.title = LocalizationConstants.ActionMenu.removeOffline
+            action.type = .removeOffline
+            action.title = LocalizationConstants.ActionMenu.removeOffline
 
             let offlineEvent = OfflineEvent(node: node, eventType: .marked)
             let eventBusService = coordinatorServices?.eventBusService
@@ -149,8 +147,8 @@ class NodeActionsViewModel {
         }
     }
 
-    private func requestRemoveOffline() {
-        handleResponse(error: nil)
+    private func requestRemoveOffline(action: ActionMenu) {
+        handleResponse(error: nil, action: action)
 
         if let node = self.node {
             if let queriedNode = listNodeDataAccessor.query(node: node) {
@@ -159,8 +157,8 @@ class NodeActionsViewModel {
                 listNodeDataAccessor.store(node: queriedNode)
             }
 
-            action?.type = .markOffline
-            action?.title = LocalizationConstants.ActionMenu.markOffline
+            action.type = .markOffline
+            action.title = LocalizationConstants.ActionMenu.markOffline
 
             let offlineEvent = OfflineEvent(node: node, eventType: .removed)
             let eventBusService = coordinatorServices?.eventBusService
@@ -170,7 +168,7 @@ class NodeActionsViewModel {
         }
     }
 
-    private func requestAddToFavorites() {
+    private func requestAddToFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
         let jsonFolder = JSONValue(dictionaryLiteral: (node.nodeType.plainType(), jsonGuid))
@@ -181,36 +179,36 @@ class NodeActionsViewModel {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.node?.favorite = true
-                sSelf.action?.type = .removeFavorite
-                sSelf.action?.title = LocalizationConstants.ActionMenu.removeFavorite
+                action.type = .removeFavorite
+                action.title = LocalizationConstants.ActionMenu.removeFavorite
 
                 let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
-            sSelf.handleResponse(error: error)
+            sSelf.handleResponse(error: error, action: action)
         }
     }
 
-    private func requestRemoveFromFavorites() {
+    private func requestRemoveFromFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
         FavoritesAPI.deleteFavorite(personId: kAPIPathMe,
                                     favoriteId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.node?.favorite = false
-                sSelf.action?.type = .addFavorite
-                sSelf.action?.title = LocalizationConstants.ActionMenu.addFavorite
+                action.type = .addFavorite
+                action.title = LocalizationConstants.ActionMenu.addFavorite
 
                 let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
             }
-            sSelf.handleResponse(error: error)
+            sSelf.handleResponse(error: error, action: action)
         }
     }
 
-    private func requestMoveToTrash() {
+    private func requestMoveToTrash(action: ActionMenu) {
         guard let node = self.node else { return }
         if node.nodeType == .site {
             SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
@@ -222,7 +220,7 @@ class NodeActionsViewModel {
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error)
+                sSelf.handleResponse(error: error, action: action)
             }
         } else {
             NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
@@ -239,12 +237,12 @@ class NodeActionsViewModel {
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error)
+                sSelf.handleResponse(error: error, action: action)
             }
         }
     }
 
-    private func requestRestoreFromTrash() {
+    private func requestRestoreFromTrash(action: ActionMenu) {
         guard let node = self.node else { return }
         TrashcanAPI.restoreDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
@@ -260,11 +258,11 @@ class NodeActionsViewModel {
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: moveEvent, on: .mainQueue)
             }
-            self?.handleResponse(error: error)
+            self?.handleResponse(error: error, action: action)
         }
     }
 
-    private func requestPermanentlyDelete() {
+    private func requestPermanentlyDelete(action: ActionMenu) {
         guard let node = self.node else { return }
         let title = LocalizationConstants.Dialog.deleteTitle
         let message = String(format: LocalizationConstants.Dialog.deleteMessage,
@@ -283,7 +281,7 @@ class NodeActionsViewModel {
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
-                sSelf.handleResponse(error: error)
+                sSelf.handleResponse(error: error, action: action)
             }
         }
 
@@ -297,7 +295,7 @@ class NodeActionsViewModel {
         }
     }
 
-    private func requestDownload() {
+    private func requestDownload(action: ActionMenu) {
         var downloadDialog: MDCAlertController?
         var downloadRequest: DownloadRequest?
 
@@ -333,7 +331,8 @@ class NodeActionsViewModel {
                         mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
                             downloadDialog?.dismiss(animated: true,
                                                     completion: {
-                                                        sSelf.handleResponse(error: error)
+                                                        sSelf.handleResponse(error: error,
+                                                                             action: action)
                                                         if let url = destinationURL {
                                                             sSelf.displayActivityViewController(for: url)
                                                         }
@@ -347,13 +346,15 @@ class NodeActionsViewModel {
 
     // MARK: - Helpers
 
-    private func handleResponse(error: Error?) {
+    private func handleResponse(error: Error?, action: ActionMenu) {
         if let error = error {
             AlfrescoLog.error(error)
         }
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.delegate?.handleFinishedAction(with: sSelf.action, node: sSelf.node, error: error)
+            sSelf.delegate?.handleFinishedAction(with: action,
+                                                 node: sSelf.node,
+                                                 error: error)
         }
     }
 
