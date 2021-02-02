@@ -136,19 +136,19 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
         let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
 
-        let okAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
             guard let sSelf = self else { return }
             UserProfile.persistOptionToOverrideSyncOnlyOnceCellularData(true)
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
-                                                   actions: [okAction, cancelAction],
+                                                   actions: [confirmAction, cancelAction],
                                                    completionHandler: {})
             }
         }

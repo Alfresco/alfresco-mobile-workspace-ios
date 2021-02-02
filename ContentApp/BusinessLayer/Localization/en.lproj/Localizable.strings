@@ -22,10 +22,8 @@
 // MARK: - General
 "retry" = "Retry";
 "yes" = "Yes";
-"no" = "No";
 "ok" = "Ok";
-"on" = "On";
-"off" = "Off";
+"later" = "Later";
 "cancel" = "Cancel";
 "delete" = "Delete";
 "create" = "Create";
@@ -179,7 +177,7 @@
 "dialog-upload-message" = "Uploading '%@'";
 "dialog-session-expired-title" = "Session expired";
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
-"dialog-override-cync-cellular-data-title" = "Sync over cellular data";
+"dialog-override-cync-cellular-data-title" = "Use cellular data?";
 "dialog-override-cync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to wifi.";
 
 // MARK: - Empty List

@@ -25,10 +25,8 @@ struct LocalizationConstants {
     struct General {
         static let retry = NSLocalizedString("retry", comment: "")
         static let yes = NSLocalizedString("yes", comment: "")
-        static let no = NSLocalizedString("no", comment: "") // swiftlint:disable:this identifier_name
         static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
-        static let on = NSLocalizedString("on", comment: "") // swiftlint:disable:this identifier_name
-        static let off = NSLocalizedString("off", comment: "")
+        static let later = NSLocalizedString("later", comment: "")
         static let cancel = NSLocalizedString("cancel", comment: "")
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
