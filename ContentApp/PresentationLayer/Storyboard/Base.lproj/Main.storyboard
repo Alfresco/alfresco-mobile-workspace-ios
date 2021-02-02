@@ -2144,10 +2144,10 @@
                                 </connections>
                             </collectionView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQA-fy-OcS">
-                                <rect key="frame" x="0.0" y="250.33333333333337" width="428" height="20"/>
+                                <rect key="frame" x="0.0" y="250.33333333333337" width="428" height="16"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="t7e-oF-xIM"/>
+                                    <constraint firstAttribute="height" constant="16" id="t7e-oF-xIM"/>
                                 </constraints>
                             </view>
                         </subviews>

@@ -120,9 +120,9 @@
 "failed-profile-info" = "Failed to fetch profile information for current user.";
 "app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
-"sync-data-title" = "Sync plan";
-"sync-wifi-mobile-data" = "Wi-fi and celullar data";
-"sync-only-wifi" = "Wi-fi only";
+"sync-data-title" = "Update offline files using";
+"sync-wifi-cellular-data" = "Wi-Fi and celullar data";
+"sync-only-wifi" = "Wi-Fi only";
 
 // MARK: - Search
 "searching" = "Searching...";
@@ -179,8 +179,8 @@
 "dialog-upload-message" = "Uploading '%@'";
 "dialog-session-expired-title" = "Session expired";
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
-"dialog-sync-over-mobile-data-title" = "Sync over mobile data";
-"dialog-sync-over-mobile-data-message" = "Do you want to sync files over cellular data just one time? Go to Settings to enable sync over celullar data.";
+"dialog-override-cync-cellular-data-title" = "Sync over cellular data";
+"dialog-override-cync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to wifi.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";

@@ -22,14 +22,14 @@ class SyncPlanDialogViewModel: ChooseDialogViewModelProtocol {
 
     weak var chooseDialogDelegate: ChooseDialogViewModelDelegate?
     var titleDialog = LocalizationConstants.Settings.syncDataPlanTitle
-    var questionType = ChooseQuestionType.syncOverMobileData
+    var questionType = ChooseQuestionType.syncPlanData
     var items: [ChooseItem]
 
     init() {
         let onlyWifiItem = ChooseItem(guid: 0, title: LocalizationConstants.Settings.syncOnlyWifi)
-        let allItem = ChooseItem(guid: 1, title: LocalizationConstants.Settings.syncWifiAndMobileData)
+        let allItem = ChooseItem(guid: 1, title: LocalizationConstants.Settings.syncWifiAndCellularData)
 
-        if UserProfile.getOptionToSyncOverMobileData() == true {
+        if UserProfile.getOptionToSyncOverCellularData() == true {
             allItem.selected = true
         } else {
             onlyWifiItem.selected = true
@@ -40,9 +40,9 @@ class SyncPlanDialogViewModel: ChooseDialogViewModelProtocol {
 
     func perfomAction(for item: ChooseItem, completion: @escaping (() -> Void)) {
         switch item.guid {
-        case 0: UserProfile.persistOptionToSyncOverMobileData(false)
-        case 1: UserProfile.persistOptionToSyncOverMobileData(true)
-        default: UserProfile.persistOptionToSyncOverMobileData(false)
+        case 0: UserProfile.persistOptionToSyncOverCellularData(false)
+        case 1: UserProfile.persistOptionToSyncOverCellularData(true)
+        default: UserProfile.persistOptionToSyncOverCellularData(false)
         }
         completion()
     }

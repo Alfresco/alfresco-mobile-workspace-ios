@@ -66,7 +66,7 @@ class SettingsViewModel {
         if #available(iOS 13.0, *) {
             section2.append(getThemeItem())
         }
-        section2.append(getSyncOverMobileDataItem())
+        section2.append(getSyncPlanItem())
         items.append(section2)
 
         items.append([getVersionItem()])
@@ -101,11 +101,11 @@ class SettingsViewModel {
 
     // MARK: - Get Settings Items
 
-    private func getSyncOverMobileDataItem() -> SettingsItem {
-        let option = UserProfile.getOptionToSyncOverMobileData()
-        let subtitle = (option) ? LocalizationConstants.Settings.syncWifiAndMobileData :
+    private func getSyncPlanItem() -> SettingsItem {
+        let option = UserProfile.getOptionToSyncOverCellularData()
+        let subtitle = (option) ? LocalizationConstants.Settings.syncWifiAndCellularData :
             LocalizationConstants.Settings.syncOnlyWifi
-        return SettingsItem(type: .syncOverMobileData,
+        return SettingsItem(type: .syncPlanData,
                             title: LocalizationConstants.Settings.syncDataPlanTitle,
                             subtitle: subtitle)
     }
@@ -198,6 +198,8 @@ class SettingsViewModel {
         return DiskService.getAvatar(for: accountIdentifier)
     }
 }
+
+// MARK: - ChooseDialogViewModel Delegate
 
 extension SettingsViewModel: ChooseDialogViewModelDelegate {
     func chosen(item: ChooseItem, for questionType: ChooseQuestionType) {

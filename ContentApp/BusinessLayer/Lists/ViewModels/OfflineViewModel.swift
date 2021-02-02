@@ -99,9 +99,9 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
-        let syncOverMobileData = UserProfile.getOptionToSyncOverMobileData()
-        if connectivityService?.status == .cellular && syncOverMobileData == false {
-            showSyncOverMovbileDataDialog()
+        let syncingCellularData = UserProfile.getOptionToSyncOverCellularData()
+        if connectivityService?.status == .cellular && syncingCellularData == false {
+            showOverrideSyncOnCellularDataDialog()
         } else {
             let syncTriggersService = coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(when: .userDidInitiateSync)
@@ -132,14 +132,14 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return listNodeDataAccessor.queryMarkedOffline()
     }
 
-    private func showSyncOverMovbileDataDialog() {
-        let title = LocalizationConstants.Dialog.syncOverMobileDataTitle
-        let message = LocalizationConstants.Dialog.syncOverMobileDataMessage
+    private func showOverrideSyncOnCellularDataDialog() {
+        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
+        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
 
         let okAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
             guard let sSelf = self else { return }
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+            syncTriggersService?.triggerSync(when: .userOverrideSyncOverCellularData)
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
 

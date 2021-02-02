@@ -48,10 +48,10 @@ class UserProfile {
         defaults.synchronize()
     }
 
-    static func persistOptionToSyncOverMobileData(_ option: Bool) {
+    static func persistOptionToSyncOverCellularData(_ option: Bool) {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         let defaults = UserDefaults.standard
-        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToSyncOverMobileData)")
+        defaults.set(option, forKey: "\(identifier)-\(kSaveOptionToSyncOverCellularData)")
         defaults.synchronize()
     }
 
@@ -62,7 +62,7 @@ class UserProfile {
         defaults.removeObject(forKey: "\(identifier)-\(kSaveDiplayProfileName)")
         defaults.removeObject(forKey: "\(identifier)-\(kSaveEmailProfile)")
         defaults.removeObject(forKey: "\(identifier)-\(kSavePersonalFilesID)")
-        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToSyncOverMobileData)")
+        defaults.removeObject(forKey: "\(identifier)-\(kSaveOptionToSyncOverCellularData)")
     }
 
     // MARK: - Get Data
@@ -85,9 +85,9 @@ class UserProfile {
         return UserDefaults.standard.object(forKey: key) as? String ?? ""
     }
 
-    static func getOptionToSyncOverMobileData() -> Bool {
+    static func getOptionToSyncOverCellularData() -> Bool {
         let identifier = accountService?.activeAccount?.identifier ?? ""
-        let key = "\(identifier)-\(kSaveOptionToSyncOverMobileData)"
+        let key = "\(identifier)-\(kSaveOptionToSyncOverCellularData)"
         return UserDefaults.standard.object(forKey: key) as? Bool ?? false
     }
 }

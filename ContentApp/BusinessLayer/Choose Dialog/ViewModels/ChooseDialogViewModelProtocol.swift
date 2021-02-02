@@ -20,7 +20,8 @@ import UIKit
 
 enum ChooseQuestionType {
     case theme
-    case syncOverMobileData
+    case syncPlanData
+    case genericQuestion
 }
 
 protocol ChooseDialogViewModelDelegate: class {

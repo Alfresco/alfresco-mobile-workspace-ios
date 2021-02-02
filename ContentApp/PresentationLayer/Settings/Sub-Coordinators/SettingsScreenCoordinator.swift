@@ -20,7 +20,7 @@ import UIKit
 
 protocol SettingsScreenCoordinatorDelegate: class {
     func showThemesModeScreen()
-    func showSyncOverMobileDataScreen()
+    func showSyncPlanDataScreen()
     func showLoginScreen()
 }
 
@@ -61,7 +61,7 @@ extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
         self.themesModeCoordinator = coordinator
     }
 
-    func showSyncOverMobileDataScreen() {
+    func showSyncPlanDataScreen() {
         let viewModel = SyncPlanDialogViewModel()
         viewModel.chooseDialogDelegate = settingsViewController?.viewModel
         let coordinator = ChooseDialogScreenCoordinator(with: presenter, model: viewModel)
