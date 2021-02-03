@@ -305,7 +305,7 @@ class NodeActionsViewModel {
         let mainQueue = DispatchQueue.main
         let workerQueue = OperationQueueService.worker
 
-        if node.markedAsOffline ?? false == true &&
+        if node.syncStatus == .synced &&
             listNodeDataAccessor.isContentDownloaded(for: node) {
             if let localURL = listNodeDataAccessor.fileLocalPath(for: node) {
                 mainQueue.async { [weak self] in
