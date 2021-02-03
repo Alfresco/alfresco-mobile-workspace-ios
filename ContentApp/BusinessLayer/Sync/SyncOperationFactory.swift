@@ -20,9 +20,17 @@ import Foundation
 import AlfrescoContent
 import AlfrescoCore
 
+protocol SyncOperationFactoryDelegate: class {
+    func didComplete(with error: Error)
+}
+
 class SyncOperationFactory {
     let nodeOperations: NodeOperations
     let eventBusService: EventBusService?
+
+    var nodesWithChildren: [ListNode: [ListNode]] = [:]
+
+    weak var delegate: SyncOperationFactoryDelegate?
 
     init(nodeOperations: NodeOperations,
          eventBusService: EventBusService?) {
@@ -51,6 +59,28 @@ class SyncOperationFactory {
                                                paginationRequest: nil,
                                                on: operationQueue)
         }
+    }
+
+    func processNodeChildren() -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { [weak self] completion, _  in
+            guard let sSelf = self else { return }
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+
+            _ = sSelf.nodesWithChildren.keys.map({ (node) in
+                if let onlineNodes = sSelf.nodesWithChildren[node] {
+                    let querriedNodeChildren = listNodeDataAccessor.querryChildren(for: node)
+                    sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
+                                           with: onlineNodes)
+                }
+            })
+
+            sSelf.nodesWithChildren = [:]
+
+            completion()
+        }
+
+        return operation
     }
 
     func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
@@ -102,7 +132,7 @@ class SyncOperationFactory {
                     return
                 }
 
-                if let error = error {
+                if error != nil {
                     sSelf.handle(error: error, for: node)
                 } else if let entry = result?.entry {
                     let onlineListNode = NodeChildMapper.create(from: entry)
@@ -132,13 +162,15 @@ class SyncOperationFactory {
 
                 if let error = error {
                     sSelf.handle(error: error, for: node)
+                    sSelf.delegate?.didComplete(with: error)
                 } else {
                     if let entries = result?.list?.entries {
                         let onlineNodes = NodeChildMapper.map(entries)
 
-                        let querriedNodeChildren = listNodeDataAccessor.querryChildren(for: node)
-                        sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
-                                               with: onlineNodes)
+                        if sSelf.nodesWithChildren[node] == nil {
+                            sSelf.nodesWithChildren[node] = []
+                        }
+                        sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
 
                         for onlineNode in onlineNodes {
                             if onlineNode.nodeType == .folder {
@@ -214,21 +246,24 @@ class SyncOperationFactory {
     }
 
     private func downloadNodeRenditionOperation(node: ListNode) -> AsyncClosureOperation? {
-        let filePreviewType = FilePreview.preview(mimetype: node.mimeType)
-        if filePreviewType == .rendition {
+        if FilePreview.preview(mimetype: node.mimeType) == .rendition {
             let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion, operation  in
                 guard let sSelf = self else { return }
 
                 sSelf.nodeOperations.sessionForCurrentAccount { _ in
-                    sSelf.nodeOperations.fetchRenditionURL(for: node.guid, completionHandler: { (renditionURL, isImageRendition) in
+                    sSelf.nodeOperations.fetchRenditionURL(for: node.guid,
+                                                           completionHandler: { (renditionURL, isImageRendition) in
                         if let url = renditionURL {
                             let listNodeDataAccessor = ListNodeDataAccessor()
 
-                            if let downloadURL = listNodeDataAccessor.renditionLocalPath(for: node, isImageRendition: isImageRendition) {
+                            if let downloadURL = listNodeDataAccessor.renditionLocalPath(for: node,
+                                                                                         isImageRendition: isImageRendition) {
                                 let parentDirectoryURL = downloadURL.deletingLastPathComponent()
                                 _ = DiskService.create(directoryPath: parentDirectoryURL.path)
 
-                                _ = sSelf.nodeOperations.downloadContent(from: url, to: downloadURL, completionHandler: { (_, error) in
+                                _ = sSelf.nodeOperations.downloadContent(from: url,
+                                                                         to: downloadURL,
+                                                                         completionHandler: { (_, error) in
                                     if operation.isCancelled {
                                         _ = DiskService.delete(itemAtPath: downloadURL.path)
                                         completion()
@@ -237,7 +272,7 @@ class SyncOperationFactory {
                                     }
 
                                     if error != nil {
-                                        AlfrescoLog.error("Unexpected sync process error while fetching the rendition for node: \(node.guid) . Reason: \(String(describing: error))")
+                                        sSelf.handle(error: error, for: node)
                                     }
 
                                     completion()
@@ -256,13 +291,16 @@ class SyncOperationFactory {
         return nil
     }
 
-    private func handle(error: Error, for node: ListNode) {
-        if error.code == StatusCodes.code404NotFound.rawValue {
+    private func handle(error: Error?, for node: ListNode) {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        if error?.code == StatusCodes.code404NotFound.rawValue {
             node.markedFor = .removal
-            let listNodeDataAccessor = ListNodeDataAccessor()
             listNodeDataAccessor.store(node: node)
         } else {
-            AlfrescoLog.error("Unexpected sync process error: \(error)")
+            AlfrescoLog.error("Unexpected sync process error: \(String(describing: error))")
+            node.syncStatus = .error
+            listNodeDataAccessor.store(node: node)
+            publishSyncStatusEvent(for: node)
         }
     }
 

@@ -27,6 +27,7 @@ class ActionMenuViewModel {
     private var listNode: ListNode?
     private var toolbarActions: [ActionMenu]?
     private var menuActions: [[ActionMenu]]
+    private var excludedActions: [ActionMenuType]
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
 
@@ -38,13 +39,15 @@ class ActionMenuViewModel {
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          node: ListNode? = nil,
          toolbarDisplayed: Bool = false,
-         coordinatorServices: CoordinatorServices?) {
+         coordinatorServices: CoordinatorServices?,
+         excludedActionTypes: [ActionMenuType] = []) {
 
         self.listNode = node
         self.menuActions = menuActions
         self.toolbarDisplayed = toolbarDisplayed
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
+        self.excludedActions = excludedActionTypes
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -136,7 +139,15 @@ class ActionMenuViewModel {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {
             menuActions = ActionsMenuGeneric.actions(for: listNode)
+
+            for (index, var actionMenuGroup) in menuActions.enumerated() {
+                actionMenuGroup.removeAll { actionMenu -> Bool in
+                    return excludedActions.contains(actionMenu.type)
+                }
+                menuActions[index] = actionMenuGroup
+            }
         }
+
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.delegate?.finishProvideActions()

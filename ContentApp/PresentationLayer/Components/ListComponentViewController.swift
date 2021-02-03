@@ -297,7 +297,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
             cell?.subtitle.text = ""
         }
         if listDataSource?.shoulDisplayOfflineIcon() == true {
-            cell?.syncStatusImageView.image = UIImage(named: "ic-sync-status-synced")
+            cell?.syncStatusImageView.image = UIImage(named: "ic-sync-status-marked")
         }
         return cell ?? UICollectionViewCell()
     }
