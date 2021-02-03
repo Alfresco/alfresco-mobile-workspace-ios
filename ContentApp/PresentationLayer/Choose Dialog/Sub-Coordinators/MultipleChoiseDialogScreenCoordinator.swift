@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -19,25 +19,26 @@
 import UIKit
 import MaterialComponents.MaterialDialogs
 
-class ThemesModeScreenCoordinator: Coordinator {
+class MultipleChoiceDialogScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
-    private var themeModeViewController: ThemesModeViewController?
-    private var settingsViewController: SettingsViewController
+    private var multipleChoiceDialogViewController: MultipleChoiceDialogViewController?
+    private var multipleChoiceDialogViewModel: MultipleChoiceViewModelProtocol
 
-    init(with presenter: UINavigationController, settingsScreen: SettingsViewController) {
+    init(with presenter: UINavigationController, model: MultipleChoiceViewModelProtocol) {
         self.presenter = presenter
-        self.settingsViewController = settingsScreen
+        self.multipleChoiceDialogViewModel = model
     }
 
     func start() {
         let dialogTransitionController = MDCDialogTransitionController()
-        let viewController = ThemesModeViewController.instantiateViewController()
+        let viewController = MultipleChoiceDialogViewController.instantiateViewController()
 
         viewController.coordinatorServices = coordinatorServices
-        viewController.delegate = settingsViewController
+        viewController.viewModel = multipleChoiceDialogViewModel
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = dialogTransitionController
-        themeModeViewController = viewController
+
+        multipleChoiceDialogViewController = viewController
         presenter.present(viewController, animated: true)
     }
 }

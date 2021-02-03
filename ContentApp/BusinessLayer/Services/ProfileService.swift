@@ -31,13 +31,6 @@ class ProfileService {
         return DiskService.getAvatar(for: accountIdentifier)
     }
 
-    static func getPersonalFilesID() -> String? {
-        if let personalFilesId = UserProfile.getPersonalFilesID() {
-            return personalFilesId
-        }
-        return nil
-    }
-
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             guard let accountIdentifier = self.accountService?.activeAccount?.identifier else { return }
@@ -71,7 +64,7 @@ class ProfileService {
         let nodeOperations = NodeOperations(accountService: accountService)
         nodeOperations.fetchNodeDetails(for: kAPIPathMy) { (result, error) in
             if let node = result {
-                UserProfile.persistPersonalFilesID(nodeID: node.entry._id)
+                UserProfile.personalFilesID = node.entry._id
             } else if let error = error {
                 AlfrescoLog.error(error)
             }

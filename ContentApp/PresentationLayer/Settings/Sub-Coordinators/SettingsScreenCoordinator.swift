@@ -20,13 +20,14 @@ import UIKit
 
 protocol SettingsScreenCoordinatorDelegate: class {
     func showThemesModeScreen()
+    func showDataPlanDialog()
     func showLoginScreen()
 }
 
 class SettingsScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var settingsViewController: SettingsViewController?
-    private var themesModeCoordinator: ThemesModeScreenCoordinator?
+    private var themesModeCoordinator: MultipleChoiceDialogScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -53,11 +54,18 @@ extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     }
 
     func showThemesModeScreen() {
-        if let settingsViewController = self.settingsViewController {
-            let coordinator = ThemesModeScreenCoordinator(with: self.presenter,
-                                                          settingsScreen: settingsViewController)
-            coordinator.start()
-            self.themesModeCoordinator = coordinator
-        }
+        let viewModel = ThemeModeDialogViewModel(with: coordinatorServices.themingService)
+        viewModel.multipleChoiceViewModelDelegate = settingsViewController?.viewModel
+        let coordinator = MultipleChoiceDialogScreenCoordinator(with: presenter, model: viewModel)
+        coordinator.start()
+        self.themesModeCoordinator = coordinator
+    }
+
+    func showDataPlanDialog() {
+        let viewModel = DataPlanDialogViewModel()
+        viewModel.multipleChoiceViewModelDelegate = settingsViewController?.viewModel
+        let coordinator = MultipleChoiceDialogScreenCoordinator(with: presenter, model: viewModel)
+        coordinator.start()
+        self.themesModeCoordinator = coordinator
     }
 }

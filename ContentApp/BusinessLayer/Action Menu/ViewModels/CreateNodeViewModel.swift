@@ -227,7 +227,7 @@ class CreateNodeViewModel {
             uploadDialogView.applyTheme(themingService?.activeTheme)
 
             let cancelAction =
-                MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in
+                MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
                 }
 

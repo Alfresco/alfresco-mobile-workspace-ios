@@ -99,10 +99,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
-        if connectivityService?.status == .cellular {
-            showNoSyncInCellularDataDialog()
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            showOverrideSyncOnCellularDataDialog()
         } else {
-            coordinatorServices?.syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+            let syncTriggersService = coordinatorServices?.syncTriggersService
+            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
         }
     }
 
@@ -130,17 +132,23 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return listNodeDataAccessor.queryMarkedOffline()
     }
 
-    private func showNoSyncInCellularDataDialog() {
-        let title = LocalizationConstants.Dialog.noSyncCelluarDataTitle
-        let message = LocalizationConstants.Dialog.noSyncCelluarDataMessage
+    private func showOverrideSyncOnCellularDataDialog() {
+        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
+        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
 
-        let okAction = MDCAlertAction(title: LocalizationConstants.Buttons.ok)
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
+            guard let sSelf = self else { return }
+            UserProfile.allowOnceSyncOverCellularData = true
+            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
+            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
-                                                   actions: [okAction],
+                                                   actions: [confirmAction, cancelAction],
                                                    completionHandler: {})
             }
         }

@@ -41,6 +41,8 @@ class TabBarScreenCoordinator: Coordinator {
     }
 
     func start() {
+        coordinatorServices.syncTriggersService?.registerTriggers()
+
         let viewController = TabBarMainViewController.instantiateViewController()
         let recentTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.recent,
                                             image: UIImage(named: "ic-recent-unselected"),

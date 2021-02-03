@@ -59,13 +59,16 @@ class SettingsViewModel {
         if let userProfile = userProfile?.entry {
            items.append([getProfileItem(from: userProfile)])
         } else {
-            if let profileItem = getLocalProfileItem() {
-                items.append([profileItem])
-            }
+            items.append([getLocalProfileItem()])
         }
+
+        var section2: [SettingsItem] = []
         if #available(iOS 13.0, *) {
-            items.append([getThemeItem()])
+            section2.append(getThemeItem())
         }
+        section2.append(getSyncPlanItem())
+        items.append(section2)
+
         items.append([getVersionItem()])
 
         self.viewModelDelegate?.didUpdateDataSource()
@@ -74,8 +77,8 @@ class SettingsViewModel {
     func performLogOutForCurrentAccount(in viewController: UIViewController) {
         let title = LocalizationConstants.Buttons.signOut
         let message = LocalizationConstants.Settings.signOutConfirmation
-        let confirmButtonTitle = LocalizationConstants.Buttons.yes
-        let cancelButtonTitle = LocalizationConstants.Buttons.cancel
+        let confirmButtonTitle = LocalizationConstants.General.yes
+        let cancelButtonTitle = LocalizationConstants.General.cancel
 
         let confirmAction = MDCAlertAction(title: confirmButtonTitle) { [weak self] _ in
             guard let sSelf = self else { return }
@@ -90,10 +93,61 @@ class SettingsViewModel {
         }
     }
 
-    // MARK: - ReSignin
+    // MARK: - ReSignin Notification
 
     @objc private func handleReSignIn(notification: Notification) {
         reloadRequests()
+    }
+
+    // MARK: - Get Settings Items
+
+    private func getSyncPlanItem() -> SettingsItem {
+        let subtitle = (UserProfile.allowSyncOverCellularData) ?
+            LocalizationConstants.Settings.syncWifiAndCellularData :
+            LocalizationConstants.Settings.syncOnlyWifi
+        return SettingsItem(type: .syncPlanData,
+                            title: LocalizationConstants.Settings.syncDataPlanTitle,
+                            subtitle: subtitle)
+    }
+
+    private func getProfileItem(from userProfile: Person) -> SettingsItem {
+        UserProfile.persistUserProfile(person: userProfile)
+        return getLocalProfileItem()
+    }
+
+    private func getLocalProfileItem() -> SettingsItem {
+        let avatar = localAvatarImage()
+        return SettingsItem(type: .account,
+                            title: UserProfile.displayName,
+                            subtitle: UserProfile.email,
+                            icon: avatar)
+    }
+
+    private func getThemeItem() -> SettingsItem {
+        let themingService = coordinatorServices?.themingService
+        var themeName = LocalizationConstants.Theme.auto
+
+        switch themingService?.getThemeMode() {
+        case .light: themeName = LocalizationConstants.Theme.light
+        case .dark: themeName = LocalizationConstants.Theme.dark
+        default: themeName = LocalizationConstants.Theme.auto
+        }
+        return SettingsItem(type: .theme,
+                            title: LocalizationConstants.Theme.theme,
+                            subtitle: themeName)
+    }
+
+    private func getVersionItem() -> SettingsItem {
+        if let version = Bundle.main.releaseVersionNumber,
+           let build = Bundle.main.buildVersionNumber {
+            let title = String(format: LocalizationConstants.Settings.appVersion, version, build)
+            return SettingsItem(type: .label,
+                                title: title,
+                                subtitle: "")
+        }
+        return SettingsItem(type: .label,
+                            title: "",
+                            subtitle: "")
     }
 
     // MARK: - Private methods
@@ -106,78 +160,12 @@ class SettingsViewModel {
             else { return }
 
             if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
-
-                currentAccount.removeAuthenticationCredentials()
-                currentAccount.removeAuthenticationParameters()
-                currentAccount.removeDiskFolder()
-                currentAccount.unregister()
-
-                let listNodeDataAccessor = ListNodeDataAccessor()
-                listNodeDataAccessor.removeAllNodes()
-
-                UserProfile.removeUserProfile(withAccountIdentifier: currentAccount.identifier)
+                accountService?.delete(account: currentAccount)
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })
-    }
-
-    private func getProfileItem(from userProfile: Person) -> SettingsItem {
-        var profileName = userProfile.firstName
-        if let lastName = userProfile.lastName {
-            profileName = "\(profileName) \(lastName)"
-        }
-        if let displayName = userProfile.displayName {
-            profileName = displayName
-        }
-        let avatar = localAvatarImage()
-
-        UserProfile.persistUserProfile(person: userProfile)
-        return SettingsItem(type: .account,
-                            title: profileName,
-                            subtitle: userProfile.email,
-                            icon: avatar)
-    }
-
-    private func getLocalProfileItem() -> SettingsItem? {
-        let avatar = localAvatarImage()
-        return SettingsItem(type: .account,
-                            title: UserProfile.getProfileName(),
-                            subtitle: UserProfile.getEmail(),
-                            icon: avatar)
-    }
-
-    private func getThemeItem() -> SettingsItem {
-        let themingService = coordinatorServices?.themingService
-        var themeName = LocalizationConstants.Theme.auto
-
-        switch themingService?.getThemeMode() {
-        case .light:
-             themeName = LocalizationConstants.Theme.light
-        case .dark:
-            themeName = LocalizationConstants.Theme.dark
-        default:
-            themeName = LocalizationConstants.Theme.auto
-        }
-        return SettingsItem(type: .theme,
-                            title: LocalizationConstants.Theme.theme,
-                            subtitle: themeName,
-                            icon: UIImage(named: "ic-theme"))
-    }
-
-    private func getVersionItem() -> SettingsItem {
-        if let version = Bundle.main.releaseVersionNumber,
-           let build = Bundle.main.buildVersionNumber {
-            return SettingsItem(type: .label,
-                                title: String(format: LocalizationConstants.Settings.appVersion,
-                                              version, build),
-                                subtitle: "",
-                                icon: nil)
-        }
-        return SettingsItem(type: .label,
-                            title: "",
-                            subtitle: "",
-                            icon: nil)
     }
 
     private func fetchAvatar() {
@@ -209,5 +197,13 @@ class SettingsViewModel {
         guard let accountIdentifier = accountService?.activeAccount?.identifier
         else { return nil }
         return DiskService.getAvatar(for: accountIdentifier)
+    }
+}
+
+// MARK: - MultipleChoiceViewModel Delegate
+
+extension SettingsViewModel: MultipleChoiceViewModelDelegate {
+    func chose(item: MultipleChoiceItem, for type: MultipleChoiceDialogType) {
+        reloadDataSource()
     }
 }

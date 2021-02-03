@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,17 +16,23 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class ThemeModesViewModel {
-    var items: [ThemeModeType]
-    var themingService: MaterialDesignThemingService?
+class MultipleChoiceItem: Equatable {
+    var guid: Int
+    var selected: Bool
+    var title: String
 
-    init() {
-        items = [.auto, .dark, .light]
+    init(guid: Int,
+         title: String,
+         selected: Bool = false) {
+        self.guid = guid
+        self.title = title
+        self.selected = selected
     }
 
-    func saveThemeMode(_ item: ThemeModeType, themingService: MaterialDesignThemingService?) {
-        themingService?.saveTheme(mode: item)
+    static func == (lhs: MultipleChoiceItem,
+                    rhs: MultipleChoiceItem) -> Bool {
+        return lhs.guid == rhs.guid
     }
 }

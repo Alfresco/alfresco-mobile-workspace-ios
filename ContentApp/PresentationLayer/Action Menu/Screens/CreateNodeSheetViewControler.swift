@@ -85,8 +85,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
-        uploadButton.setTitle(LocalizationConstants.Buttons.create, for: .normal)
-        cancelButton.setTitle(LocalizationConstants.Buttons.cancel, for: .normal)
+        uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
         titleCreate.text = createNodeViewModel?.createAction()

@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,22 +18,17 @@
 
 import UIKit
 
-class ThemeModeTableViewCell: UITableViewCell {
+class MultipleChoiceItemCollectionViewCell: UICollectionViewCell {
 
-    @IBOutlet weak var radioImageView: UIImageView!
+    @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    var item: ThemeModeType? {
+    var item: MultipleChoiceItem? {
         didSet {
             if let item = item {
-                radioImageView.image = UIImage(named: "ic-radio-unchecked")
-                switch item {
-                case .auto:
-                    titleLabel.text = LocalizationConstants.Theme.auto
-                case .light:
-                    titleLabel.text = LocalizationConstants.Theme.light
-                case .dark:
-                    titleLabel.text = LocalizationConstants.Theme.dark
-                }
+                titleLabel.text = item.title
+                iconImageView.image = (item.selected) ?
+                    UIImage(named: "ic-radio-checked") :
+                    UIImage(named: "ic-radio-unchecked")
             }
         }
     }
@@ -42,17 +37,9 @@ class ThemeModeTableViewCell: UITableViewCell {
         super.awakeFromNib()
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-
-    func selectRadioButton() {
-        radioImageView.image = UIImage(named: "ic-radio-checked")
-    }
-
-    func applyThemingService(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
-        radioImageView.tintColor = currentTheme.onSurfaceColor
+        iconImageView.tintColor = currentTheme.onSurfaceColor
     }
 }

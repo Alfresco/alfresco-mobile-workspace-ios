@@ -149,6 +149,9 @@ extension AIMSAccount: AIMSAccountDelegate {
 
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoCredential.self))")
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))")
+
+            UserProfile.removeUserProfile(forAccountIdentifier: identifier)
+
             session.parameters.remove(for: oldAccountIdentifier)
         }
 

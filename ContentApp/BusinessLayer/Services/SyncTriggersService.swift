@@ -23,12 +23,20 @@ enum SyncTriggerType: String {
     case nodeMarkedOffline
     case nodeRemovedFromOffline
     case reachableOverWifi
+    case reachableOverCellularData
     case userReAuthenticated
     case poolingTimer
     case userDidInitiateSync
 }
 
 protocol SyncTriggersServiceProtocol {
+
+    /// Register observers and timers for triggers
+    func registerTriggers()
+
+    /// Invalidate all the triggers
+    func invalidateTriggers()
+
     /// Start a sync operation when a tigger is display
     /// - Parameters type:  Type of trigger
     func triggerSync(when type: SyncTriggerType)
@@ -64,20 +72,29 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         self.syncService = syncService
         self.accountService = accountService
         self.connectivityService = connectivityService
-        self.startTimeTrigger()
+    }
+
+    func registerTriggers() {
+        self.startPoolingTrigger()
         self.observeConnectivity()
     }
 
+    func invalidateTriggers() {
+        kvoSyncStatus?.invalidate()
+        kvoConnectivity?.invalidate()
+        poolingTimer?.invalidate()
+        throttleTimer?.invalidate()
+    }
+
     func triggerSync(when type: SyncTriggerType) {
-        guard accountService?.activeAccount != nil else { return }
-        self.tiggerType = type
+        guard accountService?.activeAccount != nil,
+              isSyncAllowedOverCellularData() == true else { return }
 
         if type == .userDidInitiateSync ||
             throttleTimer?.isValid == nil ||
             throttleTimer?.isValid == false {
 
-            startThrottleTimer()
-            startSyncOperation()
+            startSyncOperation(with: type)
         }
     }
 
@@ -94,26 +111,26 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
     }
 
-    private func startSyncOperation() {
-        guard let syncService = self.syncService,
-              let type = self.tiggerType else { return }
+    private func startSyncOperation(with type: SyncTriggerType) {
         let listNodeDataAccessor = ListNodeDataAccessor()
+        guard let syncService = self.syncService,
+              let nodes = listNodeDataAccessor.queryMarkedOffline(),
+              syncService.syncServiceStatus == .idle,
+              accountService?.activeAccount != nil else { return }
 
-        if let nodes = listNodeDataAccessor.queryMarkedOffline(),
-           syncService.syncServiceStatus == .idle &&
-            accountService?.activeAccount != nil {
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
+            guard let sSelf = self else { return }
 
-            accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
-                guard let sSelf = self else { return }
-
-                if authenticationProvider.areCredentialsValid() {
-                    sSelf.poolingTimer?.invalidate()
-                    AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
-                    syncService.sync(nodeList: nodes)
-                    sSelf.observeSyncStatusOperation()
-                }
-            })
-        }
+            if authenticationProvider.areCredentialsValid() {
+                AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
+                UserProfile.allowOnceSyncOverCellularData = false
+                sSelf.tiggerType = type
+                sSelf.poolingTimer?.invalidate()
+                sSelf.startThrottleTimer()
+                syncService.sync(nodeList: nodes)
+                sSelf.observeSyncStatusOperation()
+            }
+        })
     }
 
     private func observeSyncStatusOperation() {
@@ -125,7 +142,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                           newValue.syncServiceStatus == .idle
                                     else { return }
 
-                                    sSelf.startTimeTrigger()
+                                    sSelf.startPoolingTrigger()
                                  })
     }
 
@@ -133,16 +150,13 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         kvoConnectivity =
             connectivityService?.observe(\.status,
                                          options: [.new],
-                                         changeHandler: { [weak self] (newValue, _) in
-                                            guard let sSelf = self,
-                                                  newValue.status == .wifi
-                                            else { return }
-
-                                            sSelf.triggerSync(when: .reachableOverWifi)
+                                         changeHandler: { [weak self] (_, _) in
+                                            guard let sSelf = self else { return }
+                                            sSelf.connectivityStatusChanged()
                                          })
     }
 
-    private func startTimeTrigger() {
+    private func startPoolingTrigger() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.poolingTimer?.invalidate()
@@ -153,6 +167,28 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                                     sSelf.triggerSync(when: .poolingTimer)
                                                 })
         }
+    }
 
+    private func connectivityStatusChanged() {
+        switch connectivityService?.status {
+        case .wifi:
+            triggerSync(when: .reachableOverWifi)
+        case .cellular:
+            if isSyncAllowedOverCellularData() {
+                triggerSync(when: .reachableOverCellularData)
+            } else {
+                syncService?.stopSync()
+            }
+        default: break
+        }
+    }
+
+    private func isSyncAllowedOverCellularData() -> Bool {
+        guard connectivityService?.status == .cellular else { return true }
+        if UserProfile.allowSyncOverCellularData ||
+            UserProfile.allowOnceSyncOverCellularData {
+            return true
+        }
+        return false
     }
 }
