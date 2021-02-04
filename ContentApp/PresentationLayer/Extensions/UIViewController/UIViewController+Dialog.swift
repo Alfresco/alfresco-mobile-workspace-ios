@@ -50,7 +50,7 @@ extension UIViewController {
             alertController.messageFont = currentTheme.body2TextStyle.font
             alertController.messageColor = currentTheme.onSurface60Color
             alertController.view.backgroundColor = currentTheme.surfaceColor
-            alertController.cornerRadius = dialogCornerRadius
+            alertController.cornerRadius = UIConstants.cornerRadiusDialog
 
             for action in alertController.actions {
                 let button = alertController.button(for: action)

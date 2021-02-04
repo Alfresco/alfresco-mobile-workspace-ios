@@ -38,7 +38,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
                 subtitle.text = element.path
                 iconImageView.image = FileIcon.icon(for: element)
 
-                syncStatusImageView.isHidden = !(element.syncStatus == .synced)
+                syncStatusImageView.isHidden = !element.isMarkedOffline()
                 syncStatusImageView.image = element.syncStatusIcon()
 
                 switch element.syncStatus {

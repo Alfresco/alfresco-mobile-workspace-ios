@@ -19,8 +19,6 @@
 import Foundation
 import AlfrescoContent
 
-let kRequestDefaultsFieldName = "keywords"
-
 struct SearchRequestBuilder {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
@@ -31,16 +29,16 @@ struct SearchRequestBuilder {
         return SimpleSearchRequest(querry: string,
                                    parentId: self.searchInNode(chipFilters),
                                    skipCount: pagination?.skipCount ?? 0,
-                                   maxItems: pagination?.maxItems ?? kListPageSize,
+                                   maxItems: pagination?.maxItems ?? APIConstants.pageSize,
                                    searchInclude: self.chipIncluded(chipFilters))
     }
 
     static func recentFilesRequest(pagination: RequestPagination?) -> RecentFilesRequest {
         let identifier = accountService?.activeAccount?.identifier ?? ""
         return RecentFilesRequest(userId: identifier,
-                                  days: kDaysModifiedInterval,
+                                  days: APIConstants.daysModifiedInterval,
                                   skipCount: pagination?.skipCount ?? 0,
-                                  maxItems: pagination?.maxItems ?? kListPageSize)
+                                  maxItems: pagination?.maxItems ?? APIConstants.pageSize)
     }
 
     private static func chipIncluded(_ chipFilters: [SearchChipItem]) -> [SearchInclude] {

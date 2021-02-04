@@ -50,7 +50,7 @@ class AimsViewModel {
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
+            PeopleAPI.getPerson(personId: APIConstants.me) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {
                     AlfrescoLog.error(error)

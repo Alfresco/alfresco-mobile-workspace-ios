@@ -92,8 +92,8 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
-            SitesAPI.listSiteMembershipsForPerson(personId: kAPIPathMe,
+            let maxItems = paginationRequest?.maxItems ?? APIConstants.pageSize
+            SitesAPI.listSiteMembershipsForPerson(personId: APIConstants.me,
                                                   skipCount: skipCount,
                                                   maxItems: maxItems,
                                                   orderBy: nil,

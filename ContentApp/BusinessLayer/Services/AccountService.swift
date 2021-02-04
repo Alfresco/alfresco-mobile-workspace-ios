@@ -56,9 +56,9 @@ class AccountService: AccountServiceProtocol, Service {
         didSet {
             let defaults = UserDefaults.standard
             if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults.set(activeAccountIdentifier, forKey: kActiveAccountIdentifier)
+                defaults.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
             } else {
-                defaults.removeObject(forKey: kActiveAccountIdentifier)
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
 
             defaults.synchronize()
@@ -106,7 +106,7 @@ class AccountService: AccountServiceProtocol, Service {
         if let index = accounts?.firstIndex(where: { account === $0 }) {
             let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: kActiveAccountIdentifier)
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
             accounts?.remove(at: index)
@@ -117,7 +117,7 @@ class AccountService: AccountServiceProtocol, Service {
         if let index = accounts?.firstIndex(where: { account === $0 }) {
             let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: kActiveAccountIdentifier)
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
 

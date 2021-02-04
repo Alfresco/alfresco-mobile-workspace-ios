@@ -45,7 +45,7 @@ class AuthenticationParameters: Codable {
     }
 
     static func parameters() -> AuthenticationParameters {
-        parameters(for: kSaveAuthSettingsParameters)
+        parameters(for: KeyConstants.Save.authSettingsParameters)
     }
 
     static func parameters(for accountIdentifier: String) -> AuthenticationParameters {
@@ -59,7 +59,7 @@ class AuthenticationParameters: Codable {
     }
 
     func save() {
-        save(for: kSaveAuthSettingsParameters)
+        save(for: KeyConstants.Save.authSettingsParameters)
     }
 
     func save(for accountIdentifier: String) {

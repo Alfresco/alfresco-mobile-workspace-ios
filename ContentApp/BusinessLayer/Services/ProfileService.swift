@@ -62,7 +62,7 @@ class ProfileService {
 
     static func featchPersonalFilesID() {
         let nodeOperations = NodeOperations(accountService: accountService)
-        nodeOperations.fetchNodeDetails(for: kAPIPathMy) { (result, error) in
+        nodeOperations.fetchNodeDetails(for: APIConstants.my) { (result, error) in
             if let node = result {
                 UserProfile.personalFilesID = node.entry._id
             } else if let error = error {

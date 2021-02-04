@@ -32,11 +32,11 @@ class ApplicationCoordinator: Coordinator {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
-                                               name: Notification.Name(kAPIUnauthorizedRequestNotification),
+                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.loadSplashScreenCoordinator(notification:)),
-                                               name: Notification.Name(kShowLoginScreenNotification),
+                                               name: Notification.Name(KeyConstants.Notification.showLoginScreen),
                                                object: nil)
     }
 

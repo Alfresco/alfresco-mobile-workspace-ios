@@ -177,7 +177,7 @@ class FilePreviewViewModel {
 
     private func requestFullScreenExperience() -> CGSize {
         viewModelDelegate?.enableFullscreenContentExperience()
-        return kWindow.bounds.size
+        return UIApplication.shared.windows[0].bounds.size
     }
 
     // MARK: - Preview

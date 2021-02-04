@@ -50,10 +50,10 @@ class NodeOperations {
             NodesAPI.listNodeChildren(nodeId: guid,
                                       skipCount: pagination.skipCount,
                                       maxItems: pagination.maxItems,
-                                      include: [kAPIIncludeIsFavoriteNode,
-                                                kAPIIncludePathNode,
-                                                kAPIIncludeAllowableOperationsNode,
-                                                kAPIIncludeProperties],
+                                      include: [APIConstants.Include.isFavorite,
+                                                APIConstants.Include.path,
+                                                APIConstants.Include.allowableOperations,
+                                                APIConstants.Include.properties],
                                       relativePath: relativePath) { (result, error) in
                 completion(result, error)
             }
@@ -64,7 +64,7 @@ class NodeOperations {
                              completion: @escaping ((_ data: FavoriteEntry?,
                                                             _ error: Error?) -> Void)) {
         sessionForCurrentAccount { _ in
-            FavoritesAPI.getFavorite(personId: kAPIPathMe,
+            FavoritesAPI.getFavorite(personId: APIConstants.me,
                                      favoriteId: guid) { (result, error) in
                 completion(result, error)
             }
@@ -77,10 +77,10 @@ class NodeOperations {
                                                          _ error: Error?) -> Void)) {
         sessionForCurrentAccount { _ in
             NodesAPI.getNode(nodeId: guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeIsFavoriteNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeProperties],
+                             include: [APIConstants.Include.path,
+                                       APIConstants.Include.isFavorite,
+                                       APIConstants.Include.allowableOperations,
+                                       APIConstants.Include.properties],
                              relativePath: relativePath) { (result, error) in
                 completion(result, error)
 
@@ -142,7 +142,7 @@ class NodeOperations {
               let basePathURL = accountService?.activeAccount?.apiBasePath,
               let listNode = node,
               let previewURL = URL(string: basePathURL + "/" +
-                                    String(format: kAPIPathGetNodeContent, listNode.guid, ticket))
+                                    String(format: APIConstants.Path.getNodeContent, listNode.guid, ticket))
         else { return nil }
         return previewURL
     }
@@ -181,7 +181,7 @@ class NodeOperations {
         guard let ticket = ticket,
               let basePathURL = accountService?.activeAccount?.apiBasePath,
               let renditionURL = URL(string: basePathURL + "/" +
-                                        String(format: kAPIPathGetRenditionContent,
+                                        String(format: APIConstants.Path.getRenditionContent,
                                                nodeId,
                                                renditionId,
                                                ticket))

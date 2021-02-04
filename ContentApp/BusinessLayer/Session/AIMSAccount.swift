@@ -29,7 +29,7 @@ class AIMSAccount: AccountProtocol, Equatable {
         return session.identifier
     }
     var apiBasePath: String {
-        return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(kAPIPathBase)"
+        return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(APIConstants.Path.base)"
     }
     var session: AIMSSession
 
@@ -137,7 +137,7 @@ extension AIMSAccount: AIMSAccountDelegate {
         ProfileService.featchPersonalFilesID()
 
         if oldAccountIdentifier != identifier && oldAccountIdentifier != "" {
-            UserDefaults.standard.set(identifier, forKey: kActiveAccountIdentifier)
+            UserDefaults.standard.set(identifier, forKey: KeyConstants.Save.activeAccountIdentifier)
             UserDefaults.standard.synchronize()
             session.parameters.save(for: identifier)
 
@@ -155,7 +155,7 @@ extension AIMSAccount: AIMSAccountDelegate {
             session.parameters.remove(for: oldAccountIdentifier)
         }
 
-        let notification = NSNotification.Name(rawValue: kReSignInNotification)
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
         NotificationCenter.default.post(name: notification,
                                         object: nil,
                                         userInfo: nil)

@@ -68,7 +68,7 @@ class BasicAuthViewController: SystemThemableViewController {
             ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
         if let activityIndicator = activityIndicator {
-            kWindow.addSubview(activityIndicator)
+            UIApplication.shared.windows[0].addSubview(activityIndicator)
         }
     }
 
@@ -241,7 +241,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
-        if error.responseCode == 401 {
+        if error.responseCode == ErrorCodes.unauthorized {
             applyThemingInTextField(errorTheme: true)
         }
         Snackbar.display(with: error.mapToMessage(),

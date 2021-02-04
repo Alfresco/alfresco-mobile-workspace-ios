@@ -48,7 +48,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var timeObserver: Any?
     private var statusObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
-    private var animationFade: TimeInterval = 0.3
 
     private var finishPlaying: Bool = false
     private var sliderIsMoving: Bool = false
@@ -65,13 +64,18 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
     }
 
+    private let playerJumpTime: Double = 10
+    private var animationFade: TimeInterval = 0.3
+    private let actionsViewCornerRadius: CGFloat = 8.0
+    private let actionsViewBorderWidth: CGFloat = 1.0
+
     override func awakeFromNib() {
         translatesAutoresizingMaskIntoConstraints = false
         videoSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
-        actionsView.layer.cornerRadius = dialogCornerRadius
-        actionsView.layer.borderWidth = 1.0
+        actionsView.layer.cornerRadius = actionsViewCornerRadius
+        actionsView.layer.borderWidth = actionsViewBorderWidth
         actionsView.layer.masksToBounds = true
         playerControls(enable: false)
         audioImageView.image = UIImage(named: "ic-audio")
@@ -88,11 +92,11 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     @IBAction func backwardButtonTapped(_ sender: UIButton) {
-        jumpPlayerTime(with: -kPlayerBackForWardTime)
+        jumpPlayerTime(with: -playerJumpTime)
     }
 
     @IBAction func forwardButtonTapped(_ sender: UIButton) {
-        jumpPlayerTime(with: kPlayerBackForWardTime)
+        jumpPlayerTime(with: playerJumpTime)
     }
 
     @IBAction func playPauseTapped(_ sender: UIButton) {

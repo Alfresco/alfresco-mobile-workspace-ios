@@ -24,7 +24,7 @@ import AlfrescoContent
 class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var listCondition: String = kWhereFavoritesFileFolderCondition
+    var listCondition: String = APIConstants.QuerryConditions.whereFavoritesFileFolder
     var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
@@ -41,7 +41,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func emptyList() -> EmptyListProtocol {
-        if listCondition == kWhereFavoritesFileFolderCondition {
+        if listCondition == APIConstants.QuerryConditions.whereFavoritesFileFolder {
             return EmptyFavoritesFilesFolders()
         }
         return EmptyFavoritesLibraries()
@@ -105,14 +105,14 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            FavoritesAPI.listFavorites(personId: kAPIPathMe,
+            FavoritesAPI.listFavorites(personId: APIConstants.me,
                                        skipCount: paginationRequest?.skipCount,
-                                       maxItems: kListPageSize,
+                                       maxItems: APIConstants.pageSize,
                                        orderBy: ["title ASC"],
                                        _where: sSelf.listCondition,
-                                       include: [kAPIIncludePathNode,
-                                                 kAPIIncludeAllowableOperationsNode,
-                                                 kAPIIncludeProperties],
+                                       include: [APIConstants.Include.path,
+                                                 APIConstants.Include.allowableOperations,
+                                                 APIConstants.Include.properties],
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 

@@ -45,6 +45,10 @@ class ResultViewController: SystemThemableViewController {
     var searchChipsViewModel = SearchChipsViewModel()
     weak var listItemActionDelegate: ListItemActionDelegate?
 
+    let recentSearchCellHeight: CGFloat = 48.0
+    let chipSearchCellMinimHeight: CGFloat = 32.0
+    let chipSearchCellMinimWidth: CGFloat = 52.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {

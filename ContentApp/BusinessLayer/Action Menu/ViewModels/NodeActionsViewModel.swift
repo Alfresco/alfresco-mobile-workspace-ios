@@ -23,8 +23,6 @@ import AlfrescoCore
 import Alamofire
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
-let kSheetDismissDelay = 0.5
-let kSaveToCameraRollAction = "com.apple.UIKit.activity.SaveToCameraRoll"
 
 protocol NodeActionsViewModelDelegate: class {
     func handleFinishedAction(with action: ActionMenu?,
@@ -39,6 +37,8 @@ class NodeActionsViewModel {
     private let nodeOperations: NodeOperations
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
+
+    private let sheetDismissDelay = 0.5
 
     // MARK: Init
 
@@ -174,7 +174,7 @@ class NodeActionsViewModel {
         let jsonFolder = JSONValue(dictionaryLiteral: (node.nodeType.plainType(), jsonGuid))
         let jsonBody = FavoriteBodyCreate(target: jsonFolder)
 
-        FavoritesAPI.createFavorite(personId: kAPIPathMe,
+        FavoritesAPI.createFavorite(personId: APIConstants.me,
                                     favoriteBodyCreate: jsonBody) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
@@ -192,7 +192,7 @@ class NodeActionsViewModel {
 
     private func requestRemoveFromFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
-        FavoritesAPI.deleteFavorite(personId: kAPIPathMe,
+        FavoritesAPI.deleteFavorite(personId: APIConstants.me,
                                     favoriteId: node.guid) { [weak self] (_, error) in
             guard let sSelf = self else { return }
             if error == nil {
@@ -328,7 +328,7 @@ class NodeActionsViewModel {
                     downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
                                                                            to: downloadURL,
                                                                            completionHandler: { destinationURL, error in
-                        mainQueue.asyncAfter(deadline: .now() + kSheetDismissDelay, execute: {
+                        mainQueue.asyncAfter(deadline: .now() + sSelf.sheetDismissDelay, execute: {
                             downloadDialog?.dismiss(animated: true,
                                                     completion: {
                                                         sSelf.handleResponse(error: error,
@@ -406,7 +406,7 @@ class NodeActionsViewModel {
             activityViewController.dismiss(animated: true)
             clearController.dismiss(animated: false) {
                 // Will not base check on error code as used constants have been deprecated
-                if activity?.rawValue == kSaveToCameraRollAction && !success {
+                if activity?.rawValue == KeyConstants.Save.toCameraRoll && !success {
                     let privacyVC = PrivacyNoticeViewController.instantiateViewController()
                     privacyVC.coordinatorServices = sSelf.coordinatorServices
                     presentationContext.present(privacyVC,

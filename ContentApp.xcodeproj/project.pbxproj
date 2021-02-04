@@ -144,7 +144,7 @@
 		E334C06224755D9000F74880 /* ContentAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C06124755D9000F74880 /* ContentAppUITests.swift */; };
 		E334C07424755E6B00F74880 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E334C07624755E6B00F74880 /* Localizable.strings */; };
 		E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07824755ECA00F74880 /* LocalizationConstants.swift */; };
-		E334C07B24755F0200F74880 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07A24755F0200F74880 /* Constants.swift */; };
+		E334C07B24755F0200F74880 /* UIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07A24755F0200F74880 /* UIConstants.swift */; };
 		E334C081247582B400F74880 /* ConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C080247582B400F74880 /* ConnectViewController.swift */; };
 		E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3355FF224DAEAC900C2C8A5 /* String+LiveSearch.swift */; };
 		E3355FF524DC081300C2C8A5 /* ContextualSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3355FF424DC081300C2C8A5 /* ContextualSearchViewModel.swift */; };
@@ -185,6 +185,7 @@
 		E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009424C84BD100F03D60 /* Inter-Regular.ttf */; };
 		E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */; };
 		E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009524C84BD100F03D60 /* Inter-Thin.ttf */; };
+		E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3724FD725CBD2D10005AA1C /* KeyConstants.swift */; };
 		E373675D25235D0E004FBCBD /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */; };
 		E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618032476873900DA13ED /* AlfrescoLog.swift */; };
 		E37618062476912000DA13ED /* Mirror+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37618052476912000DA13ED /* Mirror+Description.swift */; };
@@ -235,6 +236,8 @@
 		E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */; };
 		E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */; };
 		E3DCB307249A0A78003B8423 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */; };
+		E3E0F81E25CAFC5700DBC6F6 /* ErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E0F81D25CAFC5700DBC6F6 /* ErrorCodes.swift */; };
+		E3E0F82325CB09E500DBC6F6 /* APIConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E0F82225CB09E500DBC6F6 /* APIConstants.swift */; };
 		E3E2BDA024CC27F200D8A7EC /* MyLibrariesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */; };
 		E3E2BDA224CC280100D8A7EC /* SharedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */; };
 		E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA324CC280B00D8A7EC /* TrashViewModel.swift */; };
@@ -446,7 +449,7 @@
 		E334C06324755D9000F74880 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E334C07524755E6B00F74880 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E334C07824755ECA00F74880 /* LocalizationConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationConstants.swift; sourceTree = "<group>"; };
-		E334C07A24755F0200F74880 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E334C07A24755F0200F74880 /* UIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIConstants.swift; sourceTree = "<group>"; };
 		E334C080247582B400F74880 /* ConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectViewController.swift; sourceTree = "<group>"; };
 		E3355FF224DAEAC900C2C8A5 /* String+LiveSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+LiveSearch.swift"; sourceTree = "<group>"; };
 		E3355FF424DC081300C2C8A5 /* ContextualSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextualSearchViewModel.swift; sourceTree = "<group>"; };
@@ -487,6 +490,7 @@
 		E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		E369009424C84BD100F03D60 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
 		E369009524C84BD100F03D60 /* Inter-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Thin.ttf"; sourceTree = "<group>"; };
+		E3724FD725CBD2D10005AA1C /* KeyConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyConstants.swift; sourceTree = "<group>"; };
 		E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
 		E37618032476873900DA13ED /* AlfrescoLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlfrescoLog.swift; sourceTree = "<group>"; };
 		E37618052476912000DA13ED /* Mirror+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mirror+Description.swift"; sourceTree = "<group>"; };
@@ -552,6 +556,8 @@
 		E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesScreenCoordinator.swift; sourceTree = "<group>"; };
 		E3D9C03024D93AB60034D3CB /* RefreshIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshIndicatorView.swift; sourceTree = "<group>"; };
 		E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		E3E0F81D25CAFC5700DBC6F6 /* ErrorCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCodes.swift; sourceTree = "<group>"; };
+		E3E0F82225CB09E500DBC6F6 /* APIConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstants.swift; sourceTree = "<group>"; };
 		E3E2BD9F24CC27F200D8A7EC /* MyLibrariesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibrariesViewModel.swift; sourceTree = "<group>"; };
 		E3E2BDA124CC280100D8A7EC /* SharedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedViewModel.swift; sourceTree = "<group>"; };
 		E3E2BDA324CC280B00D8A7EC /* TrashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashViewModel.swift; sourceTree = "<group>"; };
@@ -903,8 +909,11 @@
 		B96B9AF32480FA5A0035AE97 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				E334C07A24755F0200F74880 /* Constants.swift */,
 				E373675C25235D0E004FBCBD /* AnalyticsConstants.swift */,
+				E334C07A24755F0200F74880 /* UIConstants.swift */,
+				E3E0F81D25CAFC5700DBC6F6 /* ErrorCodes.swift */,
+				E3E0F82225CB09E500DBC6F6 /* APIConstants.swift */,
+				E3724FD725CBD2D10005AA1C /* KeyConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -1986,6 +1995,7 @@
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
 				E31CF0A925AF06D800620ADA /* EmptyOffline.swift in Sources */,
+				E3E0F81E25CAFC5700DBC6F6 /* ErrorCodes.swift in Sources */,
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
@@ -2006,6 +2016,7 @@
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
+				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
@@ -2160,6 +2171,7 @@
 				B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskService.swift in Sources */,
 				E3A1B886249BADE90038D56D /* SettingsAccountTableViewCell.swift in Sources */,
+				E3E0F82325CB09E500DBC6F6 /* APIConstants.swift in Sources */,
 				E30E341C24B87B7500836629 /* SearchChipItem.swift in Sources */,
 				E335E731253865CF0036E090 /* ActionMenuViewModel.swift in Sources */,
 				E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */,
@@ -2170,7 +2182,7 @@
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
-				E334C07B24755F0200F74880 /* Constants.swift in Sources */,
+				E334C07B24755F0200F74880 /* UIConstants.swift in Sources */,
 				E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */,
 				B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */,
 				E3E2BDA024CC27F200D8A7EC /* MyLibrariesViewModel.swift in Sources */,

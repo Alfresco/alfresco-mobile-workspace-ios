@@ -27,12 +27,14 @@ class ActionMenuViewController: SystemThemableViewController {
     var actionMenuModel: ActionMenuViewModel?
     var nodeActionsModel: NodeActionsViewModel?
 
+    let actionMenuCellHeight: CGFloat = 63.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer.cornerRadius = dialogCornerRadius
+        view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
 
         actionMenuModel?.delegate = self

@@ -62,6 +62,11 @@ class ListComponentViewController: SystemThemableViewController {
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
+    let listItemNodeCellHeight: CGFloat = 64.0
+    let listSectionCellHeight: CGFloat = 64.0
+    let listSiteCellHeight: CGFloat = 48.0
+    let listBottomInset: CGFloat = 70.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -100,7 +105,7 @@ class ListComponentViewController: SystemThemableViewController {
         // Register collection view footer and cell
         collectionView.register(ActivityIndicatorFooterView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-                                withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier)
+                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self))
         let identifier = String(describing: ListElementCollectionViewCell.self)
         collectionView?.register(UINib(nibName: identifier,
                                        bundle: nil),
@@ -109,7 +114,7 @@ class ListComponentViewController: SystemThemableViewController {
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
-                                               name: Notification.Name(kReSignInNotification),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
     }
 
@@ -268,7 +273,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         case UICollectionView.elementKindSectionFooter:
             let footerView =
                 collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                withReuseIdentifier: kCVLoadingIndicatorReuseIdentifier,
+                                                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self),
                                                                 for: indexPath)
             return footerView
 
@@ -407,9 +412,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
     func display(error: Error) {
         var snackBarMessage = ""
         switch error.code {
-        case kTimeoutSwaggerErrorCode:
+        case ErrorCodes.swaggerTimeout:
             snackBarMessage = LocalizationConstants.Errors.errorTimeout
-        case kNodeNameErrorCode:
+        case ErrorCodes.swaggerNodeName:
             snackBarMessage = LocalizationConstants.Errors.errorFolderSameName
         default:
             snackBarMessage = LocalizationConstants.Errors.errorUnknown

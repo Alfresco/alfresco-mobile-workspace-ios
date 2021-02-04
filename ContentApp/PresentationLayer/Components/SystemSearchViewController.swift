@@ -24,6 +24,8 @@ class SystemSearchViewController: SystemThemableViewController {
     weak var listItemActionDelegate: ListItemActionDelegate?
     var tagSearchController: UISearchController?
 
+    let searchButtonAspectRatio: CGFloat = 30.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -99,17 +101,17 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func addSearchButton() {
         let searchButton = UIButton(type: .custom)
-        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
+        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: searchButtonAspectRatio, height: searchButtonAspectRatio)
         searchButton.imageView?.contentMode = .scaleAspectFill
-        searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
+        searchButton.layer.cornerRadius = searchButtonAspectRatio / 2
         searchButton.layer.masksToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
         searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currHeight?.isActive = true
 
         self.navigationItem.rightBarButtonItem = searchBarButtonItem

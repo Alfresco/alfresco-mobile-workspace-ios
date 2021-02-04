@@ -23,7 +23,7 @@ struct GetContentServicesServerInformation: APIRequest {
     typealias Response = VersionContentService
 
     var path: String {
-        return kAPIPathIsContentServiceAvailable
+        return APIConstants.Path.isContentServiceAvailable
     }
 
     var method: HttpMethod {
@@ -66,7 +66,7 @@ public struct VersionContentService: Codable {
         guard let version = self.version?.split(separator: " ").first else {
             return false
         }
-        let comparison = String(version).versionCompare(kAPIMinimumVersion)
+        let comparison = String(version).versionCompare(APIConstants.minimumVersion)
         if comparison == .orderedDescending || comparison == .orderedSame {
             return true
         }

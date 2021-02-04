@@ -48,6 +48,8 @@ class ConnectViewController: SystemThemableViewController {
         }
     }
 
+    let animationOpenKeyboard = 0.5
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -61,7 +63,7 @@ class ConnectViewController: SystemThemableViewController {
         activityIndicator = ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
         if let activityIndicator = activityIndicator {
-            kWindow.addSubview(activityIndicator)
+            UIApplication.shared.windows[0].addSubview(activityIndicator)
         }
     }
 
@@ -77,9 +79,7 @@ class ConnectViewController: SystemThemableViewController {
 
         if openKeyboard {
             openKeyboard = false
-            DispatchQueue.main.asyncAfter(deadline: .now() +
-                                            kAnimationSplashScreenLogo +
-                                            kAnimationSplashScreenContainerViews,
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationOpenKeyboard,
                 execute: { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.connectTextField.becomeFirstResponder()
@@ -290,7 +290,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
 extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-        if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+        if error.responseCode != ErrorCodes.cancelAimsWebView {
             activityIndicator?.state = .isIdle
             errorShowInProgress = true
             connectTextFieldAddMaterialComponents()
