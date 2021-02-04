@@ -241,7 +241,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
-        if error.responseCode == ErrorCodes.unauthorized {
+        if error.responseCode == ErrorCodes.Swagger.unauthorized {
             applyThemingInTextField(errorTheme: true)
         }
         Snackbar.display(with: error.mapToMessage(),

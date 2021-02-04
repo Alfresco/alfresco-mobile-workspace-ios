@@ -412,9 +412,9 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
     func display(error: Error) {
         var snackBarMessage = ""
         switch error.code {
-        case ErrorCodes.swaggerTimeout:
+        case ErrorCodes.Swagger.timeout:
             snackBarMessage = LocalizationConstants.Errors.errorTimeout
-        case ErrorCodes.swaggerNodeName:
+        case ErrorCodes.Swagger.nodeName:
             snackBarMessage = LocalizationConstants.Errors.errorFolderSameName
         default:
             snackBarMessage = LocalizationConstants.Errors.errorUnknown

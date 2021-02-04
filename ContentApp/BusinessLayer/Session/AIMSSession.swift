@@ -237,7 +237,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
                 handler(nil)
             case .failure(let error):
                 AlfrescoLog.error("Failed to log out. Reason: \(error)")
-                if error.responseCode != ErrorCodes.cancelAimsWebView {
+                if error.responseCode != ErrorCodes.AimsWebview.cancel {
                     self.session = nil
                     invalidateSessionRefresh()
                 }

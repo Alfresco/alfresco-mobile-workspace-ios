@@ -290,7 +290,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
 extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
-        if error.responseCode != ErrorCodes.cancelAimsWebView {
+        if error.responseCode != ErrorCodes.AimsWebview.cancel {
             activityIndicator?.state = .isIdle
             errorShowInProgress = true
             connectTextFieldAddMaterialComponents()

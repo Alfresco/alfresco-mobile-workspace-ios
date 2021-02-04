@@ -159,7 +159,7 @@ class SettingsViewModel {
             guard let sSelf = self, let currentAccount = accountService?.activeAccount
             else { return }
 
-            if error?.responseCode != ErrorCodes.cancelAimsWebView {
+            if error?.responseCode != ErrorCodes.AimsWebview.cancel {
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)

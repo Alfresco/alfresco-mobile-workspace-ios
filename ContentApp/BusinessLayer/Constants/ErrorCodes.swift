@@ -25,9 +25,6 @@ struct ErrorCodes {
     struct Swagger {
         static let timeout = 500
         static let nodeName = 409
+        static let unauthorized = 401
     }
-    static let cancelAimsWebView = -3
-    static let unauthorized = 401
-    static let swaggerTimeout = 500
-    static let swaggerNodeName = 409
 }
