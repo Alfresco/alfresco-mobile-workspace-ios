@@ -19,6 +19,15 @@
 import Foundation
 import AlfrescoContent
 
+enum ListEntrySyncStatus: String {
+    case markedForOffline = "ic-sync-status-marked"
+    case error = "ic-sync-status-error"
+    case pending = "ic-sync-status-pending"
+    case inProgress = "ic-sync-status-in-progress"
+    case synced = "ic-sync-status-synced"
+    case undefined = ""
+}
+
 protocol ListComponentDataSourceProtocol: class {
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
@@ -38,7 +47,7 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayListActionButton() -> Bool
     func shouldEnableListActionButton() -> Bool
     func shouldPreview(node: ListNode) -> Bool
-    func shoulDisplayOfflineIcon() -> Bool
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus
 }
 
 extension ListComponentDataSourceProtocol {
@@ -71,15 +80,15 @@ extension ListComponentDataSourceProtocol {
         return true
     }
 
-    func shoulDisplayOfflineIcon() -> Bool {
-        return true
-    }
-
     func listActionTitle() -> String? {
         return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
         return ""
+    }
+
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
     }
 }

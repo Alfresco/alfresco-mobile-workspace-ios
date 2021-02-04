@@ -154,6 +154,7 @@ class NodeActionsViewModel {
             if let queriedNode = listNodeDataAccessor.query(node: node) {
                 queriedNode.markedAsOffline = false
                 queriedNode.markedFor = .removal
+                queriedNode.syncStatus = .undefined
                 listNodeDataAccessor.store(node: queriedNode)
             }
 
