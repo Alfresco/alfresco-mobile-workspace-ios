@@ -119,8 +119,8 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.markedAsOffline > 1234 }
-    internal static var markedAsOffline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 12, isPrimaryKey: false) }
+    ///     box.query { ListNode.markedAsOffline == true }
+    internal static var markedAsOffline: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 12, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -250,9 +250,9 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .markedAsOffline > 1234 }
+    ///     box.query { .markedAsOffline == true }
 
-    internal static var markedAsOffline: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 12, isPrimaryKey: false) }
+    internal static var markedAsOffline: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 12, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///

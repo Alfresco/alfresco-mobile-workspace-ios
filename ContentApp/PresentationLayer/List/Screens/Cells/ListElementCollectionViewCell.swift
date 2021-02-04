@@ -19,7 +19,8 @@
 import UIKit
 
 protocol ListElementCollectionViewCellDelegate: class {
-    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell)
+    func moreButtonTapped(for element: ListNode?,
+                          in cell: ListElementCollectionViewCell)
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
@@ -31,23 +32,27 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var syncStatusImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
 
-    var element: ListNode? {
+    var node: ListNode? {
         didSet {
-            if let element = element {
-                title.text = element.title
-                subtitle.text = element.path
-                iconImageView.image = FileIcon.icon(for: element)
+            guard let node = node else { return }
 
-                syncStatusImageView.isHidden = !(element.syncStatus == .synced)
-                syncStatusImageView.image = element.syncStatusIcon()
+            title.text = node.title
+            subtitle.text = node.path
+            iconImageView.image = FileIcon.icon(for: node)
+        }
+    }
 
-                switch element.syncStatus {
-                case .error:
-                    subtitle.text = LocalizationConstants.Labels.syncFailed
-                case .inProgress:
-                    subtitle.text = LocalizationConstants.Labels.syncing
-                default: break
-                }
+    var syncStatus: ListEntrySyncStatus = .undefined {
+        didSet {
+            syncStatusImageView.isHidden = !(syncStatus != .undefined)
+            syncStatusImageView.image = UIImage(named: syncStatus.rawValue)
+
+            switch syncStatus {
+            case .error:
+                subtitle.text = LocalizationConstants.Labels.syncFailed
+            case .inProgress:
+                subtitle.text = LocalizationConstants.Labels.syncing
+            default: break
             }
         }
     }
@@ -65,6 +70,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
-        delegate?.moreButtonTapped(for: element, in: self)
+        delegate?.moreButtonTapped(for: node, in: self)
     }
 }

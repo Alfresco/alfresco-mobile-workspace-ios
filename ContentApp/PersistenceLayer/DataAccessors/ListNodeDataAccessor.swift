@@ -146,7 +146,12 @@ class ListNodeDataAccessor {
 
     func isNodeMarkedAsOffline(node: ListNode) -> Bool {
         guard let node = query(node: node) else { return false }
-        return node.markedAsOffline ?? false
+        return node.markedAsOffline
+    }
+
+    func syncStatus(for node: ListNode) -> SyncStatus {
+        guard let node = query(node: node) else { return .undefined }
+        return node.syncStatus
     }
 
     // MARK: - Path construction
@@ -219,7 +224,7 @@ class ListNodeDataAccessor {
 
     private func removeChildren(of node: ListNode) {
         if let children = children(of: node) {
-            for listNode in children where listNode.markedAsOffline == false || listNode.markedAsOffline == nil {
+            for listNode in children where listNode.markedAsOffline == false {
                 if listNode.nodeType == .folder {
                     removeChildren(of: listNode)
                 } else {
