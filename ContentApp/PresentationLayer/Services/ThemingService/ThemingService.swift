@@ -72,7 +72,7 @@ class ThemingService: ThemingServiceProtocol {
     }
 
     func saveTheme(mode: ThemeModeType) {
-        UserDefaults.standard.set(mode.rawValue, forKey: kSaveThemeMode)
+        UserDefaults.standard.set(mode.rawValue, forKey: KeyConstants.Save.themeMode)
         UserDefaults.standard.synchronize()
         AlfrescoLog.debug("Theme \(mode.rawValue) was saved in UserDefaults.")
 
@@ -127,7 +127,7 @@ class ThemingService: ThemingServiceProtocol {
     }
 
     func getThemeMode() -> ThemeModeType {
-        return ThemeModeType(rawValue: UserDefaults.standard.value(forKey: kSaveThemeMode) as? String ?? "Auto") ?? .auto
+        return ThemeModeType(rawValue: UserDefaults.standard.value(forKey: KeyConstants.Save.themeMode) as? String ?? "Auto") ?? .auto
     }
 }
 

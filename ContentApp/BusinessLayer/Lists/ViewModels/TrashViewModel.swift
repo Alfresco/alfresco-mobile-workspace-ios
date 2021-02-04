@@ -92,10 +92,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
+            let maxItems = paginationRequest?.maxItems ?? APIConstants.pageSize
             TrashcanAPI.listDeletedNodes(skipCount: skipCount,
                                          maxItems: maxItems,
-                                         include: [kAPIIncludePathNode]) { (result, error) in
+                                         include: [APIConstants.Include.path]) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = DeleteNodeMapper.map(entries)

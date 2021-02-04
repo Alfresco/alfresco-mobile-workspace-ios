@@ -30,7 +30,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.applyRoundedCorners(on: [.topLeft, .topRight], radius: dialogCornerRadius)
+        view.applyRoundedCorners(on: [.topLeft, .topRight], radius: UIConstants.cornerRadiusDialog)
         view.isHidden = true
     }
 

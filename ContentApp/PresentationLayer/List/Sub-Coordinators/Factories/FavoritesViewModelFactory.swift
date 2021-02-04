@@ -36,8 +36,8 @@ class FavoritesViewModelFactory {
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
 
-        foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
-        librariesViewModel.listCondition = kWhereFavoritesSiteCondition
+        foldersAndFilesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesFileFolder
+        librariesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesSite
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 

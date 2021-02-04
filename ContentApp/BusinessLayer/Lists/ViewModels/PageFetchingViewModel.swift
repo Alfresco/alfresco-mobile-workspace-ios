@@ -41,7 +41,7 @@ class PageFetchingViewModel {
             let pagination = Pagination(count: 0,
                                         hasMoreItems: false,
                                         totalItems: 0,
-                                        skipCount: Int64(currentPage * kListPageSize),
+                                        skipCount: Int64(currentPage * APIConstants.pageSize),
                                         maxItems: 0)
             updatedResults(results: results, pagination: pagination)
         }
@@ -52,8 +52,8 @@ class PageFetchingViewModel {
             guard let sSelf = self else { return }
 
             if sSelf.hasMoreItems {
-                let nextPage = RequestPagination(maxItems: kListPageSize,
-                                                 skipCount: sSelf.currentPage * kListPageSize)
+                let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
+                                                 skipCount: sSelf.currentPage * APIConstants.pageSize)
                 sSelf.fetchItems(with: nextPage,
                                  userInfo: userInfo,
                                  completionHandler: { (paginatedResponse) in
@@ -129,7 +129,7 @@ class PageFetchingViewModel {
 
     private final func incrementPage(for paginationRequest: RequestPagination?) {
         if let pageSkipCount = paginationRequest?.skipCount {
-            currentPage = pageSkipCount / kListPageSize + 1
+            currentPage = pageSkipCount / APIConstants.pageSize + 1
         }
     }
 

@@ -177,7 +177,7 @@ class CreateNodeViewModel {
     private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
         guard parentListNode.nodeType == .site else { return handle(parentListNode, nil)}
         nodeOperations.fetchNodeDetails(for: parentListNode.guid,
-                                        relativePath: kAPIPathRelativeForSites) { (result, error) in
+                                        relativePath: APIConstants.Path.relativeSites) { (result, error) in
             var listNode: ListNode?
             if let error = error {
                 AlfrescoLog.error(error)

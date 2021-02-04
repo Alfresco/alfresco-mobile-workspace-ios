@@ -30,14 +30,14 @@ class DiskService {
         let fileManager = FileManager.default
         let path = documentsDirectoryPath(for: accountIdentifier)
         if create(directoryPath: path) {
-            fileManager.createFile(atPath: "\(path)/\(kProfileAvatarImageFileName)",
+            fileManager.createFile(atPath: "\(path)/\(KeyConstants.Disk.avatar)",
                                    contents: image.pngData(), attributes: nil)
         }
     }
 
     static func getAvatar(for accountIdentifier: String) -> UIImage? {
         let fileManager = FileManager.default
-        let imagePath = documentsDirectoryPath(for: accountIdentifier) + "/" + kProfileAvatarImageFileName
+        let imagePath = documentsDirectoryPath(for: accountIdentifier) + "/" + KeyConstants.Disk.avatar
 
         var avatar: UIImage?
         if fileManager.fileExists(atPath: imagePath) {

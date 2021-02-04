@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,16 +18,13 @@
 
 import Foundation
 
-extension String {
-    func hasSpecialCharacters() -> Bool {
-        let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
-        if self.rangeOfCharacter(from: characterset) != nil {
-            return true
-        }
-        return false
+struct ErrorCodes {
+    struct AimsWebview {
+        static let cancel = -3
     }
-
-    static func specialCharacters() -> String {
-        return "* \" < > \\ / ? : |"
+    struct Swagger {
+        static let timeout = 500
+        static let nodeName = 409
+        static let unauthorized = 401
     }
 }

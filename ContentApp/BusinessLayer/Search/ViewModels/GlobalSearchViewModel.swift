@@ -29,6 +29,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var displaySearchButton: Bool = false
 
     private var liveSearchTimer: Timer?
+    private let searchTimerBuffer = 0.7
     var lastSearchedString: String?
 
     // MARK: - Init
@@ -98,7 +99,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             self.delegate?.handle(results: nil)
             return
         }
-        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)
@@ -133,7 +134,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
+            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
 
                 if let entries = results?.list.entries {
                     sSelf.resultsList = SitesNodeMapper.map(entries)

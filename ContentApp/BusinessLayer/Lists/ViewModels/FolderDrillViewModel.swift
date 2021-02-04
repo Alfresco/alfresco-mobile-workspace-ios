@@ -103,12 +103,12 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func request(with paginationRequest: RequestPagination?) {
         pageFetchingGroup.enter()
-        let relativePath = (listNode?.nodeType == .site) ? kAPIPathRelativeForSites : nil
-        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? kListPageSize,
+        let relativePath = (listNode?.nodeType == .site) ? APIConstants.Path.relativeSites : nil
+        let reqPagination = RequestPagination(maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize,
                                               skipCount: paginationRequest?.skipCount)
         updateNodeDetailsIfNecessary { [weak self] (_) in
             guard let sSelf = self else { return }
-            sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? kAPIPathMy,
+            sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? APIConstants.my,
                                                    pagination: reqPagination,
                                                    relativePath: relativePath) { (result, error) in
                 var listNodes: [ListNode]?

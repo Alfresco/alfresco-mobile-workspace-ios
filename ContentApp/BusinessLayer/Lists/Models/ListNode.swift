@@ -206,7 +206,8 @@ class ListNode: Hashable, Entity {
     }
 
     func truncateTailTitle() -> String {
-        let text = self.title.prefix(kTruncateLimitTitleInSnackbar)
+        let limitCharacters = 20
+        let text = self.title.prefix(limitCharacters)
         if text == self.title {
             return String(text)
         }

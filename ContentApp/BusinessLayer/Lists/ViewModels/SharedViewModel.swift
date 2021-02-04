@@ -90,12 +90,12 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? kListPageSize
+            let maxItems = paginationRequest?.maxItems ?? APIConstants.pageSize
             SharedLinksAPI.listSharedLinks(skipCount: skipCount,
                                            maxItems: maxItems,
                                            _where: nil,
-                                           include: [kAPIIncludeIsFavoriteNode,
-                                                     kAPIIncludeAllowableOperationsNode],
+                                           include: [APIConstants.Include.isFavorite,
+                                                     APIConstants.Include.allowableOperations],
                                            fields: nil) { (result, error) in
                 var listNodes: [ListNode]?
                 if let entries = result?.list.entries {

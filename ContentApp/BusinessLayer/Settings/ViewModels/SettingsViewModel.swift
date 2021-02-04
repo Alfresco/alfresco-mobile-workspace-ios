@@ -42,7 +42,7 @@ class SettingsViewModel {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
-                                               name: Notification.Name(kReSignInNotification),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
     }
 
@@ -159,7 +159,7 @@ class SettingsViewModel {
             guard let sSelf = self, let currentAccount = accountService?.activeAccount
             else { return }
 
-            if error?.responseCode != kLoginAIMSCancelWebViewErrorCode {
+            if error?.responseCode != ErrorCodes.AimsWebview.cancel {
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)

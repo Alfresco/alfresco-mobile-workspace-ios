@@ -40,6 +40,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var isRendering: Bool = false
     private var numberOfTaps: Int = 0
     private var fullScreenTimer: Timer?
+    private let fullScreenTimerBuffer = 0.5
     private var isFullScreen: Bool = false {
         didSet {
             if isRendering == false {
@@ -47,6 +48,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
             }
         }
     }
+
+    private let multiplerPreviewSizeImage: CGFloat = 1.0
 
     // MARK: - Init
 
@@ -79,8 +82,8 @@ class ImagePreview: UIView, FilePreviewProtocol {
                  handler: @escaping ImagePreviewHandler) {
         guard let imageView = self.zoomImageView?.zoomView as? UIImageView else { return }
         isRendering = true
-        let resizeImage = CGSize(width: imageView.bounds.width * kMultiplerPreviewSizeImage,
-                                 height: imageView.bounds.height * kMultiplerPreviewSizeImage)
+        let resizeImage = CGSize(width: imageView.bounds.width * multiplerPreviewSizeImage,
+                                 height: imageView.bounds.height * multiplerPreviewSizeImage)
         let imageRequest = ImageRequest(url: url,
                                         processors: [ImageProcessors.Resize(size: resizeImage)])
 
@@ -111,7 +114,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
 
     @objc private func zoomImageGesture(_ gestureRecognizer: UIGestureRecognizer) {
         numberOfTaps += 1
-        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: kFullScreenPreview,
+        fullScreenTimer = Timer.scheduledTimer(withTimeInterval: fullScreenTimerBuffer,
                                                repeats: false,
                                                block: { [weak self] (_) in
             guard let sSelf = self, sSelf.numberOfTaps == 1 else { return }

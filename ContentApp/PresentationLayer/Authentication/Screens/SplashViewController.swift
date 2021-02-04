@@ -42,8 +42,14 @@ class SplashViewController: SystemThemableViewController {
     var isAnimationInProgress: Bool = false
     var wasRotatedInAnimationProgress: Bool = false
     var shadowLayer: CALayer?
-    let shadowLayerRadius: Float = 50
-    let shadowLayerOpacity: Float = 0.4
+
+    let animationLogo = 0.0
+    let animationContainerViews = 0.5
+    let increaseLogoWidth: CGFloat = 30.0
+    let containerShadowLayerRadius: Float = 50.0
+    let containerShadowLayerOpacity: Float = 0.4
+    let containerShadowFadeAnimation = 0.5
+    let containerCornerRadius: Float = 10.0
 
     // MARK: - View Life Cycle
 
@@ -51,9 +57,9 @@ class SplashViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         logoImageView.isHidden = false
-        whiteAlphaView.applyCornerRadius(with: 10)
-        containerView.applyCornerRadius(with: 10)
-        blurEfectView.applyCornerRadius(with: 10)
+        whiteAlphaView.applyCornerRadius(with: containerCornerRadius)
+        containerView.applyCornerRadius(with: containerCornerRadius)
+        blurEfectView.applyCornerRadius(with: containerCornerRadius)
 
         addLocalization()
 
@@ -83,9 +89,9 @@ class SplashViewController: SystemThemableViewController {
             guard let sSelf = self else { return }
             sSelf.view.frame.size = size
             sSelf.view.layoutIfNeeded()
-            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity,
-                                                                   radius: sSelf.shadowLayerRadius)
-            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: 0.5, completionHandler: nil)
+            sSelf.shadowLayer = sSelf.shadowView.dropContourShadow(opacity: sSelf.containerShadowLayerOpacity,
+                                                                   radius: sSelf.containerShadowLayerRadius)
+            sSelf.shadowLayer?.fadeAnimation(with: .fadeIn, duration: sSelf.containerShadowFadeAnimation, completionHandler: nil)
         }
     }
 
@@ -119,9 +125,9 @@ class SplashViewController: SystemThemableViewController {
     }
 
     func animateLogo() {
-        self.logoWidthConstraint.constant += 30.0
+        self.logoWidthConstraint.constant += increaseLogoWidth
 
-        UIView.animate(withDuration: kAnimationSplashScreenLogo, animations: {
+        UIView.animate(withDuration: animationLogo, animations: {
             [weak self] in
             guard let sSelf = self else { return }
             sSelf.view.layoutIfNeeded()
@@ -136,10 +142,10 @@ class SplashViewController: SystemThemableViewController {
     func animateContainerViews() {
         self.containerViews(alpha: 0.0, hidden: false)
         self.wasRotatedInAnimationProgress = false
-        self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.shadowLayerOpacity,
-                                                             radius: self.shadowLayerRadius)
+        self.shadowLayer = self.shadowView.dropContourShadow(opacity: self.containerShadowLayerOpacity,
+                                                             radius: self.containerShadowLayerRadius)
         self.shadowLayer?.fadeAnimation(with: .fadeIn,
-                                        duration: TimeInterval(kAnimationSplashScreenContainerViews),
+                                        duration: TimeInterval(animationContainerViews),
                                         completionHandler: { [weak self] in
                                                 guard let sSelf = self,
                                                       sSelf.wasRotatedInAnimationProgress == true else {
@@ -148,14 +154,14 @@ class SplashViewController: SystemThemableViewController {
 
                                                 sSelf.shadowLayer?.removeFromSuperlayer()
                                                 sSelf.shadowLayer =
-                                                    sSelf.shadowView.dropContourShadow(opacity: sSelf.shadowLayerOpacity,
-                                                                                       radius: sSelf.shadowLayerRadius)
+                                                    sSelf.shadowView.dropContourShadow(opacity: sSelf.containerShadowLayerOpacity,
+                                                                                       radius: sSelf.containerShadowLayerRadius)
                                                 sSelf.shadowLayer?.fadeAnimation(with: .fadeIn,
                                                                                  duration: 0.0,
                                                                                  completionHandler: nil)
                                             })
 
-        UIView.animate(withDuration: kAnimationSplashScreenContainerViews, animations: { [weak self] in
+        UIView.animate(withDuration: animationContainerViews, animations: { [weak self] in
             guard let sSelf = self else { return }
             sSelf.containerViews(alpha: 1.0, hidden: false)
         }, completion: { [weak self] _ in

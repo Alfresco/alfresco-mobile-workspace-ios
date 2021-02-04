@@ -61,6 +61,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         }
     }
 
+    let unsecuredDefaultPort = "80"
+    let securedDefaultPort = "443"
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -97,7 +100,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
             httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
         portTextField.text =
-            (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
+            (httpsSwitch.isOn) ? securedDefaultPort : unsecuredDefaultPort
         enableSaveButton = (pathTextField.text != "")
     }
 

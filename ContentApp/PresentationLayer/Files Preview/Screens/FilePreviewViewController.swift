@@ -373,7 +373,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
     func display(error: Error) {
         var snackBarMessage = ""
         switch error.code {
-        case kTimeoutSwaggerErrorCode:
+        case ErrorCodes.Swagger.timeout:
             snackBarMessage = LocalizationConstants.Errors.errorTimeout
         default:
             snackBarMessage = LocalizationConstants.Errors.errorUnknown

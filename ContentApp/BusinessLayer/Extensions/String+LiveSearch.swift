@@ -20,8 +20,9 @@ import Foundation
 
 extension String {
     func canPerformLiveSearch() -> Bool {
+        let minCharactersForLiveSearch = 3
         let searchString = self.trimmingCharacters(in: .whitespacesAndNewlines)
-        if  searchString != "" && searchString.count >= kMinCharactersForLiveSearch {
+        if  searchString != "" && searchString.count >= minCharactersForLiveSearch {
             return true
         }
         return false

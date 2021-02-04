@@ -38,6 +38,7 @@ class AIMSSession {
     private var refreshInProgress = false
 
     private var refreshTimer: Timer?
+    private let refreshTimeBuffer = 20.0
     private var logoutHandler: LogoutHandler?
 
     // MARK: - Init
@@ -146,9 +147,9 @@ class AIMSSession {
     private func scheduleSessionRefresh() {
         if let accessTokenExpiresIn = self.credential?.accessTokenExpiresIn {
             let aimsAccesstokenRefreshInterval = TimeInterval(accessTokenExpiresIn)
-                - Date().timeIntervalSince1970 - TimeInterval(kAIMSAccessTokenRefreshTimeBuffer)
+                - Date().timeIntervalSince1970 - TimeInterval(refreshTimeBuffer)
 
-            if aimsAccesstokenRefreshInterval < TimeInterval(kAIMSAccessTokenRefreshTimeBuffer) {
+            if aimsAccesstokenRefreshInterval < TimeInterval(refreshTimeBuffer) {
                 return
             }
             refreshTimer?.invalidate()
@@ -215,7 +216,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
             AlfrescoLog.error("Failed to refresh access token. Reason: \(error)")
             let errorDict = ["error": error]
             invalidateSessionRefresh()
-            let notification = NSNotification.Name(rawValue: kAPIUnauthorizedRequestNotification)
+            let notification = NSNotification.Name(rawValue: KeyConstants.Notification.unauthorizedRequest)
             NotificationCenter.default.post(name: notification,
                                             object: nil,
                                             userInfo: errorDict)
@@ -236,7 +237,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
                 handler(nil)
             case .failure(let error):
                 AlfrescoLog.error("Failed to log out. Reason: \(error)")
-                if error.responseCode != kLoginAIMSCancelWebViewErrorCode {
+                if error.responseCode != ErrorCodes.AimsWebview.cancel {
                     self.session = nil
                     invalidateSessionRefresh()
                 }

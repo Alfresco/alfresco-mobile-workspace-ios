@@ -51,7 +51,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private var connectivityService: ConnectivityService?
 
     private var poolingTimer: Timer?
+    private let poolingTimerBuffer = 15 * 60.0
     private var throttleTimer: Timer?
+    private let throttleTimerBuffer = 60.0
 
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
@@ -104,7 +106,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.throttleTimer = nil
-            sSelf.throttleTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimerBuffer,
+            sSelf.throttleTimer = Timer.scheduledTimer(withTimeInterval: sSelf.throttleTimerBuffer,
                                                  repeats: false,
                                                  block: { (_) in
                                                  })
@@ -160,7 +162,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.poolingTimer?.invalidate()
-            sSelf.poolingTimer = Timer.scheduledTimer(withTimeInterval: kSyncTriggerTimer,
+            sSelf.poolingTimer = Timer.scheduledTimer(withTimeInterval: sSelf.poolingTimerBuffer,
                                                 repeats: true,
                                                 block: { (_) in
                                                     sSelf.poolingTimer?.invalidate()

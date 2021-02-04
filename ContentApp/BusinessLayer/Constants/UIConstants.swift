@@ -16,18 +16,8 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-extension String {
-    func hasSpecialCharacters() -> Bool {
-        let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
-        if self.rangeOfCharacter(from: characterset) != nil {
-            return true
-        }
-        return false
-    }
-
-    static func specialCharacters() -> String {
-        return "* \" < > \\ / ? : |"
-    }
+struct UIConstants {
+    static let cornerRadiusDialog: CGFloat = 8.0
 }

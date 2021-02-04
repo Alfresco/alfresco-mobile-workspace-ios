@@ -48,7 +48,7 @@ class SettingsScreenCoordinator: Coordinator {
 
 extension SettingsScreenCoordinator: SettingsScreenCoordinatorDelegate {
     func showLoginScreen() {
-        let notificationName = Notification.Name(rawValue: kShowLoginScreenNotification)
+        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.showLoginScreen)
         let notification = Notification.init(name: notificationName)
         NotificationCenter.default.post(notification)
     }

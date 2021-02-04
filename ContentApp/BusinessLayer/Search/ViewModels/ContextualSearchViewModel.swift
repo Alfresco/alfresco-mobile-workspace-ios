@@ -28,6 +28,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
     weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
+    private let searchTimerBuffer = 0.7
     var lastSearchedString: String?
 
     // MARK: - Init
@@ -85,7 +86,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
             self.delegate?.handle(results: nil)
             return
         }
-        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)

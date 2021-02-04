@@ -21,6 +21,7 @@ import AlfrescoAuth
 
 class AIMSAuthenticationProvider: AuthenticationProviderProtocol {
     let credential: AlfrescoCredential
+    private let sessionExpirationTimeIntervalCheck = 20
 
     init(with credential: AlfrescoCredential) {
         self.credential = credential
@@ -35,7 +36,7 @@ class AIMSAuthenticationProvider: AuthenticationProviderProtocol {
         guard let accesTokenExpiresIn = credential.accessTokenExpiresIn else { return false }
         let tokenExpireDate = Date(timeIntervalSince1970: TimeInterval(accesTokenExpiresIn))
         // Substract sessionExpirationTimeIntervalCheck time
-        let currentDateThreshold = tokenExpireDate.addingTimeInterval(-TimeInterval(kSessionExpirationTimeIntervalCheck))
+        let currentDateThreshold = tokenExpireDate.addingTimeInterval(-TimeInterval(sessionExpirationTimeIntervalCheck))
 
         if Date().compare(currentDateThreshold) == .orderedDescending ||
             Date().compare(tokenExpireDate) == .orderedDescending {

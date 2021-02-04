@@ -18,8 +18,6 @@
 
 import UIKit
 
-let kMultipleChoiceItemCellHeight: CGFloat = 44.0
-
 class MultipleChoiceDialogViewController: SystemThemableViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
@@ -28,18 +26,20 @@ class MultipleChoiceDialogViewController: SystemThemableViewController {
     var viewModel: MultipleChoiceViewModelProtocol?
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
 
+    let multipleChoiceItemCellHeight: CGFloat = 44.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.layer.cornerRadius = dialogCornerRadius
+        view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let numberOfItems = CGFloat(viewModel?.items.count ?? 2)
-        collectionViewHeightConstraint.constant = numberOfItems * kMultipleChoiceItemCellHeight
+        collectionViewHeightConstraint.constant = numberOfItems * multipleChoiceItemCellHeight
     }
 
     override func viewDidLayoutSubviews() {
@@ -106,7 +106,7 @@ extension MultipleChoiceDialogViewController: UICollectionViewDataSource,
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: kMultipleChoiceItemCellHeight)
+        return CGSize(width: view.bounds.width, height: multipleChoiceItemCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,

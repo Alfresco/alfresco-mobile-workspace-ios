@@ -45,7 +45,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
         descriptionTextArea.maximumNumberOfVisibleRows = 2
         uploadButton.isEnabled = false
-        view.layer.cornerRadius = dialogCornerRadius
+        view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
     }
 
@@ -152,7 +152,7 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     func enableUploadButton(for text: String?) {
         if text?.hasSpecialCharacters() == true {
             let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
-                                 kSpecialCharacters)
+                                 String.specialCharacters())
             applyErrorOnTextField(with: message)
         } else if text != "" {
             disableErrorOnTextField()

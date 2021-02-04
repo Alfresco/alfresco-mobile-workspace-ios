@@ -43,7 +43,7 @@ class ActivityIndicatorView: UIView {
     // MARK: - Init
 
     init(currentTheme: PresentationTheme?) {
-        super.init(frame: kWindow.bounds)
+        super.init(frame: UIApplication.shared.windows[0].bounds)
         self.commonInit()
         self.applyTheme(currentTheme)
     }
