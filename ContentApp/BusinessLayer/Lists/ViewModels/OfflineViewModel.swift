@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContent
 import MaterialComponents.MaterialDialogs
 
-class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
+class OfflineViewModel: PageFetchingViewModel {
     var supportedNodeTypes: [NodeType]?
     var coordinatorServices: CoordinatorServices?
     private var shouldEnableListButton: Bool = true
@@ -33,8 +33,56 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         refreshList()
     }
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - PageFetchingViewModel
 
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
+        refreshList()
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+
+    // MARK: - Private interface
+
+    func offlineMarkedNodes() -> [ListNode]? {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        return listNodeDataAccessor.queryMarkedOffline()
+    }
+
+    private func showOverrideSyncOnCellularDataDialog() {
+        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
+        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
+            guard let sSelf = self else { return }
+            UserProfile.allowOnceSyncOverCellularData = true
+            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
+            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+        }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
+
+        DispatchQueue.main.async {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
+                _ = presentationContext.showDialog(title: title,
+                                                   message: message,
+                                                   actions: [confirmAction, cancelAction],
+                                                   completionHandler: {})
+            }
+        }
+    }
+}
+
+// MARK: - ListViewModelProtocol
+
+extension OfflineViewModel: ListViewModelProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -93,10 +141,6 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return false
     }
 
-    func shoulDisplayOfflineIcon() -> Bool {
-        return false
-    }
-
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.status == .cellular &&
@@ -108,50 +152,12 @@ class OfflineViewModel: PageFetchingViewModel, ListViewModelProtocol {
         }
     }
 
-    // MARK: - PageFetchingViewModel
-
-    override func fetchItems(with requestPagination: RequestPagination,
-                             userInfo: Any?,
-                             completionHandler: @escaping PagedResponseCompletionHandler) {
-        refreshList()
-    }
-
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
-
-    // MARK: - Private interface
-
-    func offlineMarkedNodes() -> [ListNode]? {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        return listNodeDataAccessor.queryMarkedOffline()
-    }
-
-    private func showOverrideSyncOnCellularDataDialog() {
-        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
-        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
-            guard let sSelf = self else { return }
-            UserProfile.allowOnceSyncOverCellularData = true
-            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        if node.nodeType == .file {
+            return node.isMarkedOffline() ? .markedForOffline : .undefined
         }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
 
-        DispatchQueue.main.async {
-            if let presentationContext = UIViewController.applicationTopMostPresented {
-                _ = presentationContext.showDialog(title: title,
-                                                   message: message,
-                                                   actions: [confirmAction, cancelAction],
-                                                   completionHandler: {})
-            }
-        }
+        return .undefined
     }
 }
 

@@ -30,8 +30,27 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         refreshList()
     }
 
-    // MARK: - ListViewModelProtocol
+    // MARK: - PageFetchingViewModel
 
+    override func fetchItems(with requestPagination: RequestPagination,
+                             userInfo: Any?,
+                             completionHandler: @escaping PagedResponseCompletionHandler) {
+        refreshList()
+    }
+
+    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    override func updatedResults(results: [ListNode], pagination: Pagination) {
+        pageUpdatingDelegate?.didUpdateList(error: nil,
+                                            pagination: pagination)
+    }
+}
+
+// MARK: - ListViewModelProtocol
+
+extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -81,29 +100,32 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         return false
     }
 
-    func shoulDisplayOfflineIcon() -> Bool {
-        return false
-    }
-
     func performListAction() {
         // Do nothing
     }
 
-    // MARK: - PageFetchingViewModel
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        if node.nodeType == .file {
+            let nodeSyncStatus = node.hasSyncStatus()
+            var entryListStatus: ListEntrySyncStatus
 
-    override func fetchItems(with requestPagination: RequestPagination,
-                             userInfo: Any?,
-                             completionHandler: @escaping PagedResponseCompletionHandler) {
-        refreshList()
-    }
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .synced
+            default:
+                entryListStatus = .undefined
+            }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
+            return entryListStatus
+        }
 
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
+        return .undefined
     }
 }
 

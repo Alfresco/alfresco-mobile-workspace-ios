@@ -86,7 +86,7 @@ class ListNode: Hashable, Entity {
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed: Bool?
-    var markedAsOffline: Bool? = false
+    var markedAsOffline = false
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType
@@ -164,21 +164,6 @@ class ListNode: Hashable, Entity {
         self.markedFor = newVersion.markedFor
     }
 
-    func syncStatusIcon() -> UIImage? {
-        switch self.syncStatus {
-        case .error:
-            return UIImage(named: "ic-sync-status-error")
-        case .pending:
-            return UIImage(named: "ic-sync-status-pending")
-        case .inProgress:
-            return UIImage(named: "ic-sync-status-in-progress")
-        case .synced:
-            return UIImage(named: "ic-sync-status-synced")
-        case .undefined:
-            return UIImage(named: "ic-sync-status-pending")
-        }
-    }
-
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid
     }
@@ -196,6 +181,11 @@ class ListNode: Hashable, Entity {
     func isMarkedOffline() -> Bool {
         let dataAccessor = ListNodeDataAccessor()
         return dataAccessor.isNodeMarkedAsOffline(node: self)
+    }
+
+    func hasSyncStatus() -> SyncStatus {
+        let dataAccessor = ListNodeDataAccessor()
+        return dataAccessor.syncStatus(for: self)
     }
 
     func hasPersmission(to type: AllowableOperationsType) -> Bool {

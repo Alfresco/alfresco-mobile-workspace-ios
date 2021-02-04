@@ -287,23 +287,23 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
-
         let identifier = String(describing: ListElementCollectionViewCell.self)
+
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? ListElementCollectionViewCell
-        cell?.element = node
+        cell?.node = node
         cell?.delegate = self
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
+        cell?.syncStatus = listDataSource?.syncStatus(for: node) ?? .undefined
+
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
             cell?.moreButton.isHidden = true
         }
         if listDataSource?.shouldDisplayNodePath() == false {
             cell?.subtitle.text = ""
         }
-        if listDataSource?.shoulDisplayOfflineIcon() == true {
-            cell?.syncStatusImageView.image = UIImage(named: "ic-sync-status-marked")
-        }
+
         return cell ?? UICollectionViewCell()
     }
 

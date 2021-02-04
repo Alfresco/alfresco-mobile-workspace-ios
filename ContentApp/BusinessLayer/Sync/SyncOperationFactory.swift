@@ -157,49 +157,46 @@ class SyncOperationFactory {
                                                   skipCount: paginationRequest?.skipCount)
             sSelf.nodeOperations.fetchNodeChildren(for: node.guid,
                                                    pagination: reqPagination) { (result, error) in
-                guard let sSelf = self else { return }
                 let listNodeDataAccessor = ListNodeDataAccessor()
 
                 if let error = error {
                     sSelf.handle(error: error, for: node)
                     sSelf.delegate?.didComplete(with: error)
-                } else {
-                    if let entries = result?.list?.entries {
-                        let onlineNodes = NodeChildMapper.map(entries)
+                } else if let entries = result?.list?.entries {
+                    let onlineNodes = NodeChildMapper.map(entries)
 
-                        if sSelf.nodesWithChildren[node] == nil {
-                            sSelf.nodesWithChildren[node] = []
+                    if sSelf.nodesWithChildren[node] == nil {
+                        sSelf.nodesWithChildren[node] = []
+                    }
+                    sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
+
+                    for onlineNode in onlineNodes {
+                        if onlineNode.nodeType == .folder {
+                            listNodeDataAccessor.store(node: onlineNode)
+
+                            sSelf.fetchChildrenNodeDetailsOperations(of: onlineNode,
+                                                                     paginationRequest: nil,
+                                                                     on: queue)
+                        } else if onlineNode.nodeType == .file {
+                            let queriedNode = listNodeDataAccessor.query(node: onlineNode)
+                            sSelf.compareAndUpdate(queriedNode: queriedNode,
+                                                   with: onlineNode)
                         }
-                        sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
+                    }
 
-                        for onlineNode in onlineNodes {
-                            if onlineNode.nodeType == .folder {
-                                listNodeDataAccessor.store(node: onlineNode)
-
-                                sSelf.fetchChildrenNodeDetailsOperations(of: onlineNode,
-                                                                         paginationRequest: nil,
-                                                                         on: queue)
-                            } else if onlineNode.nodeType == .file {
-                                let queriedNode = listNodeDataAccessor.query(node: onlineNode)
-
-                                sSelf.compareAndUpdate(queriedNode: queriedNode, with: onlineNode)
-                            }
+                    if let pagination = result?.list?.pagination {
+                        let skipCount = Int64(onlineNodes.count) + pagination.skipCount
+                        if pagination.totalItems ?? 0 != skipCount {
+                            let reqPag = RequestPagination(maxItems: kMaxCount,
+                                                           skipCount: Int(skipCount))
+                            sSelf.fetchChildrenNodeDetailsOperations(of: node,
+                                                                     paginationRequest: reqPag,
+                                                                     on: queue)
                         }
-
-                        if let pagination = result?.list?.pagination {
-                            let skipCount = Int64(onlineNodes.count) + pagination.skipCount
-                            if pagination.totalItems ?? 0 != skipCount {
-                                let reqPag = RequestPagination(maxItems: kMaxCount,
-                                                               skipCount: Int(skipCount))
-                                sSelf.fetchChildrenNodeDetailsOperations(of: node,
-                                                                         paginationRequest: reqPag,
-                                                                         on: queue)
-                            }
-                        }
-
-                        completion()
                     }
                 }
+
+                completion()
             }
         }
 
@@ -295,6 +292,7 @@ class SyncOperationFactory {
         let listNodeDataAccessor = ListNodeDataAccessor()
         if error?.code == StatusCodes.code404NotFound.rawValue {
             node.markedFor = .removal
+            node.syncStatus = .undefined
             listNodeDataAccessor.store(node: node)
         } else {
             AlfrescoLog.error("Unexpected sync process error: \(String(describing: error))")
@@ -315,7 +313,7 @@ class SyncOperationFactory {
             onlineNode.syncStatus = .synced
         }
 
-        onlineNode.markedAsOffline = queriedNode?.markedAsOffline
+        onlineNode.markedAsOffline = queriedNode?.markedAsOffline ?? false
         publishSyncStatusEvent(for: onlineNode)
         listNodeDataAccessor.store(node: onlineNode)
     }
@@ -329,6 +327,7 @@ class SyncOperationFactory {
 
         for node in queriedSet {
             node.markedFor = .removal
+            node.syncStatus = .undefined
 
             let listNodeDataAccessor = ListNodeDataAccessor()
             listNodeDataAccessor.store(node: node)
