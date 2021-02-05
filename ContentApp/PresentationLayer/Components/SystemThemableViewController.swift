@@ -43,6 +43,11 @@ class SystemThemableViewController: UIViewController {
 
     private var kvoConnectivity: NSKeyValueObservation?
 
+    private let offlineModeViewRatio: CGFloat = 14.0
+    private let offlineModeIconRatio: CGFloat = 10.0
+    private let offlineModeShadowRadius: Float = 5.0
+    private let offlineModeShadowOpacity: Float = 0.25
+
     override func viewDidLoad() {
         super.viewDidLoad()
         observeConnectivity()
@@ -53,11 +58,7 @@ class SystemThemableViewController: UIViewController {
         applyComponentsThemes()
         ControllerRotation.lockOrientation(.portrait)
 
-        if coordinatorServices?.connectivityService?.hasInternetConnection() == false {
-            addOfflineModeIcon()
-        } else {
-            removeOfflineModeIcon()
-        }
+        handleConnectivity()
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -70,23 +71,29 @@ class SystemThemableViewController: UIViewController {
     func applyComponentsThemes() {
         // Override in subclass
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        offlineModeView?.backgroundColor = activeTheme?.surfaceColor
+        offlineModeView?.backgroundColor = activeTheme?.onSurface5Color
         offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
     }
 
     // MARK: Private Interface
 
     private func addOfflineModeIcon() {
+        offlineModeView?.removeFromSuperview()
+
         let centerPoint = settingsButton.imageView?.center ?? .zero
         let offlineView = UIView(frame: CGRect(origin: centerPoint,
-                                                   size: CGSize(width: 14.0, height: 14.0)))
-        offlineView.layer.cornerRadius = 7
-        offlineView.isUserInteractionEnabled = true
+                                                   size: CGSize(width: offlineModeViewRatio,
+                                                                height: offlineModeViewRatio)))
+        offlineView.layer.cornerRadius = offlineModeViewRatio/2
+        offlineView.isUserInteractionEnabled = false
 
-        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 2, y: 2),
-                                                  size: CGSize(width: 10.0, height: 10.0)))
+        let distanceXY = (offlineModeViewRatio - offlineModeIconRatio) / 2
+        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: distanceXY,
+                                                                  y: distanceXY),
+                                                  size: CGSize(width: offlineModeIconRatio,
+                                                               height: offlineModeIconRatio)))
         imageView.image = UIImage(named: "ic-offline-mode")
-        imageView.isUserInteractionEnabled = true
+        imageView.isUserInteractionEnabled = false
 
         offlineView.addSubview(imageView)
         settingsButton.addSubview(offlineView)
@@ -95,12 +102,11 @@ class SystemThemableViewController: UIViewController {
         self.offlineModeIcon = imageView
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        offlineModeView?.backgroundColor = activeTheme?.onPrimaryColor
-        offlineModeIcon?.tintColor = activeTheme?.onPrimaryInvertedColor
-    }
+        offlineModeView?.backgroundColor = activeTheme?.onSurface5Color
+        offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
 
-    private func removeOfflineModeIcon() {
-        offlineModeView?.removeFromSuperview()
+        offlineModeView?.dropShadow(opacity: offlineModeShadowOpacity,
+                                    radius: offlineModeShadowRadius)
     }
 
     // MARK: Connectivity Helpers
@@ -120,7 +126,7 @@ class SystemThemableViewController: UIViewController {
         if connectivityService?.hasInternetConnection() == false {
             addOfflineModeIcon()
         } else {
-            removeOfflineModeIcon()
+            offlineModeView?.removeFromSuperview()
         }
     }
 }

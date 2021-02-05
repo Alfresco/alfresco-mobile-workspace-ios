@@ -182,8 +182,6 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                 syncService?.stopSync()
             }
         default:
-            poolingTimer?.invalidate()
-            throttleTimer?.invalidate()
             syncService?.stopSync()
         }
     }
