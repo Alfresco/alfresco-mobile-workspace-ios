@@ -77,12 +77,14 @@ class SystemThemableViewController: UIViewController {
     // MARK: Private Interface
 
     private func addOfflineModeIcon() {
-        let offlineView = UIView(frame: CGRect(origin: settingsButton.imageView?.center ?? .zero,
+        let centerPoint = settingsButton.imageView?.center ?? .zero
+        let offlineView = UIView(frame: CGRect(origin: centerPoint,
                                                    size: CGSize(width: 14.0, height: 14.0)))
         offlineView.layer.cornerRadius = 7
         offlineView.isUserInteractionEnabled = true
 
-        let imageView = UIImageView(frame: offlineView.bounds)
+        let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 2, y: 2),
+                                                  size: CGSize(width: 10.0, height: 10.0)))
         imageView.image = UIImage(named: "ic-offline-mode")
         imageView.isUserInteractionEnabled = true
 
@@ -93,8 +95,8 @@ class SystemThemableViewController: UIViewController {
         self.offlineModeIcon = imageView
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        offlineModeView?.backgroundColor = activeTheme?.surfaceColor
-        offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
+        offlineModeView?.backgroundColor = activeTheme?.onPrimaryColor
+        offlineModeIcon?.tintColor = activeTheme?.onPrimaryInvertedColor
     }
 
     private func removeOfflineModeIcon() {
