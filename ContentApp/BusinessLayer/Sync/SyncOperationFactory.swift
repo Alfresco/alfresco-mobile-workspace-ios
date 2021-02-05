@@ -172,6 +172,8 @@ class SyncOperationFactory {
 
                     for onlineNode in onlineNodes {
                         if onlineNode.nodeType == .folder {
+                            let queriedNode = listNodeDataAccessor.query(node: onlineNode)
+                            onlineNode.markedAsOffline = queriedNode?.markedAsOffline ?? false
                             listNodeDataAccessor.store(node: onlineNode)
 
                             sSelf.fetchChildrenNodeDetailsOperations(of: onlineNode,

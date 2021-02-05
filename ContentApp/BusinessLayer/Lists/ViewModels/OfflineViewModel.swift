@@ -154,7 +154,23 @@ extension OfflineViewModel: ListViewModelProtocol {
 
     func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
         if node.nodeType == .file {
-            return node.isMarkedOffline() ? .markedForOffline : .undefined
+            let nodeSyncStatus = node.hasSyncStatus()
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .synced
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
         }
 
         return .undefined
