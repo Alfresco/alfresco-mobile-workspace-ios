@@ -20,10 +20,10 @@ import Foundation
 import UIKit
 
 enum SettingsItemType: String {
-    case account = "avatar"
+    case account = "ic-account-circle"
     case label = "label"
     case theme = "ic-theme"
-    case syncPlanData = "ic-sync-plan-data"
+    case dataPlan = "ic-sync-plan-data"
 }
 
 class SettingsItem: Equatable {
@@ -40,6 +40,7 @@ class SettingsItem: Equatable {
         self.title = title
         self.subtitle = subtitle
         self.type = type
+        self.icon = icon
         if icon == nil {
             self.icon = UIImage(named: type.rawValue)
         }

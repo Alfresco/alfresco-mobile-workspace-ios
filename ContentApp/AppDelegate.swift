@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
 
         let accountService = repository?.service(of: AccountService.identifier) as? AccountService
-        accountService?.activeAccount?.createTicket()
+        accountService?.createTicketForCurrentAccount()
 
         let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
         syncTriggerService?.triggerSync(when: .applicationDidFinishedLaunching)

@@ -53,6 +53,10 @@ protocol ConnectivityServiceProtocol {
         }
     }
 
+    func hasInternetConnection() -> Bool {
+        return NetworkReachabilityManager()?.isReachable ?? false
+    }
+
     func startNetworkReachabilityObserver() {
         reachabilityManager?.listener = { status in
             switch status {

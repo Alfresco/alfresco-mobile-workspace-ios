@@ -28,6 +28,14 @@ protocol AccountServiceProtocol {
     /// - Parameter account: Account to be registered
     func register(account: AccountProtocol)
 
+    /**
+     Creates for current account an authentication ticket used for convenient content fetching.
+
+     - SeeAlso:
+       [AuthenticationAPI](https://api-explorer.alfresco.com/api-explorer/#/authentication)
+    */
+    func createTicketForCurrentAccount()
+
     /// Removes an account but it doesn not automatically log out the user from it.
     /// - Parameter account: Account to be removed
     func unregister(account: AccountProtocol)
@@ -51,7 +59,11 @@ protocol AccountServiceProtocol {
 }
 
 class AccountService: AccountServiceProtocol, Service {
+
+    private var connectivityService: ConnectivityService?
+    private var kvoConnectivity: NSKeyValueObservation?
     private (set) var accounts: [AccountProtocol]? = []
+
     var activeAccount: AccountProtocol? {
         didSet {
             let defaults = UserDefaults.standard
@@ -65,14 +77,33 @@ class AccountService: AccountServiceProtocol, Service {
         }
     }
 
+    init(connectivityService: ConnectivityService) {
+        self.connectivityService = connectivityService
+        self.observeConnectivity()
+    }
+
+    deinit {
+        kvoConnectivity?.invalidate()
+    }
+
     func register(account: AccountProtocol) {
         accounts?.append(account)
         account.persistAuthenticationParameters()
         account.persistAuthenticationCredentials()
-        account.registered()
+
+        if connectivityService?.hasInternetConnection() == true {
+            account.registered()
+        }
+    }
+
+    func createTicketForCurrentAccount() {
+        guard connectivityService?.hasInternetConnection() == true else { return }
+        activeAccount?.createTicket()
     }
 
     func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        guard connectivityService?.hasInternetConnection() == true else { return }
+
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
@@ -91,6 +122,7 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        guard connectivityService?.hasInternetConnection() == true else { return }
         if let account = activeAccount {
             logOutFromAccount(account: account, viewController: viewController) { [weak self] error in
                 guard let sSelf = self else { return }
@@ -131,6 +163,25 @@ class AccountService: AccountServiceProtocol, Service {
             UserProfile.removeUserProfile(forAccountIdentifier: identifier)
 
             accounts?.remove(at: index)
+        }
+    }
+
+    // MARK: Private Helpers
+
+    private func observeConnectivity() {
+        kvoConnectivity = connectivityService?.observe(\.status,
+                                                       options: [.new],
+                                                       changeHandler: { [weak self] (_, _) in
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.handleConnectivity()
+                                                       })
+    }
+
+    private func handleConnectivity() {
+        if connectivityService?.hasInternetConnection() == false {
+            activeAccount?.unregister()
+        } else {
+            activeAccount?.registered()
         }
     }
 }

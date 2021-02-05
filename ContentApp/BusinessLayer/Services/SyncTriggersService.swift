@@ -153,9 +153,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             connectivityService?.observe(\.status,
                                          options: [.new],
                                          changeHandler: { [weak self] (_, _) in
-                                            guard let sSelf = self else { return }
-                                            sSelf.connectivityStatusChanged()
-                                         })
+                guard let sSelf = self else { return }
+                sSelf.connectivityStatusChanged()
+            })
     }
 
     private func startPoolingTrigger() {
@@ -163,11 +163,11 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             guard let sSelf = self else { return }
             sSelf.poolingTimer?.invalidate()
             sSelf.poolingTimer = Timer.scheduledTimer(withTimeInterval: sSelf.poolingTimerBuffer,
-                                                repeats: true,
-                                                block: { (_) in
-                                                    sSelf.poolingTimer?.invalidate()
-                                                    sSelf.triggerSync(when: .poolingTimer)
-                                                })
+                                                      repeats: true,
+                                                      block: { (_) in
+                sSelf.poolingTimer?.invalidate()
+                sSelf.triggerSync(when: .poolingTimer)
+            })
         }
     }
 
@@ -181,7 +181,10 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             } else {
                 syncService?.stopSync()
             }
-        default: break
+        default:
+            poolingTimer?.invalidate()
+            throttleTimer?.invalidate()
+            syncService?.stopSync()
         }
     }
 

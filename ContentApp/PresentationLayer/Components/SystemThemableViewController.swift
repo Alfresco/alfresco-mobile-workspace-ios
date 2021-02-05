@@ -38,11 +38,26 @@ struct ControllerRotation {
 
 class SystemThemableViewController: UIViewController {
     var coordinatorServices: CoordinatorServices?
+    private var offlineModeView: UIView?
+    private var offlineModeIcon: UIImageView?
+
+    private var kvoConnectivity: NSKeyValueObservation?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        observeConnectivity()
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         applyComponentsThemes()
         ControllerRotation.lockOrientation(.portrait)
+
+        if coordinatorServices?.connectivityService?.hasInternetConnection() == false {
+            addOfflineModeIcon()
+        } else {
+            removeOfflineModeIcon()
+        }
     }
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -54,5 +69,56 @@ class SystemThemableViewController: UIViewController {
 
     func applyComponentsThemes() {
         // Override in subclass
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        offlineModeView?.backgroundColor = activeTheme?.surfaceColor
+        offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
+    }
+
+    // MARK: Private Interface
+
+    private func addOfflineModeIcon() {
+        let offlineView = UIView(frame: CGRect(origin: settingsButton.imageView?.center ?? .zero,
+                                                   size: CGSize(width: 14.0, height: 14.0)))
+        offlineView.layer.cornerRadius = 7
+        offlineView.isUserInteractionEnabled = true
+
+        let imageView = UIImageView(frame: offlineView.bounds)
+        imageView.image = UIImage(named: "ic-offline-mode")
+        imageView.isUserInteractionEnabled = true
+
+        offlineView.addSubview(imageView)
+        settingsButton.addSubview(offlineView)
+
+        self.offlineModeView = offlineView
+        self.offlineModeIcon = imageView
+
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        offlineModeView?.backgroundColor = activeTheme?.surfaceColor
+        offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
+    }
+
+    private func removeOfflineModeIcon() {
+        offlineModeView?.removeFromSuperview()
+    }
+
+    // MARK: Connectivity Helpers
+
+    private func observeConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        kvoConnectivity = connectivityService?.observe(\.status,
+                                                       options: [.new],
+                                                       changeHandler: { [weak self] (_, _) in
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.handleConnectivity()
+                                                       })
+    }
+
+    private func handleConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            addOfflineModeIcon()
+        } else {
+            removeOfflineModeIcon()
+        }
     }
 }

@@ -101,7 +101,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let identifier = String(describing: SettingsAccountTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsAccountTableViewCell
-        case .theme, .syncPlanData:
+        case .theme, .dataPlan:
             let identifier = String(describing: SettingsItemTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsItemTableViewCell
@@ -126,7 +126,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch item.type {
         case .theme:
             settingsScreenCoordinatorDelegate?.showThemesModeScreen()
-        case .syncPlanData:
+        case .dataPlan:
             settingsScreenCoordinatorDelegate?.showDataPlanDialog()
         default: break
         }

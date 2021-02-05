@@ -66,7 +66,7 @@ class SettingsViewModel {
         if #available(iOS 13.0, *) {
             section2.append(getThemeItem())
         }
-        section2.append(getSyncPlanItem())
+        section2.append(getDataPlanItem())
         items.append(section2)
 
         items.append([getVersionItem()])
@@ -101,11 +101,11 @@ class SettingsViewModel {
 
     // MARK: - Get Settings Items
 
-    private func getSyncPlanItem() -> SettingsItem {
+    private func getDataPlanItem() -> SettingsItem {
         let subtitle = (UserProfile.allowSyncOverCellularData) ?
             LocalizationConstants.Settings.syncWifiAndCellularData :
             LocalizationConstants.Settings.syncOnlyWifi
-        return SettingsItem(type: .syncPlanData,
+        return SettingsItem(type: .dataPlan,
                             title: LocalizationConstants.Settings.syncDataPlanTitle,
                             subtitle: subtitle)
     }
