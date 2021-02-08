@@ -87,8 +87,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     }
 
     func triggerSync(when type: SyncTriggerType) {
-        guard accountService?.activeAccount != nil,
-              isSyncAllowedOverCellularData() == true else { return }
+        guard accountService?.activeAccount != nil else { return }
 
         startDebounceTimer()
         if type == .userDidInitiateSync {
@@ -116,7 +115,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         guard let syncService = self.syncService,
               let nodes = listNodeDataAccessor.queryMarkedOffline(),
               syncService.syncServiceStatus == .idle,
-              accountService?.activeAccount != nil else { return }
+              accountService?.activeAccount != nil,
+              isSyncAllowedOverCellularData() == true else { return }
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
             guard let sSelf = self else { return }
