@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-
         let window = UIWindow(frame: UIScreen.main.bounds)
         let applicationCoordinator = ApplicationCoordinator(window: window)
 
@@ -50,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-
         let repository = applicationCoordinator?.repository
 
         let themingService = repository?.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
@@ -66,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-
         let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
             if let session = aimsAccount.session.session {

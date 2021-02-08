@@ -60,7 +60,8 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
             self.offlineFolderChildrenScreenCoordinator = coordinator
         case .file, .fileLink:
             let coordinator = FilePreviewScreenCoordinator(with: presenter,
-                                                           listNode: node)
+                                                           listNode: node,
+                                                           excludedActions: [.markOffline])
             coordinator.start()
             self.filePreviewCoordinator = coordinator
 
