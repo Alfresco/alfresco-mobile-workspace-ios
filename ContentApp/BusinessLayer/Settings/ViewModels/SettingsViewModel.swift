@@ -196,7 +196,11 @@ class SettingsViewModel {
         let accountService = coordinatorServices?.accountService
         guard let accountIdentifier = accountService?.activeAccount?.identifier
         else { return nil }
-        return DiskService.getAvatar(for: accountIdentifier)
+        if let avatar = DiskService.getAvatar(for: accountIdentifier) {
+            return avatar
+        } else {
+            return UIImage(named: "ic-account-circle")
+        }
     }
 }
 

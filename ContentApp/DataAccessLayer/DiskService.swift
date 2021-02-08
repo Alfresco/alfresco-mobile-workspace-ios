@@ -44,10 +44,6 @@ class DiskService {
             avatar = UIImage(contentsOfFile: imagePath)
         }
 
-        if avatar == nil {
-            return UIImage(named: "ic-account-circle")
-        }
-
         return avatar
     }
 
