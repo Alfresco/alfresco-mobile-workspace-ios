@@ -69,7 +69,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
 
     func refreshList() {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.querryChildren(for: parentListNode) {
+        if let offlineNodes = listNodeDataAccessor.queryChildren(for: parentListNode) {
             results = offlineNodes
         }
 

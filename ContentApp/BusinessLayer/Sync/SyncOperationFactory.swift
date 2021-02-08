@@ -70,7 +70,7 @@ class SyncOperationFactory {
 
             _ = sSelf.nodesWithChildren.keys.map({ (node) in
                 if let onlineNodes = sSelf.nodesWithChildren[node] {
-                    let querriedNodeChildren = listNodeDataAccessor.querryChildren(for: node)
+                    let querriedNodeChildren = listNodeDataAccessor.queryChildren(for: node)
                     sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
                                            with: onlineNodes)
                 }
