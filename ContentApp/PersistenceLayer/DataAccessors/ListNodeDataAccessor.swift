@@ -129,7 +129,7 @@ class ListNodeDataAccessor {
         return nil
     }
 
-    func querryChildren(for parentNode: ListNode?) -> [ListNode]? {
+    func queryChildren(for parentNode: ListNode?) -> [ListNode]? {
         guard let node = parentNode else { return nil }
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {

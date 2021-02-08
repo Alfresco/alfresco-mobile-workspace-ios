@@ -31,6 +31,7 @@ class SyncOperationFactory {
     var nodesWithChildren: [ListNode: [ListNode]] = [:]
 
     weak var delegate: SyncOperationFactoryDelegate?
+    var syncIsCancelled = false
 
     init(nodeOperations: NodeOperations,
          eventBusService: EventBusService?) {
@@ -69,7 +70,7 @@ class SyncOperationFactory {
 
             _ = sSelf.nodesWithChildren.keys.map({ (node) in
                 if let onlineNodes = sSelf.nodesWithChildren[node] {
-                    let querriedNodeChildren = listNodeDataAccessor.querryChildren(for: node)
+                    let querriedNodeChildren = listNodeDataAccessor.queryChildren(for: node)
                     sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
                                            with: onlineNodes)
                 }
@@ -201,8 +202,9 @@ class SyncOperationFactory {
                 completion()
             }
         }
-
-        queue.addOperation(operation)
+        if syncIsCancelled == false {
+            queue.addOperation(operation)
+        }
     }
 
     private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {

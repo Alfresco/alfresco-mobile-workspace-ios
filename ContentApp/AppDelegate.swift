@@ -24,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private var applicationCoordinator: ApplicationCoordinator?
     var orientationLock = UIInterfaceOrientationMask.all
+    var enterInBackgroundTimestamp: TimeInterval?
+    var enterInForegroundTimestamp: TimeInterval?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -58,7 +60,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         accountService?.createTicketForCurrentAccount()
 
         let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
-        syncTriggerService?.triggerSync(when: .applicationDidFinishedLaunching)
+
+        enterInForegroundTimestamp = Date().timeIntervalSince1970
+
+        if let enterInForegroundTimestamp = self.enterInForegroundTimestamp,
+           let enterInBackgroundTimestamp = self.enterInBackgroundTimestamp {
+
+            let interval = enterInForegroundTimestamp - enterInBackgroundTimestamp
+            syncTriggerService?.triggerSync(for: .applicationDidFinishedLaunching,
+                                            in: interval)
+
+            self.enterInForegroundTimestamp = nil
+            self.enterInForegroundTimestamp = nil
+        }
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        enterInBackgroundTimestamp = Date().timeIntervalSince1970
     }
 
     func application(_ app: UIApplication,

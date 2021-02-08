@@ -81,6 +81,7 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func sync(nodeList: [ListNode]) {
+        syncOperationFactory.syncIsCancelled = false
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
@@ -88,15 +89,29 @@ let maxConcurrentSyncOperationCount = 3
             sSelf.delegate?.syncDidStarted()
             sSelf.syncServiceStatus = .fetchingNodeDetails
             let nodeDetailsOperations = sSelf.syncOperationFactory.fileNodeDetailsOperations(nodes: nodeList)
-            sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
-                                                   waitUntilFinished: false)
+            if nodeDetailsOperations.isEmpty {
+                sSelf.processNodeDetails()
+            } else {
+                sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
+                                                       waitUntilFinished: false)
+            }
             sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
                                                                            on: sSelf.syncOperationQueue)
         }
     }
 
     func stopSync() {
+        syncOperationFactory.syncIsCancelled = true
         syncOperationQueue.cancelAllOperations()
+
+        let dataAccessor = ListNodeDataAccessor()
+        if let nodesToBeDownloaded = dataAccessor.queryMarkedForDownload() {
+            for node in nodesToBeDownloaded where node.syncStatus == .pending ||
+                node.syncStatus == .inProgress {
+                node.syncStatus = .error
+                dataAccessor.store(node: node)
+            }
+        }
     }
 
     // MARK: - Private interface
