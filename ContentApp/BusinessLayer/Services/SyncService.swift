@@ -81,6 +81,7 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func sync(nodeList: [ListNode]) {
+        syncOperationFactory.syncIsCancelled = false
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
@@ -96,6 +97,7 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func stopSync() {
+        syncOperationFactory.syncIsCancelled = true
         syncOperationQueue.cancelAllOperations()
     }
 

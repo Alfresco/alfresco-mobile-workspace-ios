@@ -174,9 +174,11 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             if isSyncAllowedOverCellularData() {
                 triggerSync(when: .reachableOverCellularData)
             } else {
+                debounceTimer?.invalidate()
                 syncService?.stopSync()
             }
         default:
+            debounceTimer?.invalidate()
             syncService?.stopSync()
         }
     }

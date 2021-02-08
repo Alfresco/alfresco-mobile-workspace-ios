@@ -31,6 +31,7 @@ class SyncOperationFactory {
     var nodesWithChildren: [ListNode: [ListNode]] = [:]
 
     weak var delegate: SyncOperationFactoryDelegate?
+    var syncIsCancelled = false
 
     init(nodeOperations: NodeOperations,
          eventBusService: EventBusService?) {
@@ -201,8 +202,9 @@ class SyncOperationFactory {
                 completion()
             }
         }
-
-        queue.addOperation(operation)
+        if syncIsCancelled == false {
+            queue.addOperation(operation)
+        }
     }
 
     private func downloadNodeContentOperation(node: ListNode) -> AsyncClosureOperation {
