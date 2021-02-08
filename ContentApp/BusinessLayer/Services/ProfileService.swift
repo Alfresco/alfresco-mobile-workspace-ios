@@ -26,9 +26,16 @@ class ProfileService {
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
         let defaultImage = UIImage(named: "ic-account-circle")
-        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return defaultImage }
+        guard let accountIdentifier = accountService?.activeAccount?.identifier
+        else { return defaultImage }
 
-        return DiskService.getAvatar(for: accountIdentifier)
+        if let avatar = DiskService.getAvatar(for: accountIdentifier) {
+            return avatar
+        } else {
+            featchAvatar(completionHandler: completionHandler)
+        }
+
+        return defaultImage
     }
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
