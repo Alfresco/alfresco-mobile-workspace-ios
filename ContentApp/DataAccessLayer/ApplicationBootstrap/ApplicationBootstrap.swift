@@ -29,13 +29,17 @@ class ApplicationBootstrap {
 
     private init() {
         self.repository = ServiceRepository()
+
+        let connectivityService = self.connectivityService()
+        self.repository.register(service: connectivityService)
+
         self.repository.register(service: themingService())
         self.repository.register(service: authenticationService())
         self.repository.register(service: applicationRouter())
         self.repository.register(service: operationQueueService())
         self.repository.register(service: databaseService())
 
-        let accountService = self.accountService()
+        let accountService = self.accountService(with: connectivityService)
         self.repository.register(service: accountService)
 
         let eventBusService = self.eventBusService()
@@ -43,9 +47,6 @@ class ApplicationBootstrap {
 
         let syncService = self.syncService(with: accountService, and: eventBusService)
         self.repository.register(service: syncService)
-
-        let connectivityService = self.connectivityService()
-        self.repository.register(service: connectivityService)
 
         let syncTriggersService = self.syncTriggersService(with: syncService,
                                                            and: accountService,
@@ -69,8 +70,8 @@ class ApplicationBootstrap {
         return AuthenticationService(with: AuthenticationParameters.parameters())
     }
 
-    private func accountService() -> AccountService {
-        return AccountService()
+    private func accountService(with connectivityService: ConnectivityService) -> AccountService {
+        return AccountService(connectivityService: connectivityService)
     }
 
     private func applicationRouter() -> Router {

@@ -25,7 +25,7 @@ class ProfileService {
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        let defaultImage = UIImage(named: "account-circle")
+        let defaultImage = UIImage(named: "ic-account-circle")
         guard let accountIdentifier = accountService?.activeAccount?.identifier else { return defaultImage }
 
         return DiskService.getAvatar(for: accountIdentifier)

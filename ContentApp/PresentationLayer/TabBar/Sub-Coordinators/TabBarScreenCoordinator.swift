@@ -66,6 +66,7 @@ class TabBarScreenCoordinator: Coordinator {
                                offlineTabBarItem,
                                browseTabBarItem]
         viewController.themingService = themingService
+        viewController.connectivityService = coordinatorServices.connectivityService
         viewController.tabBarCoordinatorDelegate = self
         viewController.modalTransitionStyle = .crossDissolve
         viewController.modalPresentationStyle = .fullScreen

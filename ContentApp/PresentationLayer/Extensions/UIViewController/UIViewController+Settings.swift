@@ -40,6 +40,7 @@ extension UIViewController {
         settingsButton.imageView?.contentMode = .scaleAspectFill
         settingsButton.layer.cornerRadius = settingsButtonAspectRatio / 2
         settingsButton.layer.masksToBounds = true
+        settingsButton.clipsToBounds = false
         settingsButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)

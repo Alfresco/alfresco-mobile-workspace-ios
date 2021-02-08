@@ -25,7 +25,7 @@ enum ListEntrySyncStatus: String {
     case pending = "ic-sync-status-pending"
     case inProgress = "ic-sync-status-in-progress"
     case synced = "ic-sync-status-synced"
-    case undefined = ""
+    case undefined = "ic-sync-status-undefined"
 }
 
 protocol ListComponentDataSourceProtocol: class {

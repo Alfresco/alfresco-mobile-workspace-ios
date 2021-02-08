@@ -45,7 +45,7 @@ class DiskService {
         }
 
         if avatar == nil {
-            return UIImage(named: "account-circle")
+            return UIImage(named: "ic-account-circle")
         }
 
         return nil

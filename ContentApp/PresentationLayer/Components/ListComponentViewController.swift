@@ -62,6 +62,8 @@ class ListComponentViewController: SystemThemableViewController {
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
+    private var kvoConnectivity: NSKeyValueObservation?
+
     let listItemNodeCellHeight: CGFloat = 64.0
     let listSectionCellHeight: CGFloat = 64.0
     let listSiteCellHeight: CGFloat = 48.0
@@ -116,10 +118,13 @@ class ListComponentViewController: SystemThemableViewController {
                                                selector: #selector(self.handleReSignIn(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
+
+        observeConnectivity()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        handleConnectivity()
         listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
         collectionView.reloadData()
         progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
@@ -203,6 +208,25 @@ class ListComponentViewController: SystemThemableViewController {
 
     @objc private func handleReSignIn(notification: Notification) {
         listDataSource?.refreshList()
+    }
+
+    // MARK: Connectivity Helpers
+
+    private func observeConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        kvoConnectivity = connectivityService?.observe(\.status,
+                                                       options: [.new],
+                                                       changeHandler: { [weak self] (_, _) in
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.handleConnectivity()
+                                                       })
+    }
+
+    private func handleConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            didUpdateList(error: NSError(), pagination: nil)
+        }
     }
 }
 

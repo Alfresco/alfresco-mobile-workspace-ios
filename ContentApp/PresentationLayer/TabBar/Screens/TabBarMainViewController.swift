@@ -27,6 +27,7 @@ class TabBarMainViewController: UITabBarController {
     let bottomNavigationBar = MDCBottomNavigationBar()
     var tabs = [UITabBarItem]()
 
+    var connectivityService: ConnectivityService?
     var themingService: MaterialDesignThemingService?
     weak var tabBarCoordinatorDelegate: TabBarScreenCoordinatorDelegate?
 
@@ -105,7 +106,12 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBar.alignment = .centered
         bottomNavigationBar.items = tabs
 
-        bottomNavigationBar.selectedItem = tabs.first
+        if connectivityService?.hasInternetConnection() == false {
+            bottomNavigationBar.selectedItem = tabs[2]
+            self.selectedIndex = 2
+        } else {
+            bottomNavigationBar.selectedItem = tabs.first
+        }
         bottomNavigationBar.delegate = self
     }
 
