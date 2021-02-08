@@ -48,7 +48,7 @@ class DiskService {
             return UIImage(named: "ic-account-circle")
         }
 
-        return nil
+        return avatar
     }
 
     // MARK: - Disk operations

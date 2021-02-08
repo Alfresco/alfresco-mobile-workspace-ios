@@ -35,10 +35,12 @@ extension UIViewController {
     func addSettingsButton(action: Selector, target: Any?) {
         let settingsButtonAspectRatio: CGFloat = 30.0
         settingsButton = UIButton(type: .custom)
-        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: settingsButtonAspectRatio, height: settingsButtonAspectRatio)
+        settingsButton.frame = CGRect(x: 0.0, y: 0.0,
+                                      width: settingsButtonAspectRatio,
+                                      height: settingsButtonAspectRatio)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
-        settingsButton.layer.cornerRadius = settingsButtonAspectRatio / 2
+        settingsButton.imageView?.layer.cornerRadius = settingsButtonAspectRatio / 2
         settingsButton.layer.masksToBounds = true
         settingsButton.clipsToBounds = false
         settingsButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
