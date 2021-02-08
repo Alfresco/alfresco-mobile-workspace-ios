@@ -44,16 +44,14 @@ protocol SyncTriggersServiceProtocol {
 
 class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
-    private var tiggerType: SyncTriggerType?
-
     private let syncService: SyncService?
     private let accountService: AccountService?
     private var connectivityService: ConnectivityService?
 
     private var poolingTimer: Timer?
     private let poolingTimerBuffer = 15 * 60.0
-    private var throttleTimer: Timer?
-    private let throttleTimerBuffer = 60.0
+    private var debounceTimer: Timer?
+    private let debounceTimerBuffer = 30.0
 
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
@@ -62,7 +60,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         kvoSyncStatus?.invalidate()
         kvoConnectivity?.invalidate()
         poolingTimer?.invalidate()
-        throttleTimer?.invalidate()
+        debounceTimer?.invalidate()
     }
 
     // MARK: - Public interface
@@ -85,35 +83,35 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         kvoSyncStatus?.invalidate()
         kvoConnectivity?.invalidate()
         poolingTimer?.invalidate()
-        throttleTimer?.invalidate()
+        debounceTimer?.invalidate()
     }
 
     func triggerSync(when type: SyncTriggerType) {
         guard accountService?.activeAccount != nil,
               isSyncAllowedOverCellularData() == true else { return }
 
-        if type == .userDidInitiateSync ||
-            throttleTimer?.isValid == nil ||
-            throttleTimer?.isValid == false {
-
-            startSyncOperation(with: type)
+        startDebounceTimer()
+        if type == .userDidInitiateSync {
+            startSyncOperation()
         }
     }
 
     // MARK: - Private interface
 
-    private func startThrottleTimer() {
+    private func startDebounceTimer() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.throttleTimer = nil
-            sSelf.throttleTimer = Timer.scheduledTimer(withTimeInterval: sSelf.throttleTimerBuffer,
+            sSelf.debounceTimer = nil
+            sSelf.debounceTimer = Timer.scheduledTimer(withTimeInterval: sSelf.debounceTimerBuffer,
                                                  repeats: false,
                                                  block: { (_) in
+                                                    sSelf.debounceTimer?.invalidate()
+                                                    sSelf.startSyncOperation()
                                                  })
         }
     }
 
-    private func startSyncOperation(with type: SyncTriggerType) {
+    private func startSyncOperation() {
         let listNodeDataAccessor = ListNodeDataAccessor()
         guard let syncService = self.syncService,
               let nodes = listNodeDataAccessor.queryMarkedOffline(),
@@ -124,11 +122,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             guard let sSelf = self else { return }
 
             if authenticationProvider.areCredentialsValid() {
-                AlfrescoLog.info("-- SYNC operation started, with TRIGGER \(type.rawValue) --")
                 UserProfile.allowOnceSyncOverCellularData = false
-                sSelf.tiggerType = type
                 sSelf.poolingTimer?.invalidate()
-                sSelf.startThrottleTimer()
                 syncService.sync(nodeList: nodes)
                 sSelf.observeSyncStatusOperation()
             }
