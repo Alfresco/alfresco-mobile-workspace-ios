@@ -28,11 +28,14 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var filePreviewViewController: FilePreviewViewController?
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private let excludedActionsTypes: [ActionMenuType]
 
     init(with presenter: UINavigationController,
-         listNode: ListNode) {
+         listNode: ListNode,
+         excludedActions: [ActionMenuType] = []) {
         self.presenter = presenter
         self.listNode = listNode
+        excludedActionsTypes = excludedActions
     }
 
     func start() {
@@ -40,7 +43,8 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        excludedActions: excludedActionsTypes)
 
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices

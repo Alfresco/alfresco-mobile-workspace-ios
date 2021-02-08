@@ -54,6 +54,7 @@ class FilePreviewViewModel {
     let listNodeDataAccessor: ListNodeDataAccessor = ListNodeDataAccessor()
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
+    private let excludedActionsTypes: [ActionMenuType]
     var actionMenuViewModel: ActionMenuViewModel?
     var nodeActionsViewModel: NodeActionsViewModel?
 
@@ -64,12 +65,14 @@ class FilePreviewViewModel {
 
     init(with listNode: ListNode,
          delegate: FilePreviewViewModelDelegate?,
-         coordinatorServices: CoordinatorServices) {
+         coordinatorServices: CoordinatorServices,
+         excludedActions: [ActionMenuType] = []) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
+        self.excludedActionsTypes = excludedActions
     }
 
     func requestUpdateNodeDetails() {
@@ -78,6 +81,7 @@ class FilePreviewViewModel {
 
         nodeOperations.fetchNodeDetails(for: guid) {[weak self] (result, error) in
             guard let sSelf = self else { return }
+
             if let error = error {
                 sSelf.viewModelDelegate?.didFinishNodeDetails(error: error)
             } else if let entry = result?.entry {
@@ -86,7 +90,8 @@ class FilePreviewViewModel {
                 sSelf.actionMenuViewModel =
                     ActionMenuViewModel(node: listNode,
                                         toolbarDisplayed: true,
-                                        coordinatorServices: sSelf.coordinatorServices)
+                                        coordinatorServices: sSelf.coordinatorServices,
+                                        excludedActionTypes: sSelf.excludedActionsTypes)
                 sSelf.nodeActionsViewModel =
                     NodeActionsViewModel(node: listNode,
                                          delegate: nil,
@@ -165,7 +170,8 @@ class FilePreviewViewModel {
 
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
                                                       toolbarDisplayed: true,
-                                                      coordinatorServices: coordinatorServices)
+                                                      coordinatorServices: coordinatorServices,
+                                                      excludedActionTypes: excludedActionsTypes)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,
                                                         delegate: nil,
                                                         coordinatorServices: coordinatorServices)
