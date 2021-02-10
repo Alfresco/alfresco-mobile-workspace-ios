@@ -22,10 +22,7 @@ enum SyncTriggerType: String {
     case applicationDidFinishedLaunching
     case nodeMarkedOffline
     case nodeRemovedFromOffline
-    case reachableOverWifi
-    case reachableOverCellularData
     case userReAuthenticated
-    case poolingTimer
     case userDidInitiateSync
 }
 
@@ -39,7 +36,8 @@ protocol SyncTriggersServiceProtocol {
 
     /// Start a sync operation when a tigger is display
     /// - Parameters type:  Type of trigger
-    func triggerSync(when type: SyncTriggerType)
+    /// - Parameters interval: 
+    func triggerSync(for type: SyncTriggerType, in interval: TimeInterval)
 }
 
 class SyncTriggersService: Service, SyncTriggersServiceProtocol {
@@ -51,10 +49,12 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private var poolingTimer: Timer?
     private let poolingTimerBuffer = 15 * 60.0
     private var debounceTimer: Timer?
-    private let debounceTimerBuffer = 30.0
+    private let debounceTimerBuffer = 10.0
 
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
+
+    private var syncDidTriedToStart: Bool = false
 
     deinit {
         kvoSyncStatus?.invalidate()
@@ -72,63 +72,78 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         self.syncService = syncService
         self.accountService = accountService
         self.connectivityService = connectivityService
+
+        self.registerTriggers()
     }
 
     func registerTriggers() {
-        self.startPoolingTrigger()
-        self.observeConnectivity()
+        observeSyncStatusOperation()
+        observeConnectivity()
     }
 
     func invalidateTriggers() {
         kvoSyncStatus?.invalidate()
         kvoConnectivity?.invalidate()
-        poolingTimer?.invalidate()
-        debounceTimer?.invalidate()
+        invalidateAllTimers()
     }
 
-    func triggerSync(when type: SyncTriggerType) {
+    func triggerSync(for type: SyncTriggerType, in interval: TimeInterval = 0) {
         guard accountService?.activeAccount != nil else { return }
 
-        startDebounceTimer()
-        if type == .userDidInitiateSync {
+        if type == .applicationDidFinishedLaunching &&
+            interval > poolingTimerBuffer {
+            startSyncOperation()
+        }
+
+        if type == .nodeMarkedOffline ||
+            type == .nodeRemovedFromOffline {
+            startDebounceTimer()
+        }
+
+        if type == .userDidInitiateSync ||
+            type == .userReAuthenticated {
             startSyncOperation()
         }
     }
 
-    // MARK: - Private interface
+    // MARK: - Timers
 
     private func startDebounceTimer() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.debounceTimer = nil
-            sSelf.debounceTimer = Timer.scheduledTimer(withTimeInterval: sSelf.debounceTimerBuffer,
-                                                 repeats: false,
-                                                 block: { (_) in
-                                                    sSelf.debounceTimer?.invalidate()
-                                                    sSelf.startSyncOperation()
-                                                 })
+            sSelf.debounceTimer?.invalidate()
+            sSelf.debounceTimer =
+                Timer.scheduledTimer(withTimeInterval: sSelf.debounceTimerBuffer,
+                                     repeats: false,
+                                     block: { (_) in
+                                        guard let sSelf = self else { return }
+                                        sSelf.debounceTimer?.invalidate()
+                                        sSelf.startSyncOperation()
+                                     })
         }
     }
 
-    private func startSyncOperation() {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        guard let syncService = self.syncService,
-              let nodes = listNodeDataAccessor.queryMarkedOffline(),
-              syncService.syncServiceStatus == .idle,
-              accountService?.activeAccount != nil,
-              isSyncAllowedOverCellularData() == true else { return }
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
+    private func startPoolingTrigger() {
+        DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-
-            if authenticationProvider.areCredentialsValid() {
-                UserProfile.allowOnceSyncOverCellularData = false
-                sSelf.poolingTimer?.invalidate()
-                syncService.sync(nodeList: nodes)
-                sSelf.observeSyncStatusOperation()
-            }
-        })
+            sSelf.poolingTimer?.invalidate()
+            sSelf.poolingTimer =
+                Timer.scheduledTimer(withTimeInterval: sSelf.poolingTimerBuffer,
+                                     repeats: true,
+                                     block: { (_) in
+                                        guard let sSelf = self else { return }
+                                        sSelf.poolingTimer?.invalidate()
+                                        sSelf.startSyncOperation()
+                                     })
+        }
     }
+
+    private func invalidateAllTimers() {
+        poolingTimer?.invalidate()
+        debounceTimer?.invalidate()
+    }
+
+    // MARK: - KVO
 
     private func observeSyncStatusOperation() {
         kvoSyncStatus =
@@ -138,7 +153,6 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                     guard let sSelf = self,
                                           newValue.syncServiceStatus == .idle
                                     else { return }
-
                                     sSelf.startPoolingTrigger()
                                  })
     }
@@ -148,42 +162,54 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             connectivityService?.observe(\.status,
                                          options: [.new],
                                          changeHandler: { [weak self] (_, _) in
-                guard let sSelf = self else { return }
-                sSelf.connectivityStatusChanged()
-            })
+                                            guard let sSelf = self else { return }
+                                            sSelf.connectivityStatusChanged()
+                                         })
     }
 
-    private func startPoolingTrigger() {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.poolingTimer?.invalidate()
-            sSelf.poolingTimer = Timer.scheduledTimer(withTimeInterval: sSelf.poolingTimerBuffer,
-                                                      repeats: true,
-                                                      block: { (_) in
-                sSelf.poolingTimer?.invalidate()
-                sSelf.triggerSync(when: .poolingTimer)
-            })
+    // MARK: - Private Interface
+
+    private func startSyncOperation() {
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        guard let syncService = self.syncService,
+              let nodes = listNodeDataAccessor.queryMarkedOffline(),
+              syncService.syncServiceStatus == .idle,
+              accountService?.activeAccount != nil else { return }
+
+        if isSyncAllowedOverConnectivity() == false {
+            syncDidTriedToStart = true
+            return
         }
+
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
+            guard let sSelf = self else { return }
+
+            if authenticationProvider.areCredentialsValid() {
+                UserProfile.allowOnceSyncOverCellularData = false
+                sSelf.invalidateAllTimers()
+                sSelf.syncDidTriedToStart = false
+                syncService.sync(nodeList: nodes)
+            }
+        })
     }
 
     private func connectivityStatusChanged() {
         switch connectivityService?.status {
-        case .wifi:
-            triggerSync(when: .reachableOverWifi)
-        case .cellular:
-            if isSyncAllowedOverCellularData() {
-                triggerSync(when: .reachableOverCellularData)
+        case .wifi, .cellular:
+            if isSyncAllowedOverConnectivity() {
+                if syncDidTriedToStart == true {
+                    startSyncOperation()
+                }
             } else {
-                debounceTimer?.invalidate()
                 syncService?.stopSync()
             }
         default:
-            debounceTimer?.invalidate()
+            invalidateAllTimers()
             syncService?.stopSync()
         }
     }
 
-    private func isSyncAllowedOverCellularData() -> Bool {
+    private func isSyncAllowedOverConnectivity() -> Bool {
         guard connectivityService?.status == .cellular else { return true }
         if UserProfile.allowSyncOverCellularData ||
             UserProfile.allowOnceSyncOverCellularData {

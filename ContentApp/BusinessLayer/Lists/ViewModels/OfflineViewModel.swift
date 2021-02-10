@@ -65,7 +65,7 @@ class OfflineViewModel: PageFetchingViewModel {
             guard let sSelf = self else { return }
             UserProfile.allowOnceSyncOverCellularData = true
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+            syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
 
@@ -148,7 +148,7 @@ extension OfflineViewModel: ListViewModelProtocol {
             showOverrideSyncOnCellularDataDialog()
         } else {
             let syncTriggersService = coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(when: .userDidInitiateSync)
+            syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
     }
 

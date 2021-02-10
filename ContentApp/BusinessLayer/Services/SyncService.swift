@@ -89,8 +89,12 @@ let maxConcurrentSyncOperationCount = 3
             sSelf.delegate?.syncDidStarted()
             sSelf.syncServiceStatus = .fetchingNodeDetails
             let nodeDetailsOperations = sSelf.syncOperationFactory.fileNodeDetailsOperations(nodes: nodeList)
-            sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
-                                                   waitUntilFinished: false)
+            if nodeDetailsOperations.isEmpty {
+                sSelf.processNodeDetails()
+            } else {
+                sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
+                                                       waitUntilFinished: false)
+            }
             sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
                                                                            on: sSelf.syncOperationQueue)
         }
