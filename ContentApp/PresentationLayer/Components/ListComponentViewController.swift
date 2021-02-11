@@ -227,6 +227,7 @@ class ListComponentViewController: SystemThemableViewController {
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
         }
+        listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
     }
 }
 

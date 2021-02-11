@@ -62,18 +62,12 @@ class NodeActionsViewModel {
     // MARK: - Actions Request Helpers
 
     private func request(action: ActionMenu) {
-        let accountService = coordinatorServices?.accountService
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            if let handler = sSelf.actionFinishedHandler {
-                DispatchQueue.main.async {
-                    handler()
-                }
+        if let handler = actionFinishedHandler {
+            DispatchQueue.main.async {
+                handler()
             }
-
-            sSelf.handle(action: action)
-        })
+        }
+        handle(action: action)
     }
 
     private func handle(action: ActionMenu) {
@@ -95,24 +89,30 @@ class NodeActionsViewModel {
     }
 
     private func handleFavorite(action: ActionMenu) {
-        switch action.type {
-        case .addFavorite:
-            requestAddToFavorites(action: action)
-        case .removeFavorite:
-            requestRemoveFromFavorites(action: action)
-        default: break
+        sessionForCurrentAccount { [weak self] (_) in
+            guard let sSelf = self else { return }
+            switch action.type {
+            case .addFavorite:
+                sSelf.requestAddToFavorites(action: action)
+            case .removeFavorite:
+                sSelf.requestRemoveFromFavorites(action: action)
+            default: break
+            }
         }
     }
 
     private func handleMove(action: ActionMenu) {
-        switch action.type {
-        case .moveTrash:
-            requestMoveToTrash(action: action)
-        case .restore:
-            requestRestoreFromTrash(action: action)
-        case .permanentlyDelete:
-            requestPermanentlyDelete(action: action)
-        default: break
+        sessionForCurrentAccount { [weak self] (_) in
+            guard let sSelf = self else { return }
+            switch action.type {
+            case .moveTrash:
+                sSelf.requestMoveToTrash(action: action)
+            case .restore:
+                sSelf.requestRestoreFromTrash(action: action)
+            case .permanentlyDelete:
+                sSelf.requestPermanentlyDelete(action: action)
+            default: break
+            }
         }
     }
 
@@ -325,7 +325,7 @@ class NodeActionsViewModel {
                     let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
                     var downloadURL = URL(fileURLWithPath: downloadPath)
                     downloadURL.appendPathComponent(node.title)
-
+                    sSelf.sessionForCurrentAccount { (_) in
                     downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
                                                                            to: downloadURL,
                                                                            completionHandler: { destinationURL, error in
@@ -342,10 +342,20 @@ class NodeActionsViewModel {
                     }
                 )}
             }
+            }
         }
     }
 
     // MARK: - Helpers
+
+    func sessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
+        let accountService = coordinatorServices?.accountService
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            completionHandler(authenticationProvider)
+        })
+    }
 
     private func handleResponse(error: Error?, action: ActionMenu) {
         if let error = error {
