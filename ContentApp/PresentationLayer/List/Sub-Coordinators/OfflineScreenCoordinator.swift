@@ -74,7 +74,10 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                 self.offlineFolderChildrenScreenCoordinator = coordinator
             case .file, .fileLink:
                 let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                               listNode: node)
+                                                               listNode: node,
+                                                               excludedActions: [.moveTrash,
+                                                                                 .addFavorite,
+                                                                                 .removeFavorite])
                 coordinator.start()
                 self.filePreviewCoordinator = coordinator
 
@@ -87,7 +90,10 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                          coordinatorServices: coordinatorServices)
+                                                          coordinatorServices: coordinatorServices,
+                                                          excludedActionTypes: [.moveTrash,
+                                                                                .addFavorite,
+                                                                                .removeFavorite])
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
