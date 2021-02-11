@@ -24,6 +24,7 @@ import Alamofire
 class NodeOperations {
     var accountService: AccountService?
     var renditionTimer: Timer?
+    var downloader: BackgroundDownloader?
 
     // MARK: - Init
 
@@ -90,7 +91,7 @@ class NodeOperations {
 
     func downloadContent(for node: ListNode,
                          to destinationURL: URL,
-                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
+                         completionHandler: @escaping DownloadHandler) -> URLSessionDownloadTask? {
         let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
         let downloadURL = URL(string: requestBuilder.URLString)
 
@@ -105,36 +106,12 @@ class NodeOperations {
 
     func downloadContent(from url: URL,
                          to destinationURL: URL,
-                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            return (destinationURL, [.removePreviousFile])
-        }
-
-        return Alamofire.download(url,
-                                  parameters: nil,
-                                  headers: AlfrescoContentAPI.customHeaders,
-                                  to: destination).response { response in
-                                    if let destinationUrl = response.destinationURL,
-                                       let httpURLResponse = response.response {
-                                        if (200...299).contains(httpURLResponse.statusCode) {
-                                            completionHandler(destinationUrl, nil)
-                                        } else {
-                                            let error = APIError(domain: "",
-                                                                 code: httpURLResponse.statusCode)
-                                            completionHandler(nil, error)
-                                        }
-                                    } else {
-                                        if response.error?.code == NSURLErrorNetworkConnectionLost ||
-                                            response.error?.code == NSURLErrorCancelled {
-                                            completionHandler(nil, nil)
-                                        } else {
-                                            let error = APIError(domain: "",
-                                                                 error: response.error)
-                                            completionHandler(nil, error)
-                                        }
-                                    }
-                                  }
-
+                         completionHandler: @escaping DownloadHandler) -> URLSessionDownloadTask? {
+        downloader = BackgroundDownloader(from: url,
+                                              downloadTo: destinationURL,
+                                              headers: AlfrescoContentAPI.customHeaders,
+                                              completionHandler: completionHandler)
+        return downloader?.download()
     }
 
     func fetchContentURL(for node: ListNode?) -> URL? {

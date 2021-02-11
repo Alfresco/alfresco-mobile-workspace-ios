@@ -70,6 +70,7 @@
 		B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */; };
 		B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */; };
 		B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */; };
+		B9ACEF6425D2AB1200EF46AD /* BackgroundDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ACEF6325D2AB1200EF46AD /* BackgroundDownloader.swift */; };
 		B9AE0BB924C03D170001289C /* NavigationRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AE0BB824C03D170001289C /* NavigationRoutes.swift */; };
 		B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */; };
 		B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */; };
@@ -367,6 +368,7 @@
 		B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFetchingViewModel.swift; sourceTree = "<group>"; };
 		B9AC16D024B32E520084F929 /* NavigationURLPathComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationURLPathComponent.swift; sourceTree = "<group>"; };
 		B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
+		B9ACEF6325D2AB1200EF46AD /* BackgroundDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundDownloader.swift; sourceTree = "<group>"; };
 		B9AE0BB824C03D170001289C /* NavigationRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoutes.swift; sourceTree = "<group>"; };
 		B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFetchableCollectionView.swift; sourceTree = "<group>"; };
 		B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpConnectScreenModel.swift; sourceTree = "<group>"; };
@@ -763,6 +765,7 @@
 				B96B9AF52480FCAA0035AE97 /* ApplicationBootstrap */,
 				B91A5E46247825CF0063E938 /* ServiceRepository */,
 				E30ADEF424A1EB7400C8C4E2 /* DiskService.swift */,
+				B9ACEF6325D2AB1200EF46AD /* BackgroundDownloader.swift */,
 			);
 			path = DataAccessLayer;
 			sourceTree = "<group>";
@@ -2132,6 +2135,7 @@
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				B9ECECFA254302420097DB3F /* NodeEvent.swift in Sources */,
 				E3A9B235251884D700A548E7 /* PlainTextPreview.swift in Sources */,
+				B9ACEF6425D2AB1200EF46AD /* BackgroundDownloader.swift in Sources */,
 				B9233F6B25A5C700006EA4DA /* ListNodeDataAccessor.swift in Sources */,
 				E3A7F32D258A5B880089734D /* OfflineScreenCoordinator.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
@@ -2448,7 +2452,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2472,7 +2476,7 @@
 				CURRENT_PROJECT_VERSION = 2.0;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

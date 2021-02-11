@@ -20,6 +20,7 @@ import Foundation
 
 enum SyncTriggerType: String {
     case applicationDidFinishedLaunching
+    case backgroundSync
     case nodeMarkedOffline
     case nodeRemovedFromOffline
     case userReAuthenticated

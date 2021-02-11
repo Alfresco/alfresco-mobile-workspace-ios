@@ -298,7 +298,7 @@ class NodeActionsViewModel {
 
     private func requestDownload(action: ActionMenu) {
         var downloadDialog: MDCAlertController?
-        var downloadRequest: DownloadRequest?
+        var downloadTask: URLSessionDownloadTask?
 
         guard let accountIdentifier = coordinatorServices?.accountService?.activeAccount?.identifier else { return }
         guard let node = self.node else { return }
@@ -318,7 +318,7 @@ class NodeActionsViewModel {
             mainQueue.async { [weak self] in
                 guard let sSelf = self else { return }
                 downloadDialog = sSelf.showDownloadDialog(actionHandler: { _ in
-                    downloadRequest?.cancel()
+                    downloadTask?.cancel()
                 })
 
                 workerQueue.async {
@@ -326,7 +326,7 @@ class NodeActionsViewModel {
                     var downloadURL = URL(fileURLWithPath: downloadPath)
                     downloadURL.appendPathComponent(node.title)
 
-                    downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
+                    downloadTask = sSelf.nodeOperations.downloadContent(for: node,
                                                                            to: downloadURL,
                                                                            completionHandler: { destinationURL, error in
                         mainQueue.asyncAfter(deadline: .now() + sSelf.sheetDismissDelay, execute: {

@@ -18,14 +18,19 @@
 
 import UIKit
 import Firebase
+import BackgroundTasks
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private var applicationCoordinator: ApplicationCoordinator?
     var orientationLock = UIInterfaceOrientationMask.all
+
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
+
+    var backgroundTask: BGAppRefreshTask?
+    var backgroundCompletionHandler: (() -> Void)?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -46,6 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
+
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.alfresco.contentapp.sync",
+                                        using: nil) { task in
+            if let task = task as? BGAppRefreshTask {
+                self.handleSyncRefresh(task: task)
+            }
+        }
 
         return true
     }
@@ -95,5 +107,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
+    }
+
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        scheduleSyncRefresh()
+    }
+
+    func application(_ application: UIApplication,
+                     handleEventsForBackgroundURLSession identifier: String,
+                     completionHandler: @escaping () -> Void) {
+        backgroundCompletionHandler = completionHandler
+    }
+
+    func scheduleSyncRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "com.alfresco.contentapp.sync")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
+
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+
+        print("Task submitted")
+    }
+
+    func handleSyncRefresh(task: BGAppRefreshTask) {
+        scheduleSyncRefresh()
+
+        let repository = applicationCoordinator?.repository
+        let syncService = repository?.service(of: SyncService.identifier) as? SyncService
+        syncService?.delegate = self
+
+        let listNodeDataAccessor = ListNodeDataAccessor()
+        if let nodes = listNodeDataAccessor.queryMarkedOffline() {
+            syncService?.sync(nodeList: nodes)
+        }
+
+        task.expirationHandler = {
+            syncService?.stopSync()
+        }
+
+        backgroundTask = task
+    }
+}
+
+extension AppDelegate: SyncServiceDelegate {
+    func syncDidStarted() {
+        // Do nothing
+    }
+
+    func syncDidFinished() {
+        backgroundTask?.setTaskCompleted(success: true)
     }
 }
