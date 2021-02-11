@@ -332,8 +332,15 @@ class NodeActionsViewModel {
                         mainQueue.asyncAfter(deadline: .now() + sSelf.sheetDismissDelay, execute: {
                             downloadDialog?.dismiss(animated: true,
                                                     completion: {
-                                                        sSelf.handleResponse(error: error,
-                                                                             action: action)
+                                                        if error?.code == NSURLErrorNetworkConnectionLost ||
+                                                            error?.code == NSURLErrorCancelled {
+                                                            sSelf.handleResponse(error: nil,
+                                                                                 action: action)
+                                                        } else {
+                                                            sSelf.handleResponse(error: error,
+                                                                                 action: action)
+                                                        }
+
                                                         if let url = destinationURL {
                                                             sSelf.displayActivityViewController(for: url)
                                                         }

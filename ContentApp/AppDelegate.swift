@@ -30,7 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInForegroundTimestamp: TimeInterval?
 
     var backgroundTask: BGAppRefreshTask?
-    var backgroundCompletionHandler: (() -> Void)?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -87,10 +86,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        enterInBackgroundTimestamp = Date().timeIntervalSince1970
-    }
-
     func application(_ app: UIApplication,
                      open url: URL,
                      options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -110,13 +105,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
+        enterInBackgroundTimestamp = Date().timeIntervalSince1970
         scheduleSyncRefresh()
     }
 
     func application(_ application: UIApplication,
                      handleEventsForBackgroundURLSession identifier: String,
                      completionHandler: @escaping () -> Void) {
-        backgroundCompletionHandler = completionHandler
+        BackgroundDownloader.backgroundCompletionHandler = completionHandler
     }
 
     func scheduleSyncRefresh() {

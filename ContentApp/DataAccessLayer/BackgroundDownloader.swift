@@ -19,49 +19,66 @@
 import Foundation
 import AlfrescoCore
 
-typealias DownloadHandler = (URL?, APIError?) -> Void
+typealias DownloadHandler = (URL?, Error?) -> Void
+typealias BackgroundCompletionHandler = (() -> Void)
 
-class BackgroundDownloader: NSObject {
-    private lazy var urlSession: URLSession = {
-        let identifier = Bundle.main.bundleIdentifier! + ".background"
-        let config = URLSessionConfiguration.background(withIdentifier: identifier)
-//        config.isDiscretionary = true
-        config.sessionSendsLaunchEvents = true
+protocol BackgroundDownloaderProtocol {
+    /// Initializez background downloader class with request related information.
+    /// - Parameters:
+    ///   - url: URL from where to download the file
+    ///   - destinationURL: URL where the downloaded file will be saved
+    ///   - headers: Request headers, usually reserved for authentication parameters
+    ///   - completionHandler: Handler executed when the request finishes successfully or
+    ///                        encounters an error
+    init(from url: URL,
+         downloadTo destinationURL: URL,
+         headers: [String: String],
+         completionHandler: @escaping DownloadHandler)
 
-        return URLSession(configuration: config,
-                          delegate: self,
-                          delegateQueue: nil)
-    }()
+    /// Starts a download and returns the associated task for further control over it.
+    func download() -> URLSessionDownloadTask?
+}
 
+class BackgroundDownloader: NSObject, BackgroundDownloaderProtocol {
+    public var isDiscretionary = false {
+        didSet {
+            // Need to recreate session object with new setting
+            BackgroundDownloader.urlSession = createSession()
+        }
+    }
     private let destinationURL: URL
     private let originURL: URL
     private let completionHandler: DownloadHandler
     private var backgroundTask: URLSessionDownloadTask?
     private let headers: [String: String]
 
-    deinit {
-        urlSession.finishTasksAndInvalidate()
-    }
+    static var urlSession: URLSession = URLSession(configuration: .default)
+    static var backgroundCompletionHandler: BackgroundCompletionHandler?
 
-    init(from url: URL,
-         downloadTo destinationURL: URL,
-         headers: [String: String],
-         completionHandler: @escaping DownloadHandler) {
+    // MARK: - Public interface
+
+    required init(from url: URL,
+                  downloadTo destinationURL: URL,
+                  headers: [String: String],
+                  completionHandler: @escaping DownloadHandler) {
         originURL = url
         self.destinationURL = destinationURL
         self.completionHandler = completionHandler
         self.headers = headers
+        super.init()
+
+        BackgroundDownloader.urlSession = createSession()
     }
 
     func download() -> URLSessionDownloadTask? {
         do {
             let request = try URLRequest(url: originURL,
-                                     method: .get,
-                                     headers: headers)
-            backgroundTask = urlSession.downloadTask(with: request)
+                                         method: .get,
+                                         headers: headers)
+            backgroundTask = BackgroundDownloader.urlSession.downloadTask(with: request)
 
-            let resourceValues = try originURL.resourceValues(forKeys: [.fileSizeKey])
-            if let fileSize = resourceValues.fileSize {
+            let resourceValues = try originURL.resourceValues(forKeys: [.totalFileSizeKey])
+            if let fileSize = resourceValues.totalFileSize {
                 backgroundTask?.countOfBytesClientExpectsToSend = 200
                 backgroundTask?.countOfBytesClientExpectsToReceive = Int64(fileSize)
             }
@@ -70,14 +87,31 @@ class BackgroundDownloader: NSObject {
         backgroundTask?.resume()
         return backgroundTask
     }
+
+    // MARK: - Private interface
+
+    private func createSession() -> URLSession {
+        let identifier = Bundle.main.bundleIdentifier! + ".background" + randomString(numberOfDigits: 10)
+        let config = URLSessionConfiguration.background(withIdentifier: identifier)
+        config.isDiscretionary = isDiscretionary
+        config.sessionSendsLaunchEvents = true
+
+        return URLSession(configuration: config,
+                          delegate: self,
+                          delegateQueue: nil)
+    }
+
+    private func randomString(numberOfDigits: Int) -> String {
+        let digits = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
+        return String(Array(0..<numberOfDigits).map { _ in digits.randomElement()! })
+    }
 }
 
 extension BackgroundDownloader: URLSessionDelegate, URLSessionDownloadDelegate {
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         DispatchQueue.main.async {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-                  let backgroundCompletionHandler =
-                    appDelegate.backgroundCompletionHandler else {
+            guard let backgroundCompletionHandler = BackgroundDownloader.backgroundCompletionHandler
+                     else {
                 return
             }
             backgroundCompletionHandler()
@@ -87,15 +121,10 @@ extension BackgroundDownloader: URLSessionDelegate, URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession,
                     task: URLSessionTask,
                     didCompleteWithError error: Error?) {
-        if let httpURLResponse = task.response as? HTTPURLResponse {
-            if error?.code == NSURLErrorNetworkConnectionLost ||
-                error?.code == NSURLErrorCancelled {
-                completionHandler(nil, nil)
-            } else {
-                let error = APIError(domain: "",
-                                     code: httpURLResponse.statusCode)
-                completionHandler(nil, error)
-            }
+        if error != nil {
+            completionHandler(nil, error)
+        } else {
+            completionHandler(destinationURL, nil)
         }
     }
 
@@ -108,10 +137,9 @@ extension BackgroundDownloader: URLSessionDelegate, URLSessionDownloadDelegate {
             try fileManager.createDirectory(atPath: parentDir.path,
                                             withIntermediateDirectories: true,
                                             attributes: nil)
-            _ = try fileManager.replaceItemAt(location,
-                                          withItemAt: destinationURL,
-                                          backupItemName: location.lastPathComponent)
-            completionHandler(destinationURL, nil)
+            _ = try fileManager.replaceItemAt(destinationURL,
+                                              withItemAt: location,
+                                              backupItemName: location.lastPathComponent)
         } catch _ {
             let error = APIError(domain: "")
             completionHandler(nil, error)
