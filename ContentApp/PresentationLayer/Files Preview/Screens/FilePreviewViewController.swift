@@ -30,9 +30,6 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewStatusLabel: UILabel!
     @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
-    @IBOutlet weak var toolbar: UIToolbar!
-    var toolbarActions: [UIBarButtonItem]?
-
     var needsContraintsForFullScreen = false
 
     var filePreviewViewModel: FilePreviewViewModel?
@@ -55,6 +52,8 @@ class FilePreviewViewController: SystemThemableViewController {
 
         title = filePreviewViewModel?.listNode?.title
         filePreviewViewModel?.requestUpdateNodeDetails()
+
+        addMoreButtonAction()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -94,45 +93,35 @@ class FilePreviewViewController: SystemThemableViewController {
 
     // MARK: - IBActions
 
-    @objc func toolbarActionTapped(sender: UIBarButtonItem) {
-        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else {
-            return
+    @objc func moreButtonTapped() {
+        if let node = filePreviewViewModel?.listNode {
+            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
+                                                                       delegate: self)
         }
-
-        let action = actions[sender.tag]
-        filePreviewViewModel?.nodeActionsViewModel?.tapped(on: action,
-                                                           finished: {})
     }
 
     // MARK: - Private Helpers
 
-    private func addToolbarActions() {
-        guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else {
-            return
-        }
+    private func addMoreButtonAction() {
+        let aspectRatio: CGFloat = 30.0
+        let moreButton = UIButton(type: .custom)
+        moreButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: aspectRatio,
+                                    height: aspectRatio)
+        moreButton.imageView?.contentMode = .scaleAspectFill
+        moreButton.layer.cornerRadius = aspectRatio / 2
+        moreButton.layer.masksToBounds = true
+        moreButton.addTarget(self, action: #selector(moreButtonTapped),
+                             for: UIControl.Event.touchUpInside)
+        moreButton.setImage(UIImage(named: "ic-action-more"), for: .normal)
 
-        var array = [UIBarButtonItem]()
-        for action in actions {
-            let button = UIBarButtonItem(image: action.icon,
-                                         style: .plain,
-                                         target: self,
-                                         action: #selector(toolbarActionTapped(sender:)))
-            button.tag = array.count
-            button.image = action.icon
-            array.append(button)
-        }
-        self.toolbarActions = array
-        var toolbarActions = [UIBarButtonItem]()
-        for button in array {
-            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                                  target: nil,
-                                                  action: nil))
-            toolbarActions.append(button)
-            toolbarActions.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace,
-                                                  target: nil,
-                                                  action: nil))
-        }
-        toolbar.items = toolbarActions
+        let barButton = UIBarButtonItem(customView: moreButton)
+        let currWidth = barButton.customView?.widthAnchor.constraint(equalToConstant: aspectRatio)
+        currWidth?.isActive = true
+        let currHeight = barButton.customView?.heightAnchor.constraint(equalToConstant: aspectRatio)
+        currHeight?.isActive = true
+
+        self.navigationItem.rightBarButtonItem = barButton
     }
 
     private func activateContraintsToSuperview() {
@@ -167,9 +156,6 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewStatusLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
-
-        toolbar.barTintColor = currentTheme.surfaceColor
-        toolbar.tintColor = currentTheme.onSurface60Color
     }
 
     private func applyTheme(for dialog: MDCAlertController) {
@@ -267,27 +253,14 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     }
 
     func update(listNode: ListNode) {
-        if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
-            let icon = (listNode.favorite ?? false) ? ActionMenuType.removeFavorite.rawValue :
-                ActionMenuType.addFavorite.rawValue
-            toolbarActions?[index].image = UIImage(named: icon)
-        }
-        if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
-            let icon = (listNode.favorite ?? false ) ? ActionMenuType.removeFavorite.rawValue :
-                ActionMenuType.addFavorite.rawValue
-            toolbarActions?[index].image = UIImage(named: icon)
-        }
     }
 
     func didFinishNodeDetails(error: Error?) {
         if error != nil {
             Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
                              type: .error, automaticallyDismisses: false, finish: nil)
-            toolbar.isHidden = true
         } else {
-            toolbar.isHidden = false
             filePreviewViewModel?.nodeActionsViewModel?.delegate = self
-            addToolbarActions()
             filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
             filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.title
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode)
@@ -307,25 +280,13 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         } else {
             guard let action = action else { return }
 
-            if action.type.isGenericActions {
-                handleGeneric(action: action, node: node)
-            } else if action.type.isFavoriteActions {
+            if action.type.isFavoriteActions {
                 handleFavorite(action: action)
             } else if action.type.isMoveActions {
                 handleMove(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             }
-        }
-    }
-
-    func handleGeneric(action: ActionMenu, node: ListNode?) {
-        guard let node = node else { return }
-        switch action.type {
-        case .more:
-            filePreviewCoordinatorDelegate?.showActionSheetForListItem(node: node,
-                                                                       delegate: self)
-        default: break
         }
     }
 
@@ -398,7 +359,6 @@ extension FilePreviewViewController: FilePreviewDelegate {
         containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
         navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
         setNeedsStatusBarAppearanceUpdate()
-        toolbar.isHidden = enable
     }
 }
 

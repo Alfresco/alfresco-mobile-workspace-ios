@@ -1355,7 +1355,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T1Q-0N-hv3">
-                                <rect key="frame" x="0.0" y="44" width="428" height="792"/>
+                                <rect key="frame" x="0.0" y="44" width="428" height="848"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0F-3a-ePc">
@@ -1395,35 +1395,23 @@
                                     <constraint firstItem="cN8-0a-TbF" firstAttribute="centerX" secondItem="F0F-3a-ePc" secondAttribute="centerX" id="wXj-D6-sFy"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleAspectFit" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pmp-xR-at1">
-                                <rect key="frame" x="0.0" y="836" width="428" height="56"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="56" id="eIq-A3-hX0"/>
-                                </constraints>
-                                <items/>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </toolbar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Nm8-k5-tkg"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="F0F-3a-ePc" firstAttribute="centerX" secondItem="FKD-KB-WFW" secondAttribute="centerX" id="1FJ-n9-ZTV"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="5eY-jD-hoj"/>
-                            <constraint firstItem="Pmp-xR-at1" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="CaC-fp-hcv"/>
-                            <constraint firstItem="Nm8-k5-tkg" firstAttribute="bottom" secondItem="Pmp-xR-at1" secondAttribute="bottom" id="HSO-8q-C4q"/>
                             <constraint firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="Kyh-x1-Xub"/>
                             <constraint firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="L3T-gS-byg"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="Nm8-k5-tkg" secondAttribute="top" id="O19-eL-B9B"/>
                             <constraint firstItem="Nm8-k5-tkg" firstAttribute="trailing" secondItem="T1Q-0N-hv3" secondAttribute="trailing" id="P4Q-uf-vVr"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="Nm8-k5-tkg" secondAttribute="leading" id="W6J-Ue-6kc"/>
-                            <constraint firstItem="Pmp-xR-at1" firstAttribute="top" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="XQL-cq-uKo"/>
                             <constraint firstItem="pCa-oq-KHf" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="anM-WD-1xe"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="leading" secondItem="FKD-KB-WFW" secondAttribute="leading" id="dLG-Wz-dlS"/>
                             <constraint firstItem="T1Q-0N-hv3" firstAttribute="top" secondItem="FKD-KB-WFW" secondAttribute="top" id="iJZ-jq-SmT"/>
                             <constraint firstAttribute="trailing" secondItem="pCa-oq-KHf" secondAttribute="trailing" id="oJ5-Tf-Zly"/>
-                            <constraint firstItem="Pmp-xR-at1" firstAttribute="trailing" secondItem="FKD-KB-WFW" secondAttribute="trailing" id="rbn-Nr-LJo"/>
                             <constraint firstItem="F0F-3a-ePc" firstAttribute="centerY" secondItem="FKD-KB-WFW" secondAttribute="centerY" id="v8x-mr-DeR"/>
+                            <constraint firstItem="Nm8-k5-tkg" firstAttribute="bottom" secondItem="T1Q-0N-hv3" secondAttribute="bottom" id="yHy-EX-w2o"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -1441,15 +1429,14 @@
                         <outlet property="filePreviewTitleLabel" destination="cN8-0a-TbF" id="xJ1-7G-BNO"/>
                         <outlet property="mimeTypeImageView" destination="Omh-yg-bT9" id="0Lp-mU-S1q"/>
                         <outlet property="progressView" destination="pCa-oq-KHf" id="oZk-qk-eDn"/>
-                        <outlet property="toolbar" destination="Pmp-xR-at1" id="ziE-vF-X2f"/>
                         <outletCollection property="previewContraintsToSafeArea" destination="P4Q-uf-vVr" collectionClass="NSMutableArray" id="bPq-6m-h0n"/>
-                        <outletCollection property="previewContraintsToSafeArea" destination="XQL-cq-uKo" collectionClass="NSMutableArray" id="D0Q-hi-e95"/>
                         <outletCollection property="previewContraintsToSafeArea" destination="O19-eL-B9B" collectionClass="NSMutableArray" id="oiH-KB-eQZ"/>
                         <outletCollection property="previewContraintsToSafeArea" destination="W6J-Ue-6kc" collectionClass="NSMutableArray" id="OOL-4R-ABf"/>
                         <outletCollection property="previewContraintsToSuperview" destination="Kyh-x1-Xub" collectionClass="NSMutableArray" id="ipR-8Z-5yT"/>
                         <outletCollection property="previewContraintsToSuperview" destination="L3T-gS-byg" collectionClass="NSMutableArray" id="61I-4u-PNv"/>
                         <outletCollection property="previewContraintsToSuperview" destination="dLG-Wz-dlS" collectionClass="NSMutableArray" id="6zc-yk-eAr"/>
                         <outletCollection property="previewContraintsToSuperview" destination="iJZ-jq-SmT" collectionClass="NSMutableArray" id="Ive-GM-7NZ"/>
+                        <outletCollection property="previewContraintsToSafeArea" destination="yHy-EX-w2o" collectionClass="NSMutableArray" id="0Ob-JN-Sim"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fRJ-WK-LdC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

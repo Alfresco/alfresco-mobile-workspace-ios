@@ -89,7 +89,6 @@ class FilePreviewViewModel {
                 sSelf.listNode = listNode
                 sSelf.actionMenuViewModel =
                     ActionMenuViewModel(node: listNode,
-                                        toolbarDisplayed: true,
                                         coordinatorServices: sSelf.coordinatorServices,
                                         excludedActionTypes: sSelf.excludedActionsTypes)
                 sSelf.nodeActionsViewModel =
@@ -169,7 +168,6 @@ class FilePreviewViewModel {
             listNodeDataAccessor.isContentDownloaded(for: listNode) {
 
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
-                                                      toolbarDisplayed: true,
                                                       coordinatorServices: coordinatorServices,
                                                       excludedActionTypes: excludedActionsTypes)
             nodeActionsViewModel = NodeActionsViewModel(node: listNode,

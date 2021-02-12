@@ -31,20 +31,17 @@ class ActionMenuViewModel {
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
 
-    var toolbarDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
 
     init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
          node: ListNode? = nil,
-         toolbarDisplayed: Bool = false,
          coordinatorServices: CoordinatorServices?,
          excludedActionTypes: [ActionMenuType] = []) {
 
         self.listNode = node
         self.menuActions = menuActions
-        self.toolbarDisplayed = toolbarDisplayed
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.excludedActions = excludedActionTypes
@@ -55,10 +52,6 @@ class ActionMenuViewModel {
                                             icon: FileIcon.icon(for: listNode))],
                                 [ActionMenu(title: "", type: .placeholder),
                                  ActionMenu(title: "", type: .placeholder)]]
-            if toolbarDisplayed {
-                self.createMenuActions()
-                self.divideForToolbarActions()
-            }
         }
     }
 
@@ -66,10 +59,6 @@ class ActionMenuViewModel {
 
     func fetchNodeInformation() {
         guard let listNode = self.listNode else {
-            delegate?.finishProvideActions()
-            return
-        }
-        if toolbarDisplayed {
             delegate?.finishProvideActions()
             return
         }
@@ -152,27 +141,5 @@ class ActionMenuViewModel {
             guard let sSelf = self else { return }
             sSelf.delegate?.finishProvideActions()
         }
-    }
-
-    private func divideForToolbarActions() {
-        var toolActions = [ActionMenu]()
-        for index in 0...menuActions.count - 1 {
-            for action in menuActions[index] where
-                action.type == .removeFavorite ||
-                action.type == .addFavorite {
-                toolActions.append(action)
-            }
-            for action in menuActions[index] where
-                action.type == .download {
-                toolActions.append(action)
-            }
-        }
-        addActionToOpenMenu(in: toolActions)
-    }
-
-    private func addActionToOpenMenu(in array: [ActionMenu]?) {
-        guard var array = array else { return }
-        array.append(ActionMenu(title: "", type: .more))
-        toolbarActions = array
     }
 }
