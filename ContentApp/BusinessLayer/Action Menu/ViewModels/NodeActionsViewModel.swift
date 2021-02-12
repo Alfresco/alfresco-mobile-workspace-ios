@@ -129,8 +129,6 @@ class NodeActionsViewModel {
     }
 
     private func requestMarkOffline(action: ActionMenu) {
-        handleResponse(error: nil, action: action)
-
         if let node = self.node {
             node.syncStatus = .pending
             node.markedAsOffline = true
@@ -145,11 +143,10 @@ class NodeActionsViewModel {
 
             coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeMarkedOffline)
         }
+        handleResponse(error: nil, action: action)
     }
 
     private func requestRemoveOffline(action: ActionMenu) {
-        handleResponse(error: nil, action: action)
-
         if let node = self.node {
             if let queriedNode = listNodeDataAccessor.query(node: node) {
                 queriedNode.markedAsOffline = false
@@ -167,6 +164,7 @@ class NodeActionsViewModel {
 
             coordinatorServices?.syncTriggersService?.triggerSync(for: .nodeRemovedFromOffline)
         }
+        handleResponse(error: nil, action: action)
     }
 
     private func requestAddToFavorites(action: ActionMenu) {
