@@ -126,6 +126,8 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         handleConnectivity()
         listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
+        listActionButton.isEnabled =
+            coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
         collectionView.reloadData()
         progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
         progressView.trackTintColor =
