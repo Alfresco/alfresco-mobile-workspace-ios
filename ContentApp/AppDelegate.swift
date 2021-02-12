@@ -29,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
 
-    var backgroundTask: BGAppRefreshTask?
+    var backgroundTask: BGProcessingTask?
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.alfresco.contentapp.sync",
                                         using: nil) { task in
-            if let task = task as? BGAppRefreshTask {
+            if let task = task as? BGProcessingTask {
                 self.handleSyncRefresh(task: task)
             }
         }
@@ -116,19 +116,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func scheduleSyncRefresh() {
-        let request = BGAppRefreshTaskRequest(identifier: "com.alfresco.contentapp.sync")
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
+        let request = BGProcessingTaskRequest(identifier: "com.alfresco.contentapp.sync")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 5 * 60)
+        request.requiresNetworkConnectivity = true
 
         do {
             try BGTaskScheduler.shared.submit(request)
+            print()
         } catch {
-            print("Could not schedule app refresh: \(error)")
+            AlfrescoLog.error("Could not schedule app refresh: \(error)")
         }
-
-        print("Task submitted")
     }
 
-    func handleSyncRefresh(task: BGAppRefreshTask) {
+    func handleSyncRefresh(task: BGProcessingTask) {
         scheduleSyncRefresh()
 
         let repository = applicationCoordinator?.repository
