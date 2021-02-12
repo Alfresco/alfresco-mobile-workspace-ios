@@ -198,9 +198,9 @@ struct LocalizationConstants {
         static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
         static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
         static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
-        static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-cync-cellular-data-title", comment: "")
+        static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
 
-        static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-cync-cellular-data-message", comment: "")
+        static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
     }
 
     struct EmptyLists {
