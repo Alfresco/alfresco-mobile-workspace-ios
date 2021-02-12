@@ -177,8 +177,8 @@
 "dialog-upload-message" = "Uploading '%@'";
 "dialog-session-expired-title" = "Session expired";
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
-"dialog-override-cync-cellular-data-title" = "Use cellular data?";
-"dialog-override-cync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to wifi.";
+"dialog-override-sync-cellular-data-title" = "Use cellular data?";
+"dialog-override-sync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to Wi-Fi.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";
