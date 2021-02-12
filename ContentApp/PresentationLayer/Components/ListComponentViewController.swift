@@ -426,10 +426,10 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
         guard let node = node else { return }
         switch action.type {
         case .markOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
                                      node.truncateTailTitle())
         case .removeOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
                                      node.truncateTailTitle())
         default: break
         }

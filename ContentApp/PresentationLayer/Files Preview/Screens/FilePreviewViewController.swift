@@ -360,10 +360,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         var snackBarMessage: String?
         switch action.type {
         case .markOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
+            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
                                      node.truncateTailTitle())
         case .removeOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
+            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
                                      node.truncateTailTitle())
         default: break
         }
