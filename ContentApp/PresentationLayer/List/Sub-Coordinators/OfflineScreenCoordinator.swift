@@ -99,13 +99,23 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         }
     }
 
-    func showActionSheetForListItem(for node: ListNode, delegate: NodeActionsViewModelDelegate) {
+    func showActionSheetForListItem(for node: ListNode,
+                                    from dataSource: ListComponentDataSourceProtocol,
+                                    delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel = ActionMenuViewModel(node: node,
+            let actionMenuViewModel: ActionMenuViewModel
+
+            if dataSource === offlineDataSource?.resultsViewModel {
+                actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                              coordinatorServices: coordinatorServices)
+            } else {
+                actionMenuViewModel = ActionMenuViewModel(node: node,
                                                           coordinatorServices: coordinatorServices,
                                                           excludedActionTypes: [.moveTrash,
                                                                                 .addFavorite,
                                                                                 .removeFavorite])
+            }
+
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
