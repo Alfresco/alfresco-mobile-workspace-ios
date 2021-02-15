@@ -54,7 +54,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
 
-    private var syncDidTriedToStart: Bool = false
+    private var syncDidTriedToStartOnConnectivity: Bool = false
+    private var syncDidTriedToStartWhenSyncing: Bool = false
 
     deinit {
         kvoSyncStatus?.invalidate()
@@ -97,6 +98,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
         if type == .nodeMarkedOffline ||
             type == .nodeRemovedFromOffline {
+            syncDidTriedToStartWhenSyncing = true
             startDebounceTimer()
         }
 
@@ -153,6 +155,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                                     guard let sSelf = self,
                                           newValue.syncServiceStatus == .idle
                                     else { return }
+                                    if sSelf.syncDidTriedToStartWhenSyncing {
+                                        sSelf.startSyncOperation()
+                                    }
                                     sSelf.startPoolingTrigger()
                                  })
     }
@@ -177,7 +182,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
               accountService?.activeAccount != nil else { return }
 
         if isSyncAllowedOverConnectivity() == false {
-            syncDidTriedToStart = true
+            syncDidTriedToStartOnConnectivity = true
             return
         }
 
@@ -187,7 +192,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             if authenticationProvider.areCredentialsValid() {
                 UserProfile.allowOnceSyncOverCellularData = false
                 sSelf.invalidateAllTimers()
-                sSelf.syncDidTriedToStart = false
+                sSelf.syncDidTriedToStartOnConnectivity = false
+                sSelf.syncDidTriedToStartWhenSyncing = false
                 syncService.sync(nodeList: nodes)
             }
         })
@@ -197,7 +203,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         switch connectivityService?.status {
         case .wifi, .cellular:
             if isSyncAllowedOverConnectivity() {
-                if syncDidTriedToStart == true {
+                if syncDidTriedToStartOnConnectivity == true {
                     startSyncOperation()
                 }
             } else {

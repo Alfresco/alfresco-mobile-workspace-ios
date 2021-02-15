@@ -124,14 +124,19 @@ class ListComponentViewController: SystemThemableViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        handleConnectivity()
+
         listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
-        listActionButton.isEnabled =
-            coordinatorServices?.connectivityService?.hasInternetConnection() ?? false
+        handleConnectivity()
+
+        if coordinatorServices?.syncService?.syncServiceStatus != .idle {
+            listActionButton.isEnabled = false
+        }
+
         collectionView.reloadData()
-        progressView.progressTintColor = coordinatorServices?.themingService?.activeTheme?.primaryT1Color
-        progressView.trackTintColor =
-            coordinatorServices?.themingService?.activeTheme?.primary30T1Color
+
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        progressView.progressTintColor = activeTheme?.primaryT1Color
+        progressView.trackTintColor = activeTheme?.primary30T1Color
     }
 
     override func willTransition(to newCollection: UITraitCollection,
