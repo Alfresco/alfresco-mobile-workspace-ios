@@ -49,6 +49,9 @@ class EventBusService: EventBusServiceProtocol, Service {
             let array = NSPointerArray.weakObjects()
 
             if (observer.supportedNodeTypes?.contains(where: nodeTypes.contains)) == nil {
+                if observer.supportedNodeTypes == nil {
+                    observer.supportedNodeTypes = []
+                }
                 observer.supportedNodeTypes?.append(contentsOf: nodeTypes)
             }
 

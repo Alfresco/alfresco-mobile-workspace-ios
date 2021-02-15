@@ -22,8 +22,10 @@ import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
 protocol ListItemActionDelegate: class {
-    func showPreview(from node: ListNode)
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol)
     func showActionSheetForListItem(for node: ListNode,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate)
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
     func showNodeCreationDialog(with actionMenu: ActionMenu,
@@ -340,13 +342,18 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let node = listDataSource?.listNode(for: indexPath) else { return }
-        if listDataSource?.shouldPreview(node: node) == false { return }
-        if node.trashed == false {
-            listItemActionDelegate?.showPreview(from: node)
+        guard let dataSource = listDataSource else { return }
+        let node = dataSource.listNode(for: indexPath)
+        if dataSource.shouldPreview(node: node) == false { return }
+        if node.trashed == false,
+           let dataSource = listDataSource {
+            listItemActionDelegate?.showPreview(for: node,
+                                                from: dataSource)
             listActionDelegate?.elementTapped(node: node)
         } else {
-            listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
+            listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                               from: dataSource,
+                                                               delegate: self)
         }
     }
 }
@@ -467,8 +474,11 @@ extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeV
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
-        guard let node = element else { return }
-        listItemActionDelegate?.showActionSheetForListItem(for: node, delegate: self)
+        guard let node = element,
+              let dataSource = listDataSource else { return }
+        listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                           from: dataSource,
+                                                           delegate: self)
     }
 }
 

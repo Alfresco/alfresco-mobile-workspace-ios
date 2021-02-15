@@ -64,7 +64,8 @@ class FavoritesScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension FavoritesScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         if let navigationViewController = self.navigationViewController {
             switch node.nodeType {
             case .folder, .site, .folderLink:
@@ -85,6 +86,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

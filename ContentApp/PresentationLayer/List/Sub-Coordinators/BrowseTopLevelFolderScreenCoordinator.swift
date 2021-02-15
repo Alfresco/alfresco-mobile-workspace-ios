@@ -50,7 +50,8 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 }
 
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         switch node.nodeType {
         case .folder, .folderLink, .site:
             let folderDrillDownCoordinator =
@@ -70,6 +71,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices)
