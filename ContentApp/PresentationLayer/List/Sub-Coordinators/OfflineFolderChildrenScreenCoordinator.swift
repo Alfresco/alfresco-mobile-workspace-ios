@@ -51,7 +51,8 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 }
 
 extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         switch node.nodeType {
         case .folder:
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,

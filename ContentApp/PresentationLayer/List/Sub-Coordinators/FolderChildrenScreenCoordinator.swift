@@ -50,7 +50,8 @@ class FolderChildrenScreenCoordinator: Coordinator {
 }
 
 extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         switch node.nodeType {
         case .site, .folder, .folderLink:
             let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter,

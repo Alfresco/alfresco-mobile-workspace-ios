@@ -63,7 +63,8 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension RecentScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         if let navigationViewController = self.navigationViewController {
             switch node.nodeType {
             case .folder, .folderLink, .site:
