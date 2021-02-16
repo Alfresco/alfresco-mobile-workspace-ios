@@ -29,13 +29,16 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private let excludedActionsTypes: [ActionMenuType]
+    private let shouldPreviewLatestContent: Bool
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
-         excludedActions: [ActionMenuType] = []) {
+         excludedActions: [ActionMenuType] = [],
+         shouldPreviewLatestContent: Bool = true) {
         self.presenter = presenter
         self.listNode = listNode
-        excludedActionsTypes = excludedActions
+        self.excludedActionsTypes = excludedActions
+        self.shouldPreviewLatestContent = shouldPreviewLatestContent
     }
 
     func start() {
@@ -44,7 +47,8 @@ class FilePreviewScreenCoordinator: Coordinator {
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
                                                         coordinatorServices: coordinatorServices,
-                                                        excludedActions: excludedActionsTypes)
+                                                        excludedActions: excludedActionsTypes,
+                                                        shouldPreviewLatestContent: shouldPreviewLatestContent)
 
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices

@@ -55,6 +55,7 @@ class FilePreviewViewModel {
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     private let excludedActionsTypes: [ActionMenuType]
+    private let shouldPreviewLatestContent: Bool
     var actionMenuViewModel: ActionMenuViewModel?
     var nodeActionsViewModel: NodeActionsViewModel?
 
@@ -66,13 +67,15 @@ class FilePreviewViewModel {
     init(with listNode: ListNode,
          delegate: FilePreviewViewModelDelegate?,
          coordinatorServices: CoordinatorServices,
-         excludedActions: [ActionMenuType] = []) {
+         excludedActions: [ActionMenuType] = [],
+         shouldPreviewLatestContent: Bool) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
         self.excludedActionsTypes = excludedActions
+        self.shouldPreviewLatestContent = shouldPreviewLatestContent
     }
 
     func requestUpdateNodeDetails() {
@@ -104,7 +107,8 @@ class FilePreviewViewModel {
     func requestFilePreview(with size: CGSize?) {
         guard var size = size, let listNode = listNode else { return }
 
-        if listNodeDataAccessor.isContentDownloaded(for: listNode) {
+        if listNodeDataAccessor.isContentDownloaded(for: listNode) &&
+            shouldPreviewLatestContent == false {
             previewOffline(with: size)
             return
         }
