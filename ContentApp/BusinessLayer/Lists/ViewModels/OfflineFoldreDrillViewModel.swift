@@ -100,6 +100,13 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
         return false
     }
 
+    func shouldDisplayMoreButton(node: ListNode) -> Bool {
+        if node.nodeType == .folder {
+            return false
+        }
+        return true
+    }
+
     func performListAction() {
         // Do nothing
     }

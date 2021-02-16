@@ -63,6 +63,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
             let coordinator = FilePreviewScreenCoordinator(with: presenter,
                                                            listNode: node,
                                                            excludedActions: [.markOffline,
+                                                                             .removeOffline,
                                                                              .moveTrash,
                                                                              .addFavorite,
                                                                              .removeFavorite],
