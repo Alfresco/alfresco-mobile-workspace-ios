@@ -45,6 +45,7 @@ protocol ListComponentDataSourceProtocol: class {
     func shouldDisplayCreateButton() -> Bool
     func shouldDisplayNodePath() -> Bool
     func shouldDisplayListActionButton() -> Bool
+    func shouldDisplayMoreButton(node: ListNode) -> Bool
     func shouldEnableListActionButton() -> Bool
     func shouldPreview(node: ListNode) -> Bool
     func syncStatus(for node: ListNode) -> ListEntrySyncStatus
@@ -74,6 +75,10 @@ extension ListComponentDataSourceProtocol {
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return false
+    }
+
+    func shouldDisplayMoreButton(node: ListNode) -> Bool {
+        return true
     }
 
     func shouldPreview(node: ListNode) -> Bool {

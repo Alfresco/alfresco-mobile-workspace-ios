@@ -110,6 +110,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         cell?.delegate = self
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.syncStatus = listDataSource?.syncStatus(for: node) ?? .undefined
+        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton(node: node) ?? true)
 
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
             cell?.moreButton.isHidden = true
