@@ -19,21 +19,26 @@
 "copyright-format" = "© %d Alfresco Software, Inc. Todos los derechos reservados.";
 "product-name" = "Alfresco\nMobile Workspace";
 
+// MARK: - General
+"retry" = "Reintentar";
+"yes" = "Sí";
+"ok" = "Aceptar";
+"later" = "Más tarde";
+"cancel" = "Cancelar";
+"delete" = "Eliminar";
+"create" = "Crear";
+"save" = "Guardar";
+
 // MARK: - Buttons
 "connect" = "Conectar";
 "advanced-settings" = "Ajustes avanzados";
 "need-help" = "¿Necesita ayuda?";
 "need-help-alfresco" = "¿Cómo conectarse a Alfresco?";
 "reset-to-default" = "Restablecer valores predet.";
-"save" = "Guardar";
 "sign-in" = "Iniciar sesión";
 "sign-in-with-sso" = "Iniciar sesión con SSO";
 "sign-out" = "Cerrar sesión";
-"retry" = "Reintentar";
-"yes" = "Sí";
-"cancel" = "Cancelar";
-"delete" = "Eliminar";
-"create" = "Crear";
+"sync-all" = "Sincronizar todo";
 
 // MARK: - PlaceHolders
 "connect-to" = "Conectar a";
@@ -59,22 +64,25 @@
 "how-to-connect-to-alfresco" = "Cómo conectarse a Alfresco";
 "connecting" = "Conectando";
 "signing-in" = "Iniciando sesión";
+"syncing" = "Sincronizando...";
+"sync-failed" = "Error al sincronizar";
 
-// MARK: - Screen Titles
+// MARK: - Tabs Titles
 "settings" = "Ajustes";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
+"offline" = "Sin conexión";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL de Alfresco Content Services";
 "help-connect-section1-paragraph" = "Puede introducir la URL de su instancia de Alfresco Content Services. Tendrá que introducir su nombre de usuario y contraseña para autenticarse.";
 "help-connect-title-section2" = "Iniciar sesión con SSO";
-"help-connect-section2-paragraph" = "Puede introducir la URL de Alfresco Identity Management Service para autenticarse con el proveedor de identidades de su organización.\n\nDeberá indicar la URL de su instancia de Alfresco Content Services más tarde.\n\nHable con su administrador de Alfresco si necesita ayuda.";
+"help-connect-section2-paragraph" = "Puede introducir la URL de Alfresco Identity Management Service para autenticarse con el proveedor de identidades de su organización.\nDeberá indicar la URL de su instancia de Alfresco Content Services más tarde.\n\nHable con su administrador de Alfresco si necesita ayuda.";
 "help-advanced-settings-title-section1" = "Autenticación con Alfresco";
 "help-advanced-settings-section1-paragraph" = "Si no utiliza la configuración de SSO predeterminada, puede establecer sus valores aquí.\n\nSi necesita ayuda, contacte a su administrador de Alfresco.";
 "help-sso-title-section1" = "Ubicación del repositorio de contenido";
-"help-sso-section1-paragraph" = "URL de Alfresco Content Services:\n\nEsta es la URL de su instancia de Alfresco Content Services\n\nHable con su administrador de Alfresco si necesita ayuda.";
+"help-sso-section1-paragraph" = "URL de Alfresco Content Services:\n\nEsta es la URL de su instancia de Alfresco Content Services\nHable con su administrador de Alfresco si necesita ayuda.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Ha surgido un error. Contacte a su administrador para obtener ayuda. Cód. de error: %d";
@@ -99,6 +107,8 @@
 "approved-restored" = "%@ restaurado";
 "approved-deleted" = "%@ eliminado";
 "approved-created" = "%@ se ha creado";
+"approved-mark-offline" = "%@ estará disponible sin conexión.";
+"approved-remove-offline" = "%@ ya no estará disponible sin conexión.";
 
 // MARK: - Settings Screen
 "theme" = "Apariencia";
@@ -108,6 +118,9 @@
 "failed-profile-info" = "Fallo al recuperar información de perfil del usuario actual.";
 "app-version" = "Versión de aplic. %@-%@";
 "sign-out-confirmation" = "¿Seguro que desea cerrar sesión?";
+"sync-data-title" = "Actualizar ficheros sin conexión usando";
+"sync-wifi-cellular-data" = "Wifi y datos móviles";
+"sync-only-wifi" = "Sólo wifi";
 
 // MARK: - Search
 "searching" = "Buscando...";
@@ -154,6 +167,8 @@
 "action-menu-create-ms-excel" = "Hoja de cálculo de Excel";
 "action-menu-create-ms-powerpoint" = "Presentación de PowerPoint";
 "action-menu-create-folder" = "Nueva carpeta";
+"action-menu-mark-offline" = "Disponible sin conexión";
+"action-menu-remove-offline" = "Quitar sin conexión";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
@@ -161,7 +176,9 @@
 "dialog-download-message" = "Descargando '%@'";
 "dialog-upload-message" = "Cargando '%@'";
 "dialog-session-expired-title" = "Sesión caducada.";
-"dialog-session-expired-message" = "Su sesión ya no está abierta. Vuelva a iniciar sesión para continuar.";
+"dialog-session-expired-message" = "Su sesión ya no está activa. Vuelva a iniciar sesión para continuar.";
+"dialog-override-sync-cellular-data-title" = "¿Utilizar los datos móviles?";
+"dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
@@ -173,6 +190,8 @@
 "empty-folder-description" = "Parece que no hay\n ningún contenido todavía.";
 "empty-search-title" = "¡Vaya!";
 "empty-search-description" = "No podemos encontrar\n lo que busca.";
+"empty-offline-title" = "Contenido sin conexión";
+"empty-offline-description" = "Contenido disponible\n sin conexión se mostrará aquí.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
