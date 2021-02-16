@@ -95,6 +95,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                                            maxItems: maxItems,
                                            _where: nil,
                                            include: [APIConstants.Include.isFavorite,
+                                                     APIConstants.Include.path,
                                                      APIConstants.Include.allowableOperations],
                                            fields: nil) { (result, error) in
                 var listNodes: [ListNode]?

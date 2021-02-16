@@ -29,10 +29,13 @@ struct SharedLinkMapper {
     }
 
     private static func create(from node: SharedLink) -> ListNode {
+        let path = node.path?.elements?.compactMap({ $0.name })
+            .joined(separator: " \u{203A} ") ?? ""
+
         return ListNode(guid: node.nodeId ?? "",
                         mimeType: node.content?.mimeType,
                         title: node.name ?? "",
-                        path: "",
+                        path: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: .file,
                         favorite: node.isFavorite,
