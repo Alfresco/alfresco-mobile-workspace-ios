@@ -65,8 +65,8 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                            excludedActions: [.markOffline,
                                                                              .moveTrash,
                                                                              .addFavorite,
-                                                                             .removeFavorite],
-                                                           shouldPreviewLatestContent: false)
+                                                                             .removeFavorite])
+            coordinator.shouldPreviewLatestContent = false
             coordinator.start()
             self.filePreviewCoordinator = coordinator
 
