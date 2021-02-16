@@ -55,7 +55,7 @@ class FilePreviewViewModel {
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     private let excludedActionsTypes: [ActionMenuType]
-    private let shouldPreviewLatestContent: Bool?
+    private let shouldPreviewLatestContent: Bool
     var actionMenuViewModel: ActionMenuViewModel?
     var nodeActionsViewModel: NodeActionsViewModel?
 
@@ -68,7 +68,7 @@ class FilePreviewViewModel {
          delegate: FilePreviewViewModelDelegate?,
          coordinatorServices: CoordinatorServices,
          excludedActions: [ActionMenuType] = [],
-         shouldPreviewLatestContent: Bool? = true) {
+         shouldPreviewLatestContent: Bool) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
