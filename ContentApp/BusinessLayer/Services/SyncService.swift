@@ -48,10 +48,10 @@ protocol SyncServiceDelegate: class {
 let maxConcurrentSyncOperationCount = 3
 
 @objc class SyncService: NSObject, Service, SyncServiceProtocol {
-
     let syncOperationQueue: OperationQueue
     let syncOperationFactory: SyncOperationFactory
     let eventBusService: EventBusService?
+    var syncError: Error?
 
     @objc dynamic var syncServiceStatus: SyncServiceStatus = .idle
     weak var delegate: SyncServiceDelegate?
@@ -169,8 +169,8 @@ let maxConcurrentSyncOperationCount = 3
 
 extension SyncService: SyncOperationFactoryDelegate {
     func didComplete(with error: Error) {
-        stopSync()
-        syncServiceStatus = .idle
-        delegate?.syncDidFinished()
+        // Log the last error but don't stop the sync service for now
+        AlfrescoLog.error("-- Sync encountered an error: \(error.localizedDescription)")
+        syncError = error
     }
 }
