@@ -19,21 +19,26 @@
 "copyright-format" = "© %d Alfresco Software, Inc. Tutti i diritti riservati.";
 "product-name" = "Alfresco\nMobile Workspace";
 
+// MARK: - General
+"retry" = "Riprova";
+"yes" = "Sì";
+"ok" = "OK";
+"later" = "Dopo";
+"cancel" = "Annulla";
+"delete" = "Elimina";
+"create" = "Crea";
+"save" = "Salva";
+
 // MARK: - Buttons
 "connect" = "Connetti";
 "advanced-settings" = "Impost. avanzate";
 "need-help" = "Serve aiuto?";
 "need-help-alfresco" = "Come connettersi ad Alfresco?";
 "reset-to-default" = "Reimposta su default";
-"save" = "Salva";
 "sign-in" = "Accedi";
 "sign-in-with-sso" = "Accedi con SSO";
 "sign-out" = "Esci";
-"retry" = "Riprova";
-"yes" = "Sì";
-"cancel" = "Annulla";
-"delete" = "Elimina";
-"create" = "Crea";
+"sync-all" = "Sincronizza tutto";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connetti a";
@@ -59,12 +64,15 @@
 "how-to-connect-to-alfresco" = "Come connettersi ad Alfresco";
 "connecting" = "Connetto";
 "signing-in" = "Accedo";
+"syncing" = "Sincronizzo...";
+"sync-failed" = "Sincronizzazione non riuscita";
 
-// MARK: - Screen Titles
+// MARK: - Tabs Titles
 "settings" = "Impostazioni";
 "recent" = "Recenti";
 "favorites" = "Preferiti";
 "browse" = "Sfoglia";
+"offline" = "Offline";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL di Alfresco Content Services";
@@ -99,6 +107,8 @@
 "approved-restored" = "%@ ripristinato";
 "approved-deleted" = "%@ eliminato";
 "approved-created" = "%@ è stato creato";
+"approved-mark-offline" = "%@ sarà reso disponibile offline.";
+"approved-remove-offline" = "%@ non sarà più disponibile offline.";
 
 // MARK: - Settings Screen
 "theme" = "Aspetto";
@@ -108,6 +118,9 @@
 "failed-profile-info" = "Impossibile recuperare le informazioni del profilo per l'utente corrente.";
 "app-version" = "App versione %@-%@";
 "sign-out-confirmation" = "Vuoi uscire?";
+"sync-data-title" = "Aggiorna file offline utilizzando";
+"sync-wifi-cellular-data" = "Wi-Fi e dati cellulare";
+"sync-only-wifi" = "Solo Wi-Fi";
 
 // MARK: - Search
 "searching" = "Cerco...";
@@ -154,14 +167,18 @@
 "action-menu-create-ms-excel" = "Foglio di calcolo di Excel";
 "action-menu-create-ms-powerpoint" = "Presentazione di PowerPoint";
 "action-menu-create-folder" = "Nuova cartella";
+"action-menu-mark-offline" = "Rendi disponibile offline";
+"action-menu-remove-offline" = "Rimuovi offline";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Elimina";
 "dialog-delete-message" = "%@ verrà eliminato definitivamente.";
 "dialog-download-message" = "Scarico '%@'";
 "dialog-upload-message" = "Carico '%@'";
-"dialog-session-expired-title" = "Sessione scaduta";
+"dialog-session-expired-title" = "Sessione scaduta.";
 "dialog-session-expired-message" = "Non sei più connesso. Accedi di nuovo per continuare.";
+"dialog-override-sync-cellular-data-title" = "Vuoi utilizzare i dati cellulare?";
+"dialog-override-sync-cellular-data-message" = "Le tue impostazioni saranno sostituite e questa volta il download verrà eseguito usando i dati cellulari. Altrimenti, il download inizierà dopo la connessione alla rete Wi-Fi.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
@@ -173,6 +190,8 @@
 "empty-folder-description" = "A quanto pare\n qui non c'è nulla.";
 "empty-search-title" = "Oops!";
 "empty-search-description" = "Non riusciamo a trovare ciò che\n stai cercando.";
+"empty-offline-title" = "Nessun contenuto offline";
+"empty-offline-description" = "Il contenuto che hai reso\n disponibile offline verrà visualizzato qui.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace deve accedere alle foto";

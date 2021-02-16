@@ -19,21 +19,26 @@
 "copyright-format" = "© %d Alfresco Software, Inc. Alle rechten voorbehouden.";
 "product-name" = "Alfresco\nMobile Workspace";
 
+// MARK: - General
+"retry" = "Opnieuw proberen";
+"yes" = "Ja";
+"ok" = "OK";
+"later" = "Later";
+"cancel" = "Annuleren";
+"delete" = "Verwijderen";
+"create" = "Maken";
+"save" = "Opslaan";
+
 // MARK: - Buttons
 "connect" = "Verbinden";
 "advanced-settings" = "Geavanceerde instellingen";
 "need-help" = "Hulp nodig?";
 "need-help-alfresco" = "Verbinding maken met Alfresco?";
 "reset-to-default" = "Standaardinstellingen herstellen";
-"save" = "Opslaan";
 "sign-in" = "Inloggen";
 "sign-in-with-sso" = "Inloggen met SSO";
 "sign-out" = "Uitloggen";
-"retry" = "Opnieuw proberen";
-"yes" = "Ja";
-"cancel" = "Annuleren";
-"delete" = "Verwijderen";
-"create" = "Maken";
+"sync-all" = "Alles synchroniseren";
 
 // MARK: - PlaceHolders
 "connect-to" = "Verbinden met";
@@ -59,12 +64,15 @@
 "how-to-connect-to-alfresco" = "Verbinding maken met Alfresco";
 "connecting" = "Verbinden";
 "signing-in" = "Inloggen";
+"syncing" = "Synchroniseren...";
+"sync-failed" = "Synchroniseren mislukt";
 
-// MARK: - Screen Titles
+// MARK: - Tabs Titles
 "settings" = "Instellingen";
 "recent" = "Recent";
 "favorites" = "Favorieten";
 "browse" = "Bladeren";
+"offline" = "Offline";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services-URL";
@@ -99,6 +107,8 @@
 "approved-restored" = "%@ hersteld";
 "approved-deleted" = "%@ verwijderd";
 "approved-created" = "%@ is gemaakt";
+"approved-mark-offline" = "%@ wordt offline beschikbaar gemaakt.";
+"approved-remove-offline" = "%@ is niet langer offline beschikbaar.";
 
 // MARK: - Settings Screen
 "theme" = "Weergave";
@@ -108,6 +118,9 @@
 "failed-profile-info" = "Kan profielinformatie voor huidige gebruiker niet ophalen.";
 "app-version" = "Appversie %@-%@";
 "sign-out-confirmation" = "Weet u zeker dat u wilt uitloggen?";
+"sync-data-title" = "Offlinebestanden bijwerken met";
+"sync-wifi-cellular-data" = "Wi-Fi en mobiele dataverbinding";
+"sync-only-wifi" = "Alleen Wi-Fi";
 
 // MARK: - Search
 "searching" = "Zoeken...";
@@ -154,6 +167,8 @@
 "action-menu-create-ms-excel" = "Excel-spreadsheet";
 "action-menu-create-ms-powerpoint" = "PowerPoint-presentatie";
 "action-menu-create-folder" = "Nieuwe map";
+"action-menu-mark-offline" = "Offline beschikbaar maken";
+"action-menu-remove-offline" = "Offline verwijderen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
@@ -161,7 +176,9 @@
 "dialog-download-message" = "'%@' wordt gedownload";
 "dialog-upload-message" = "'%@' wordt geüpload";
 "dialog-session-expired-title" = "Sessie verlopen.";
-"dialog-session-expired-message" = "U bent niet meer ingelogd. Log opnieuw in om door te gaan.";
+"dialog-session-expired-message" = "U bent niet meer aangemeld. Meld u opnieuw aan om door te gaan.";
+"dialog-override-sync-cellular-data-title" = "Mobiele dataverbinding gebruiken?";
+"dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via een mobiele dataverbinding. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
@@ -173,6 +190,8 @@
 "empty-folder-description" = "Het lijkt erop dat hier\n nog niets te vinden is.";
 "empty-search-title" = "Oeps!";
 "empty-search-description" = "We kunnen niet vinden wat\n u zoekt.";
+"empty-offline-title" = "Geen offlinecontent";
+"empty-offline-description" = "Content die u offline\n beschikbaar maakt, wordt hier weergegeven.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
