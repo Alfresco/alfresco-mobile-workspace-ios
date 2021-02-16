@@ -72,6 +72,8 @@
 		B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */; };
 		B9AE0BB924C03D170001289C /* NavigationRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AE0BB824C03D170001289C /* NavigationRoutes.swift */; };
 		B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */; };
+		B9B17B0F25DBE95D00F534E6 /* ListComponent+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B17B0E25DBE95D00F534E6 /* ListComponent+DataSource.swift */; };
+		B9B17B1725DBED9600F534E6 /* ListComponent+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B17B1625DBED9600F534E6 /* ListComponent+Actions.swift */; };
 		B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */; };
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
@@ -369,6 +371,8 @@
 		B9AC16D224B4B3270084F929 /* UIViewController+Hierarchy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Hierarchy.swift"; sourceTree = "<group>"; };
 		B9AE0BB824C03D170001289C /* NavigationRoutes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationRoutes.swift; sourceTree = "<group>"; };
 		B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFetchableCollectionView.swift; sourceTree = "<group>"; };
+		B9B17B0E25DBE95D00F534E6 /* ListComponent+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+DataSource.swift"; sourceTree = "<group>"; };
+		B9B17B1625DBED9600F534E6 /* ListComponent+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Actions.swift"; sourceTree = "<group>"; };
 		B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpConnectScreenModel.swift; sourceTree = "<group>"; };
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
@@ -1001,6 +1005,7 @@
 			isa = PBXGroup;
 			children = (
 				B95604EF25011F3300D955BA /* PDFRenderer */,
+				B9B17B0A25DBE92D00F534E6 /* ListComponent */,
 				E3AE4E9E2506641C0095C76E /* ZoomImageView.swift */,
 				E37ECED124869BC2003D72E8 /* ActivityIndicatorView.swift */,
 				B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */,
@@ -1012,12 +1017,21 @@
 				E387387B24D1D1820028F76B /* SystemSearchViewController.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
-				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
 				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
 				B93E08F925665297009732C3 /* PrivacyNoticeViewController.swift */,
 				B944AB1E255BD9E200965709 /* Download Dialog */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		B9B17B0A25DBE92D00F534E6 /* ListComponent */ = {
+			isa = PBXGroup;
+			children = (
+				B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */,
+				B9B17B0E25DBE95D00F534E6 /* ListComponent+DataSource.swift */,
+				B9B17B1625DBED9600F534E6 /* ListComponent+Actions.swift */,
+			);
+			path = ListComponent;
 			sourceTree = "<group>";
 		};
 		B9B7530925AC8422004F16E5 /* AsyncOperation */ = {
@@ -2138,6 +2152,7 @@
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
+				B9B17B0F25DBE95D00F534E6 /* ListComponent+DataSource.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
 				E3E9ED3B24CB03E400F1A2C2 /* FavoritesNodeMapper.swift in Sources */,
 				E378D598256D9FDE00E08405 /* String+Range.swift in Sources */,
@@ -2164,6 +2179,7 @@
 				E335E706253864CD0036E090 /* ActionMenuScreenCoordinator.swift in Sources */,
 				B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */,
 				E3A433A72566CBF0000DD886 /* CreateNodeViewModel.swift in Sources */,
+				B9B17B1725DBED9600F534E6 /* ListComponent+Actions.swift in Sources */,
 				B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */,
 				B956715C24BDD86A009E1B23 /* SearchViewModelProtocol.swift in Sources */,
 				E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */,
