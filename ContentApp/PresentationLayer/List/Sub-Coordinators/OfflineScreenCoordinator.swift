@@ -85,12 +85,13 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                     self.offlineFolderChildrenScreenCoordinator = coordinator
                 }
             case .file, .fileLink:
+                let shouldPreviewLatestContent = (dataSource === offlineDataSource?.resultsViewModel)
                 let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
                                                                listNode: node,
                                                                excludedActions: [.moveTrash,
                                                                                  .addFavorite,
                                                                                  .removeFavorite],
-                                                               shouldPreviewLatestContent: false)
+                                                               shouldPreviewLatestContent: shouldPreviewLatestContent)
                 coordinator.start()
                 self.filePreviewCoordinator = coordinator
 
