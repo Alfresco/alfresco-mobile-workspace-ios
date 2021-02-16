@@ -89,7 +89,8 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                                                listNode: node,
                                                                excludedActions: [.moveTrash,
                                                                                  .addFavorite,
-                                                                                 .removeFavorite])
+                                                                                 .removeFavorite],
+                                                               shouldPreviewLatestContent: false)
                 coordinator.start()
                 self.filePreviewCoordinator = coordinator
 
