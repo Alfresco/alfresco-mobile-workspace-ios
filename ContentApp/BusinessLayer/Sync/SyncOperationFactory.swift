@@ -294,7 +294,8 @@ class SyncOperationFactory {
 
     private func handle(error: Error?, for node: ListNode) {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if error?.code == StatusCodes.code404NotFound.rawValue {
+        if error?.code == StatusCodes.code404NotFound.rawValue ||
+            error?.code == StatusCodes.code403Forbidden.rawValue {
             node.markedFor = .removal
             node.syncStatus = .undefined
             listNodeDataAccessor.store(node: node)
