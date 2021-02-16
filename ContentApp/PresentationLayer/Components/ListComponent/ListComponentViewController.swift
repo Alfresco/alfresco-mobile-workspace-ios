@@ -55,21 +55,17 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var createButton: MDCFloatingButton!
     @IBOutlet weak var listActionButton: MDCFloatingButton!
-
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
-    var isPaginationEnabled: Bool?
 
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    private var kvoConnectivity: NSKeyValueObservation?
+    var isPaginationEnabled: Bool = true
 
-    let listItemNodeCellHeight: CGFloat = 64.0
-    let listSectionCellHeight: CGFloat = 64.0
-    let listSiteCellHeight: CGFloat = 48.0
-    let listBottomInset: CGFloat = 70.0
+    private var kvoConnectivity: NSKeyValueObservation?
+    private let listBottomInset: CGFloat = 70.0
 
     // MARK: - View Life Cycle
 
@@ -150,7 +146,7 @@ class ListComponentViewController: SystemThemableViewController {
             coordinatorServices?.themingService?.activeTheme?.primary30T1Color
     }
 
-    // MARK: - IBActions
+    // MARK: - Actions
 
     @IBAction func createButtonTapped(_ sender: MDCFloatingButton) {
         listItemActionDelegate?.showNodeCreationSheet(delegate: self)
@@ -237,236 +233,6 @@ class ListComponentViewController: SystemThemableViewController {
             didUpdateList(error: NSError(), pagination: nil)
         }
         listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
-    }
-}
-
-// MARK: - UICollectionView DataSource & Delegate
-
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
-                                       UICollectionViewDataSource,
-                                       UICollectionViewDelegate {
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-
-        if listDataSource?.shouldDisplaySections() ?? false {
-            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
-        } else {
-            return CGSize(width: self.view.bounds.width, height: 0)
-        }
-    }
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return listDataSource?.numberOfSections() ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return listDataSource?.numberOfItems(in: section) ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let node = listDataSource?.listNode(for: indexPath)
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: listItemNodeCellHeight) }
-        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (node.nodeType == .site) ? listSiteCellHeight : listItemNodeCellHeight)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
-
-        if dataSource.numberOfSections() - 1 == section {
-            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false {
-                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
-            }
-        }
-        return CGSize(width: 0, height: 0)
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView =
-                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                    withReuseIdentifier: identifier,
-                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
-                fatalError("Invalid ListSectionCollectionReusableView type") }
-            headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
-            return headerView
-
-        case UICollectionView.elementKindSectionFooter:
-            let footerView =
-                collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self),
-                                                                for: indexPath)
-            return footerView
-
-        default:
-            assert(false, "Unexpected element kind")
-        }
-
-        return UICollectionReusableView()
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
-        let identifier = String(describing: ListElementCollectionViewCell.self)
-
-        let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
-                                               for: indexPath) as? ListElementCollectionViewCell
-        cell?.node = node
-        cell?.delegate = self
-        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.syncStatus = listDataSource?.syncStatus(for: node) ?? .undefined
-
-        if node.nodeType == .fileLink || node.nodeType == .folderLink {
-            cell?.moreButton.isHidden = true
-        }
-        if listDataSource?.shouldDisplayNodePath() == false {
-            cell?.subtitle.text = ""
-        }
-
-        return cell ?? UICollectionViewCell()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let dataSource = listDataSource else { return }
-        let node = dataSource.listNode(for: indexPath)
-        if dataSource.shouldPreview(node: node) == false { return }
-        if node.trashed == false,
-           let dataSource = listDataSource {
-            listItemActionDelegate?.showPreview(for: node,
-                                                from: dataSource)
-            listActionDelegate?.elementTapped(node: node)
-        } else {
-            listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                               from: dataSource,
-                                                               delegate: self)
-        }
-    }
-}
-
-// MARK: - CreateNodeViewModel and ActionMenuViewModel Delegates
-
-extension ListComponentViewController: NodeActionsViewModelDelegate, CreateNodeViewModelDelegate {
-
-    func handleCreatedNode(node: ListNode?, error: Error?) {
-        if node == nil && error == nil {
-            return
-        } else if let error = error {
-            self.display(error: error)
-        } else {
-            displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
-                                         node?.truncateTailTitle() ?? ""),
-                            type: .approve)
-        }
-    }
-
-    func handleFinishedAction(with action: ActionMenu?,
-                              node: ListNode?,
-                              error: Error?) {
-        if let error = error {
-            self.display(error: error)
-        } else {
-            guard let action = action else { return }
-
-            if action.type.isFavoriteActions {
-                handleFavorite(action: action)
-            } else if action.type.isMoveActions {
-                handleMove(action: action, node: node)
-            } else if action.type.isCreateActions {
-                handleSheetCreate(action: action)
-            } else if action.type.isDownloadActions {
-                handleDownload(action: action, node: node)
-            }
-        }
-    }
-
-    func handleFavorite(action: ActionMenu) {
-        var snackBarMessage: String?
-        switch action.type {
-        case .addFavorite:
-            snackBarMessage = LocalizationConstants.Approved.removedFavorites
-        case .removeFavorite:
-            snackBarMessage = LocalizationConstants.Approved.addedFavorites
-        default: break
-        }
-        displaySnackbar(with: snackBarMessage, type: .approve)
-    }
-
-    func handleMove(action: ActionMenu, node: ListNode?) {
-        var snackBarMessage: String?
-        guard let node = node else { return }
-        switch action.type {
-        case .moveTrash:
-            snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                     node.truncateTailTitle())
-        case .restore:
-            snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                     node.truncateTailTitle())
-        case .permanentlyDelete:
-            snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                     node.truncateTailTitle())
-        default: break
-        }
-        displaySnackbar(with: snackBarMessage, type: .approve)
-    }
-
-    func handleSheetCreate(action: ActionMenu) {
-        switch action.type {
-        case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
-            listItemActionDelegate?.showNodeCreationDialog(with: action,
-                                                           delegate: self)
-        default: break
-        }
-    }
-
-    func handleDownload(action: ActionMenu, node: ListNode?) {
-        var snackBarMessage: String?
-        guard let node = node else { return }
-        switch action.type {
-        case .markOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
-                                     node.truncateTailTitle())
-        case .removeOffline:
-            snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
-                                     node.truncateTailTitle())
-        default: break
-        }
-        displaySnackbar(with: snackBarMessage, type: .approve)
-    }
-
-    func display(error: Error) {
-        var snackBarMessage = ""
-        switch error.code {
-        case ErrorCodes.Swagger.timeout:
-            snackBarMessage = LocalizationConstants.Errors.errorTimeout
-        case ErrorCodes.Swagger.nodeName:
-            snackBarMessage = LocalizationConstants.Errors.errorFolderSameName
-        default:
-            snackBarMessage = LocalizationConstants.Errors.errorUnknown
-        }
-        displaySnackbar(with: snackBarMessage, type: .error)
-    }
-
-    func displaySnackbar(with message: String?, type: SnackBarType?) {
-        if let message = message, let type = type {
-            let snackBar = Snackbar(with: message, type: type)
-            snackBar.snackBar.presentationHostViewOverride = view
-            snackBar.show(completion: nil)
-        }
     }
 }
 

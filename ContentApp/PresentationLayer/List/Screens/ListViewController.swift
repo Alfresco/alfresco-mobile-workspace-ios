@@ -22,7 +22,7 @@ import AlfrescoContent
 class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
     var listViewModel: ListViewModelProtocol?
-    var isPaginationEnabled: Bool?
+    var isPaginationEnabled: Bool = true
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
