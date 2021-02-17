@@ -168,7 +168,7 @@ class FilePreviewViewController: SystemThemableViewController {
         filePreviewTitleLabel?.font = currentTheme.body2TextStyle.font
         filePreviewTitleLabel?.textColor = currentTheme.onSurfaceColor
 
-        toolbar.barTintColor = currentTheme.surfaceColor
+        toolbar.barTintColor = currentTheme.primaryColorVariant
         toolbar.tintColor = currentTheme.onSurface60Color
     }
 

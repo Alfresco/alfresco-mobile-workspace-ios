@@ -43,7 +43,7 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         titleLabel.lineBreakMode = .byTruncatingTail
         imageView.tintColor = currentTheme.onSurface60Color
-        separator.backgroundColor = currentTheme.onSurface15Color
+        separator.backgroundColor = currentTheme.dividerColor
         sectionSeparator.backgroundColor = currentTheme.onSurface15Color
     }
 }

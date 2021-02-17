@@ -25,6 +25,7 @@ protocol TabBarScreenDelegate: class {
 
 class TabBarMainViewController: UITabBarController {
     let bottomNavigationBar = MDCBottomNavigationBar()
+    let dividerView = UIView()
     var tabs = [UITabBarItem]()
 
     var connectivityService: ConnectivityService?
@@ -51,7 +52,6 @@ class TabBarMainViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        delegate = self
 
         tabBarCoordinatorDelegate?.showRecentScreen()
         tabBarCoordinatorDelegate?.showFavoritesScreen()
@@ -98,10 +98,14 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
         bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor
         bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
+        bottomNavigationBar.shadowColor = .clear
+        dividerView.backgroundColor = currentTheme.onSurface15Color
     }
 
     func addBottomNavigationBar() {
         view.addSubview(bottomNavigationBar)
+        bottomNavigationBar.addSubview(dividerView)
+
         bottomNavigationBar.titleVisibility = .always
         bottomNavigationBar.alignment = .centered
         bottomNavigationBar.items = tabs
@@ -124,6 +128,10 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBarFrame.size.height += view.safeAreaInsets.bottom
         bottomNavigationBarFrame.origin.y -= view.safeAreaInsets.bottom
         bottomNavigationBar.frame = bottomNavigationBarFrame
+        dividerView.frame = CGRect(x: 0,
+                                   y: -1,
+                                   width: bottomNavigationBarFrame.width,
+                                   height: 1)
     }
 
     func doubleTapLogic(for item: Int) {
@@ -140,16 +148,6 @@ extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
         doubleTapLogic(for: item.tag)
         self.selectedIndex = item.tag
         return true
-    }
-}
-
-// MARK: - UITabBarControllerDelegate
-
-extension TabBarMainViewController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController,
-                          animationControllerForTransitionFrom fromVC: UIViewController,
-                          to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return TopLevelTransition(viewControllers: tabBarController.viewControllers)
     }
 }
 

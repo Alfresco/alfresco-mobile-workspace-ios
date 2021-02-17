@@ -49,10 +49,13 @@ protocol PresentationTheme {
     var onPrimaryInvertedColor: UIColor { get }
 
     var primaryVariantT1Color: UIColor { get }
+    var primaryColorVariant: UIColor { get }
     var primaryT1Color: UIColor { get }
     var primary30T1Color: UIColor { get }
     var primary15T1Color: UIColor { get }
 
     var primaryVariantT2Color: UIColor { get }
     var primaryT2Color: UIColor { get }
+
+    var dividerColor: UIColor { get }
 }
