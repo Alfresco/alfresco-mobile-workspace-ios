@@ -20,7 +20,6 @@
 		B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */; };
 		B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */; };
 		B91A5E56247CFBD90063E938 /* ConnectScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */; };
-		B91FEB6624B75D63002878F1 /* TopLevelTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91FEB6524B75D63002878F1 /* TopLevelTransition.swift */; };
 		B9233F6B25A5C700006EA4DA /* ListNodeDataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9233F6A25A5C700006EA4DA /* ListNodeDataAccessor.swift */; };
 		B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9233FBF25A708D1006EA4DA /* OfflineViewModelFactory.swift */; };
 		B9233FC525A70ADC006EA4DA /* OfflineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9233FC425A70ADC006EA4DA /* OfflineViewModel.swift */; };
@@ -302,7 +301,6 @@
 		B91A5E51247BD9020063E938 /* SplashScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E53247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedSettingsScreenCoordinator.swift; sourceTree = "<group>"; };
 		B91A5E55247CFBD90063E938 /* ConnectScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectScreenCoordinator.swift; sourceTree = "<group>"; };
-		B91FEB6524B75D63002878F1 /* TopLevelTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopLevelTransition.swift; sourceTree = "<group>"; };
 		B9233F6A25A5C700006EA4DA /* ListNodeDataAccessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListNodeDataAccessor.swift; sourceTree = "<group>"; };
 		B9233FBF25A708D1006EA4DA /* OfflineViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineViewModelFactory.swift; sourceTree = "<group>"; };
 		B9233FC425A70ADC006EA4DA /* OfflineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineViewModel.swift; sourceTree = "<group>"; };
@@ -1013,7 +1011,6 @@
 				B99E1C4E247FE63700116F05 /* NeedHelpViewController.swift */,
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
-				B91FEB6524B75D63002878F1 /* TopLevelTransition.swift */,
 				E387387B24D1D1820028F76B /* SystemSearchViewController.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
@@ -2173,7 +2170,6 @@
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
-				B91FEB6624B75D63002878F1 /* TopLevelTransition.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				E3436F88250B8C4A00634C62 /* UIView+LoadNib.swift in Sources */,
 				E335E706253864CD0036E090 /* ActionMenuScreenCoordinator.swift in Sources */,

@@ -48,10 +48,13 @@ struct DarkTheme: PresentationTheme {
     var onPrimaryInvertedColor = #colorLiteral(red: 0.1294117647, green: 0.137254902, blue: 0.1568627451, alpha: 1)
 
     var primaryVariantT1Color = #colorLiteral(red: 0.431372549, green: 0.6745098039, blue: 1, alpha: 1)
+    var primaryColorVariant = #colorLiteral(red: 0.1803921569, green: 0.1803921569, blue: 0.1803921569, alpha: 1)
     var primaryT1Color = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 1)
     var primary30T1Color = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 0.3)
     var primary15T1Color = #colorLiteral(red: 0.1647058824, green: 0.4901960784, blue: 0.8823529412, alpha: 0.15)
 
     var primaryVariantT2Color = #colorLiteral(red: 1, green: 0.7764705882, blue: 0, alpha: 1)
     var primaryT2Color = #colorLiteral(red: 1, green: 0.9098039216, blue: 0, alpha: 1)
+
+    var dividerColor = #colorLiteral(red: 0.3490196078, green: 0.3490196078, blue: 0.3490196078, alpha: 1)
 }
