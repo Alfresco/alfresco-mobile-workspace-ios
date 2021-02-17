@@ -175,6 +175,15 @@ class ListNode: Hashable, Entity {
         if self.favorite == nil {
             return true
         }
+
+        switch self.nodeType {
+        case .site: break
+        default:
+            if self.allowableOperations.count == 1  &&
+                self.allowableOperations.first == AllowableOperationsType.unknown {
+                return true
+            }
+        }
         return false
     }
 
