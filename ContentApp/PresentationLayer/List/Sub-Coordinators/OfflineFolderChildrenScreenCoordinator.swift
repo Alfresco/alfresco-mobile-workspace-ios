@@ -82,6 +82,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices,
                                                       excludedActionTypes: [.markOffline,
+                                                                            .removeOffline,
                                                                             .moveTrash,
                                                                             .addFavorite,
                                                                             .removeFavorite])
