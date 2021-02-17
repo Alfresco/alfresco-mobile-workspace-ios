@@ -85,15 +85,21 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                     self.offlineFolderChildrenScreenCoordinator = coordinator
                 }
             case .file, .fileLink:
-                let shouldPreviewLatestContent = (dataSource === offlineDataSource?.resultsViewModel)
-                let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                               listNode: node,
-                                                               excludedActions: [.moveTrash,
-                                                                                 .addFavorite,
-                                                                                 .removeFavorite],
-                                                               shouldPreviewLatestContent: shouldPreviewLatestContent)
-                coordinator.start()
-                self.filePreviewCoordinator = coordinator
+                if dataSource === offlineDataSource?.resultsViewModel {
+                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                                   listNode: node)
+                    coordinator.start()
+                    self.filePreviewCoordinator = coordinator
+                } else {
+                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                                   listNode: node,
+                                                                   excludedActions: [.moveTrash,
+                                                                                     .addFavorite,
+                                                                                     .removeFavorite],
+                                                                   shouldPreviewLatestContent: false)
+                    coordinator.start()
+                    self.filePreviewCoordinator = coordinator
+                }
 
             default:
                 AlfrescoLog.error("Unable to show preview for unknown node type")
