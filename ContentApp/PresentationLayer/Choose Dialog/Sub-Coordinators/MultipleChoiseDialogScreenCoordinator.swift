@@ -23,14 +23,15 @@ class MultipleChoiceDialogScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var multipleChoiceDialogViewController: MultipleChoiceDialogViewController?
     private var multipleChoiceDialogViewModel: MultipleChoiceViewModelProtocol
+    private var dialogTransitionController: MDCDialogTransitionController
 
     init(with presenter: UINavigationController, model: MultipleChoiceViewModelProtocol) {
         self.presenter = presenter
         self.multipleChoiceDialogViewModel = model
+        self.dialogTransitionController = MDCDialogTransitionController()
     }
 
     func start() {
-        let dialogTransitionController = MDCDialogTransitionController()
         let viewController = MultipleChoiceDialogViewController.instantiateViewController()
 
         viewController.coordinatorServices = coordinatorServices
