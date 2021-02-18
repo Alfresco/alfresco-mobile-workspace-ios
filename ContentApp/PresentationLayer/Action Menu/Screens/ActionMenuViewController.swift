@@ -138,7 +138,7 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
 // MARK: - ActionMenuViewModel Delegate
 
 extension ActionMenuViewController: ActionMenuViewModelDelegate {
-    func finishProvideActions() {
+    func finishedLoadingActions() {
         let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
         collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
         collectionView.reloadData()
