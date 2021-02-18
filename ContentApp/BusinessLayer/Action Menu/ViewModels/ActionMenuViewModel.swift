@@ -20,7 +20,7 @@ import UIKit
 import AlfrescoContent
 
 protocol ActionMenuViewModelDelegate: class {
-    func finishProvideActions()
+    func finishedLoadingActions()
 }
 
 class ActionMenuViewModel {
@@ -66,11 +66,11 @@ class ActionMenuViewModel {
 
     func fetchNodeInformation() {
         guard let listNode = self.listNode else {
-            delegate?.finishProvideActions()
+            delegate?.finishedLoadingActions()
             return
         }
         if toolbarDisplayed {
-            delegate?.finishProvideActions()
+            delegate?.finishedLoadingActions()
             return
         }
         if listNode.shouldUpdate() == false {
@@ -150,7 +150,7 @@ class ActionMenuViewModel {
 
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.delegate?.finishProvideActions()
+            sSelf.delegate?.finishedLoadingActions()
         }
     }
 
