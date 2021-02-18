@@ -61,7 +61,7 @@ class FilePreviewViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
 
-        ControllerRotation.lockOrientation(.all)
+        allowInterfaceRotation()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -90,6 +90,10 @@ class FilePreviewViewController: SystemThemableViewController {
             }
         }
         filePreviewViewModel?.filePreview?.recalculateFrame(from: size)
+    }
+
+    func allowInterfaceRotation() {
+        ControllerRotation.lockOrientation(.all)
     }
 
     // MARK: - IBActions

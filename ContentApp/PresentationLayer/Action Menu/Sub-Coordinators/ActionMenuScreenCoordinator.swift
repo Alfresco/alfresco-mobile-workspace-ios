@@ -19,28 +19,45 @@
 import UIKit
 import MaterialComponents.MaterialBottomSheet
 
-class ActionMenuScreenCoordinator: Coordinator {
+class ActionMenuScreenCoordinator: NSObject, Coordinator {
     private let presenter: UINavigationController
     private var actionMenuViewController: ActionMenuViewController?
     private let actionMenuViewModel: ActionMenuViewModel
     private let nodeActionViewModel: NodeActionsViewModel
+    private let dismissHandler: () -> Void
 
     init(with presenter: UINavigationController,
          actionMenuViewModel: ActionMenuViewModel,
-         nodeActionViewModel: NodeActionsViewModel) {
+         nodeActionViewModel: NodeActionsViewModel,
+         dismissHandler:@escaping () -> Void = {}) {
         self.presenter = presenter
         self.actionMenuViewModel = actionMenuViewModel
         self.nodeActionViewModel = nodeActionViewModel
+        self.dismissHandler = dismissHandler
     }
 
     func start() {
         let viewController = ActionMenuViewController.instantiateViewController()
         let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.delegate = self
 
         viewController.coordinatorServices = coordinatorServices
         viewController.actionMenuModel = actionMenuViewModel
         viewController.nodeActionsModel = nodeActionViewModel
         presenter.present(bottomSheet, animated: true, completion: nil)
         actionMenuViewController = viewController
+    }
+}
+
+extension ActionMenuScreenCoordinator: MDCBottomSheetControllerDelegate {
+    func bottomSheetControllerStateChanged(_ controller: MDCBottomSheetController,
+                                           state: MDCSheetState) {
+        if state == .closed {
+            dismissHandler()
+        }
+    }
+
+    func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
+        dismissHandler()
     }
 }

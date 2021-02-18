@@ -74,7 +74,10 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
               let nodeActionsViewModel = filePreviewViewController.filePreviewViewModel?.nodeActionsViewModel else { return }
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsViewModel)
+                                                      nodeActionViewModel: nodeActionsViewModel) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.filePreviewViewController?.allowInterfaceRotation()
+        }
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
