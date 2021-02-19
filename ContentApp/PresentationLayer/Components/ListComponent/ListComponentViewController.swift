@@ -236,6 +236,26 @@ class ListComponentViewController: SystemThemableViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegate
+
+extension ListComponentViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let dataSource = listDataSource else { return }
+        let node = dataSource.listNode(for: indexPath)
+        if dataSource.shouldPreview(node: node) == false { return }
+        if node.trashed == false,
+           let dataSource = listDataSource {
+            listItemActionDelegate?.showPreview(for: node,
+                                                from: dataSource)
+            listActionDelegate?.elementTapped(node: node)
+        } else {
+            listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                               from: dataSource,
+                                                               delegate: self)
+        }
+    }
+}
+
 // MARK: - ListElementCollectionViewCell Delegate
 
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
@@ -259,7 +279,6 @@ extension ListComponentViewController: PageFetchableDelegate {
 // MARK: - ListComponentPageUpdatingDelegate
 
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
-
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
         guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }

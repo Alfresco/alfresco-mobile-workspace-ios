@@ -54,17 +54,17 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                      from dataSource: ListComponentDataSourceProtocol) {
         switch node.nodeType {
         case .site, .folder, .folderLink:
-            let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter,
-                                                                             listNode: node)
-            folderDrillDownCoordinator.start()
-            self.folderDrillDownCoordinator = folderDrillDownCoordinator
+            setUpFolderCoordinator(for: node)
         case .file, .fileLink:
-            let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter,
-                                                                      listNode: node)
-            filePreviewCoordinator.start()
-            self.filePreviewCoordinator = filePreviewCoordinator
+            setUpFileCoordinator(for: node)
         default:
-            AlfrescoLog.error("Unable to show preview for unknown node type")
+            if node.isFile {
+                setUpFileCoordinator(for: node)
+            } else if node.isFolder {
+                setUpFolderCoordinator(for: node)
+            } else {
+                AlfrescoLog.error("Unable to show preview for unknown node type")
+            }
         }
     }
 
@@ -104,5 +104,19 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                      createNodeViewModelDelegate: delegate)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
+    }
+
+    private func setUpFileCoordinator(for node: ListNode) {
+        let filePreviewCoordinator = FilePreviewScreenCoordinator(with: self.presenter,
+                                                                  listNode: node)
+        filePreviewCoordinator.start()
+        self.filePreviewCoordinator = filePreviewCoordinator
+    }
+
+    private func setUpFolderCoordinator(for node: ListNode) {
+        let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: self.presenter,
+                                                                         listNode: node)
+        folderDrillDownCoordinator.start()
+        self.folderDrillDownCoordinator = folderDrillDownCoordinator
     }
 }

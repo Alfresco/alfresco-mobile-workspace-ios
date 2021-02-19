@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4924419163766400768",
-      "lastPropertyId": "17:186580639668120576",
+      "lastPropertyId": "18:1597269330570867456",
       "name": "ListNode",
       "properties": [
         {
@@ -85,13 +85,13 @@
           "type": 9
         },
         {
-          "id": "16:1132591789422262528",
-          "name": "markedForStatus",
+          "id": "17:186580639668120576",
+          "name": "allowableOperations",
           "type": 9
         },
         {
-          "id": "17:186580639668120576",
-          "name": "allowableOperations",
+          "id": "18:1597269330570867456",
+          "name": "markedFor",
           "type": 9
         }
       ],
@@ -106,7 +106,9 @@
   "modelVersionParserMinimum": 4,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    1132591789422262528
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

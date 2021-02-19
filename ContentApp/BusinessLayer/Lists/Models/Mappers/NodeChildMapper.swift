@@ -42,8 +42,10 @@ struct NodeChildMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
-                        favorite: node.isFavorite,
-                        allowableOperations: node.allowableOperations)
+                        favorite: node.isFavorite ?? false,
+                        allowableOperations: node.allowableOperations,
+                        isFile: node.isFile,
+                        isFolder: node.isFolder)
     }
 
     private static func create(from node: NodeChildAssociation) -> ListNode {
@@ -66,8 +68,10 @@ struct NodeChildMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
-                        favorite: node.isFavorite,
+                        favorite: node.isFavorite ?? false,
                         allowableOperations: node.allowableOperations,
-                        destination: destination)
+                        destination: destination,
+                        isFile: node.isFile,
+                        isFolder: node.isFolder)
     }
 }
