@@ -77,25 +77,27 @@ typealias CreatedNodeType = (String, String, String)
 class ListNode: Hashable, Entity {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentGuid: String?
-    var guid: String
-    var siteID: String
+    var guid = ""
+    var siteID = ""
     var destination: String?
     var mimeType: String?
-    var title: String
-    var path: String
+    var title = ""
+    var path = ""
     var modifiedAt: Date?
-    var favorite: Bool?
-    var trashed: Bool?
+    var favorite: Bool = false
+    var trashed: Bool = false
     var markedAsOffline = false
+    var isFile = false
+    var isFolder = false
 
     // objectbox: convert = { "default": ".unknown" }
-    var nodeType: NodeType
+    var nodeType: NodeType = .unknown
     // objectbox: convert = { "default": ".unknown" }
     var siteRole: SiteRole = .unknown
     // objectbox: convert = { "default": ".undefined" }
-    var syncStatus: SyncStatus
+    var syncStatus: SyncStatus = .undefined
     // objectbox: convert = { "default": ".undefined" }
-    var markedFor: MarkedForStatus
+    var markedFor: MarkedForStatus = .undefined
     // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
     var allowableOperations: [AllowableOperationsType] = [.unknown]
 
@@ -109,14 +111,15 @@ class ListNode: Hashable, Entity {
          path: String,
          modifiedAt: Date? = nil,
          nodeType: NodeType,
-         favorite: Bool? = nil,
+         favorite: Bool = false,
          syncStatus: SyncStatus = .undefined,
          markedOfflineStatus: MarkedForStatus = .undefined,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
-         destination: String? = nil) {
-
+         destination: String? = nil,
+         isFile: Bool = false,
+         isFolder: Bool = false) {
         self.guid = guid
         self.siteID = siteID
         self.parentGuid = parentGuid
@@ -132,19 +135,12 @@ class ListNode: Hashable, Entity {
         self.siteRole = parse(siteRole)
         self.trashed = trashed
         self.destination = destination
+        self.isFile = isFile
+        self.isFolder = isFolder
     }
 
-    init() {
-        guid = ""
-        siteID = ""
-        title = ""
-        path = ""
-        nodeType = .unknown
-        allowableOperations = [.unknown]
-        siteRole = .unknown
-        syncStatus = .undefined
-        markedFor = .undefined
-    }
+    // Default initializer required by ObjectBox
+    init() {}
 
     // MARK: - Public Helpers
 
@@ -162,6 +158,8 @@ class ListNode: Hashable, Entity {
         self.syncStatus = newVersion.syncStatus
         self.markedAsOffline = newVersion.markedAsOffline
         self.markedFor = newVersion.markedFor
+        self.isFile = newVersion.isFile
+        self.isFolder = newVersion.isFolder
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
@@ -171,9 +169,6 @@ class ListNode: Hashable, Entity {
     func shouldUpdate() -> Bool {
         if self.trashed == true {
             return false
-        }
-        if self.favorite == nil {
-            return true
         }
 
         switch self.nodeType {

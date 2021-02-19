@@ -38,13 +38,15 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 10, uid: 8877005435172031744)
         try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 11, uid: 8306138110636922368)
         try entityBuilder.addProperty(name: "markedAsOffline", type: Bool.entityPropertyType, id: 12, uid: 8931151636810106368)
+        try entityBuilder.addProperty(name: "isFile", type: Bool.entityPropertyType, id: 19, uid: 7009987470108192768)
+        try entityBuilder.addProperty(name: "isFolder", type: Bool.entityPropertyType, id: 20, uid: 3222472111177428736)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 13, uid: 6370314685970737664)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 14, uid: 8122952080249357824)
         try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 15, uid: 4676429062915184384)
         try entityBuilder.addProperty(name: "markedFor", type: String.entityPropertyType, id: 18, uid: 1597269330570867456)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 17, uid: 186580639668120576)
 
-        try entityBuilder.lastProperty(id: 18, uid: 1597269330570867456)
+        try entityBuilder.lastProperty(id: 20, uid: 3222472111177428736)
     }
 }
 
@@ -107,20 +109,32 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.favorite > 1234 }
-    internal static var favorite: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 10, isPrimaryKey: false) }
+    ///     box.query { ListNode.favorite == true }
+    internal static var favorite: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 10, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.trashed > 1234 }
-    internal static var trashed: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 11, isPrimaryKey: false) }
+    ///     box.query { ListNode.trashed == true }
+    internal static var trashed: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
     ///     box.query { ListNode.markedAsOffline == true }
     internal static var markedAsOffline: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 12, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.isFile == true }
+    internal static var isFile: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 19, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.isFolder == true }
+    internal static var isFolder: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 20, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -234,17 +248,17 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .favorite > 1234 }
+    ///     box.query { .favorite == true }
 
-    internal static var favorite: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 10, isPrimaryKey: false) }
+    internal static var favorite: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 10, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .trashed > 1234 }
+    ///     box.query { .trashed == true }
 
-    internal static var trashed: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 11, isPrimaryKey: false) }
+    internal static var trashed: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 11, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -253,6 +267,22 @@ extension ObjectBox.Property where E == ListNode {
     ///     box.query { .markedAsOffline == true }
 
     internal static var markedAsOffline: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 12, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .isFile == true }
+
+    internal static var isFile: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 19, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .isFolder == true }
+
+    internal static var isFolder: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 20, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -334,6 +364,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(entity.favorite, at: 2 + 2 * 10)
         propertyCollector.collect(entity.trashed, at: 2 + 2 * 11)
         propertyCollector.collect(entity.markedAsOffline, at: 2 + 2 * 12)
+        propertyCollector.collect(entity.isFile, at: 2 + 2 * 19)
+        propertyCollector.collect(entity.isFolder, at: 2 + 2 * 20)
         propertyCollector.collect(dataOffset: propertyOffset_parentGuid, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_guid, at: 2 + 2 * 3)
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 4)
@@ -363,6 +395,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.favorite = entityReader.read(at: 2 + 2 * 10)
         entity.trashed = entityReader.read(at: 2 + 2 * 11)
         entity.markedAsOffline = entityReader.read(at: 2 + 2 * 12)
+        entity.isFile = entityReader.read(at: 2 + 2 * 19)
+        entity.isFolder = entityReader.read(at: 2 + 2 * 20)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 14)) ?? .unknown
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 15)) ?? .undefined

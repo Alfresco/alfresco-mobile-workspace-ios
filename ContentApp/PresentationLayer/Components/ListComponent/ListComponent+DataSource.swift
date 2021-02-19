@@ -23,9 +23,7 @@ private let listSectionCellHeight: CGFloat = 64.0
 private let listSiteCellHeight: CGFloat = 48.0
 
 extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
-                                       UICollectionViewDataSource,
-                                       UICollectionViewDelegate {
-
+                                       UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
@@ -120,21 +118,5 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         }
 
         return cell ?? UICollectionViewCell()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let dataSource = listDataSource else { return }
-        let node = dataSource.listNode(for: indexPath)
-        if dataSource.shouldPreview(node: node) == false { return }
-        if node.trashed == false,
-           let dataSource = listDataSource {
-            listItemActionDelegate?.showPreview(for: node,
-                                                from: dataSource)
-            listActionDelegate?.elementTapped(node: node)
-        } else {
-            listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                               from: dataSource,
-                                                               delegate: self)
-        }
     }
 }
