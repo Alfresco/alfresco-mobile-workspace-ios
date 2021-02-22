@@ -76,6 +76,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     }
 
     func refreshList() {
+        refreshedList = true
         currentPage = 1
         delegate?.refreshResults()
     }

@@ -34,6 +34,7 @@ class PageFetchingViewModel {
     var pageFetchingGroup = DispatchGroup()
     var currentPage: Int = 1
     var hasMoreItems = true
+    var refreshedList = false
 
     var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
@@ -52,8 +53,9 @@ class PageFetchingViewModel {
             guard let sSelf = self else { return }
 
             if sSelf.hasMoreItems {
+                let skipCount = (sSelf.refreshedList) ? APIConstants.pageSize : sSelf.results.count
                 let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
-                                                 skipCount: sSelf.results.count)
+                                                 skipCount: skipCount)
                 sSelf.fetchItems(with: nextPage,
                                  userInfo: userInfo,
                                  completionHandler: { (paginatedResponse) in
@@ -67,6 +69,7 @@ class PageFetchingViewModel {
         if let error = response.error {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
+                sSelf.refreshedList = false
                 sSelf.handlePage(results: nil, pagination: nil, error: error)
             }
         } else if let results = response.results,
@@ -80,6 +83,7 @@ class PageFetchingViewModel {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
+                sSelf.refreshedList = false
                 sSelf.handlePage(results: results,
                                  pagination: response.responsePagination,
                                  error: nil)

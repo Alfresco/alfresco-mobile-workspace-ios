@@ -52,6 +52,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     func refreshList() {
+        refreshedList = true
         currentPage = 1
         request(with: nil)
     }

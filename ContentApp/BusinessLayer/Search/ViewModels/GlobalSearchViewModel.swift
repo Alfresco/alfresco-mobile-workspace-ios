@@ -20,7 +20,6 @@ import Foundation
 import AlfrescoContent
 
 class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
-    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
 
@@ -117,6 +116,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
         self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 
@@ -136,11 +136,12 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             let searchChipsState = sSelf.searchChipsState()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
 
+                var listNodes: [ListNode]?
                 if let entries = results?.list.entries {
-                    sSelf.resultsList = SitesNodeMapper.map(entries)
+                    listNodes = SitesNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
@@ -163,11 +164,14 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                                          chipFilters: sSelf.searchChips,
                                                                          pagination: paginationRequest)
             SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
+
+                print("asd")
+                var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ResultsNodeMapper.map(entries)
+                    listNodes = ResultsNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)

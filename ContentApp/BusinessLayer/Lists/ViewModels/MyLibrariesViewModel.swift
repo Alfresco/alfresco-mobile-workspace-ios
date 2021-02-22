@@ -52,6 +52,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func refreshList() {
+        refreshedList = true
         currentPage = 1
         request(with: nil)
     }
