@@ -53,7 +53,7 @@ class PageFetchingViewModel {
 
             if sSelf.hasMoreItems {
                 let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
-                                                 skipCount: sSelf.currentPage * APIConstants.pageSize)
+                                                 skipCount: sSelf.results.count)
                 sSelf.fetchItems(with: nextPage,
                                  userInfo: userInfo,
                                  completionHandler: { (paginatedResponse) in
