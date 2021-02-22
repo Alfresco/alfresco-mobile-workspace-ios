@@ -117,6 +117,11 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
             cell?.subtitle.text = ""
         }
 
+        if isPaginationEnabled && collectionView.lastItemIndexPath() == indexPath {
+            self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
+                                                                   itemAtIndexPath: indexPath)
+        }
+
         return cell ?? UICollectionViewCell()
     }
 }
