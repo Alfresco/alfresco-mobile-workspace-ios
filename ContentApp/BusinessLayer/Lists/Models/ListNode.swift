@@ -84,7 +84,7 @@ class ListNode: Hashable, Entity {
     var title = ""
     var path = ""
     var modifiedAt: Date?
-    var favorite: Bool = false
+    var favorite: Bool?
     var trashed: Bool = false
     var markedAsOffline = false
     var isFile = false
@@ -111,7 +111,7 @@ class ListNode: Hashable, Entity {
          path: String,
          modifiedAt: Date? = nil,
          nodeType: NodeType,
-         favorite: Bool = false,
+         favorite: Bool? = nil,
          syncStatus: SyncStatus = .undefined,
          markedOfflineStatus: MarkedForStatus = .undefined,
          allowableOperations: [String]? = nil,
@@ -171,7 +171,7 @@ class ListNode: Hashable, Entity {
             return false
         }
 
-        if self.favorite == false {
+        if self.favorite == nil {
             return true
         }
 
