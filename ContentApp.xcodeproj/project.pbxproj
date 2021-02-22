@@ -56,6 +56,7 @@
 		B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0B24D9AD220058BCE1 /* UIViewController+Settings.swift */; };
 		B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */; };
 		B9973068255E7CC70026166A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B997306A255E7CC70026166A /* InfoPlist.strings */; };
+		B99A882725E38FB700B3C16D /* PresentingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99A882625E38FB700B3C16D /* PresentingCoordinator.swift */; };
 		B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99B5BE824BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift */; };
 		B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */; };
 		B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99D9BBC2486724D00FBFC9B /* AuthenticationProviderProtocol.swift */; };
@@ -346,6 +347,7 @@
 		B9973074255E7CD80026166A /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B9973076255E7CE60026166A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B997307C255E7CF30026166A /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B99A882625E38FB700B3C16D /* PresentingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentingCoordinator.swift; sourceTree = "<group>"; };
 		B99B5BE824BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTabBarThemingServiceWorker.swift; sourceTree = "<group>"; };
 		B99D9BB924866F1400FBFC9B /* GetContentServicesProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContentServicesProfile.swift; sourceTree = "<group>"; };
 		B99D9BBC2486724D00FBFC9B /* AuthenticationProviderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationProviderProtocol.swift; sourceTree = "<group>"; };
@@ -1423,6 +1425,7 @@
 			children = (
 				B946E84B25592DC600023A39 /* Factories */,
 				E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */,
+				B99A882625E38FB700B3C16D /* PresentingCoordinator.swift */,
 				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
 				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 				E3A7F32C258A5B880089734D /* OfflineScreenCoordinator.swift */,
@@ -2070,6 +2073,7 @@
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
 				B91A5E48247825E20063E938 /* ServiceRepository.swift in Sources */,
 				B959CCD82476CB0D00811F15 /* ThemingScene.swift in Sources */,
+				B99A882725E38FB700B3C16D /* PresentingCoordinator.swift in Sources */,
 				E3AF925A25C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift in Sources */,
 				B957FE6C24A8EFBB007F13C0 /* Router.swift in Sources */,
 				E3337DCA25BF105400C7B5C8 /* SyncTriggersService.swift in Sources */,

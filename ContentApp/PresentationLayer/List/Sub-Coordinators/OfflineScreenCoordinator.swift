@@ -71,8 +71,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentDataSourceProtocol) {
         if let navigationViewController = self.navigationViewController {
-            switch node.nodeType {
-            case .folder, .site, .folderLink:
+            if node.isAFolderType() {
                 if dataSource === offlineDataSource?.resultsViewModel {
                     let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
                                                                       listNode: node)
@@ -84,7 +83,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                     coordinator.start()
                     self.offlineFolderChildrenScreenCoordinator = coordinator
                 }
-            case .file, .fileLink:
+            } else if node.isAFileType() {
                 if dataSource === offlineDataSource?.resultsViewModel {
                     let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
                                                                    listNode: node)
@@ -100,8 +99,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                     coordinator.start()
                     self.filePreviewCoordinator = coordinator
                 }
-
-            default:
+            } else {
                 AlfrescoLog.error("Unable to show preview for unknown node type")
             }
         }

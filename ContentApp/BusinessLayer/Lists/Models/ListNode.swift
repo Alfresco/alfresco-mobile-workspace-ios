@@ -222,6 +222,24 @@ class ListNode: Hashable, Entity {
         hasher.combine(guid)
     }
 
+    func isAFileType() -> Bool {
+        switch nodeType {
+        case .file, .fileLink:
+            return true
+        default:
+            return isFile
+        }
+    }
+
+    func isAFolderType() -> Bool {
+        switch nodeType {
+        case .folder, .folderLink:
+            return true
+        default:
+            return isFolder
+        }
+    }
+
     // MARK: - Creation
 
     static private var mapExtensions: [ActionMenuType: CreatedNodeType] {
