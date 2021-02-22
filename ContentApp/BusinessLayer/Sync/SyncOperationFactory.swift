@@ -43,7 +43,7 @@ class SyncOperationFactory {
         guard let nodes = nodes else { return [] }
         var detailsOperations: [AsyncClosureOperation] = []
 
-        for node in nodes where node.nodeType == .file {
+        for node in nodes where node.isAFileType() {
             let fileNodeOperation = fetchFileNodeDetailsOperation(node: node)
             detailsOperations.append(fileNodeOperation)
         }
@@ -55,7 +55,7 @@ class SyncOperationFactory {
                                              on operationQueue: OperationQueue) {
         guard let nodes = nodes else { return }
 
-        for node in nodes where node.nodeType == .folder {
+        for node in nodes where node.isAFolderType() {
             fetchChildrenNodeDetailsOperations(of: node,
                                                paginationRequest: nil,
                                                on: operationQueue)
@@ -172,7 +172,7 @@ class SyncOperationFactory {
                     sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
 
                     for onlineNode in onlineNodes {
-                        if onlineNode.nodeType == .folder {
+                        if onlineNode.isAFolderType() {
                             let queriedNode = listNodeDataAccessor.query(node: onlineNode)
                             onlineNode.markedAsOffline = queriedNode?.markedAsOffline ?? false
                             listNodeDataAccessor.store(node: onlineNode)
@@ -180,7 +180,7 @@ class SyncOperationFactory {
                             sSelf.fetchChildrenNodeDetailsOperations(of: onlineNode,
                                                                      paginationRequest: nil,
                                                                      on: queue)
-                        } else if onlineNode.nodeType == .file {
+                        } else if onlineNode.isAFileType() {
                             let queriedNode = listNodeDataAccessor.query(node: onlineNode)
                             sSelf.compareAndUpdate(queriedNode: queriedNode,
                                                    with: onlineNode)
