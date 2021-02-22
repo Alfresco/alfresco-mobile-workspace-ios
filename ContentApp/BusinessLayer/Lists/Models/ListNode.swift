@@ -171,6 +171,10 @@ class ListNode: Hashable, Entity {
             return false
         }
 
+        if self.favorite == false {
+            return true
+        }
+
         switch self.nodeType {
         case .site: break
         default:
