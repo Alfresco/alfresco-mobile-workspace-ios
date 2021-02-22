@@ -44,6 +44,8 @@ struct DeleteNodeMapper {
                         path: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
-                        trashed: true)
+                        trashed: true,
+                        isFile: node.isFile,
+                        isFolder: node.isFolder)
     }
 }
