@@ -66,7 +66,10 @@ class EventBusService: EventBusServiceProtocol, Service {
                 if let registeredObserver = observers.object(at: idx) as? EventObservable {
 
                     if let supportedNoteTypes = registeredObserver.supportedNodeTypes {
-                        if supportedNoteTypes.contains(event.node.nodeType) {
+                        // Match observers by registered node types but allow custom types to be
+                        // matched as well
+                        if supportedNoteTypes.contains(event.node.nodeType) ||
+                            event.node.nodeType == .unknown {
                             var dispatchQueue: DispatchQueue
 
                             switch queue {
