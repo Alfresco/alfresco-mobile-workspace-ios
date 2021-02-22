@@ -165,7 +165,6 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                                          pagination: paginationRequest)
             SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
 
-                print("asd")
                 var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
