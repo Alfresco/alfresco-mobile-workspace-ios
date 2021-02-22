@@ -84,7 +84,7 @@ class ListNode: Hashable, Entity {
     var title = ""
     var path = ""
     var modifiedAt: Date?
-    var favorite: Bool = false
+    var favorite: Bool?
     var trashed: Bool = false
     var markedAsOffline = false
     var isFile = false
@@ -111,7 +111,7 @@ class ListNode: Hashable, Entity {
          path: String,
          modifiedAt: Date? = nil,
          nodeType: NodeType,
-         favorite: Bool = false,
+         favorite: Bool? = nil,
          syncStatus: SyncStatus = .undefined,
          markedOfflineStatus: MarkedForStatus = .undefined,
          allowableOperations: [String]? = nil,
@@ -171,6 +171,10 @@ class ListNode: Hashable, Entity {
             return false
         }
 
+        if self.favorite == nil {
+            return true
+        }
+
         switch self.nodeType {
         case .site: break
         default:
@@ -220,6 +224,24 @@ class ListNode: Hashable, Entity {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(guid)
+    }
+
+    func isAFileType() -> Bool {
+        switch nodeType {
+        case .file, .fileLink:
+            return true
+        default:
+            return isFile
+        }
+    }
+
+    func isAFolderType() -> Bool {
+        switch nodeType {
+        case .folder, .folderLink:
+            return true
+        default:
+            return isFolder
+        }
     }
 
     // MARK: - Creation

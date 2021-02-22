@@ -170,7 +170,12 @@ class NodeActionsViewModel {
     private func requestAddToFavorites(action: ActionMenu) {
         guard let node = self.node else { return }
         let jsonGuid = JSONValue(dictionaryLiteral: ("guid", JSONValue(stringLiteral: node.guid)))
-        let jsonFolder = JSONValue(dictionaryLiteral: (node.nodeType.plainType(), jsonGuid))
+        var jsonFolder: JSONValue
+        if node.nodeType == .unknown {
+            jsonFolder = JSONValue(dictionaryLiteral: (node.isFile ? "file" : "folder", jsonGuid))
+        } else {
+            jsonFolder = JSONValue(dictionaryLiteral: (node.nodeType.plainType(), jsonGuid))
+        }
         let jsonBody = FavoriteBodyCreate(target: jsonFolder)
 
         FavoritesAPI.createFavorite(personId: APIConstants.me,

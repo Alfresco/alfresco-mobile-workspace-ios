@@ -62,19 +62,22 @@ struct ActionsMenuGeneric {
                                        type: .markOffline)
         let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
                                        type: .removeOffline)
-        if node.nodeType == .file ||
-            node.nodeType == .folder {
+        let enableAction = node.isAFileType() || node.isAFolderType()
+
+        if enableAction {
             return node.isMarkedOffline() ? removeOffAction : markOffAction
         }
+
         return nil
     }
 
     static private func downloadAction(for node: ListNode) -> ActionMenu? {
         let downloadAction = ActionMenu(title: LocalizationConstants.ActionMenu.download,
                                       type: .download)
-        if node.nodeType == .file || node.nodeType == .fileLink {
+        if node.isAFileType() {
             return downloadAction
         }
+
         return nil
     }
 

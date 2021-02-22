@@ -109,8 +109,8 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.favorite == true }
-    internal static var favorite: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 10, isPrimaryKey: false) }
+    ///     box.query { ListNode.favorite > 1234 }
+    internal static var favorite: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 10, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -248,9 +248,9 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .favorite == true }
+    ///     box.query { .favorite > 1234 }
 
-    internal static var favorite: Property<ListNode, Bool, Void> { return Property<ListNode, Bool, Void>(propertyId: 10, isPrimaryKey: false) }
+    internal static var favorite: Property<ListNode, Bool?, Void> { return Property<ListNode, Bool?, Void>(propertyId: 10, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///

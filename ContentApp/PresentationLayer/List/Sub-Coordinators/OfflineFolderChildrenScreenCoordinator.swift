@@ -19,7 +19,6 @@
 import UIKit
 
 class OfflineFolderChildrenScreenCoordinator: Coordinator {
-
     private let presenter: UINavigationController
     private var listNode: ListNode
     private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
@@ -53,13 +52,12 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentDataSourceProtocol) {
-        switch node.nodeType {
-        case .folder:
+        if node.isAFolderType() {
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,
                                                                      listNode: node)
             coordinator.start()
             self.offlineFolderChildrenScreenCoordinator = coordinator
-        case .file, .fileLink:
+        } else if node.isAFileType() {
             let coordinator = FilePreviewScreenCoordinator(with: presenter,
                                                            listNode: node,
                                                            excludedActions: [.markOffline,
@@ -70,8 +68,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                            shouldPreviewLatestContent: false)
             coordinator.start()
             self.filePreviewCoordinator = coordinator
-
-        default:
+        } else {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }

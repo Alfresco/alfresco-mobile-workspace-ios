@@ -18,11 +18,9 @@
 
 import UIKit
 
-class BrowseTopLevelFolderScreenCoordinator: Coordinator {
+class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var browseNode: BrowseNode
-    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
@@ -31,7 +29,7 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
         self.browseNode = browseNode
     }
 
-    func start() {
+    override func start() {
         let viewModelFactory = TopLevelBrowseViewModelFactory()
         viewModelFactory.coordinatorServices = coordinatorServices
 
@@ -52,20 +50,13 @@ class BrowseTopLevelFolderScreenCoordinator: Coordinator {
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentDataSourceProtocol) {
-        switch node.nodeType {
-        case .folder, .folderLink, .site:
-            let folderDrillDownCoordinator =
-                FolderChildrenScreenCoordinator(with: self.presenter,
-                                                listNode: node)
-            folderDrillDownCoordinator.start()
-            self.folderDrillDownCoordinator = folderDrillDownCoordinator
-        case .file, .fileLink:
-            let filePreviewCoordinator =
-                FilePreviewScreenCoordinator(with: self.presenter,
-                                             listNode: node)
-            filePreviewCoordinator.start()
-            self.filePreviewCoordinator = filePreviewCoordinator
-        default:
+        if node.isAFolderType() || node.nodeType == .site {
+            startFolderCoordinator(for: node,
+                                   presenter: self.presenter)
+        } else if node.isAFileType() {
+            startFileCoordinator(for: node,
+                                 presenter: self.presenter)
+        } else {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
