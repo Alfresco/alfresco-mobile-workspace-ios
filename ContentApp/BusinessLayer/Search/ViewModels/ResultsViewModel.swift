@@ -44,7 +44,10 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
 
 extension ResultsViewModel: SearchViewModelDelegate {
     func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.updateResults(results: results, pagination: pagination, error: error)
+        }
     }
 }
 
