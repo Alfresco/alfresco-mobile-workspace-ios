@@ -20,7 +20,6 @@ import Foundation
 import AlfrescoContent
 
 class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
-    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
     var searchChipNode: SearchChipItem?
@@ -104,6 +103,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
         self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 
@@ -118,11 +118,13 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
                                                                          chipFilters: sSelf.searchChips,
                                                                          pagination: paginationRequest)
             SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
+
+                var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ResultsNodeMapper.map(entries)
+                    listNodes = ResultsNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)

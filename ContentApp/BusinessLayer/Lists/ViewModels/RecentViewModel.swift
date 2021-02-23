@@ -53,6 +53,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     func refreshList() {
+        refreshedList = true
         currentPage = 1
         recentsList(with: nil)
     }
