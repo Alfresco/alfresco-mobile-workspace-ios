@@ -167,6 +167,7 @@ class ListComponentViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme
               else { return }
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListTitle.textAlignment = .center
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
 

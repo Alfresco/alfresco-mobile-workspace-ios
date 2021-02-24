@@ -1990,14 +1990,14 @@
                                             <constraint firstAttribute="height" constant="88" id="vks-Jx-Irx"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbf-LQ-gvV">
-                                        <rect key="frame" x="167.66666666666666" y="342.66666666666669" width="92.999999999999972" height="33.666666666666686"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qbf-LQ-gvV">
+                                        <rect key="frame" x="107" y="342.66666666666669" width="214" height="33.666666666666686"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9C-Qd-WPm">
-                                        <rect key="frame" x="143.33333333333337" y="384.33333333333331" width="141.66666666666663" height="40.666666666666686"/>
+                                        <rect key="frame" x="107" y="384.33333333333331" width="214" height="40.666666666666686"/>
                                         <string key="text">We can’t find what
  you’re looking for</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -2009,10 +2009,12 @@
                                 <constraints>
                                     <constraint firstItem="vM6-Fd-wHr" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="3UM-hH-fp2"/>
                                     <constraint firstItem="qbf-LQ-gvV" firstAttribute="top" secondItem="vM6-Fd-wHr" secondAttribute="bottom" constant="16" id="GWP-6q-8SG"/>
+                                    <constraint firstItem="qbf-LQ-gvV" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="Gk4-ql-iVJ"/>
+                                    <constraint firstItem="o9C-Qd-WPm" firstAttribute="width" secondItem="ddo-cc-nfp" secondAttribute="width" multiplier="0.5" id="LtT-uU-SMm"/>
                                     <constraint firstItem="vM6-Fd-wHr" firstAttribute="centerY" secondItem="ddo-cc-nfp" secondAttribute="centerY" multiplier="2/3" id="MeQ-7d-DhL"/>
-                                    <constraint firstItem="qbf-LQ-gvV" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="Z46-UG-KBZ"/>
                                     <constraint firstItem="o9C-Qd-WPm" firstAttribute="top" secondItem="qbf-LQ-gvV" secondAttribute="bottom" constant="8" id="dbU-se-jIn"/>
-                                    <constraint firstItem="o9C-Qd-WPm" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="hUF-85-fVI"/>
+                                    <constraint firstItem="o9C-Qd-WPm" firstAttribute="centerX" secondItem="ddo-cc-nfp" secondAttribute="centerX" id="g0d-Jr-HaG"/>
+                                    <constraint firstItem="qbf-LQ-gvV" firstAttribute="width" secondItem="ddo-cc-nfp" secondAttribute="width" multiplier="0.5" id="leh-7m-BdC"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mp9-wt-XHA" customClass="MDCFloatingButton">
