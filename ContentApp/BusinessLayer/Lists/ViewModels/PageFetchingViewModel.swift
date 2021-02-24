@@ -35,6 +35,7 @@ class PageFetchingViewModel {
     var currentPage: Int = 1
     var hasMoreItems = true
     var refreshedList = false
+    var pageSkipCount: Int?
 
     var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
@@ -56,11 +57,14 @@ class PageFetchingViewModel {
                 let skipCount = (sSelf.refreshedList) ? APIConstants.pageSize : sSelf.results.count
                 let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
                                                  skipCount: skipCount)
-                sSelf.fetchItems(with: nextPage,
-                                 userInfo: userInfo,
-                                 completionHandler: { (paginatedResponse) in
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                })
+                if skipCount != sSelf.pageSkipCount {
+                    sSelf.pageSkipCount = skipCount
+                    sSelf.fetchItems(with: nextPage,
+                                     userInfo: userInfo,
+                                     completionHandler: { (paginatedResponse) in
+                                        sSelf.handlePaginatedResponse(response: paginatedResponse)
+                                     })
+                }
             }
         }
     }
@@ -70,6 +74,7 @@ class PageFetchingViewModel {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.refreshedList = false
+                sSelf.pageSkipCount = nil
                 sSelf.handlePage(results: nil, pagination: nil, error: error)
             }
         } else if let results = response.results,
@@ -84,6 +89,7 @@ class PageFetchingViewModel {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.refreshedList = false
+                sSelf.pageSkipCount = nil
                 sSelf.handlePage(results: results,
                                  pagination: response.responsePagination,
                                  error: nil)

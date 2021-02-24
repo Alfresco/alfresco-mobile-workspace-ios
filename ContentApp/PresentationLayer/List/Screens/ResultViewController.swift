@@ -315,12 +315,15 @@ extension ResultViewController: ListComponentActionDelegate {
         resultScreenDelegate?.elementListTapped(elementList: node)
     }
 
-    func didUpdateList(error: Error?, pagination: Pagination?) {
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?) {
         stopLoading()
         recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
     }
 
-    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath) {
         self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndexPath)
     }
 

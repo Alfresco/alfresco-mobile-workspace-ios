@@ -99,11 +99,13 @@ extension ListViewController: ListComponentActionDelegate {
         // Do nothing
     }
 
-    func didUpdateList(error: Error?, pagination: Pagination?) {
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?, pagination: Pagination?) {
         listController?.stopLoading()
     }
 
-    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath) {
         listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
     }
 

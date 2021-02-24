@@ -34,8 +34,11 @@ protocol ListItemActionDelegate: class {
 
 protocol ListComponentActionDelegate: class {
     func elementTapped(node: ListNode)
-    func didUpdateList(error: Error?, pagination: Pagination?)
-    func fetchNextListPage(for itemAtIndexPath: IndexPath)
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?)
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath)
     func performListAction()
 }
 
@@ -272,7 +275,7 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
 
 extension ListComponentViewController: PageFetchableDelegate {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath) {
-        listActionDelegate?.fetchNextListPage(for: itemAtIndexPath)
+        listActionDelegate?.fetchNextListPage(in: self, for: itemAtIndexPath)
     }
 }
 
@@ -311,7 +314,7 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
                 }
             })
 
-            listActionDelegate?.didUpdateList(error: error, pagination: pagination)
+            listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination)
         } else {
             stopLoading()
 
