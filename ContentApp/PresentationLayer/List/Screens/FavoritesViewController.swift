@@ -270,18 +270,21 @@ extension FavoritesViewController: ListComponentActionDelegate {
         // Do nothing
     }
 
-    func didUpdateList(error: Error?, pagination: Pagination?) {
-        if tabBar.selectedItem?.tag == 0 {
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?) {
+        if listComponentViewController == folderAndFilesViewController {
             folderAndFilesViewController?.stopLoading()
-        } else if tabBar.selectedItem?.tag == 1 {
+        } else if listComponentViewController == librariesViewController {
             librariesViewController?.stopLoading()
         }
     }
 
-    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
-        if tabBar.selectedItem?.tag == 0 {
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath) {
+        if listComponentViewController == folderAndFilesViewController {
             folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
-        } else if tabBar.selectedItem?.tag == 1 {
+        } else if listComponentViewController == librariesViewController {
             librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
         }
     }
