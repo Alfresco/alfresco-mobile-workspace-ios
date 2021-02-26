@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
-"empty-recent-description" = "Bestanden die u weergeeft en\n bewerkt worden hier weergegeven.";
+"empty-recent-description" = "Bestanden die u weergeeft en bewerkt worden hier weergegeven.";
 "empty-favorites-files-folders-title" = "Geen favoriete bestanden of mappen";
 "empty-favorites-libraries-title" = "Geen favoriete bibliotheken";
-"empty-favorites-description" = "Het lijkt erop dat u niets\n hebt toegevoegd.";
+"empty-favorites-description" = "Het lijkt erop dat u niets hebt toegevoegd.";
 "empty-folder-title" = "Map is leeg";
-"empty-folder-description" = "Het lijkt erop dat hier\n nog niets te vinden is.";
+"empty-folder-description" = "Het lijkt erop dat hier nog niets te vinden is.";
 "empty-search-title" = "Oeps!";
-"empty-search-description" = "We kunnen niet vinden wat\n u zoekt.";
+"empty-search-description" = "We kunnen niet vinden wat u zoekt.";
 "empty-offline-title" = "Geen offlinecontent";
-"empty-offline-description" = "Content die u offline\n beschikbaar maakt, wordt hier weergegeven.";
+"empty-offline-description" = "Content die u offline beschikbaar maakt, wordt hier weergegeven.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
