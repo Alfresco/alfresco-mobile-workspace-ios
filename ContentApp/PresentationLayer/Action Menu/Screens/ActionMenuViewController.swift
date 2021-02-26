@@ -27,7 +27,7 @@ class ActionMenuViewController: SystemThemableViewController {
     var actionMenuModel: ActionMenuViewModel?
     var nodeActionsModel: NodeActionsViewModel?
 
-    let actionMenuCellHeight: CGFloat = 63.0
+    let actionMenuCellHeight: CGFloat = 55.0
 
     // MARK: - View Life Cycle
 

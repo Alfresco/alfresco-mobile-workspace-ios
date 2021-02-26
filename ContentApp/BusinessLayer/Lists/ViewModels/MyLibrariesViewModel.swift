@@ -65,6 +65,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
+    func shouldDisplayNodePath() -> Bool {
+        return false
+    }
+
     func performListAction() {
         // Do nothing
     }

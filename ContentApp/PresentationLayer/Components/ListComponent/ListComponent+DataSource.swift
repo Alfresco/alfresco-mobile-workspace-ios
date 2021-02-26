@@ -18,9 +18,9 @@
 
 import UIKit
 
-private let listItemNodeCellHeight: CGFloat = 64.0
-private let listSectionCellHeight: CGFloat = 64.0
-private let listSiteCellHeight: CGFloat = 48.0
+private let listItemNodeCellHeight: CGFloat = 54.0
+private let listSectionCellHeight: CGFloat = 54.0
+private let listSiteCellHeight: CGFloat = 44.0
 
 extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                                        UICollectionViewDataSource {
@@ -47,11 +47,11 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let node = listDataSource?.listNode(for: indexPath)
+        guard let dataSource = listDataSource
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
                              height: listItemNodeCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (node.nodeType == .site) ? listSiteCellHeight : listItemNodeCellHeight)
+                      height: (dataSource.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
