@@ -27,7 +27,7 @@ class BrowseViewController: SystemSearchViewController {
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
     let sectionCellHeight: CGFloat = 1.0
-    let listBrowseCellHeight: CGFloat = 48.0
+    let listBrowseCellHeight: CGFloat = 44.0
 
     // MARK: - View Life Cycle
 

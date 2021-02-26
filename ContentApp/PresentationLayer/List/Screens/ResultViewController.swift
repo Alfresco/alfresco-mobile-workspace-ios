@@ -45,7 +45,7 @@ class ResultViewController: SystemThemableViewController {
     var searchChipsViewModel = SearchChipsViewModel()
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    let recentSearchCellHeight: CGFloat = 48.0
+    let recentSearchCellHeight: CGFloat = 44.0
     let chipSearchCellMinimHeight: CGFloat = 32.0
     let chipSearchCellMinimWidth: CGFloat = 52.0
 
