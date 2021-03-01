@@ -28,7 +28,7 @@ Alternatively you can build your own version of the app locally.
 
 ### Prerequisites
 
-In order to build Wire for iOS locally, it is necessary to install the following tools on the local machine:
+In order to build Alfresco Mobile Workspace for iOS locally, it is necessary to install the following tools on the local machine:
 - XCode 11 or newer
 - Cocoapods 1.0 or newer
 
