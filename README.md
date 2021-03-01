@@ -43,7 +43,7 @@ In order to build Wire for iOS locally, it is necessary to install the following
 
 ## Development
 
-We'd love to accept your patches and contributions to this project. [Check our Contributing guidelines](https://github.com/Alfresco/content-app-ios/blob/develop/CONTRIBUTING.md).
+We'd love to accept your patches and contributions to this project. [Check our Contributing guidelines](https://github.com/Alfresco/content-app-ios/master/CONTRIBUTING.md).
 
 ## Code reviews
 
