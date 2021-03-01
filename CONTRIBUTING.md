@@ -40,7 +40,7 @@ For that reason it's best to address and discuss the issue beforehand.
 
 Descriptive and consistent naming makes software easier to read and understand. Use the Swift naming conventions described in the [API Design Guidelines](https://swift.org/documentation/api-design-guidelines/)
 
-Whe use Swiftlint to reinforce some of guidelines and that may be subject to change so keep [an eye on it](https://github.com/Alfresco/content-app-ios/blob/master/.swiftlint.yml). For convenience it's already integrated in the project so make sure you're on the latest version before making your PR.
+We use Swiftlint to reinforce some of guidelines and that may be subject to change so keep [an eye on it](https://github.com/Alfresco/content-app-ios/blob/master/.swiftlint.yml). For convenience it's already integrated in the project so make sure you're on the latest version before making your PR.
 
 ## Code reviews
 
