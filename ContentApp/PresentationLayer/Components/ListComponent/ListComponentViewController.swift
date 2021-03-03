@@ -84,7 +84,7 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
         listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
-        listActionButton.mode = .expanded
+        listActionButton.mode = .normal
         listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
 
@@ -176,6 +176,7 @@ class ListComponentViewController: SystemThemableViewController {
 
         listActionButton.backgroundColor = currentTheme.primaryT1Color
         listActionButton.tintColor = currentTheme.onPrimaryColor
+        listActionButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
 
         refreshControl?.tintColor = currentTheme.primaryT1Color
     }

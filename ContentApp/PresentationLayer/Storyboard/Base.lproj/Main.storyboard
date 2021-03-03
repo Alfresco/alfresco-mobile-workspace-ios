@@ -2018,10 +2018,12 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mp9-wt-XHA" customClass="MDCFloatingButton">
-                                <rect key="frame" x="199" y="817" width="30" height="48"/>
+                                <rect key="frame" x="164" y="817" width="100" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Gez-be-97m"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="PsH-pj-n1z"/>
                                 </constraints>
+                                <state key="normal" title="Sync all"/>
                                 <connections>
                                     <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="XC4-1i-hoI"/>
                                     <action selector="listActionButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7oS-ZR-NSA"/>
