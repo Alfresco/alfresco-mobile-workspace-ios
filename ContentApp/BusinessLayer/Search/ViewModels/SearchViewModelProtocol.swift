@@ -25,7 +25,7 @@ protocol SearchViewModelProtocol {
     var lastSearchedString: String? { get set }
 
     func defaultSearchChips() -> [SearchChipItem]
-    func logicSearchChips(chipTapped: SearchChipItem) -> [Int]
+    func searchChipTapped(tappedChip: SearchChipItem) -> [Int]
     func performSearch(for string: String?, paginationRequest: RequestPagination?)
     func performLiveSearch(for string: String?)
     func fetchNextSearchResultsPage(for string: String?, index: IndexPath)

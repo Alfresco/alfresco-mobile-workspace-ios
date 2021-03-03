@@ -21,6 +21,7 @@ import AlfrescoContent
 
 protocol ResultsViewModelDelegate: class {
     func refreshResults()
+    func isNodePathEnabled() -> Bool
 }
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
@@ -76,6 +77,14 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
+    }
+
+    func shouldDisplayNodePath() -> Bool {
+        if let delegate = self.delegate {
+            return delegate.isNodePathEnabled()
+        }
+
+        return true
     }
 
     func refreshList() {
