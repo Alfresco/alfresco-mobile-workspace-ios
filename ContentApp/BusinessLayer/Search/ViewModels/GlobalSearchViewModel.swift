@@ -55,9 +55,9 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         return searchChips
     }
 
-    func logicSearchChips(chipTapped: SearchChipItem) -> [Int] {
+    func searchChipTapped(tappedChip: SearchChipItem) -> [Int] {
         var indexChipsReload: [Int] = []
-        if chipTapped.type == .library {
+        if tappedChip.type == .library {
             for chip in searchChips where chip.type != .library && chip.selected {
                 chip.selected = false
                 indexChipsReload.append(searchChips.firstIndex(where: { $0 == chip }) ?? 0)
@@ -205,5 +205,15 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
 extension GlobalSearchViewModel: ResultsViewModelDelegate {
     func refreshResults() {
         performSearch(for: lastSearchedString, paginationRequest: nil)
+    }
+
+    func isNodePathEnabled() -> Bool {
+        for chip in searchChips where chip.selected {
+            if chip.type == .library {
+                return false
+            }
+        }
+
+        return true
     }
 }

@@ -59,7 +59,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
         return searchChips
     }
 
-    func logicSearchChips(chipTapped: SearchChipItem) -> [Int] {
+    func searchChipTapped(tappedChip: SearchChipItem) -> [Int] {
         return []
     }
 
@@ -159,5 +159,15 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
 extension ContextualSearchViewModel: ResultsViewModelDelegate {
     func refreshResults() {
         performSearch(for: lastSearchedString, paginationRequest: nil)
+    }
+
+    func isNodePathEnabled() -> Bool {
+        for chip in searchChips where chip.selected {
+            if chip.type == .library {
+                return false
+            }
+        }
+
+        return true
     }
 }

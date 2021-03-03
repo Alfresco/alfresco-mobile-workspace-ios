@@ -142,7 +142,7 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
             let searchViewModel = self.searchViewModel else { return }
 
         rvc.startLoading()
-        rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
+        rvc.reloadChips(searchViewModel.searchChipTapped(tappedChip: chip))
         searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 
