@@ -159,7 +159,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Zu Favoriten hinzufügen";
 "action-menu-remove-favorite" = "Aus Favoriten entfernen";
-"action-menu-move-trash" = "In den Papierkorb verschieben";
+"action-menu-move-trash" = "In Papierkorb verschieben";
 "action-menu-download" = "Öffnen mit";
 "action-menu-restore" = "Wiederherstellen";
 "action-menu-permanently-delete" = "Dauerhaft löschen";
@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "Keine benutzten Dateien";
-"empty-recent-description" = "Hier werden Dateien aufgeführt, die Sie anzeigen und bearbeiten.";
+"empty-recent-description" = "Hier werden Dateien\naufgeführt, die Sie anzeigen und bearbeiten.";
 "empty-favorites-files-folders-title" = "Keine Dateien oder Ordner als Favoriten";
 "empty-favorites-libraries-title" = "Keine Bibliotheken als Favoriten";
-"empty-favorites-description" = "Sie haben scheinbar noch nichts hinzugefügt.";
+"empty-favorites-description" = "Sie haben scheinbar noch\nnichts hinzugefügt.";
 "empty-folder-title" = "Ordner ist leer";
-"empty-folder-description" = "Dieser Ordner ist noch leer.";
+"empty-folder-description" = "Dieser Ordner ist\nnoch leer.";
 "empty-search-title" = "Hoppla!";
-"empty-search-description" = "Wir können das von Ihnen Gesuchte nicht finden.";
+"empty-search-description" = "Wir können das von\nIhnen Gesuchte nicht finden.";
 "empty-offline-title" = "Keine Offlineinhalte";
-"empty-offline-description" = "Offline zur Verfügung gestellte Inhalte werden hier zu sehen sein.";
+"empty-offline-description" = "Offline zur Verfügung gestellte Inhalte\nwerden hier zu sehen sein.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";

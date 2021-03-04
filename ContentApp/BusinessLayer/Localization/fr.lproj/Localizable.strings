@@ -69,10 +69,10 @@
 
 // MARK: - Tabs Titles
 "settings" = "Réglages";
-"recent" = "Récent";
+"recent" = "Récents";
 "favorites" = "Favoris";
 "browse" = "Parcourir";
-"offline" = "Hors connexion";
+"offline" = "Hors ligne";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL d'Alfresco Content Services";
@@ -107,8 +107,8 @@
 "approved-restored" = "%@ a été restauré";
 "approved-deleted" = "%@ a été supprimé";
 "approved-created" = "%@ a été créé";
-"approved-mark-offline" = "%@ sera disponible hors connexion.";
-"approved-remove-offline" = "%@ ne sera plus disponible hors connexion.";
+"approved-mark-offline" = "%@ sera disponible hors ligne.";
+"approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -118,7 +118,7 @@
 "failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
 "app-version" = "Version de l'application %@-%@";
 "sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
-"sync-data-title" = "Mettre à jour les fichiers hors connexion en utilisant";
+"sync-data-title" = "Mettre à jour les fichiers hors ligne en utilisant";
 "sync-wifi-cellular-data" = "une connexion Wi-Fi et des données celullaires";
 "sync-only-wifi" = "une connexion Wi-Fi uniquement";
 
@@ -167,8 +167,8 @@
 "action-menu-create-ms-excel" = "Feuille de calcul Excel";
 "action-menu-create-ms-powerpoint" = "Présentation PowerPoint";
 "action-menu-create-folder" = "Nouveau dossier";
-"action-menu-mark-offline" = "Rendre disponible hors connexion";
-"action-menu-remove-offline" = "Supprimer hors connexion";
+"action-menu-mark-offline" = "Rendre disponible hors ligne";
+"action-menu-remove-offline" = "Supprimer hors ligne";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
-"empty-recent-description" = "Les fichiers consultés et modifiés apparaîtront ici.";
+"empty-recent-description" = "Les fichiers consultés et\n modifiés apparaîtront ici.";
 "empty-favorites-files-folders-title" = "Aucun fichier ou dossier favori";
-"empty-favorites-libraries-title" = "Pas de bibliothèques favorites";
-"empty-favorites-description" = "Il semble que vous n'ayez rien ajouté.";
+"empty-favorites-libraries-title" = "Aucune bibliothèque favorite";
+"empty-favorites-description" = "Il semble que vous n'ayez\n rien ajouté.";
 "empty-folder-title" = "Le dossier est vide";
-"empty-folder-description" = "Il semble que cet emplacement ne contienne aucun élément.";
+"empty-folder-description" = "Il semble que cet emplacement\n ne contienne aucun élément.";
 "empty-search-title" = "Oups !";
-"empty-search-description" = "Nous n'avons pas trouvé ce que vous recherchez.";
-"empty-offline-title" = "Aucun contenu hors connexion";
-"empty-offline-description" = "Le contenu disponible hors connexion s'affichera ici.";
+"empty-search-description" = "Nous n'avons pas trouvé ce que\n vous recherchez.";
+"empty-offline-title" = "Aucun contenu hors ligne";
+"empty-offline-description" = "Le contenu\n disponible hors ligne s'affichera ici.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
