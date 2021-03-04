@@ -16,8 +16,6 @@ variables:
     value: 'iphoneos'
   - name: cocoapods_path
     value: $(Pipeline.Workspace)/.cocoapods
-  - name: build_version
-    value: $[counter('buildVersion', 1441)]
 
 steps:
 - checkout: self
