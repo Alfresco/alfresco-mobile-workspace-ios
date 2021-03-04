@@ -116,7 +116,7 @@
 "light" = "Hell";
 "dark" = "Dunkel";
 "failed-profile-info" = "Abruf der Profilinformationen für aktuellen Benutzer fehlgeschlagen.";
-"app-version" = "App-Version %@-%@";
+"app-version" = "App-Version %@";
 "sign-out-confirmation" = "Möchten Sie sich wirklich abmelden?";
 "sync-data-title" = "Offlinedateien aktualisieren mithilfe von";
 "sync-wifi-cellular-data" = "WLAN und Mobilfunkdaten";

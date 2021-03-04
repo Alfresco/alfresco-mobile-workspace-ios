@@ -116,7 +116,7 @@
 "light" = "Claire";
 "dark" = "Sombre";
 "failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
-"app-version" = "Version de l'application %@-%@";
+"app-version" = "Version de l'application %@";
 "sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
 "sync-data-title" = "Mettre à jour les fichiers hors connexion en utilisant";
 "sync-wifi-cellular-data" = "une connexion Wi-Fi et des données celullaires";

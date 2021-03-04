@@ -138,9 +138,8 @@ class SettingsViewModel {
     }
 
     private func getVersionItem() -> SettingsItem {
-        if let version = Bundle.main.releaseVersionNumber,
-           let build = Bundle.main.buildVersionNumber {
-            let title = String(format: LocalizationConstants.Settings.appVersion, version, build)
+        if let version = Bundle.main.releaseVersionNumber {
+            let title = String(format: LocalizationConstants.Settings.appVersion, version)
             return SettingsItem(type: .label,
                                 title: title,
                                 subtitle: "")
