@@ -125,7 +125,7 @@
 // MARK: - Search
 "searching" = "Buscando...";
 "no-recent-search" = "No hay búsquedas actuales.";
-"recent-search" = "Búsquedas actuales";
+"recent-search" = "Búsquedas recientes";
 "files" = "Ficheros";
 "folders" = "Carpetas";
 "libraries" = "Bibliotecas";
@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
-"empty-recent-description" = "Los ficheros que vea y edite se mostrarán aquí.";
+"empty-recent-description" = "Los ficheros que vea y\n edite se mostrarán aquí.";
 "empty-favorites-files-folders-title" = "No hay ficheros ni carpetas favoritos";
 "empty-favorites-libraries-title" = "No hay bibliotecas favoritas";
-"empty-favorites-description" = "Parece que no ha añadido ningún contenido.";
-"empty-folder-title" = "Esta carpeta está vacía";
-"empty-folder-description" = "Parece que no hay ningún contenido todavía.";
+"empty-favorites-description" = "Parece que no ha\n añadido nada.";
+"empty-folder-title" = "La carpeta está vacía";
+"empty-folder-description" = "Parece que todavía \n no hay contenido.";
 "empty-search-title" = "¡Vaya!";
-"empty-search-description" = "No podemos encontrar lo que busca.";
+"empty-search-description" = "No podemos encontrar\n lo que busca.";
 "empty-offline-title" = "Contenido sin conexión";
-"empty-offline-description" = "Contenido disponible sin conexión se mostrará aquí.";
+"empty-offline-description" = "Contenido disponible\n sin conexión se mostrará aquí.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";

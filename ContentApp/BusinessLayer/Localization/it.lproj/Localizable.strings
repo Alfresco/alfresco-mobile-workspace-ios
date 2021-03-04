@@ -138,7 +138,7 @@
 "this-week" = "Questa settimana";
 "last-week" = "Scorsa settimana";
 "this-month" = "Questo mese";
-"older" = "Precedenti";
+"older" = "Meno recenti";
 
 // MARK: - Browse Static List
 "personal-files" = "File personali";
@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
-"empty-recent-description" = "I file che visualizzi e modifichi verranno visualizzati qui.";
+"empty-recent-description" = "I file che visualizzi e\n modifichi verranno mostrati qui.";
 "empty-favorites-files-folders-title" = "Nessun file o cartella preferiti";
 "empty-favorites-libraries-title" = "Nessuna libreria preferita";
-"empty-favorites-description" = "A quanto pare non hai aggiunto nulla.";
+"empty-favorites-description" = "A quanto pare non hai\n aggiunto nulla.";
 "empty-folder-title" = "La cartella è vuota";
-"empty-folder-description" = "A quanto pare qui non c'è nulla.";
+"empty-folder-description" = "A quanto pare\n qui non c'è nulla.";
 "empty-search-title" = "Oops!";
-"empty-search-description" = "Non riusciamo a trovare ciò che stai cercando.";
+"empty-search-description" = "Non riusciamo a trovare ciò che\n stai cercando.";
 "empty-offline-title" = "Nessun contenuto offline";
-"empty-offline-description" = "Il contenuto che hai reso disponibile offline verrà visualizzato qui.";
+"empty-offline-description" = "Il contenuto che hai reso\n disponibile offline verrà visualizzato qui.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace deve accedere alle foto";
