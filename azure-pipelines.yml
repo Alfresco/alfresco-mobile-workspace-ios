@@ -70,7 +70,8 @@ steps:
   inputs:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
-    versionCode: '$(Build.BuildId)'
+    versionCode: '$(Build.BuildNumber)'
+    versionName: '1.0.0-$(Build.BuildNumber)'
     printFile: true
 
 - task: CmdLine@2
