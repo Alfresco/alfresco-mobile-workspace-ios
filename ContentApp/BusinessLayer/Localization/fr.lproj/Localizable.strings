@@ -182,16 +182,16 @@
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
-"empty-recent-description" = "Les fichiers consultés et\n modifiés apparaîtront ici.";
+"empty-recent-description" = "Les fichiers consultés et modifiés apparaîtront ici.";
 "empty-favorites-files-folders-title" = "Aucun fichier ou dossier favori";
 "empty-favorites-libraries-title" = "Aucune bibliothèque favorite";
-"empty-favorites-description" = "Il semble que vous n'ayez\n rien ajouté.";
+"empty-favorites-description" = "Il semble que vous n'ayez rien ajouté.";
 "empty-folder-title" = "Le dossier est vide";
-"empty-folder-description" = "Il semble que cet emplacement\n ne contienne aucun élément.";
+"empty-folder-description" = "Il semble que cet emplacement ne contienne aucun élément.";
 "empty-search-title" = "Oups !";
-"empty-search-description" = "Nous n'avons pas trouvé ce que\n vous recherchez.";
+"empty-search-description" = "Nous n'avons pas trouvé ce que vous recherchez.";
 "empty-offline-title" = "Aucun contenu hors ligne";
-"empty-offline-description" = "Le contenu\n disponible hors ligne s'affichera ici.";
+"empty-offline-description" = "Le contenu disponible hors ligne s'affichera ici.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
