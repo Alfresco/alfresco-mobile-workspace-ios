@@ -116,7 +116,7 @@
 "light" = "Light";
 "dark" = "Dark";
 "failed-profile-info" = "Failed to fetch profile information for current user.";
-"app-version" = "App version %@";
+"app-version" = "App version %@-%@";
 "sign-out-confirmation" = "Are you sure you want to sign out?";
 "sync-data-title" = "Update offline files using";
 "sync-wifi-cellular-data" = "Wi-Fi and celullar data";

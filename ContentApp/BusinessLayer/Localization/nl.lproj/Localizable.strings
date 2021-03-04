@@ -116,7 +116,7 @@
 "light" = "Licht";
 "dark" = "Donker";
 "failed-profile-info" = "Kan profielinformatie voor huidige gebruiker niet ophalen.";
-"app-version" = "Appversie %@";
+"app-version" = "Appversie %@-%@";
 "sign-out-confirmation" = "Weet u zeker dat u wilt uitloggen?";
 "sync-data-title" = "Offlinebestanden bijwerken met";
 "sync-wifi-cellular-data" = "Wi-Fi en mobiele dataverbinding";

@@ -116,7 +116,7 @@
 "light" = "Chiaro";
 "dark" = "Scuro";
 "failed-profile-info" = "Impossibile recuperare le informazioni del profilo per l'utente corrente.";
-"app-version" = "App versione %@";
+"app-version" = "App versione %@-%@";
 "sign-out-confirmation" = "Vuoi uscire?";
 "sync-data-title" = "Aggiorna file offline utilizzando";
 "sync-wifi-cellular-data" = "Wi-Fi e dati cellulare";
