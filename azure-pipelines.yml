@@ -16,6 +16,8 @@ variables:
     value: 'iphoneos'
   - name: cocoapods_path
     value: $(Pipeline.Workspace)/.cocoapods
+  - name: build_version
+    value: $[counter('buildVersion', 1441)]
 
 steps:
 - checkout: self
@@ -70,8 +72,8 @@ steps:
   inputs:
     sourcePath: 'ContentApp/Supporting Files/Info.plist'
     versionCodeOption: 'buildid'
-    versionCode: '$(Build.BuildNumber)'
-    versionName: '1.0.0-$(Build.BuildNumber)'
+    versionCode: '$(build_version)'
+    versionName: '1.0.0-$(build_version)'
     printFile: true
 
 - task: CmdLine@2
