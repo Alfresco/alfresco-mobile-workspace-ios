@@ -57,6 +57,13 @@ class ActionMenuViewController: SystemThemableViewController {
         calculatePreferredSize(view.bounds.size)
     }
 
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        var contentInset = collectionView.contentInset
+        collectionView.contentInset = contentInset
+    }
+
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -122,7 +129,8 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: actionMenuCellHeight)
+        return CGSize(width: collectionView.frame.width,
+                      height: actionMenuCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
