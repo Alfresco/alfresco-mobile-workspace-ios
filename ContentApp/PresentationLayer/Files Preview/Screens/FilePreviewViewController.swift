@@ -257,7 +257,12 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
 
     func enableFullscreenContentExperience() {
         needsContraintsForFullScreen = true
-        activateContraintsToSuperview()
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            if sSelf.needsContraintsForFullScreen {
+                sSelf.activateContraintsToSuperview()
+            }
+        }
     }
 
     func willPreparePreview() {
