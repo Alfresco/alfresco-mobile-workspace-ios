@@ -181,7 +181,7 @@
 "dialog-override-sync-cellular-data-message" = "Dadurch werden Ihre Einstellungen überschrieben und der Download erfolgt in diesem Fall über Mobilfunkdaten. Andernfalls beginnt der Download später nach dem Herstellen einer WLAN-Verbindung.";
 
 // MARK: - Empty List
-"empty-recent-title" = "Keine benutzten Dateien";
+"empty-recent-title" = "Keine aktuellen Dateien";
 "empty-recent-description" = "Hier werden Dateien aufgeführt, die Sie anzeigen und bearbeiten.";
 "empty-favorites-files-folders-title" = "Keine Dateien oder Ordner als Favoriten";
 "empty-favorites-libraries-title" = "Keine Bibliotheken als Favoriten";

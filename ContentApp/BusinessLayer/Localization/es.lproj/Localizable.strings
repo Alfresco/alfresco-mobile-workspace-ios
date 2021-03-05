@@ -68,7 +68,7 @@
 "sync-failed" = "Error al sincronizar";
 
 // MARK: - Tabs Titles
-"settings" = "Ajustes";
+"settings" = "﻿Configuración";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
@@ -124,7 +124,7 @@
 
 // MARK: - Search
 "searching" = "Buscando...";
-"no-recent-search" = "No hay búsquedas actuales.";
+"no-recent-search" = "No hay búsquedas recientes.";
 "recent-search" = "Búsquedas recientes";
 "files" = "Ficheros";
 "folders" = "Carpetas";
@@ -138,7 +138,7 @@
 "this-week" = "Esta semana";
 "last-week" = "La semana pasada";
 "this-month" = "Este mes";
-"older" = "Más antiguo";
+"older" = "Anterior";
 
 // MARK: - Browse Static List
 "personal-files" = "Ficheros personales";

@@ -34,10 +34,10 @@
 "advanced-settings" = "Impost. avanzate";
 "need-help" = "Serve aiuto?";
 "need-help-alfresco" = "Come connettersi ad Alfresco?";
-"reset-to-default" = "Reimposta su default";
+"reset-to-default" = "Reimposta su predefinito";
 "sign-in" = "Accedi";
 "sign-in-with-sso" = "Accedi con SSO";
-"sign-out" = "Esci";
+"sign-out" = "Disconnetti";
 "sync-all" = "Sincronizza tutto";
 
 // MARK: - PlaceHolders
@@ -80,7 +80,7 @@
 "help-connect-title-section2" = "Accesso con SSO";
 "help-connect-section2-paragraph" = "Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.\n\nDovrai quindi fornire l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 "help-advanced-settings-title-section1" = "Autenticazione con Alfresco";
-"help-advanced-settings-section1-paragraph" = "Se non utilizzi le impostazioni SSO di default, puoi impostare qui i tuoi valori.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
+"help-advanced-settings-section1-paragraph" = "Se non utilizzi le impostazioni SSO di predefinito, puoi impostare qui i tuoi valori.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 "help-sso-title-section1" = "Percorso repository dei contenuti";
 "help-sso-section1-paragraph" = "URL di Alfresco Content Services:\n\nQuesto è l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 
@@ -112,12 +112,12 @@
 
 // MARK: - Settings Screen
 "theme" = "Aspetto";
-"auto" = "Default di sistema";
+"auto" = "Predefinito di sistema";
 "light" = "Chiaro";
 "dark" = "Scuro";
 "failed-profile-info" = "Impossibile recuperare le informazioni del profilo per l'utente corrente.";
 "app-version" = "App versione %@-%@";
-"sign-out-confirmation" = "Vuoi uscire?";
+"sign-out-confirmation" = "Vuoi disconnetterti?";
 "sync-data-title" = "Aggiorna file offline utilizzando";
 "sync-wifi-cellular-data" = "Wi-Fi e dati cellulare";
 "sync-only-wifi" = "Solo Wi-Fi";
