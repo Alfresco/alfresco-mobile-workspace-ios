@@ -208,10 +208,8 @@ extension GlobalSearchViewModel: ResultsViewModelDelegate {
     }
 
     func isNodePathEnabled() -> Bool {
-        for chip in searchChips where chip.selected {
-            if chip.type == .library {
-                return false
-            }
+        for chip in searchChips where chip.selected && chip.type == .library {
+            return false
         }
 
         return true
