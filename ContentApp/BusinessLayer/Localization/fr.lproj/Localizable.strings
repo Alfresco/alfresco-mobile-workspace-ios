@@ -31,7 +31,7 @@
 
 // MARK: - Buttons
 "connect" = "Connexion";
-"advanced-settings" = "Réglages avancés";
+"advanced-settings" = "Paramètres avancés";
 "need-help" = "Besoin d'aide ?";
 "need-help-alfresco" = "Comment se connecter à Alfresco ?";
 "reset-to-default" = "Valeurs par défaut";
@@ -55,7 +55,7 @@
 // MARK: - Labels
 "transport-protocol" = "Protocole de transport";
 "https" = "HTTPS";
-"alfresco-content-settings" = "Réglages Alfresco Content Services";
+"alfresco-content-settings" = "Paramètres Alfresco Content Services";
 "authentication" = "Authentification";
 "info-connect-to" = "Connecté à : ";
 "info-aims-connect-to"  = "Connexion à : ";
@@ -68,7 +68,7 @@
 "sync-failed" = "La synchronisation a échoué";
 
 // MARK: - Tabs Titles
-"settings" = "Réglages";
+"settings" = "Paramètres";
 "recent" = "Récents";
 "favorites" = "Favoris";
 "browse" = "Parcourir";
@@ -91,7 +91,7 @@
 "error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
 "error-logjn-no-longer-authenticated" = "Vous n'êtes plus authentifié, veuillez vous reconnecter.";
 "error-something-went-wrong" = "Un problème est survenu !";
-"warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux réglages avancés.";
+"warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux paramètres avancés.";
 "error-unknown" = "Une erreur inconnue s'est produite.";
 "error-timeout" = "Cette opération est plus longue que prévu. Veuillez patienter quelques instants.";
 "error-folder-same-name" = "Un dossier du même nom existe déjà. Utilisez un autre nom.";
@@ -178,7 +178,7 @@
 "dialog-session-expired-title" = "La session a expiré.";
 "dialog-session-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
 "dialog-override-sync-cellular-data-title" = "Utiliser des données cellulaires ?";
-"dialog-override-sync-cellular-data-message" = "Vos réglages seront remplacés et des données cellulaires seront utilisées pour le téléchargement. Sinon, le téléchargement aura lieu plus tard lorsque la connexion Wi-Fi sera disponible.";
+"dialog-override-sync-cellular-data-message" = "Vos paramètres seront remplacés et des données cellulaires seront utilisées pour le téléchargement. Sinon, le téléchargement aura lieu plus tard lorsque la connexion Wi-Fi sera disponible.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
@@ -196,4 +196,4 @@
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
 "privacy-photos-description" = "Pour enregistrer des images ou des vidéos sur votre appareil, Mobile Workspace a besoin d'accéder à vos photos.";
-"privacy-button" = "Passer en revue les réglages de confidentialité";
+"privacy-button" = "Passer en revue les paramètres de confidentialité";
