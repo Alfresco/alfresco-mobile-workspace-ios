@@ -236,6 +236,14 @@ class ListComponentViewController: SystemThemableViewController {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
+
+            if listDataSource?.shouldDisplayPullToRefreshOffline() == false {
+                refreshControl?.removeFromSuperview()
+            }
+        } else {
+            if let refreshControl = self.refreshControl, refreshControl.superview == nil {
+                collectionView.addSubview(refreshControl)
+            }
         }
         listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
     }
