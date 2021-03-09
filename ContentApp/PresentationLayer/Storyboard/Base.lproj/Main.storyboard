@@ -2017,7 +2017,7 @@
                                     <constraint firstItem="qbf-LQ-gvV" firstAttribute="width" secondItem="ddo-cc-nfp" secondAttribute="width" multiplier="0.5" id="leh-7m-BdC"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mp9-wt-XHA" customClass="MDCFloatingButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mp9-wt-XHA" customClass="MDCButton">
                                 <rect key="frame" x="164" y="817" width="100" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="Gez-be-97m"/>
