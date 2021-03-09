@@ -185,6 +185,13 @@ class ListNode: Hashable, Entity {
         }
         return false
     }
+    
+    func removeAllowableOperationUnknown() {
+        if self.allowableOperations.count == 1 &&
+            self.allowableOperations.first == AllowableOperationsType.unknown {
+            self.allowableOperations.removeFirst()
+        }
+    }
 
     func isMarkedOffline() -> Bool {
         let dataAccessor = ListNodeDataAccessor()

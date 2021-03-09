@@ -90,6 +90,7 @@ class ActionMenuViewModel {
                 guard let sSelf = self else { return }
                 if let entry = result?.entry {
                     sSelf.listNode?.update(with: NodeChildMapper.create(from: entry))
+                    sSelf.listNode?.removeAllowableOperationUnknown()
                 }
                 sSelf.createMenuActions()
             }

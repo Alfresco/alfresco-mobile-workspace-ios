@@ -137,7 +137,7 @@ class SyncOperationFactory {
                     sSelf.handle(error: error, for: node)
                 } else if let entry = result?.entry {
                     let onlineListNode = NodeChildMapper.create(from: entry)
-
+                    onlineListNode.removeAllowableOperationUnknown()
                     sSelf.compareAndUpdate(queriedNode: node, with: onlineListNode)
                 }
 
