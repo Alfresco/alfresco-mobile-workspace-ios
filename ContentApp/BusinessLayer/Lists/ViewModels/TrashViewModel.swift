@@ -75,7 +75,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -97,7 +97,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
             TrashcanAPI.listDeletedNodes(skipCount: skipCount,
                                          maxItems: maxItems,
                                          include: [APIConstants.Include.path]) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = DeleteNodeMapper.map(entries)
                 } else {

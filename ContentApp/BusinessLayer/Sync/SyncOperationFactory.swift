@@ -39,8 +39,8 @@ class SyncOperationFactory {
         self.eventBusService = eventBusService
     }
 
-    func fileNodeDetailsOperations(nodes: [ListNode]?) -> [AsyncClosureOperation] {
-        guard let nodes = nodes else { return [] }
+    func fileNodeDetailsOperations(nodes: [ListNode]) -> [AsyncClosureOperation] {
+        guard nodes.isEmpty else { return [] }
         var detailsOperations: [AsyncClosureOperation] = []
 
         for node in nodes where node.isAFileType() {
@@ -51,10 +51,8 @@ class SyncOperationFactory {
         return detailsOperations
     }
 
-    func scheduleFolderNodeDetailsOperations(for nodes: [ListNode]?,
+    func scheduleFolderNodeDetailsOperations(for nodes: [ListNode],
                                              on operationQueue: OperationQueue) {
-        guard let nodes = nodes else { return }
-
         for node in nodes where node.isAFolderType() {
             fetchChildrenNodeDetailsOperations(of: node,
                                                paginationRequest: nil,
@@ -84,8 +82,8 @@ class SyncOperationFactory {
         return operation
     }
 
-    func deleteMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
-        guard let nodes = nodes else { return [] }
+    func deleteMarkedNodesOperation(nodes: [ListNode]) -> [AsyncClosureOperation] {
+        guard nodes.isEmpty else { return [] }
         var deleteOperations: [AsyncClosureOperation] = []
         let listNodeDataAccessor = ListNodeDataAccessor()
 
@@ -102,8 +100,8 @@ class SyncOperationFactory {
         return deleteOperations
     }
 
-    func downloadMarkedNodesOperation(nodes: [ListNode]?) -> [AsyncClosureOperation] {
-        guard let nodes = nodes else { return [] }
+    func downloadMarkedNodesOperation(nodes: [ListNode]) -> [AsyncClosureOperation] {
+        guard nodes.isEmpty else { return [] }
         var downloadOperations: [AsyncClosureOperation] = []
 
         for node in nodes {
@@ -323,11 +321,9 @@ class SyncOperationFactory {
         listNodeDataAccessor.store(node: onlineNode)
     }
 
-    private func compareAndUpdate(queriedNodeChildren: [ListNode]?,
+    private func compareAndUpdate(queriedNodeChildren: [ListNode],
                                   with onlineNodeChildren: [ListNode]) {
-        guard let queriedNodes = queriedNodeChildren else { return }
-        var queriedSet = Set(queriedNodes)
-
+        var queriedSet = Set(queriedNodeChildren)
         queriedSet.subtract(Set(onlineNodeChildren))
 
         for node in queriedSet {

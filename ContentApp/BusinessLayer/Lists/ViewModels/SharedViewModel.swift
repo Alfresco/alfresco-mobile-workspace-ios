@@ -69,7 +69,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -99,7 +99,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                                                      APIConstants.Include.path,
                                                      APIConstants.Include.allowableOperations],
                                            fields: nil) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list.entries {
                     listNodes = SharedLinkMapper.map(entries)
                 } else {

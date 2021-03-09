@@ -89,7 +89,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         favoritesList(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?,
+    override func handlePage(results: [ListNode],
                              pagination: Pagination?,
                              error: Error?) {
         updateResults(results: results,
@@ -121,7 +121,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 
-                                        var listNodes: [ListNode]?
+                                        var listNodes: [ListNode] = []
                                         if let entries = result?.list {
                                             listNodes = FavoritesNodeMapper.map(entries.entries)
                                         } else {

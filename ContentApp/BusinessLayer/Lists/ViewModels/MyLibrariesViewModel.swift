@@ -79,7 +79,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -105,7 +105,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                                   relations: nil,
                                                   fields: nil,
                                                   _where: nil) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list.entries {
                     listNodes = SitesNodeMapper.map(entries)
                 } else {

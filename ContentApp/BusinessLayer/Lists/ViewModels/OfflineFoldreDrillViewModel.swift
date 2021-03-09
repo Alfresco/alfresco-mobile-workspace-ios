@@ -38,7 +38,7 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         refreshList()
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -69,9 +69,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
 
     func refreshList() {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.queryChildren(for: parentListNode) {
-            results = offlineNodes
-        }
+        results = listNodeDataAccessor.queryChildren(for: parentListNode)
 
         handlePage(results: results,
                    pagination: nil,

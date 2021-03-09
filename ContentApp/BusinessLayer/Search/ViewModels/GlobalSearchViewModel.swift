@@ -81,7 +81,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         liveSearchTimer?.invalidate()
         guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines),
               !searchString.isEmpty else {
-            self.delegate?.handle(results: nil)
+            self.delegate?.handle(results: [])
             return
         }
 
@@ -96,7 +96,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     func performLiveSearch(for string: String?) {
         liveSearchTimer?.invalidate()
         guard let searchString = string, searchString.canPerformLiveSearch() else {
-            self.delegate?.handle(results: nil)
+            self.delegate?.handle(results: [])
             return
         }
         liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
@@ -116,7 +116,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         }
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
         self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
@@ -137,7 +137,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             let searchChipsState = sSelf.searchChipsState()
             QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
 
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = results?.list.entries {
                     listNodes = SitesNodeMapper.map(entries)
                 }
@@ -166,7 +166,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
                                                                          pagination: paginationRequest)
             SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
 
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
                 }

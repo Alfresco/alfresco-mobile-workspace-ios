@@ -114,7 +114,7 @@ class ListNode: Hashable, Entity {
          favorite: Bool? = nil,
          syncStatus: SyncStatus = .undefined,
          markedOfflineStatus: MarkedForStatus = .undefined,
-         allowableOperations: [String]? = nil,
+         allowableOperations: [String] = [],
          siteRole: String? = nil,
          trashed: Bool = false,
          destination: String? = nil,
@@ -287,8 +287,8 @@ class ListNode: Hashable, Entity {
 
     // MARK: - Private Helpers
 
-    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType] {
-        guard let allowableOperations = allowableOperations else { return [.unknown] }
+    private func parse(_ allowableOperations: [String]) -> [AllowableOperationsType] {
+        guard allowableOperations.isEmpty else { return [.unknown] }
         var allowableOperationsTypes = [AllowableOperationsType]()
 
         _ = allowableOperations.map {

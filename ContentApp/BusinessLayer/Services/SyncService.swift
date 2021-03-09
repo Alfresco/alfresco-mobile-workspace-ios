@@ -105,12 +105,12 @@ let maxConcurrentSyncOperationCount = 3
         syncOperationQueue.cancelAllOperations()
 
         let dataAccessor = ListNodeDataAccessor()
-        if let nodesToBeDownloaded = dataAccessor.queryMarkedForDownload() {
-            for node in nodesToBeDownloaded where node.syncStatus == .pending ||
-                node.syncStatus == .inProgress {
-                node.syncStatus = .error
-                dataAccessor.store(node: node)
-            }
+        let nodesToBeDownloaded = dataAccessor.queryMarkedForDownload()
+
+        for node in nodesToBeDownloaded where node.syncStatus == .pending ||
+            node.syncStatus == .inProgress {
+            node.syncStatus = .error
+            dataAccessor.store(node: node)
         }
     }
 

@@ -47,12 +47,12 @@ protocol SearchViewModelDelegate: class {
      - error: Error object
      - Note: If the list  is empty,  a view with empty list will appear.  If the list is a nil object then recent searches will appear
      */
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?)
-    func handle(results: [ListNode]?)
+    func handle(results: [ListNode], pagination: Pagination?, error: Error?)
+    func handle(results: [ListNode])
 }
 
 extension SearchViewModelDelegate {
-    func handle(results: [ListNode]?) {
+    func handle(results: [ListNode]) {
         handle(results: results, pagination: nil, error: nil)
     }
 }

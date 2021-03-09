@@ -25,7 +25,7 @@ protocol ActionMenuViewModelDelegate: class {
 
 class ActionMenuViewModel {
     private var listNode: ListNode?
-    private var toolbarActions: [ActionMenu]?
+    private var toolbarActions: [ActionMenu]
     private var menuActions: [[ActionMenu]]
     private var excludedActions: [ActionMenuType]
     private var coordinatorServices: CoordinatorServices?
@@ -45,6 +45,7 @@ class ActionMenuViewModel {
         self.listNode = node
         self.menuActions = menuActions
         self.toolbarDisplayed = toolbarDisplayed
+        self.toolbarActions = []
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.excludedActions = excludedActionTypes
@@ -101,13 +102,13 @@ class ActionMenuViewModel {
         return menuActions
     }
 
-    func actionsForToolbar() -> [ActionMenu]? {
+    func actionsForToolbar() -> [ActionMenu] {
         return toolbarActions
     }
 
     func indexInToolbar(for actionType: ActionMenuType) -> Int? {
-        guard let actions = toolbarActions else { return nil }
-        for index in 0...actions.count - 1 where actions[index].type == actionType {
+        guard toolbarActions.isEmpty else { return nil }
+        for index in 0...toolbarActions.count - 1 where toolbarActions[index].type == actionType {
             return index
         }
         return nil
@@ -171,9 +172,7 @@ class ActionMenuViewModel {
         addActionToOpenMenu(in: toolActions)
     }
 
-    private func addActionToOpenMenu(in array: [ActionMenu]?) {
-        guard var array = array else { return }
-        array.append(ActionMenu(title: "", type: .more))
-        toolbarActions = array
+    private func addActionToOpenMenu(in array: [ActionMenu]) {
+        toolbarActions.append(ActionMenu(title: "", type: .more))
     }
 }

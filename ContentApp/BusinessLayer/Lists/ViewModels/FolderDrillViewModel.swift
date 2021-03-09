@@ -91,7 +91,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -112,7 +112,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? APIConstants.my,
                                                    pagination: reqPagination,
                                                    relativePath: relativePath) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = NodeChildMapper.map(entries)
                 } else {
