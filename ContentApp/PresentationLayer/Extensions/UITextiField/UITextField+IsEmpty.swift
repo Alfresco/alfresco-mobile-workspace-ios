@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,13 +17,12 @@
 //
 
 import Foundation
+import UIKit
 
-extension String {
-    func canPerformLiveSearch() -> Bool {
-        let minCharactersForLiveSearch = 3
-        let searchString = self.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !searchString.isEmpty && searchString.count >= minCharactersForLiveSearch {
-            return true
+extension UITextField {
+    func isEmpty() -> Bool {
+        if let text = self.text {
+            return text.isEmpty
         }
         return false
     }

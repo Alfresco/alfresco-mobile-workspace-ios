@@ -205,11 +205,11 @@ extension BasicAuthViewController: UITextFieldDelegate {
         case usernameTextField:
             enableSignInButton = (textField.updatedText(for: range,
                                                         replacementString: string) != "" &&
-                                    passwordTextField.text != "")
+                                    !passwordTextField.isEmpty())
         case passwordTextField:
             enableSignInButton = (textField.updatedText(for: range,
                                                         replacementString: string) != "" &&
-                                    usernameTextField.text != "")
+                                    !usernameTextField.isEmpty())
         default: break
         }
         return true
@@ -233,7 +233,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableSignInButton = (usernameTextField.text != "" && passwordTextField.text != "")
+        enableSignInButton = (!usernameTextField.isEmpty() && !passwordTextField.isEmpty())
     }
 }
 

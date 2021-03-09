@@ -71,7 +71,8 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
         }
 
         liveSearchTimer?.invalidate()
-        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines), searchString != "" else {
+        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !searchString.isEmpty else {
             self.delegate?.handle(results: nil)
             return
         }

@@ -255,7 +255,7 @@ class ListNode: Hashable, Entity {
 
     static func getExtension(from type: ActionMenuType?) -> String? {
         guard let type = type else { return nil }
-        if let ext = ListNode.mapExtensions[type], ext.0 != "" {
+        if let ext = ListNode.mapExtensions[type], !ext.0.isEmpty {
             return  "." + ext.0
         }
         return nil

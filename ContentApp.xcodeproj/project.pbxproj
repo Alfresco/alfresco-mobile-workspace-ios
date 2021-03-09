@@ -77,7 +77,7 @@
 		B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */; };
 		B9B630A824812585004833BC /* NeedHelpAdvancedSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */; };
 		B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */; };
-		B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AD24813BAF004833BC /* UITextview+Size.swift */; };
+		B9B630AE24813BAF004833BC /* UITextView+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B630AD24813BAF004833BC /* UITextView+Size.swift */; };
 		B9B7530525AC422B004F16E5 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530425AC422B004F16E5 /* SyncService.swift */; };
 		B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530A25AC8543004F16E5 /* AsyncOperation.swift */; };
 		B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */; };
@@ -267,6 +267,7 @@
 		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
 		E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */; };
 		E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */; };
+		F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -368,7 +369,7 @@
 		B9B630A524812575004833BC /* NeedHelpConnectScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpConnectScreenModel.swift; sourceTree = "<group>"; };
 		B9B630A724812585004833BC /* NeedHelpAdvancedSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAdvancedSettingsModel.swift; sourceTree = "<group>"; };
 		B9B630AB248125A8004833BC /* NeedHelpAIMSModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpAIMSModel.swift; sourceTree = "<group>"; };
-		B9B630AD24813BAF004833BC /* UITextview+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextview+Size.swift"; sourceTree = "<group>"; };
+		B9B630AD24813BAF004833BC /* UITextView+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Size.swift"; sourceTree = "<group>"; };
 		B9B7530425AC422B004F16E5 /* SyncService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		B9B7530A25AC8543004F16E5 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncClosureOperation.swift; sourceTree = "<group>"; };
@@ -568,6 +569,7 @@
 		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuGeneric.swift; sourceTree = "<group>"; };
 		E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionMenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+IsEmpty.swift"; sourceTree = "<group>"; };
 		F4ECEF6177D9FF73F5055CD9 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -954,7 +956,7 @@
 		B97D373C2554603100CD1523 /* UITextView */ = {
 			isa = PBXGroup;
 			children = (
-				B9B630AD24813BAF004833BC /* UITextview+Size.swift */,
+				B9B630AD24813BAF004833BC /* UITextView+Size.swift */,
 				E3A9B2A82518F52700A548E7 /* UITextView+Theming.swift */,
 			);
 			path = UITextView;
@@ -1466,6 +1468,7 @@
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F13998D525F767890062F652 /* UITextiField */,
 				B97D373725545FD000CD1523 /* UIViewController */,
 				B97D373825545FF900CD1523 /* UIView */,
 				B97D373C2554603100CD1523 /* UITextView */,
@@ -1474,7 +1477,6 @@
 				B99E1C46247FA77300116F05 /* CALayer+Animations.swift */,
 				B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */,
 				E321BAD2248111F400BE938E /* UIFont+InterFont.swift */,
-				E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
 				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
 				E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */,
@@ -1643,6 +1645,15 @@
 				E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		F13998D525F767890062F652 /* UITextiField */ = {
+			isa = PBXGroup;
+			children = (
+				E31184D7247BFAFA0044BE0D /* UITextField+Replacement.swift */,
+				F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */,
+			);
+			path = UITextiField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2016,7 +2027,7 @@
 				E35FB74A2476693C004674FD /* String+Encoding.swift in Sources */,
 				E3A2A904247EBB690046582C /* BasicAuthScreenCoordinator.swift in Sources */,
 				E387387C24D1D1820028F76B /* SystemSearchViewController.swift in Sources */,
-				B9B630AE24813BAF004833BC /* UITextview+Size.swift in Sources */,
+				B9B630AE24813BAF004833BC /* UITextView+Size.swift in Sources */,
 				E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
@@ -2057,6 +2068,7 @@
 				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
 				E30B077C25B6C9FA0030FE3B /* ConnectivityService.swift in Sources */,
 				E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */,
+				F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */,
 				B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				E3A433A22566CAA7000DD886 /* CreateNodeSheetCoordinator.swift in Sources */,
