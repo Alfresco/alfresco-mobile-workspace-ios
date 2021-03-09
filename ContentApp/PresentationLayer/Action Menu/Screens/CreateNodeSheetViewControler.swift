@@ -174,7 +174,7 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameEndPeriod,
                                      ".")
                 applyErrorOnTextField(with: message)
-            } else if textTrimm.isEmpty && text.count > 0 {
+            } else if textTrimm.isEmpty && !text.isEmpty {
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameContainOnlySpaces,
                                      ".")
                 applyErrorOnTextField(with: message)

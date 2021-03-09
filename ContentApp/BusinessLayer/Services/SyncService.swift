@@ -130,17 +130,17 @@ let maxConcurrentSyncOperationCount = 3
         let downloadOperations = syncOperationFactory.downloadMarkedNodesOperation(nodes: nodesToBeDownloaded)
         let deleteOperations = syncOperationFactory.deleteMarkedNodesOperation(nodes: nodesToBeDeleted)
 
-        if downloadOperations.count == 0 &&
-            deleteOperations.count == 0 {
+        if downloadOperations.isEmpty &&
+            deleteOperations.isEmpty {
             syncServiceStatus = .idle
             delegate?.syncDidFinished()
         } else {
-            if downloadOperations.count > 0 {
+            if !downloadOperations.isEmpty {
                 syncOperationQueue.addOperations(downloadOperations,
                                                  waitUntilFinished: false)
             }
 
-            if deleteOperations.count > 0 {
+            if !deleteOperations.isEmpty {
                 syncOperationQueue.addOperations(deleteOperations,
                                                  waitUntilFinished: false)
             }
@@ -150,7 +150,7 @@ let maxConcurrentSyncOperationCount = 3
     func observeOperationQueue() {
         kvoToken = syncOperationQueue.observe(\.operations, options: .new) { [weak self] (newValue, _) in
             guard let sSelf = self else { return }
-            if newValue.operations.count == 0 {
+            if newValue.operations.isEmpty {
                 switch sSelf.syncServiceStatus {
                 case .fetchingNodeDetails:
                     sSelf.processNodeDetails()

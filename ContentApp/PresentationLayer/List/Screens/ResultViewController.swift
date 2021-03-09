@@ -148,7 +148,7 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func reloadChips(_ array: [Int]) {
-        guard array.count != 0 else { return }
+        guard !array.isEmpty else { return }
         var items: [IndexPath] = []
         for indexChip in array {
             items.append(IndexPath(row: indexChip, section: 0))

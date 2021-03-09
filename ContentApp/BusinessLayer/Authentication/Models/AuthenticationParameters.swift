@@ -30,7 +30,7 @@ class AuthenticationParameters: Codable {
     var contentURL: String = ""
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
-        if port.count != 0 {
+        if !port.isEmpty {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }
         return fullFormatURL
@@ -38,7 +38,7 @@ class AuthenticationParameters: Codable {
 
     var fullContentURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", contentURL)
-        if port.count != 0 {
+        if !port.isEmpty {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }
         return fullFormatURL

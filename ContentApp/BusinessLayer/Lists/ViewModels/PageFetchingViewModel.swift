@@ -100,7 +100,7 @@ class PageFetchingViewModel {
 
     func updateResults(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         if let results = results {
-            if results.count > 0 {
+            if !results.isEmpty {
                 if pagination?.skipCount != 0 {
                     addNewResults(results: results, pagination: pagination)
                 } else {
@@ -145,7 +145,7 @@ class PageFetchingViewModel {
 
     private func addNewResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
-        if results.count != 0 {
+        if !results.isEmpty {
             let olderElementsSet = Set(self.results)
             let newElementsSet = Set(results)
 
@@ -162,7 +162,7 @@ class PageFetchingViewModel {
 
     private func addResults(results: [ListNode]?, pagination: Pagination?) {
         guard let results = results else { return }
-        if results.count != 0 {
+        if !results.isEmpty {
             self.results = results
 
             shouldDisplayNextPageLoadingIndicator =

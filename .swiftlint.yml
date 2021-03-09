@@ -54,7 +54,7 @@ opt_in_rules: # some rules are only opt-in
   - redundant_objc_attribute
   - redundant_type_annotation
   - unused_import
-  # - empty_count
+  - empty_count
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage

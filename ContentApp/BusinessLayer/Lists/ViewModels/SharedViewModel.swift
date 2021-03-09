@@ -44,7 +44,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
