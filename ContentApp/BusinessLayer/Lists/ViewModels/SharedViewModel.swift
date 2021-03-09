@@ -24,7 +24,7 @@ import AlfrescoContent
 class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 

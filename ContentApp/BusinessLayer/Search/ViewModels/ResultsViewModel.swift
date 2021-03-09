@@ -25,7 +25,7 @@ protocol ResultsViewModelDelegate: class {
 }
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     weak var delegate: ResultsViewModelDelegate?
     var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations

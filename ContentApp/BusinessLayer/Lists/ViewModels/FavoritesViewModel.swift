@@ -25,7 +25,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
     var listCondition: String = APIConstants.QuerryConditions.whereFavoritesFileFolder
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 

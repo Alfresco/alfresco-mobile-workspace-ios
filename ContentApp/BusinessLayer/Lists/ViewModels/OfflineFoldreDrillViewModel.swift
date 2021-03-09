@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContent
 
 class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     var parentListNode: ListNode?
 
     // MARK: - Init

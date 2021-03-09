@@ -24,7 +24,7 @@ import AlfrescoContent
 class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 

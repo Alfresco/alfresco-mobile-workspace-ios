@@ -25,7 +25,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 

@@ -27,7 +27,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     let nodeOperations: NodeOperations
     var listNode: ListNode?
 
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 

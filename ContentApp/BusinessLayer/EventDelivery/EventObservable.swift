@@ -24,6 +24,6 @@ enum EventQueueType {
 }
 
 protocol EventObservable: class {
-    var supportedNodeTypes: [NodeType]? { get set }
+    var supportedNodeTypes: [NodeType] { get set }
     func handle(event: BaseNodeEvent, on queue: EventQueueType)
 }
