@@ -57,7 +57,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var createButton: MDCFloatingButton!
-    @IBOutlet weak var listActionButton: MDCFloatingButton!
+    @IBOutlet weak var listActionButton: MDCButton!
     var refreshControl: UIRefreshControl?
 
     var listDataSource: ListComponentDataSourceProtocol?
@@ -84,9 +84,9 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
         listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
-        listActionButton.mode = .normal
         listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
+        listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
 
         if listDataSource?.shouldDisplayCreateButton() == true ||
             listDataSource?.shouldDisplayListActionButton() == true {
