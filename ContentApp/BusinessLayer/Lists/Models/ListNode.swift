@@ -145,21 +145,21 @@ class ListNode: Hashable, Entity {
     // MARK: - Public Helpers
 
     func update(with newVersion: ListNode) {
-        self.parentGuid = newVersion.parentGuid
-        self.siteID = newVersion.siteID
-        self.destination = newVersion.destination
-        self.mimeType = newVersion.mimeType
-        self.title = newVersion.title
-        self.path = newVersion.path
-        self.modifiedAt = newVersion.modifiedAt
-        self.favorite = newVersion.favorite
-        self.nodeType = newVersion.nodeType
-        self.allowableOperations = newVersion.allowableOperations
-        self.syncStatus = newVersion.syncStatus
-        self.markedAsOffline = newVersion.markedAsOffline
-        self.markedFor = newVersion.markedFor
-        self.isFile = newVersion.isFile
-        self.isFolder = newVersion.isFolder
+        parentGuid = newVersion.parentGuid
+        siteID = newVersion.siteID
+        destination = newVersion.destination
+        mimeType = newVersion.mimeType
+        title = newVersion.title
+        path = newVersion.path
+        modifiedAt = newVersion.modifiedAt
+        favorite = newVersion.favorite
+        nodeType = newVersion.nodeType
+        allowableOperations = newVersion.allowableOperations
+        syncStatus = newVersion.syncStatus
+        markedAsOffline = newVersion.markedAsOffline
+        markedFor = newVersion.markedFor
+        isFile = newVersion.isFile
+        isFolder = newVersion.isFolder
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
@@ -167,23 +167,30 @@ class ListNode: Hashable, Entity {
     }
 
     func shouldUpdate() -> Bool {
-        if self.trashed == true {
+        if trashed == true {
             return false
         }
 
-        if self.favorite == nil {
+        if favorite == nil {
             return true
         }
 
-        switch self.nodeType {
+        switch nodeType {
         case .site: break
         default:
-            if self.allowableOperations.count == 1  &&
-                self.allowableOperations.first == AllowableOperationsType.unknown {
+            if allowableOperations.count == 1  &&
+                allowableOperations.first == AllowableOperationsType.unknown {
                 return true
             }
         }
         return false
+    }
+
+    func removeAllowableOperationUnknown() {
+        if allowableOperations.count == 1 &&
+            allowableOperations.first == AllowableOperationsType.unknown {
+            allowableOperations.removeFirst()
+        }
     }
 
     func isMarkedOffline() -> Bool {
@@ -201,9 +208,9 @@ class ListNode: Hashable, Entity {
     }
 
     func hasPermissionToCreate() -> Bool {
-        if self.nodeType == .folder {
+        if nodeType == .folder {
             return hasPersmission(to: .create)
-        } else if self.nodeType == .site {
+        } else if nodeType == .site {
             return !(hasRole(to: .consumer) || hasRole(to: .unknown))
         }
         return false
@@ -215,8 +222,8 @@ class ListNode: Hashable, Entity {
 
     func truncateTailTitle() -> String {
         let limitCharacters = 20
-        let text = self.title.prefix(limitCharacters)
-        if text == self.title {
+        let text = title.prefix(limitCharacters)
+        if text == title {
             return String(text)
         }
         return text + "..."
