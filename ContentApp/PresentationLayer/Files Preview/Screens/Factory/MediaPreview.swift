@@ -70,6 +70,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private let actionsViewBorderWidth: CGFloat = 1.0
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         translatesAutoresizingMaskIntoConstraints = false
         videoSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),

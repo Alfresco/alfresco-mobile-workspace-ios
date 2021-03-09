@@ -60,7 +60,7 @@ class ActionMenuViewController: SystemThemableViewController {
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
 
-        var contentInset = collectionView.contentInset
+        let contentInset = collectionView.contentInset
         collectionView.contentInset = contentInset
     }
 

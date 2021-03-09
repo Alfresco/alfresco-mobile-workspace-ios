@@ -181,8 +181,8 @@ class BasicAuthViewController: SystemThemableViewController {
         passwordTextField.trailingViewMode = .always
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer.init(target: self,
-                                                            action: #selector(showPasswordButtonTapped(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                          action: #selector(showPasswordButtonTapped(_:)))
         passwordTextField.trailingView?.addGestureRecognizer(tapGestureRecognizer)
         passwordTextField.trailingView?.tintColor = currentTheme.onSurface60Color
         passwordTextField.isSecureTextEntry = true

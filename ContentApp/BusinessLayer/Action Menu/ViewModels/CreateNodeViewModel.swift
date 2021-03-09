@@ -216,7 +216,7 @@ class CreateNodeViewModel {
     }
 
     private func showUploadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
-        if let uploadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+        if let uploadDialogView = DownloadDialog.fromNib() as? DownloadDialog {
             let themingService = coordinatorServices?.themingService
             let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
             let nodeNameWithExtension = ( nodeName ?? "" ) + nodeExtension

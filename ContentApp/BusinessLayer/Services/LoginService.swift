@@ -52,7 +52,7 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
     private (set) var parameters: AuthenticationParameters
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = parameters.authenticationConfiguration()
-        return AlfrescoAuth.init(configuration: authConfig)
+        return AlfrescoAuth(configuration: authConfig)
     }()
 
     var session: AlfrescoAuthSession?

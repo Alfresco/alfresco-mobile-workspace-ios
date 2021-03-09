@@ -20,7 +20,7 @@ import UIKit
 
 extension UINavigationController {
     func pushFadeViewController(_ viewController: UIViewController) {
-        let transition: CATransition = CATransition()
+        let transition = CATransition()
         transition.duration = 0.3
         transition.type = CATransitionType.fade
         transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)

@@ -50,6 +50,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         nameTextField.becomeFirstResponder()
     }
 

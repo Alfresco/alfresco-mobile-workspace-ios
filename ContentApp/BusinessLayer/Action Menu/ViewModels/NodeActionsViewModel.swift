@@ -375,7 +375,7 @@ class NodeActionsViewModel {
     // MARK: - Download node content
 
     private func showDownloadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
-        if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+        if let downloadDialogView = DownloadDialog.fromNib() as? DownloadDialog {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.Dialog.downloadMessage,

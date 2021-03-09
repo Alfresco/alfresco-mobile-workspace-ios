@@ -27,7 +27,7 @@ enum ActivityIndicatorControllerState {
 class ActivityIndicatorView: UIView {
     private var activityIndicator = MDCActivityIndicator()
     private var overlayView: UIView?
-    private var label: UILabel = UILabel()
+    private var label = UILabel()
 
     var state: ActivityIndicatorControllerState? {
         didSet {

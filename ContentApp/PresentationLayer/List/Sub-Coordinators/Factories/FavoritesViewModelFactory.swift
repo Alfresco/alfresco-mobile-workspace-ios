@@ -27,12 +27,12 @@ class FavoritesViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func favoritesDataSource() -> FavoritesDataSource {
-
+        
         let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let foldersAndFilesViewModel = FavoritesViewModel.init(with: coordinatorServices,
-                                                               listRequest: nil)
-        let librariesViewModel = FavoritesViewModel.init(with: coordinatorServices,
-                                                         listRequest: nil)
+        let foldersAndFilesViewModel = FavoritesViewModel(with: coordinatorServices,
+                                                          listRequest: nil)
+        let librariesViewModel = FavoritesViewModel(with: coordinatorServices,
+                                                    listRequest: nil)
         let globalSearchViewModel =
             GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
 

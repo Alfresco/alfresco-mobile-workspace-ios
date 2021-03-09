@@ -20,5 +20,5 @@ import Foundation
 
 class OperationQueueService: Service {
     static let main = DispatchQueue.main
-    static let worker = DispatchQueue.init(label: "WorkerQueue")
+    static let worker = DispatchQueue(label: "WorkerQueue")
 }

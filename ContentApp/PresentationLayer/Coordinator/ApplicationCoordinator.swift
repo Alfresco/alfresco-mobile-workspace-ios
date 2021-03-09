@@ -28,7 +28,7 @@ class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+        splashScreenCoordinator = SplashScreenCoordinator(with: rootViewController)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
@@ -82,7 +82,7 @@ class ApplicationCoordinator: Coordinator {
 
             sSelf.rootViewController = UINavigationController()
             sSelf.splashScreenCoordinator =
-                SplashScreenCoordinator.init(with: sSelf.rootViewController)
+                SplashScreenCoordinator(with: sSelf.rootViewController)
 
             sSelf.start()
         })
