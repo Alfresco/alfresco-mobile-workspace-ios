@@ -60,7 +60,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
 
         if dataSource.numberOfSections() - 1 == section {
-            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false {
+            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false &&
+                coordinatorServices?.connectivityService?.hasInternetConnection() == true {
                 return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
             }
         }
@@ -117,7 +118,8 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
             cell?.subtitle.text = ""
         }
 
-        if isPaginationEnabled && collectionView.lastItemIndexPath() == indexPath {
+        if isPaginationEnabled && collectionView.lastItemIndexPath() == indexPath &&
+            coordinatorServices?.connectivityService?.hasInternetConnection() == true {
             self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
                                                                    itemAtIndexPath: indexPath)
         }
