@@ -19,6 +19,7 @@
 import UIKit
 import AlfrescoAuth
 import AlfrescoContent
+import FastCoding
 
 protocol SplashScreenCoordinatorDelegate: class {
     func showLoginContainerView()
@@ -71,7 +72,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
                 do {
                     let decoder = JSONDecoder()
 
-                    if let aimsSession = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(activeAccountSessionData) as? AlfrescoAuthSession {
+                    if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
                         let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
 
                         let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
