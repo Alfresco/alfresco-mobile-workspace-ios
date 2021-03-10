@@ -80,6 +80,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.delegate = self
         collectionView.pageDelegate = self
         collectionView.isPaginationEnabled = isPaginationEnabled
+        collectionView.coordinatorServices = coordinatorServices
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
@@ -229,6 +230,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                        changeHandler: { [weak self] (_, _) in
                                                         guard let sSelf = self else { return }
                                                         sSelf.handleConnectivity()
+                                                        sSelf.collectionView.reloadData()
                                                        })
     }
 
