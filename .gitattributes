@@ -1,0 +1,4 @@
+# https://github.com/github/linguist#using-gitattributes
+ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf.js linguist-vendored
+ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf.worker.js linguist-vendored
+ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf_viewer.js linguist-vendored
