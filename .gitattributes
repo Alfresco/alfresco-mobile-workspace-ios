@@ -2,4 +2,4 @@
 ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf.js linguist-vendored
 ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf.worker.js linguist-vendored
 ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/pdf_viewer.js linguist-vendored
-ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/viewer-inlined.html linguist-vendored
+ContentApp/PresentationLayer/Components/PDFRenderer/pdfjs-library/viewer-inlined.html linguist-generated
