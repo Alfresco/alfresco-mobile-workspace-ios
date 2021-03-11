@@ -49,32 +49,26 @@ class ConnectViewModel {
                 case .basicAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
-                if authType == .aimsAuth {
-                    sSelf.authenticationService?.isContentServicesAvailable(handler: { (result) in
-                        switch result {
-                        case .success(let isVersionOverMinium):
-                            if isVersionOverMinium {
-                                DispatchQueue.main.async {
-                                    sSelf.delegate?.authServiceByPass()
-                                    sSelf.aimsViewModel?.login(repository: url, in: viewController)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    sSelf.delegate?.authServiceAvailable(for: authType)
-                                }
+                sSelf.authenticationService?.isContentServicesAvailable(handler: { (result) in
+                    switch result {
+                    case .success(let isVersionOverMinium):
+                        if isVersionOverMinium && authType == .aimsAuth {
+                            DispatchQueue.main.async {
+                                sSelf.delegate?.authServiceByPass()
+                                sSelf.aimsViewModel?.login(repository: url, in: viewController)
                             }
-                        case .failure(let error):
-                            AlfrescoLog.error(error)
+                        } else {
                             DispatchQueue.main.async {
                                 sSelf.delegate?.authServiceAvailable(for: authType)
                             }
                         }
-                    })
-                } else {
-                    DispatchQueue.main.async {
-                        sSelf.delegate?.authServiceAvailable(for: authType)
+                    case .failure(let error):
+                        AlfrescoLog.error(error)
+                        DispatchQueue.main.async {
+                            sSelf.delegate?.authServiceAvailable(for: authType)
+                        }
                     }
-                }
+                })
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
