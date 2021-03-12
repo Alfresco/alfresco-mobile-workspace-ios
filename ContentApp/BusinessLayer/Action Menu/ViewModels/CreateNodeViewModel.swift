@@ -22,11 +22,12 @@ import Alamofire
 import MaterialComponents.MaterialDialogs
 
 protocol CreateNodeViewModelDelegate: class {
-    func createNode(node: ListNode?, error: Error?)
+    func handleCreatedNode(node: ListNode?, error: Error?)
 }
 
 class CreateNodeViewModel {
     private var coordinatorServices: CoordinatorServices?
+    private let nodeOperations: NodeOperations
     private var actionMenu: ActionMenu
     private var parentListNode: ListNode
     private var nodeName: String?
@@ -44,6 +45,7 @@ class CreateNodeViewModel {
          delegate: CreateNodeViewModelDelegate?) {
 
         self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.delegate = delegate
@@ -63,27 +65,22 @@ class CreateNodeViewModel {
                 sSelf.uploadRequest?.cancel()
             })
         }
-        let accountService = coordinatorServices?.accountService
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            sSelf.updateNodeDetails { (listNode, _) in
-                guard let sSelf = self, let listNode = listNode else { return }
-                let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
-                let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
-                                                                           nodeBodyCreate: nodeBody,
-                                                                           autoRename: shouldAutorename,
-                                                                           include: nil,
-                                                                           fields: nil)
-                switch sSelf.actionMenu.type {
-                case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                    sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
-                case .createFolder:
-                    sSelf.createNewFolder(with: requestBuilder)
-                default: break
-                }
+        updateNodeDetails { [weak self] (listNode, _) in
+            guard let sSelf = self, let listNode = listNode else { return }
+            let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
+            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
+                                                                       nodeBodyCreate: nodeBody,
+                                                                       autoRename: shouldAutorename,
+                                                                       include: nil,
+                                                                       fields: nil)
+            switch sSelf.actionMenu.type {
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+            case .createFolder:
+                sSelf.createNewFolder(with: requestBuilder)
+            default: break
             }
-        })
+        }
     }
 
     func creatingNewFolder() -> Bool {
@@ -100,11 +97,11 @@ class CreateNodeViewModel {
         requestBuilder.execute { [weak self] (result, error) in
             guard let sSelf = self else { return }
             if let error = error {
-                sSelf.delegate?.createNode(node: nil, error: error)
+                sSelf.delegate?.handleCreatedNode(node: nil, error: error)
                 AlfrescoLog.error(error)
             } else if let node = result?.body?.entry {
                 let listNode = NodeChildMapper.create(from: node)
-                sSelf.delegate?.createNode(node: listNode, error: nil)
+                sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                 sSelf.publishEventBus(with: listNode)
             }
         }
@@ -140,11 +137,11 @@ class CreateNodeViewModel {
                         let resultDecode = sSelf.decode(data: data)
                         if let nodeEntry = resultDecode.0 {
                             let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.createNode(node: listNode, error: nil)
+                            sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                             sSelf.publishEventBus(with: listNode)
                         }
                         if let error = resultDecode.1 {
-                            sSelf.delegate?.createNode(node: nil, error: error)
+                            sSelf.delegate?.handleCreatedNode(node: nil, error: error)
                             AlfrescoLog.error(error)
                         }
                     }
@@ -178,13 +175,9 @@ class CreateNodeViewModel {
     // MARK: - Private Utils
 
     private func updateNodeDetails(handle: @escaping (ListNode?, Error?) -> Void) {
-        guard parentListNode.kind == .site else { return handle(parentListNode, nil)}
-        NodesAPI.getNode(nodeId: parentListNode.guid,
-                         include: [kAPIIncludePathNode,
-                                   kAPIIncludeIsFavoriteNode,
-                                   kAPIIncludeAllowableOperationsNode,
-                                   kAPIIncludeProperties],
-                         relativePath: kAPIPathRelativeForSites) { (result, error) in
+        guard parentListNode.nodeType == .site else { return handle(parentListNode, nil)}
+        nodeOperations.fetchNodeDetails(for: parentListNode.guid,
+                                        relativePath: APIConstants.Path.relativeSites) { (result, error) in
             var listNode: ListNode?
             if let error = error {
                 AlfrescoLog.error(error)
@@ -228,13 +221,13 @@ class CreateNodeViewModel {
             let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
             let nodeNameWithExtension = ( nodeName ?? "" ) + nodeExtension
             uploadDialogView.messageLabel.text =
-                String(format: LocalizationConstants.NodeActionsDialog.uploadMessage,
+                String(format: LocalizationConstants.Dialog.uploadMessage,
                        nodeNameWithExtension)
             uploadDialogView.activityIndicator.startAnimating()
             uploadDialogView.applyTheme(themingService?.activeTheme)
 
             let cancelAction =
-                MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { action in
+                MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
                 }
 
@@ -261,6 +254,7 @@ class CreateNodeViewModel {
                               aspectNames: nil,
                               properties: nodeProperties(),
                               permissions: nil,
+                              definition: nil,
                               relativePath: nil,
                               association: nil,
                               secondaryChildren: nil,
@@ -270,10 +264,10 @@ class CreateNodeViewModel {
     private func handle(error: Error) {
         if error.code == NSURLErrorNetworkConnectionLost ||
             error.code == NSURLErrorCancelled {
-            delegate?.createNode(node: nil, error: nil)
+            delegate?.handleCreatedNode(node: nil, error: nil)
             return
         }
-        delegate?.createNode(node: nil, error: error)
+        delegate?.handleCreatedNode(node: nil, error: error)
         AlfrescoLog.error(error)
     }
 

@@ -63,6 +63,17 @@ class FilePreviewFactory {
             }
             completion?(nil)
             return FileWithoutPreview(with: node)
+        case .text:
+            do {
+                let plainTextPreview = PlainTextPreview()
+                plainTextPreview.display(text: try Data(contentsOf: url))
+                completion?(nil)
+                return plainTextPreview
+            } catch {
+                AlfrescoLog.error("Text file can't be read.")
+                completion?(nil)
+                return FileWithoutPreview(with: node)
+            }
 
         default:
             completion?(nil)

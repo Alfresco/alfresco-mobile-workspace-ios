@@ -34,6 +34,8 @@ class PageFetchingViewModel {
     var pageFetchingGroup = DispatchGroup()
     var currentPage: Int = 1
     var hasMoreItems = true
+    var refreshedList = false
+    var pageSkipCount: Int?
 
     var shouldDisplayNextPageLoadingIndicator: Bool = false
     var results: [ListNode] = [] {
@@ -41,7 +43,7 @@ class PageFetchingViewModel {
             let pagination = Pagination(count: 0,
                                         hasMoreItems: false,
                                         totalItems: 0,
-                                        skipCount: Int64(currentPage * kListPageSize),
+                                        skipCount: Int64(currentPage * APIConstants.pageSize),
                                         maxItems: 0)
             updatedResults(results: results, pagination: pagination)
         }
@@ -51,14 +53,28 @@ class PageFetchingViewModel {
         pageFetchingGroup.notify(queue: .global()) { [weak self] in
             guard let sSelf = self else { return }
 
+            let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+            if connectivityService?.hasInternetConnection() == false {
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.refreshedList = false
+                    sSelf.pageSkipCount = nil
+                    sSelf.handlePage(results: sSelf.results, pagination: nil, error: nil)
+                }
+            }
+
             if sSelf.hasMoreItems {
-                let nextPage = RequestPagination(maxItems: kListPageSize,
-                                                 skipCount: sSelf.currentPage * kListPageSize)
-                sSelf.fetchItems(with: nextPage,
-                                 userInfo: userInfo,
-                                 completionHandler: { (paginatedResponse) in
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                })
+                let skipCount = (sSelf.refreshedList) ? APIConstants.pageSize : sSelf.results.count
+                let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
+                                                 skipCount: skipCount)
+                if skipCount != sSelf.pageSkipCount {
+                    sSelf.pageSkipCount = skipCount
+                    sSelf.fetchItems(with: nextPage,
+                                     userInfo: userInfo,
+                                     completionHandler: { (paginatedResponse) in
+                                        sSelf.handlePaginatedResponse(response: paginatedResponse)
+                                     })
+                }
             }
         }
     }
@@ -67,6 +83,8 @@ class PageFetchingViewModel {
         if let error = response.error {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
+                sSelf.refreshedList = false
+                sSelf.pageSkipCount = nil
                 sSelf.handlePage(results: nil, pagination: nil, error: error)
             }
         } else if let results = response.results,
@@ -80,6 +98,8 @@ class PageFetchingViewModel {
 
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
+                sSelf.refreshedList = false
+                sSelf.pageSkipCount = nil
                 sSelf.handlePage(results: results,
                                  pagination: response.responsePagination,
                                  error: nil)
@@ -129,7 +149,7 @@ class PageFetchingViewModel {
 
     private final func incrementPage(for paginationRequest: RequestPagination?) {
         if let pageSkipCount = paginationRequest?.skipCount {
-            currentPage = pageSkipCount / kListPageSize + 1
+            currentPage = pageSkipCount / APIConstants.pageSize + 1
         }
     }
 

@@ -19,7 +19,8 @@
 import UIKit
 
 protocol ListElementCollectionViewCellDelegate: class {
-    func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell)
+    func moreButtonTapped(for element: ListNode?,
+                          in cell: ListElementCollectionViewCell)
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
@@ -28,13 +29,30 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
+    @IBOutlet weak var syncStatusImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
-    var element: ListNode? {
+
+    var node: ListNode? {
         didSet {
-            if let element = element {
-                title.text = element.title
-                subtitle.text = element.path
-                iconImageView.image = FileIcon.icon(for: element)
+            guard let node = node else { return }
+
+            title.text = node.title
+            subtitle.text = node.path
+            iconImageView.image = FileIcon.icon(for: node)
+        }
+    }
+
+    var syncStatus: ListEntrySyncStatus = .undefined {
+        didSet {
+            syncStatusImageView.isHidden = !(syncStatus != .undefined)
+            syncStatusImageView.image = syncStatus.rawValue.count != 0 ? UIImage(named: syncStatus.rawValue) : nil
+
+            switch syncStatus {
+            case .error:
+                subtitle.text = LocalizationConstants.Labels.syncFailed
+            case .inProgress:
+                subtitle.text = LocalizationConstants.Labels.syncing
+            default: break
             }
         }
     }
@@ -46,10 +64,12 @@ class ListElementCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
-        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        iconImageView.tintColor = currentTheme.onSurface60Color
+        moreButton.tintColor = currentTheme.onSurface60Color
+        syncStatusImageView.tintColor = currentTheme.onSurface60Color
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
-        delegate?.moreButtonTapped(for: element, in: self)
+        delegate?.moreButtonTapped(for: node, in: self)
     }
 }

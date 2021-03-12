@@ -1,0 +1,124 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4924419163766400768",
+      "lastPropertyId": "20:3222472111177428736",
+      "name": "ListNode",
+      "properties": [
+        {
+          "flags": 1,
+          "id": "1:2761924956872080128",
+          "name": "id",
+          "type": 6
+        },
+        {
+          "id": "2:6727807577279065856",
+          "name": "parentGuid",
+          "type": 9
+        },
+        {
+          "id": "3:1160052078537699328",
+          "name": "guid",
+          "type": 9
+        },
+        {
+          "id": "4:958837345273675264",
+          "name": "siteID",
+          "type": 9
+        },
+        {
+          "id": "5:3656813396238663424",
+          "name": "destination",
+          "type": 9
+        },
+        {
+          "id": "6:40203180090543360",
+          "name": "mimeType",
+          "type": 9
+        },
+        {
+          "id": "7:7099218486325184512",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "8:3118078692928307712",
+          "name": "path",
+          "type": 9
+        },
+        {
+          "id": "9:1855641798515070976",
+          "name": "modifiedAt",
+          "type": 10
+        },
+        {
+          "id": "10:8877005435172031744",
+          "name": "favorite",
+          "type": 1
+        },
+        {
+          "id": "11:8306138110636922368",
+          "name": "trashed",
+          "type": 1
+        },
+        {
+          "id": "12:8931151636810106368",
+          "name": "markedAsOffline",
+          "type": 1
+        },
+        {
+          "id": "13:6370314685970737664",
+          "name": "nodeType",
+          "type": 9
+        },
+        {
+          "id": "14:8122952080249357824",
+          "name": "siteRole",
+          "type": 9
+        },
+        {
+          "id": "15:4676429062915184384",
+          "name": "syncStatus",
+          "type": 9
+        },
+        {
+          "id": "17:186580639668120576",
+          "name": "allowableOperations",
+          "type": 9
+        },
+        {
+          "id": "18:1597269330570867456",
+          "name": "markedFor",
+          "type": 9
+        },
+        {
+          "id": "19:7009987470108192768",
+          "name": "isFile",
+          "type": 1
+        },
+        {
+          "id": "20:3222472111177428736",
+          "name": "isFolder",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "1:4924419163766400768",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    1132591789422262528
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

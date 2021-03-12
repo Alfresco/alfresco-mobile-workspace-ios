@@ -28,6 +28,14 @@ protocol AccountServiceProtocol {
     /// - Parameter account: Account to be registered
     func register(account: AccountProtocol)
 
+    /**
+     Creates for current account an authentication ticket used for convenient content fetching.
+
+     - SeeAlso:
+       [AuthenticationAPI](https://api-explorer.alfresco.com/api-explorer/#/authentication)
+    */
+    func createTicketForCurrentAccount()
+
     /// Removes an account but it doesn not automatically log out the user from it.
     /// - Parameter account: Account to be removed
     func unregister(account: AccountProtocol)
@@ -51,29 +59,52 @@ protocol AccountServiceProtocol {
 }
 
 class AccountService: AccountServiceProtocol, Service {
+
+    private var connectivityService: ConnectivityService?
+    private var kvoConnectivity: NSKeyValueObservation?
     private (set) var accounts: [AccountProtocol]? = []
+
     var activeAccount: AccountProtocol? {
         didSet {
             let defaults = UserDefaults.standard
             if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults.set(activeAccountIdentifier, forKey: kActiveAccountIdentifier)
+                defaults.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
             } else {
-                defaults.removeObject(forKey: kActiveAccountIdentifier)
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
 
             defaults.synchronize()
         }
     }
 
+    init(connectivityService: ConnectivityService) {
+        self.connectivityService = connectivityService
+        self.observeConnectivity()
+    }
+
+    deinit {
+        kvoConnectivity?.invalidate()
+    }
+
     func register(account: AccountProtocol) {
         accounts?.append(account)
         account.persistAuthenticationParameters()
         account.persistAuthenticationCredentials()
-        account.registered()
+
+        if connectivityService?.hasInternetConnection() == true {
+            account.registered()
+        }
+    }
+
+    func createTicketForCurrentAccount() {
+        guard connectivityService?.hasInternetConnection() == true else { return }
+        activeAccount?.createTicket()
     }
 
     func getSessionForCurrentAccount(completionHandler: @escaping ((AuthenticationProviderProtocol) -> Void)) {
-        DispatchQueue.global().async { [weak self] in
+        guard connectivityService?.hasInternetConnection() == true else { return }
+
+        OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
 
             sSelf.activeAccount?.getSession(completionHandler: { (authenticationProivder) in
@@ -83,7 +114,7 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func logOutFromAccount(account: AccountProtocol, viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
-        DispatchQueue.main.async {
+        OperationQueueService.main.async {
             account.logOut(onViewController: viewController, completionHandler: { error in
                 completionHandler(error)
             })
@@ -91,6 +122,7 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func logOutFromCurrentAccount(viewController: UIViewController?, completionHandler: @escaping LogoutHandler) {
+        guard connectivityService?.hasInternetConnection() == true else { return }
         if let account = activeAccount {
             logOutFromAccount(account: account, viewController: viewController) { [weak self] error in
                 guard let sSelf = self else { return }
@@ -106,10 +138,50 @@ class AccountService: AccountServiceProtocol, Service {
         if let index = accounts?.firstIndex(where: { account === $0 }) {
             let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: kActiveAccountIdentifier)
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
             accounts?.remove(at: index)
+        }
+    }
+
+    func delete(account: AccountProtocol) {
+        if let index = accounts?.firstIndex(where: { account === $0 }) {
+            let defaults = UserDefaults.standard
+            if account.identifier == activeAccount?.identifier {
+                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+            }
+            account.unregister()
+
+            account.removeDiskFolder()
+            account.removeAuthenticationParameters()
+            account.removeAuthenticationCredentials()
+
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            listNodeDataAccessor.removeAllNodes()
+
+            UserProfile.removeUserProfile(forAccountIdentifier: identifier)
+
+            accounts?.remove(at: index)
+        }
+    }
+
+    // MARK: Private Helpers
+
+    private func observeConnectivity() {
+        kvoConnectivity = connectivityService?.observe(\.status,
+                                                       options: [.new],
+                                                       changeHandler: { [weak self] (_, _) in
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.handleConnectivity()
+                                                       })
+    }
+
+    private func handleConnectivity() {
+        if connectivityService?.hasInternetConnection() == false {
+            activeAccount?.unregister()
+        } else {
+            activeAccount?.registered()
         }
     }
 }

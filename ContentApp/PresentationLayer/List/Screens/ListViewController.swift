@@ -22,6 +22,7 @@ import AlfrescoContent
 class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
     var listViewModel: ListViewModelProtocol?
+    var isPaginationEnabled: Bool = true
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
@@ -34,6 +35,7 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.listActionDelegate = self
         listComponentViewController.listDataSource = listViewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
+        listComponentViewController.isPaginationEnabled = self.isPaginationEnabled
         listViewModel?.pageUpdatingDelegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
@@ -94,13 +96,20 @@ class ListViewController: SystemSearchViewController {
 
 extension ListViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
+        // Do nothing
     }
 
-    func didUpdateList(error: Error?, pagination: Pagination?) {
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?, pagination: Pagination?) {
         listController?.stopLoading()
     }
 
-    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath) {
         listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
+    }
+
+    func performListAction() {
+        listViewModel?.performListAction()
     }
 }

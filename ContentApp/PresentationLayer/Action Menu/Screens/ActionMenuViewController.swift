@@ -27,12 +27,14 @@ class ActionMenuViewController: SystemThemableViewController {
     var actionMenuModel: ActionMenuViewModel?
     var nodeActionsModel: NodeActionsViewModel?
 
+    let actionMenuCellHeight: CGFloat = 55.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer.cornerRadius = dialogCornerRadius
+        view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
 
         actionMenuModel?.delegate = self
@@ -53,6 +55,13 @@ class ActionMenuViewController: SystemThemableViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         calculatePreferredSize(view.bounds.size)
+    }
+
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+
+        let contentInset = collectionView.contentInset
+        collectionView.contentInset = contentInset
     }
 
     override func viewWillTransition(to size: CGSize,
@@ -84,8 +93,8 @@ class ActionMenuViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        view.backgroundColor = currentTheme.surfaceColor
-        activityIndicator.cycleColors = [currentTheme.primaryVariantColor]
+        view.backgroundColor = currentTheme.primaryColorVariant
+        activityIndicator.cycleColors = [currentTheme.primaryVariantT1Color]
     }
 }
 
@@ -120,7 +129,8 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: actionMenuCellHeight)
+        return CGSize(width: collectionView.frame.width,
+                      height: actionMenuCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -136,7 +146,7 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
 // MARK: - ActionMenuViewModel Delegate
 
 extension ActionMenuViewController: ActionMenuViewModelDelegate {
-    func finishProvideActions() {
+    func finishedLoadingActions() {
         let numberOfActions = actionMenuModel?.numberOfActions() ?? 1
         collectionViewContraintHeight.constant = numberOfActions * actionMenuCellHeight
         collectionView.reloadData()

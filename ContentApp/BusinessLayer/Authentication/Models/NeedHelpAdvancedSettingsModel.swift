@@ -19,6 +19,8 @@
 import Foundation
 
 struct NeedHelpAdvancedSettingsModel: NeedHelpModelProtocol {
-    var titleText = LocalizationConstants.Labels.needHelpTitle
-    var hintText = LocalizationConstants.Textviews.advancedSettingsHint
+    var sections: [NeedHelpSection] =
+        [NeedHelpSection(title: LocalizationConstants.Help.advancedSettingsTitleSection1,
+                         paragraphs: LocalizationConstants.Help.advancedSettingsSection1Paragraph)]
+    var title = LocalizationConstants.Labels.howToConnectTitle
 }

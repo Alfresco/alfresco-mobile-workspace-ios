@@ -29,22 +29,33 @@ extension UIView {
         self.layer.rasterizationScale = UIScreen.main.scale
     }
 
-    func dropContourShadow(opacity: Float, radius: Float, xOffset: Float = 0, yOffset: Float = 0) -> CALayer {
+    func dropContourShadow(opacity: Float,
+                           radius: Float,
+                           xOffset: Float = 0,
+                           yOffset: Float = 0) -> CALayer {
         let xOffset = CGFloat(xOffset)
         let yOffset = CGFloat(yOffset)
         let shadowOffset = CGSize(width: xOffset, height: yOffset)
         let shadowOpacity = opacity
         let shadowRadius = CGFloat(radius)
         let shadowPath = UIBezierPath(rect: self.frame).cgPath
-        let shadowColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
+        var shadowColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
+        if #available(iOS 13.0, *) {
+            shadowColor = UIColor.label
+        }
 
         let shadowLayer = CALayer()
         let mutablePath = CGMutablePath()
         let maskLayer = CAShapeLayer()
 
-        let shadowFrame = self.frame.insetBy(dx: -2 * shadowRadius, dy: -2 * shadowRadius).offsetBy(dx: xOffset, dy: yOffset)
+        let shadowFrame = self.frame.insetBy(dx: -2 * shadowRadius,
+                                             dy: -2 * shadowRadius).offsetBy(dx: xOffset,
+                                                                             dy: yOffset)
         let shadowRect = CGRect(origin: .zero, size: shadowFrame.size)
-        let shadowTransform = CGAffineTransform(translationX: -self.frame.origin.x - xOffset + 2 * shadowRadius, y: -self.frame.origin.y - yOffset + 2 * shadowRadius)
+        let translationXTX = -self.frame.origin.x - xOffset + 2 * shadowRadius
+        let translationXTY = -self.frame.origin.y - yOffset + 2 * shadowRadius
+        let shadowTransform = CGAffineTransform(translationX: translationXTX,
+                                                y: translationXTY)
 
         shadowLayer.shadowOffset = shadowOffset
         shadowLayer.shadowOpacity = shadowOpacity
@@ -66,7 +77,11 @@ extension UIView {
         return shadowLayer
     }
 
-    func applyCornerRadius(with radius: Float, mask: CACornerMask = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMinXMinYCorner]) {
+    func applyCornerRadius(with radius: Float,
+                           mask: CACornerMask = [.layerMaxXMaxYCorner,
+                                                 .layerMaxXMinYCorner,
+                                                 .layerMinXMaxYCorner,
+                                                 .layerMinXMinYCorner]) {
         self.layer.cornerRadius = CGFloat(radius)
         self.layer.masksToBounds = true
         self.layer.maskedCorners = mask

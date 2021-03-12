@@ -39,6 +39,33 @@ class AimsViewModel {
     func login(repository: String, in viewController: UIViewController) {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.contentURL = repository
+        authenticationService?.isContentServicesAvailable(on: authParameters.fullContentURL,
+                                                          handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let isVersionOverMinium):
+                guard isVersionOverMinium else {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let sSelf = self else { return }
+                        sSelf.delegate?.logInFailed(with: APIError(domain: ""))
+                    }
+                    return
+                }
+                sSelf.authenticationService?.update(authenticationParameters: authParameters)
+                sSelf.authenticationService?.aimsAuthentication(on: viewController, delegate: sSelf)
+            case .failure(let error):
+                AlfrescoLog.error(error)
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.delegate?.logInFailed(with: error)
+                }
+            }
+        })
+    }
+
+    func loginByPass(repository: String, in viewController: UIViewController) {
+        let authParameters = AuthenticationParameters.parameters()
+        authParameters.contentURL = repository
         authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.aimsAuthentication(on: viewController, delegate: self)
     }
@@ -50,7 +77,7 @@ class AimsViewModel {
     private func fetchProfileInformation() {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: kAPIPathMe) { [weak self] (personEntry, error) in
+            PeopleAPI.getPerson(personId: APIConstants.me) { [weak self] (personEntry, error) in
                 guard let sSelf = self else { return }
                 if let error = error {
                     AlfrescoLog.error(error)
@@ -76,13 +103,16 @@ class AimsViewModel {
 }
 
 extension AimsViewModel: AlfrescoAuthDelegate {
-    func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
+    func didReceive(result: Result<AlfrescoCredential?, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(let aimsCredential):
+            guard let aimsCredential = aimsCredential  else { return }
             AlfrescoLog.debug("LoginAIMS with success: \(Mirror.description(for: aimsCredential))")
 
             if let authSession = session, let accountParams = authenticationService?.parameters {
-                let accountSession = AIMSSession(with: authSession, parameters: accountParams, credential: aimsCredential)
+                let accountSession = AIMSSession(with: authSession,
+                                                 parameters: accountParams,
+                                                 credential: aimsCredential)
                 let account = AIMSAccount(with: accountSession)
 
                 AlfrescoContentAPI.basePath = account.apiBasePath
@@ -93,7 +123,8 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 self.fetchProfileInformation()
             }
         case .failure(let error):
-            AlfrescoLog.error("Error \(String(describing: authenticationService?.parameters.contentURL)) login with aims : \(error.localizedDescription)")
+            let contentURL = authenticationService?.parameters.contentURL
+            AlfrescoLog.error("Error \(String(describing: contentURL)) login with aims : \(error.localizedDescription)")
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.delegate?.logInFailed(with: error)

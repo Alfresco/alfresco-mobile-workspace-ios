@@ -20,28 +20,34 @@ import UIKit
 import AlfrescoContent
 
 protocol ActionMenuViewModelDelegate: class {
-    func finishProvideActions()
+    func finishedLoadingActions()
 }
 
 class ActionMenuViewModel {
-    private var accountService: AccountService?
     private var listNode: ListNode?
     private var toolbarActions: [ActionMenu]?
     private var menuActions: [[ActionMenu]]
-    var toolbarDivide: Bool
+    private var excludedActions: [ActionMenuType]
+    private var coordinatorServices: CoordinatorServices?
+    private let nodeOperations: NodeOperations
+
+    var toolbarDisplayed: Bool
     weak var delegate: ActionMenuViewModelDelegate?
 
     // MARK: - Init
 
-    init(with accountService: AccountService?,
-         menuActions: [[ActionMenu]] = [[ActionMenu]](),
-         listNode: ListNode? = nil,
-         toolbarDivide: Bool = false) {
+    init(menuActions: [[ActionMenu]] = [[ActionMenu]](),
+         node: ListNode? = nil,
+         toolbarDisplayed: Bool = false,
+         coordinatorServices: CoordinatorServices?,
+         excludedActionTypes: [ActionMenuType] = []) {
 
-        self.accountService = accountService
-        self.listNode = listNode
-        self.toolbarDivide = toolbarDivide
+        self.listNode = node
         self.menuActions = menuActions
+        self.toolbarDisplayed = toolbarDisplayed
+        self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
+        self.excludedActions = excludedActionTypes
 
         if let listNode = listNode {
             self.menuActions = [[ActionMenu(title: listNode.title,
@@ -49,7 +55,7 @@ class ActionMenuViewModel {
                                             icon: FileIcon.icon(for: listNode))],
                                 [ActionMenu(title: "", type: .placeholder),
                                  ActionMenu(title: "", type: .placeholder)]]
-            if toolbarDivide {
+            if toolbarDisplayed {
                 self.createMenuActions()
                 self.divideForToolbarActions()
             }
@@ -60,43 +66,35 @@ class ActionMenuViewModel {
 
     func fetchNodeInformation() {
         guard let listNode = self.listNode else {
-            delegate?.finishProvideActions()
+            delegate?.finishedLoadingActions()
             return
         }
-        if toolbarDivide {
-            delegate?.finishProvideActions()
+        if toolbarDisplayed {
+            delegate?.finishedLoadingActions()
             return
         }
         if listNode.shouldUpdate() == false {
             createMenuActions()
             return
         }
-        accountService?.activeAccount?.getSession(completionHandler: { [weak self] authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            guard let sSelf = self else { return }
-            if listNode.kind == .site {
-                FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                         favoriteId: listNode.guid) { (_, error) in
-                    if error == nil {
-                        sSelf.listNode?.favorite = true
-                    }
-                    sSelf.createMenuActions()
+        if listNode.nodeType == .site {
+            nodeOperations.fetchNodeIsFavorite(for: listNode.guid) { [weak self] (_, error) in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    sSelf.listNode?.favorite = true
                 }
-            } else {
-                NodesAPI.getNode(nodeId: listNode.guid,
-                                 include: [kAPIIncludePathNode,
-                                           kAPIIncludeAllowableOperationsNode,
-                                           kAPIIncludeIsFavoriteNode,
-                                           kAPIIncludeProperties],
-                                 relativePath: nil,
-                                 fields: nil) { (result, _) in
-                    if let entry = result?.entry {
-                        sSelf.listNode = NodeChildMapper.create(from: entry)
-                    }
-                    sSelf.createMenuActions()
-                }
+                sSelf.createMenuActions()
             }
-        })
+        } else {
+            nodeOperations.fetchNodeDetails(for: listNode.guid) { [weak self] (result, _) in
+                guard let sSelf = self else { return }
+                if let entry = result?.entry {
+                    sSelf.listNode?.update(with: NodeChildMapper.create(from: entry))
+                    sSelf.listNode?.removeAllowableOperationUnknown()
+                }
+                sSelf.createMenuActions()
+            }
+        }
     }
 
     func actions() -> [[ActionMenu]] {
@@ -142,22 +140,32 @@ class ActionMenuViewModel {
             menuActions = ActionsMenuTrashMoreButton.actions(for: listNode)
         } else {
             menuActions = ActionsMenuGeneric.actions(for: listNode)
+
+            for (index, var actionMenuGroup) in menuActions.enumerated() {
+                actionMenuGroup.removeAll { actionMenu -> Bool in
+                    return excludedActions.contains(actionMenu.type)
+                }
+                menuActions[index] = actionMenuGroup
+            }
         }
+
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.delegate?.finishProvideActions()
+            sSelf.delegate?.finishedLoadingActions()
         }
     }
 
     private func divideForToolbarActions() {
         var toolActions = [ActionMenu]()
         for index in 0...menuActions.count - 1 {
-            for action in menuActions[index] where action.type != .node {
+            for action in menuActions[index] where
+                action.type == .removeFavorite ||
+                action.type == .addFavorite {
                 toolActions.append(action)
-                if toolActions.count == kToolbarFilePreviewNumberOfAction - 1 {
-                    addActionToOpenMenu(in: toolActions)
-                    return
-                }
+            }
+            for action in menuActions[index] where
+                action.type == .download {
+                toolActions.append(action)
             }
         }
         addActionToOpenMenu(in: toolActions)

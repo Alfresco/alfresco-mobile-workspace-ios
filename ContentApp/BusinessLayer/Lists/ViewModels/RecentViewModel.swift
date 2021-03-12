@@ -24,44 +24,14 @@ import AlfrescoContent
 class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
-    var accountService: AccountService?
-    var supportedNodeTypes: [ElementKindType]?
+    var coordinatorServices: CoordinatorServices?
+    var supportedNodeTypes: [NodeType]?
 
     // MARK: - Init
 
-    required init(with accountService: AccountService?, listRequest: SearchRequest?) {
-        self.accountService = accountService
+    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
+        self.coordinatorServices = coordinatorServices
         self.listRequest = listRequest
-    }
-
-    // MARK: - Public methods
-
-    func recentsList(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            SearchAPI.search(queryBody: SearchRequestBuilder.recentRequest(pagination: paginationRequest)) { (result, error) in
-                var listNodes: [ListNode]?
-                if let entries = result?.list?.entries {
-                    listNodes = ResultsNodeMapper.map(entries)
-                } else {
-                    if let error = error {
-                        AlfrescoLog.error(error)
-                    }
-                }
-                let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
-            }
-        })
-    }
-
-    func shouldDisplaySettingsButton() -> Bool {
-        return true
     }
 
     // MARK: - ListViewModelProtocol
@@ -74,16 +44,18 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return EmptyRecents()
     }
 
-    func shouldDisplaySections() -> Bool {
-        return true
-    }
-
     func numberOfSections() -> Int {
         return groupedLists.count
     }
 
     func numberOfItems(in section: Int) -> Int {
         return groupedLists[section].list.count
+    }
+
+    func refreshList() {
+        refreshedList = true
+        currentPage = 1
+        recentsList(with: nil)
     }
 
     func listNode(for indexPath: IndexPath) -> ListNode {
@@ -94,25 +66,16 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return groupedLists[indexPath.section].titleGroup
     }
 
+    func shouldDisplaySections() -> Bool {
+        return true
+    }
+
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func shouldDisplayMoreButton() -> Bool {
+    func shouldDisplaySettingsButton() -> Bool {
         return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
-    func shouldDisplayNodePath() -> Bool {
-        return true
-    }
-
-    func refreshList() {
-        currentPage = 1
-        recentsList(with: nil)
     }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
@@ -128,6 +91,37 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
+    }
+
+    func performListAction() {
+        // Do nothing
+    }
+
+    // MARK: - Public methods
+
+    func recentsList(with paginationRequest: RequestPagination?) {
+        pageFetchingGroup.enter()
+        let accountService = coordinatorServices?.accountService
+        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let recentFilesRequest = SearchRequestBuilder.recentFilesRequest(pagination: paginationRequest)
+            SearchAPI.recentFiles(recentFilesRequest: recentFilesRequest) { (result, error) in
+                var listNodes: [ListNode]?
+                if let entries = result?.list?.entries {
+                    listNodes = ResultsNodeMapper.map(entries)
+                } else {
+                    if let error = error {
+                        AlfrescoLog.error(error)
+                    }
+                }
+                let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                          error: error,
+                                                          requestPagination: paginationRequest,
+                                                          responsePagination: result?.list?.pagination)
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        })
     }
 
     // MARK: - Private methods
@@ -172,6 +166,8 @@ extension RecentViewModel {
             handleFavorite(event: publishedEvent)
         } else if let publishedEvent = event as? MoveEvent {
             handleMove(event: publishedEvent)
+        } else if let publishedEvent = event as? OfflineEvent {
+            handleOffline(event: publishedEvent)
         }
     }
 
@@ -186,7 +182,7 @@ extension RecentViewModel {
         let node = event.node
         switch event.eventType {
         case .moveToTrash:
-            if node.kind == .file {
+            if node.nodeType == .file {
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
                 }
@@ -196,6 +192,15 @@ extension RecentViewModel {
         case .restore:
             refreshList()
         default: break
+        }
+    }
+
+    private func handleOffline(event: OfflineEvent) {
+        let node = event.node
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            let listNode = results[indexOfOfflineNode]
+            listNode.update(with: node)
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

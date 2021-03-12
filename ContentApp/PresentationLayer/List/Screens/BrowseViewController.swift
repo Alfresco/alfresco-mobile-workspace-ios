@@ -26,6 +26,9 @@ class BrowseViewController: SystemSearchViewController {
     weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
+    let sectionCellHeight: CGFloat = 1.0
+    let listBrowseCellHeight: CGFloat = 44.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -118,7 +121,7 @@ extension BrowseViewController: UICollectionViewDelegateFlowLayout, UICollection
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: self.view.bounds.width,
-                      height: (section == 0) ? 0 : listBrowseSectionCellHeight)
+                      height: (section == 0) ? 0 : sectionCellHeight)
     }
 }
 

@@ -27,17 +27,17 @@ class FavoritesViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func favoritesDataSource() -> FavoritesDataSource {
-        let accountService = coordinatorServices?.accountService
 
-        let resultViewModel = ResultsViewModel()
-        let foldersAndFilesViewModel = FavoritesViewModel.init(with: accountService,
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+        let foldersAndFilesViewModel = FavoritesViewModel.init(with: coordinatorServices,
                                                                listRequest: nil)
-        let librariesViewModel = FavoritesViewModel.init(with: accountService,
+        let librariesViewModel = FavoritesViewModel.init(with: coordinatorServices,
                                                          listRequest: nil)
-        let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
+        let globalSearchViewModel =
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
 
-        foldersAndFilesViewModel.listCondition = kWhereFavoritesFileFolderCondition
-        librariesViewModel.listCondition = kWhereFavoritesSiteCondition
+        foldersAndFilesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesFileFolder
+        librariesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesSite
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 
@@ -48,6 +48,10 @@ class FavoritesViewModelFactory {
         registerForFavouriteEvent(resultViewModel: resultViewModel,
                                   foldersAndFilesViewModel: foldersAndFilesViewModel,
                                   librariesViewModel: librariesViewModel)
+
+        registerForOfflineEvent(resultViewModel: resultViewModel,
+                                foldersAndFilesViewModel: foldersAndFilesViewModel,
+                                librariesViewModel: librariesViewModel)
 
         return (foldersAndFilesViewModel, librariesViewModel, globalSearchViewModel, resultViewModel)
     }
@@ -82,5 +86,18 @@ class FavoritesViewModelFactory {
         eventBusService?.register(observer: librariesViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.site])
+    }
+
+    private func registerForOfflineEvent(resultViewModel: ResultsViewModel,
+                                         foldersAndFilesViewModel: FavoritesViewModel,
+                                         librariesViewModel: FavoritesViewModel) {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: foldersAndFilesViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
     }
 }

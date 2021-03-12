@@ -20,6 +20,7 @@ import Foundation
 
 struct RecentSearchesViewModel {
     var searches: [String] = []
+    let maxElemetsInRecentSearchesArray = 15
 
     init() {
         searches = self.recentSearch()
@@ -36,14 +37,14 @@ struct RecentSearchesViewModel {
             recents.remove(at: indexItem)
         }
         recents.insert(string, at: 0)
-        if recents.count == kMaxElemetsInRecentSearchesArray + 1 {
+        if recents.count == maxElemetsInRecentSearchesArray + 1 {
             recents.removeLast()
         }
-        UserDefaults.standard.set(recents, forKey: kSaveRecentSearchesArray)
+        UserDefaults.standard.set(recents, forKey: KeyConstants.Save.recentSearches)
         UserDefaults.standard.synchronize()
     }
 
     private func recentSearch() -> [String] {
-        return UserDefaults.standard.array(forKey: kSaveRecentSearchesArray) as? [String] ?? []
+        return UserDefaults.standard.array(forKey: KeyConstants.Save.recentSearches) as? [String] ?? []
     }
 }

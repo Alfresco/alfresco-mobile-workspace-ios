@@ -68,7 +68,7 @@ class BasicAuthViewController: SystemThemableViewController {
             ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.signingIn)
         if let activityIndicator = activityIndicator {
-            kWindow.addSubview(activityIndicator)
+            UIApplication.shared.windows[0].addSubview(activityIndicator)
         }
     }
 
@@ -131,13 +131,13 @@ class BasicAuthViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
+        guard let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
+        separator.backgroundColor = currentTheme.onSurface15Color
 
         signInButton.applyContainedTheme(withScheme: loginButtonScheme)
-        signInButton.setBackgroundColor(currentTheme.dividerColor,
+        signInButton.setBackgroundColor(currentTheme.onSurface15Color,
                                         for: .disabled)
         signInButton.isUppercaseTitle = false
         signInButton.setShadowColor(.clear, for: .normal)
@@ -174,8 +174,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
         usernameTextField.trailingViewMode = .unlessEditing
         usernameTextField.trailingView = UIImageView(image: UIImage(named: "ic-username"))
-        usernameTextField.trailingView?.tintColor =
-            currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        usernameTextField.trailingView?.tintColor = currentTheme.onSurface60Color
 
         showPasswordImageView = UIImageView(image: UIImage(named: "ic-password-hide"))
         showPasswordImageView.contentMode = .scaleAspectFit
@@ -185,8 +184,7 @@ class BasicAuthViewController: SystemThemableViewController {
         let tapGestureRecognizer = UITapGestureRecognizer.init(target: self,
                                                             action: #selector(showPasswordButtonTapped(_:)))
         passwordTextField.trailingView?.addGestureRecognizer(tapGestureRecognizer)
-        passwordTextField.trailingView?.tintColor =
-            currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        passwordTextField.trailingView?.tintColor = currentTheme.onSurface60Color
         passwordTextField.isSecureTextEntry = true
     }
 }
@@ -195,7 +193,7 @@ class BasicAuthViewController: SystemThemableViewController {
 
 extension BasicAuthViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.primaryVariantColor
+        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.primaryVariantT1Color
         keyboardHandling?.adaptFrame(in: view, subview: textField)
         return true
     }
@@ -230,7 +228,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.dividerColor
+        textField.rightView?.tintColor = coordinatorServices?.themingService?.activeTheme?.onSurface15Color
         return true
     }
 
@@ -243,7 +241,7 @@ extension BasicAuthViewController: BasicAuthViewModelDelegate {
 
     func logInFailed(with error: APIError) {
         activityIndicator?.state = .isIdle
-        if error.responseCode == 401 {
+        if error.responseCode == ErrorCodes.Swagger.unauthorized {
             applyThemingInTextField(errorTheme: true)
         }
         Snackbar.display(with: error.mapToMessage(),

@@ -18,11 +18,6 @@
 
 import UIKit
 
-protocol NeedHelpModelProtocol {
-    var titleText: String { get }
-    var hintText: String { get }
-}
-
 class NeedHelpViewController: SystemThemableViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
@@ -35,7 +30,7 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.applyRoundedCorners(on: [.topLeft, .topRight], radius: dialogCornerRadius)
+        view.applyRoundedCorners(on: [.topLeft, .topRight], radius: UIConstants.cornerRadiusDialog)
         view.isHidden = true
     }
 
@@ -53,7 +48,8 @@ class NeedHelpViewController: SystemThemableViewController {
         calculatePreferredSize(view.bounds.size)
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         calculatePreferredSize(size)
     }
@@ -67,16 +63,26 @@ class NeedHelpViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+              let model = model else { return }
 
-        textView.attributedText = NSAttributedString(withLocalizedHTMLString: model?.hintText ?? "",
-                                                     font: currentTheme.subtitle2TextStyle.font)
-        textView.textColor = currentTheme.onSurfaceColor
+        textView.text = model.allText()
+        let mAtrString = NSMutableAttributedString(string: textView.text)
 
-        titleLabel.text = model?.titleText
+        for section in model.sections {
+            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurfaceColor,
+                                      .font: currentTheme.subtitle1TextStyle.font],
+                                     range: (model.allText() as NSString).range(of: section.title))
+            mAtrString.addAttributes([.foregroundColor: currentTheme.onSurface60Color,
+                                      .font: currentTheme.body2TextStyle.font],
+                                     range: (model.allText() as NSString).range(of: section.paragraphs))
+        }
+        textView.attributedText = mAtrString
+
+        titleLabel.text = model.title
         titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
 
-        closeButton.setTitleColor(currentTheme.primaryVariantColor, for: .normal)
+        closeButton.tintColor = currentTheme.onSurface60Color
         view.backgroundColor = currentTheme.surfaceColor
     }
 

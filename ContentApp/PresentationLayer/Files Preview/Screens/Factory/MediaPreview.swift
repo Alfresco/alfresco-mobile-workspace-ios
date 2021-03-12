@@ -48,7 +48,6 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var timeObserver: Any?
     private var statusObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
-    private var animationFade: TimeInterval = 0.3
 
     private var finishPlaying: Bool = false
     private var sliderIsMoving: Bool = false
@@ -65,13 +64,18 @@ class MediaPreview: UIView, FilePreviewProtocol {
         }
     }
 
+    private let playerJumpTime: Double = 10
+    private var animationFade: TimeInterval = 0.3
+    private let actionsViewCornerRadius: CGFloat = 8.0
+    private let actionsViewBorderWidth: CGFloat = 1.0
+
     override func awakeFromNib() {
         translatesAutoresizingMaskIntoConstraints = false
         videoSlider.addTarget(self,
                                  action: #selector(onSliderValChanged(slider:event:)),
                                  for: .valueChanged)
-        actionsView.layer.cornerRadius = dialogCornerRadius
-        actionsView.layer.borderWidth = 1.0
+        actionsView.layer.cornerRadius = actionsViewCornerRadius
+        actionsView.layer.borderWidth = actionsViewBorderWidth
         actionsView.layer.masksToBounds = true
         playerControls(enable: false)
         audioImageView.image = UIImage(named: "ic-audio")
@@ -88,11 +92,11 @@ class MediaPreview: UIView, FilePreviewProtocol {
     }
 
     @IBAction func backwardButtonTapped(_ sender: UIButton) {
-        jumpPlayerTime(with: -kPlayerBackForWardTime)
+        jumpPlayerTime(with: -playerJumpTime)
     }
 
     @IBAction func forwardButtonTapped(_ sender: UIButton) {
-        jumpPlayerTime(with: kPlayerBackForWardTime)
+        jumpPlayerTime(with: playerJumpTime)
     }
 
     @IBAction func playPauseTapped(_ sender: UIButton) {
@@ -175,18 +179,13 @@ class MediaPreview: UIView, FilePreviewProtocol {
         statusObserver = playerItem.observe(\AVPlayerItem.status,
                                             changeHandler: { [weak self] cPlayerItem, _ in
             guard let sSelf = self else { return }
-            switch cPlayerItem.status {
-            case .readyToPlay:
+            if let error = cPlayerItem.error {
+                handler(error)
+                sSelf.playerControls(enable: false)
+            } else {
+                handler(nil)
                 sSelf.playerControls(enable: true)
                 sSelf.updateTotalTime(from: cPlayerItem.duration.seconds)
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(nil)
-                }
-            case .failed:
-                if let handler = sSelf.videoPreviewHandler {
-                    handler(playerItem.error)
-                }
-            default: break
             }
         })
     }
@@ -306,18 +305,18 @@ class MediaPreview: UIView, FilePreviewProtocol {
         totalTimeSecondsLabel.applyStyleBody2OnSurface(theme: currentTheme)
         totalTimeSecondsLabel.textAlignment = .left
 
-        videoSlider.tintColor = currentTheme.primaryColor
-        videoSlider.thumbTintColor = currentTheme.primaryColor
-        videoSlider.maximumTrackTintColor = currentTheme.primaryColor.withAlphaComponent(0.4)
+        videoSlider.tintColor = currentTheme.primaryT1Color
+        videoSlider.thumbTintColor = currentTheme.primaryT1Color
+        videoSlider.maximumTrackTintColor = currentTheme.primary30T1Color
         videoSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
 
         actionsView.backgroundColor = currentTheme.surfaceColor
-        actionsView.layer.borderColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12).cgColor
+        actionsView.layer.borderColor = currentTheme.onSurface15Color.cgColor
 
-        backwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        forwardButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        backwardButton.tintColor = currentTheme.onSurface60Color
+        forwardButton.tintColor = currentTheme.onSurface60Color
 
-        playPauseButton.tintColor = currentTheme.primaryColor
+        playPauseButton.tintColor = currentTheme.primaryT1Color
         if isAudioFile {
             backgroundColor = currentTheme.backgroundColor
         }

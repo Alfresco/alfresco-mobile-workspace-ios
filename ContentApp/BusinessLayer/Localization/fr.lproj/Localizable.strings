@@ -19,20 +19,26 @@
 "copyright-format" = "© %d Alfresco Software, Inc. Tous droits réservés.";
 "product-name" = "Alfresco\nMobile Workspace";
 
+// MARK: - General
+"retry" = "Réessayer";
+"yes" = "Oui";
+"ok" = "Ok";
+"later" = "Plus tard";
+"cancel" = "Annuler";
+"delete" = "Supprimer";
+"create" = "Créer";
+"save" = "Enregistrer";
+
 // MARK: - Buttons
 "connect" = "Connexion";
-"advanced-settings" = "Réglages avancés";
+"advanced-settings" = "Paramètres avancés";
 "need-help" = "Besoin d'aide ?";
 "need-help-alfresco" = "Comment se connecter à Alfresco ?";
 "reset-to-default" = "Valeurs par défaut";
-"save" = "Enregistrer";
 "sign-in" = "Connexion";
 "sign-in-with-sso" = "Connexion avec SSO";
 "sign-out" = "Déconnexion";
-"retry" = "Réessayer";
-"yes" = "Oui";
-"cancel" = "Annuler";
-"delete" = "Supprimer";
+"sync-all" = "Synchroniser tout";
 
 // MARK: - PlaceHolders
 "connect-to" = "Connexion à";
@@ -43,11 +49,13 @@
 "username-or-email" = "Nom d'utilisateur ou e-mail";
 "password" = "Mot de passe";
 "content-services-url" = "URL de Content Services";
+"description" = "Description";
+"name" = "Nom";
 
 // MARK: - Labels
 "transport-protocol" = "Protocole de transport";
 "https" = "HTTPS";
-"alfresco-content-settings" = "Réglages Alfresco Content Services";
+"alfresco-content-settings" = "Paramètres Alfresco Content Services";
 "authentication" = "Authentification";
 "info-connect-to" = "Connecté à : ";
 "info-aims-connect-to"  = "Connexion à : ";
@@ -56,19 +64,25 @@
 "how-to-connect-to-alfresco" = "Comment se connecter à Alfresco";
 "connecting" = "Connexion en cours";
 "signing-in" = "Connexion en cours";
-"session-expired" = "Session expirée";
-"sesssion-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
+"syncing" = "Synchronisation...";
+"sync-failed" = "La synchronisation a échoué";
 
-// MARK: - Screen Titles
-"settings" = "Réglages";
-"recent" = "Récent";
+// MARK: - Tabs Titles
+"settings" = "Paramètres";
+"recent" = "Récents";
 "favorites" = "Favoris";
 "browse" = "Parcourir";
+"offline" = "Hors ligne";
 
 // MARK: - Help Textviews
-"help-service-url-hint" = "<p><font size=\"5\">URL d'Alfresco Content Services</font></p><p>Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.</p><p><font size=\"5\">Connexion avec SSO</font></p><p>Vous pouvez saisir l'URL de votre service de gestion d'identité Alfresco pour vous authentifier auprès du fournisseur d'identité de votre société.</p><p>*Vous devrez ensuite entrer l'URL de votre instance d'Alfresco Content Services</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
-"help-advanced-settings-hint" = "<p><font size=\"6\">Authentification Alfresco</font></p><p>Si vous n'utilisez pas les paramètres SSO par défaut, définissez les paramètres ici.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
-"help-sso-hint" = "<p><font size=\"6\">Emplacement de l'entrepôt de contenu</font></p><p>URL d'Alfresco Content Services :</p><p>Il s'agit de l'URL de votre instance d'Alfresco Content Services.</p><p>Pour obtenir de l'aide, contactez votre administrateur Alfresco.</p>";
+"help-connect-title-section1" = "URL d'Alfresco Content Services";
+"help-connect-section1-paragraph" = "Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.";
+"help-connect-title-section2" = "Connexion avec SSO";
+"help-connect-section2-paragraph" = "Vous pouvez saisir l'URL de votre service de gestion d'identité Alfresco pour vous authentifier auprès du fournisseur d'identité de votre société.\nVous devrez ensuite entrer l'URL de votre instance d'Alfresco Content Services\n\nPour obtenir de l'aide, contactez votre administrateur Alfresco.";
+"help-advanced-settings-title-section1" = "Authentification Alfresco";
+"help-advanced-settings-section1-paragraph" = "Si vous n'utilisez pas les paramètres SSO par défaut, définissez les paramètres ici.\n\nPour obtenir de l'aide, contactez votre administrateur Alfresco.";
+"help-sso-title-section1" = "Emplacement de l'entrepôt de contenu";
+"help-sso-section1-paragraph" = "URL d'Alfresco Content Services :\n\nIl s'agit de l'URL de votre instance d'Alfresco Content Services.\n\nPour obtenir de l'aide, contactez votre administrateur Alfresco.";
 
 // MARK: - Snackbar errors
 "error-login-generic" = "Un problème est survenu. Pour obtenir de l'aide, contactez votre administrateur Alfresco. Code d'erreur : %d";
@@ -77,9 +91,13 @@
 "error-login-wrong-credential" = "Nom d'utilisateur ou mot de passe incorrect.";
 "error-logjn-no-longer-authenticated" = "Vous n'êtes plus authentifié, veuillez vous reconnecter.";
 "error-something-went-wrong" = "Un problème est survenu !";
-"warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux réglages avancés.";
+"warning-login-path-empty" = "Le chemin ne peut pas être vide. Accédez aux paramètres avancés.";
 "error-unknown" = "Une erreur inconnue s'est produite.";
 "error-timeout" = "Cette opération est plus longue que prévu. Veuillez patienter quelques instants.";
+"error-folder-same-name" = "Un dossier du même nom existe déjà. Utilisez un autre nom.";
+"error-node-name-special-characters" = "Le nom ne peut pas contenir les caractères suivants : %@";
+"error-folder-name-end-period" = "Le nom de dossier ne peut pas se terminer par un point %@";
+"error-folder-name-contain-only-spaces" = "Le nom de dossier ne peut pas contenir uniquement des espaces";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
@@ -88,6 +106,9 @@
 "approved-moved-trash" = "%@ a été placé dans la corbeille";
 "approved-restored" = "%@ a été restauré";
 "approved-deleted" = "%@ a été supprimé";
+"approved-created" = "%@ a été créé";
+"approved-mark-offline" = "%@ sera disponible hors ligne.";
+"approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -97,6 +118,9 @@
 "failed-profile-info" = "La récupération des informations de profil de l'utilisateur actuel a échoué.";
 "app-version" = "Version de l'application %@-%@";
 "sign-out-confirmation" = "Voulez-vous vraiment vous déconnecter ?";
+"sync-data-title" = "Mettre à jour les fichiers hors ligne en utilisant";
+"sync-wifi-cellular-data" = "une connexion Wi-Fi et des données celullaires";
+"sync-only-wifi" = "une connexion Wi-Fi uniquement";
 
 // MARK: - Search
 "searching" = "Recherche en cours...";
@@ -139,24 +163,37 @@
 "action-menu-download" = "Ouvrir avec";
 "action-menu-restore" = "Restaurer";
 "action-menu-permanently-delete" = "Supprimer définitivement";
+"action-menu-create-ms-word" = "Document Word";
+"action-menu-create-ms-excel" = "Feuille de calcul Excel";
+"action-menu-create-ms-powerpoint" = "Présentation PowerPoint";
+"action-menu-create-folder" = "Nouveau dossier";
+"action-menu-mark-offline" = "Rendre disponible hors ligne";
+"action-menu-remove-offline" = "Supprimer hors ligne";
 
-// MARK: - Node Actions Dialog
+// MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
 "dialog-delete-message" = "%@ sera supprimé définitivement.";
 "dialog-download-message" = "Téléchargement de '%@' en cours";
+"dialog-upload-message" = "Importation de '%@' en cours";
+"dialog-session-expired-title" = "La session a expiré.";
+"dialog-session-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
+"dialog-override-sync-cellular-data-title" = "Utiliser des données cellulaires ?";
+"dialog-override-sync-cellular-data-message" = "Vos paramètres seront remplacés et des données cellulaires seront utilisées pour le téléchargement. Sinon, le téléchargement aura lieu plus tard lorsque la connexion Wi-Fi sera disponible.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
-"empty-recent-description" = "Les fichiers consultés et\n modifiés apparaîtront ici.";
+"empty-recent-description" = "Les fichiers consultés et modifiés apparaîtront ici.";
 "empty-favorites-files-folders-title" = "Aucun fichier ou dossier favori";
-"empty-favorites-libraries-title" = "Pas de bibliothèques favorites";
-"empty-favorites-description" = "Il semble que vous n'ayez\n rien ajouté.";
+"empty-favorites-libraries-title" = "Aucune bibliothèque favorite";
+"empty-favorites-description" = "Il semble que vous n'ayez rien ajouté.";
 "empty-folder-title" = "Le dossier est vide";
-"empty-folder-description" = "Il semble que cet emplacement\n ne contienne aucun élément.";
+"empty-folder-description" = "Il semble que cet emplacement ne contienne aucun élément.";
 "empty-search-title" = "Oups !";
-"empty-search-description" = "Nous n'avons pas trouvé ce que\n vous recherchez.";
+"empty-search-description" = "Nous n'avons pas trouvé ce que vous recherchez.";
+"empty-offline-title" = "Aucun contenu hors ligne";
+"empty-offline-description" = "Le contenu disponible hors ligne s'affichera ici.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
 "privacy-photos-description" = "Pour enregistrer des images ou des vidéos sur votre appareil, Mobile Workspace a besoin d'accéder à vos photos.";
-"privacy-button" = "Passer en revue les réglages de confidentialité";
+"privacy-button" = "Passer en revue les paramètres de confidentialité";

@@ -40,6 +40,14 @@ steps:
     path: Pods
   displayName: Cache Pods
 
+- task: ios-bundle-version@1
+  inputs:
+    sourcePath: 'ContentApp/Supporting Files/Info.plist'
+    versionCodeOption: 'buildid'
+    versionCode: '$(build_version)'
+    versionName: '1.0.0'
+    printFile: true
+
 - task: CmdLine@2
   displayName: Installing pods
   inputs:
@@ -65,13 +73,6 @@ steps:
   name: prov_profile
   inputs:
     secureFile: '$(provisioning_profile)'
-
-- task: ios-bundle-version@1
-  inputs:
-    sourcePath: 'ContentApp/Supporting Files/Info.plist'
-    versionCodeOption: 'buildid'
-    versionCode: '$(Build.BuildId)'
-    printFile: true
 
 - task: CmdLine@2
   displayName: 'Build and Pilot'

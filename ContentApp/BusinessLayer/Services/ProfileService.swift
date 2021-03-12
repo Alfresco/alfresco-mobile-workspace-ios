@@ -25,31 +25,31 @@ class ProfileService {
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
     static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        if let avatar = DiskServices.getAvatar() {
-            return avatar
-        }
-        return UIImage(named: "account-circle")
-    }
+        let defaultImage = UIImage(named: "ic-account-circle")
+        guard let accountIdentifier = accountService?.activeAccount?.identifier
+        else { return defaultImage }
 
-    static func getPersonalFilesID() -> String? {
-        if let personalFilesId = UserProfile.getPersonalFilesID() {
-            return personalFilesId
+        if let avatar = DiskService.getAvatar(for: accountIdentifier) {
+            return avatar
+        } else {
+            featchAvatar(completionHandler: completionHandler)
         }
-        return nil
+
+        return defaultImage
     }
 
     static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
+            guard let accountIdentifier = self.accountService?.activeAccount?.identifier else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getAvatarImage(personId: identifier) { (data, error) in
+            PeopleAPI.getAvatarImage(personId: accountIdentifier) { (data, error) in
                 if let error = error {
                     AlfrescoLog.error(error)
                 } else if let data = data {
                     if let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             completionHandler(image)
-                            DiskServices.saveAvatar(image)
+                            DiskService.saveAvatar(image, for: accountIdentifier)
                         }
                     }
                 }
@@ -68,15 +68,13 @@ class ProfileService {
     }
 
     static func featchPersonalFilesID() {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            NodesAPI.getNode(nodeId: kAPIPathMy) { (entry, error) in
-                if let node = entry {
-                    UserProfile.persistPersonalFilesID(nodeID: node.entry._id)
-                } else if let error = error {
-                    AlfrescoLog.error(error)
-                }
+        let nodeOperations = NodeOperations(accountService: accountService)
+        nodeOperations.fetchNodeDetails(for: APIConstants.my) { (result, error) in
+            if let node = result {
+                UserProfile.personalFilesID = node.entry._id
+            } else if let error = error {
+                AlfrescoLog.error(error)
             }
-        })
+        }
     }
 }

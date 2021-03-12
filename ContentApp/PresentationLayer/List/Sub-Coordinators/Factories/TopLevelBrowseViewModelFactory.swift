@@ -36,25 +36,17 @@ class TopLevelBrowseViewModelFactory {
     }
 
     func listViewModel(from type: BrowseType?) -> ListViewModelProtocol {
-        let accountService = coordinatorServices?.accountService
-        let eventBusService = coordinatorServices?.eventBusService
-
         switch type {
         case .personalFiles:
-            return personalFilesViewModel(with: accountService,
-                                          eventBusService: eventBusService)
+            return personalFilesViewModel()
         case .myLibraries:
-            return myLibrariesViewModel(with: accountService,
-                                        eventBusService: eventBusService)
+            return myLibrariesViewModel()
         case .shared:
-            return sharedViewModel(with: accountService,
-                                   eventBusService: eventBusService)
+            return sharedViewModel()
         case .trash:
-            return trashViewModel(with: accountService,
-                                  eventBusService: eventBusService)
+            return trashViewModel()
         default:
-            return defaultViewModel(with: accountService,
-                                    eventBusService: eventBusService)
+            return defaultViewModel()
         }
     }
 
@@ -66,7 +58,7 @@ class TopLevelBrowseViewModelFactory {
 
         switch type {
         case .personalFiles:
-            if let nodeID = UserProfile.getPersonalFilesID() {
+            if let nodeID = UserProfile.personalFilesID {
                 searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + (title ?? ""),
                                             type: .node,
                                             selected: true,
@@ -94,22 +86,26 @@ class TopLevelBrowseViewModelFactory {
     func resultsViewModel() -> ResultsViewModel {
         let eventBusService = coordinatorServices?.eventBusService
 
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
         eventBusService?.register(observer: resultViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return resultViewModel
     }
 
     // MARK: - Private builders
 
-    private func personalFilesViewModel(with accountService: AccountService?,
-                                        eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let viewModel = FolderDrillViewModel(with: accountService,
+    private func personalFilesViewModel() -> ListViewModelProtocol {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        let viewModel = FolderDrillViewModel(with: coordinatorServices,
                                              listRequest: nil)
         eventBusService?.register(observer: viewModel,
                                   for: FavouriteEvent.self,
@@ -117,12 +113,16 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 
-    private func myLibrariesViewModel(with accountService: AccountService?,
-                                      eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let viewModel = MyLibrariesViewModel(with: accountService,
+    private func myLibrariesViewModel() -> ListViewModelProtocol {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        let viewModel = MyLibrariesViewModel(with: coordinatorServices,
                                              listRequest: nil)
         eventBusService?.register(observer: viewModel,
                                   for: FavouriteEvent.self,
@@ -133,9 +133,10 @@ class TopLevelBrowseViewModelFactory {
         return viewModel
     }
 
-    private func sharedViewModel(with accountService: AccountService?,
-                                 eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let viewModel = SharedViewModel(with: accountService,
+    private func sharedViewModel() -> ListViewModelProtocol {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        let viewModel = SharedViewModel(with: coordinatorServices,
                                         listRequest: nil)
         eventBusService?.register(observer: viewModel,
                                   for: FavouriteEvent.self,
@@ -143,12 +144,16 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 
-    private func trashViewModel(with accountService: AccountService?,
-                                eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let viewModel = TrashViewModel(with: accountService,
+    private func trashViewModel() -> ListViewModelProtocol {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        let viewModel = TrashViewModel(with: coordinatorServices,
                               listRequest: nil)
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
@@ -156,9 +161,10 @@ class TopLevelBrowseViewModelFactory {
         return viewModel
     }
 
-    private func defaultViewModel(with accountService: AccountService?,
-                                  eventBusService: EventBusService?) -> ListViewModelProtocol {
-        let viewModel = FolderDrillViewModel(with: accountService,
+    private func defaultViewModel() -> ListViewModelProtocol {
+        let eventBusService = coordinatorServices?.eventBusService
+
+        let viewModel = FolderDrillViewModel(with: coordinatorServices,
                                              listRequest: nil)
         eventBusService?.register(observer: viewModel,
                                   for: FavouriteEvent.self,
@@ -166,6 +172,9 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: viewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 }

@@ -33,7 +33,7 @@ class DialogsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
     private func pdfPasswordDialog(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
 
-        containerScheme.colorScheme.primaryColor = theme.primaryVariantColor
+        containerScheme.colorScheme.primaryColor = theme.primaryVariantT1Color
         containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 
         return containerScheme
@@ -41,7 +41,7 @@ class DialogsThemingServiceWorker: MaterialDesignThemingServiceWorkerProtocol {
 
     private func dialogButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryColor
+        containerScheme.colorScheme.primaryColor = theme.primaryT1Color
         containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
         containerScheme.typographyScheme.button = theme.buttonTextStyle.font
 

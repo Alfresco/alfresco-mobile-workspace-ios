@@ -19,10 +19,11 @@
 import Foundation
 import UIKit
 
-enum SettingsItemType {
-    case account
-    case theme
-    case label
+enum SettingsItemType: String {
+    case account = "ic-account-circle"
+    case label = "label"
+    case theme = "ic-theme"
+    case dataPlan = "ic-sync-plan-data"
 }
 
 class SettingsItem: Equatable {
@@ -31,11 +32,18 @@ class SettingsItem: Equatable {
     var subtitle: String
     var type: SettingsItemType
 
-    init(type: SettingsItemType, title: String, subtitle: String, icon: UIImage?) {
-        self.icon = icon
+    init(type: SettingsItemType,
+         title: String,
+         subtitle: String,
+         icon: UIImage? = nil) {
+
         self.title = title
         self.subtitle = subtitle
         self.type = type
+        self.icon = icon
+        if icon == nil {
+            self.icon = UIImage(named: type.rawValue)
+        }
     }
 
     static func == (lhs: SettingsItem, rhs: SettingsItem) -> Bool {

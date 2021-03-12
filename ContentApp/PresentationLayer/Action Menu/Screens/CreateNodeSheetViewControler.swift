@@ -45,7 +45,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
         descriptionTextArea.maximumNumberOfVisibleRows = 2
         uploadButton.isEnabled = false
-        view.layer.cornerRadius = dialogCornerRadius
+        view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
     }
 
@@ -85,8 +85,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
-        uploadButton.setTitle(LocalizationConstants.Buttons.create, for: .normal)
-        cancelButton.setTitle(LocalizationConstants.Buttons.cancel, for: .normal)
+        uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
         titleCreate.text = createNodeViewModel?.createAction()
@@ -103,7 +103,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
         uploadButton.applyTextTheme(withScheme: buttonScheme)
         uploadButton.isUppercaseTitle = false
-        uploadButton.setTitleColor(currentTheme.onSurfaceColor.withAlphaComponent(0.4),
+        uploadButton.setTitleColor(currentTheme.onSurface30Color,
                                    for: .disabled)
 
         cancelButton.applyTextTheme(withScheme: buttonScheme)
@@ -152,7 +152,7 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     func enableUploadButton(for text: String?) {
         if text?.hasSpecialCharacters() == true {
             let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
-                                 kSpecialCharacters)
+                                 String.specialCharacters())
             applyErrorOnTextField(with: message)
         } else if text != "" {
             disableErrorOnTextField()

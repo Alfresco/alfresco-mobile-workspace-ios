@@ -33,18 +33,22 @@ extension UIViewController {
     }
 
     func addSettingsButton(action: Selector, target: Any?) {
+        let settingsButtonAspectRatio: CGFloat = 30.0
         settingsButton = UIButton(type: .custom)
-        settingsButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
+        settingsButton.frame = CGRect(x: 0.0, y: 0.0,
+                                      width: settingsButtonAspectRatio,
+                                      height: settingsButtonAspectRatio)
         addAvatarInSettingsButton()
         settingsButton.imageView?.contentMode = .scaleAspectFill
-        settingsButton.layer.cornerRadius = accountSettingsButtonHeight / 2
+        settingsButton.imageView?.layer.cornerRadius = settingsButtonAspectRatio / 2
         settingsButton.layer.masksToBounds = true
+        settingsButton.clipsToBounds = false
         settingsButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
-        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
         currWidth?.isActive = true
-        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
         currHeight?.isActive = true
 
         self.navigationItem.leftBarButtonItem = settingsBarButtonItem

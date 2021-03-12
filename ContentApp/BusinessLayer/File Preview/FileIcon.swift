@@ -198,11 +198,13 @@ class FileIcon {
         guard let listNode = listNode else {
             return UIImage(named: IconType.generic.rawValue)
         }
+
         if listNode.nodeType == .fileLink || listNode.nodeType == .folderLink {
             if let iconType = self.map[listNode.nodeType.rawValue] {
                 return UIImage(named: iconType.rawValue)
             }
         }
+
         guard let mimetype = listNode.mimeType else {
             return UIImage(named: IconType.generic.rawValue)
         }
@@ -218,6 +220,11 @@ class FileIcon {
         } else if mimetype.hasPrefix("text/") {
             return UIImage(named: IconType.document.rawValue)
         } else {
+            // If no matching happened based on mime type information is possible that we're
+            // dealing with a custom type
+            if listNode.isFolder {
+                return UIImage(named: IconType.folder.rawValue)
+            }
             print(mimetype)
             return UIImage(named: IconType.generic.rawValue)
         }

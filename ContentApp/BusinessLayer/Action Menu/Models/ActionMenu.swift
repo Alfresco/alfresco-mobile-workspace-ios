@@ -39,6 +39,32 @@ class ActionMenu {
 }
 
 enum ActionMenuType: String {
+
+    var isGenericActions: Bool {
+        return [.more].contains(self)
+    }
+
+    var isFavoriteActions: Bool {
+        return [.addFavorite, .removeFavorite].contains(self)
+    }
+
+    var isMoveActions: Bool {
+        return [.moveTrash, .restore, .permanentlyDelete].contains(self)
+    }
+
+    var isDownloadActions: Bool {
+        return [.download, .markOffline, .removeOffline].contains(self)
+    }
+
+    var isCreateActions: Bool {
+        return [.createMSWord, .createMSExcel, .createMSPowerPoint,
+                .createFolder].contains(self)
+    }
+
+    var isMoreAction: Bool {
+        return [.more].contains(self)
+    }
+
     // MARK: - Generic
     case placeholder = "ic-placeholder"
     case node = "ic-node"
@@ -47,10 +73,14 @@ enum ActionMenuType: String {
     // MARK: - Nodes
     case addFavorite = "ic-action-outline-favorite"
     case removeFavorite = "ic-action-fill-favorite"
+
     case moveTrash = "ic-action-delete"
-    case download = "ic-action-download"
     case restore = "ic-restore"
     case permanentlyDelete = "ic-action-delete-forever"
+
+    case download = "ic-action-download"
+    case markOffline = "ic-action-outline-offline"
+    case removeOffline = "ic-action-fill-offline"
 
     // MARK: - Create
     case createFolder = "ic-action-create-folder"

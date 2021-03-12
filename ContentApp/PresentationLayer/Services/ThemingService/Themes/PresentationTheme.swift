@@ -34,14 +34,28 @@ protocol PresentationTheme {
     var overlineTextStyle: TextStyle { get }
 
     // COLORS
-    var primaryVariantColor: UIColor { get }
-    var primaryColor: UIColor { get }
-    var onPrimaryColor: UIColor { get }
+
     var surfaceColor: UIColor { get }
     var onSurfaceColor: UIColor { get }
+    var onSurface60Color: UIColor { get }
+    var onSurface30Color: UIColor { get }
+    var onSurface15Color: UIColor { get }
+    var onSurface5Color: UIColor { get }
     var backgroundColor: UIColor { get }
     var onBackgroundColor: UIColor { get }
     var errorColor: UIColor { get }
     var errorOnColor: UIColor { get }
+    var onPrimaryColor: UIColor { get }
+    var onPrimaryInvertedColor: UIColor { get }
+
+    var primaryVariantT1Color: UIColor { get }
+    var primaryColorVariant: UIColor { get }
+    var primaryT1Color: UIColor { get }
+    var primary30T1Color: UIColor { get }
+    var primary15T1Color: UIColor { get }
+
+    var primaryVariantT2Color: UIColor { get }
+    var primaryT2Color: UIColor { get }
+
     var dividerColor: UIColor { get }
 }

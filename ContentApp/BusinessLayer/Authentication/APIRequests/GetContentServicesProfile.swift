@@ -24,7 +24,7 @@ struct GetContentServicesProfile: APIRequest {
     let authenticationProvider: BasicAuthenticationProvider
 
     var path: String {
-        return kAPIPathGetProfile
+        return APIConstants.Path.getProfile
     }
 
     var method: HttpMethod {

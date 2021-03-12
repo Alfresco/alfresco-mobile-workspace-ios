@@ -24,14 +24,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     private var applicationCoordinator: ApplicationCoordinator?
     var orientationLock = UIInterfaceOrientationMask.all
+    var enterInBackgroundTimestamp: TimeInterval?
+    var enterInForegroundTimestamp: TimeInterval?
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let applicationCoordinator = ApplicationCoordinator(window: window)
 
         self.window = window
         self.applicationCoordinator = applicationCoordinator
-        if let themingService = applicationCoordinator.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
+        let repository = applicationCoordinator.repository
+
+        if let themingService = repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService {
             window.backgroundColor = themingService.activeTheme?.surfaceColor
         }
 
@@ -39,17 +44,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         FirebaseApp.configure()
 
+        let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+        connectivityService?.startNetworkReachabilityObserver()
+
         return true
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        let themingService = applicationCoordinator?.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        let repository = applicationCoordinator?.repository
+
+        let themingService = repository?.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
-        let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
-        accountService?.activeAccount?.createTicket()
+
+        let accountService = repository?.service(of: AccountService.identifier) as? AccountService
+        accountService?.createTicketForCurrentAccount()
+
+        let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
+
+        enterInForegroundTimestamp = Date().timeIntervalSince1970
+
+        if let enterInForegroundTimestamp = self.enterInForegroundTimestamp,
+           let enterInBackgroundTimestamp = self.enterInBackgroundTimestamp {
+
+            let interval = enterInForegroundTimestamp - enterInBackgroundTimestamp
+            syncTriggerService?.triggerSync(for: .applicationDidFinishedLaunching,
+                                            in: interval)
+
+            self.enterInForegroundTimestamp = nil
+            self.enterInForegroundTimestamp = nil
+        }
     }
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        enterInBackgroundTimestamp = Date().timeIntervalSince1970
+    }
+
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let accountService = applicationCoordinator?.repository.service(of: AccountService.identifier) as? AccountService
         if let aimsAccount = accountService?.activeAccount as? AIMSAccount {
             if let session = aimsAccount.session.session {
@@ -60,7 +92,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
 
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+    func application(_ application: UIApplication,
+                     supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
     }
 }

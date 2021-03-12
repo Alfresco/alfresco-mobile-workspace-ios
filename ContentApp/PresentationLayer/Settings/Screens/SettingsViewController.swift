@@ -69,8 +69,7 @@ class SettingsViewController: SystemThemableViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor =
-            currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
@@ -102,7 +101,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
             let identifier = String(describing: SettingsAccountTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsAccountTableViewCell
-        case .theme:
+        case .theme, .dataPlan:
             let identifier = String(describing: SettingsItemTableViewCell.self)
             cell = tableView.dequeueReusableCell(withIdentifier: identifier,
                                                  for: indexPath) as? SettingsItemTableViewCell
@@ -127,6 +126,8 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         switch item.type {
         case .theme:
             settingsScreenCoordinatorDelegate?.showThemesModeScreen()
+        case .dataPlan:
+            settingsScreenCoordinatorDelegate?.showDataPlanDialog()
         default: break
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -150,6 +151,7 @@ extension SettingsViewController: SettingsViewModelDelegate {
     }
 
     func didUpdateDataSource() {
+        applyComponentsThemes()
         tableView.reloadData()
     }
 }
@@ -157,13 +159,6 @@ extension SettingsViewController: SettingsViewModelDelegate {
 extension SettingsViewController: SettingsTableViewCellDelegate {
     func signOutButtonTapped(for item: SettingsItem) {
         self.viewModel?.performLogOutForCurrentAccount(in: self)
-    }
-}
-
-extension SettingsViewController: ThemesModeScrenDelegate {
-    func changeThemeMode() {
-        applyComponentsThemes()
-        viewModel?.reloadDataSource()
     }
 }
 

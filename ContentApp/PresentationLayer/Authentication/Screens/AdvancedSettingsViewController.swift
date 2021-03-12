@@ -61,6 +61,9 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         }
     }
 
+    let unsecuredDefaultPort = "80"
+    let securedDefaultPort = "443"
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -97,7 +100,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
             httpsLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         }
         portTextField.text =
-            (httpsSwitch.isOn) ? kDefaultLoginSecuredPort : kDefaultLoginUnsecuredPort
+            (httpsSwitch.isOn) ? securedDefaultPort : unsecuredDefaultPort
         enableSaveButton = (pathTextField.text != "")
     }
 
@@ -140,15 +143,15 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         clientIDTextField.label.text = LocalizationConstants.TextFieldPlaceholders.clientID
 
         needHelpButton.setTitle(LocalizationConstants.Buttons.needHelp, for: .normal)
-        saveButton.setTitle(LocalizationConstants.Buttons.save, for: .normal)
+        saveButton.setTitle(LocalizationConstants.General.save, for: .normal)
     }
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard
             let loginTextFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
-            let loginButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginButton),
-            let advancedSettingsButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginAdvancedSettingsButton),
+            let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton),
+            let smallButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginSmallButton),
             let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         portTextField.applyTheme(withScheme: loginTextFieldScheme)
@@ -168,19 +171,19 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         copyrightLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
         copyrightLabel.textAlignment = .center
 
-        saveButton.applyContainedTheme(withScheme: loginButtonScheme)
-        saveButton.setBackgroundColor(currentTheme.onSurfaceColor.withAlphaComponent(0.05),
+        saveButton.applyContainedTheme(withScheme: bigButtonScheme)
+        saveButton.setBackgroundColor(currentTheme.onSurface5Color,
                                       for: .disabled)
         saveButton.isUppercaseTitle = false
         saveButton.setShadowColor(.clear, for: .normal)
 
         resetToDefaultPadButton.backgroundColor = .clear
-        resetToDefaultPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        resetToDefaultButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        resetToDefaultPadButton.tintColor = currentTheme.onSurface60Color
+        resetToDefaultButton.tintColor = currentTheme.onSurface60Color
 
-        backPadButton.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        backPadButton.tintColor = currentTheme.onSurface60Color
 
-        needHelpButton.applyTextTheme(withScheme: advancedSettingsButtonScheme)
+        needHelpButton.applyTextTheme(withScheme: smallButtonScheme)
         needHelpButton.isUppercaseTitle = false
 
         view.backgroundColor = currentTheme.surfaceColor

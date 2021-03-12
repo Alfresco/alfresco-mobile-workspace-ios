@@ -26,14 +26,13 @@ class RecentViewModelFactory {
     var coordinatorServices: CoordinatorServices?
 
     func recentDataSource() -> RecentDataSource {
-        let accountService = coordinatorServices?.accountService
         let eventBusService = coordinatorServices?.eventBusService
 
-        let recentViewModel = RecentViewModel(with: accountService,
+        let recentViewModel = RecentViewModel(with: coordinatorServices,
                                             listRequest: nil)
-        let resultViewModel = ResultsViewModel()
+        let resultViewModel = ResultsViewModel(with: coordinatorServices)
         let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: accountService)
+            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel
 
@@ -50,6 +49,13 @@ class RecentViewModelFactory {
         eventBusService?.register(observer: recentViewModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
+
+        eventBusService?.register(observer: resultViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: recentViewModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return (recentViewModel, resultViewModel, globalSearchViewModel)
     }

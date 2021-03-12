@@ -22,6 +22,7 @@ class BrowseViewModel {
     var list: [[BrowseNode]]
 
     init() {
-        list = [[BrowseNode(type: .personalFiles), BrowseNode(type: .myLibraries)], [BrowseNode(type: .shared), BrowseNode(type: .trash)]]
+        list = [[BrowseNode(type: .personalFiles), BrowseNode(type: .myLibraries)],
+                [BrowseNode(type: .shared), BrowseNode(type: .trash)]]
     }
 }

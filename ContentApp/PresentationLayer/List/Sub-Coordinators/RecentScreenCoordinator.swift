@@ -18,20 +18,19 @@
 
 import UIKit
 
-class RecentScreenCoordinator: ListCoordinatorProtocol {
+class RecentScreenCoordinator: PresentingCoordinator,
+                               ListCoordinatorProtocol {
 
     private let presenter: TabBarMainViewController
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
-    private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
-    private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
     }
 
-    func start() {
+    override func start() {
         let recentViewModelFactory = RecentViewModelFactory()
         recentViewModelFactory.coordinatorServices = coordinatorServices
 
@@ -63,29 +62,27 @@ class RecentScreenCoordinator: ListCoordinatorProtocol {
 }
 
 extension RecentScreenCoordinator: ListItemActionDelegate {
-    func showPreview(from node: ListNode) {
+    func showPreview(for node: ListNode,
+                     from dataSource: ListComponentDataSourceProtocol) {
         if let navigationViewController = self.navigationViewController {
-            switch node.kind {
-            case .folder, .site:
-                let folderDrillDownCoordinator =
-                    FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                    listNode: node)
-                folderDrillDownCoordinator.start()
-                self.folderDrillDownCoordinator = folderDrillDownCoordinator
-            case .file:
-                let filePreviewCoordinator =
-                    FilePreviewScreenCoordinator(with: navigationViewController,
-                                                 listNode: node)
-                filePreviewCoordinator.start()
-                self.filePreviewCoordinator = filePreviewCoordinator
+            if node.isAFolderType() || node.nodeType == .site {
+                startFolderCoordinator(for: node,
+                                       presenter: navigationViewController)
+            } else if node.isAFileType() {
+                startFileCoordinator(for: node,
+                                     presenter: navigationViewController)
+            } else {
+                AlfrescoLog.error("Unable to show preview for unknown node type")
             }
         }
     }
 
     func showActionSheetForListItem(for node: ListNode,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel = ActionMenuViewModel(with: accountService, listNode: node)
+            let actionMenuViewModel = ActionMenuViewModel(node: node,
+                                                          coordinatorServices: coordinatorServices)
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
@@ -98,9 +95,11 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     }
 
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
+        // Do nothing
     }
 
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?) {
+        // Do nothing
     }
 }

@@ -35,7 +35,7 @@ extension FilePreviewProtocol {
         get {
             return filePreviewDelegate
         }
-        set {}
+        set {} // swiftlint:disable:this unused_setter_value
     }
 
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {}

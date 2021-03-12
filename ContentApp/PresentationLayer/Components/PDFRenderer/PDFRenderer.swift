@@ -38,7 +38,7 @@ class PDFRenderer: UIView {
     private var pageViewOverlay: UIView?
     private var pageCountLabel: UILabel?
 
-    // MARK: - Public interface
+    // MARK: - Init
 
     override init(frame: CGRect) {
          super.init(frame: frame)
@@ -50,10 +50,39 @@ class PDFRenderer: UIView {
 
     convenience init(with frame: CGRect, pdfURL: URL) {
         self.init(frame: frame)
-
-        self.pdfURL = pdfURL
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.pdfURL = pdfURL
+        if self.isLocalURL() {
+            self.loadPDFUsingNativeRenderer()
+        } else {
+            self.loadPDFUsingWebKit()
+        }
+    }
 
+    // MARK: - Public Interface
+
+    func enableLogging() {
+        webView?.configuration.preferences.setValue(true,
+                                                    forKey: "developerExtrasEnabled")
+    }
+
+    func unlockPDF(password: String) {
+        pdfPassword = password
+        webView?.evaluateJavaScript("PDFViewerApplication.onPassword(\"\(password)\")",
+                                    completionHandler: { (_, error) in
+            AlfrescoLog.error("Unexpected error while unlocking PDF document")
+        })
+    }
+
+    // MARK: - Private interface
+
+    private func isLocalURL() -> Bool {
+        guard let pdfURL = self.pdfURL else { return false }
+        return pdfURL.absoluteString.hasPrefix("file:///")
+    }
+
+    private func loadPDFUsingWebKit() {
+        guard let pdfURL = self.pdfURL else { return }
         let config = WKWebViewConfiguration()
 
         let contentController = WKUserContentController()
@@ -75,45 +104,13 @@ class PDFRenderer: UIView {
         self.addSubview(webView)
 
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 0),
-            webView.leftAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leftAnchor, constant: 0),
-            webView.rightAnchor.constraint(equalTo: self.safeAreaLayoutGuide.rightAnchor, constant: 0),
-            webView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            webView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 0),
+            webView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: 0),
+            webView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
-
-        loadPDF(at: pdfURL)
+        loadPDF()
     }
-
-    func enableLogging() {
-        webView?.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
-    }
-
-    func loadPDF(at url: URL) {
-        self.pdfURL = url
-        guard let webView = self.webView else { return }
-
-        let pdfjsLibraryPath = Bundle.main.path(forResource: "viewer-inlined.html", ofType: nil) ?? ""
-        do {
-            let libraryData = try Data(contentsOf: URL(fileURLWithPath: pdfjsLibraryPath))
-            let libraryDataEncodedString = String(decoding: libraryData, as: UTF8.self)
-
-            if let urlScheme = url.scheme, let urlHost = url.host {
-                let baseURLDomainString = urlScheme + "://" + urlHost
-                webView.loadHTMLString(libraryDataEncodedString, baseURL: URL(string: baseURLDomainString))
-            }
-        } catch {
-            AlfrescoLog.error(("Unexpected error while loading PDF.js library: \(error)."))
-        }
-    }
-
-    func unlockPDF(password: String) {
-        pdfPassword = password
-        webView?.evaluateJavaScript("PDFViewerApplication.onPassword(\"\(password)\")", completionHandler: { (_, error) in
-            AlfrescoLog.error("Unexpected error while unlocking PDF document")
-        })
-    }
-
-    // MARK: - Private interface
 
     private func addPageCountView() {
         let pageViewOverlay = UIView()
@@ -154,6 +151,27 @@ class PDFRenderer: UIView {
             UIView.animate(withDuration: 0.25, delay: 2, animations: {
                 self.pageViewOverlay?.alpha = 0
             })
+        }
+    }
+
+    // MARK: - Load PDF
+
+    private func loadPDF() {
+        guard let url = self.pdfURL, let webView = self.webView else { return }
+
+        let pdfjsLibraryPath = Bundle.main.path(forResource: "viewer-inlined.html",
+                                                ofType: nil) ?? ""
+        do {
+            let libraryData = try Data(contentsOf: URL(fileURLWithPath: pdfjsLibraryPath))
+            let libraryDataEncodedString = String(decoding: libraryData, as: UTF8.self)
+
+            if let urlScheme = url.scheme, let urlHost = url.host {
+                let baseURLDomainString = urlScheme + "://" + urlHost
+                webView.loadHTMLString(libraryDataEncodedString,
+                                       baseURL: URL(string: baseURLDomainString))
+            }
+        } catch {
+            AlfrescoLog.error(("Unexpected error while loading PDF.js library: \(error)."))
         }
     }
 
@@ -204,7 +222,8 @@ class PDFRenderer: UIView {
 }
 
 extension PDFRenderer: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage) {
         if message.name == "pdfAction" {
             if (message.body as? String) == "showPasswordPrompt" {
                 if let url = pdfURL {
@@ -222,7 +241,9 @@ extension PDFRenderer: WKScriptMessageHandler {
 }
 
 extension PDFRenderer: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+    func webView(_ webView: WKWebView,
+                 decidePolicyFor navigationAction: WKNavigationAction,
+                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
@@ -238,7 +259,8 @@ extension PDFRenderer: WKNavigationDelegate {
     }
 
     @objc private func handlePageChange(notification: Notification) {
-        if let currentPage = pdfView?.currentPage?.pageRef?.pageNumber, let totalNoOfPages = pdfView?.document?.pageCount {
+        if let currentPage = pdfView?.currentPage?.pageRef?.pageNumber,
+           let totalNoOfPages = pdfView?.document?.pageCount {
             showPageCountView()
             pageCountLabel?.text = String(format: "%d of %d", currentPage, totalNoOfPages)
         }

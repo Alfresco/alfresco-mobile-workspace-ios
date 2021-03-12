@@ -17,8 +17,8 @@
 //
 
 import UIKit
-import MaterialComponents.MaterialTabs
-import MaterialComponents.MaterialTabs_Theming
+import MaterialComponents.MaterialTabs_TabBarView
+import MaterialComponents.MaterialTabs_TabBarViewTheming
 import MaterialComponents.MaterialTypographyScheme
 import AlfrescoContent
 
@@ -30,7 +30,7 @@ class FavoritesViewController: SystemSearchViewController {
     var librariesListViewModel: ListViewModelProtocol?
 
     lazy var scrollView: UIScrollView = setupScrollView()
-    lazy var tabBar: MDCTabBar = setupTabBarView()
+    lazy var tabBar: MDCTabBarView = setupTabBarView()
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
@@ -62,6 +62,7 @@ class FavoritesViewController: SystemSearchViewController {
         ])
 
         setupScrollingContent()
+        tabBar.selectedItem = tabBar.items.first
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -125,26 +126,20 @@ class FavoritesViewController: SystemSearchViewController {
               let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         tabBar.applySurfaceTheme(withScheme: scheme)
         tabBar.backgroundColor = currentTheme.surfaceColor
-        tabBar.bottomDividerColor = currentTheme.dividerColor
-        tabBar.enableRippleBehavior = true
-        tabBar.rippleColor = currentTheme.surfaceColor
+        tabBar.bottomDividerColor = currentTheme.onSurface15Color
+        tabBar.rippleColor = .clear
     }
 
-    func setupTabBarView() -> MDCTabBar {
-        let tabBar = MDCTabBar()
-        tabBar.delegate = self
-
+    func setupTabBarView() -> MDCTabBarView {
+        let tabBar = MDCTabBarView()
+        tabBar.tabBarDelegate = self
         tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
                                      image: nil,
                                      tag: 0),
                         UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
                                      image: nil,
                                      tag: 1)]
-
-        tabBar.itemAppearance = .titles
-        tabBar.setAlignment(.justified, animated: false)
         tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
-        tabBar.displaysUppercaseTitles = false
         tabBar.translatesAutoresizingMaskIntoConstraints = false
 
         return tabBar
@@ -228,8 +223,8 @@ class FavoritesViewController: SystemSearchViewController {
 
 // MARK: - MDCTabBar Delegate
 
-extension FavoritesViewController: MDCTabBarDelegate {
-    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+extension FavoritesViewController: MDCTabBarViewDelegate {
+    func tabBarView(_ tabBarView: MDCTabBarView, didSelect item: UITabBarItem) {
         selectTabItem(item: item)
     }
 }
@@ -267,30 +262,38 @@ extension FavoritesViewController: UIScrollViewDelegate {
 // MARK: - ListComponentActionDelegate
 
 extension FavoritesViewController: ListComponentActionDelegate {
-    func elementTapped(node: ListNode) {
+    func performListAction() {
+        // Do nothing
     }
 
-    func didUpdateList(error: Error?, pagination: Pagination?) {
-        if tabBar.selectedItem?.tag == 0 {
+    func elementTapped(node: ListNode) {
+        // Do nothing
+    }
+
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?) {
+        if listComponentViewController == folderAndFilesViewController {
             folderAndFilesViewController?.stopLoading()
-        } else if tabBar.selectedItem?.tag == 1 {
+        } else if listComponentViewController == librariesViewController {
             librariesViewController?.stopLoading()
         }
     }
 
-    func fetchNextListPage(for itemAtIndexPath: IndexPath) {
-        if tabBar.selectedItem?.tag == 0 {
+    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
+                           for itemAtIndexPath: IndexPath) {
+        if listComponentViewController == folderAndFilesViewController {
             folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
-        } else if tabBar.selectedItem?.tag == 1 {
+        } else if listComponentViewController == librariesViewController {
             librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
         }
     }
 }
 
-class FavoritesTabBarIndicator: NSObject, MDCTabBarIndicatorTemplate {
-    func indicatorAttributes(for context: MDCTabBarIndicatorContext) -> MDCTabBarIndicatorAttributes {
+class FavoritesTabBarIndicator: NSObject, MDCTabBarViewIndicatorTemplate {
+    func indicatorAttributes(for context: MDCTabBarViewIndicatorContext) -> MDCTabBarViewIndicatorAttributes {
         let bounds = context.contentFrame
-        let attr = MDCTabBarIndicatorAttributes()
+        let attr = MDCTabBarViewIndicatorAttributes()
         let overflow: CGFloat = 30
         let frame = CGRect(x: bounds.minX - overflow / 2,
                            y: context.bounds.maxY - 2,

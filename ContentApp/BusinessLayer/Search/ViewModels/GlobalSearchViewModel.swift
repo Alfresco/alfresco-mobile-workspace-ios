@@ -20,7 +20,6 @@ import Foundation
 import AlfrescoContent
 
 class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
-    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
 
@@ -29,6 +28,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var displaySearchButton: Bool = false
 
     private var liveSearchTimer: Timer?
+    private let searchTimerBuffer = 0.7
     var lastSearchedString: String?
 
     // MARK: - Init
@@ -55,9 +55,9 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
         return searchChips
     }
 
-    func logicSearchChips(chipTapped: SearchChipItem) -> [Int] {
+    func searchChipTapped(tappedChip: SearchChipItem) -> [Int] {
         var indexChipsReload: [Int] = []
-        if chipTapped.type == .library {
+        if tappedChip.type == .library {
             for chip in searchChips where chip.type != .library && chip.selected {
                 chip.selected = false
                 indexChipsReload.append(searchChips.firstIndex(where: { $0 == chip }) ?? 0)
@@ -98,7 +98,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             self.delegate?.handle(results: nil)
             return
         }
-        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)
@@ -116,6 +116,7 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
         self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 
@@ -133,13 +134,14 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? kListPageSize) { (results, error) in
+            QueriesAPI.findSites(term: searchString, skipCount: paginationRequest?.skipCount, maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
 
+                var listNodes: [ListNode]?
                 if let entries = results?.list.entries {
-                    sSelf.resultsList = SitesNodeMapper.map(entries)
+                    listNodes = SitesNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
@@ -158,13 +160,17 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
+            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
+                                                                         chipFilters: sSelf.searchChips,
+                                                                         pagination: paginationRequest)
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
 
+                var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ResultsNodeMapper.map(entries)
+                    listNodes = ResultsNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
@@ -199,5 +205,13 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
 extension GlobalSearchViewModel: ResultsViewModelDelegate {
     func refreshResults() {
         performSearch(for: lastSearchedString, paginationRequest: nil)
+    }
+
+    func isNodePathEnabled() -> Bool {
+        for chip in searchChips where chip.selected && chip.type == .library {
+            return false
+        }
+
+        return true
     }
 }

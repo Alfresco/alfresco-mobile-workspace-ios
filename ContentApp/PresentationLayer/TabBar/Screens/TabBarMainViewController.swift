@@ -25,8 +25,10 @@ protocol TabBarScreenDelegate: class {
 
 class TabBarMainViewController: UITabBarController {
     let bottomNavigationBar = MDCBottomNavigationBar()
+    let dividerView = UIView()
     var tabs = [UITabBarItem]()
 
+    var connectivityService: ConnectivityService?
     var themingService: MaterialDesignThemingService?
     weak var tabBarCoordinatorDelegate: TabBarScreenCoordinatorDelegate?
 
@@ -50,10 +52,10 @@ class TabBarMainViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        delegate = self
 
         tabBarCoordinatorDelegate?.showRecentScreen()
         tabBarCoordinatorDelegate?.showFavoritesScreen()
+        tabBarCoordinatorDelegate?.showOfflineScreen()
         tabBarCoordinatorDelegate?.showBrowseScreen()
         addLocalization()
         addBottomNavigationBar()
@@ -94,17 +96,26 @@ class TabBarMainViewController: UITabBarController {
 
         bottomNavigationBar.applyPrimaryTheme(withScheme: themingService.containerScheming(for: .applicationTabBar))
         bottomNavigationBar.selectedItemTintColor = currentTheme.onSurfaceColor
-        bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        bottomNavigationBar.unselectedItemTintColor = currentTheme.onSurfaceColor
         bottomNavigationBar.itemsContentVerticalMargin = self.itemsContentVerticalMargin
+        bottomNavigationBar.shadowColor = .clear
+        dividerView.backgroundColor = currentTheme.onSurface15Color
     }
 
     func addBottomNavigationBar() {
         view.addSubview(bottomNavigationBar)
+        bottomNavigationBar.addSubview(dividerView)
+
         bottomNavigationBar.titleVisibility = .always
         bottomNavigationBar.alignment = .centered
         bottomNavigationBar.items = tabs
 
-        bottomNavigationBar.selectedItem = tabs.first
+        if connectivityService?.hasInternetConnection() == false {
+            bottomNavigationBar.selectedItem = tabs[2]
+            self.selectedIndex = 2
+        } else {
+            bottomNavigationBar.selectedItem = tabs.first
+        }
         bottomNavigationBar.delegate = self
     }
 
@@ -117,6 +128,10 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBarFrame.size.height += view.safeAreaInsets.bottom
         bottomNavigationBarFrame.origin.y -= view.safeAreaInsets.bottom
         bottomNavigationBar.frame = bottomNavigationBarFrame
+        dividerView.frame = CGRect(x: 0,
+                                   y: -1,
+                                   width: bottomNavigationBarFrame.width,
+                                   height: 1)
     }
 
     func doubleTapLogic(for item: Int) {
@@ -133,16 +148,6 @@ extension TabBarMainViewController: MDCBottomNavigationBarDelegate {
         doubleTapLogic(for: item.tag)
         self.selectedIndex = item.tag
         return true
-    }
-}
-
-// MARK: - UITabBarControllerDelegate
-
-extension TabBarMainViewController: UITabBarControllerDelegate {
-    func tabBarController(_ tabBarController: UITabBarController,
-                          animationControllerForTransitionFrom fromVC: UIViewController,
-                          to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return TopLevelTransition(viewControllers: tabBarController.viewControllers)
     }
 }
 

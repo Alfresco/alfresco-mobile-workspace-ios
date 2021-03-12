@@ -30,7 +30,7 @@ class SettingsComponentsThemingServiceWorker: MaterialDesignThemingServiceWorker
 
     private func signOutButtonContainerScheme(for theme: PresentationTheme) -> MDCContainerScheming {
         let containerScheme = MDCContainerScheme()
-        containerScheme.colorScheme.primaryColor = theme.primaryColor
+        containerScheme.colorScheme.primaryColor = theme.primaryT1Color
         containerScheme.colorScheme.onPrimaryColor = theme.onPrimaryColor
         containerScheme.typographyScheme.button = theme.subtitle2TextStyle.font
 

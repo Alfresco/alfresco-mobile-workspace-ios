@@ -20,7 +20,6 @@ import Foundation
 import AlfrescoContent
 
 class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
-    var resultsList: [ListNode] = []
     var accountService: AccountService?
     var searchChips: [SearchChipItem] = []
     var searchChipNode: SearchChipItem?
@@ -28,6 +27,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
     weak var delegate: SearchViewModelDelegate?
 
     private var liveSearchTimer: Timer?
+    private let searchTimerBuffer = 0.7
     var lastSearchedString: String?
 
     // MARK: - Init
@@ -59,7 +59,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
         return searchChips
     }
 
-    func logicSearchChips(chipTapped: SearchChipItem) -> [Int] {
+    func searchChipTapped(tappedChip: SearchChipItem) -> [Int] {
         return []
     }
 
@@ -85,7 +85,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
             self.delegate?.handle(results: nil)
             return
         }
-        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: kSearchTimerBuffer, repeats: false, block: { [weak self] (timer) in
+        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
             timer.invalidate()
             guard let sSelf = self else { return }
             sSelf.performSearch(for: searchString)
@@ -103,6 +103,7 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
     }
 
     override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+        updateResults(results: results, pagination: pagination, error: error)
         self.delegate?.handle(results: results, pagination: pagination, error: error)
     }
 
@@ -113,13 +114,17 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
-            SearchAPI.search(queryBody: SearchRequestBuilder.searchRequest(searchString, chipFilters: sSelf.searchChips, pagination: paginationRequest)) { (result, error) in
+            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
+                                                                         chipFilters: sSelf.searchChips,
+                                                                         pagination: paginationRequest)
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
 
+                var listNodes: [ListNode]?
                 if let entries = result?.list?.entries {
-                    sSelf.resultsList = ResultsNodeMapper.map(entries)
+                    listNodes = ResultsNodeMapper.map(entries)
                 }
 
-                let paginatedResponse = PaginatedResponse(results: sSelf.resultsList,
+                let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
@@ -154,5 +159,13 @@ class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol 
 extension ContextualSearchViewModel: ResultsViewModelDelegate {
     func refreshResults() {
         performSearch(for: lastSearchedString, paginationRequest: nil)
+    }
+
+    func isNodePathEnabled() -> Bool {
+        for chip in searchChips where chip.selected && chip.type == .library {
+            return false
+        }
+
+        return true
     }
 }

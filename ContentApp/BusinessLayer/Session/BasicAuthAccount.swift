@@ -24,7 +24,7 @@ class BasicAuthAccount: AccountProtocol, Equatable {
         return credential.username
     }
     var apiBasePath: String {
-        return "\(parameters.fullHostnameURL)/\(parameters.path)/\(kAPIPathBase)"
+        return "\(parameters.fullHostnameURL)/\(parameters.path)/\(APIConstants.Path.base)"
     }
     var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
@@ -58,7 +58,8 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
 
     func removeDiskFolder() {
-        DiskServices.delete(directory: identifier)
+        let path = DiskService.documentsDirectoryPath(for: identifier)
+        _ = DiskService.delete(itemAtPath: path)
     }
 
     func unregister() {

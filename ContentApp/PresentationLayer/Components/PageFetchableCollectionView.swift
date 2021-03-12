@@ -24,6 +24,8 @@ protocol PageFetchableDelegate: class {
 
 class PageFetchableCollectionView: UICollectionView {
     weak var pageDelegate: PageFetchableDelegate?
+    var isPaginationEnabled: Bool?
+    var coordinatorServices: CoordinatorServices?
 
     private var lastItemIndexPath: IndexPath?
 
@@ -41,8 +43,11 @@ class PageFetchableCollectionView: UICollectionView {
 
 extension PageFetchableCollectionView: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        for indexPath in indexPaths where indexPath == lastItemIndexPath {
-            pageDelegate?.fetchNextContentPage(for: self, itemAtIndexPath: indexPath)
+        if isPaginationEnabled ?? true &&
+            coordinatorServices?.connectivityService?.hasInternetConnection() == true {
+            for indexPath in indexPaths where indexPath == lastItemIndexPath {
+                pageDelegate?.fetchNextContentPage(for: self, itemAtIndexPath: indexPath)
+            }
         }
     }
 }

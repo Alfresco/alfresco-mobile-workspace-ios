@@ -24,6 +24,8 @@ class SystemSearchViewController: SystemThemableViewController {
     weak var listItemActionDelegate: ListItemActionDelegate?
     var tagSearchController: UISearchController?
 
+    let searchButtonAspectRatio: CGFloat = 30.0
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -49,7 +51,7 @@ class SystemSearchViewController: SystemThemableViewController {
     func cancelSearchMode() {
         searchViewModel?.lastSearchedString = nil
         self.navigationItem.searchController?.searchBar.text = ""
-        self.navigationItem.searchController?.dismiss(animated: false, completion: nil)
+        self.navigationItem.searchController?.isActive = false
     }
 
     func configureNavigationBar() {
@@ -89,7 +91,7 @@ class SystemSearchViewController: SystemThemableViewController {
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
         navigationController?.navigationBar.titleTextAttributes =
@@ -99,17 +101,17 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func addSearchButton() {
         let searchButton = UIButton(type: .custom)
-        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: accountSettingsButtonHeight, height: accountSettingsButtonHeight)
+        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: searchButtonAspectRatio, height: searchButtonAspectRatio)
         searchButton.imageView?.contentMode = .scaleAspectFill
-        searchButton.layer.cornerRadius = accountSettingsButtonHeight / 2
+        searchButton.layer.cornerRadius = searchButtonAspectRatio / 2
         searchButton.layer.masksToBounds = true
         searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
         searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: accountSettingsButtonHeight)
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currHeight?.isActive = true
 
         self.navigationItem.rightBarButtonItem = searchBarButtonItem
@@ -140,7 +142,7 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
             let searchViewModel = self.searchViewModel else { return }
 
         rvc.startLoading()
-        rvc.reloadChips(searchViewModel.logicSearchChips(chipTapped: chip))
+        rvc.reloadChips(searchViewModel.searchChipTapped(tappedChip: chip))
         searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
     }
 

@@ -22,22 +22,27 @@ struct LocalizationConstants {
     static let copyright = NSLocalizedString("copyright-format", comment: "")
     static let productName = NSLocalizedString("product-name", comment: "")
 
+    struct General {
+        static let retry = NSLocalizedString("retry", comment: "")
+        static let yes = NSLocalizedString("yes", comment: "")
+        static let ok = NSLocalizedString("ok", comment: "") // swiftlint:disable:this identifier_name
+        static let later = NSLocalizedString("later", comment: "")
+        static let cancel = NSLocalizedString("cancel", comment: "")
+        static let delete = NSLocalizedString("delete", comment: "")
+        static let create = NSLocalizedString("create", comment: "")
+        static let save = NSLocalizedString("save", comment: "")
+    }
+
     struct Buttons {
         static let connect = NSLocalizedString("connect", comment: "")
         static let advancedSetting = NSLocalizedString("advanced-settings", comment: "")
         static let needHelp = NSLocalizedString("need-help", comment: "")
         static let needHelpAlfresco = NSLocalizedString("need-help-alfresco", comment: "")
         static let resetToDefault = NSLocalizedString("reset-to-default", comment: "")
-        static let save = NSLocalizedString("save", comment: "")
         static let signin = NSLocalizedString("sign-in", comment: "")
         static let signInWithSSO = NSLocalizedString("sign-in-with-sso", comment: "")
-        static let snackbarConfirmation = "x"
         static let signOut = NSLocalizedString("sign-out", comment: "")
-        static let retry = NSLocalizedString("retry", comment: "")
-        static let yes = NSLocalizedString("yes", comment: "")
-        static let cancel = NSLocalizedString("cancel", comment: "")
-        static let delete = NSLocalizedString("delete", comment: "")
-        static let create = NSLocalizedString("create", comment: "")
+        static let syncAll = NSLocalizedString("sync-all", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -65,8 +70,8 @@ struct LocalizationConstants {
         static let howToConnectTitle = NSLocalizedString("how-to-connect-to-alfresco", comment: "")
         static let conneting = NSLocalizedString("connecting", comment: "")
         static let signingIn = NSLocalizedString("signing-in", comment: "")
-        static let sessionExpiredTitle =  NSLocalizedString("session-expired", comment: "")
-        static let sesssionExpiredMessage =  NSLocalizedString("sesssion-expired-message", comment: "")
+        static let syncing = NSLocalizedString("syncing", comment: "")
+        static let syncFailed = NSLocalizedString("sync-failed", comment: "")
     }
 
     struct ScreenTitles {
@@ -75,12 +80,18 @@ struct LocalizationConstants {
         static let recent = NSLocalizedString("recent", comment: "")
         static let favorites = NSLocalizedString("favorites", comment: "")
         static let browse = NSLocalizedString("browse", comment: "")
+        static let offline = NSLocalizedString("offline", comment: "")
     }
 
-    struct Textviews {
-        static let serviceURLHint = NSLocalizedString("help-service-url-hint", comment: "")
-        static let advancedSettingsHint = NSLocalizedString("help-advanced-settings-hint", comment: "")
-        static let ssoHint = NSLocalizedString("help-sso-hint", comment: "")
+    struct Help {
+        static let connectTitleSection1 = NSLocalizedString("help-connect-title-section1", comment: "")
+        static let connectSection1Paragraph = NSLocalizedString("help-connect-section1-paragraph", comment: "")
+        static let connectTitleSection2 = NSLocalizedString("help-connect-title-section2", comment: "")
+        static let connectSection2Paragraph = NSLocalizedString("help-connect-section2-paragraph", comment: "")
+        static let advancedSettingsTitleSection1 = NSLocalizedString("help-advanced-settings-title-section1", comment: "")
+        static let advancedSettingsSection1Paragraph = NSLocalizedString("help-advanced-settings-section1-paragraph", comment: "")
+        static let ssoTitleSection1 = NSLocalizedString("help-sso-title-section1", comment: "")
+        static let ssoSection1Paragraph = NSLocalizedString("help-sso-section1-paragraph", comment: "")
     }
 
     struct Errors {
@@ -97,7 +108,6 @@ struct LocalizationConstants {
         static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
         static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
         static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
-
     }
 
     struct Approved {
@@ -108,6 +118,8 @@ struct LocalizationConstants {
         static let restored = NSLocalizedString("approved-restored", comment: "")
         static let deleted = NSLocalizedString("approved-deleted", comment: "")
         static let created = NSLocalizedString("approved-created", comment: "")
+        static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
+        static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
     }
 
     struct Theme {
@@ -121,6 +133,9 @@ struct LocalizationConstants {
         static let failedProfileInfo = NSLocalizedString("failed-profile-info", comment: "")
         static let appVersion = NSLocalizedString("app-version", comment: "")
         static let signOutConfirmation = NSLocalizedString("sign-out-confirmation", comment: "")
+        static let syncDataPlanTitle = NSLocalizedString("sync-data-title", comment: "")
+        static let syncOnlyWifi = NSLocalizedString("sync-only-wifi", comment: "")
+        static let syncWifiAndCellularData = NSLocalizedString("sync-wifi-cellular-data", comment: "")
     }
 
     struct Search {
@@ -172,13 +187,20 @@ struct LocalizationConstants {
         static let createMSexcel = NSLocalizedString("action-menu-create-ms-excel", comment: "")
         static let createMSpowerpoint = NSLocalizedString("action-menu-create-ms-powerpoint", comment: "")
         static let createFolder = NSLocalizedString("action-menu-create-folder", comment: "")
+        static let markOffline = NSLocalizedString("action-menu-mark-offline", comment: "")
+        static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
     }
 
-    struct NodeActionsDialog {
+    struct Dialog {
         static let deleteTitle = NSLocalizedString("dialog-delete-title", comment: "")
         static let deleteMessage = NSLocalizedString("dialog-delete-message", comment: "")
         static let downloadMessage = NSLocalizedString("dialog-download-message", comment: "")
         static let uploadMessage = NSLocalizedString("dialog-upload-message", comment: "")
+        static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
+        static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
+        static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
+
+        static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
     }
 
     struct EmptyLists {
@@ -191,6 +213,8 @@ struct LocalizationConstants {
         static let folderDescription = NSLocalizedString("empty-folder-description", comment: "")
         static let searchTitle = NSLocalizedString("empty-search-title", comment: "")
         static let searchDescription = NSLocalizedString("empty-search-description", comment: "")
+        static let offlineTitle = NSLocalizedString("empty-offline-title", comment: "")
+        static let offlineDescription = NSLocalizedString("empty-offline-description", comment: "")
     }
 
     struct PrivacySettings {

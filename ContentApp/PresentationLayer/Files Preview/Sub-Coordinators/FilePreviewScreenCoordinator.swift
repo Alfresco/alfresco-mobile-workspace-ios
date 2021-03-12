@@ -28,10 +28,17 @@ class FilePreviewScreenCoordinator: Coordinator {
     private var filePreviewViewController: FilePreviewViewController?
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private let excludedActionsTypes: [ActionMenuType]
+    private let shouldPreviewLatestContent: Bool
 
-    init(with presenter: UINavigationController, listNode: ListNode) {
+    init(with presenter: UINavigationController,
+         listNode: ListNode,
+         excludedActions: [ActionMenuType] = [],
+         shouldPreviewLatestContent: Bool = true) {
         self.presenter = presenter
         self.listNode = listNode
+        self.excludedActionsTypes = excludedActions
+        self.shouldPreviewLatestContent = shouldPreviewLatestContent
     }
 
     func start() {
@@ -39,7 +46,9 @@ class FilePreviewScreenCoordinator: Coordinator {
 
         let filePreviewViewModel = FilePreviewViewModel(with: listNode,
                                                         delegate: viewController,
-                                                        coordinatorServices: coordinatorServices)
+                                                        coordinatorServices: coordinatorServices,
+                                                        excludedActions: excludedActionsTypes,
+                                                        shouldPreviewLatestContent: shouldPreviewLatestContent)
 
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices
@@ -65,7 +74,10 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
               let nodeActionsViewModel = filePreviewViewController.filePreviewViewModel?.nodeActionsViewModel else { return }
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
-                                                      nodeActionViewModel: nodeActionsViewModel)
+                                                      nodeActionViewModel: nodeActionsViewModel) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.filePreviewViewController?.allowInterfaceRotation()
+        }
         coordinator.start()
         actionMenuCoordinator = coordinator
     }

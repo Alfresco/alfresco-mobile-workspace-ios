@@ -32,11 +32,11 @@ class ApplicationCoordinator: Coordinator {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
-                                               name: Notification.Name(kAPIUnauthorizedRequestNotification),
+                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.loadSplashScreenCoordinator(notification:)),
-                                               name: Notification.Name(kShowLoginScreenNotification),
+                                               name: Notification.Name(KeyConstants.Notification.showLoginScreen),
                                                object: nil)
     }
 
@@ -59,8 +59,8 @@ class ApplicationCoordinator: Coordinator {
         let viewController =
             window.rootViewController?.presentedViewController ?? window.rootViewController
 
-        let title = LocalizationConstants.Labels.sessionExpiredTitle
-        let message = LocalizationConstants.Labels.sesssionExpiredMessage
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }
@@ -68,7 +68,7 @@ class ApplicationCoordinator: Coordinator {
                 sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
             }
         }
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.Buttons.cancel) { _ in }
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
 
         _ = viewController?.showDialog(title: title,
                                        message: message,

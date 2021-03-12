@@ -42,8 +42,8 @@ class ActionMenuCollectionViewCell: ListSelectableCell {
         guard let currentTheme = currentTheme else { return }
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         titleLabel.lineBreakMode = .byTruncatingTail
-        imageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
-        separator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
-        sectionSeparator.backgroundColor = currentTheme.onSurfaceColor.withAlphaComponent(0.12)
+        imageView.tintColor = currentTheme.onSurface60Color
+        separator.backgroundColor = currentTheme.dividerColor
+        sectionSeparator.backgroundColor = currentTheme.onSurface15Color
     }
 }

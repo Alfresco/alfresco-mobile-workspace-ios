@@ -19,6 +19,8 @@
 import Foundation
 
 struct NeedHelpAIMSModel: NeedHelpModelProtocol {
-    var titleText = LocalizationConstants.Labels.needHelpTitle
-    var hintText = LocalizationConstants.Textviews.ssoHint
+    var sections: [NeedHelpSection] =
+        [NeedHelpSection(title: LocalizationConstants.Help.ssoTitleSection1,
+                         paragraphs: LocalizationConstants.Help.ssoSection1Paragraph)]
+    var title = LocalizationConstants.Labels.howToConnectTitle
 }

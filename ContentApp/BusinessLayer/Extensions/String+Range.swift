@@ -26,4 +26,8 @@ extension String {
         }
         return false
     }
+
+    static func specialCharacters() -> String {
+        return "* \" < > \\ / ? : |"
+    }
 }

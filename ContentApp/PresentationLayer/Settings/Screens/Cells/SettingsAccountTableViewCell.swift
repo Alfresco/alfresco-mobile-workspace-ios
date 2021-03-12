@@ -59,7 +59,7 @@ class SettingsAccountTableViewCell: UITableViewCell, SettingsTablewViewCellProto
         titleLabel.applyStyleBody1OnSurface(theme: currentTheme)
         subtitleLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
 
-        iconImageView.tintColor = currentTheme.onSurfaceColor.withAlphaComponent(0.6)
+        iconImageView.tintColor = currentTheme.onSurface60Color
 
         signOutButton.isUppercaseTitle = false
         signOutButton.setTitle(LocalizationConstants.Buttons.signOut, for: .normal)

@@ -21,41 +21,23 @@ import AlfrescoContent
 
 protocol ResultsViewModelDelegate: class {
     func refreshResults()
+    func isNodePathEnabled() -> Bool
 }
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
-    var supportedNodeTypes: [ElementKindType]?
+    var supportedNodeTypes: [NodeType]?
     weak var delegate: ResultsViewModelDelegate?
+    var coordinatorServices: CoordinatorServices?
+    let nodeOperations: NodeOperations
+
+    init(with coordinatorServices: CoordinatorServices?) {
+        self.coordinatorServices = coordinatorServices
+        self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
+    }
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
-    }
-
-    // MARK: Event observable
-
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        if let publishedEvent = event as? FavouriteEvent {
-            let node = publishedEvent.node
-            for listNode in results where listNode == node {
-                listNode.favorite = node.favorite
-            }
-        } else if let publishedEvent = event as? MoveEvent {
-            let node = publishedEvent.node
-            switch publishedEvent.eventType {
-            case .moveToTrash:
-                if node.kind == .file {
-                    if let indexOfMovedNode = results.firstIndex(of: node) {
-                        results.remove(at: indexOfMovedNode)
-                    }
-                } else {
-                    refreshList()
-                }
-            case .restore:
-                refreshList()
-            default: break
-            }
-        }
     }
 }
 
@@ -63,11 +45,14 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
 
 extension ResultsViewModel: SearchViewModelDelegate {
     func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.updateResults(results: results, pagination: pagination, error: error)
+        }
     }
 }
 
-// MARK: - ListCcomponentDataSourceProtocol
+// MARK: - ListComponentDataSourceProtocol
 
 extension ResultsViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
@@ -76,10 +61,6 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptySearch()
-    }
-
-    func shouldDisplaySections() -> Bool {
-        return false
     }
 
     func numberOfSections() -> Int {
@@ -94,48 +75,35 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return results[indexPath.row]
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func shouldDisplayMoreButton() -> Bool {
-        return true
-    }
-
-    func shouldDisplayCreateButton() -> Bool {
-        return false
-    }
-
     func shouldDisplayNodePath() -> Bool {
+        if let delegate = self.delegate {
+            return delegate.isNodePathEnabled()
+        }
+
         return true
     }
 
     func refreshList() {
+        refreshedList = true
         currentPage = 1
         delegate?.refreshResults()
     }
 
     func updateDetails(for listNode: ListNode?, completion: @escaping ((ListNode?, Error?) -> Void)) {
         guard let node = listNode else { return }
-        if node.kind == .site {
-            FavoritesAPI.getFavorite(personId: kAPIPathMe,
-                                     favoriteId: node.guid) { (_, error) in
+        if node.nodeType == .site {
+            nodeOperations.fetchNodeIsFavorite(for: node.guid) { (_, error) in
                 if error == nil {
                     node.favorite = true
                 }
                 completion(node, error)
             }
         } else {
-            NodesAPI.getNode(nodeId: node.guid,
-                             include: [kAPIIncludePathNode,
-                                       kAPIIncludeAllowableOperationsNode,
-                                       kAPIIncludeIsFavoriteNode],
-                             relativePath: nil,
-                             fields: nil) { (result, error) in
+            nodeOperations.fetchNodeDetails(for: node.guid) { (result, error) in
                 if let entry = result?.entry {
                     let listNode = NodeChildMapper.create(from: entry)
                     completion(listNode, error)
@@ -143,6 +111,56 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
                     completion(listNode, error)
                 }
             }
+        }
+    }
+}
+
+// MARK: - Event observable
+
+extension ResultsViewModel {
+
+    // MARK: Event observable
+
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        } else if let publishedEvent = event as? OfflineEvent {
+            handleOffline(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in results where listNode == node {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.nodeType == .file {
+                if let indexOfMovedNode = results.firstIndex(of: node) {
+                    results.remove(at: indexOfMovedNode)
+                }
+            } else {
+                refreshList()
+            }
+        case .restore:
+            refreshList()
+        default: break
+        }
+    }
+
+    private func handleOffline(event: OfflineEvent) {
+        let node = event.node
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            let listNode = results[indexOfOfflineNode]
+            listNode.update(with: node)
+            results[indexOfOfflineNode] = listNode
         }
     }
 }

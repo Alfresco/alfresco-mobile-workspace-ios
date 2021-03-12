@@ -37,7 +37,7 @@ public enum Offset: Int {
 
 open class ZoomImageView: UIScrollView {
 
-    static let kZoomInFactorFromMinWhenDoubleTap: CGFloat = 3
+    let zoomInFactorFromMinWhenDoubleTap: CGFloat = 3
 
     open var imageContentMode: ScaleMode = .aspectFit
     open var initialOffset: Offset = .center
@@ -250,7 +250,7 @@ open class ZoomImageView: UIScrollView {
             setZoomScale(minimumZoomScale, animated: true)
         } else {
             let center = gestureRecognizer.location(in: gestureRecognizer.view)
-            let zoomRect = zoomRectForScale(ZoomImageView.kZoomInFactorFromMinWhenDoubleTap * minimumZoomScale, center: center)
+            let zoomRect = zoomRectForScale(zoomInFactorFromMinWhenDoubleTap * minimumZoomScale, center: center)
             zoom(to: zoomRect, animated: true)
         }
     }

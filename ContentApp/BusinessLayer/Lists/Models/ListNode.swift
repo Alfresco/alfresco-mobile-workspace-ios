@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoContent
+import ObjectBox
 
 enum NodeType: String {
     case site = "st:site"
@@ -26,12 +27,19 @@ enum NodeType: String {
     case fileLink = "app:filelink"
     case folderLink = "app:folderlink"
     case unknown = ""
-}
 
-enum ElementKindType: String {
-    case file
-    case folder
-    case site
+    func plainType() -> String {
+        switch self {
+        case .file:
+            return "file"
+        case .folder:
+            return "folder"
+        case .site:
+            return "site"
+        default:
+            return ""
+        }
+    }
 }
 
 enum AllowableOperationsType: String {
@@ -40,6 +48,20 @@ enum AllowableOperationsType: String {
     case updatePermissions
     case delete
     case unknown
+}
+
+enum SyncStatus: String {
+    case pending
+    case inProgress
+    case synced
+    case error
+    case undefined
+}
+
+enum MarkedForStatus: String {
+    case download
+    case removal
+    case undefined
 }
 
 enum SiteRole: String {
@@ -52,98 +74,156 @@ enum SiteRole: String {
 
 typealias CreatedNodeType = (String, String, String)
 
-class ListNode: Hashable {
-    var guid: String
-    var siteID: String
+class ListNode: Hashable, Entity {
+    var id: Id = 0 // swiftlint:disable:this identifier_name
+    var parentGuid: String?
+    var guid = ""
+    var siteID = ""
     var destination: String?
     var mimeType: String?
-    var title: String
-    var path: String
+    var title = ""
+    var path = ""
     var modifiedAt: Date?
-    var kind: ElementKindType
-    var nodeType: NodeType
     var favorite: Bool?
-    var allowableOperations: [AllowableOperationsType]?
-    var siteRole: SiteRole?
-    var trashed: Bool?
+    var trashed: Bool = false
+    var markedAsOffline = false
+    var isFile = false
+    var isFolder = false
+
+    // objectbox: convert = { "default": ".unknown" }
+    var nodeType: NodeType = .unknown
+    // objectbox: convert = { "default": ".unknown" }
+    var siteRole: SiteRole = .unknown
+    // objectbox: convert = { "default": ".undefined" }
+    var syncStatus: SyncStatus = .undefined
+    // objectbox: convert = { "default": ".undefined" }
+    var markedFor: MarkedForStatus = .undefined
+    // objectbox: convert = { "dbType": "String", "converter": "AllowableOperationsConverter" }
+    var allowableOperations: [AllowableOperationsType] = [.unknown]
 
     // MARK: - Init
 
     init(guid: String,
          siteID: String = "",
+         parentGuid: String? = nil,
          mimeType: String? = nil,
-         title: String, path: String,
+         title: String,
+         path: String,
          modifiedAt: Date? = nil,
-         kind: ElementKindType,
          nodeType: NodeType,
          favorite: Bool? = nil,
+         syncStatus: SyncStatus = .undefined,
+         markedOfflineStatus: MarkedForStatus = .undefined,
          allowableOperations: [String]? = nil,
          siteRole: String? = nil,
          trashed: Bool = false,
-         destionation: String? = nil) {
-
+         destination: String? = nil,
+         isFile: Bool = false,
+         isFolder: Bool = false) {
         self.guid = guid
         self.siteID = siteID
+        self.parentGuid = parentGuid
         self.mimeType = mimeType
         self.title = title
         self.path = path
         self.modifiedAt = modifiedAt
-        self.kind = kind
         self.nodeType = nodeType
         self.favorite = favorite
+        self.syncStatus = syncStatus
+        self.markedFor = markedOfflineStatus
         self.allowableOperations = parse(allowableOperations)
         self.siteRole = parse(siteRole)
         self.trashed = trashed
-        self.destination = destionation
+        self.destination = destination
+        self.isFile = isFile
+        self.isFolder = isFolder
     }
 
+    // Default initializer required by ObjectBox
+    init() {}
+
     // MARK: - Public Helpers
+
+    func update(with newVersion: ListNode) {
+        parentGuid = newVersion.parentGuid
+        siteID = newVersion.siteID
+        destination = newVersion.destination
+        mimeType = newVersion.mimeType
+        title = newVersion.title
+        path = newVersion.path
+        modifiedAt = newVersion.modifiedAt
+        favorite = newVersion.favorite
+        nodeType = newVersion.nodeType
+        allowableOperations = newVersion.allowableOperations
+        syncStatus = newVersion.syncStatus
+        markedAsOffline = newVersion.markedAsOffline
+        markedFor = newVersion.markedFor
+        isFile = newVersion.isFile
+        isFolder = newVersion.isFolder
+    }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
         return lhs.guid == rhs.guid
     }
 
     func shouldUpdate() -> Bool {
-        if self.trashed == true {
+        if trashed == true {
             return false
         }
-        if self.kind == .site {
-            if self.siteRole == nil || self.favorite == nil {
-                return true
-            }
+
+        if favorite == nil {
+            return true
         }
 
-        if self.kind == .file || self.kind == .folder {
-            if self.allowableOperations == nil ||
-                self.favorite == nil {
+        switch nodeType {
+        case .site: break
+        default:
+            if allowableOperations.count == 1  &&
+                allowableOperations.first == AllowableOperationsType.unknown {
                 return true
             }
         }
         return false
     }
 
+    func removeAllowableOperationUnknown() {
+        if allowableOperations.count == 1 &&
+            allowableOperations.first == AllowableOperationsType.unknown {
+            allowableOperations.removeFirst()
+        }
+    }
+
+    func isMarkedOffline() -> Bool {
+        let dataAccessor = ListNodeDataAccessor()
+        return dataAccessor.isNodeMarkedAsOffline(node: self)
+    }
+
+    func hasSyncStatus() -> SyncStatus {
+        let dataAccessor = ListNodeDataAccessor()
+        return dataAccessor.syncStatus(for: self)
+    }
+
     func hasPersmission(to type: AllowableOperationsType) -> Bool {
-        guard let allowableOperations = allowableOperations else { return false }
         return allowableOperations.contains(type)
     }
 
     func hasPermissionToCreate() -> Bool {
-        if self.kind == .folder {
+        if nodeType == .folder {
             return hasPersmission(to: .create)
-        } else if self.kind == .site {
+        } else if nodeType == .site {
             return !(hasRole(to: .consumer) || hasRole(to: .unknown))
         }
         return false
     }
 
     func hasRole(to type: SiteRole) -> Bool {
-        guard let siteRole = siteRole else { return false }
         return siteRole == type
     }
 
     func truncateTailTitle() -> String {
-        let text = self.title.prefix(kTruncateLimitTitleInSnackbar)
-        if text == self.title {
+        let limitCharacters = 20
+        let text = title.prefix(limitCharacters)
+        if text == title {
             return String(text)
         }
         return text + "..."
@@ -151,6 +231,24 @@ class ListNode: Hashable {
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(guid)
+    }
+
+    func isAFileType() -> Bool {
+        switch nodeType {
+        case .file, .fileLink:
+            return true
+        default:
+            return isFile
+        }
+    }
+
+    func isAFolderType() -> Bool {
+        switch nodeType {
+        case .folder, .folderLink:
+            return true
+        default:
+            return isFolder
+        }
     }
 
     // MARK: - Creation
@@ -189,17 +287,46 @@ class ListNode: Hashable {
 
     // MARK: - Private Helpers
 
-    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType]? {
-        guard let allowableOperations = allowableOperations else { return nil }
+    private func parse(_ allowableOperations: [String]?) -> [AllowableOperationsType] {
+        guard let allowableOperations = allowableOperations else { return [.unknown] }
         var allowableOperationsTypes = [AllowableOperationsType]()
-        for allowableOperation in allowableOperations {
-            allowableOperationsTypes.append(AllowableOperationsType(rawValue: allowableOperation) ?? .unknown)
+
+        _ = allowableOperations.map {
+            if let type = AllowableOperationsType(rawValue: $0) {
+                allowableOperationsTypes.append(type)
+            }
         }
+
         return allowableOperationsTypes
     }
 
     private func parse(_ siteRole: String?) -> SiteRole {
         guard let siteRole = siteRole else { return .unknown}
         return SiteRole(rawValue: siteRole) ?? .unknown
+    }
+}
+
+class AllowableOperationsConverter {
+    static func convert(_ enumerated: [AllowableOperationsType]) -> String {
+        var convertedString = ""
+        _ = enumerated.enumerated().map {(index, element) in
+            if index == enumerated.count - 1 {
+                convertedString.append(String(format: "%@", element.rawValue))
+            } else {
+                convertedString.append(String(format: "%@,", element.rawValue))
+            }
+        }
+
+        return convertedString
+    }
+
+    static func convert(_ string: String?) -> [AllowableOperationsType] {
+        guard let string = string else { return [AllowableOperationsType.unknown] }
+        var operations: [AllowableOperationsType] = []
+        _ = string.split(separator: ",").map {
+            operations.append(AllowableOperationsType(rawValue: String($0)) ?? .unknown)
+        }
+
+        return operations
     }
 }
