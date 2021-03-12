@@ -44,6 +44,12 @@ protocol AuthenticationServiceProtocol {
     ///   - credentials: Credential object containing the username and password
     ///   - handler: Signals the success or failure of the operation with additional error information
     func basicAuthentication(with credentials: BasicAuthCredential, handler: @escaping ((Result<Bool, APIError>) -> Void))
+
+    /// Check if Content Services has minimum version to use in this application.
+    /// - Parameters:
+    ///   - stringURL: URL to check the version
+    ///   - handler: Signals the success or failure of the operation with additional error information
+    func isContentServicesAvailable(on stringURL: String, handler: @escaping ((Result<Bool, APIError>) -> Void))
 }
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
@@ -92,8 +98,9 @@ class AuthenticationService: AuthenticationServiceProtocol, Service {
         })
     }
 
-    func isContentServicesAvailable(handler: @escaping ((Result<Bool, APIError>) -> Void)) {
-        apiClient = APIClient(with: String(format: "%@/%@/", parameters.fullHostnameURL, parameters.path))
+    func isContentServicesAvailable(on stringURL: String,
+                                    handler: @escaping ((Result<Bool, APIError>) -> Void)) {
+        apiClient = APIClient(with: String(format: "%@/%@/", stringURL, parameters.path))
         _ = apiClient?.send(GetContentServicesServerInformation(), completion: { (result) in
             switch result {
             case .success(let response):
