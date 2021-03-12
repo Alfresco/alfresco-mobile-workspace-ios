@@ -49,33 +49,20 @@ class ConnectViewModel {
                 case .basicAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
-                sSelf.authenticationService?.isContentServicesAvailable(handler: { (result) in
+                sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
+                                                                        handler: { (result) in
                     switch result {
                     case .success(let isVersionOverMinium):
-
-                        guard isVersionOverMinium else {
-                            DispatchQueue.main.async {
-                                sSelf.delegate?.authServiceUnavailable(with: APIError(domain: ""))
-                            }
-                            return
-                        }
-
-                        switch authType {
-                        case .aimsAuth:
-                            DispatchQueue.main.async {
-                                sSelf.delegate?.authServiceByPass()
-                                sSelf.aimsViewModel?.login(repository: url, in: viewController)
-                            }
-                        default:
-                            DispatchQueue.main.async {
-                                sSelf.delegate?.authServiceAvailable(for: authType)
-                            }
-                        }
+                        sSelf.contentService(available: isVersionOverMinium,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
                     case .failure(let error):
                         AlfrescoLog.error(error)
-                        DispatchQueue.main.async {
-                            sSelf.delegate?.authServiceUnavailable(with: error)
-                        }
+                        sSelf.contentService(available: false,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
                     }
                 })
             case .failure(let error):
@@ -85,5 +72,32 @@ class ConnectViewModel {
                 }
             }
         })
+    }
+
+    func contentService(available: Bool,
+                        authType: AvailableAuthType,
+                        url: String,
+                        in viewController: UIViewController) {
+        switch authType {
+        case .aimsAuth:
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                if available {
+                    sSelf.delegate?.authServiceByPass()
+                    sSelf.aimsViewModel?.loginByPass(repository: url, in: viewController)
+                } else {
+                    sSelf.delegate?.authServiceAvailable(for: authType)
+                }
+            }
+        default:
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                if available {
+                    sSelf.delegate?.authServiceAvailable(for: authType)
+                } else {
+                    sSelf.delegate?.authServiceUnavailable(with: APIError(domain: ""))
+                }
+            }
+        }
     }
 }

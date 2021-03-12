@@ -39,6 +39,33 @@ class AimsViewModel {
     func login(repository: String, in viewController: UIViewController) {
         let authParameters = AuthenticationParameters.parameters()
         authParameters.contentURL = repository
+        authenticationService?.isContentServicesAvailable(on: authParameters.fullContentURL,
+                                                          handler: { [weak self] (result) in
+            guard let sSelf = self else { return }
+            switch result {
+            case .success(let isVersionOverMinium):
+                guard isVersionOverMinium else {
+                    DispatchQueue.main.async { [weak self] in
+                        guard let sSelf = self else { return }
+                        sSelf.delegate?.logInFailed(with: APIError(domain: ""))
+                    }
+                    return
+                }
+                sSelf.authenticationService?.update(authenticationParameters: authParameters)
+                sSelf.authenticationService?.aimsAuthentication(on: viewController, delegate: sSelf)
+            case .failure(let error):
+                AlfrescoLog.error(error)
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.delegate?.logInFailed(with: error)
+                }
+            }
+        })
+    }
+
+    func loginByPass(repository: String, in viewController: UIViewController) {
+        let authParameters = AuthenticationParameters.parameters()
+        authParameters.contentURL = repository
         authenticationService?.update(authenticationParameters: authParameters)
         authenticationService?.aimsAuthentication(on: viewController, delegate: self)
     }
