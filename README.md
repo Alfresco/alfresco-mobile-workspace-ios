@@ -1,4 +1,4 @@
-# <img title="Alfresco" alt='Alfresco' src='https://raw.githubusercontent.com/https://github.com/Alfresco/content-app-ios/master/docs/logo.svg' height="32px" /> Mobile Workspace iOS
+# <img title="Alfresco" alt='Alfresco' src='https://raw.githubusercontent.com/Alfresco/alfresco-mobile-workspace-ios/master/docs/logo.svg' height="32px" /> Mobile Workspace iOS
 
 ## What Is Alfresco Mobile Workspace?
 Alfresco Mobile Workspace enables users to work away from their workstation without compromising on the way content is accessed. Keep productivity high by transporting technical documents into the field without having to worry about a data connection.
@@ -34,7 +34,7 @@ In order to build Alfresco Mobile Workspace for iOS locally, it is necessary to 
 
 ### How to build locally
 1. Clone the repository:
-    `git clone https://github.com/Alfresco/content-app-ios.git`
+    `git clone https://github.com/Alfresco/alfresco-mobile-workspace-ios.git`
 2. Install the Cocoapods dependencies:
     `pod install`
 3. Open the project using the workspace file
@@ -43,4 +43,4 @@ In order to build Alfresco Mobile Workspace for iOS locally, it is necessary to 
 
 ## Development
 
-We'd love to accept your patches and contributions to this project. [Check our Contributing guidelines](https://github.com/Alfresco/content-app-ios/blob/master/CONTRIBUTING.md).
+We'd love to accept your patches and contributions to this project. [Check our Contributing guidelines](https://github.com/Alfresco/alfresco-mobile-workspace-ios/blob/master/CONTRIBUTING.md).
