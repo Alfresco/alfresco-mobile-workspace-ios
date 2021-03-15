@@ -41,7 +41,7 @@ struct GetContentServicesServerInformation: APIRequest {
 
 public struct VersionContentService: Codable {
     private var version: String?
-    private let data: [String: String]?
+    private let data: [String: String]
 
     enum CodingKeys: String, CodingKey {
         case data
@@ -57,7 +57,7 @@ public struct VersionContentService: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         self.data = try values.decode([String: String].self, forKey: .data)
         self.version = ""
-        if let version = data?[CodingKeys.version.rawValue] {
+        if let version = data[CodingKeys.version.rawValue] {
             self.version = version
         }
     }

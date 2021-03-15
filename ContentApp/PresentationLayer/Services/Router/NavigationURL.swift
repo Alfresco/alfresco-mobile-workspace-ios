@@ -22,7 +22,7 @@ protocol NavigationURLProtocol {
     var url: URL? { get }
     var route: NavigationRoute? { get }
 
-    var queryItems: [URLQueryItem]? { get }
+    var queryItems: [URLQueryItem] { get }
 }
 
 struct NavigationURL: NavigationURLProtocol {
@@ -41,9 +41,9 @@ struct NavigationURL: NavigationURLProtocol {
         }
     }
 
-    var queryItems: [URLQueryItem]? {
-        guard let route = self.route else { return nil }
-        return URLComponents(string: route)?.queryItems
+    var queryItems: [URLQueryItem] {
+        guard let route = self.route else { return [] }
+        return URLComponents(string: route)?.queryItems ?? []
     }
 
     init(route: NavigationRoute) {

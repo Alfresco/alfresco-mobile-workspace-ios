@@ -51,7 +51,7 @@ class AIMSSession {
         self.parameters = parameters
         self.credential = credential
         let authConfig = parameters.authenticationConfiguration()
-        self.alfrescoAuth = AlfrescoAuth.init(configuration: authConfig)
+        self.alfrescoAuth = AlfrescoAuth(configuration: authConfig)
         scheduleSessionRefresh()
     }
 

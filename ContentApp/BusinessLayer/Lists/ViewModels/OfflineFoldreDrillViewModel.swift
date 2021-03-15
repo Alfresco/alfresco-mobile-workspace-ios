@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContent
 
 class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     var parentListNode: ListNode?
 
     // MARK: - Init
@@ -38,7 +38,7 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
         refreshList()
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -60,7 +60,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -69,9 +69,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
 
     func refreshList() {
         let listNodeDataAccessor = ListNodeDataAccessor()
-        if let offlineNodes = listNodeDataAccessor.queryChildren(for: parentListNode) {
-            results = offlineNodes
-        }
+        results = listNodeDataAccessor.queryChildren(for: parentListNode)
 
         handlePage(results: results,
                    pagination: nil,

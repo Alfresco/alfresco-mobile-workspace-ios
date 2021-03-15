@@ -59,7 +59,7 @@ class ConnectViewController: SystemThemableViewController {
         viewModel?.aimsViewModel?.delegate = self
 
         addLocalization()
-        enableConnectButton = (connectTextField.text != "")
+        enableConnectButton = !connectTextField.isEmpty()
         activityIndicator = ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
         if let activityIndicator = activityIndicator {
@@ -251,7 +251,7 @@ extension ConnectViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableConnectButton = (textField.text != "")
+        enableConnectButton = !textField.isEmpty()
     }
 }
 

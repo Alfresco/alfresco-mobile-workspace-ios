@@ -20,7 +20,7 @@ import UIKit
 
 protocol AccountServiceProtocol {
     /// Array of registered accounts.
-    var accounts: [AccountProtocol]? { get }
+    var accounts: [AccountProtocol] { get }
     /// Account on which requests will be executed.
     var activeAccount: AccountProtocol? { get set }
 
@@ -62,7 +62,7 @@ class AccountService: AccountServiceProtocol, Service {
 
     private var connectivityService: ConnectivityService?
     private var kvoConnectivity: NSKeyValueObservation?
-    private (set) var accounts: [AccountProtocol]? = []
+    private (set) var accounts: [AccountProtocol] = []
 
     var activeAccount: AccountProtocol? {
         didSet {
@@ -87,7 +87,7 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func register(account: AccountProtocol) {
-        accounts?.append(account)
+        accounts.append(account)
         account.persistAuthenticationParameters()
         account.persistAuthenticationCredentials()
 
@@ -135,18 +135,18 @@ class AccountService: AccountServiceProtocol, Service {
     }
 
     func unregister(account: AccountProtocol) {
-        if let index = accounts?.firstIndex(where: { account === $0 }) {
+        if let index = accounts.firstIndex(where: { account === $0 }) {
             let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
                 defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
-            accounts?.remove(at: index)
+            accounts.remove(at: index)
         }
     }
 
     func delete(account: AccountProtocol) {
-        if let index = accounts?.firstIndex(where: { account === $0 }) {
+        if let index = accounts.firstIndex(where: { account === $0 }) {
             let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
                 defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
@@ -162,7 +162,7 @@ class AccountService: AccountServiceProtocol, Service {
 
             UserProfile.removeUserProfile(forAccountIdentifier: identifier)
 
-            accounts?.remove(at: index)
+            accounts.remove(at: index)
         }
     }
 

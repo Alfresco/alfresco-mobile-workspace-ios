@@ -23,7 +23,7 @@ import MaterialComponents.MDCAlertController_ButtonForAction
 extension UIViewController {
     func showDialog(title: String?,
                     message: String?,
-                    actions: [MDCAlertAction]? = nil,
+                    actions: [MDCAlertAction] = [],
                     accesoryView: UIView? = nil,
                     completionHandler: @escaping () -> Void) -> MDCAlertController {
         let alertController = MDCAlertController(title: title,
@@ -31,10 +31,8 @@ extension UIViewController {
 
         alertController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
 
-        if let actions = actions {
-            for action in actions {
-                alertController.addAction(action)
-            }
+        for action in actions {
+            alertController.addAction(action)
         }
 
         if let accesoryView = accesoryView {

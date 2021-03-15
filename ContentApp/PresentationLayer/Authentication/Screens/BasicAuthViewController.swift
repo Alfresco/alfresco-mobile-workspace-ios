@@ -181,8 +181,8 @@ class BasicAuthViewController: SystemThemableViewController {
         passwordTextField.trailingViewMode = .always
         passwordTextField.trailingView = showPasswordImageView
         passwordTextField.trailingView?.isUserInteractionEnabled = true
-        let tapGestureRecognizer = UITapGestureRecognizer.init(target: self,
-                                                            action: #selector(showPasswordButtonTapped(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self,
+                                                          action: #selector(showPasswordButtonTapped(_:)))
         passwordTextField.trailingView?.addGestureRecognizer(tapGestureRecognizer)
         passwordTextField.trailingView?.tintColor = currentTheme.onSurface60Color
         passwordTextField.isSecureTextEntry = true
@@ -205,11 +205,11 @@ extension BasicAuthViewController: UITextFieldDelegate {
         case usernameTextField:
             enableSignInButton = (textField.updatedText(for: range,
                                                         replacementString: string) != "" &&
-                                    passwordTextField.text != "")
+                                    !passwordTextField.isEmpty())
         case passwordTextField:
             enableSignInButton = (textField.updatedText(for: range,
                                                         replacementString: string) != "" &&
-                                    usernameTextField.text != "")
+                                    !usernameTextField.isEmpty())
         default: break
         }
         return true
@@ -233,7 +233,7 @@ extension BasicAuthViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableSignInButton = (usernameTextField.text != "" && passwordTextField.text != "")
+        enableSignInButton = (!usernameTextField.isEmpty() && !passwordTextField.isEmpty())
     }
 }
 

@@ -25,7 +25,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
     var listCondition: String = APIConstants.QuerryConditions.whereFavoritesFileFolder
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 
@@ -48,7 +48,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -89,7 +89,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         favoritesList(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?,
+    override func handlePage(results: [ListNode],
                              pagination: Pagination?,
                              error: Error?) {
         updateResults(results: results,
@@ -121,7 +121,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                        fields: nil) { [weak self] (result, error) in
                                         guard let sSelf = self else { return }
 
-                                        var listNodes: [ListNode]?
+                                        var listNodes: [ListNode] = []
                                         if let entries = result?.list {
                                             listNodes = FavoritesNodeMapper.map(entries.entries)
                                         } else {

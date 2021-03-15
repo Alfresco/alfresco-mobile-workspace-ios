@@ -176,8 +176,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     private func startSyncOperation() {
         let listNodeDataAccessor = ListNodeDataAccessor()
+        let nodes = listNodeDataAccessor.queryMarkedOffline()
+
         guard let syncService = self.syncService,
-              let nodes = listNodeDataAccessor.queryMarkedOffline(),
               syncService.syncServiceStatus == .idle,
               accountService?.activeAccount != nil else { return }
 

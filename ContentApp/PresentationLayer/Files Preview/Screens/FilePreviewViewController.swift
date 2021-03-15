@@ -31,7 +31,7 @@ class FilePreviewViewController: SystemThemableViewController {
     @IBOutlet weak var filePreviewTitleLabel: UILabel!
 
     @IBOutlet weak var toolbar: UIToolbar!
-    var toolbarActions: [UIBarButtonItem]?
+    var toolbarActions: [UIBarButtonItem] = []
 
     var needsContraintsForFullScreen = false
 
@@ -279,12 +279,12 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .removeFavorite) {
             let icon = (listNode.favorite ?? false) ? ActionMenuType.removeFavorite.rawValue :
                 ActionMenuType.addFavorite.rawValue
-            toolbarActions?[index].image = UIImage(named: icon)
+            toolbarActions[index].image = UIImage(named: icon)
         }
         if let index = filePreviewViewModel?.actionMenuViewModel?.indexInToolbar(for: .addFavorite) {
             let icon = (listNode.favorite ?? false ) ? ActionMenuType.removeFavorite.rawValue :
                 ActionMenuType.addFavorite.rawValue
-            toolbarActions?[index].image = UIImage(named: icon)
+            toolbarActions[index].image = UIImage(named: icon)
         }
     }
 

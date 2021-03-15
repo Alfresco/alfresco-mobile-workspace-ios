@@ -25,7 +25,7 @@ protocol ResultsViewModelDelegate: class {
 }
 
 class ResultsViewModel: PageFetchingViewModel, EventObservable {
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     weak var delegate: ResultsViewModelDelegate?
     var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations
@@ -44,7 +44,7 @@ class ResultsViewModel: PageFetchingViewModel, EventObservable {
 // MARK: - SearchViewModelDelegate
 
 extension ResultsViewModel: SearchViewModelDelegate {
-    func handle(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    func handle(results: [ListNode], pagination: Pagination?, error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.updateResults(results: results, pagination: pagination, error: error)
@@ -64,7 +64,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {

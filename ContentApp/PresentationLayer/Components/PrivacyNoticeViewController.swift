@@ -27,6 +27,7 @@ class PrivacyNoticeViewController: SystemThemableViewController {
     @IBOutlet weak var privacyButton: MDCButton!
 
     override func viewDidLoad() {
+        super.viewDidLoad()
         addLocalization()
     }
 

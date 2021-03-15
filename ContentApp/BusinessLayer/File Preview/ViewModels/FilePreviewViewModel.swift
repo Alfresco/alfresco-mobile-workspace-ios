@@ -48,10 +48,10 @@ typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel {
     var listNode: ListNode?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations
-    let listNodeDataAccessor: ListNodeDataAccessor = ListNodeDataAccessor()
+    let listNodeDataAccessor = ListNodeDataAccessor()
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     private let excludedActionsTypes: [ActionMenuType]

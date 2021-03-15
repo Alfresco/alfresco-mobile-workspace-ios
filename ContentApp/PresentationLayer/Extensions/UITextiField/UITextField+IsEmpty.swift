@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,15 +16,14 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-extension UINavigationController {
-    func pushFadeViewController(_ viewController: UIViewController) {
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = CATransitionType.fade
-        transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        view.layer.add(transition, forKey: nil)
-        pushViewController(viewController, animated: false)
+extension UITextField {
+    func isEmpty() -> Bool {
+        if let text = self.text {
+            return text.isEmpty
+        }
+        return false
     }
 }

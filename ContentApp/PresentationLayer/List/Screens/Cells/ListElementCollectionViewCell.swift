@@ -45,7 +45,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     var syncStatus: ListEntrySyncStatus = .undefined {
         didSet {
             syncStatusImageView.isHidden = !(syncStatus != .undefined)
-            syncStatusImageView.image = syncStatus.rawValue.count != 0 ? UIImage(named: syncStatus.rawValue) : nil
+            syncStatusImageView.image = !syncStatus.rawValue.isEmpty ? UIImage(named: syncStatus.rawValue) : nil
 
             switch syncStatus {
             case .error:

@@ -37,7 +37,7 @@ class BasicAuthViewModel {
     }
 
     func authenticate(username: String, password: String) {
-        if authenticationService?.parameters.path == "" {
+        if let path = authenticationService?.parameters.path, path.isEmpty {
             self.delegate?.logInWarning(with: LocalizationConstants.Errors.pathEmpty)
             return
         }

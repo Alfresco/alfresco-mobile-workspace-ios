@@ -46,8 +46,8 @@ open class ZoomImageView: UIScrollView {
 
     open weak var imageScrollViewDelegate: ZoomImageViewDelegate?
 
-    var imageSize: CGSize = CGSize.zero
-    private var pointToCenterAfterResize: CGPoint = CGPoint.zero
+    var imageSize = CGSize.zero
+    private var pointToCenterAfterResize = CGPoint.zero
     private var scaleToRestoreAfterResize: CGFloat = 1.0
     var maxScaleFromMinScale: CGFloat = 4.0
 
