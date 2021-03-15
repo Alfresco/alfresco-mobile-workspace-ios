@@ -55,7 +55,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
 
-    var enableSaveButton: Bool = false {
+    var enableSaveButton = false {
         didSet {
             saveButton.isEnabled = enableSaveButton
         }

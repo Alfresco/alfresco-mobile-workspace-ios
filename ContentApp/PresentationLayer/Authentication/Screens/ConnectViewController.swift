@@ -38,11 +38,11 @@ class ConnectViewController: SystemThemableViewController {
     var viewModel: ConnectViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var openKeyboard: Bool = true
-    var errorShowInProgress: Bool = false
+    var openKeyboard = true
+    var errorShowInProgress = false
     var activityIndicator: ActivityIndicatorView?
 
-    var enableConnectButton: Bool = false {
+    var enableConnectButton = false {
         didSet {
             connectButton.isEnabled = enableConnectButton
         }

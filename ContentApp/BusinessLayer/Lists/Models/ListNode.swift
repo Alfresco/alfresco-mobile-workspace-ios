@@ -85,7 +85,7 @@ class ListNode: Hashable, Entity {
     var path = ""
     var modifiedAt: Date?
     var favorite: Bool?
-    var trashed: Bool = false
+    var trashed = false
     var markedAsOffline = false
     var isFile = false
     var isFolder = false

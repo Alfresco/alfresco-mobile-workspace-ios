@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 
 class AuthenticationParameters: Codable {
-    var https: Bool = true
+    var https = true
     var port: String = "443"
     var path: String = "alfresco"
     var realm: String = "alfresco"

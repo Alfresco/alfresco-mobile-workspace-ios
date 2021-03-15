@@ -49,16 +49,16 @@ class MediaPreview: UIView, FilePreviewProtocol {
     private var statusObserver: NSKeyValueObservation?
     private var rateObserver: NSKeyValueObservation?
 
-    private var finishPlaying: Bool = false
-    private var sliderIsMoving: Bool = false
-    private var jumpPlayer: Bool = false
-    private var isFullScreen: Bool = false {
+    private var finishPlaying = false
+    private var sliderIsMoving = false
+    private var jumpPlayer = false
+    private var isFullScreen = false {
         didSet {
             filePreviewDelegate?.enableFullScreen(isFullScreen)
             apply(fade: isFullScreen, to: actionsView)
         }
     }
-    private var isAudioFile: Bool = false {
+    private var isAudioFile = false {
         didSet {
             audioImageView.isHidden = !isAudioFile
         }

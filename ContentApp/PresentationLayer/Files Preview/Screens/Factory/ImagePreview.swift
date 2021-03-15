@@ -37,11 +37,11 @@ class ImagePreview: UIView, FilePreviewProtocol {
     private var svgImageView: SVGKImage?
     private var svgImageSize: CGSize?
 
-    private var isRendering: Bool = false
+    private var isRendering = false
     private var numberOfTaps: Int = 0
     private var fullScreenTimer: Timer?
     private let fullScreenTimerBuffer = 0.5
-    private var isFullScreen: Bool = false {
+    private var isFullScreen = false {
         didSet {
             if isRendering == false {
                 filePreviewDelegate?.enableFullScreen(isFullScreen)

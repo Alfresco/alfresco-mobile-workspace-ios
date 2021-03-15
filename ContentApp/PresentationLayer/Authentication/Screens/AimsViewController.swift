@@ -44,7 +44,7 @@ class AimsViewController: SystemThemableViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
 
-    var enableSignInButton: Bool = false {
+    var enableSignInButton = false {
         didSet {
             signInButton.isEnabled = enableSignInButton
             signInButton.tintColor = signInButton.currentTitleColor

@@ -47,7 +47,7 @@ class BasicAuthViewController: SystemThemableViewController {
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
     var activityIndicator: ActivityIndicatorView?
 
-    var enableSignInButton: Bool = false {
+    var enableSignInButton = false {
         didSet {
             signInButton.isEnabled = enableSignInButton
             signInButton.tintColor = signInButton.currentTitleColor
