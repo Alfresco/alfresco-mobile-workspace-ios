@@ -24,8 +24,8 @@ class GlobalSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
     var searchChips: [SearchChipItem] = []
 
     weak var delegate: SearchViewModelDelegate?
-    var displaySearchBar: Bool = true
-    var displaySearchButton: Bool = false
+    var displaySearchBar = true
+    var displaySearchButton = false
 
     private var liveSearchTimer: Timer?
     private let searchTimerBuffer = 0.7

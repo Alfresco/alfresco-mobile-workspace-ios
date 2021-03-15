@@ -38,9 +38,9 @@ class SplashViewController: SystemThemableViewController {
 
     weak var coordinatorDelegate: SplashScreenCoordinatorDelegate?
 
-    var applyAnimations: Bool = true
-    var isAnimationInProgress: Bool = false
-    var wasRotatedInAnimationProgress: Bool = false
+    var applyAnimations = true
+    var isAnimationInProgress = false
+    var wasRotatedInAnimationProgress = false
     var shadowLayer: CALayer?
 
     let animationLogo = 0.0

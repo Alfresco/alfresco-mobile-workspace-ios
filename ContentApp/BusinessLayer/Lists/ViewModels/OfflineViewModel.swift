@@ -23,7 +23,7 @@ import MaterialComponents.MaterialDialogs
 class OfflineViewModel: PageFetchingViewModel {
     var supportedNodeTypes: [NodeType] = []
     var coordinatorServices: CoordinatorServices?
-    private var shouldEnableListButton: Bool = true
+    private var shouldEnableListButton = true
 
     // MARK: - Init
 

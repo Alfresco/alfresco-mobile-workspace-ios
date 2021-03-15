@@ -22,7 +22,7 @@ import UIKit
 class KeyboardHandling {
     private var view: UIView?
     private var object: UIView?
-    private var viewChanged: Bool = false
+    private var viewChanged = false
 
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

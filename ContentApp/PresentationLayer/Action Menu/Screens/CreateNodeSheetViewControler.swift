@@ -32,7 +32,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     var createNodeViewModel: CreateNodeViewModel?
 
-    var enableUploadButton: Bool = false {
+    var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton
         }

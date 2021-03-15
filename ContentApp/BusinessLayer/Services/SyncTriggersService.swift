@@ -54,8 +54,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
 
-    private var syncDidTriedToStartOnConnectivity: Bool = false
-    private var syncDidTriedToStartWhenSyncing: Bool = false
+    private var syncDidTriedToStartOnConnectivity = false
+    private var syncDidTriedToStartWhenSyncing = false
 
     deinit {
         kvoSyncStatus?.invalidate()

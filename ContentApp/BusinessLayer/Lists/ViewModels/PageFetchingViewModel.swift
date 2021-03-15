@@ -37,7 +37,7 @@ class PageFetchingViewModel {
     var refreshedList = false
     var pageSkipCount: Int?
 
-    var shouldDisplayNextPageLoadingIndicator: Bool = false
+    var shouldDisplayNextPageLoadingIndicator = false
     var results: [ListNode] = [] {
         didSet {
             let pagination = Pagination(count: 0,

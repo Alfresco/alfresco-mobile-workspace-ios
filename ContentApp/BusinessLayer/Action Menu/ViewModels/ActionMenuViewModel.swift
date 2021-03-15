@@ -173,6 +173,7 @@ class ActionMenuViewModel {
     }
 
     private func addActionToOpenMenu(in array: [ActionMenu]) {
+        toolbarActions.append(contentsOf: array)
         toolbarActions.append(ActionMenu(title: "", type: .more))
     }
 }
