@@ -20,6 +20,7 @@ import Foundation
 import AlfrescoAuth
 import AlfrescoContent
 import JWTDecode
+import FastCoding
 
 class AIMSSession {
     weak var delegate: AIMSAccountDelegate?
@@ -60,16 +61,18 @@ class AIMSSession {
         do {
             if let authSession = session {
                 let credentialData = try JSONEncoder().encode(credential)
-                let sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession,
-                                                                   requiringSecureCoding: true)
+                let sessionData = FastCoder.data(withRootObject: authSession)
+                let sessionKey = "\(identifier)-\(String(describing: AlfrescoAuthSession.self))"
+
+                if let ecodedSessionData = sessionData {
+                    _ = Keychain.set(value: ecodedSessionData,
+                                     forKey: sessionKey)
+                }
 
                 let credentialKey = "\(identifier)-\(String(describing: AlfrescoCredential.self))"
-                let sessionKey = "\(identifier)-\(String(describing: AlfrescoAuthSession.self))"
 
                 _ = Keychain.set(value: credentialData,
                                  forKey: credentialKey)
-                _ = Keychain.set(value: sessionData,
-                                 forKey: sessionKey)
             }
         } catch {
             AlfrescoLog.error("Unable to persist credentials to Keychain.")

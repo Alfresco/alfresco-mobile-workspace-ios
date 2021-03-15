@@ -170,6 +170,7 @@ class SyncOperationFactory {
                     sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
 
                     for onlineNode in onlineNodes {
+                        onlineNode.removeAllowableOperationUnknown()
                         if onlineNode.isAFolderType() {
                             let queriedNode = listNodeDataAccessor.query(node: onlineNode)
                             onlineNode.markedAsOffline = queriedNode?.markedAsOffline ?? false

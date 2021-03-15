@@ -49,32 +49,22 @@ class ConnectViewModel {
                 case .basicAuth:
                     AlfrescoLog.debug("URL \(url) has authentication type BASIC.")
                 }
-                if authType == .aimsAuth {
-                    sSelf.authenticationService?.isContentServicesAvailable(handler: { (result) in
-                        switch result {
-                        case .success(let isVersionOverMinium):
-                            if isVersionOverMinium {
-                                DispatchQueue.main.async {
-                                    sSelf.delegate?.authServiceByPass()
-                                    sSelf.aimsViewModel?.login(repository: url, in: viewController)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    sSelf.delegate?.authServiceAvailable(for: authType)
-                                }
-                            }
-                        case .failure(let error):
-                            AlfrescoLog.error(error)
-                            DispatchQueue.main.async {
-                                sSelf.delegate?.authServiceAvailable(for: authType)
-                            }
-                        }
-                    })
-                } else {
-                    DispatchQueue.main.async {
-                        sSelf.delegate?.authServiceAvailable(for: authType)
+                sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
+                                                                        handler: { (result) in
+                    switch result {
+                    case .success(let isVersionOverMinium):
+                        sSelf.contentService(available: isVersionOverMinium,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
+                    case .failure(let error):
+                        AlfrescoLog.error(error)
+                        sSelf.contentService(available: false,
+                                             authType: authType,
+                                             url: url,
+                                             in: viewController)
                     }
-                }
+                })
             case .failure(let error):
                 AlfrescoLog.error("Error \(url) auth_type: \(error.localizedDescription)")
                 DispatchQueue.main.async {
@@ -82,5 +72,32 @@ class ConnectViewModel {
                 }
             }
         })
+    }
+
+    func contentService(available: Bool,
+                        authType: AvailableAuthType,
+                        url: String,
+                        in viewController: UIViewController) {
+        switch authType {
+        case .aimsAuth:
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                if available {
+                    sSelf.delegate?.authServiceByPass()
+                    sSelf.aimsViewModel?.loginByPass(repository: url, in: viewController)
+                } else {
+                    sSelf.delegate?.authServiceAvailable(for: authType)
+                }
+            }
+        default:
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                if available {
+                    sSelf.delegate?.authServiceAvailable(for: authType)
+                } else {
+                    sSelf.delegate?.authServiceUnavailable(with: APIError(domain: ""))
+                }
+            }
+        }
     }
 }

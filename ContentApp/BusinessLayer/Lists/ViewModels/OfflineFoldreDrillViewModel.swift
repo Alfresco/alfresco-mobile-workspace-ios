@@ -105,6 +105,10 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
         return true
     }
 
+    func shouldDisplayPullToRefreshOffline() -> Bool {
+        true
+    }
+
     func performListAction() {
         // Do nothing
     }

@@ -138,6 +138,10 @@ extension OfflineViewModel: ListViewModelProtocol {
         return false
     }
 
+    func shouldDisplayPullToRefreshOffline() -> Bool {
+        true
+    }
+
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.status == .cellular &&

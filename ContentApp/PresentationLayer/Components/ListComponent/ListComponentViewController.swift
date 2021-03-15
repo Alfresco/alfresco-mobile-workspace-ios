@@ -80,6 +80,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.delegate = self
         collectionView.pageDelegate = self
         collectionView.isPaginationEnabled = isPaginationEnabled
+        collectionView.coordinatorServices = coordinatorServices
 
         emptyListView.isHidden = true
         createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
@@ -229,6 +230,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                        changeHandler: { [weak self] (_, _) in
                                                         guard let sSelf = self else { return }
                                                         sSelf.handleConnectivity()
+                                                        sSelf.collectionView.reloadData()
                                                        })
     }
 
@@ -236,6 +238,14 @@ class ListComponentViewController: SystemThemableViewController {
         let connectivityService = coordinatorServices?.connectivityService
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
+
+            if listDataSource?.shouldDisplayPullToRefreshOffline() == false {
+                refreshControl?.removeFromSuperview()
+            }
+        } else {
+            if let refreshControl = self.refreshControl, refreshControl.superview == nil {
+                collectionView.addSubview(refreshControl)
+            }
         }
         listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
     }

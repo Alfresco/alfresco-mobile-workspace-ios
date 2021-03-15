@@ -53,6 +53,16 @@ class PageFetchingViewModel {
         pageFetchingGroup.notify(queue: .global()) { [weak self] in
             guard let sSelf = self else { return }
 
+            let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+            if connectivityService?.hasInternetConnection() == false {
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.refreshedList = false
+                    sSelf.pageSkipCount = nil
+                    sSelf.handlePage(results: sSelf.results, pagination: nil, error: nil)
+                }
+            }
+
             if sSelf.hasMoreItems {
                 let skipCount = (sSelf.refreshedList) ? APIConstants.pageSize : sSelf.results.count
                 let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
