@@ -42,7 +42,6 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         
         webView.navigationDelegate = self
-        webView.scrollView.delegate = self
         addSubview(webView)
         plainTextWebView = webView
 
@@ -84,11 +83,6 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
     func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
         backgroundColor = currentTheme.backgroundColor
-    }
-}
-
-extension PlainTextPreview: UIScrollViewDelegate {
-    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
     }
 }
 
