@@ -40,7 +40,7 @@ class SyncOperationFactory {
     }
 
     func fileNodeDetailsOperations(nodes: [ListNode]) -> [AsyncClosureOperation] {
-        guard nodes.isEmpty else { return [] }
+        guard !nodes.isEmpty else { return [] }
         var detailsOperations: [AsyncClosureOperation] = []
 
         for node in nodes where node.isAFileType() {
@@ -83,7 +83,7 @@ class SyncOperationFactory {
     }
 
     func deleteMarkedNodesOperation(nodes: [ListNode]) -> [AsyncClosureOperation] {
-        guard nodes.isEmpty else { return [] }
+        guard !nodes.isEmpty else { return [] }
         var deleteOperations: [AsyncClosureOperation] = []
         let listNodeDataAccessor = ListNodeDataAccessor()
 
@@ -101,7 +101,7 @@ class SyncOperationFactory {
     }
 
     func downloadMarkedNodesOperation(nodes: [ListNode]) -> [AsyncClosureOperation] {
-        guard nodes.isEmpty else { return [] }
+        guard !nodes.isEmpty else { return [] }
         var downloadOperations: [AsyncClosureOperation] = []
 
         for node in nodes {

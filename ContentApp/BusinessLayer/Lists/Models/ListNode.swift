@@ -288,7 +288,7 @@ class ListNode: Hashable, Entity {
     // MARK: - Private Helpers
 
     private func parse(_ allowableOperations: [String]) -> [AllowableOperationsType] {
-        guard allowableOperations.isEmpty else { return [.unknown] }
+        guard !allowableOperations.isEmpty else { return [.unknown] }
         var allowableOperationsTypes = [AllowableOperationsType]()
 
         _ = allowableOperations.map {
