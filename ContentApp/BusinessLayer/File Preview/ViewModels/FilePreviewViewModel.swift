@@ -132,6 +132,7 @@ class FilePreviewViewModel {
                                   with: size)
             }
         case .text:
+            size = requestFullScreenExperience()
             previewContentFileText(with: size)
         default:
             if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
@@ -201,7 +202,7 @@ class FilePreviewViewModel {
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
 
         switch filePreviewType {
-        case .video, .image, .gif, .audio:
+        case .video, .image, .gif, .audio, .text:
             size = requestFullScreenExperience()
         case .rendition:
             if let renditionType = listNodeDataAccessor.localRenditionType(for: listNode) {
