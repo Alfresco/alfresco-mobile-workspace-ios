@@ -21,7 +21,13 @@ import UIKit
 import WebKit
 
 class PlainTextPreview: UIView, FilePreviewProtocol {
+    weak var filePreviewDelegate: FilePreviewDelegate?
     private var plainTextWebView: WKWebView?
+    private var isFullScreen = false {
+        didSet {
+            filePreviewDelegate?.enableFullScreen(isFullScreen)
+        }
+    }
 
     // MARK: - Init
 
@@ -33,26 +39,77 @@ class PlainTextPreview: UIView, FilePreviewProtocol {
         let webView = WKWebView()
         webView.backgroundColor = .clear
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        
+        webView.navigationDelegate = self
+        webView.scrollView.delegate = self
         addSubview(webView)
         plainTextWebView = webView
 
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            webView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0),
-            webView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0),
-            webView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
+            webView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            webView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            webView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         ])
+
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(viewTapped(_:)))
+        tapGesture.delegate = self
+        plainTextWebView?.addGestureRecognizer(tapGesture)
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
+    // MARK: - IBActions
+
+    @objc private func viewTapped(_ gestureRecognizer: UIGestureRecognizer) {
+        isFullScreen = !isFullScreen
+    }
+
     // MARK: - Public Helpers
 
     func display(text: Data) {
         if let url = URL(string: "http://localhost") {
-            plainTextWebView?.load(text, mimeType: "text/plain", characterEncodingName: "UTF-8", baseURL: url)
+            plainTextWebView?.load(text, mimeType: "text/plain",
+                                   characterEncodingName: "UTF-8",
+                                   baseURL: url)
         }
+    }
+
+    // MARK: - FilePreviewProtocol
+
+    func applyComponentsThemes(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        backgroundColor = currentTheme.backgroundColor
+    }
+}
+
+extension PlainTextPreview: UIScrollViewDelegate {
+    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+    }
+}
+
+// MARK: - WKNavigation Delegate
+
+extension PlainTextPreview: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        let topSafeArea = plainTextWebView?.scrollView.safeAreaInsets.top ?? 0
+        plainTextWebView?.scrollView.contentInset = UIEdgeInsets(top: topSafeArea,
+                                                                 left: 0,
+                                                                 bottom: 0,
+                                                                 right: 0)
+    }
+}
+
+// MARK: - UIGestureRecognizer Delegate
+
+extension PlainTextPreview: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith
+                            otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+      return true
     }
 }
