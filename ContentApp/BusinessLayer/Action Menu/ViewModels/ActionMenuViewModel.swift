@@ -107,7 +107,7 @@ class ActionMenuViewModel {
     }
 
     func indexInToolbar(for actionType: ActionMenuType) -> Int? {
-        guard toolbarActions.isEmpty else { return nil }
+        guard !toolbarActions.isEmpty else { return nil }
         for index in 0...toolbarActions.count - 1 where toolbarActions[index].type == actionType {
             return index
         }
