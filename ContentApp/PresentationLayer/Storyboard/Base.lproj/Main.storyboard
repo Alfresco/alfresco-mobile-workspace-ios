@@ -625,6 +625,9 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6lD-7k-QxA">
                                                     <rect key="frame" x="26" y="18.333333333333332" width="25" height="24.999999999999996"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="iconImageView">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="LYr-xz-EMj"/>
                                                         <constraint firstAttribute="height" constant="25" id="y9m-ON-Qxq"/>
@@ -632,12 +635,18 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cwy-uC-SOR">
                                                     <rect key="frame" x="77" y="11.999999999999998" width="311" height="19.333333333333329"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="titleLabel">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DNl-QQ-Wod">
                                                     <rect key="frame" x="77" y="35.333333333333336" width="311" height="14.333333333333336"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="subtitleLabel">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -682,6 +691,9 @@
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oe5-Bi-mx4">
                                                     <rect key="frame" x="26" y="22" width="25" height="25"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="iconImageView">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="25" id="6MF-0O-9gJ"/>
                                                         <constraint firstAttribute="width" constant="25" id="pwJ-76-xlW"/>
@@ -689,18 +701,27 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FXy-uz-ujj">
                                                     <rect key="frame" x="77" y="12" width="311" height="20"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="titleLabel">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Ik-vx-1eJ">
                                                     <rect key="frame" x="77" y="36" width="311" height="14"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="subtitleLabel">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wRW-7C-B7y" customClass="MDCButton">
                                                     <rect key="frame" x="77" y="70" width="30" height="34"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="signOutButton">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <connections>
                                                         <action selector="signOutButtonTapped:" destination="rVU-8H-XdN" eventType="touchUpInside" id="M73-C3-rh3"/>
                                                     </connections>
@@ -748,6 +769,9 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulv-nG-lSy">
                                                     <rect key="frame" x="24" y="26" width="380" height="20.333333333333329"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="titleLabel">
+                                                        <bool key="isElement" value="YES"/>
+                                                    </accessibility>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
