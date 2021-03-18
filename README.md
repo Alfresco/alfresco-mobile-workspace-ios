@@ -1,4 +1,8 @@
-# <img title="Alfresco" alt='Alfresco' src='https://raw.githubusercontent.com/Alfresco/alfresco-mobile-workspace-ios/master/docs/logo.svg' height="32px" /> Mobile Workspace iOS
+[<img title="Alfresco" alt='Alfresco' src='https://raw.githubusercontent.com/Alfresco/alfresco-mobile-workspace-ios/master/docs/logo.svg' align=right height="32px"/>](https://alfresco.com/)
+
+# Alfresco Mobile Workspace iOS
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Alfresco/alfresco-mobile-workspace-ios?label=release)
+![License](https://img.shields.io/github/license/Alfresco/alfresco-mobile-workspace-android)
 
 ## What Is Alfresco Mobile Workspace?
 Alfresco Mobile Workspace enables users to work away from their workstation without compromising on the way content is accessed. Keep productivity high by transporting technical documents into the field without having to worry about a data connection.
@@ -17,7 +21,7 @@ Alfresco Mobile Workspace enables users to work away from their workstation with
 
 You can make use of the app by installing it from the App Store.
 
-<a href="<Link here>">
+<a href="https://apps.apple.com/us/app/alfresco-mobile-workspace/id1514434480">
   <img alt="Get it on App Store" height="40" width="135"
        src="https://linkmaker.itunes.apple.com/assets/shared/badges/en-us/appstore-lrg.svg" />
 </a>
