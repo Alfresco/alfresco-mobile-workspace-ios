@@ -35,6 +35,7 @@ extension UIViewController {
     func addSettingsButton(action: Selector, target: Any?) {
         let settingsButtonAspectRatio: CGFloat = 30.0
         settingsButton = UIButton(type: .custom)
+        settingsButton.accessibilityIdentifier = "settingsButton"
         settingsButton.frame = CGRect(x: 0.0, y: 0.0,
                                       width: settingsButtonAspectRatio,
                                       height: settingsButtonAspectRatio)
@@ -46,6 +47,7 @@ extension UIViewController {
         settingsButton.addTarget(target, action: action, for: UIControl.Event.touchUpInside)
 
         let settingsBarButtonItem = UIBarButtonItem(customView: settingsButton)
+        settingsBarButtonItem.accessibilityIdentifier = "settingsBarButton"
         let currWidth = settingsBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
         currWidth?.isActive = true
         let currHeight = settingsBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: settingsButtonAspectRatio)
