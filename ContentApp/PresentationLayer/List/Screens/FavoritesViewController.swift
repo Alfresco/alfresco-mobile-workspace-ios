@@ -133,12 +133,17 @@ class FavoritesViewController: SystemSearchViewController {
     func setupTabBarView() -> MDCTabBarView {
         let tabBar = MDCTabBarView()
         tabBar.tabBarDelegate = self
-        tabBar.items = [UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
-                                     image: nil,
-                                     tag: 0),
-                        UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
-                                     image: nil,
-                                     tag: 1)]
+        let folderAndFilesTabBarItem =
+            UITabBarItem(title: LocalizationConstants.Search.filterFoldersAndFiles,
+                         image: nil,
+                         tag: 0)
+        let librariesTabBarItem =
+            UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
+                         image: nil,
+                         tag: 1)
+        folderAndFilesTabBarItem.accessibilityIdentifier = "favoritesFilesAndFolderTab"
+        librariesTabBarItem.accessibilityIdentifier = "favoritesLibrariesTab"
+        tabBar.items = [folderAndFilesTabBarItem, librariesTabBarItem]
         tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
 
