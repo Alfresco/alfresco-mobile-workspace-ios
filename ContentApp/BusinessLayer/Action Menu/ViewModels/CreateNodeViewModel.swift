@@ -230,6 +230,7 @@ class CreateNodeViewModel {
                 MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
                 }
+            cancelAction.accessibilityIdentifier = "cancelActionButton"
 
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,

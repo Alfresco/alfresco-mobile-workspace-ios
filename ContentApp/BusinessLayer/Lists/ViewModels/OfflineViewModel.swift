@@ -67,7 +67,10 @@ class OfflineViewModel: PageFetchingViewModel {
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
