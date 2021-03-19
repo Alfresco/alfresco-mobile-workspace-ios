@@ -141,8 +141,12 @@ class FavoritesViewController: SystemSearchViewController {
             UITabBarItem(title: LocalizationConstants.Search.filterLibraries,
                          image: nil,
                          tag: 1)
+
+        folderAndFilesTabBarItem.isAccessibilityElement = true
         folderAndFilesTabBarItem.accessibilityIdentifier = "favoritesFilesAndFolderTab"
+        librariesTabBarItem.isAccessibilityElement = true
         librariesTabBarItem.accessibilityIdentifier = "favoritesLibrariesTab"
+
         tabBar.items = [folderAndFilesTabBarItem, librariesTabBarItem]
         tabBar.selectionIndicatorTemplate = FavoritesTabBarIndicator()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
