@@ -132,6 +132,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.smartQuotesType = .no
+        searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
         return searchController
     }

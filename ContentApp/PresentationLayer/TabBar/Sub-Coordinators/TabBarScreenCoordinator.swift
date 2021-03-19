@@ -57,13 +57,9 @@ class TabBarScreenCoordinator: Coordinator {
                                             image: UIImage(named: "ic-browse-unselected"),
                                             selectedImage: UIImage(named: "ic-browse-selected"))
 
-        recentTabBarItem.isAccessibilityElement = true
         recentTabBarItem.accessibilityIdentifier = "recentTab"
-        favoritesTabBarItem.isAccessibilityElement = true
         favoritesTabBarItem.accessibilityIdentifier = "favoritesTab"
-        offlineTabBarItem.isAccessibilityElement = true
         offlineTabBarItem.accessibilityIdentifier = "offlineTab"
-        browseTabBarItem.isAccessibilityElement = true
         browseTabBarItem.accessibilityIdentifier = "browseTab"
 
         recentTabBarItem.tag = 0

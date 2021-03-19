@@ -142,9 +142,7 @@ class FavoritesViewController: SystemSearchViewController {
                          image: nil,
                          tag: 1)
 
-        folderAndFilesTabBarItem.isAccessibilityElement = true
-        folderAndFilesTabBarItem.accessibilityIdentifier = "favoritesFilesAndFolderTab"
-        librariesTabBarItem.isAccessibilityElement = true
+        folderAndFilesTabBarItem.accessibilityIdentifier = "favoritesFilesAndFoldersTab"
         librariesTabBarItem.accessibilityIdentifier = "favoritesLibrariesTab"
 
         tabBar.items = [folderAndFilesTabBarItem, librariesTabBarItem]
