@@ -1058,6 +1058,7 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G6H-m0-aVG">
                                         <rect key="frame" x="24" y="10" width="380" height="29"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="recentSearchesTitleLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1082,6 +1083,9 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-restore" translatesAutoresizingMaskIntoConstraints="NO" id="p9t-aS-aTa">
                                                             <rect key="frame" x="25" y="12" width="24" height="24"/>
                                                             <color key="tintColor" systemColor="labelColor"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="recentSearchLeftImageView">
+                                                                <bool key="isElement" value="YES"/>
+                                                            </accessibility>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="O8g-lW-N3I"/>
                                                                 <constraint firstAttribute="width" constant="24" id="U3P-7c-WbJ"/>
@@ -1089,6 +1093,7 @@
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bkg-JQ-MQK">
                                                             <rect key="frame" x="73" y="14.666666666666664" width="268" height="19"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="recentSearchTitleLabel"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -1096,6 +1101,9 @@
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-recent-searches" translatesAutoresizingMaskIntoConstraints="NO" id="bNy-em-qpt">
                                                             <rect key="frame" x="365" y="12" width="24" height="24"/>
                                                             <color key="tintColor" systemColor="labelColor"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="recentSearchRightImageView">
+                                                                <bool key="isElement" value="YES"/>
+                                                            </accessibility>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="IBF-EP-dFE"/>
                                                                 <constraint firstAttribute="width" constant="24" id="uw8-e6-jNx"/>
