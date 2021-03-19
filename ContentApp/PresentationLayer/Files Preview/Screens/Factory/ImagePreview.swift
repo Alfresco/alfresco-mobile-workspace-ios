@@ -63,6 +63,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
         zoomImageView.backgroundColor = .clear
         zoomImageView.translatesAutoresizingMaskIntoConstraints = false
         zoomImageView.contentInsetAdjustmentBehavior = .never
+        zoomImageView.accessibilityIdentifier = "zoomImageView"
         addSubview(zoomImageView)
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(zoomImageGesture(_:)))

@@ -1416,6 +1416,9 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Omh-yg-bT9">
                                         <rect key="frame" x="114" y="114" width="72" height="72"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="filePreviewNodeMimeTypeImageView">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="72" id="hpV-KS-vPh"/>
                                             <constraint firstAttribute="width" secondItem="Omh-yg-bT9" secondAttribute="height" multiplier="1:1" id="y8Y-0x-N2l"/>
@@ -1423,12 +1426,14 @@
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cN8-0a-TbF">
                                         <rect key="frame" x="20" y="206" width="260" height="0.0"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="filePreviewNodeTitleLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rcA-QW-qS4">
                                         <rect key="frame" x="150" y="210" width="0.0" height="0.0"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="filePreviewNodeStatusLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>

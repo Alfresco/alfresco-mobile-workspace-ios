@@ -123,6 +123,7 @@ class FilePreviewViewController: SystemThemableViewController {
                                          action: #selector(toolbarActionTapped(sender:)))
             button.tag = array.count
             button.image = action.icon
+            button.accessibilityIdentifier = action.type.rawValue
             array.append(button)
         }
         self.toolbarActions = array
