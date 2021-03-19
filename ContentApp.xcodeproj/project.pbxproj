@@ -267,6 +267,7 @@
 		E3F5625E2476F6490091896D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5625D2476F6490091896D /* SplashViewController.swift */; };
 		E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */; };
 		E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */; };
+		F137B6D0260495FE00A60054 /* UINavigationBar+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */; };
 		F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */; };
 /* End PBXBuildFile section */
 
@@ -569,6 +570,7 @@
 		E3F5625D2476F6490091896D /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuGeneric.swift; sourceTree = "<group>"; };
 		E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionMenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Subviews.swift"; sourceTree = "<group>"; };
 		F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+IsEmpty.swift"; sourceTree = "<group>"; };
 		F4ECEF6177D9FF73F5055CD9 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1468,6 +1470,7 @@
 		E3A2A8F9247E7D230046582C /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F137B6CE260495DE00A60054 /* UINavigation */,
 				F13998D525F767890062F652 /* UITextiField */,
 				B97D373725545FD000CD1523 /* UIViewController */,
 				B97D373825545FF900CD1523 /* UIView */,
@@ -1478,7 +1481,6 @@
 				B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */,
 				E321BAD2248111F400BE938E /* UIFont+InterFont.swift */,
 				E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */,
-				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
 				E350BD45249CBDC4008E381F /* Bundle+VersionString.swift */,
 				B9FC629C24C6C90600246606 /* UICollectionView+ItemIndex.swift */,
 				E321380D24C6F2C60025A833 /* UILabel+Theming.swift */,
@@ -1645,6 +1647,15 @@
 				E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		F137B6CE260495DE00A60054 /* UINavigation */ = {
+			isa = PBXGroup;
+			children = (
+				B9288AC4249A42950007096A /* UINavigationController+FadePresentation.swift */,
+				F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */,
+			);
+			path = UINavigation;
 			sourceTree = "<group>";
 		};
 		F13998D525F767890062F652 /* UITextiField */ = {
@@ -1996,6 +2007,7 @@
 				B9DBB21B256537840098CF18 /* OperationQueueService.swift in Sources */,
 				E3E9ED4124CB22EF00F1A2C2 /* BrowseViewController.swift in Sources */,
 				B9958E0C24D9AD220058BCE1 /* UIViewController+Settings.swift in Sources */,
+				F137B6D0260495FE00A60054 /* UINavigationBar+Subviews.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
 				E31CF0A925AF06D800620ADA /* EmptyOffline.swift in Sources */,
 				E3E0F81E25CAFC5700DBC6F6 /* ErrorCodes.swift in Sources */,
