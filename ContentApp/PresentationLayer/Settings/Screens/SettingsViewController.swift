@@ -112,6 +112,7 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
         }
         cell?.item = item
         cell?.delegate = self
+        cell?.accessibilityIdentifier = item.type.rawValue
         cell?.applyTheme(with: coordinatorServices?.themingService)
         if (viewModel?.items.count ?? 0) - 1 == indexPath.section {
             cell?.shouldHideSeparator(hidden: true)

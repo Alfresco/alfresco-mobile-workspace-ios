@@ -84,7 +84,10 @@ class SettingsViewModel {
             guard let sSelf = self else { return }
             sSelf.logOutForCurrentAccount(in: viewController)
         }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
         let cancelAction = MDCAlertAction(title: cancelButtonTitle) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         if let viewController = viewController as? SystemThemableViewController {
             _ = viewController.showDialog(title: title,

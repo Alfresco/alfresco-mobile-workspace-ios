@@ -99,6 +99,7 @@ extension MultipleChoiceDialogViewController: UICollectionViewDataSource,
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? MultipleChoiceItemCollectionViewCell
         cell?.item = viewModel.items[indexPath.row]
+        cell?.accessibilityIdentifier = "multipleChoiceItemCell\(indexPath.row)"
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         return cell ?? UICollectionViewCell()
     }

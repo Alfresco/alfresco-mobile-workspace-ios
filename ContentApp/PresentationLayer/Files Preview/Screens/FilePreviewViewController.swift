@@ -123,6 +123,7 @@ class FilePreviewViewController: SystemThemableViewController {
                                          action: #selector(toolbarActionTapped(sender:)))
             button.tag = array.count
             button.image = action.icon
+            button.accessibilityIdentifier = action.type.rawValue
             array.append(button)
         }
         self.toolbarActions = array
@@ -236,6 +237,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
                 guard let sSelf = self else { return }
                 sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
             }
+        submitAction.accessibilityIdentifier = "submitActionButton"
         let cancelAction =
             MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
                 guard let sSelf = self else { return }
@@ -243,6 +245,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
                 alertController?.dismiss(animated: true, completion: nil)
                 sSelf.filePreviewCoordinatorDelegate?.navigateBack()
             }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         alertController = showDialog(title: title,
                                      message: message,

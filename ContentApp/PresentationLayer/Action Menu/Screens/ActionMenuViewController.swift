@@ -121,6 +121,7 @@ extension ActionMenuViewController: UICollectionViewDataSource, UICollectionView
             collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
                                                for: indexPath) as? ActionMenuCollectionViewCell
         cell?.action = action
+        cell?.accessibilityIdentifier = action.type.rawValue
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
         cell?.sectionSeparator.isHidden = !(actionMenuModel.shouldShowSectionSeparator(for: indexPath))
         return cell ?? UICollectionViewCell()
