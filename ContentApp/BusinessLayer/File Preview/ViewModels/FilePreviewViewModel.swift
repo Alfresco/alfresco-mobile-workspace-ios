@@ -113,10 +113,9 @@ class FilePreviewViewModel {
             return
         }
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
-
+        size = requestFullScreenExperience()
         switch filePreviewType {
         case .video, .image, .gif, .audio:
-            size = requestFullScreenExperience()
             if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
                 previewFile(type: filePreviewType, at: contentURL, with: size)
             }
@@ -124,15 +123,11 @@ class FilePreviewViewModel {
             viewModelDelegate?.willPreparePreview()
             nodeOperations.fetchRenditionURL(for: listNode.guid) { [weak self] url, isImageRendition in
                 guard let sSelf = self else { return }
-                if isImageRendition {
-                    size = sSelf.requestFullScreenExperience()
-                }
                 sSelf.previewFile(type: (isImageRendition ? .image : .rendition),
                                   at: url,
                                   with: size)
             }
         case .text:
-            size = requestFullScreenExperience()
             previewContentFileText(with: size)
         default:
             if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
@@ -200,16 +195,11 @@ class FilePreviewViewModel {
 
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
+        size = requestFullScreenExperience()
 
         switch filePreviewType {
-        case .video, .image, .gif, .audio, .text:
-            size = requestFullScreenExperience()
         case .rendition:
             if let renditionType = listNodeDataAccessor.localRenditionType(for: listNode) {
-                if renditionType == .imagePreview {
-                    size = requestFullScreenExperience()
-                }
-
                 isImageRendition = renditionType == .imagePreview ? true : false
                 previewURL = listNodeDataAccessor.renditionLocalPath(for: listNode,
                                                                      isImageRendition: isImageRendition)

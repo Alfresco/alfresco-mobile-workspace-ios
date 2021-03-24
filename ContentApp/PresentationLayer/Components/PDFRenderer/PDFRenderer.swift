@@ -32,11 +32,18 @@ class PDFRenderer: UIView {
     var pdfBackgroundColor: UIColor?
 
     weak var passwordDelegate: PDFRendererPasswordDelegate?
+    weak var filePreviewDelegate: FilePreviewDelegate?
 
     private var pdfView: PDFView?
     private var pdfPassword: String?
     private var pageViewOverlay: UIView?
     private var pageCountLabel: UILabel?
+    
+    private var isFullScreen = false {
+        didSet {
+            filePreviewDelegate?.enableFullScreen(isFullScreen)
+        }
+    }
 
     // MARK: - Init
 
@@ -98,16 +105,26 @@ class PDFRenderer: UIView {
 
         webView = WKWebView(frame: frame, configuration: config)
         webView?.navigationDelegate = self
+
         guard let webView = self.webView else { return }
 
         webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(viewTapped(_:)))
+        tapGesture.delegate = self
+        webView.addGestureRecognizer(tapGesture)
+        
+        webView.navigationDelegate = self
+        
         self.addSubview(webView)
 
         NSLayoutConstraint.activate([
-            webView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 0),
-            webView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor, constant: 0),
-            webView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor, constant: 0),
-            webView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            webView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            webView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            webView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            webView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
         ])
         loadPDF()
     }
@@ -153,6 +170,12 @@ class PDFRenderer: UIView {
             })
         }
     }
+    
+    // MARK: - IBActions
+
+    @objc private func viewTapped(_ gestureRecognizer: UIGestureRecognizer) {
+        isFullScreen = !isFullScreen
+    }
 
     // MARK: - Load PDF
 
@@ -182,6 +205,11 @@ class PDFRenderer: UIView {
 
         let pdfView = PDFView(frame: self.bounds)
         pdfView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(viewTapped(_:)))
+        tapGesture.delegate = self
+        pdfView.addGestureRecognizer(tapGesture)
 
         addSubview(pdfView)
         addPageCountView()
@@ -206,10 +234,15 @@ class PDFRenderer: UIView {
         pdfView.autoScales = true
 
         NSLayoutConstraint.activate([
-            self.topAnchor.constraint(equalTo: pdfView.topAnchor, constant: 0),
-            self.leftAnchor.constraint(equalTo: pdfView.leftAnchor, constant: 0),
-            self.rightAnchor.constraint(equalTo: pdfView.rightAnchor, constant: 0),
-            self.bottomAnchor.constraint(equalTo: pdfView.bottomAnchor, constant: 0)
+            pdfView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            pdfView.leftAnchor.constraint(equalTo: leftAnchor, constant: 0),
+            pdfView.rightAnchor.constraint(equalTo: rightAnchor, constant: 0),
+            pdfView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0)
+            
+//            self.topAnchor.constraint(equalTo: pdfView.topAnchor, constant: 0),
+//            self.leftAnchor.constraint(equalTo: pdfView.leftAnchor, constant: 0),
+//            self.rightAnchor.constraint(equalTo: pdfView.rightAnchor, constant: 0),
+//            self.bottomAnchor.constraint(equalTo: pdfView.bottomAnchor, constant: 0)
         ])
 
         // Add page changed listener
@@ -218,8 +251,18 @@ class PDFRenderer: UIView {
               selector: #selector(handlePageChange(notification:)),
               name: Notification.Name.PDFViewPageChanged,
               object: nil)
+        
+//        if let pdfView = self.pdfView {
+//            for subview in pdfView.subviews {
+//                if let pdfScrollView = subview as? UIScrollView {
+//                    pdfScrollView.contentInsetAdjustmentBehavior = .never
+//                }
+//            }
+//        }
     }
 }
+
+// MARK: - WKScriptMessage Handler
 
 extension PDFRenderer: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController,
@@ -240,6 +283,8 @@ extension PDFRenderer: WKScriptMessageHandler {
     }
 }
 
+// MARK: - WKNavigation Delegate
+
 extension PDFRenderer: WKNavigationDelegate {
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
@@ -253,6 +298,14 @@ extension PDFRenderer: WKNavigationDelegate {
             decisionHandler(.allow)
         }
     }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        let topSafeArea = self.webView?.scrollView.safeAreaInsets.top ?? 0
+        self.webView?.scrollView.contentInset = UIEdgeInsets(top: topSafeArea,
+                                                             left: 0,
+                                                             bottom: 0,
+                                                             right: 0)
+    }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         loadPDFUsingNativeRenderer()
@@ -264,5 +317,15 @@ extension PDFRenderer: WKNavigationDelegate {
             showPageCountView()
             pageCountLabel?.text = String(format: "%d of %d", currentPage, totalNoOfPages)
         }
+    }
+}
+
+// MARK: - UIGestureRecognizer Delegate
+
+extension PDFRenderer: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                           shouldRecognizeSimultaneouslyWith
+                            otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+      return true
     }
 }
