@@ -93,7 +93,7 @@ extension PlainTextPreview: WKNavigationDelegate {
         let topSafeArea = plainTextWebView?.scrollView.safeAreaInsets.top ?? 0
         plainTextWebView?.scrollView.contentInset = UIEdgeInsets(top: topSafeArea,
                                                                  left: 0,
-                                                                 bottom: 0,
+                                                                 bottom: topSafeArea,
                                                                  right: 0)
     }
 }
