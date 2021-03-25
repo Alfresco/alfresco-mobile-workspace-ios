@@ -95,6 +95,7 @@ extension PlainTextPreview: WKNavigationDelegate {
                                                                  left: 0,
                                                                  bottom: topSafeArea,
                                                                  right: 0)
+        // Used topSafeArea insets for bottom in this case due to the fact that we extend the bounds of the container view for particular mime types past the safe areas
     }
 }
 
