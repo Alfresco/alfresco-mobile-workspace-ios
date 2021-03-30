@@ -48,10 +48,10 @@ typealias RenditionCompletionHandler = (URL?) -> Void
 
 class FilePreviewViewModel {
     var listNode: ListNode?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     var coordinatorServices: CoordinatorServices?
     let nodeOperations: NodeOperations
-    let listNodeDataAccessor: ListNodeDataAccessor = ListNodeDataAccessor()
+    let listNodeDataAccessor = ListNodeDataAccessor()
 
     private weak var viewModelDelegate: FilePreviewViewModelDelegate?
     private let excludedActionsTypes: [ActionMenuType]
@@ -132,6 +132,7 @@ class FilePreviewViewModel {
                                   with: size)
             }
         case .text:
+            size = requestFullScreenExperience()
             previewContentFileText(with: size)
         default:
             if let contentURL = nodeOperations.fetchContentURL(for: listNode) {
@@ -201,7 +202,7 @@ class FilePreviewViewModel {
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
 
         switch filePreviewType {
-        case .video, .image, .gif, .audio:
+        case .video, .image, .gif, .audio, .text:
             size = requestFullScreenExperience()
         case .rendition:
             if let renditionType = listNodeDataAccessor.localRenditionType(for: listNode) {

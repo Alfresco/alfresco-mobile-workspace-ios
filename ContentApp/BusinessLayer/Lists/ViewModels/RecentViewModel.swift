@@ -25,7 +25,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     var listRequest: SearchRequest?
     var groupedLists: [GroupedList] = []
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 
@@ -89,7 +89,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -107,7 +107,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let recentFilesRequest = SearchRequestBuilder.recentFilesRequest(pagination: paginationRequest)
             SearchAPI.recentFiles(recentFilesRequest: recentFilesRequest) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
                 } else {

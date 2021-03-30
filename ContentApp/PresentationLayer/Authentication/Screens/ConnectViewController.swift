@@ -38,11 +38,11 @@ class ConnectViewController: SystemThemableViewController {
     var viewModel: ConnectViewModel?
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
-    var openKeyboard: Bool = true
-    var errorShowInProgress: Bool = false
+    var openKeyboard = true
+    var errorShowInProgress = false
     var activityIndicator: ActivityIndicatorView?
 
-    var enableConnectButton: Bool = false {
+    var enableConnectButton = false {
         didSet {
             connectButton.isEnabled = enableConnectButton
         }
@@ -59,7 +59,7 @@ class ConnectViewController: SystemThemableViewController {
         viewModel?.aimsViewModel?.delegate = self
 
         addLocalization()
-        enableConnectButton = (connectTextField.text != "")
+        enableConnectButton = !connectTextField.isEmpty()
         activityIndicator = ActivityIndicatorView(currentTheme: coordinatorServices?.themingService?.activeTheme)
         activityIndicator?.label(text: LocalizationConstants.Labels.conneting)
         if let activityIndicator = activityIndicator {
@@ -251,7 +251,7 @@ extension ConnectViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableConnectButton = (textField.text != "")
+        enableConnectButton = !textField.isEmpty()
     }
 }
 

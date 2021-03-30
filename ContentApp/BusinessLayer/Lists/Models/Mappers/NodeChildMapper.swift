@@ -43,7 +43,7 @@ struct NodeChildMapper {
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
-                        allowableOperations: node.allowableOperations,
+                        allowableOperations: node.allowableOperations ?? [],
                         isFile: node.isFile,
                         isFolder: node.isFolder)
     }
@@ -69,7 +69,7 @@ struct NodeChildMapper {
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,
-                        allowableOperations: node.allowableOperations,
+                        allowableOperations: node.allowableOperations ?? [],
                         destination: destination,
                         isFile: node.isFile,
                         isFolder: node.isFolder)

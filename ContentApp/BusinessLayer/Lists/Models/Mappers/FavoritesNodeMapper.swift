@@ -50,7 +50,7 @@ struct FavoritesNodeMapper {
                         modifiedAt: node.modifiedAt,
                         nodeType: nodeType,
                         favorite: true,
-                        allowableOperations: node.allowableOperations,
+                        allowableOperations: node.allowableOperations ?? [],
                         isFile: node.isFile,
                         isFolder: node.isFolder)
     }

@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,9 +16,16 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class OperationQueueService: Service {
-    static let main = DispatchQueue.main
-    static let worker = DispatchQueue(label: "WorkerQueue")
+extension UINavigationBar {
+    func addAccessibilityIdentifersToTitle() {
+        for navSubview in self.subviews {
+            for subview in navSubview.subviews {
+                if let label = subview as? UILabel {
+                    label.accessibilityIdentifier = "screenTitle"
+                }
+            }
+        }
+    }
 }

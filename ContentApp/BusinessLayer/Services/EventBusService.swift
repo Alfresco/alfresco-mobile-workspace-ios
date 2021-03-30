@@ -48,11 +48,11 @@ class EventBusService: EventBusServiceProtocol, Service {
         } else {
             let array = NSPointerArray.weakObjects()
 
-            if (observer.supportedNodeTypes?.contains(where: nodeTypes.contains)) == nil {
-                if observer.supportedNodeTypes == nil {
+            if observer.supportedNodeTypes.contains(where: nodeTypes.contains) == false {
+                if observer.supportedNodeTypes.isEmpty {
                     observer.supportedNodeTypes = []
                 }
-                observer.supportedNodeTypes?.append(contentsOf: nodeTypes)
+                observer.supportedNodeTypes.append(contentsOf: nodeTypes)
             }
 
             array.addObject(observer)
@@ -64,24 +64,22 @@ class EventBusService: EventBusServiceProtocol, Service {
         if let observers = eventObserverAssociation[E.self] {
             for idx in 0 ..< observers.count {
                 if let registeredObserver = observers.object(at: idx) as? EventObservable {
-
-                    if let supportedNoteTypes = registeredObserver.supportedNodeTypes {
-                        // Match observers by registered node types but allow custom types to be
-                        // matched as well
-                        if supportedNoteTypes.contains(event.node.nodeType) ||
-                            event.node.nodeType == .unknown {
-                            var dispatchQueue: DispatchQueue
-
-                            switch queue {
-                            case .backgroundQueue:
-                                dispatchQueue = OperationQueueService.worker
-                            case .mainQueue:
-                                dispatchQueue = OperationQueueService.main
-                            }
-
-                            dispatchQueue.async {
-                                registeredObserver.handle(event: event, on: queue)
-                            }
+                    let supportedNoteTypes = registeredObserver.supportedNodeTypes
+                    // Match observers by registered node types but allow custom types to be
+                    // matched as well
+                    if supportedNoteTypes.contains(event.node.nodeType) ||
+                        event.node.nodeType == .unknown {
+                        var dispatchQueue: DispatchQueue
+                        
+                        switch queue {
+                        case .backgroundQueue:
+                            dispatchQueue = OperationQueueService.worker
+                        case .mainQueue:
+                            dispatchQueue = OperationQueueService.main
+                        }
+                        
+                        dispatchQueue.async {
+                            registeredObserver.handle(event: event, on: queue)
                         }
                     }
                 }

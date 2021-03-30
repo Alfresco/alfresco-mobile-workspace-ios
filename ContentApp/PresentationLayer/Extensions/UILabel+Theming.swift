@@ -21,7 +21,7 @@ import UIKit
 
 extension UILabel {
     func add(characterSpacing kernValue: Double, lineHeight: CGFloat) {
-        if let labelText = text, labelText.count > 0 {
+        if let labelText = text, !labelText.isEmpty {
             let attributedString = NSMutableAttributedString(string: labelText)
             let style = NSMutableParagraphStyle()
             let range = NSRange(location: 0, length: labelText.count)

@@ -21,9 +21,9 @@ import AlfrescoContent
 import MaterialComponents.MaterialDialogs
 
 class OfflineViewModel: PageFetchingViewModel {
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
     var coordinatorServices: CoordinatorServices?
-    private var shouldEnableListButton: Bool = true
+    private var shouldEnableListButton = true
 
     // MARK: - Init
 
@@ -41,7 +41,7 @@ class OfflineViewModel: PageFetchingViewModel {
         refreshList()
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -52,7 +52,7 @@ class OfflineViewModel: PageFetchingViewModel {
 
     // MARK: - Private interface
 
-    func offlineMarkedNodes() -> [ListNode]? {
+    func offlineMarkedNodes() -> [ListNode] {
         let listNodeDataAccessor = ListNodeDataAccessor()
         return listNodeDataAccessor.queryMarkedOffline()
     }
@@ -67,7 +67,10 @@ class OfflineViewModel: PageFetchingViewModel {
             let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
@@ -92,7 +95,7 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -100,10 +103,7 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func refreshList() {
-        if let offlineNodes = offlineMarkedNodes() {
-            results = offlineNodes
-        }
-
+        results = offlineMarkedNodes()
         handlePage(results: results,
                    pagination: nil,
                    error: nil)

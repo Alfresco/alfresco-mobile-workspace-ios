@@ -32,7 +32,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     var createNodeViewModel: CreateNodeViewModel?
 
-    var enableUploadButton: Bool = false {
+    var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton
         }
@@ -50,6 +50,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         nameTextField.becomeFirstResponder()
     }
 
@@ -68,12 +69,12 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
         if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-           nodeName != "" {
+           !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
-                guard let sSelf = self else { return }
-                var descriptionNode = sSelf.descriptionTextArea.textView.text
-                descriptionNode = (descriptionNode == "") ? nil : descriptionNode
-                sSelf.createNodeViewModel?.createNode(with: nodeName, description: descriptionNode)
+                guard let sSelf = self,
+                      let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
+                sSelf.createNodeViewModel?.createNode(with: nodeName,
+                                                      description: (descriptionNode.isEmpty) ? nil : descriptionNode)
             }
         }
     }
@@ -150,28 +151,30 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
     }
 
     func enableUploadButton(for text: String?) {
-        if text?.hasSpecialCharacters() == true {
+        guard let text = text else {
+            enableUploadButton = false
+            disableErrorOnTextField()
+            return
+        }
+        if text.hasSpecialCharacters() == true {
             let message = String(format: LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
                                  String.specialCharacters())
             applyErrorOnTextField(with: message)
-        } else if text != "" {
-            disableErrorOnTextField()
-        } else {
-            enableUploadButton = false
+        } else if !text.isEmpty {
             disableErrorOnTextField()
         }
-
-        if text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
+        
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             enableUploadButton = false
         }
 
         if createNodeViewModel?.creatingNewFolder() == true {
-            let textTrimm = text?.trimmingCharacters(in: .whitespacesAndNewlines)
-            if textTrimm?.last == "." {
+            let textTrimm = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if textTrimm.last == "." {
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameEndPeriod,
                                      ".")
                 applyErrorOnTextField(with: message)
-            } else if textTrimm == "" && text?.count ?? 0 > 0 {
+            } else if textTrimm.isEmpty && !text.isEmpty {
                 let message = String(format: LocalizationConstants.Errors.errorFolderNameContainOnlySpaces,
                                      ".")
                 applyErrorOnTextField(with: message)

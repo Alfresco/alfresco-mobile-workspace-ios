@@ -65,7 +65,7 @@ class ListComponentViewController: SystemThemableViewController {
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    var isPaginationEnabled: Bool = true
+    var isPaginationEnabled = true
 
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0

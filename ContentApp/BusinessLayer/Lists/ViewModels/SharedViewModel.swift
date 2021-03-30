@@ -24,7 +24,7 @@ import AlfrescoContent
 class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 
@@ -44,7 +44,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -69,7 +69,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -99,7 +99,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                                                      APIConstants.Include.path,
                                                      APIConstants.Include.allowableOperations],
                                            fields: nil) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list.entries {
                     listNodes = SharedLinkMapper.map(entries)
                 } else {

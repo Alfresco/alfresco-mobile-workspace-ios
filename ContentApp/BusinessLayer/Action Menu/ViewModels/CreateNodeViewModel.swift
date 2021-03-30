@@ -216,7 +216,7 @@ class CreateNodeViewModel {
     }
 
     private func showUploadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
-        if let uploadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+        if let uploadDialogView: DownloadDialog = .fromNib() {
             let themingService = coordinatorServices?.themingService
             let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
             let nodeNameWithExtension = ( nodeName ?? "" ) + nodeExtension
@@ -230,6 +230,7 @@ class CreateNodeViewModel {
                 MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
                 }
+            cancelAction.accessibilityIdentifier = "cancelActionButton"
 
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,

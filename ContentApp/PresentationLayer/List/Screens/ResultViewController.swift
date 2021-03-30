@@ -148,7 +148,7 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func reloadChips(_ array: [Int]) {
-        guard array.count != 0 else { return }
+        guard !array.isEmpty else { return }
         var items: [IndexPath] = []
         for indexChip in array {
             items.append(IndexPath(row: indexChip, section: 0))
@@ -206,6 +206,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                           for: indexPath) as? RecentSearchCollectionViewCell
             cell?.search = recentSearchesViewModel.searches[indexPath.row]
+            cell?.accessibilityIdentifier = "recentSearchItem\(indexPath.row)"
             cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return cell ?? UICollectionViewCell()
         case chipsCollectionView:
@@ -235,6 +236,16 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
                     cell?.chipView.setBorderColor(borderColor, for: .normal)
                 }
+            }
+            switch chip.type {
+            case .file:
+                cell?.accessibilityIdentifier = "filesChip"
+            case .folder:
+                cell?.accessibilityIdentifier = "foldersChip"
+            case .library:
+                cell?.accessibilityIdentifier = "librariesChip"
+            case .node:
+                cell?.accessibilityIdentifier = "nodeChip"
             }
             return cell ?? UICollectionViewCell()
         default:

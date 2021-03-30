@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,6 +17,9 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KUS-L8-7iW">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <accessibility key="accessibilityConfiguration" identifier="mediaPlayerView">
+                        <bool key="isElement" value="YES"/>
+                    </accessibility>
                     <gestureRecognizers/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="muY-ee-MGQ" appends="YES" id="vsO-Rd-p3h"/>
@@ -24,6 +27,9 @@
                 </view>
                 <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BhC-7B-chu">
                     <rect key="frame" x="171" y="412" width="72" height="72"/>
+                    <accessibility key="accessibilityConfiguration" identifier="filePreviewNodeMimeTypeImageView">
+                        <bool key="isElement" value="YES"/>
+                    </accessibility>
                     <constraints>
                         <constraint firstAttribute="width" constant="72" id="Mun-lx-Tas"/>
                         <constraint firstAttribute="width" secondItem="BhC-7B-chu" secondAttribute="height" multiplier="1:1" id="SwW-ib-60s"/>
@@ -34,24 +40,36 @@
                     <subviews>
                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="eL1-58-t8M">
                             <rect key="frame" x="14" y="10" width="370" height="31"/>
+                            <accessibility key="accessibilityConfiguration" identifier="mediaSlider">
+                                <bool key="isElement" value="YES"/>
+                            </accessibility>
                         </slider>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QFs-sP-tcR">
                             <rect key="frame" x="16" y="42" width="68" height="14.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VW-CM-6ey">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaCurentTimeMinutesLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxW-1K-sUx">
                                     <rect key="frame" x="32" y="0.0" width="4" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaCurentTimeClockLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JOJ-Iy-Vap">
                                     <rect key="frame" x="36" y="0.0" width="32" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaCurentTimeSecondsLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -67,18 +85,27 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Usu-vR-3T6">
                                     <rect key="frame" x="0.0" y="0.0" width="32" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaTotalMinutesLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=":" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raq-Xs-PBS">
                                     <rect key="frame" x="32" y="0.0" width="4" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaTotalClockLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wVe-9d-cTm">
                                     <rect key="frame" x="36" y="0.0" width="32" height="14.5"/>
+                                    <accessibility key="accessibilityConfiguration" identifier="mediaTotalSecondsLabel">
+                                        <bool key="isElement" value="YES"/>
+                                    </accessibility>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -91,6 +118,9 @@
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vb7-0h-3My">
                             <rect key="frame" x="177" y="48" width="44" height="44"/>
+                            <accessibility key="accessibilityConfiguration" identifier="playButton">
+                                <bool key="isElement" value="YES"/>
+                            </accessibility>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="vb7-0h-3My" secondAttribute="height" multiplier="1:1" id="Sqa-Ow-o7P"/>
                                 <constraint firstAttribute="width" constant="44" id="nmL-cn-mVw"/>
@@ -103,6 +133,9 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zkY-Jo-eFB">
                             <rect key="frame" x="111" y="48" width="44" height="44"/>
+                            <accessibility key="accessibilityConfiguration" identifier="backwardButton">
+                                <bool key="isElement" value="YES"/>
+                            </accessibility>
                             <constraints>
                                 <constraint firstAttribute="width" constant="44" id="E1g-Sz-49z"/>
                                 <constraint firstAttribute="width" secondItem="zkY-Jo-eFB" secondAttribute="height" multiplier="1:1" id="hyY-uP-0AK"/>
@@ -115,6 +148,9 @@
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Npq-9n-q7v">
                             <rect key="frame" x="243" y="48" width="44" height="44"/>
+                            <accessibility key="accessibilityConfiguration" identifier="forwardButton">
+                                <bool key="isElement" value="YES"/>
+                            </accessibility>
                             <constraints>
                                 <constraint firstAttribute="width" constant="44" id="0Qh-xI-TVh"/>
                                 <constraint firstAttribute="width" secondItem="Npq-9n-q7v" secondAttribute="height" multiplier="1:1" id="bX4-Ph-MFo"/>

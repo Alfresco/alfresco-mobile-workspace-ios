@@ -273,6 +273,8 @@ class NodeActionsViewModel {
                              node.title)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
         let deleteAction = MDCAlertAction(title: LocalizationConstants.General.delete) { _ in
             TrashcanAPI.deleteDeletedNode(nodeId: node.guid) { [weak self] (_, error) in
                 guard let sSelf = self else { return }
@@ -288,6 +290,7 @@ class NodeActionsViewModel {
                 sSelf.handleResponse(error: error, action: action)
             }
         }
+        deleteAction.accessibilityIdentifier = "deleteActionButton"
 
         DispatchQueue.main.async {
             if let presentationContext = UIViewController.applicationTopMostPresented {
@@ -375,7 +378,7 @@ class NodeActionsViewModel {
     // MARK: - Download node content
 
     private func showDownloadDialog(actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
-        if let downloadDialogView: DownloadDialog = DownloadDialog.fromNib() {
+        if let downloadDialogView: DownloadDialog = .fromNib() {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.Dialog.downloadMessage,
@@ -387,6 +390,7 @@ class NodeActionsViewModel {
                 MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
                     actionHandler(action)
             }
+            cancelAction.accessibilityIdentifier = "cancelActionButton"
 
             if let presentationContext = UIViewController.applicationTopMostPresented {
                 let downloadDialog = presentationContext.showDialog(title: nil,

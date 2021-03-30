@@ -24,7 +24,7 @@ import AlfrescoContent
 class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 
@@ -44,7 +44,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -79,7 +79,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -105,7 +105,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                                   relations: nil,
                                                   fields: nil,
                                                   _where: nil) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list.entries {
                     listNodes = SitesNodeMapper.map(entries)
                 } else {

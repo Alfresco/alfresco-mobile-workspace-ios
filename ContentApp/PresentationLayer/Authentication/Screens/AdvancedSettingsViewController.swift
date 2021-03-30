@@ -55,7 +55,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
 
-    var enableSaveButton: Bool = false {
+    var enableSaveButton = false {
         didSet {
             saveButton.isEnabled = enableSaveButton
         }
@@ -101,7 +101,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
         }
         portTextField.text =
             (httpsSwitch.isOn) ? securedDefaultPort : unsecuredDefaultPort
-        enableSaveButton = (pathTextField.text != "")
+        enableSaveButton = !pathTextField.isEmpty()
     }
 
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -199,7 +199,7 @@ class AdvancedSettingsViewController: SystemThemableViewController {
     }
 
     func saveFields() {
-        if pathTextField.text == "" {
+        if pathTextField.isEmpty() {
             return
         }
         viewModel.saveFields(https: httpsSwitch.isOn,
@@ -219,12 +219,12 @@ class AdvancedSettingsViewController: SystemThemableViewController {
 extension AdvancedSettingsViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         keyboardHandling?.adaptFrame(in: scrollView, subview: textField)
-        enableSaveButton = (pathTextField.text != "")
+        enableSaveButton = !pathTextField.isEmpty()
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        enableSaveButton = (pathTextField.text != "")
+        enableSaveButton = !pathTextField.isEmpty()
     }
 
     func textField(_ textField: UITextField,
@@ -234,7 +234,7 @@ extension AdvancedSettingsViewController: UITextFieldDelegate {
             enableSaveButton = (textField.updatedText(for: range,
                                                       replacementString: string) != "")
         } else {
-            enableSaveButton = (pathTextField.text != "")
+            enableSaveButton = !pathTextField.isEmpty()
         }
         return true
     }

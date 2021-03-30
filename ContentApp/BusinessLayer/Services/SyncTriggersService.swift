@@ -54,8 +54,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     private var kvoSyncStatus: NSKeyValueObservation?
     private var kvoConnectivity: NSKeyValueObservation?
 
-    private var syncDidTriedToStartOnConnectivity: Bool = false
-    private var syncDidTriedToStartWhenSyncing: Bool = false
+    private var syncDidTriedToStartOnConnectivity = false
+    private var syncDidTriedToStartWhenSyncing = false
 
     deinit {
         kvoSyncStatus?.invalidate()
@@ -176,8 +176,9 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
 
     private func startSyncOperation() {
         let listNodeDataAccessor = ListNodeDataAccessor()
+        let nodes = listNodeDataAccessor.queryMarkedOffline()
+
         guard let syncService = self.syncService,
-              let nodes = listNodeDataAccessor.queryMarkedOffline(),
               syncService.syncServiceStatus == .idle,
               accountService?.activeAccount != nil else { return }
 

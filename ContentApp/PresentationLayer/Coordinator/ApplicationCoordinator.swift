@@ -28,7 +28,7 @@ class ApplicationCoordinator: Coordinator {
     init(window: UIWindow) {
         self.window = window
         rootViewController = UINavigationController()
-        splashScreenCoordinator = SplashScreenCoordinator.init(with: rootViewController)
+        splashScreenCoordinator = SplashScreenCoordinator(with: rootViewController)
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
@@ -68,7 +68,10 @@ class ApplicationCoordinator: Coordinator {
                 sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
             }
         }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
 
         _ = viewController?.showDialog(title: title,
                                        message: message,
@@ -82,7 +85,7 @@ class ApplicationCoordinator: Coordinator {
 
             sSelf.rootViewController = UINavigationController()
             sSelf.splashScreenCoordinator =
-                SplashScreenCoordinator.init(with: sSelf.rootViewController)
+                SplashScreenCoordinator(with: sSelf.rootViewController)
 
             sSelf.start()
         })

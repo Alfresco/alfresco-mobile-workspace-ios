@@ -73,6 +73,11 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
             statuslabel.centerXAnchor.constraint(equalTo: centerXAnchor, constant: 0),
             statuslabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4)
         ])
+        
+        imageView.accessibilityIdentifier = "filePreviewNodeMimeTypeImageView"
+        imageView.isAccessibilityElement = true
+        titleLabel.accessibilityIdentifier = "filePreviewNodeTitleLabel"
+        statuslabel.accessibilityIdentifier = "filePreviewNodeStatusLabel"
     }
 
     // MARK: - FilePreviewProtocol

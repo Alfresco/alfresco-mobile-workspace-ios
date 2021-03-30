@@ -126,7 +126,7 @@ class Router: RouterProtocol, Service {
 
         let candidateStringPathComponents = self.pathComponents(for: candidate)
         let candidatePathComponents = candidateStringPathComponents.map { (path) -> NavigationURLPathComponent in
-            return NavigationURLPathComponent.init(with: path)
+            return NavigationURLPathComponent(with: path)
         }
 
         var matchedValues: [String: Any] = [:]

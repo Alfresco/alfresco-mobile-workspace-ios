@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,8 +17,13 @@
 //
 
 import Foundation
+import UIKit
 
-class OperationQueueService: Service {
-    static let main = DispatchQueue.main
-    static let worker = DispatchQueue(label: "WorkerQueue")
+extension UITextField {
+    func isEmpty() -> Bool {
+        if let text = self.text {
+            return text.isEmpty
+        }
+        return false
+    }
 }

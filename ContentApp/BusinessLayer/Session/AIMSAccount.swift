@@ -136,7 +136,7 @@ extension AIMSAccount: AIMSAccountDelegate {
         createTicket()
         ProfileService.featchPersonalFilesID()
 
-        if oldAccountIdentifier != identifier && oldAccountIdentifier != "" {
+        if oldAccountIdentifier != identifier && !oldAccountIdentifier.isEmpty {
             UserDefaults.standard.set(identifier, forKey: KeyConstants.Save.activeAccountIdentifier)
             UserDefaults.standard.synchronize()
             session.parameters.save(for: identifier)

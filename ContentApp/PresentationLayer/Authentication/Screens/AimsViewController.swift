@@ -44,7 +44,7 @@ class AimsViewController: SystemThemableViewController {
 
     var keyboardHandling: KeyboardHandling? = KeyboardHandling()
 
-    var enableSignInButton: Bool = false {
+    var enableSignInButton = false {
         didSet {
             signInButton.isEnabled = enableSignInButton
             signInButton.tintColor = signInButton.currentTitleColor
@@ -59,7 +59,7 @@ class AimsViewController: SystemThemableViewController {
         viewModel?.delegate = self
 
         addLocalization()
-        enableSignInButton = (repositoryTextField.text != "")
+        enableSignInButton = !repositoryTextField.isEmpty()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -161,7 +161,7 @@ extension AimsViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        enableSignInButton = (textField.text != "")
+        enableSignInButton = !textField.isEmpty()
     }
 }
 

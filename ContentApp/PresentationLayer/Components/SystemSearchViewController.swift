@@ -101,6 +101,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func addSearchButton() {
         let searchButton = UIButton(type: .custom)
+        searchButton.accessibilityIdentifier = "searchButton"
         searchButton.frame = CGRect(x: 0.0, y: 0.0, width: searchButtonAspectRatio, height: searchButtonAspectRatio)
         searchButton.imageView?.contentMode = .scaleAspectFill
         searchButton.layer.cornerRadius = searchButtonAspectRatio / 2
@@ -109,6 +110,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
+        searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
@@ -130,6 +132,8 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.delegate = self
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.smartQuotesType = .no
+        searchController.searchBar.isAccessibilityElement = true
+        searchController.searchBar.accessibilityIdentifier = "searchBar"
         return searchController
     }
 }

@@ -24,7 +24,7 @@ import AlfrescoContent
 class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listRequest: SearchRequest?
     var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType]?
+    var supportedNodeTypes: [NodeType] = []
 
     // MARK: - Init
 
@@ -44,7 +44,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func numberOfSections() -> Int {
-        return (results.count == 0) ? 0 : 1
+        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -75,7 +75,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: requestPagination)
     }
 
-    override func handlePage(results: [ListNode]?, pagination: Pagination?, error: Error?) {
+    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
         updateResults(results: results, pagination: pagination, error: error)
     }
 
@@ -97,7 +97,7 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
             TrashcanAPI.listDeletedNodes(skipCount: skipCount,
                                          maxItems: maxItems,
                                          include: [APIConstants.Include.path]) { (result, error) in
-                var listNodes: [ListNode]?
+                var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = DeleteNodeMapper.map(entries)
                 } else {
