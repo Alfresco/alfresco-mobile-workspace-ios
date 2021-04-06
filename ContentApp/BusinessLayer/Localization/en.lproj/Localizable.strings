@@ -169,6 +169,7 @@
 "action-menu-create-folder" = "New folder";
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
+"action-menu-create-media" = "Take a photo";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";

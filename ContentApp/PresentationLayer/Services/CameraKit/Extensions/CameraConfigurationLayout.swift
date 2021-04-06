@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,6 +16,10 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
-NSPhotoLibraryAddUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
-NSCameraUsageDescription = "Tralala";
+import UIKit
+
+class CameraConfigurationLayout {
+    var onSurfaceColor: UIColor?
+    var onSurface60Color: UIColor?
+    var surfaceColor: UIColor?
+}

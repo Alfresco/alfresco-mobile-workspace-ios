@@ -25,6 +25,7 @@ class CreateNodeSheetCoordinator: Coordinator {
     private let actionMenu: ActionMenu
     private let parentListNode: ListNode
     private weak var createNodeViewModelDelegate: CreateNodeViewModelDelegate?
+    private var dialogTransitionController: MDCDialogTransitionController
 
     init(with presenter: UINavigationController,
          actionMenu: ActionMenu,
@@ -35,10 +36,10 @@ class CreateNodeSheetCoordinator: Coordinator {
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.createNodeViewModelDelegate = createNodeViewModelDelegate
+        self.dialogTransitionController = MDCDialogTransitionController()
     }
 
     func start() {
-        let dialogTransitionController = MDCDialogTransitionController()
         let viewController = CreateNodeSheetViewControler.instantiateViewController()
         let createNodeViewModel = CreateNodeViewModel(with: actionMenu,
                                                       parentListNode: parentListNode,

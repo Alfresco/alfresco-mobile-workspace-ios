@@ -189,6 +189,7 @@ struct LocalizationConstants {
         static let createFolder = NSLocalizedString("action-menu-create-folder", comment: "")
         static let markOffline = NSLocalizedString("action-menu-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
+        static let createMedia = NSLocalizedString("action-menu-create-media", comment: "")
     }
 
     struct Dialog {

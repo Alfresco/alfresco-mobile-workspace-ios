@@ -74,10 +74,11 @@ class CreateNodeViewModel {
                                                                        include: nil,
                                                                        fields: nil)
             switch sSelf.actionMenu.type {
-            case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
             case .createFolder:
                 sSelf.createNewFolder(with: requestBuilder)
+            case .createMSWord, .createMSExcel, .createMSPowerPoint:
+                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+            case .createMedia: break
             default: break
             }
         }

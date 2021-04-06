@@ -23,6 +23,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    private var cameraCoordinator: CameraScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -97,5 +98,11 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                      createNodeViewModelDelegate: delegate)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
+    }
+    
+    func showCamera() {
+        let coordinator = CameraScreenCoordinator(with: presenter)
+        coordinator.start()
+        cameraCoordinator = coordinator
     }
 }
