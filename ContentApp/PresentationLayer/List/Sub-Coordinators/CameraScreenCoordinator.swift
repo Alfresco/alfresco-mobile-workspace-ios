@@ -30,6 +30,7 @@ class CameraScreenCoordinator: Coordinator {
     func start() {
         let viewController = CameraViewController.instantiateViewController()
         viewController.theme = configurationLayout()
+        viewController.localization = cameraLocalization()
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
         navigationViewController.modalPresentationStyle = .fullScreen
@@ -48,7 +49,16 @@ class CameraScreenCoordinator: Coordinator {
         theme.onSurfaceColor = currentTheme.onSurfaceColor
         theme.onSurface60Color = currentTheme.onSurface60Color
         theme.surfaceColor = currentTheme.surfaceColor
+        theme.subtitle2Font = currentTheme.subtitle2TextStyle.font
 
         return theme
+    }
+    
+    func cameraLocalization() -> CameraLocalization {
+        let localization = CameraLocalization()
+        
+        localization.sliderPhoto = LocalizationConstants.Camera.sliderCameraPhoto
+        
+        return localization
     }
 }

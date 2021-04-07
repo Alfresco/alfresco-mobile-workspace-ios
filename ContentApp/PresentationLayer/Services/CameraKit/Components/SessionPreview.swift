@@ -20,7 +20,7 @@ import AVFoundation
 import UIKit
 
 class SessionPreview: UIView {
-    private var focusView: UIView?
+    private var focusView: UIImageView?
     private var lastScale = minZoom
     private var focusTimer: Timer?
     
@@ -112,12 +112,14 @@ class SessionPreview: UIView {
     // MARK: - Private Methods
     
     private func setupView() {
-        let focusTapGesture = UITapGestureRecognizer(target: self,
-                                                     action: #selector(handleFocusTap(recognizer:)))
+        let focusTapGesture =
+            UILongPressGestureRecognizer(target: self,
+                                         action: #selector(handleFocusTap(recognizer:)))
         addGestureRecognizer(focusTapGesture)
         
-        let zoomPinchGesture = UIPinchGestureRecognizer(target: self,
-                                                        action: #selector(handleZoomPinch(recognizer:)))
+        let zoomPinchGesture =
+            UIPinchGestureRecognizer(target: self,
+                                     action: #selector(handleZoomPinch(recognizer:)))
         addGestureRecognizer(zoomPinchGesture)
     }
     
@@ -125,10 +127,9 @@ class SessionPreview: UIView {
         focusView?.removeFromSuperview()
         focusTimer?.invalidate()
 
-        let focusView = UIView(frame: CGRect(origin: point, size: focusViewSize))
+        let focusView = UIImageView(frame: CGRect(origin: point, size: focusViewSize))
         focusView.center = point
-        focusView.layer.borderColor = UIColor.green.cgColor
-        focusView.layer.borderWidth = 1
+        focusView.image = UIImage(named: "ic-camera-focus-marks")
         focusView.layer.masksToBounds = true
 
         clipsToBounds = true
@@ -158,10 +159,8 @@ class SessionPreview: UIView {
         if recognizer.state == .began {
             recognizer.scale = lastScale
         }
-        
         let zoom = max(minZoom, min(maxZoom, recognizer.scale))
         session?.zoom = Double(zoom)
-        
         if recognizer.state == .ended {
             lastScale = zoom
         }

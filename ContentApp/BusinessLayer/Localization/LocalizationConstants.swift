@@ -223,4 +223,8 @@ struct LocalizationConstants {
         static let privacyPhotosDescription = NSLocalizedString("privacy-photos-description", comment: "")
         static let privacyButton = NSLocalizedString("privacy-button", comment: "")
     }
+    
+    struct Camera {
+        static let sliderCameraPhoto = NSLocalizedString("slider-camera-photo", comment: "")
+    }
 }

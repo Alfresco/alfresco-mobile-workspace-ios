@@ -22,4 +22,10 @@ class CameraConfigurationLayout {
     var onSurfaceColor: UIColor?
     var onSurface60Color: UIColor?
     var surfaceColor: UIColor?
+    
+    var subtitle2Font: UIFont?
+}
+
+class CameraLocalization {
+    var sliderPhoto: String?
 }

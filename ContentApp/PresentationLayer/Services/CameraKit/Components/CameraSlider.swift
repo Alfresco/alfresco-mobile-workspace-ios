@@ -19,13 +19,13 @@
 import UIKit
 
 struct CameraSliderEntry {
-    let entryName: String
+    let entryName: String?
 }
 
 struct CameraSliderControlSyle {
-    let selectedOptionColor: UIColor
-    let optionColor: UIColor
-    let optionFont: UIFont
+    let selectedOptionColor: UIColor?
+    let optionColor: UIColor?
+    let optionFont: UIFont?
 }
 
 protocol CameraSliderControlDelegate: class {

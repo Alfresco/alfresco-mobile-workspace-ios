@@ -23,7 +23,8 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    
+    @IBOutlet weak var captureButton: UIButton!
+    @IBOutlet weak var cameraSlider: CameraSliderControl!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var featuresView: UIView!
     @IBOutlet weak var sessionPreview: SessionPreview! {
@@ -40,6 +41,7 @@ class CameraViewController: UIViewController {
     
     var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
+    var localization: CameraLocalization?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
     
     override var prefersStatusBarHidden: Bool {
@@ -51,6 +53,12 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         cameraViewModel.delegate = self
+        cameraSliderConfiguration()
+
+        zoomLabel.layer.cornerRadius = zoomLabel.bounds.height / 2.0
+        zoomLabel.layer.masksToBounds = true
+        zoomLabel.font = theme?.subtitle2Font
+        switchCameraButton.layer.cornerRadius = switchCameraButton.bounds.height / 2.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,6 +103,17 @@ class CameraViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func cameraSliderConfiguration() {
+        guard let currentTheme = theme, let localization = self.localization else { return }
+
+        let sliderStyle = CameraSliderControlSyle(selectedOptionColor: currentTheme.onSurfaceColor,
+                                                  optionColor: currentTheme.onSurface60Color,
+                                                  optionFont: currentTheme.subtitle2Font)
+
+        cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
+        cameraSlider.updateStyle(style: sliderStyle)
+    }
+    
     private func applyComponentsThemes() {
         guard let currentTheme = theme else { return }
         view.backgroundColor = currentTheme.surfaceColor
@@ -103,6 +122,8 @@ class CameraViewController: UIViewController {
         closeButton.tintColor = currentTheme.onSurface60Color
         flashModeButton.tintColor = currentTheme.onSurface60Color
         switchCameraButton.tintColor = currentTheme.onSurface60Color
+        switchCameraButton.backgroundColor = currentTheme.surfaceColor?.withAlphaComponent(0.6)
+        zoomLabel.backgroundColor = currentTheme.surfaceColor?.withAlphaComponent(0.6)
     }
     
     // MARK: - Navigation
@@ -128,7 +149,13 @@ extension CameraViewController: CameraViewModelDelegate {
 
 extension CameraViewController: CaptureSessionUIDelegate {
     func didChange(zoom: Double) {
-        zoomLabel.text = String(format: "%.1fx", zoom)
+        var text = String(format: "%.1f", zoom)
+        guard let aprox = Double(text) else { return }
+
+        if aprox - Double(Int(aprox)) == 0.0 {
+            text = "\(Int(aprox))"
+        }
+        zoomLabel.text = "\(text)x"
     }
     
     func didChange(orientation: UIImage.Orientation) {

@@ -18,10 +18,24 @@
 
 import UIKit
 
+enum CapturedAssetType {
+    case image
+    case video
+    
+    var ext: String {
+        switch self {
+        case .image: return "jpeg"
+        case .video: return "mov"
+        }
+    }
+}
+
 class CapturedAsset {
     private(set) var path: String?
+    private let type: CapturedAssetType
     
-    init(data: Data) {
+    init(type: CapturedAssetType, data: Data) {
+        self.type = type
         self.path = cacheToDisk(data: data)
     }
     
@@ -52,7 +66,7 @@ class CapturedAsset {
     private func cacheToDisk(data: Data) -> String? {
         guard let mediaFolder = createMediaFolder() else { return nil }
         let timestamp = String(Date().timeIntervalSince1970)
-        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).\(jpeg)")
+        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)
         return imagePath

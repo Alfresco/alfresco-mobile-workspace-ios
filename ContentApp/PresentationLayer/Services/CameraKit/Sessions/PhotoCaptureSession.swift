@@ -141,7 +141,7 @@ class PhotoCaptureSession: CaptureSession {
             delegate?.captured(asset: nil, error: error)
             return
         }
-        delegate?.captured(asset: CapturedAsset(data: data), error: nil)
+        delegate?.captured(asset: CapturedAsset(type: .image, data: data), error: nil)
     }
 }
 
