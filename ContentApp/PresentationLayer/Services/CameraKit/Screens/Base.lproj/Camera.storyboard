@@ -180,7 +180,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic-camera-capture-state-normal" width="96" height="96"/>
+        <image name="ic-camera-capture-state-normal" width="72" height="72"/>
         <image name="ic-camera-capture-state-pressed" width="72" height="72"/>
         <image name="ic-camera-flash-auto" width="24" height="24"/>
         <image name="ic-camera-switch" width="24" height="24"/>

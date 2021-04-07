@@ -18,3 +18,4 @@
 
 NSPhotoLibraryUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
 NSPhotoLibraryAddUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
+NSCameraUsageDescription = "Allow camera access to upload photos and videos to Workspace.";

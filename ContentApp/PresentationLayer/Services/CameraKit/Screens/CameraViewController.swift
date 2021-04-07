@@ -113,6 +113,7 @@ class CameraViewController: UIViewController {
 
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
         cameraSlider.updateStyle(style: sliderStyle)
+        cameraSlider.delegate = self
     }
     
     private func applyComponentsThemes() {
@@ -148,6 +149,8 @@ extension CameraViewController: CameraViewModelDelegate {
     }
 }
 
+// MARK: - CaptureSessionUI Delegate
+
 extension CameraViewController: CaptureSessionUIDelegate {
     func didChange(zoom: Double) {
         var text = String(format: "%.1f", zoom)
@@ -168,6 +171,13 @@ extension CameraViewController: CaptureSessionUIDelegate {
             sSelf.switchCameraButton.rotate(to: orientation)
             sSelf.zoomLabel.rotate(to: orientation)
         }
+    }
+}
+
+// MARK: - CameraSliderControl Delegate
+
+extension CameraViewController: CameraSliderControlDelegate {
+    func didChangeSelection(to currentSelection: Int) {
     }
 }
 

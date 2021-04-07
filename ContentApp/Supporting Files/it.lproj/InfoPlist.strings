@@ -18,3 +18,4 @@
 
 NSPhotoLibraryUsageDescription = "Puoi caricare foto e video dalla tua Libreria foto in questa app.";
 NSPhotoLibraryAddUsageDescription = "Puoi caricare foto e video dalla tua Libreria foto in questa app.";
+NSCameraUsageDescription = "Allow camera access to upload photos and videos to Workspace.";
