@@ -26,6 +26,7 @@ struct CameraSliderControlSyle {
     let selectedOptionColor: UIColor?
     let optionColor: UIColor?
     let optionFont: UIFont?
+    let optionBackgroundColor: UIColor?
 }
 
 protocol CameraSliderControlDelegate: class {
@@ -33,21 +34,24 @@ protocol CameraSliderControlDelegate: class {
 }
 
 class CameraSliderControl: UIControl {
-    var entryPadding = 75
+    var entryPadding = 80
     weak var delegate: CameraSliderControlDelegate?
 
     private(set) var currentSelection: Int = 0
 
     private let scrollView = UIScrollView()
-    private var sliderEntries: [UILabel] = []
+    private var sliderLabelEntries: [UILabel] = []
+    private var sliderButtonEntries: [UIButton] = []
     private var sliderStyle: CameraSliderControlSyle =
         CameraSliderControlSyle(selectedOptionColor: .green,
                                 optionColor: .black,
-                                optionFont: .systemFont(ofSize: 14))
+                                optionFont: .systemFont(ofSize: 14),
+                                optionBackgroundColor: .white)
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-
+        
+        self.backgroundColor = .clear
         self.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -97,20 +101,22 @@ class CameraSliderControl: UIControl {
 
             entryLabel.translatesAutoresizingMaskIntoConstraints = false
             button.translatesAutoresizingMaskIntoConstraints = false
-
+            
             entryLabel.textAlignment = .center
             entryLabel.text = entry.entryName
 
-            sliderEntries.append(entryLabel)
-            sliderEntryView.addSubview(entryLabel)
+            sliderLabelEntries.append(entryLabel)
+            sliderButtonEntries.append(button)
             sliderEntryView.addSubview(button)
+            sliderEntryView.addSubview(entryLabel)
             scrollView.addSubview(sliderEntryView)
 
             NSLayoutConstraint.activate([
                 entryLabel.centerXAnchor.constraint(equalTo: sliderEntryView.centerXAnchor),
                 entryLabel.centerYAnchor.constraint(equalTo: sliderEntryView.centerYAnchor),
-                button.centerXAnchor.constraint(equalTo: sliderEntryView.centerXAnchor),
-                button.centerYAnchor.constraint(equalTo: sliderEntryView.centerYAnchor)
+                button.centerYAnchor.constraint(equalTo: sliderEntryView.centerYAnchor),
+                button.leadingAnchor.constraint(equalTo: entryLabel.leadingAnchor, constant: -16.0),
+                button.trailingAnchor.constraint(equalTo: entryLabel.trailingAnchor, constant: 16.0)
             ])
         }
     }
@@ -123,10 +129,17 @@ class CameraSliderControl: UIControl {
     // MARK: - Private interface
 
     private func applyCurrentStyle() {
-        for (index, entry) in sliderEntries.enumerated() {
-            entry.textColor = index == currentSelection ? sliderStyle.selectedOptionColor : sliderStyle.optionColor
+        for (index, entry) in sliderLabelEntries.enumerated() {
+            entry.textColor = index == currentSelection
+                ? sliderStyle.selectedOptionColor : sliderStyle.optionColor
             entry.font = sliderStyle.optionFont
             entry.sizeToFit()
+        }
+        for entry in sliderButtonEntries {
+            entry.sizeToFit()
+            entry.backgroundColor = sliderStyle.optionBackgroundColor?.withAlphaComponent(0.6)
+            entry.layer.cornerRadius = entry.bounds.height / 2.0
+            entry.layer.masksToBounds = true
         }
     }
 
@@ -139,13 +152,12 @@ class CameraSliderControl: UIControl {
                 return
             }
         case .left:
-            if currentSelection < sliderEntries.count - 1 {
+            if currentSelection < sliderLabelEntries.count - 1 {
                 currentSelection += 1
             } else {
                 return
             }
-        default:
-            break
+        default: break
         }
 
         scrollToCurrentSelection()

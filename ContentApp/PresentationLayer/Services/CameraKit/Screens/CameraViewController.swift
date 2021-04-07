@@ -108,7 +108,8 @@ class CameraViewController: UIViewController {
 
         let sliderStyle = CameraSliderControlSyle(selectedOptionColor: currentTheme.onSurfaceColor,
                                                   optionColor: currentTheme.onSurface60Color,
-                                                  optionFont: currentTheme.subtitle2Font)
+                                                  optionFont: currentTheme.subtitle2Font,
+                                                  optionBackgroundColor: currentTheme.surfaceColor)
 
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
         cameraSlider.updateStyle(style: sliderStyle)
