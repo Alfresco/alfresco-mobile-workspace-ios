@@ -17,24 +17,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bu5-a0-glo">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dfX-xY-wpU">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <barButtonItem image="ic-close" id="Jwc-qC-g9y">
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z0X-Ts-kZm">
+                                        <rect key="frame" x="16" y="0.0" width="46" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="ZMu-dT-sQM"/>
+                                        </constraints>
+                                        <state key="normal" image="ic-close"/>
                                         <connections>
-                                            <action selector="closeButtonTapped:" destination="nj7-Z3-jPD" id="PlI-6F-JBP"/>
+                                            <action selector="closeButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="uQR-yk-Rsg"/>
                                         </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="sSh-nv-DpP"/>
-                                    <barButtonItem image="ic-camera-flash-auto" id="KO8-4H-5A6">
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yXa-57-gSk">
+                                        <rect key="frame" x="352" y="0.0" width="46" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="Q2b-V4-OYf"/>
+                                        </constraints>
+                                        <state key="normal" image="ic-camera-flash-auto"/>
                                         <connections>
-                                            <action selector="flashModeButtonTapped:" destination="nj7-Z3-jPD" id="RlM-gx-5WT"/>
+                                            <action selector="flashModeButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="FOB-RL-AKW"/>
                                         </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </toolbar>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="yXa-57-gSk" secondAttribute="trailing" constant="16" id="5lp-5d-O96"/>
+                                    <constraint firstAttribute="height" constant="44" id="Cuw-bi-Ua2"/>
+                                    <constraint firstItem="Z0X-Ts-kZm" firstAttribute="leading" secondItem="dfX-xY-wpU" secondAttribute="leading" constant="16" id="S24-PB-nDK"/>
+                                    <constraint firstAttribute="bottom" secondItem="yXa-57-gSk" secondAttribute="bottom" id="SD3-N4-O0s"/>
+                                    <constraint firstAttribute="bottom" secondItem="Z0X-Ts-kZm" secondAttribute="bottom" id="Un5-lW-L96"/>
+                                    <constraint firstItem="Z0X-Ts-kZm" firstAttribute="top" secondItem="dfX-xY-wpU" secondAttribute="top" id="a72-iU-t2I"/>
+                                    <constraint firstItem="yXa-57-gSk" firstAttribute="top" secondItem="dfX-xY-wpU" secondAttribute="top" id="iOl-9L-eTJ"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mpj-Nv-eD8" customClass="SessionPreview" customModule="ContentApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="44" width="414" height="552"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -77,24 +94,25 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ULu-2x-pmc" secondAttribute="bottom" id="2pV-iG-ovx"/>
-                            <constraint firstItem="Mpj-Nv-eD8" firstAttribute="top" secondItem="Bu5-a0-glo" secondAttribute="bottom" id="3od-Hf-EVv"/>
-                            <constraint firstItem="Bu5-a0-glo" firstAttribute="top" secondItem="aD4-lP-4o8" secondAttribute="top" id="4Fu-0U-eET"/>
                             <constraint firstItem="Mpj-Nv-eD8" firstAttribute="leading" secondItem="aD4-lP-4o8" secondAttribute="leading" id="4lO-dO-3hW"/>
+                            <constraint firstItem="dfX-xY-wpU" firstAttribute="top" secondItem="aD4-lP-4o8" secondAttribute="top" id="91g-cJ-iYk"/>
+                            <constraint firstItem="Mpj-Nv-eD8" firstAttribute="top" secondItem="dfX-xY-wpU" secondAttribute="bottom" id="GL4-t0-kh5"/>
+                            <constraint firstItem="dfX-xY-wpU" firstAttribute="leading" secondItem="aD4-lP-4o8" secondAttribute="leading" id="Gyf-VB-g5o"/>
                             <constraint firstItem="ULu-2x-pmc" firstAttribute="height" secondItem="7oH-hL-pld" secondAttribute="height" multiplier="0.190217" id="JCu-xU-F7b"/>
                             <constraint firstItem="aD4-lP-4o8" firstAttribute="trailing" secondItem="Mpj-Nv-eD8" secondAttribute="trailing" id="Myv-fa-TxY"/>
-                            <constraint firstItem="aD4-lP-4o8" firstAttribute="trailing" secondItem="Bu5-a0-glo" secondAttribute="trailing" id="YTM-lN-Qrg"/>
-                            <constraint firstItem="Bu5-a0-glo" firstAttribute="leading" secondItem="7oH-hL-pld" secondAttribute="leading" id="f5Y-f7-oVW"/>
+                            <constraint firstItem="dfX-xY-wpU" firstAttribute="trailing" secondItem="aD4-lP-4o8" secondAttribute="trailing" id="hfm-WY-1sT"/>
                             <constraint firstItem="ULu-2x-pmc" firstAttribute="top" secondItem="Mpj-Nv-eD8" secondAttribute="bottom" id="lHu-bu-5Yb"/>
                             <constraint firstItem="ULu-2x-pmc" firstAttribute="leading" secondItem="aD4-lP-4o8" secondAttribute="leading" id="rXt-hn-V6D"/>
                             <constraint firstItem="aD4-lP-4o8" firstAttribute="trailing" secondItem="ULu-2x-pmc" secondAttribute="trailing" id="rvp-Tl-D0C"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeButton" destination="Jwc-qC-g9y" id="sGH-34-a14"/>
+                        <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="featuresView" destination="ULu-2x-pmc" id="1wk-ju-RDg"/>
-                        <outlet property="flashModeButton" destination="KO8-4H-5A6" id="3Up-nD-5AN"/>
+                        <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
                         <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
-                        <outlet property="toolbarView" destination="Bu5-a0-glo" id="ATe-ae-kbR"/>
+                        <outlet property="switchCameraButton" destination="7ci-e2-bho" id="whO-0t-Wkd"/>
+                        <outlet property="topBarView" destination="dfX-xY-wpU" id="PAX-eL-Wqf"/>
                         <outlet property="zoomLabel" destination="Z2s-So-wmT" id="dQE-ap-MjN"/>
                         <segue destination="aGd-Xu-cBR" kind="show" identifier="showPreviewVCfromCameraVC" id="xR3-tt-icf"/>
                     </connections>

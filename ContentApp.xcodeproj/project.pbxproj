@@ -275,6 +275,7 @@
 		F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E689B261727B1002FDEF9 /* CameraFeatures.swift */; };
 		F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */; };
 		F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */; };
+		F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */; };
 		F185B17B2617454D00407451 /* CameraUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B17A2617454D00407451 /* CameraUtils.swift */; };
 		F185B1812617495300407451 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B1802617495300407451 /* CameraViewController.swift */; };
 		F185B19026174A0100407451 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B18F26174A0100407451 /* CameraViewModel.swift */; };
@@ -593,6 +594,7 @@
 		F14E689B261727B1002FDEF9 /* CameraFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeatures.swift; sourceTree = "<group>"; };
 		F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDeviceOrientation+VideoOrientation.swift"; sourceTree = "<group>"; };
 		F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedAsset.swift; sourceTree = "<group>"; };
+		F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rotate.swift"; sourceTree = "<group>"; };
 		F185B17A2617454D00407451 /* CameraUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUtils.swift; sourceTree = "<group>"; };
 		F185B1802617495300407451 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F185B18F26174A0100407451 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
@@ -1728,6 +1730,7 @@
 				F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */,
 				F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */,
 				F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */,
+				F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2103,6 +2106,7 @@
 				B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
+				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,

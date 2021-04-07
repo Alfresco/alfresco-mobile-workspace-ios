@@ -19,25 +19,28 @@
 import UIKit
 
 class CameraViewController: UIViewController {
-    @IBOutlet weak var toolbarView: UIToolbar!
-    @IBOutlet weak var closeButton: UIBarButtonItem!
-    @IBOutlet weak var flashModeButton: UIBarButtonItem!
+    @IBOutlet weak var topBarView: UIView!
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var flashModeButton: UIButton!
+    @IBOutlet weak var switchCameraButton: UIButton!
     
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var featuresView: UIView!
     @IBOutlet weak var sessionPreview: SessionPreview! {
         didSet {
             let session = PhotoCaptureSession()
-            session.resolution = CGSize(width: 3024, height: 4032)
+            session.resolution = wideResolution
             session.delegate = cameraViewModel
+            session.uiDelegate = self
 
             sessionPreview.add(session: session)
             sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
         }
     }
     
-    var cameraViewModel: CameraViewModel?
+    var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
+    var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -47,15 +50,19 @@ class CameraViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        cameraViewModel?.delegate = self
+        cameraViewModel.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
-        cameraViewModel?.deletePreviousCapture()
+        cameraViewModel.deletePreviousCapture()
         applyComponentsThemes()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -67,14 +74,14 @@ class CameraViewController: UIViewController {
     
     // MARK: - IBActions
     
-    @IBAction func closeButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func closeButtonTapped(_ sender: UIButton) {
         sessionPreview.stopSession()
         self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func flashModeButtonTapped(_ sender: UIBarButtonItem) {
+    @IBAction func flashModeButtonTapped(_ sender: UIButton) {
         sessionPreview.nextFlashMode()
-        flashModeButton.image = sessionPreview.flashModeIcon()
+        flashModeButton.setImage(sessionPreview.flashModeIcon(), for: .normal)
     }
     
     @IBAction func captureButtonTapped(_ sender: UIButton) {
@@ -82,6 +89,7 @@ class CameraViewController: UIViewController {
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
+        sessionPreview.resetZoom()
         sessionPreview.changeCameraPosition()
     }
     
@@ -91,8 +99,10 @@ class CameraViewController: UIViewController {
         guard let currentTheme = theme else { return }
         view.backgroundColor = currentTheme.surfaceColor
         featuresView.backgroundColor = currentTheme.surfaceColor
-        toolbarView.barTintColor = currentTheme.surfaceColor
-        toolbarView.tintColor = currentTheme.onSurface60Color
+        topBarView.backgroundColor = currentTheme.surfaceColor
+        closeButton.tintColor = currentTheme.onSurface60Color
+        flashModeButton.tintColor = currentTheme.onSurface60Color
+        switchCameraButton.tintColor = currentTheme.onSurface60Color
     }
     
     // MARK: - Navigation
@@ -114,9 +124,22 @@ extension CameraViewController: CameraViewModelDelegate {
                          sender: capturedAsset)
         }
     }
-    
-    func update(zoom: Double) {
+}
+
+extension CameraViewController: CaptureSessionUIDelegate {
+    func didChange(zoom: Double) {
         zoomLabel.text = String(format: "%.1fx", zoom)
+    }
+    
+    func didChange(orientation: UIImage.Orientation) {
+        uiOrientation = orientation
+        UIView.animate(withDuration: animationRotateCameraButtons) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.closeButton.rotate(to: orientation)
+            sSelf.flashModeButton.rotate(to: orientation)
+            sSelf.switchCameraButton.rotate(to: orientation)
+            sSelf.zoomLabel.rotate(to: orientation)
+        }
     }
 }
 

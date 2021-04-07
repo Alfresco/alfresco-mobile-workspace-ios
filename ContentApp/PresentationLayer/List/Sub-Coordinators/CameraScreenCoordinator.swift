@@ -29,9 +29,6 @@ class CameraScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = CameraViewController.instantiateViewController()
-        let cameraViewModel = CameraViewModel()
-        
-        viewController.cameraViewModel = cameraViewModel
         viewController.theme = configurationLayout()
         
         let navigationViewController = UINavigationController(rootViewController: viewController)

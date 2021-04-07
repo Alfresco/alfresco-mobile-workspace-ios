@@ -21,13 +21,13 @@ import UIKit
 
 extension UIDeviceOrientation {
     var videoOrientation: AVCaptureVideoOrientation {
-        switch UIDevice.current.orientation {
+        switch self {
         case .portraitUpsideDown:
             return .portraitUpsideDown
         case .landscapeLeft:
-            return .landscapeRight
-        case .landscapeRight:
             return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
         default:
             return .portrait
         }

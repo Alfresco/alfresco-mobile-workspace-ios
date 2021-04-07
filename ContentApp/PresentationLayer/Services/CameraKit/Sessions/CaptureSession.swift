@@ -18,10 +18,15 @@
 
 import AVFoundation
 import UIKit
+import CoreMotion
 
 protocol CaptureSessionDelegate: class {
     func captured(asset: CapturedAsset?, error: Error?)
+}
+
+protocol CaptureSessionUIDelegate: class {
     func didChange(zoom: Double)
+    func didChange(orientation: UIImage.Orientation)
 }
 
 class CaptureSession: NSObject {
@@ -30,11 +35,17 @@ class CaptureSession: NSObject {
     var overlayView: UIView?
     var zoom = 1.0
     weak var delegate: CaptureSessionDelegate?
+    weak var uiDelegate: CaptureSessionUIDelegate?
+    var orientationLast = UIDevice.current.orientation
+
+    private var motionManager: CMMotionManager?
     
     // MARK: - Init
 
     override init() {
         self.session = AVCaptureSession()
+        super.init()
+        self.initializeMotionManager()
     }
     
     // MARK: - Public Methods
@@ -51,6 +62,45 @@ class CaptureSession: NSObject {
     }
     
     func capture() {
+    }
+    
+    // MARK: - Private Methods
+    
+    func initializeMotionManager() {
+        guard let operation = OperationQueue.current else { return }
+        motionManager = CMMotionManager()
+        motionManager?.accelerometerUpdateInterval = 0.2
+        motionManager?.gyroUpdateInterval = 0.2
+        motionManager?
+            .startAccelerometerUpdates(to: operation,
+                                       withHandler: { [weak self] (accelerometer, error) in
+                                        guard let sSelf = self else { return }
+            if let error = error {
+                AlfrescoLog.error("CMMotionManager fail, error: \(error.localizedDescription)")
+            } else if let acceleration = accelerometer?.acceleration {
+                sSelf.outputAccelertionData(acceleration)
+            }
+        })
+    }
+    
+    func outputAccelertionData(_ acceleration: CMAcceleration) {
+        var orientationNew: UIDeviceOrientation
+        if acceleration.x >= 0.75 {
+            orientationNew = .landscapeLeft
+        } else if acceleration.x <= -0.75 {
+            orientationNew = .landscapeRight
+        } else if acceleration.y <= -0.75 {
+            orientationNew = .portrait
+        } else if acceleration.y >= 0.75 {
+            orientationNew = .portraitUpsideDown
+        } else {
+            return
+        }
+        if orientationNew == orientationLast {
+            return
+        }
+        orientationLast = orientationNew
+        uiDelegate?.didChange(orientation: orientationLast.imageOrientation)
     }
     
     // MARK: - Static Public Methods

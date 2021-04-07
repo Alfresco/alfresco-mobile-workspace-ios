@@ -21,10 +21,6 @@ import UIKit
 class CapturedAsset {
     private(set) var path: String?
     
-    init(image: UIImage) {
-        self.path = cacheToDisk(image: image)
-    }
-    
     init(data: Data) {
         self.path = cacheToDisk(data: data)
     }
@@ -54,38 +50,20 @@ class CapturedAsset {
     // MARK: - Private Helpers
     
     private func cacheToDisk(data: Data) -> String? {
-        guard let mediaFolder = createMediaFolder()
-        else {
-            return nil
-        }
+        guard let mediaFolder = createMediaFolder() else { return nil }
         let timestamp = String(Date().timeIntervalSince1970)
-        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).jpeg")
-        let fileManager = FileManager.default
-        fileManager.createFile(atPath: imagePath,
-                               contents: data, attributes: nil)
+        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).\(jpeg)")
+        FileManager.default.createFile(atPath: imagePath,
+                                       contents: data, attributes: nil)
         return imagePath
     }
-    
-    private func cacheToDisk(image: UIImage) -> String? {
-        guard let mediaFolder = createMediaFolder(),
-              let data = image.jpegData(compressionQuality: 1)
-        else {
-            return nil
-        }
-        let timestamp = String(Date().timeIntervalSince1970)
-        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).jpeg")
-        let fileManager = FileManager.default
-        fileManager.createFile(atPath: imagePath,
-                               contents: data, attributes: nil)
-        return imagePath
-    }
-    
+
     private func createMediaFolder() -> NSString? {
         let fileManager = FileManager.default
         let documentsDirectory = fileManager.urls(for: .documentDirectory,
                                                   in: .userDomainMask)[0]
         let documentsDirectoryPath = documentsDirectory.path as NSString
-        let mediaFolder = documentsDirectoryPath.appendingPathComponent("Media Folder")
+        let mediaFolder = documentsDirectoryPath.appendingPathComponent(mediaFolderName)
         if !fileManager.fileExists(atPath: mediaFolder) {
             do {
                 try fileManager.createDirectory(atPath: mediaFolder,

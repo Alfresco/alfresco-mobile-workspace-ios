@@ -20,9 +20,9 @@ import AVFoundation
 import UIKit
 
 class SessionPreview: UIView {
-    
     private var focusView: UIView?
-    private var lastScale: CGFloat = 1.0
+    private var lastScale = minZoom
+    private var focusTimer: Timer?
     
     private(set) var previewLayer: AVCaptureVideoPreviewLayer? {
         didSet {
@@ -59,9 +59,8 @@ class SessionPreview: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let videoOrientation = UIDevice.current.orientation.videoOrientation
         previewLayer?.frame = bounds
-        previewLayer?.connection?.videoOrientation = videoOrientation
+        previewLayer?.connection?.videoOrientation = .portrait
     }
     
     // MARK: - Public Methods
@@ -124,17 +123,25 @@ class SessionPreview: UIView {
     
     private func addFocusView(at point: CGPoint) {
         focusView?.removeFromSuperview()
-        let focusView = UIView(frame: CGRect(origin: point,
-                                             size: CGSize(width: 100, height: 100)))
+        focusTimer?.invalidate()
+
+        let focusView = UIView(frame: CGRect(origin: point, size: focusViewSize))
         focusView.center = point
         focusView.layer.borderColor = UIColor.green.cgColor
         focusView.layer.borderWidth = 1
+        focusView.layer.masksToBounds = true
+
+        clipsToBounds = true
         addSubview(focusView)
         self.focusView = focusView
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.focusView?.removeFromSuperview()
-        }
+        
+        focusTimer = Timer.scheduledTimer(withTimeInterval: animationFadeFocusView,
+                                          repeats: false,
+                                          block: { [weak self] (timer) in
+                                            timer.invalidate()
+                                            guard let sSelf = self else { return }
+                                            sSelf.focusView?.removeFromSuperview()
+        })
     }
     
     // MARK: - GestureRecognizer
@@ -152,7 +159,7 @@ class SessionPreview: UIView {
             recognizer.scale = lastScale
         }
         
-        let zoom = max(1.0, min(10.0, recognizer.scale))
+        let zoom = max(minZoom, min(maxZoom, recognizer.scale))
         session?.zoom = Double(zoom)
         
         if recognizer.state == .ended {

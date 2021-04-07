@@ -74,7 +74,7 @@ class PhotoCaptureSession: CaptureSession {
             } catch {
                 AlfrescoLog.error("Something went wrong on zoom.")
             }
-            delegate?.didChange(zoom: zoom)
+            uiDelegate?.didChange(zoom: zoom)
         }
     }
 
@@ -87,8 +87,8 @@ class PhotoCaptureSession: CaptureSession {
         }
         
         self.photoOutput.isHighResolutionCaptureEnabled = true
-        let capturePhotoSettings = [AVCapturePhotoSettings(format:
-                                                            [AVVideoCodecKey: AVVideoCodecType.jpeg])]
+        let format = [AVVideoCodecKey: AVVideoCodecType.jpeg]
+        let capturePhotoSettings = [AVCapturePhotoSettings(format: format)]
         self.photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
                                                        completionHandler: nil)
         self.session.sessionPreset = .photo
@@ -104,12 +104,7 @@ class PhotoCaptureSession: CaptureSession {
         settings.isHighResolutionPhotoEnabled = true
 
         if let connection = photoOutput.connection(with: .video) {
-            if resolution.width > 0,
-               resolution.height > 0 {
-                connection.videoOrientation = .portrait
-            } else {
-                connection.videoOrientation = UIDevice.current.orientation.videoOrientation
-            }
+            connection.videoOrientation = orientationLast.videoOrientation
         }
         photoOutput.capturePhoto(with: settings, delegate: self)
     }
@@ -146,30 +141,7 @@ class PhotoCaptureSession: CaptureSession {
             delegate?.captured(asset: nil, error: error)
             return
         }
-        
-        let asset = CapturedAsset(data: data)
-        delegate?.captured(asset: asset, error: nil)
-
-//        guard let image = UIImage(data: data) else {
-//            let error = CaptureError.error("Cannot get photo")
-//            AlfrescoLog.error(error)
-//            delegate?.captured(asset: nil, error: error)
-//            return
-//        }
-//
-//        if resolution.width > 0,
-//           resolution.height > 0,
-//            let transformedImage = CameraUtils.cropAndScale(image,
-//                                                            width: Int(resolution.width),
-//                                                            height: Int(resolution.height),
-//                                                            orientation: UIDevice.current.orientation,
-//                                                            mirrored: cameraPosition == .front) {
-//            let asset = CapturedAsset(image: transformedImage)
-//            delegate?.captured(asset: asset, error: nil)
-//        } else {
-//            let asset = CapturedAsset(image: image)
-//            delegate?.captured(asset: asset, error: nil)
-//        }
+        delegate?.captured(asset: CapturedAsset(data: data), error: nil)
     }
 }
 

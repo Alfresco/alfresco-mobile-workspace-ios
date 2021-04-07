@@ -18,27 +18,21 @@
 
 import UIKit
 
-protocol CameraViewModelDelegate: class {
-    func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
-}
-
-class CameraViewModel {
-    weak var delegate: CameraViewModelDelegate?
-    private var capturedAsset: CapturedAsset?
-    
-    // MARK: - Public Methods
-    
-    func deletePreviousCapture() {
-        capturedAsset?.deleteAsset()
-    }
-}
-
-extension CameraViewModel: CaptureSessionDelegate {
-    func captured(asset: CapturedAsset?, error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.capturedAsset = asset
-            sSelf.delegate?.finishProcess(capturedAsset: asset, error: error)
+extension UIView {
+    func rotate(to orientation: UIImage.Orientation) {
+        var angle: CGFloat = 0.0
+        switch orientation {
+        case .down, .downMirrored:
+            angle = 90 * .pi/180
+        case .left, .leftMirrored:
+            angle = 180 * .pi/180
+        case .up, .upMirrored:
+            angle = 270 * .pi/180
+        case .right, .rightMirrored:
+            angle = 0 * .pi/180
+        @unknown default:
+            angle = 0 * .pi/180
         }
+        self.transform = CGAffineTransform(rotationAngle: angle)
     }
 }
