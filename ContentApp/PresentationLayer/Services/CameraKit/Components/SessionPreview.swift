@@ -113,7 +113,7 @@ class SessionPreview: UIView {
     
     private func setupView() {
         let focusTapGesture =
-            UILongPressGestureRecognizer(target: self,
+            UITapGestureRecognizer(target: self,
                                          action: #selector(handleFocusTap(recognizer:)))
         addGestureRecognizer(focusTapGesture)
         

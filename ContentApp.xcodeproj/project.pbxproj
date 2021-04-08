@@ -277,7 +277,7 @@
 		F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */; };
 		F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */; };
 		F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */; };
-		F185B17B2617454D00407451 /* CameraUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B17A2617454D00407451 /* CameraUtils.swift */; };
+		F185B17B2617454D00407451 /* CameraKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B17A2617454D00407451 /* CameraKitConstants.swift */; };
 		F185B1812617495300407451 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B1802617495300407451 /* CameraViewController.swift */; };
 		F185B19026174A0100407451 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B18F26174A0100407451 /* CameraViewModel.swift */; };
 		F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B19D2617591200407451 /* ListComponent+Delegates.swift */; };
@@ -598,7 +598,7 @@
 		F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDeviceOrientation+VideoOrientation.swift"; sourceTree = "<group>"; };
 		F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedAsset.swift; sourceTree = "<group>"; };
 		F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rotate.swift"; sourceTree = "<group>"; };
-		F185B17A2617454D00407451 /* CameraUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraUtils.swift; sourceTree = "<group>"; };
+		F185B17A2617454D00407451 /* CameraKitConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitConstants.swift; sourceTree = "<group>"; };
 		F185B1802617495300407451 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		F185B18F26174A0100407451 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		F185B19D2617591200407451 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
@@ -1772,7 +1772,7 @@
 			children = (
 				1346FA06261DA4CF00336990 /* CameraSlider.swift */,
 				F14E68912617066A002FDEF9 /* SessionPreview.swift */,
-				F185B17A2617454D00407451 /* CameraUtils.swift */,
+				F185B17A2617454D00407451 /* CameraKitConstants.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2227,7 +2227,7 @@
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
 				E3355FF524DC081300C2C8A5 /* ContextualSearchViewModel.swift in Sources */,
 				E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */,
-				F185B17B2617454D00407451 /* CameraUtils.swift in Sources */,
+				F185B17B2617454D00407451 /* CameraKitConstants.swift in Sources */,
 				B9233FC025A708D1006EA4DA /* OfflineViewModelFactory.swift in Sources */,
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,

@@ -18,14 +18,14 @@
 
 import UIKit
 
-class CameraConfigurationLayout {
-    var onSurfaceColor: UIColor?
-    var onSurface60Color: UIColor?
-    var surfaceColor: UIColor?
+struct CameraConfigurationLayout {
+    var onSurfaceColor: UIColor
+    var onSurface60Color: UIColor
+    var surfaceColor: UIColor
     
-    var subtitle2Font: UIFont?
+    var subtitle2Font: UIFont
 }
 
-class CameraLocalization {
-    var sliderPhoto: String?
+struct CameraLocalization {
+    var sliderPhoto: String
 }

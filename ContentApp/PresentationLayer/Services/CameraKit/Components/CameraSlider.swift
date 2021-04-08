@@ -19,14 +19,14 @@
 import UIKit
 
 struct CameraSliderEntry {
-    let entryName: String?
+    let entryName: String
 }
 
 struct CameraSliderControlSyle {
-    let selectedOptionColor: UIColor?
-    let optionColor: UIColor?
-    let optionFont: UIFont?
-    let optionBackgroundColor: UIColor?
+    let selectedOptionColor: UIColor
+    let optionColor: UIColor
+    let optionFont: UIFont
+    let optionBackgroundColor: UIColor
 }
 
 protocol CameraSliderControlDelegate: class {
@@ -137,7 +137,7 @@ class CameraSliderControl: UIControl {
         }
         for entry in sliderButtonEntries {
             entry.sizeToFit()
-            entry.backgroundColor = sliderStyle.optionBackgroundColor?.withAlphaComponent(0.6)
+            entry.backgroundColor = sliderStyle.optionBackgroundColor.withAlphaComponent(0.6)
             entry.layer.cornerRadius = entry.bounds.height / 2.0
             entry.layer.masksToBounds = true
         }

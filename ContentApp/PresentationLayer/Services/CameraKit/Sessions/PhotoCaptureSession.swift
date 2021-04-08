@@ -20,7 +20,6 @@ import AVFoundation
 import UIKit
 
 class PhotoCaptureSession: CaptureSession {
-    
     let photoOutput = AVCapturePhotoOutput()
     var flashMode = FlashMode.auto
     
@@ -59,7 +58,7 @@ class PhotoCaptureSession: CaptureSession {
                 }
                 deviceInput.device.unlockForConfiguration()
             } catch {
-                AlfrescoLog.error("Something went wrong on resolution \(resolution)")
+                AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
             }
         }
     }
@@ -72,7 +71,7 @@ class PhotoCaptureSession: CaptureSession {
                 device.videoZoomFactor = CGFloat(self.zoom)
                 device.unlockForConfiguration()
             } catch {
-                AlfrescoLog.error("Something went wrong on zoom.")
+                AlfrescoLog.error("An unexpected error occured while zooming.")
             }
             uiDelegate?.didChange(zoom: zoom)
         }
@@ -148,7 +147,6 @@ class PhotoCaptureSession: CaptureSession {
 // MARK: - AVCapturePhotoCapture Delegate
 
 extension PhotoCaptureSession: AVCapturePhotoCaptureDelegate {
-    
     func photoOutput(_ output: AVCapturePhotoOutput,
                      didFinishProcessingPhoto photo: AVCapturePhoto,
                      error: Error?) {

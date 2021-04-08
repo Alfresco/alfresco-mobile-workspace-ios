@@ -123,8 +123,8 @@ class CameraViewController: UIViewController {
         closeButton.tintColor = currentTheme.onSurface60Color
         flashModeButton.tintColor = currentTheme.onSurface60Color
         switchCameraButton.tintColor = currentTheme.onSurface60Color
-        switchCameraButton.backgroundColor = currentTheme.surfaceColor?.withAlphaComponent(0.6)
-        zoomLabel.backgroundColor = currentTheme.surfaceColor?.withAlphaComponent(0.6)
+        switchCameraButton.backgroundColor = currentTheme.surfaceColor.withAlphaComponent(0.6)
+        zoomLabel.backgroundColor = currentTheme.surfaceColor.withAlphaComponent(0.6)
     }
     
     // MARK: - Navigation

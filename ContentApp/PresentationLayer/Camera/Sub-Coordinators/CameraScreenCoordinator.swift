@@ -75,21 +75,17 @@ class CameraScreenCoordinator: Coordinator {
 
     func configurationLayout() -> CameraConfigurationLayout? {
         guard let currentTheme = themingService?.activeTheme else { return nil}
-        let theme = CameraConfigurationLayout()
-
-        theme.onSurfaceColor = currentTheme.onSurfaceColor
-        theme.onSurface60Color = currentTheme.onSurface60Color
-        theme.surfaceColor = currentTheme.surfaceColor
-        theme.subtitle2Font = currentTheme.subtitle2TextStyle.font
+        let theme = CameraConfigurationLayout(onSurfaceColor: currentTheme.onSurfaceColor,
+                                              onSurface60Color: currentTheme.onSurface60Color,
+                                              surfaceColor: currentTheme.surfaceColor,
+                                              subtitle2Font: currentTheme.subtitle2TextStyle.font)
 
         return theme
     }
     
     func cameraLocalization() -> CameraLocalization {
-        let localization = CameraLocalization()
-        
-        localization.sliderPhoto = LocalizationConstants.Camera.sliderCameraPhoto
-        
+        let localization = CameraLocalization(sliderPhoto: LocalizationConstants.Camera.sliderCameraPhoto)
+
         return localization
     }
 }
