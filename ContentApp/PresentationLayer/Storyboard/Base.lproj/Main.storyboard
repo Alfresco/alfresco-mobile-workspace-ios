@@ -1326,14 +1326,14 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile Workspace needs photos access" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6JA-Z8-PZp">
-                                        <rect key="frame" x="8" y="312" width="412" height="67"/>
+                                        <rect key="frame" x="24" y="312" width="380" height="67"/>
                                         <accessibility key="accessibilityConfiguration" identifier="privacyNoticeTitleLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To save images or videos on your device, Mobile Workspace needs access to your photos." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDd-q7-2Ei">
-                                        <rect key="frame" x="8" y="387" width="412" height="40.666666666666686"/>
+                                        <rect key="frame" x="24" y="387" width="380" height="40.666666666666686"/>
                                         <accessibility key="accessibilityConfiguration" identifier="privacyNoticeDescriptionLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -1353,18 +1353,16 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="0IK-86-kGM"/>
                                     <constraint firstItem="6JA-Z8-PZp" firstAttribute="top" secondItem="lAK-WR-Cfc" secondAttribute="bottom" id="9CL-J6-3Wd"/>
                                     <constraint firstItem="C1z-OU-mAW" firstAttribute="top" secondItem="BDd-q7-2Ei" secondAttribute="bottom" constant="16" id="Bjb-oU-gJL"/>
                                     <constraint firstItem="lAK-WR-Cfc" firstAttribute="centerY" secondItem="4bc-Zt-mwr" secondAttribute="centerY" multiplier="2/3" id="IZS-wy-pOi"/>
                                     <constraint firstItem="C1z-OU-mAW" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="NoR-lq-cXV"/>
-                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="8" id="Tn6-Vf-XBR"/>
-                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="X7S-pA-RTn"/>
-                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="8" id="aAe-rk-CF5"/>
+                                    <constraint firstItem="6JA-Z8-PZp" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="24" id="Tn6-Vf-XBR"/>
+                                    <constraint firstItem="BDd-q7-2Ei" firstAttribute="leading" secondItem="4bc-Zt-mwr" secondAttribute="leading" constant="24" id="aAe-rk-CF5"/>
                                     <constraint firstItem="BDd-q7-2Ei" firstAttribute="top" secondItem="6JA-Z8-PZp" secondAttribute="bottom" constant="8" id="f5a-Lj-qGQ"/>
-                                    <constraint firstAttribute="trailing" secondItem="6JA-Z8-PZp" secondAttribute="trailing" constant="8" id="kpR-Dh-1qe"/>
+                                    <constraint firstAttribute="trailing" secondItem="6JA-Z8-PZp" secondAttribute="trailing" constant="24" id="kpR-Dh-1qe"/>
                                     <constraint firstItem="lAK-WR-Cfc" firstAttribute="centerX" secondItem="4bc-Zt-mwr" secondAttribute="centerX" id="rlu-EJ-BUF"/>
-                                    <constraint firstAttribute="trailing" secondItem="BDd-q7-2Ei" secondAttribute="trailing" constant="8" id="yPO-LI-6i8"/>
+                                    <constraint firstAttribute="trailing" secondItem="BDd-q7-2Ei" secondAttribute="trailing" constant="24" id="yPO-LI-6i8"/>
                                 </constraints>
                             </view>
                         </subviews>
