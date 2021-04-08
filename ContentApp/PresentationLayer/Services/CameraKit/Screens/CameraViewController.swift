@@ -119,7 +119,6 @@ class CameraViewController: UIViewController {
     private func applyComponentsThemes() {
         guard let currentTheme = theme else { return }
         view.backgroundColor = currentTheme.surfaceColor
-        featuresView.backgroundColor = currentTheme.surfaceColor
         topBarView.backgroundColor = currentTheme.surfaceColor
         closeButton.tintColor = currentTheme.onSurface60Color
         flashModeButton.tintColor = currentTheme.onSurface60Color

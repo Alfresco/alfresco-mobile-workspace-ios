@@ -286,6 +286,7 @@
 		F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020B6261AF83B007799B2 /* PreviewViewController.swift */; };
 		F1B020BC261B0255007799B2 /* CameraScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */; };
 		F1B020C1261B1F55007799B2 /* CameraConfigurationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */; };
+		F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -606,6 +607,7 @@
 		F1B020B6261AF83B007799B2 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScreenCoordinator.swift; sourceTree = "<group>"; };
 		F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraConfigurationLayout.swift; sourceTree = "<group>"; };
+		F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeModelProtocol.swift; sourceTree = "<group>"; };
 		F4ECEF6177D9FF73F5055CD9 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -768,6 +770,7 @@
 				E3CF862524E69B13001C86B5 /* Files Preview */,
 				E386BAEC25C7DE8E005F3503 /* Choose Dialog */,
 				E335E735253866980036E090 /* Action Menu */,
+				F1B6A549261ED2B0005353CA /* Camera */,
 				B99E1C4D247FE58B00116F05 /* Components */,
 				E3A2A8F9247E7D230046582C /* Extensions */,
 				B959CCD02476B18D00811F15 /* Services */,
@@ -1473,7 +1476,6 @@
 				E3E9ED3E24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift */,
 				E3E9ED4A24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift */,
 				E3AE301724CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift */,
-				F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -1529,6 +1531,7 @@
 		E3A2A8FE247E7D950046582C /* BusinessLayer */ = {
 			isa = PBXGroup;
 			children = (
+				F1E295CC261EF62E00C9B8EE /* PrivacyNotice */,
 				B9B7531425AC8F95004F16E5 /* Sync */,
 				B9ECECF8254301F10097DB3F /* EventDelivery */,
 				B9E7D5FF249115BA0056292B /* Session */,
@@ -1772,6 +1775,30 @@
 				F185B17A2617454D00407451 /* CameraUtils.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		F1B6A549261ED2B0005353CA /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				F1B6A54A261ED2C1005353CA /* Sub-Coordinators */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		F1B6A54A261ED2C1005353CA /* Sub-Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */,
+			);
+			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		F1E295CC261EF62E00C9B8EE /* PrivacyNotice */ = {
+			isa = PBXGroup;
+			children = (
+				F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */,
+			);
+			path = PrivacyNotice;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2110,6 +2137,7 @@
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
+				F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */,
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,

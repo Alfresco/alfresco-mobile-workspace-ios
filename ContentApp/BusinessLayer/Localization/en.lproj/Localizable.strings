@@ -197,6 +197,8 @@
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";
 "privacy-photos-description" = "To save images or videos on your device, Mobile Workspace needs access to your photos.";
+"privacy-camera-title" = "Mobile Workspace needs camera access";
+"privacy-camera-description" = "To take and upload photos and videos, Mobile Workspace needs access to your photos.";
 "privacy-button" = "Review privacy settings";
 
 // MARK: - Camera

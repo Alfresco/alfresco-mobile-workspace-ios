@@ -16,12 +16,19 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-let wideResolution = CGSize(width: 3024, height: 4032)
-let focusViewSize = CGSize(width: 72, height: 72)
-let mediaFolderName = "Media Folder"
-let minZoom: CGFloat = 1.0
-let maxZoom: CGFloat = 10.0
-let animationFadeFocusView = 2.0
-let animationRotateCameraButtons = 0.5
+protocol PrivacyNoticeModelProtocol {
+    var title: String { get }
+    var description: String { get }
+}
+
+struct PrivacyNotiveCameraModel: PrivacyNoticeModelProtocol {
+    var title = LocalizationConstants.PrivacySettings.privacyCameraTitle
+    var description =  LocalizationConstants.PrivacySettings.privacyCameraDescription
+}
+
+struct PrivacyNotivePhotosModel: PrivacyNoticeModelProtocol {
+    var title = LocalizationConstants.PrivacySettings.privacyPhotosTitle
+    var description =  LocalizationConstants.PrivacySettings.privacyPhotosDescription
+}

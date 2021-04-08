@@ -426,6 +426,7 @@ class NodeActionsViewModel {
                 // Will not base check on error code as used constants have been deprecated
                 if activity?.rawValue == KeyConstants.Save.toCameraRoll && !success {
                     let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                    privacyVC.viewModel = PrivacyNotivePhotosModel()
                     privacyVC.coordinatorServices = sSelf.coordinatorServices
                     presentationContext.present(privacyVC,
                                                 animated: true,

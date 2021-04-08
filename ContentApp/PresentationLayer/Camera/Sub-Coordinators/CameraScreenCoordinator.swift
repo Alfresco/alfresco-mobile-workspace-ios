@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class CameraScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
@@ -34,13 +35,43 @@ class CameraScreenCoordinator: Coordinator {
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
         navigationViewController.modalPresentationStyle = .fullScreen
-        presenter.present(navigationViewController, animated: true)
         
         self.navigationViewController = navigationViewController
         cameraViewController = viewController
+        
+        requestAuthorizationForCameraUsage { [weak self] (granted) in
+            guard let sSelf = self else { return }
+            if granted {
+                DispatchQueue.main.async {
+                    guard let sSelf = self else { return }
+                    sSelf.presenter.present(navigationViewController,
+                                            animated: true)
+                }
+            } else {
+                let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                privacyVC.viewModel = PrivacyNotiveCameraModel()
+                privacyVC.coordinatorServices = sSelf.coordinatorServices
+                sSelf.presenter.present(privacyVC,
+                                        animated: true,
+                                        completion: nil)
+            }
+        }
     }
     
     // MARK: - Private Methods
+        
+    func requestAuthorizationForCameraUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            completion(true)
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                completion(granted)
+            }
+        default:
+            completion(false)
+        }
+    }
 
     func configurationLayout() -> CameraConfigurationLayout? {
         guard let currentTheme = themingService?.activeTheme else { return nil}

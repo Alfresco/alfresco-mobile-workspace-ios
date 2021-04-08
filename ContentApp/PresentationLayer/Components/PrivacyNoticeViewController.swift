@@ -25,6 +25,8 @@ class PrivacyNoticeViewController: SystemThemableViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var privacyButton: MDCButton!
+    
+    var viewModel: PrivacyNoticeModelProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,8 +67,8 @@ class PrivacyNoticeViewController: SystemThemableViewController {
     // MARK: - Helpers
 
     func addLocalization() {
-        titleLabel.text = LocalizationConstants.PrivacySettings.privacyPhotosTitle
-        descriptionLabel.text = LocalizationConstants.PrivacySettings.privacyPhotosDescription
+        titleLabel.text = viewModel?.title
+        descriptionLabel.text = viewModel?.description
         privacyButton.setTitle(LocalizationConstants.PrivacySettings.privacyButton, for: .normal)
     }
 }

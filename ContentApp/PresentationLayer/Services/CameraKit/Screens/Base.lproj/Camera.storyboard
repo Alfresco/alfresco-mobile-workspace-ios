@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mpj-Nv-eD8" customClass="SessionPreview" customModule="ContentApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="428" height="628"/>
+                                <rect key="frame" x="0.0" y="88" width="428" height="838"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1x" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z2s-So-wmT">
@@ -106,6 +106,7 @@
                                 <constraints>
                                     <constraint firstItem="7ci-e2-bho" firstAttribute="centerY" secondItem="vye-B6-Ywp" secondAttribute="centerY" id="4Zn-Sz-MDq"/>
                                     <constraint firstItem="vye-B6-Ywp" firstAttribute="top" secondItem="ULu-2x-pmc" secondAttribute="top" constant="12" id="9wm-KE-YGv"/>
+                                    <constraint firstAttribute="height" constant="176" id="PnB-46-8Cg"/>
                                     <constraint firstItem="4bR-ue-MhG" firstAttribute="centerX" secondItem="ULu-2x-pmc" secondAttribute="centerX" id="ZeD-5m-Vyx"/>
                                     <constraint firstItem="4bR-ue-MhG" firstAttribute="top" secondItem="vye-B6-Ywp" secondAttribute="bottomMargin" constant="20" id="hME-c8-Ppx"/>
                                     <constraint firstAttribute="trailing" secondItem="7ci-e2-bho" secondAttribute="trailing" constant="16" id="r2D-jg-ypG"/>
@@ -121,12 +122,11 @@
                             <constraint firstItem="dfX-xY-wpU" firstAttribute="top" secondItem="aD4-lP-4o8" secondAttribute="top" id="91g-cJ-iYk"/>
                             <constraint firstItem="Mpj-Nv-eD8" firstAttribute="top" secondItem="dfX-xY-wpU" secondAttribute="bottom" id="GL4-t0-kh5"/>
                             <constraint firstItem="dfX-xY-wpU" firstAttribute="leading" secondItem="aD4-lP-4o8" secondAttribute="leading" id="Gyf-VB-g5o"/>
-                            <constraint firstItem="ULu-2x-pmc" firstAttribute="height" secondItem="7oH-hL-pld" secondAttribute="height" multiplier="0.190217" id="JCu-xU-F7b"/>
                             <constraint firstItem="ULu-2x-pmc" firstAttribute="top" secondItem="Z2s-So-wmT" secondAttribute="bottom" constant="12" id="JEH-wm-jDp"/>
                             <constraint firstItem="aD4-lP-4o8" firstAttribute="trailing" secondItem="Mpj-Nv-eD8" secondAttribute="trailing" id="Myv-fa-TxY"/>
+                            <constraint firstAttribute="bottom" secondItem="Mpj-Nv-eD8" secondAttribute="bottom" id="UY9-jK-w1o"/>
                             <constraint firstItem="Z2s-So-wmT" firstAttribute="centerX" secondItem="7oH-hL-pld" secondAttribute="centerX" id="X3J-rw-j5P"/>
                             <constraint firstItem="dfX-xY-wpU" firstAttribute="trailing" secondItem="aD4-lP-4o8" secondAttribute="trailing" id="hfm-WY-1sT"/>
-                            <constraint firstItem="ULu-2x-pmc" firstAttribute="top" secondItem="Mpj-Nv-eD8" secondAttribute="bottom" id="lHu-bu-5Yb"/>
                             <constraint firstItem="ULu-2x-pmc" firstAttribute="leading" secondItem="aD4-lP-4o8" secondAttribute="leading" id="rXt-hn-V6D"/>
                             <constraint firstItem="aD4-lP-4o8" firstAttribute="trailing" secondItem="ULu-2x-pmc" secondAttribute="trailing" id="rvp-Tl-D0C"/>
                         </constraints>
