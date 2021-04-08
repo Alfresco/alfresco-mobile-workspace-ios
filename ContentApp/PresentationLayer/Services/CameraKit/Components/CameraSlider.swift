@@ -34,7 +34,7 @@ protocol CameraSliderControlDelegate: class {
 }
 
 class CameraSliderControl: UIControl {
-    var entryPadding = 80
+    var entryPadding = 45
     weak var delegate: CameraSliderControlDelegate?
 
     private(set) var currentSelection: Int = 0
@@ -50,7 +50,7 @@ class CameraSliderControl: UIControl {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+
         self.backgroundColor = .clear
         self.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,6 +73,8 @@ class CameraSliderControl: UIControl {
     }
 
     override func layoutSubviews() {
+        scrollView.contentSize = self.frame.size
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: self.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
@@ -84,14 +86,13 @@ class CameraSliderControl: UIControl {
     // MARK: - Public interface
 
     func addSlider(entries: CameraSliderEntry...) {
-        let contentWidth = scrollView.contentSize.width + CGFloat(entryPadding) * CGFloat(entries.count)
-        scrollView.contentSize = CGSize(width: contentWidth,
-                                        height: self.frame.height)
+        var previousEntryViewFrame: CGRect?
+
         for (index, entry) in entries.enumerated() {
-            let entryFrame = CGRect(x: CGFloat(entryPadding) * CGFloat(index),
-                                          y: 0,
-                                          width: self.frame.width,
-                                          height: self.frame.height)
+            var entryFrame = CGRect(x: 0,
+                                    y: 0,
+                                    width: self.frame.width,
+                                    height: self.frame.height)
             let sliderEntryView = PassthroughView(frame: entryFrame)
             let entryLabel = UILabel()
             let button = UIButton(frame: entryLabel.frame)
@@ -101,7 +102,7 @@ class CameraSliderControl: UIControl {
 
             entryLabel.translatesAutoresizingMaskIntoConstraints = false
             button.translatesAutoresizingMaskIntoConstraints = false
-            
+
             entryLabel.textAlignment = .center
             entryLabel.text = entry.entryName
 
@@ -111,6 +112,20 @@ class CameraSliderControl: UIControl {
             sliderEntryView.addSubview(entryLabel)
             scrollView.addSubview(sliderEntryView)
 
+            if let labelTitle = sliderLabelEntries[index].text {
+                let labelWidth = (labelTitle as NSString).size(withAttributes: [ .font : sliderStyle.optionFont ]).width
+                entryFrame.size.width = labelWidth
+
+                if index > 0, let previousEntryViewFrame = previousEntryViewFrame {
+                    entryFrame.origin.x = previousEntryViewFrame.origin.x +
+                        previousEntryViewFrame.size.width +
+                        CGFloat(entryPadding)
+                }
+
+                previousEntryViewFrame = entryFrame
+                sliderEntryView.frame = entryFrame
+            }
+
             NSLayoutConstraint.activate([
                 entryLabel.centerXAnchor.constraint(equalTo: sliderEntryView.centerXAnchor),
                 entryLabel.centerYAnchor.constraint(equalTo: sliderEntryView.centerYAnchor),
@@ -119,6 +134,12 @@ class CameraSliderControl: UIControl {
                 button.trailingAnchor.constraint(equalTo: entryLabel.trailingAnchor, constant: 16.0)
             ])
         }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.scrollToCurrentSelection(animated: false)
+        }
+
     }
 
     func updateStyle(style: CameraSliderControlSyle) {
@@ -160,21 +181,23 @@ class CameraSliderControl: UIControl {
         default: break
         }
 
-        scrollToCurrentSelection()
+        scrollToCurrentSelection(animated: true)
     }
 
     @objc private func handleTap(_ sender: UIButton) {
         currentSelection = sender.tag
-        scrollToCurrentSelection()
+        scrollToCurrentSelection(animated: true)
     }
 
-    private func scrollToCurrentSelection() {
-        let currentSelectionPoint = CGPoint(x: CGFloat(currentSelection * entryPadding),
-                                            y: scrollView.contentOffset.y)
-        scrollView.setContentOffset(currentSelectionPoint, animated: true)
-        applyCurrentStyle()
+    private func scrollToCurrentSelection(animated: Bool) {
+        if let currentSelectionParentView = sliderLabelEntries[currentSelection].superview {
+            let currentSelectionPoint = CGPoint(x: currentSelectionParentView.center.x - self.frame.width / 2,
+                                                y: scrollView.contentOffset.y)
+            scrollView.setContentOffset(currentSelectionPoint, animated: animated)
+            applyCurrentStyle()
 
-        delegate?.didChangeSelection(to: currentSelection)
+            delegate?.didChangeSelection(to: currentSelection)
+        }
     }
 }
 
