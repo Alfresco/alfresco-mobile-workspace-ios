@@ -647,6 +647,14 @@
 			path = generated;
 			sourceTree = "<group>";
 		};
+		13FA0C372620482D001875B2 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				F14E68852617028A002FDEF9 /* CameraKit */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
 		6F4B75B86F4D71EED5B5B6D5 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -793,7 +801,6 @@
 		B959CCD02476B18D00811F15 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F14E68852617028A002FDEF9 /* CameraKit */,
 				B959CCD22476C90100811F15 /* ThemingService */,
 				B957FE6A24A8EFA7007F13C0 /* Router */,
 			);
@@ -1164,9 +1171,9 @@
 			isa = PBXGroup;
 			children = (
 				E334C03E24755D8E00F74880 /* ContentApp */,
+				02738D6D4FA8666C09BC8E80 /* generated */,
 				E334C05524755D9000F74880 /* ContentAppTests */,
 				E334C06024755D9000F74880 /* ContentAppUITests */,
-				02738D6D4FA8666C09BC8E80 /* generated */,
 				E334C03D24755D8E00F74880 /* Products */,
 				6F4B75B86F4D71EED5B5B6D5 /* Pods */,
 				B2D0465CBC8FC9656EE6C525 /* Frameworks */,
@@ -1191,6 +1198,7 @@
 				E3A2A8FE247E7D950046582C /* BusinessLayer */,
 				B959CCCE2476B14400811F15 /* DataAccessLayer */,
 				E3A2A8FF247E7DCD0046582C /* PersistenceLayer */,
+				13FA0C372620482D001875B2 /* Modules */,
 				E334C07024755DD900F74880 /* Supporting Files */,
 			);
 			path = ContentApp;
