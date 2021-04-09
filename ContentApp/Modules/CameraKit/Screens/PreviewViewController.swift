@@ -20,6 +20,7 @@ import UIKit
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_OutlinedTextFields
+import MaterialComponents.MaterialTextControls_OutlinedTextAreas
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class PreviewViewController: UIViewController {
@@ -29,8 +30,12 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var trashButton: UIButton!
     @IBOutlet weak var capturedAssetImageView: UIImageView!
     
+    @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
     @IBOutlet weak var fileNameTextField: MDCOutlinedTextField!
     @IBOutlet weak var saveButton: MDCButton!
+    
+    @IBOutlet weak var capturedAssetHeightContraint: NSLayoutConstraint!
+    @IBOutlet weak var capturedAssetWidthConstraint: NSLayoutConstraint!
     
     var previewViewModel: PreviewViewModel?
     var theme: CameraConfigurationLayout?
@@ -47,16 +52,25 @@ class PreviewViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        fileNameTextField.text = previewViewModel?.capturedAsset?.filename
-
-        capturedAssetImageView.image = previewViewModel?.capturedAsset?.image()
-        capturedAssetImageView.layer.cornerRadius = 8.0
-
-        trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
-
         applyLocalization()
         applyComponentsThemes()
-
+        
+        fileNameTextField.text = previewViewModel?.capturedAsset?.filename
+        
+        descriptionField.textView.delegate = self
+        descriptionField.maximumNumberOfVisibleRows = 7
+        
+        if let image = previewViewModel?.capturedAsset?.image() {
+            capturedAssetImageView.image = image
+            if image.imageOrientation == .down ||
+                image.imageOrientation == .up {
+                swapCapturedAssetRatioContraints()
+            }
+        }
+        capturedAssetImageView.layer.cornerRadius = 8.0
+        
+        trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
+        
         enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
     }
     
@@ -101,6 +115,7 @@ class PreviewViewController: UIViewController {
         
         fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
         fileNameTextField.trailingViewMode = .unlessEditing
+        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
     }
     
     private func applyLocalization() {
@@ -108,7 +123,13 @@ class PreviewViewController: UIViewController {
         
         title = localization.previewScreenTitle
         fileNameTextField.label.text = localization.fileNameTextField
+        descriptionField.label.text = localization.descriptionTextField
         saveButton.setTitle(localization.saveButton, for: .normal)
+    }
+    
+    private func swapCapturedAssetRatioContraints() {
+        swap(&capturedAssetWidthConstraint.constant, &capturedAssetHeightContraint.constant)
+        capturedAssetImageView.layoutIfNeeded()
     }
     
     // MARK: - Navigation
@@ -192,5 +213,11 @@ extension PreviewViewController: UITextFieldDelegate {
 
     func specialCharacters() -> String {
         return "* \" < > \\ / ? : |"
+    }
+}
+
+extension PreviewViewController: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        return true
     }
 }

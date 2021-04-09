@@ -163,7 +163,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAD-Um-d5b" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="542"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="612"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
                                                 <rect key="frame" x="97" y="12" width="234" height="312"/>
@@ -202,7 +202,7 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stA-oV-pdw" customClass="MDCButton">
-                                                <rect key="frame" x="24" y="470" width="380" height="48"/>
+                                                <rect key="frame" x="24" y="540" width="380" height="48"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="signInButton">
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
@@ -221,6 +221,14 @@
                                                     <action selector="saveButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="Unf-WI-yxN"/>
                                                 </connections>
                                             </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-v8-anF" customClass="MDCOutlinedTextArea">
+                                                <rect key="frame" x="24" y="450" width="380" height="50"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="250" constant="50" id="Clk-z3-gvv"/>
+                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="oql-LW-3rB"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <gestureRecognizers/>
@@ -230,12 +238,15 @@
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="DaO-AO-6CM"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="top" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="36" id="GDW-RP-1KR"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="Il7-Be-aeh"/>
+                                            <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="40" id="RoD-iB-NA0"/>
+                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="40" id="TQu-aK-HcY"/>
+                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="X0X-35-9ml"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="ZMF-7v-Fiy"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="leading" secondItem="pAD-Um-d5b" secondAttribute="leading" constant="24" id="bpT-8G-Mda"/>
-                                            <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="60" id="eWt-Go-HRO"/>
                                             <constraint firstItem="Lqx-zE-Z9u" firstAttribute="top" secondItem="pAD-Um-d5b" secondAttribute="top" constant="12" id="f6e-T5-eDE"/>
                                             <constraint firstAttribute="bottom" secondItem="stA-oV-pdw" secondAttribute="bottom" constant="24" id="kUT-Rn-cqH"/>
                                             <constraint firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" constant="24" id="msc-MG-94m"/>
+                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="zxW-IL-dKe"/>
                                         </constraints>
                                         <connections>
                                             <outletCollection property="gestureRecognizers" destination="fUl-P1-TBS" appends="YES" id="eD1-RU-mXF"/>
@@ -255,7 +266,7 @@
                         <viewLayoutGuide key="safeArea" id="oiy-4P-8jG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="7XH-50-xwG" firstAttribute="top" secondItem="AXw-qe-bel" secondAttribute="top" id="BtO-aq-tej"/>
+                            <constraint firstItem="7XH-50-xwG" firstAttribute="top" secondItem="oiy-4P-8jG" secondAttribute="top" id="BtO-aq-tej"/>
                             <constraint firstItem="pAD-Um-d5b" firstAttribute="width" secondItem="AXw-qe-bel" secondAttribute="width" id="I0j-8n-wZe"/>
                             <constraint firstAttribute="trailing" secondItem="7XH-50-xwG" secondAttribute="trailing" id="bgg-yN-2Hw"/>
                             <constraint firstAttribute="bottom" secondItem="7XH-50-xwG" secondAttribute="bottom" id="nh9-gu-obS"/>
@@ -264,8 +275,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="JdQ-o1-FYr"/>
                     <connections>
+                        <outlet property="capturedAssetHeightContraint" destination="Vm8-za-Gom" id="Yhp-H4-qwQ"/>
                         <outlet property="capturedAssetImageView" destination="Lqx-zE-Z9u" id="uNe-fR-aCj"/>
+                        <outlet property="capturedAssetWidthConstraint" destination="pMY-ai-Vuf" id="Adr-1f-NAg"/>
                         <outlet property="contentView" destination="pAD-Um-d5b" id="ylJ-c6-fJG"/>
+                        <outlet property="descriptionField" destination="rvJ-v8-anF" id="gmY-aS-Tyf"/>
                         <outlet property="fileNameTextField" destination="tlp-el-y3t" id="0bh-vZ-s9W"/>
                         <outlet property="saveButton" destination="stA-oV-pdw" id="Lwp-uE-F0G"/>
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
