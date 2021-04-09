@@ -81,6 +81,11 @@ class CameraSliderControl: UIControl {
             scrollView.widthAnchor.constraint(equalTo: self.widthAnchor),
             scrollView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
+
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.scrollToCurrentSelection(animated: false)
+        }
     }
 
     // MARK: - Public interface
@@ -113,7 +118,7 @@ class CameraSliderControl: UIControl {
             scrollView.addSubview(sliderEntryView)
 
             if let labelTitle = sliderLabelEntries[index].text {
-                let labelWidth = (labelTitle as NSString).size(withAttributes: [ .font : sliderStyle.optionFont ]).width
+                let labelWidth = (labelTitle as NSString).size(withAttributes: [ .font: sliderStyle.optionFont ]).width
                 entryFrame.size.width = labelWidth
 
                 if index > 0, let previousEntryViewFrame = previousEntryViewFrame {
@@ -134,12 +139,6 @@ class CameraSliderControl: UIControl {
                 button.trailingAnchor.constraint(equalTo: entryLabel.trailingAnchor, constant: 16.0)
             ])
         }
-
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.scrollToCurrentSelection(animated: false)
-        }
-
     }
 
     func updateStyle(style: CameraSliderControlSyle) {
