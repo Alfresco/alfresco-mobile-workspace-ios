@@ -18,3 +18,4 @@
 
 NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
 NSPhotoLibraryAddUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
+NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";

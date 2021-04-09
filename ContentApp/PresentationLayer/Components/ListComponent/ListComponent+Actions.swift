@@ -85,9 +85,12 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
 
     func handleSheetCreate(action: ActionMenu) {
         switch action.type {
-        case .createMSWord, .createMSExcel, .createMSPowerPoint, .createFolder:
+        case .createMSWord, .createMSExcel, .createMSPowerPoint,
+             .createFolder:
             listItemActionDelegate?.showNodeCreationDialog(with: action,
                                                            delegate: self)
+        case .createMedia:
+            listItemActionDelegate?.showCamera()
         default: break
         }
     }

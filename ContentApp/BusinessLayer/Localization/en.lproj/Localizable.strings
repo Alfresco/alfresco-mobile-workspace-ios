@@ -169,6 +169,7 @@
 "action-menu-create-folder" = "New folder";
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
+"action-menu-create-media" = "Take a photo";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";
@@ -196,4 +197,9 @@
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";
 "privacy-photos-description" = "To save images or videos on your device, Mobile Workspace needs access to your photos.";
+"privacy-camera-title" = "Mobile Workspace needs camera access";
+"privacy-camera-description" = "To take and upload photos and videos, Mobile Workspace needs access to your photos.";
 "privacy-button" = "Review privacy settings";
+
+// MARK: - Camera
+"slider-camera-photo" = "Photo";

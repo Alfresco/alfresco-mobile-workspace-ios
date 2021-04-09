@@ -21,34 +21,6 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 
-protocol ListItemActionDelegate: class {
-    func showPreview(for node: ListNode,
-                     from dataSource: ListComponentDataSourceProtocol)
-    func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentDataSourceProtocol,
-                                    delegate: NodeActionsViewModelDelegate)
-    func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
-    func showNodeCreationDialog(with actionMenu: ActionMenu,
-                                delegate: CreateNodeViewModelDelegate?)
-}
-
-protocol ListComponentActionDelegate: class {
-    func elementTapped(node: ListNode)
-    func didUpdateList(in listComponentViewController: ListComponentViewController,
-                       error: Error?,
-                       pagination: Pagination?)
-    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
-                           for itemAtIndexPath: IndexPath)
-    func performListAction()
-}
-
-protocol ListComponentPageUpdatingDelegate: class {
-    func didUpdateList(error: Error?,
-                       pagination: Pagination?)
-    func shouldDisplayCreateButton(enable: Bool)
-    func didUpdateListActionState(enable: Bool)
-}
-
 class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var emptyListView: UIView!

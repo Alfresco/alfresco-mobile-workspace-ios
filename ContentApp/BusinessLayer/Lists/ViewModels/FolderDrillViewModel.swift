@@ -70,9 +70,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func shouldDisplayCreateButton() -> Bool {
-        return false
-//        guard let listNode = listNode else { return true }
-//        return listNode.hasPermissionToCreate()
+        guard let listNode = listNode else { return true }
+        return listNode.hasPermissionToCreate()
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {

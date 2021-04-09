@@ -189,6 +189,7 @@ struct LocalizationConstants {
         static let createFolder = NSLocalizedString("action-menu-create-folder", comment: "")
         static let markOffline = NSLocalizedString("action-menu-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
+        static let createMedia = NSLocalizedString("action-menu-create-media", comment: "")
     }
 
     struct Dialog {
@@ -218,8 +219,14 @@ struct LocalizationConstants {
     }
 
     struct PrivacySettings {
+        static let privacyButton = NSLocalizedString("privacy-button", comment: "")
         static let privacyPhotosTitle = NSLocalizedString("privacy-photos-title", comment: "")
         static let privacyPhotosDescription = NSLocalizedString("privacy-photos-description", comment: "")
-        static let privacyButton = NSLocalizedString("privacy-button", comment: "")
+        static let privacyCameraTitle = NSLocalizedString("privacy-camera-title", comment: "")
+        static let privacyCameraDescription = NSLocalizedString("privacy-camera-description", comment: "")
+    }
+    
+    struct Camera {
+        static let sliderCameraPhoto = NSLocalizedString("slider-camera-photo", comment: "")
     }
 }
