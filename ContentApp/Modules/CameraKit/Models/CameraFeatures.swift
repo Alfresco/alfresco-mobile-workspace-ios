@@ -27,6 +27,13 @@ enum DeviceType {
     var captureDeviceType: AVCaptureDevice.DeviceType {
         switch self {
         case .frontCamera, .backCamera:
+            if #available(iOS 13.0, *) {
+                if let _ = AVCaptureDevice.default(.builtInTripleCamera, for: AVMediaType.video, position: .back) {
+                    return .builtInTripleCamera
+                } else if let _ = AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back) {
+                    return .builtInDualCamera
+                }
+            }
             return .builtInWideAngleCamera
         case .microphone:
             return .builtInMicrophone
