@@ -56,6 +56,7 @@ struct LocalizationConstants {
         static let password = NSLocalizedString("password", comment: "")
         static let description = NSLocalizedString("description", comment: "")
         static let name = NSLocalizedString("name", comment: "")
+        static let filename = NSLocalizedString("file-name", comment: "")
     }
 
     struct Labels {
@@ -81,6 +82,7 @@ struct LocalizationConstants {
         static let favorites = NSLocalizedString("favorites", comment: "")
         static let browse = NSLocalizedString("browse", comment: "")
         static let offline = NSLocalizedString("offline", comment: "")
+        static let previewCaptureAsset = NSLocalizedString("previewCaptureAsset", comment: "")
     }
 
     struct Help {

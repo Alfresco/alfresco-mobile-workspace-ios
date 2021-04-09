@@ -18,24 +18,33 @@
 
 import UIKit
 
+let mediaFolderName = "Media Folder"
+let prefixFileName = "IMG"
+let extPhoto = "jpeg"
+let extVideo = "mov"
+
 enum CapturedAssetType {
     case image
     case video
     
     var ext: String {
         switch self {
-        case .image: return "jpeg"
-        case .video: return "mov"
+        case .image: return extPhoto
+        case .video: return extVideo
         }
     }
 }
 
 class CapturedAsset {
+    
     private(set) var path: String?
     private let type: CapturedAssetType
+    var description = ""
+    var filename = ""
     
     init(type: CapturedAssetType, data: Data) {
         self.type = type
+        self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
     }
     
@@ -63,10 +72,15 @@ class CapturedAsset {
     
     // MARK: - Private Helpers
     
+    private func provideFileName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+    }
+    
     private func cacheToDisk(data: Data) -> String? {
         guard let mediaFolder = createMediaFolder() else { return nil }
-        let timestamp = String(Date().timeIntervalSince1970)
-        let imagePath = mediaFolder.appendingPathComponent("\(timestamp).\(type.ext)")
+        let imagePath = mediaFolder.appendingPathComponent("\(filename).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)
         return imagePath
