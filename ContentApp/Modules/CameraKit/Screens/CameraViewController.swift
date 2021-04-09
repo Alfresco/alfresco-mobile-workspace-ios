@@ -67,6 +67,7 @@ class CameraViewController: UIViewController {
         sessionPreview.startSession()
         cameraViewModel.deletePreviousCapture()
         applyComponentsThemes()
+        cameraSlider.setNeedsLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
