@@ -91,6 +91,7 @@ class PreviewViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text {
             previewViewModel?.capturedAsset?.filename = filename
+            navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 
