@@ -76,18 +76,35 @@ class CameraScreenCoordinator: Coordinator {
     }
 
     func configurationLayout() -> CameraConfigurationLayout? {
-        guard let currentTheme = themingService?.activeTheme else { return nil}
-        let theme = CameraConfigurationLayout(onSurfaceColor: currentTheme.onSurfaceColor,
-                                              onSurface60Color: currentTheme.onSurface60Color,
-                                              surfaceColor: currentTheme.surfaceColor,
-                                              subtitle2Font: currentTheme.subtitle2TextStyle.font)
+        guard let currentTheme = themingService?.activeTheme,
+              let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
+              let buttonScheme = themingService?.containerScheming(for: .dialogButton)
+        else { return  nil}
 
-        return theme
+        return
+            CameraConfigurationLayout(onSurfaceColor: currentTheme.onSurfaceColor,
+                                      onSurface60Color: currentTheme.onSurface60Color,
+                                      onSurface5Color: currentTheme.onSurface5Color,
+                                      surfaceColor: currentTheme.surfaceColor,
+                                      subtitle2Font: currentTheme.subtitle2TextStyle.font,
+                                      headline6Font: currentTheme.headline6TextStyle.font,
+                                      textFieldScheme: textFieldScheme,
+                                      buttonScheme: buttonScheme)
     }
     
     func cameraLocalization() -> CameraLocalization {
-        let localization = CameraLocalization(sliderPhoto: LocalizationConstants.Camera.sliderCameraPhoto)
-
-        return localization
+        return
+            CameraLocalization(sliderPhoto:
+                                LocalizationConstants.Camera.sliderCameraPhoto,
+                               saveButton:
+                                LocalizationConstants.General.save,
+                               previewScreenTitle:
+                                LocalizationConstants.ScreenTitles.previewCaptureAsset,
+                               fileNameTextField:
+                                LocalizationConstants.TextFieldPlaceholders.filename,
+                               descriptionTextField:
+                                LocalizationConstants.TextFieldPlaceholders.description,
+                               errorNodeNameSpecialCharacters:
+                                LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
     }
 }

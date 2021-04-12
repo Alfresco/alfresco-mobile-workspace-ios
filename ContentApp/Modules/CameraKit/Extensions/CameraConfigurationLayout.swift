@@ -17,15 +17,26 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialContainerScheme
 
 struct CameraConfigurationLayout {
     var onSurfaceColor: UIColor
     var onSurface60Color: UIColor
+    var onSurface5Color: UIColor
     var surfaceColor: UIColor
     
     var subtitle2Font: UIFont
+    var headline6Font: UIFont
+    
+    var textFieldScheme: MDCContainerScheming
+    let buttonScheme: MDCContainerScheming
 }
 
 struct CameraLocalization {
     var sliderPhoto: String
+    var saveButton: String
+    var previewScreenTitle: String
+    var fileNameTextField: String
+    var descriptionTextField: String
+    var errorNodeNameSpecialCharacters: String
 }

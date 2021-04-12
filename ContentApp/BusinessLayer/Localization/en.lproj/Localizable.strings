@@ -51,6 +51,7 @@
 "content-services-url" = "Content Services URL";
 "description" = "Description";
 "name" = "Name";
+"file-name" = "File Name";
 
 // MARK: - Labels
 "transport-protocol" = "Transport protocol";
@@ -73,6 +74,7 @@
 "favorites" = "Favorites";
 "browse" = "Browse";
 "offline" = "Offline";
+"previewCaptureAsset" = "Preview";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";

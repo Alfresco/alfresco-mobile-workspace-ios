@@ -20,6 +20,7 @@ import UIKit
 
 enum SegueIdentifiers: String {
     case showPreviewVCfromCameraVC
+    case showFullScreen
 }
 
 protocol CameraStoryboardInstantiable: NSObjectProtocol {
