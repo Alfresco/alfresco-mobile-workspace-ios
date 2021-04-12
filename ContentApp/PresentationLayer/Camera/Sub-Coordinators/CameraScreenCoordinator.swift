@@ -40,7 +40,6 @@ class CameraScreenCoordinator: Coordinator {
         cameraViewController = viewController
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
-            guard self != nil else { return }
             if granted {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
