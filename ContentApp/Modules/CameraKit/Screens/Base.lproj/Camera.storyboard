@@ -167,6 +167,9 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
                                                 <rect key="frame" x="97" y="12" width="234" height="312"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="capturedPreviewImage">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="312" id="Vm8-za-Gom"/>
@@ -178,6 +181,7 @@
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KME-9f-KQ8">
                                                 <rect key="frame" x="279" y="272" width="40" height="40"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="cY8-nk-3VA"/>
                                                     <constraint firstAttribute="height" constant="40" id="hBW-0B-lwt"/>
@@ -189,21 +193,29 @@
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="tlp-el-y3t" customClass="MDCOutlinedTextField">
                                                 <rect key="frame" x="24" y="360" width="380" height="50"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="createNodeNameTextField">
+                                                <accessibility key="accessibilityConfiguration" identifier="fileNameTextField">
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="r8g-H7-mJL"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                 <connections>
                                                     <outlet property="delegate" destination="aGd-Xu-cBR" id="dNP-pz-hOB"/>
                                                 </connections>
                                             </textField>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-v8-anF" customClass="MDCOutlinedTextArea">
+                                                <rect key="frame" x="24" y="450" width="380" height="50"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" priority="250" constant="50" id="Clk-z3-gvv"/>
+                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="oql-LW-3rB"/>
+                                                </constraints>
+                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stA-oV-pdw" customClass="MDCButton">
                                                 <rect key="frame" x="24" y="540" width="380" height="48"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="signInButton">
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
                                                 <constraints>
@@ -221,14 +233,6 @@
                                                     <action selector="saveButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="Unf-WI-yxN"/>
                                                 </connections>
                                             </button>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-v8-anF" customClass="MDCOutlinedTextArea">
-                                                <rect key="frame" x="24" y="450" width="380" height="50"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" priority="250" constant="50" id="Clk-z3-gvv"/>
-                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="300" id="oql-LW-3rB"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <gestureRecognizers/>
@@ -266,7 +270,7 @@
                         <viewLayoutGuide key="safeArea" id="oiy-4P-8jG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="7XH-50-xwG" firstAttribute="top" secondItem="oiy-4P-8jG" secondAttribute="top" id="BtO-aq-tej"/>
+                            <constraint firstItem="7XH-50-xwG" firstAttribute="top" secondItem="AXw-qe-bel" secondAttribute="top" id="BtO-aq-tej"/>
                             <constraint firstItem="pAD-Um-d5b" firstAttribute="width" secondItem="AXw-qe-bel" secondAttribute="width" id="I0j-8n-wZe"/>
                             <constraint firstAttribute="trailing" secondItem="7XH-50-xwG" secondAttribute="trailing" id="bgg-yN-2Hw"/>
                             <constraint firstAttribute="bottom" secondItem="7XH-50-xwG" secondAttribute="bottom" id="nh9-gu-obS"/>
@@ -283,6 +287,7 @@
                         <outlet property="fileNameTextField" destination="tlp-el-y3t" id="0bh-vZ-s9W"/>
                         <outlet property="saveButton" destination="stA-oV-pdw" id="Lwp-uE-F0G"/>
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
+                        <outlet property="scrollViewTopConstraint" destination="BtO-aq-tej" id="Ixo-6q-B2b"/>
                         <outlet property="trashButton" destination="KME-9f-KQ8" id="A18-M8-a1x"/>
                         <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreen" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
                     </connections>
@@ -330,6 +335,7 @@
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o6a-Ob-X3M">
                                 <rect key="frame" x="16" y="60" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="closeButton"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="jG9-vk-ELX"/>
                                     <constraint firstAttribute="width" constant="40" id="skE-GD-eCR"/>

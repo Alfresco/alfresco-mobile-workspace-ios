@@ -37,9 +37,11 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var capturedAssetHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var capturedAssetWidthConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
     var previewViewModel: PreviewViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
+    var keyboardHandling = KeyboardHandling()
     
     var enableSaveButton = false {
         didSet {
@@ -58,7 +60,9 @@ class PreviewViewController: UIViewController {
         fileNameTextField.text = previewViewModel?.capturedAsset?.filename
         
         descriptionField.textView.delegate = self
+        descriptionField.baseTextAreaDelegate = self
         descriptionField.maximumNumberOfVisibleRows = 7
+        descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
         if let image = previewViewModel?.capturedAsset?.image() {
             capturedAssetImageView.image = image
@@ -147,6 +151,16 @@ class PreviewViewController: UIViewController {
 
 extension PreviewViewController: UITextFieldDelegate {
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        keyboardHandling.adaptFrame(in: scrollView, subview: textField)
+        return true
+    }
+    
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        scrollView.layoutIfNeeded()
+        return true
+    }
+    
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -161,6 +175,11 @@ extension PreviewViewController: UITextFieldDelegate {
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         enableSaveButton(for: "")
+        return true
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        descriptionField.textView.becomeFirstResponder()
         return true
     }
 
@@ -216,8 +235,31 @@ extension PreviewViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - UITextView Delegate
+
 extension PreviewViewController: UITextViewDelegate {
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        keyboardHandling.adaptFrame(in: scrollView, subview: saveButton)
         return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        scrollViewTopConstraint.constant = 0
+    }
+}
+
+// MARK: - MDCBaseTextArea Delegate
+
+extension PreviewViewController: MDCBaseTextAreaDelegate {
+    func baseTextArea(_ baseTextArea: MDCBaseTextArea, shouldChange newSize: CGSize) {
+        if descriptionField.textView.isFirstResponder {
+            if descriptionField.frame.height < newSize.height {
+                scrollView.frame.origin.y -= 20
+                scrollViewTopConstraint.constant = scrollView.frame.origin.y
+            } else {
+                scrollView.frame.origin.y += 20
+                scrollViewTopConstraint.constant = scrollView.frame.origin.y
+            }
+        }
     }
 }
