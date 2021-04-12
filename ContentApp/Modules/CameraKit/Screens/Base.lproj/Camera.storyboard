@@ -286,6 +286,7 @@
                         <outlet property="descriptionField" destination="rvJ-v8-anF" id="gmY-aS-Tyf"/>
                         <outlet property="fileNameTextField" destination="tlp-el-y3t" id="0bh-vZ-s9W"/>
                         <outlet property="saveButton" destination="stA-oV-pdw" id="Lwp-uE-F0G"/>
+                        <outlet property="saveButtonBottomConstraint" destination="kUT-Rn-cqH" id="YhC-vD-8sb"/>
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
                         <outlet property="scrollViewTopConstraint" destination="BtO-aq-tej" id="Ixo-6q-B2b"/>
                         <outlet property="trashButton" destination="KME-9f-KQ8" id="A18-M8-a1x"/>

@@ -36,8 +36,9 @@ class PreviewViewController: UIViewController {
     
     @IBOutlet weak var capturedAssetHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var capturedAssetWidthConstraint: NSLayoutConstraint!
-    
+    @IBOutlet weak var saveButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
+
     var previewViewModel: PreviewViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
@@ -161,14 +162,16 @@ class PreviewViewController: UIViewController {
 extension PreviewViewController {
 
     @objc func keyboardWillShow(notification: NSNotification) {
-        guard let object = saveButton, let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  else {
+        guard let object = saveButton, let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return
         }
         
         let frameObjectInView = scrollView.convert(object.frame, to: view)
         let keyboardHeight = keyboardFrame.cgRectValue.height
         let objectPositionY = view.frame.size.height
-            - (frameObjectInView.origin.y + frameObjectInView.size.height)
+            - frameObjectInView.origin.y
+            - frameObjectInView.size.height
+            - saveButtonBottomConstraint.constant
 
         if objectPositionY < keyboardHeight {
             scrollView.frame.origin.y -= (keyboardHeight - objectPositionY)
@@ -284,11 +287,12 @@ extension PreviewViewController: UITextViewDelegate {
 extension PreviewViewController: MDCBaseTextAreaDelegate {
     func baseTextArea(_ baseTextArea: MDCBaseTextArea, shouldChange newSize: CGSize) {
         if descriptionField.textView.isFirstResponder {
+            guard let lineHeight = baseTextArea.textView.font?.lineHeight else { return }
             if descriptionField.frame.height < newSize.height {
-                scrollView.frame.origin.y -= 20
+                scrollView.frame.origin.y -= lineHeight
                 scrollViewTopConstraint.constant = scrollView.frame.origin.y
             } else {
-                scrollView.frame.origin.y += 20
+                scrollView.frame.origin.y += lineHeight
                 scrollViewTopConstraint.constant = scrollView.frame.origin.y
             }
         }
