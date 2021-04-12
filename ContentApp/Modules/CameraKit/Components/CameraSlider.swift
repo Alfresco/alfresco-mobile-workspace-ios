@@ -102,6 +102,7 @@ class CameraSliderControl: UIControl {
             let entryLabel = UILabel()
             let button = UIButton(frame: entryLabel.frame)
             button.tag = index
+            button.accessibilityIdentifier = "cameraSlideButton\(index)"
             button.addTarget(self, action: #selector(handleTap(_:)),
                              for: .touchUpInside)
 
