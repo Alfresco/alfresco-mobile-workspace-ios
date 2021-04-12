@@ -40,7 +40,6 @@ class CameraScreenCoordinator: Coordinator {
         cameraViewController = viewController
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
-            guard let sSelf = self else { return }
             if granted {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
@@ -48,12 +47,15 @@ class CameraScreenCoordinator: Coordinator {
                                             animated: true)
                 }
             } else {
-                let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                privacyVC.viewModel = PrivacyNotiveCameraModel()
-                privacyVC.coordinatorServices = sSelf.coordinatorServices
-                sSelf.presenter.present(privacyVC,
-                                        animated: true,
-                                        completion: nil)
+                DispatchQueue.main.async {
+                    guard let sSelf = self else { return }
+                    let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                    privacyVC.viewModel = PrivacyNotiveCameraModel()
+                    privacyVC.coordinatorServices = sSelf.coordinatorServices
+                    sSelf.presenter.present(privacyVC,
+                                            animated: true,
+                                            completion: nil)
+                }
             }
         }
     }

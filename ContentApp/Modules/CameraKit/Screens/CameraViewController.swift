@@ -95,6 +95,7 @@ class CameraViewController: UIViewController {
     }
     
     @IBAction func captureButtonTapped(_ sender: UIButton) {
+        captureButton.isUserInteractionEnabled = false
         sessionPreview.capture()
     }
 
@@ -159,6 +160,7 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: CameraViewModelDelegate {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
+        captureButton.isUserInteractionEnabled = true
         if capturedAsset != nil {
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                          sender: nil)

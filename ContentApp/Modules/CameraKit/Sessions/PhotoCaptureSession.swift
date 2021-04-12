@@ -41,6 +41,30 @@ class PhotoCaptureSession: CaptureSession {
             }
             if let captureDeviceInput = captureDeviceInput {
                 session.addInput(captureDeviceInput)
+
+                do {
+                    let device = captureDeviceInput.device
+                    try device.lockForConfiguration()
+
+                    let focusMode: AVCaptureDevice.FocusMode = .continuousAutoFocus
+                    let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
+                    let whitebalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+
+                    if device.isFocusModeSupported(focusMode) {
+                        device.focusMode = focusMode
+                    }
+                    if device.isExposureModeSupported(exposureMode) {
+                        device.exposureMode = exposureMode
+                    }
+
+                    if device.isWhiteBalanceModeSupported(whitebalanceMode) {
+                        device.whiteBalanceMode = .continuousAutoWhiteBalance
+                    }
+
+                    device.unlockForConfiguration()
+                } catch {
+                    AlfrescoLog.error("An unexpected error occured while zooming.")
+                }
             }
         }
     }
@@ -120,9 +144,16 @@ class PhotoCaptureSession: CaptureSession {
             do {
                 try device.lockForConfiguration()
                 device.focusPointOfInterest = point
-                device.focusMode = .continuousAutoFocus
+                device.focusMode = .autoFocus
+                if device.isSmoothAutoFocusSupported {
+                    device.isSmoothAutoFocusEnabled = true
+                }
                 if device.isExposurePointOfInterestSupported {
                     device.exposureMode = .autoExpose
+                }
+                let whiteBalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+                if device.isWhiteBalanceModeSupported(whiteBalanceMode) {
+                    device.whiteBalanceMode = whiteBalanceMode
                 }
                 device.unlockForConfiguration()
             } catch let error {
