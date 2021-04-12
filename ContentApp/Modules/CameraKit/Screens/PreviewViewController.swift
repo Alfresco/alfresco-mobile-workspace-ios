@@ -41,7 +41,6 @@ class PreviewViewController: UIViewController {
     var previewViewModel: PreviewViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
-    var keyboardHandling = KeyboardHandling()
     
     var enableSaveButton = false {
         didSet {
@@ -76,6 +75,15 @@ class PreviewViewController: UIViewController {
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
         
         enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillShow),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillHide),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
     
     // MARK: - IBActions
@@ -147,24 +155,46 @@ class PreviewViewController: UIViewController {
     }
 }
 
+// MARK: - Keyboard Notificafion
+
+extension PreviewViewController {
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let object = saveButton, let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue  else {
+            return
+        }
+        
+        let frameObjectInView = scrollView.convert(object.frame, to: view)
+        let keyboardHeight = keyboardFrame.cgRectValue.height
+        let objectPositionY = view.frame.size.height
+            - (frameObjectInView.origin.y + frameObjectInView.size.height)
+
+        if objectPositionY < keyboardHeight {
+            scrollView.frame.origin.y -= (keyboardHeight - objectPositionY)
+            scrollViewTopConstraint.constant = scrollView.frame.origin.y
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if scrollView.frame.origin.y != 0 {
+            scrollView.frame.origin.y = 0
+        }
+    }
+}
+
 // MARK: - UITextField Delegate
 
 extension PreviewViewController: UITextFieldDelegate {
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        keyboardHandling.adaptFrame(in: scrollView, subview: textField)
-        return true
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollViewTopConstraint.constant = scrollView.frame.origin.y
     }
-    
-    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        scrollView.layoutIfNeeded()
-        return true
-    }
-    
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-
+        
+        scrollViewTopConstraint.constant = scrollView.frame.origin.y
         var updatedText = ""
         if let text = textField.text, let textRange = Range(range, in: text) {
            updatedText = text.replacingCharacters(in: textRange, with: string)
@@ -184,6 +214,7 @@ extension PreviewViewController: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollViewTopConstraint.constant = 0
         enableSaveButton(for: textField.text)
     }
 
@@ -238,9 +269,8 @@ extension PreviewViewController: UITextFieldDelegate {
 // MARK: - UITextView Delegate
 
 extension PreviewViewController: UITextViewDelegate {
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        keyboardHandling.adaptFrame(in: scrollView, subview: saveButton)
-        return true
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        scrollViewTopConstraint.constant = scrollView.frame.origin.y
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
