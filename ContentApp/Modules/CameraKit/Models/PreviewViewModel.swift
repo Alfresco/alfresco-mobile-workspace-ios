@@ -25,4 +25,9 @@ class PreviewViewModel {
     init(capturedAsset: CapturedAsset?) {
         self.capturedAsset = capturedAsset
     }
+    
+    func applyToCapturedAsset(filename: String, description: String?) {
+        capturedAsset?.filename = filename
+        capturedAsset?.description = description
+    }
 }

@@ -39,7 +39,7 @@ class CapturedAsset {
     
     private(set) var path: String?
     private let type: CapturedAssetType
-    var description = ""
+    var description: String?
     var filename = ""
     
     init(type: CapturedAssetType, data: Data) {
