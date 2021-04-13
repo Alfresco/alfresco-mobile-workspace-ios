@@ -68,16 +68,17 @@ class CreateNodeViewModel {
         updateNodeDetails { [weak self] (listNode, _) in
             guard let sSelf = self, let listNode = listNode else { return }
             let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
-            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
-                                                                       nodeBodyCreate: nodeBody,
-                                                                       autoRename: shouldAutorename,
-                                                                       include: nil,
-                                                                       fields: nil)
+
             switch sSelf.actionMenu.type {
             case .createFolder:
-                sSelf.createNewFolder(with: requestBuilder)
+                sSelf.createNewFolder(nodeId: listNode.guid,
+                                      nodeBody: nodeBody,
+                                      autoRename: shouldAutorename)
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+                sSelf.createMSOfficeNode(nodeId: listNode.guid,
+                                         nodeBody: nodeBody,
+                                         autoRename: shouldAutorename,
+                                         description: description)
             case .createMedia: break
             default: break
             }
@@ -94,7 +95,12 @@ class CreateNodeViewModel {
 
     // MARK: - Create Nodes
 
-    private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
+    private func createNewFolder(nodeId: String, nodeBody: NodeBodyCreate, autoRename: Bool) {
+        let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: nodeId,
+                                                                   nodeBodyCreate: nodeBody,
+                                                                   autoRename: autoRename,
+                                                                   include: nil,
+                                                                   fields: nil)
         requestBuilder.execute { [weak self] (result, error) in
             guard let sSelf = self else { return }
             if let error = error {
@@ -108,68 +114,27 @@ class CreateNodeViewModel {
         }
     }
 
-    private func createMSOfficeNode(with requestBuilder: RequestBuilder<NodeEntry>,
-                                    nodeBody: NodeBodyCreate) {
-        guard let url = URL(string: requestBuilder.URLString) else { return }
-
-        Alamofire.upload(multipartFormData: { [weak self] (formData) in
-            guard let sSelf = self else { return }
-            sSelf.addData(in: formData, from: nodeBody)
-        }, to: url,
-        headers: AlfrescoContentAPI.customHeaders,
-        encodingCompletion: { [weak self] encodingResult in
-            guard let sSelf = self else { return }
-            sSelf.finishEncodingMultipart(with: encodingResult)
-        })
-    }
-
-    private func finishEncodingMultipart(with encodingResult: SessionManager.MultipartFormDataEncodingResult) {
-        switch encodingResult {
-        case .success(let upload, _, _) :
-            uploadRequest = upload
-            upload.responseJSON { [weak self] response in
+    private func createMSOfficeNode(nodeId: String,
+                                    nodeBody: NodeBodyCreate,
+                                    autoRename: Bool,
+                                    description: String?) {
+        if let dataTemplate = dataFromTemplateFile() {
+            NodesAPI.createNode(nodeId: nodeId,
+                                nodeBody: nodeBody,
+                                fileData: dataTemplate,
+                                autoRename: autoRename,
+                                description: description) {[weak self]  (nodeEntry, error) in
                 guard let sSelf = self else { return }
-                sSelf.uploadDialog?.dismiss(animated: true)
 
-                if let error = response.error {
-                    sSelf.handle(error: error)
-                } else {
-                    if let data = response.data {
-                        let resultDecode = sSelf.decode(data: data)
-                        if let nodeEntry = resultDecode.0 {
-                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
-                            sSelf.publishEventBus(with: listNode)
-                        }
-                        if let error = resultDecode.1 {
-                            sSelf.delegate?.handleCreatedNode(node: nil, error: error)
-                            AlfrescoLog.error(error)
-                        }
-                    }
+                sSelf.uploadDialog?.dismiss(animated: true)
+                if let transferError = error {
+                    sSelf.handle(error: transferError)
+                } else if let entry = nodeEntry {
+                    let listNode = NodeChildMapper.create(from: entry.entry)
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.publishEventBus(with: listNode)
                 }
             }
-        case .failure(let encodingError):
-            uploadDialog?.dismiss(animated: true)
-            handle(error: encodingError)
-        }
-    }
-
-    private func addData(in formData: MultipartFormData, from nodeBody: NodeBodyCreate) {
-        if let dataTemplate = dataFromTemplateFile(),
-           let dataNodeType = nodeBody.nodeType.data(using: .utf8),
-           let dataAutoRename = "true".data(using: .utf8) {
-
-            formData.append(dataTemplate,
-                            withName: "filedata",
-                            fileName: nodeBody.name,
-                            mimeType: "")
-            formData.append(dataNodeType, withName: "nodeType")
-            formData.append(dataAutoRename, withName: "autoRename")
-
-        }
-        if let description = nodeDescription,
-           let dataDescription = description.data(using: .utf8) {
-            formData.append(dataDescription, withName: "cm:description")
         }
     }
 
@@ -187,17 +152,6 @@ class CreateNodeViewModel {
             }
             handle(listNode, error)
         }
-    }
-
-    private func decode(data: Data) -> (NodeEntry?, Error?) {
-        let decodeResult: (decodableObj: NodeEntry?, error: Error?)
-        decodeResult = CodableHelper.decode(NodeEntry.self, from: data)
-        if let error = decodeResult.error {
-            return (nil, error)
-        } else if let nodeEntry = decodeResult.decodableObj {
-            return (nodeEntry, nil)
-        }
-        return (nil, nil)
     }
 
     private func publishEventBus(with listNode: ListNode) {
