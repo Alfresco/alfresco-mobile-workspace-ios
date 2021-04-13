@@ -29,6 +29,7 @@ protocol ListItemActionDelegate: class {
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?)
     func showCamera()
+    func showPhotoLibrary()
 }
 
 protocol ListComponentActionDelegate: class {
@@ -59,6 +60,10 @@ extension ListItemActionDelegate {
     }
     
     func showCamera() {
+        // Do nothing
+    }
+    
+    func showPhotoLibrary() {
         // Do nothing
     }
 }

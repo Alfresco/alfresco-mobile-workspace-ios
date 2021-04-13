@@ -258,7 +258,8 @@ class ListNode: Hashable, Entity {
                 .createMSWord: ("docx", "cm:content", "word"),
                 .createMSPowerPoint: ("pptx", "cm:content", "powerpoint"),
                 .createFolder: ("", "cm:folder", ""),
-                .createMedia: (".jpg", "cm:content", "")]
+                .createMedia: ("", "cm:content", ""),
+                .uploadMedia: ("", "cm:content", "")]
     }
 
     static func getExtension(from type: ActionMenuType?) -> String? {

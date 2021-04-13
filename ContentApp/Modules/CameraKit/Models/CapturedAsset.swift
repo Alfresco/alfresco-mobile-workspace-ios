@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import Photos
 
 let mediaFolderName = "Media Folder"
 let prefixFileName = "IMG"
@@ -46,6 +47,25 @@ class CapturedAsset {
         self.type = type
         self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
+    }
+    
+    init(phAsset: PHAsset) {
+        self.type = (phAsset.mediaType == .video) ? .video : .image
+        self.filename = provideFileName()
+        
+        let poptions = PHContentEditingInputRequestOptions()
+        poptions.isNetworkAccessAllowed = true
+        phAsset.requestContentEditingInput(with: poptions) { [weak self] (input, _) in
+            guard let sSelf = self else { return }
+            do {
+                if let imageURL = input?.fullSizeImageURL {
+                    let data = try Data(contentsOf: imageURL)
+                    sSelf.cacheToDisk(data: data)
+                }
+            } catch {
+                AlfrescoLog.error("Failde to read data from: \(String(describing: input?.fullSizeImageURL)) ")
+            }
+        }
     }
     
     // MARK: - Public Helpers

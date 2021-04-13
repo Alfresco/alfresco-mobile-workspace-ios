@@ -78,7 +78,7 @@ class CreateNodeViewModel {
                 sSelf.createNewFolder(with: requestBuilder)
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
                 sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
-            case .createMedia: break
+            case .createMedia, .uploadMedia: break
             default: break
             }
         }

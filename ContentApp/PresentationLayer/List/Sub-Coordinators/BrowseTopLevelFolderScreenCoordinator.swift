@@ -24,6 +24,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
+    private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -108,5 +109,11 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let coordinator = CameraScreenCoordinator(with: presenter)
         coordinator.start()
         cameraCoordinator = coordinator
+    }
+    
+    func showPhotoLibrary() {
+        let coordinator = PhotoLibraryScreenCoordinator(with: presenter)
+        coordinator.start()
+        photoLibraryCoordinator = coordinator
     }
 }

@@ -55,8 +55,14 @@ class FullScreenCapturedAssetViewController: UIViewController {
     }
 }
 
+// MARK: - UIScrollView Delegate
+
 extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 }
+
+// MARK: - Storyboard Instantiable
+
+extension FullScreenCapturedAssetViewController: CameraStoryboardInstantiable { }

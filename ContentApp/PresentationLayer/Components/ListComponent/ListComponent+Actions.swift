@@ -91,6 +91,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                                                            delegate: self)
         case .createMedia:
             listItemActionDelegate?.showCamera()
+        case .uploadMedia:
+            listItemActionDelegate?.showPhotoLibrary()
         default: break
         }
     }

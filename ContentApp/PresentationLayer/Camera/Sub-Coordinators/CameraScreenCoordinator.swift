@@ -50,7 +50,7 @@ class CameraScreenCoordinator: Coordinator {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
                     let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                    privacyVC.viewModel = PrivacyNotiveCameraModel()
+                    privacyVC.viewModel = PrivacyNoticeCameraModel()
                     privacyVC.coordinatorServices = sSelf.coordinatorServices
                     sSelf.presenter.present(privacyVC,
                                             animated: true,

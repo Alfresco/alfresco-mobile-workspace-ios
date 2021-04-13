@@ -276,6 +276,10 @@
 		F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E689B261727B1002FDEF9 /* CameraFeatures.swift */; };
 		F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */; };
 		F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */; };
+		F168F45926246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F168F45826246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift */; };
+		F168F465262484FC0002D3A5 /* PhotoGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F168F464262484FC0002D3A5 /* PhotoGalleryViewController.swift */; };
+		F168F46E262488150002D3A5 /* PhotoGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F168F46D262488150002D3A5 /* PhotoGalleryViewModel.swift */; };
+		F168F47326248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F168F47226248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift */; };
 		F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */; };
 		F185B17B2617454D00407451 /* CameraKitConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B17A2617454D00407451 /* CameraKitConstants.swift */; };
 		F185B1812617495300407451 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B1802617495300407451 /* CameraViewController.swift */; };
@@ -283,6 +287,7 @@
 		F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B19D2617591200407451 /* ListComponent+Delegates.swift */; };
 		F185B1A326175C8800407451 /* CameraStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */; };
 		F185B1A72617663000407451 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F185B1A92617663000407451 /* Camera.storyboard */; };
+		F18AAB542625731900B98181 /* GalleryConfigurationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18AAB532625731900B98181 /* GalleryConfigurationLayout.swift */; };
 		F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C3B262065680096743B /* PreviewViewModel.swift */; };
 		F1AC6C44262065710096743B /* FullScreenCapturedAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */; };
 		F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020B6261AF83B007799B2 /* PreviewViewController.swift */; };
@@ -599,6 +604,10 @@
 		F14E689B261727B1002FDEF9 /* CameraFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFeatures.swift; sourceTree = "<group>"; };
 		F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDeviceOrientation+VideoOrientation.swift"; sourceTree = "<group>"; };
 		F14E68B126173B6B002FDEF9 /* CapturedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapturedAsset.swift; sourceTree = "<group>"; };
+		F168F45826246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryScreenCoordinator.swift; sourceTree = "<group>"; };
+		F168F464262484FC0002D3A5 /* PhotoGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewController.swift; sourceTree = "<group>"; };
+		F168F46D262488150002D3A5 /* PhotoGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryViewModel.swift; sourceTree = "<group>"; };
+		F168F47226248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Rotate.swift"; sourceTree = "<group>"; };
 		F185B17A2617454D00407451 /* CameraKitConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitConstants.swift; sourceTree = "<group>"; };
 		F185B1802617495300407451 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
@@ -606,6 +615,7 @@
 		F185B19D2617591200407451 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
 		F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStoryboardInstantiable.swift; sourceTree = "<group>"; };
 		F185B1A82617663000407451 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
+		F18AAB532625731900B98181 /* GalleryConfigurationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryConfigurationLayout.swift; sourceTree = "<group>"; };
 		F1AC6C3B262065680096743B /* PreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenCapturedAssetViewController.swift; sourceTree = "<group>"; };
 		F1B020B6261AF83B007799B2 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
@@ -1722,6 +1732,7 @@
 		F14E68852617028A002FDEF9 /* CameraKit */ = {
 			isa = PBXGroup;
 			children = (
+				F168F463262484DF0002D3A5 /* Storyboard */,
 				F185B17F261748B000407451 /* Screens */,
 				F185B19426174A4100407451 /* Components */,
 				F185B18D261749E900407451 /* ViewModels */,
@@ -1747,6 +1758,7 @@
 				F14E68A026172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift */,
 				F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */,
 				F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */,
+				F18AAB532625731900B98181 /* GalleryConfigurationLayout.swift */,
 				F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */,
 			);
 			path = Extensions;
@@ -1762,13 +1774,30 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		F168F463262484DF0002D3A5 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				F185B1A92617663000407451 /* Camera.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		F168F4692624864D0002D3A5 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F168F47226248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		F185B17F261748B000407451 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				F168F4692624864D0002D3A5 /* Cells */,
 				F185B1802617495300407451 /* CameraViewController.swift */,
 				F1B020B6261AF83B007799B2 /* PreviewViewController.swift */,
 				F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */,
-				F185B1A92617663000407451 /* Camera.storyboard */,
+				F168F464262484FC0002D3A5 /* PhotoGalleryViewController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -1777,6 +1806,7 @@
 			isa = PBXGroup;
 			children = (
 				F185B18F26174A0100407451 /* CameraViewModel.swift */,
+				F168F46D262488150002D3A5 /* PhotoGalleryViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1803,6 +1833,7 @@
 			isa = PBXGroup;
 			children = (
 				F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */,
+				F168F45826246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -2152,6 +2183,7 @@
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
 				F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */,
+				F168F46E262488150002D3A5 /* PhotoGalleryViewModel.swift in Sources */,
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
 				E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */,
 				B96988312510CA6D005A2B6A /* DialogsThemingServiceWorker.swift in Sources */,
@@ -2187,6 +2219,7 @@
 				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
 				B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */,
 				F14E689C261727B1002FDEF9 /* CameraFeatures.swift in Sources */,
+				F168F465262484FC0002D3A5 /* PhotoGalleryViewController.swift in Sources */,
 				B95247322548134A00E768DD /* NSPointerArray+Operations.swift in Sources */,
 				E3355FF324DAEAC900C2C8A5 /* String+LiveSearch.swift in Sources */,
 				E348EDDF2498A30300F489B4 /* DarkTheme.swift in Sources */,
@@ -2214,6 +2247,7 @@
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */,
+				F168F45926246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift in Sources */,
 				F1AC6C44262065710096743B /* FullScreenCapturedAssetViewController.swift in Sources */,
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
@@ -2276,6 +2310,7 @@
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
+				F18AAB542625731900B98181 /* GalleryConfigurationLayout.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
@@ -2364,6 +2399,7 @@
 				B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */,
 				B9958E0624D7E3570058BCE1 /* ListSelectableCell.swift in Sources */,
 				E35FB73E247657AE004674FD /* AdvancedSettingsViewController.swift in Sources */,
+				F168F47326248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* UIConstants.swift in Sources */,
 				E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */,

@@ -299,3 +299,7 @@ extension PreviewViewController: MDCBaseTextAreaDelegate {
         }
     }
 }
+
+// MARK: - Storyboard Instantiable
+
+extension PreviewViewController: CameraStoryboardInstantiable { }
