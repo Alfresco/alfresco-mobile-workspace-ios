@@ -16,29 +16,18 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-protocol CameraViewModelDelegate: class {
-    func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
-}
-
-class CameraViewModel {
-    weak var delegate: CameraViewModelDelegate?
-    var capturedAsset: CapturedAsset?
+class PreviewViewModel {
     
-    // MARK: - Public Methods
+    let capturedAsset: CapturedAsset?
     
-    func deletePreviousCapture() {
-        capturedAsset?.deleteAsset()
+    init(capturedAsset: CapturedAsset?) {
+        self.capturedAsset = capturedAsset
     }
-}
-
-extension CameraViewModel: CaptureSessionDelegate {
-    func captured(asset: CapturedAsset?, error: Error?) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.capturedAsset = asset
-            sSelf.delegate?.finishProcess(capturedAsset: asset, error: error)
-        }
+    
+    func applyToCapturedAsset(filename: String, description: String?) {
+        capturedAsset?.filename = filename
+        capturedAsset?.description = description
     }
 }

@@ -20,7 +20,6 @@ import UIKit
 
 let wideResolution = CGSize(width: 3024, height: 4032)
 let focusViewSize = CGSize(width: 72, height: 72)
-let mediaFolderName = "Media Folder"
 let minZoom: CGFloat = 1.0
 let maxZoom: CGFloat = 10.0
 let animationFadeFocusView = 2.0

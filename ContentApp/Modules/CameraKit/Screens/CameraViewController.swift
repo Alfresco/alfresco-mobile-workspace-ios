@@ -32,6 +32,7 @@ class CameraViewController: UIViewController {
     var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
+
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
 
     private var cameraSession: PhotoCaptureSession?
@@ -102,12 +103,12 @@ class CameraViewController: UIViewController {
     // MARK: - Private Methods
     
     private func cameraSliderConfiguration() {
-        guard let currentTheme = theme, let localization = self.localization else { return }
+        guard let theme = self.theme, let localization = self.localization else { return }
 
-        let sliderStyle = CameraSliderControlSyle(selectedOptionColor: currentTheme.onSurfaceColor,
-                                                  optionColor: currentTheme.onSurface60Color,
-                                                  optionFont: currentTheme.subtitle2Font,
-                                                  optionBackgroundColor: currentTheme.surfaceColor)
+        let sliderStyle = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
+                                                  optionColor: theme.onSurface60Color,
+                                                  optionFont: theme.subtitle2Font,
+                                                  optionBackgroundColor: theme.surfaceColor)
 
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
         cameraSlider.updateStyle(style: sliderStyle)
@@ -125,14 +126,27 @@ class CameraViewController: UIViewController {
     }
     
     private func applyComponentsThemes() {
-        guard let currentTheme = theme else { return }
-        view.backgroundColor = currentTheme.surfaceColor
-        topBarView.backgroundColor = currentTheme.surfaceColor
-        closeButton.tintColor = currentTheme.onSurface60Color
-        flashModeButton.tintColor = currentTheme.onSurface60Color
-        switchCameraButton.tintColor = currentTheme.onSurface60Color
-        switchCameraButton.backgroundColor = currentTheme.surfaceColor.withAlphaComponent(0.6)
-        zoomLabel.backgroundColor = currentTheme.surfaceColor.withAlphaComponent(0.6)
+        guard let theme = self.theme else { return }
+
+        view.backgroundColor = theme.surfaceColor
+        topBarView.backgroundColor = theme.surfaceColor
+        closeButton.tintColor = theme.onSurface60Color
+        flashModeButton.tintColor = theme.onSurface60Color
+        switchCameraButton.tintColor = theme.onSurface60Color
+        switchCameraButton.backgroundColor = theme.surfaceColor.withAlphaComponent(0.6)
+        zoomLabel.backgroundColor = theme.surfaceColor.withAlphaComponent(0.6)
+        
+        let image = UIImage(color: theme.surfaceColor,
+                            size: navigationController?.navigationBar.bounds.size)
+        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.backgroundColor = theme.surfaceColor
+        navigationController?.navigationBar.tintColor = theme.onSurface60Color
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.barTintColor = theme.surfaceColor
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.font: theme.headline6Font,
+             NSAttributedString.Key.foregroundColor: theme.onSurfaceColor]
     }
     
     // MARK: - Navigation
@@ -140,7 +154,10 @@ class CameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController {
-            pvc.capturedAsset = sender as? CapturedAsset
+            let previewViewModel = PreviewViewModel(capturedAsset: cameraViewModel.capturedAsset)
+            pvc.previewViewModel = previewViewModel
+            pvc.theme = theme
+            pvc.localization = localization
         }
     }
 }
@@ -149,10 +166,10 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: CameraViewModelDelegate {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
-        if let capturedAsset = capturedAsset {
-            captureButton.isUserInteractionEnabled = true
+        captureButton.isUserInteractionEnabled = true
+        if capturedAsset != nil {
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-                         sender: capturedAsset)
+                         sender: nil)
         }
     }
 }
