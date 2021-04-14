@@ -27,22 +27,14 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var cameraSlider: CameraSliderControl!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var featuresView: UIView!
-    @IBOutlet weak var sessionPreview: SessionPreview! {
-        didSet {
-            let session = PhotoCaptureSession()
-            session.resolution = wideResolution
-            session.delegate = cameraViewModel
-            session.uiDelegate = self
-
-            sessionPreview.add(session: session)
-            sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
-        }
-    }
+    @IBOutlet weak var sessionPreview: SessionPreview!
     
     var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
+
+    private var cameraSession: PhotoCaptureSession?
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -72,6 +64,10 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if cameraSession == nil {
+            setUpCameraSession()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -116,6 +112,16 @@ class CameraViewController: UIViewController {
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
         cameraSlider.updateStyle(style: sliderStyle)
         cameraSlider.delegate = self
+    }
+
+    private func setUpCameraSession() {
+        let session = PhotoCaptureSession()
+        session.resolution = wideResolution
+        session.delegate = cameraViewModel
+        session.uiDelegate = self
+
+        sessionPreview.add(session: session)
+        sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
     }
     
     private func applyComponentsThemes() {

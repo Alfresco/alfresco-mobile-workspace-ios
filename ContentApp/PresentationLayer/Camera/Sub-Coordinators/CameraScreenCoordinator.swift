@@ -22,7 +22,6 @@ import AVFoundation
 class CameraScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
-    private var cameraViewController: CameraViewController?
     
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -37,7 +36,6 @@ class CameraScreenCoordinator: Coordinator {
         navigationViewController.modalPresentationStyle = .fullScreen
         
         self.navigationViewController = navigationViewController
-        cameraViewController = viewController
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             if granted {
