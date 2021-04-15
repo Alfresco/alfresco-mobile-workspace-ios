@@ -19,14 +19,19 @@
 import UIKit
 
 class CameraViewController: UIViewController {
-    @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
     @IBOutlet weak var captureButton: UIButton!
-    @IBOutlet weak var cameraSlider: CameraSliderControl!
     @IBOutlet weak var zoomLabel: UILabel!
-    @IBOutlet weak var featuresView: UIView!
+    
+    @IBOutlet weak var topBarView: UIView!
+    @IBOutlet weak var finderView: UIView!
+    @IBOutlet weak var zoomView: UIView!
+    @IBOutlet weak var shutterView: UIView!
+    @IBOutlet weak var modeView: UIView!
+
+    @IBOutlet weak var cameraSlider: CameraSliderControl!
     @IBOutlet weak var sessionPreview: SessionPreview! {
         didSet {
             let session = PhotoCaptureSession()
@@ -55,6 +60,9 @@ class CameraViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureViewsLayout()
+
         cameraViewModel.delegate = self
         cameraSliderConfiguration()
 
@@ -107,6 +115,111 @@ class CameraViewController: UIViewController {
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
     }
     
+    // MARK: - Configure Layout Methods
+    
+    private func configureViewsLayout() {
+        let aspectRatio: CGFloat = 4 / 3
+        let viewWidth = view.bounds.width
+        let viewHeight = view.bounds.height
+        
+        topBarView.frame.size = CGSize(width: viewWidth, height: 44)
+        finderView.frame.size = CGSize(width: viewWidth, height: viewWidth * aspectRatio)
+        zoomView.frame.size = CGSize(width: viewWidth, height: 64)
+        shutterView.frame.size = CGSize(width: viewWidth, height: 96)
+        modeView.frame.size = CGSize(width: viewWidth, height: 64)
+        
+        let topViewHeight = topBarView.bounds.height
+        let finderViewHeight = finderView.bounds.height
+        let zoomViewHeight = zoomView.bounds.height
+        let shutterViewHeight = shutterView.bounds.height
+        let modeViewHeight = modeView.bounds.height
+        
+        var topViewGuide: CGFloat = 0.0
+        var finderViewGuide: CGFloat = 0.0
+        var zoomViewGuide: CGFloat = 0.0
+        var shutterViewGuide: CGFloat = 0.0
+        var modeViewGuide: CGFloat = 0.0
+        
+        let case1 = topViewHeight + finderViewHeight + shutterViewHeight + modeViewHeight
+        let case2 = topViewHeight + finderViewHeight + modeViewHeight
+        let case3 = topViewHeight + finderViewHeight
+        
+        if case1 <= viewHeight { // All elemets fits
+            let offset = (viewHeight - (case1)) / 2
+            topViewGuide = offset
+            finderViewGuide = topViewGuide + topViewHeight
+            shutterViewGuide = finderViewGuide + finderViewHeight
+            modeViewGuide = shutterViewGuide + shutterViewHeight
+            zoomViewGuide = shutterViewGuide - zoomViewHeight
+        } else if case2 <= viewHeight { // All elemets except the shutter fits
+            let offset = (viewHeight - (case2)) / 2
+            topViewGuide = offset
+            finderViewGuide = topViewGuide + topViewHeight
+            shutterViewGuide = finderViewGuide + finderViewHeight - shutterViewHeight
+            modeViewGuide = finderViewGuide + finderViewHeight
+            zoomViewGuide = shutterViewGuide - zoomViewHeight
+        } else if case3 <= viewHeight { // Only the top bar and finder fits
+            let offset = (viewHeight - (case3)) / 2
+            topViewGuide = offset
+            finderViewGuide = topViewGuide + topViewHeight
+            modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
+            shutterViewGuide = modeViewGuide - shutterViewHeight
+            zoomViewGuide = shutterViewGuide - zoomViewHeight
+        } else { // Overlay everything on top of the finder
+            let offset = (viewHeight - finderViewHeight) / 2
+            topViewGuide = offset
+            finderViewGuide = offset
+            modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
+            shutterViewGuide = modeViewGuide - shutterViewHeight
+            zoomViewGuide = shutterViewGuide - zoomViewHeight
+        }
+        
+        topBarView.frame = CGRect(x: 0, y: topViewGuide, width: viewWidth, height: topViewHeight)
+        finderView.frame = CGRect(x: 0, y: finderViewGuide, width: viewWidth, height: finderViewHeight)
+        zoomView.frame = CGRect(x: 0, y: zoomViewGuide, width: viewWidth, height: zoomViewHeight)
+        shutterView.frame = CGRect(x: 0, y: shutterViewGuide, width: viewWidth, height: shutterViewHeight)
+        modeView.frame = CGRect(x: 0, y: modeViewGuide, width: viewWidth, height: modeViewHeight)
+        
+        configureTopViewLayout()
+        configureFinderViewLayout()
+        configureZoomView()
+        configureShutterView()
+        configureModeView()
+    }
+    
+    private func configureTopViewLayout() {
+        let topBarViewHeight = topBarView.frame.height
+        let flashModeButtonX = topBarView.frame.width - flashModeButton.bounds.width - 16
+        
+        closeButton.frame.origin = CGPoint(x: 16, y: 0)
+        closeButton.center.y = topBarViewHeight / 2.0
+        flashModeButton.frame.origin = CGPoint(x: flashModeButtonX, y: 0)
+        flashModeButton.center.y = topBarViewHeight / 2.0
+    }
+    
+    private func configureFinderViewLayout() {
+        sessionPreview.frame.origin = .zero
+        sessionPreview.frame.size = finderView.frame.size
+    }
+    
+    private func configureZoomView() {
+        zoomLabel.center = CGPoint(x: zoomView.frame.width / 2, y: zoomView.frame.height / 2)
+        zoomLabel.frame.size = CGSize(width: 40, height: 40)
+    }
+    
+    private func configureShutterView() {
+        let switchCameraButtonX = shutterView.frame.width - switchCameraButton.bounds.width - 16
+        
+        captureButton.center = CGPoint(x: shutterView.frame.width / 2, y: shutterView.frame.height / 2)
+        switchCameraButton.frame.origin.x = switchCameraButtonX
+        switchCameraButton.center.y = captureButton.center.y
+    }
+    
+    private func configureModeView() {
+        cameraSlider.center = CGPoint(x: modeView.frame.width / 2, y: modeView.frame.height / 2)
+        cameraSlider.translatesAutoresizingMaskIntoConstraints = true
+    }
+    
     // MARK: - Private Methods
     
     private func cameraSliderConfiguration() {
@@ -126,7 +239,6 @@ class CameraViewController: UIViewController {
         guard let theme = self.theme else { return }
 
         view.backgroundColor = theme.surfaceColor
-        topBarView.backgroundColor = theme.surfaceColor
         closeButton.tintColor = theme.onSurface60Color
         flashModeButton.tintColor = theme.onSurface60Color
         switchCameraButton.tintColor = theme.onSurface60Color
