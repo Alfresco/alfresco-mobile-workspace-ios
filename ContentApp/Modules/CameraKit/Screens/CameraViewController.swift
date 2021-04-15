@@ -36,6 +36,8 @@ class CameraViewController: UIViewController {
 
             sessionPreview.add(session: session)
             sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
+
+            flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
         }
     }
     
@@ -102,6 +104,7 @@ class CameraViewController: UIViewController {
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
         sessionPreview.resetZoom()
         sessionPreview.changeCameraPosition()
+        flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
     }
     
     // MARK: - Private Methods

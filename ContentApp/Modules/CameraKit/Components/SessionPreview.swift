@@ -109,6 +109,13 @@ class SessionPreview: UIView {
         session?.zoom = Double(lastScale)
     }
     
+    func shouldDisplayFlash() -> Bool {
+        if let photoSession = session as? PhotoCaptureSession {
+            return photoSession.captureDeviceInput?.device.hasFlash ?? false
+        }
+        return false
+    }
+    
     // MARK: - Private Methods
     
     private func setupView() {
