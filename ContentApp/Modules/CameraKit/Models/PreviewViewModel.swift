@@ -19,15 +19,14 @@
 import Foundation
 
 class PreviewViewModel {
+    let capturedAsset: CapturedAsset
     
-    let capturedAsset: CapturedAsset?
-    
-    init(capturedAsset: CapturedAsset?) {
+    init(capturedAsset: CapturedAsset) {
         self.capturedAsset = capturedAsset
     }
     
-    func applyToCapturedAsset(filename: String, description: String?) {
-        capturedAsset?.filename = filename
-        capturedAsset?.description = description
+    func updateMetadata(filename: String, description: String?) {
+        capturedAsset.filename = filename
+        capturedAsset.description = description
     }
 }

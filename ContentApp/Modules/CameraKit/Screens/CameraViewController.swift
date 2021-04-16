@@ -153,8 +153,9 @@ class CameraViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-           let pvc = segue.destination as? PreviewViewController {
-            let previewViewModel = PreviewViewModel(capturedAsset: cameraViewModel.capturedAsset)
+           let pvc = segue.destination as? PreviewViewController,
+           let asset = cameraViewModel.capturedAsset {
+            let previewViewModel = PreviewViewModel(capturedAsset: asset)
             pvc.previewViewModel = previewViewModel
             pvc.theme = theme
             pvc.localization = localization

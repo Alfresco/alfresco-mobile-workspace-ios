@@ -24,7 +24,6 @@ import MaterialComponents.MaterialTextControls_OutlinedTextAreas
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
 class PreviewViewController: UIViewController {
-    
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var trashButton: UIButton!
@@ -57,14 +56,14 @@ class PreviewViewController: UIViewController {
         applyLocalization()
         applyComponentsThemes()
         
-        fileNameTextField.text = previewViewModel?.capturedAsset?.filename
+        fileNameTextField.text = previewViewModel?.capturedAsset.filename
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
-        if let image = previewViewModel?.capturedAsset?.image() {
+        if let image = previewViewModel?.capturedAsset.image() {
             capturedAssetImageView.image = image
             if image.imageOrientation == .down ||
                 image.imageOrientation == .up {
@@ -91,14 +90,14 @@ class PreviewViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text {
-            previewViewModel?.applyToCapturedAsset(filename: filename,
+            previewViewModel?.updateMetadata(filename: filename,
                                                    description: descriptionField.textView.text)
             navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 
     @IBAction func trashButtonTapped(_ sender: UIButton) {
-        previewViewModel?.capturedAsset?.deleteAsset()
+        previewViewModel?.capturedAsset.deleteAsset()
         navigationController?.popViewController(animated: true)
     }
 
@@ -153,7 +152,7 @@ class PreviewViewController: UIViewController {
         if segue.identifier == SegueIdentifiers.showFullScreen.rawValue,
            let fscavc = segue.destination as? FullScreenCapturedAssetViewController {
             fscavc.theme = theme
-            fscavc.imageCapturedAsset = previewViewModel?.capturedAsset?.image()
+            fscavc.imageCapturedAsset = previewViewModel?.capturedAsset.image()
         }
     }
 }
@@ -161,9 +160,9 @@ class PreviewViewController: UIViewController {
 // MARK: - Keyboard Notificafion
 
 extension PreviewViewController {
-
     @objc func keyboardWillShow(notification: NSNotification) {
-        guard let object = saveButton, let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+        guard let object = saveButton,
+              let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             return
         }
         
@@ -190,7 +189,6 @@ extension PreviewViewController {
 // MARK: - UITextField Delegate
 
 extension PreviewViewController: UITextFieldDelegate {
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         scrollViewTopConstraint.constant = scrollView.frame.origin.y
     }
@@ -198,10 +196,10 @@ extension PreviewViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
-        
         scrollViewTopConstraint.constant = scrollView.frame.origin.y
         var updatedText = ""
-        if let text = textField.text, let textRange = Range(range, in: text) {
+        if let text = textField.text,
+           let textRange = Range(range, in: text) {
            updatedText = text.replacingCharacters(in: textRange, with: string)
         }
         enableSaveButton(for: updatedText)
