@@ -289,6 +289,8 @@
 		F1B020BC261B0255007799B2 /* CameraScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */; };
 		F1B020C1261B1F55007799B2 /* CameraConfigurationLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */; };
 		F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */; };
+		F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E613E02629608B0013A5D8 /* CameraViewController+Layout.swift */; };
+		F1E613E62629719A0013A5D8 /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E613E52629719A0013A5D8 /* UIColor+Hex.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -612,6 +614,8 @@
 		F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScreenCoordinator.swift; sourceTree = "<group>"; };
 		F1B020C0261B1F55007799B2 /* CameraConfigurationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraConfigurationLayout.swift; sourceTree = "<group>"; };
 		F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeModelProtocol.swift; sourceTree = "<group>"; };
+		F1E613E02629608B0013A5D8 /* CameraViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CameraViewController+Layout.swift"; sourceTree = "<group>"; };
+		F1E613E52629719A0013A5D8 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		F4ECEF6177D9FF73F5055CD9 /* Pods-ContentApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp/Pods-ContentApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1536,6 +1540,7 @@
 				B9FC629C24C6C90600246606 /* UICollectionView+ItemIndex.swift */,
 				E321380D24C6F2C60025A833 /* UILabel+Theming.swift */,
 				E3E8B0102548683D00CD399D /* UImage+Color.swift */,
+				F1E613E52629719A0013A5D8 /* UIColor+Hex.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1766,6 +1771,7 @@
 			isa = PBXGroup;
 			children = (
 				F185B1802617495300407451 /* CameraViewController.swift */,
+				F1E613E02629608B0013A5D8 /* CameraViewController+Layout.swift */,
 				F1B020B6261AF83B007799B2 /* PreviewViewController.swift */,
 				F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */,
 				F185B1A92617663000407451 /* Camera.storyboard */,
@@ -2236,8 +2242,10 @@
 				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
 				E30B077C25B6C9FA0030FE3B /* ConnectivityService.swift in Sources */,
 				E3D25C8D2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift in Sources */,
+				F1E613E62629719A0013A5D8 /* UIColor+Hex.swift in Sources */,
 				F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */,
 				B9B7531025AC8974004F16E5 /* AsyncClosureOperation.swift in Sources */,
+				F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				E3A433A22566CAA7000DD886 /* CreateNodeSheetCoordinator.swift in Sources */,
 				B91A5E52247BD9020063E938 /* SplashScreenCoordinator.swift in Sources */,
