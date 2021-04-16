@@ -23,7 +23,6 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFields
 import MaterialComponents.MaterialTextControls_OutlinedTextAreas
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
-
 class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -92,7 +91,7 @@ class PreviewViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text,
-           let capturedAsset = previewViewModel?.capturedAsset{
+           let capturedAsset = previewViewModel?.capturedAsset {
             previewViewModel?.updateMetadata(filename: filename,
                                                    description: descriptionField.textView.text)
             cameraDelegate?.didEndReview(for: capturedAsset)

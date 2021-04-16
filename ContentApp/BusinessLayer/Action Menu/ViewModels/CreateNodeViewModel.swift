@@ -57,8 +57,6 @@ class CreateNodeViewModel {
         self.nodeName = name
         self.nodeDescription = description
 
-        guard let nodeBody = self.nodeBody() else { return }
-
         if actionMenu.type != .createFolder {
             uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
                 guard let sSelf = self else { return }
@@ -72,13 +70,10 @@ class CreateNodeViewModel {
             switch sSelf.actionMenu.type {
             case .createFolder:
                 sSelf.createNewFolder(nodeId: listNode.guid,
-                                      nodeBody: nodeBody,
                                       autoRename: shouldAutorename)
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
                 sSelf.createMSOfficeNode(nodeId: listNode.guid,
-                                         nodeBody: nodeBody,
-                                         autoRename: shouldAutorename,
-                                         description: description)
+                                         autoRename: shouldAutorename)
             case .createMedia: break
             default: break
             }
@@ -95,38 +90,43 @@ class CreateNodeViewModel {
 
     // MARK: - Create Nodes
 
-    private func createNewFolder(nodeId: String, nodeBody: NodeBodyCreate, autoRename: Bool) {
-        let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: nodeId,
-                                                                   nodeBodyCreate: nodeBody,
-                                                                   autoRename: autoRename,
-                                                                   include: nil,
-                                                                   fields: nil)
-        requestBuilder.execute { [weak self] (result, error) in
-            guard let sSelf = self else { return }
-            if let error = error {
-                sSelf.delegate?.handleCreatedNode(node: nil, error: error)
-                AlfrescoLog.error(error)
-            } else if let node = result?.body?.entry {
-                let listNode = NodeChildMapper.create(from: node)
-                sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
-                sSelf.publishEventBus(with: listNode)
+    private func createNewFolder(nodeId: String,
+                                 autoRename: Bool) {
+        if let name = nodeName {
+            nodeOperations.createNode(nodeId: nodeId,
+                                      name: name,
+                                      description: nodeDescription,
+                                      autoRename: autoRename) { [weak self] (result, error) in
+                guard let sSelf = self else { return }
+
+                if let error = error {
+                    sSelf.delegate?.handleCreatedNode(node: nil,
+                                                      error: error)
+                    AlfrescoLog.error(error)
+                } else if let node = result?.entry {
+                    let listNode = NodeChildMapper.create(from: node)
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.publishEventBus(with: listNode)
+                }
             }
         }
     }
 
     private func createMSOfficeNode(nodeId: String,
-                                    nodeBody: NodeBodyCreate,
-                                    autoRename: Bool,
-                                    description: String?) {
-        if let dataTemplate = dataFromTemplateFile() {
-            NodesAPI.createNode(nodeId: nodeId,
-                                nodeBody: nodeBody,
-                                fileData: dataTemplate,
-                                autoRename: autoRename,
-                                description: description) {[weak self]  (nodeEntry, error) in
+                                    autoRename: Bool) {
+        if let dataTemplate = dataFromTemplateFile(),
+           let name = nodeName,
+           let nodeExtension = ListNode.getExtension(from: actionMenu.type) {
+            nodeOperations.createNode(nodeId: nodeId,
+                                      name: name,
+                                      description: nodeDescription,
+                                      nodeExtension: nodeExtension,
+                                      fileData: dataTemplate,
+                                      autoRename: autoRename) { [weak self] (nodeEntry, error) in
                 guard let sSelf = self else { return }
 
                 sSelf.uploadDialog?.dismiss(animated: true)
+                
                 if let transferError = error {
                     sSelf.handle(error: transferError)
                 } else if let entry = nodeEntry {
@@ -158,7 +158,6 @@ class CreateNodeViewModel {
         let moveEvent = MoveEvent(node: parentListNode, eventType: .created)
         let eventBusService = coordinatorServices?.eventBusService
         eventBusService?.publish(event: moveEvent, on: .mainQueue)
-
     }
 
     private func dataFromTemplateFile() -> Data? {
@@ -199,24 +198,6 @@ class CreateNodeViewModel {
         return nil
     }
 
-    private func nodeBody() -> NodeBodyCreate? {
-        guard let name = self.nodeName,
-              let nodeType = ListNode.nodeType(from: actionMenu.type)
-        else { return nil }
-
-        let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
-        return NodeBodyCreate(name: name + nodeExtension,
-                              nodeType: nodeType,
-                              aspectNames: nil,
-                              properties: nodeProperties(),
-                              permissions: nil,
-                              definition: nil,
-                              relativePath: nil,
-                              association: nil,
-                              secondaryChildren: nil,
-                              targets: nil)
-    }
-
     private func handle(error: Error) {
         if error.code == NSURLErrorNetworkConnectionLost ||
             error.code == NSURLErrorCancelled {
@@ -225,14 +206,5 @@ class CreateNodeViewModel {
         }
         delegate?.handleCreatedNode(node: nil, error: error)
         AlfrescoLog.error(error)
-    }
-
-    private func nodeProperties() -> JSONValue? {
-        guard let name = self.nodeName,
-              let description = self.nodeDescription
-              else { return nil }
-        return JSONValue(dictionaryLiteral:
-                            ("cm:title", JSONValue(stringLiteral: name)),
-                         ("cm:description", JSONValue(stringLiteral: description)))
     }
 }
