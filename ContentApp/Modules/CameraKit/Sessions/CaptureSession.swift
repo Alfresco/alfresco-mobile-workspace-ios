@@ -58,7 +58,8 @@ class CaptureSession: NSObject {
         session.stopRunning()
     }
     
-    func focus(at point: CGPoint) {
+    func focus(at point: CGPoint) -> Bool {
+        return false
     }
     
     func capture() {

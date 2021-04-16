@@ -86,6 +86,7 @@ class CameraViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
         sessionPreview.stopSession()
         sessionPreview.resetZoom()
+        sessionPreview.resetToAutoFocus()
     }
     
     // MARK: - IBActions

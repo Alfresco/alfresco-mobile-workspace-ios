@@ -41,30 +41,7 @@ class PhotoCaptureSession: CaptureSession {
             }
             if let captureDeviceInput = captureDeviceInput {
                 session.addInput(captureDeviceInput)
-
-                do {
-                    let device = captureDeviceInput.device
-                    try device.lockForConfiguration()
-
-                    let focusMode: AVCaptureDevice.FocusMode = .continuousAutoFocus
-                    let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
-                    let whitebalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
-
-                    if device.isFocusModeSupported(focusMode) {
-                        device.focusMode = focusMode
-                    }
-                    if device.isExposureModeSupported(exposureMode) {
-                        device.exposureMode = exposureMode
-                    }
-
-                    if device.isWhiteBalanceModeSupported(whitebalanceMode) {
-                        device.whiteBalanceMode = .continuousAutoWhiteBalance
-                    }
-
-                    device.unlockForConfiguration()
-                } catch {
-                    AlfrescoLog.error("An unexpected error occured while zooming.")
-                }
+                defaultConfiguration(for: captureDeviceInput.device)
             }
         }
     }
@@ -134,15 +111,23 @@ class PhotoCaptureSession: CaptureSession {
     
     // MARK: - Public Methods
     
+    func resetDeviceConfiguration() {
+        if let device = captureDeviceInput?.device {
+            defaultConfiguration(for: device)
+        }
+    }
+    
     func togglePosition() {
         cameraPosition = cameraPosition == .back ? .front : .back
     }
     
-    override func focus(at point: CGPoint) {
+    override func focus(at point: CGPoint) -> Bool {
+        var shouldDisplayFocus = false
         if let device = captureDeviceInput?.device,
            device.isFocusPointOfInterestSupported {
             do {
                 try device.lockForConfiguration()
+                shouldDisplayFocus = true
                 device.focusPointOfInterest = point
                 device.focusMode = .autoFocus
                 if device.isSmoothAutoFocusSupported {
@@ -160,6 +145,7 @@ class PhotoCaptureSession: CaptureSession {
                 AlfrescoLog.error("Error while focusing at point \(point): \(error.localizedDescription)")
             }
         }
+        return shouldDisplayFocus
     }
     
     // MARK: - Private Methods
@@ -172,6 +158,31 @@ class PhotoCaptureSession: CaptureSession {
             return
         }
         delegate?.captured(asset: CapturedAsset(type: .image, data: data), error: nil)
+    }
+    
+    private func defaultConfiguration(for device: AVCaptureDevice) {
+        do {
+            try device.lockForConfiguration()
+
+            let focusMode: AVCaptureDevice.FocusMode = .continuousAutoFocus
+            let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
+            let whitebalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+
+            if device.isFocusModeSupported(focusMode) {
+                device.focusMode = focusMode
+            }
+            if device.isExposureModeSupported(exposureMode) {
+                device.exposureMode = exposureMode
+            }
+
+            if device.isWhiteBalanceModeSupported(whitebalanceMode) {
+                device.whiteBalanceMode = .continuousAutoWhiteBalance
+            }
+
+            device.unlockForConfiguration()
+        } catch {
+            AlfrescoLog.error("An unexpected error occured while zooming.")
+        }
     }
 }
 

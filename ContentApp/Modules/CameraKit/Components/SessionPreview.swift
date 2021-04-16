@@ -116,6 +116,12 @@ class SessionPreview: UIView {
         return false
     }
     
+    func resetToAutoFocus() {
+        if let photoSession = session as? PhotoCaptureSession {
+            photoSession.resetDeviceConfiguration()
+        }
+    }
+    
     // MARK: - Private Methods
     
     private func setupView() {
@@ -157,8 +163,9 @@ class SessionPreview: UIView {
     @objc private func handleFocusTap(recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: self)
         if let point = previewLayer?.captureDevicePointConverted(fromLayerPoint: location) {
-            session?.focus(at: point)
-            addFocusView(at: location)
+            if session?.focus(at: point) == true {
+                addFocusView(at: location)
+            }
         }
     }
     
