@@ -31,6 +31,7 @@ class CameraScreenCoordinator: Coordinator {
         let viewController = CameraViewController.instantiateViewController()
         viewController.theme = configurationLayout()
         viewController.localization = cameraLocalization()
+        viewController.cameraDelegate = self
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
         navigationViewController.modalPresentationStyle = .fullScreen
@@ -104,5 +105,11 @@ class CameraScreenCoordinator: Coordinator {
                                 LocalizationConstants.TextFieldPlaceholders.description,
                                errorNodeNameSpecialCharacters:
                                 LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
+    }
+}
+
+extension CameraScreenCoordinator: CameraKitCaptureDelegate {
+    func didEndReview(for capturedAsset: CapturedAsset) {
+
     }
 }

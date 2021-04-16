@@ -32,6 +32,7 @@ class CameraViewController: UIViewController {
     var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
+    weak var cameraDelegate: CameraKitCaptureDelegate?
 
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
 
@@ -159,6 +160,7 @@ class CameraViewController: UIViewController {
             pvc.previewViewModel = previewViewModel
             pvc.theme = theme
             pvc.localization = localization
+            pvc.cameraDelegate = cameraDelegate
         }
     }
 }

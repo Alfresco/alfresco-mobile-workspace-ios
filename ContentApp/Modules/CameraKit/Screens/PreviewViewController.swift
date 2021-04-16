@@ -23,6 +23,7 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFields
 import MaterialComponents.MaterialTextControls_OutlinedTextAreas
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 
+
 class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
@@ -41,6 +42,7 @@ class PreviewViewController: UIViewController {
     var previewViewModel: PreviewViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
+    weak var cameraDelegate: CameraKitCaptureDelegate?
     
     var enableSaveButton = false {
         didSet {
@@ -89,11 +91,14 @@ class PreviewViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
-        if let filename = fileNameTextField.text {
+        if let filename = fileNameTextField.text,
+           let capturedAsset = previewViewModel?.capturedAsset{
             previewViewModel?.updateMetadata(filename: filename,
                                                    description: descriptionField.textView.text)
-            navigationController?.dismiss(animated: true, completion: nil)
+            cameraDelegate?.didEndReview(for: capturedAsset)
         }
+        
+        navigationController?.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func trashButtonTapped(_ sender: UIButton) {

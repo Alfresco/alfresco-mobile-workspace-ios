@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		130E15ED26297E23005E5DF4 /* CameraKitCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130E15EC26297E23005E5DF4 /* CameraKitCaptureDelegate.swift */; };
 		1346FA07261DA4CF00336990 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* CameraSlider.swift */; };
 		3F5FE0B20F6B03156D3B7D5E /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030C62496D2AEEA6A35E5E8E /* Pods_ContentApp_ContentAppUITests.framework */; };
 		64089C92E50C51E8734BC752 /* Pods_ContentAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187B55C1BEC9CBAC3D8BDF62 /* Pods_ContentAppTests.framework */; };
@@ -311,6 +312,7 @@
 /* Begin PBXFileReference section */
 		030C62496D2AEEA6A35E5E8E /* Pods_ContentApp_ContentAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentApp_ContentAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A95DB77C408C5FCAB0A1CD6 /* Pods-ContentApp-ContentAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		130E15EC26297E23005E5DF4 /* CameraKitCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitCaptureDelegate.swift; sourceTree = "<group>"; };
 		1346FA06261DA4CF00336990 /* CameraSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSlider.swift; sourceTree = "<group>"; };
 		187B55C1BEC9CBAC3D8BDF62 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6211E23BDFC0C67D5C9B8E26 /* Pods-ContentAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.release.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -649,6 +651,14 @@
 				71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */,
 			);
 			path = generated;
+			sourceTree = "<group>";
+		};
+		130E15EB26297E0C005E5DF4 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				130E15EC26297E23005E5DF4 /* CameraKitCaptureDelegate.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		13FA0C372620482D001875B2 /* Modules */ = {
@@ -1722,6 +1732,7 @@
 		F14E68852617028A002FDEF9 /* CameraKit */ = {
 			isa = PBXGroup;
 			children = (
+				130E15EB26297E0C005E5DF4 /* Protocol */,
 				F185B17F261748B000407451 /* Screens */,
 				F185B19426174A4100407451 /* Components */,
 				F185B18D261749E900407451 /* ViewModels */,
@@ -2232,6 +2243,7 @@
 				E3E9ED4F24CB3E4800F1A2C2 /* NodeChildMapper.swift in Sources */,
 				B9F6EBA224923C2900D980FA /* AIMSSession.swift in Sources */,
 				B92E13EB24AE01FC00D607D4 /* NavigationURL.swift in Sources */,
+				130E15ED26297E23005E5DF4 /* CameraKitCaptureDelegate.swift in Sources */,
 				B91A5E4E247BD5A10063E938 /* Coordinator.swift in Sources */,
 				E3CF862424E698F0001C86B5 /* FilePreview.swift in Sources */,
 				E30B077C25B6C9FA0030FE3B /* ConnectivityService.swift in Sources */,
