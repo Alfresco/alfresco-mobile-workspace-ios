@@ -46,7 +46,13 @@ class PhotoCaptureSession: CaptureSession {
         }
     }
     
-    var resolution = CGSize.zero {
+    override var aspectRatio: CameraAspectRatio {
+        didSet {
+            resolution = aspectRatio.size
+        }
+    }
+    
+    override var resolution: CGSize {
         didSet {
             guard let deviceInput = captureDeviceInput else { return }
             do {
@@ -100,11 +106,13 @@ class PhotoCaptureSession: CaptureSession {
     override func capture() {
         guard session.isRunning else { return }
         let settings = AVCapturePhotoSettings()
-        settings.flashMode = flashMode.captureFlashMode
+        if let device = captureDeviceInput?.device, device.hasFlash {
+            settings.flashMode = flashMode.captureFlashMode
+        }
         settings.isHighResolutionPhotoEnabled = true
 
         if let connection = photoOutput.connection(with: .video) {
-            connection.videoOrientation = orientationLast.videoOrientation
+            connection.videoOrientation = orientationLast.captureOrientation
         }
         photoOutput.capturePhoto(with: settings, delegate: self)
     }

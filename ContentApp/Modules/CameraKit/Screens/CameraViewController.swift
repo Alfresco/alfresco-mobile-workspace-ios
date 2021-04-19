@@ -18,6 +18,8 @@
 
 import UIKit
 
+let animationRotateCameraButtons = 0.5
+
 class CameraViewController: UIViewController {
     
     @IBOutlet weak var closeButton: UIButton!
@@ -36,7 +38,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var sessionPreview: SessionPreview! {
         didSet {
             let session = PhotoCaptureSession()
-            session.resolution = wideResolution
+            session.aspectRatio = .ar4per3
             session.delegate = cameraViewModel
             session.uiDelegate = self
 
@@ -62,8 +64,7 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureViewsLayout()
-
+        configureViewsLayout(for: view.bounds.size)
         cameraViewModel.delegate = self
         cameraSliderConfiguration()
     }
@@ -87,6 +88,17 @@ class CameraViewController: UIViewController {
         sessionPreview.stopSession()
         sessionPreview.resetZoom()
         sessionPreview.resetToAutoFocus()
+    }
+    
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        configureViewsLayout(for: size)
+        sessionPreview.updateAspectRatioResolution()
+    }
+    
+    override var shouldAutorotate: Bool {
+        return false
     }
     
     // MARK: - IBActions
@@ -166,6 +178,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
     }
     
     func didChange(orientation: UIImage.Orientation) {
+        guard UIDevice.current.userInterfaceIdiom != .pad else { return }
         uiOrientation = orientation
         UIView.animate(withDuration: animationRotateCameraButtons) { [weak self] in
             guard let sSelf = self else { return }

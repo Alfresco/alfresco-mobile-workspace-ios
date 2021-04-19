@@ -63,12 +63,13 @@ extension CameraViewController {
     
     // MARK: - Configure Layout Methods
     
-    func configureViewsLayout(with aspectRatio: CGFloat = 4 / 3) {
-        let viewWidth = view.bounds.width
-        let viewHeight = view.bounds.height
+    func configureViewsLayout(for size: CGSize) {
+        let aspectRatio = sessionPreview.aspectRatio()
+        let viewWidth = size.width
+        let viewHeight = size.height
         
         topBarView.frame.size = CGSize(width: viewWidth, height: 56)
-        finderView.frame.size = CGSize(width: viewWidth, height: viewWidth * aspectRatio)
+        finderView.frame.size = CGSize(width: viewWidth, height: viewWidth * aspectRatio.value)
         zoomView.frame.size = CGSize(width: viewWidth, height: 64)
         shutterView.frame.size = CGSize(width: viewWidth, height: 96)
         modeView.frame.size = CGSize(width: viewWidth, height: 64)

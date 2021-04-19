@@ -33,6 +33,8 @@ class CaptureSession: NSObject {
     let session: AVCaptureSession
     var previewLayer: AVCaptureVideoPreviewLayer?
     var overlayView: UIView?
+    var resolution = CGSize.zero
+    var aspectRatio = CameraAspectRatio.ar4per3
     var zoom = 1.0
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
@@ -63,6 +65,10 @@ class CaptureSession: NSObject {
     }
     
     func capture() {
+    }
+    
+    func deviceOrientationChanged() {
+        resolution = aspectRatio.size
     }
     
     // MARK: - Private Methods

@@ -19,6 +19,11 @@
 import AVFoundation
 import UIKit
 
+let focusViewSize = CGSize(width: 72, height: 72)
+let minZoom: CGFloat = 1.0
+let maxZoom: CGFloat = 10.0
+let animationFadeFocusView = 2.0
+
 class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
@@ -60,7 +65,12 @@ class SessionPreview: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         previewLayer?.frame = bounds
-        previewLayer?.connection?.videoOrientation = .portrait
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            previewLayer?.connection?.videoOrientation = UIDevice.current.orientation.cameraOrientation
+        } else {
+            previewLayer?.connection?.videoOrientation = .portrait
+        }
     }
     
     // MARK: - Public Methods
@@ -120,6 +130,14 @@ class SessionPreview: UIView {
         if let photoSession = session as? PhotoCaptureSession {
             photoSession.resetDeviceConfiguration()
         }
+    }
+    
+    func aspectRatio() -> CameraAspectRatio {
+        return session?.aspectRatio ?? .ar4per3
+    }
+    
+    func updateAspectRatioResolution() {
+        session?.deviceOrientationChanged()
     }
     
     // MARK: - Private Methods
