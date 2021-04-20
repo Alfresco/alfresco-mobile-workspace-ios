@@ -106,9 +106,48 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:381938179637751040",
+      "lastPropertyId": "6:370033443724301568",
+      "name": "UploadTransfer",
+      "properties": [
+        {
+          "flags": 1,
+          "id": "1:5316901957059283200",
+          "name": "id",
+          "type": 6
+        },
+        {
+          "id": "2:3942621293964620544",
+          "name": "parentNodeId",
+          "type": 9
+        },
+        {
+          "id": "3:433559388114328576",
+          "name": "nodeName",
+          "type": 9
+        },
+        {
+          "id": "4:8762750373210733056",
+          "name": "nodeDescription",
+          "type": 9
+        },
+        {
+          "id": "5:3230068557200613376",
+          "name": "filePath",
+          "type": 9
+        },
+        {
+          "id": "6:370033443724301568",
+          "name": "syncStatus",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:4924419163766400768",
+  "lastEntityId": "2:381938179637751040",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

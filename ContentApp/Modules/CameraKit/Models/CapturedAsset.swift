@@ -36,7 +36,6 @@ enum CapturedAssetType {
 }
 
 class CapturedAsset {
-    
     private(set) var path: String?
     private let type: CapturedAssetType
     var description: String?

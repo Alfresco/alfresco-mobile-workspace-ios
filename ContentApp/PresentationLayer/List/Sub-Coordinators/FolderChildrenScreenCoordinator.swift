@@ -101,7 +101,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func showCamera() {
-        let coordinator = CameraScreenCoordinator(with: presenter)
+        let coordinator = CameraScreenCoordinator(with: presenter,
+                                                  parentListNode: listNode)
         coordinator.start()
         cameraCoordinator = coordinator
     }

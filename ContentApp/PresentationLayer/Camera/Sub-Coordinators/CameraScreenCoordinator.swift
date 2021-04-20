@@ -22,9 +22,12 @@ import AVFoundation
 class CameraScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
+    private let parentListNode: ListNode
     
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController,
+         parentListNode: ListNode) {
         self.presenter = presenter
+        self.parentListNode = parentListNode
     }
     
     func start() {
@@ -110,6 +113,6 @@ class CameraScreenCoordinator: Coordinator {
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-
+//        let uploadTransfer = UploadTransfer(parentNodeId: capturedAsset., nodeName: <#T##String#>, nodeDescription: <#T##String?#>, filePath: <#T##String#>)
     }
 }
