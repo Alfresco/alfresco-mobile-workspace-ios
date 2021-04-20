@@ -65,7 +65,7 @@ class FullScreenCapturedAssetViewController: UIViewController {
     private func applyComponentsThemes() {
         view.backgroundColor = .black
         closeButton.tintColor = .white
-        closeButton.backgroundColor = .clear
+        closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
     }
     
     private func zoomRectForScale(_ scale: CGFloat, center: CGPoint) -> CGRect {
@@ -101,11 +101,9 @@ extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
                                                        left: left,
                                                        bottom: top,
                                                        right: left)
-                closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
             }
         } else {
             scrollView.contentInset = UIEdgeInsets.zero
-            closeButton.backgroundColor = .clear
         }
     }
 }
