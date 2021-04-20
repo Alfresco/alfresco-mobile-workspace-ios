@@ -146,7 +146,8 @@ class CameraViewController: UIViewController {
     private func zoomSliderConfiguration() {
         guard let theme = self.theme else { return }
         
-        let sliderStyle = RangeSliderControlSyle(tintColor: theme.surfaceColor,
+        let sliderStyle = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
+                                                 tintColor: theme.surface60Color,
                                                  optionFont: theme.subtitle2Font,
                                                  fontColor: theme.onSurfaceColor)
         zoomSlider.updateStyle(sliderStyle)
