@@ -61,6 +61,7 @@ class PreviewViewController: UIViewController {
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
+        descriptionField.minimumNumberOfVisibleRows = 1
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
