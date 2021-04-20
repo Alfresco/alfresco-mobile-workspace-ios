@@ -61,6 +61,7 @@ class PreviewViewController: UIViewController {
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
+        descriptionField.minimumNumberOfVisibleRows = 1
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
@@ -121,7 +122,7 @@ class PreviewViewController: UIViewController {
         view.backgroundColor = theme.surfaceColor
         
         trashButton.tintColor = theme.onSurface60Color
-        trashButton.backgroundColor = theme.surfaceColor.withAlphaComponent(0.6)
+        trashButton.backgroundColor = theme.surface60Color
         
         saveButton.applyContainedTheme(withScheme: theme.buttonScheme)
         saveButton.setBackgroundColor(theme.onSurface5Color, for: .disabled)

@@ -19,6 +19,11 @@
 import AVFoundation
 import UIKit
 
+let focusViewSize = CGSize(width: 72, height: 72)
+let minZoom: Float = 1.0
+let maxZoom: Float = 10.0
+let animationFadeFocusView = 2.0
+
 class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
@@ -60,7 +65,12 @@ class SessionPreview: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         previewLayer?.frame = bounds
-        previewLayer?.connection?.videoOrientation = .portrait
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            previewLayer?.connection?.videoOrientation = UIDevice.current.orientation.cameraOrientation
+        } else {
+            previewLayer?.connection?.videoOrientation = .portrait
+        }
     }
     
     // MARK: - Public Methods
@@ -81,21 +91,17 @@ class SessionPreview: UIView {
         session?.capture()
     }
     
-    func nextFlashMode() {
+    func update(flashMode: FlashMode) {
         if let photoSession = session as? PhotoCaptureSession {
-            switch photoSession.flashMode {
-            case .auto: photoSession.flashMode = .off
-            case .off: photoSession.flashMode = .on
-            case .on: photoSession.flashMode = .auto
-            }
+            photoSession.flashMode = flashMode
         }
     }
     
-    func flashModeIcon() -> UIImage? {
+    func shouldDisplayFlash() -> Bool {
         if let photoSession = session as? PhotoCaptureSession {
-            return photoSession.flashMode.icon
+            return photoSession.captureDeviceInput?.device.hasFlash ?? false
         }
-        return nil
+        return false
     }
     
     func changeCameraPosition() {
@@ -106,7 +112,25 @@ class SessionPreview: UIView {
     
     func resetZoom() {
         lastScale = 1.0
-        session?.zoom = Double(lastScale)
+        session?.zoom = lastScale
+    }
+    
+    func update(zoom: Double) {
+        session?.zoom = Float(zoom)
+    }
+    
+    func resetToAutoFocus() {
+        if let photoSession = session as? PhotoCaptureSession {
+            photoSession.resetDeviceConfiguration()
+        }
+    }
+    
+    func aspectRatio() -> CameraAspectRatio {
+        return session?.aspectRatio ?? .ar4by3
+    }
+    
+    func updateAspectRatioResolution() {
+        session?.deviceOrientationChanged()
     }
     
     // MARK: - Private Methods
@@ -150,17 +174,18 @@ class SessionPreview: UIView {
     @objc private func handleFocusTap(recognizer: UITapGestureRecognizer) {
         let location = recognizer.location(in: self)
         if let point = previewLayer?.captureDevicePointConverted(fromLayerPoint: location) {
-            session?.focus(at: point)
-            addFocusView(at: location)
+            if session?.focus(at: point) == true {
+                addFocusView(at: location)
+            }
         }
     }
     
     @objc private func handleZoomPinch(recognizer: UIPinchGestureRecognizer) {
         if recognizer.state == .began {
-            recognizer.scale = lastScale
+            recognizer.scale = CGFloat(lastScale)
         }
-        let zoom = max(minZoom, min(maxZoom, recognizer.scale))
-        session?.zoom = Double(zoom)
+        let zoom = max(minZoom, min(maxZoom, Float(recognizer.scale)))
+        update(zoom: Double(zoom))
         if recognizer.state == .ended {
             lastScale = zoom
         }
