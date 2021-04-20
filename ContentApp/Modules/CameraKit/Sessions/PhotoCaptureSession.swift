@@ -70,12 +70,12 @@ class PhotoCaptureSession: CaptureSession {
         }
     }
     
-    override var zoom: Double {
+    override var zoom: Float {
         didSet {
             guard let device = captureDeviceInput?.device else {return }
             do {
                 try device.lockForConfiguration()
-                device.videoZoomFactor = CGFloat(self.zoom)
+                device.videoZoomFactor = CGFloat(zoom)
                 device.unlockForConfiguration()
             } catch {
                 AlfrescoLog.error("An unexpected error occured while zooming.")

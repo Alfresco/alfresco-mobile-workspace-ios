@@ -20,8 +20,8 @@ import AVFoundation
 import UIKit
 
 let focusViewSize = CGSize(width: 72, height: 72)
-let minZoom: CGFloat = 1.0
-let maxZoom: CGFloat = 10.0
+let minZoom: Float = 1.0
+let maxZoom: Float = 10.0
 let animationFadeFocusView = 2.0
 
 class SessionPreview: UIView {
@@ -91,21 +91,17 @@ class SessionPreview: UIView {
         session?.capture()
     }
     
-    func nextFlashMode() {
+    func update(flashMode: FlashMode) {
         if let photoSession = session as? PhotoCaptureSession {
-            switch photoSession.flashMode {
-            case .auto: photoSession.flashMode = .off
-            case .off: photoSession.flashMode = .on
-            case .on: photoSession.flashMode = .auto
-            }
+            photoSession.flashMode = flashMode
         }
     }
     
-    func flashModeIcon() -> UIImage? {
+    func shouldDisplayFlash() -> Bool {
         if let photoSession = session as? PhotoCaptureSession {
-            return photoSession.flashMode.icon
+            return photoSession.captureDeviceInput?.device.hasFlash ?? false
         }
-        return nil
+        return false
     }
     
     func changeCameraPosition() {
@@ -116,14 +112,11 @@ class SessionPreview: UIView {
     
     func resetZoom() {
         lastScale = 1.0
-        session?.zoom = Double(lastScale)
+        session?.zoom = lastScale
     }
     
-    func shouldDisplayFlash() -> Bool {
-        if let photoSession = session as? PhotoCaptureSession {
-            return photoSession.captureDeviceInput?.device.hasFlash ?? false
-        }
-        return false
+    func update(zoom: Double) {
+        session?.zoom = Float(zoom)
     }
     
     func resetToAutoFocus() {
@@ -189,10 +182,10 @@ class SessionPreview: UIView {
     
     @objc private func handleZoomPinch(recognizer: UIPinchGestureRecognizer) {
         if recognizer.state == .began {
-            recognizer.scale = lastScale
+            recognizer.scale = CGFloat(lastScale)
         }
-        let zoom = max(minZoom, min(maxZoom, recognizer.scale))
-        session?.zoom = Double(zoom)
+        let zoom = max(minZoom, min(maxZoom, Float(recognizer.scale)))
+        update(zoom: Double(zoom))
         if recognizer.state == .ended {
             lastScale = zoom
         }

@@ -31,6 +31,10 @@ struct CameraConfigurationLayout {
     
     var textFieldScheme: MDCContainerScheming
     let buttonScheme: MDCContainerScheming
+    
+    var autoFlashText: String
+    var onFlashText: String
+    var offFlashText: String
 }
 
 struct CameraLocalization {

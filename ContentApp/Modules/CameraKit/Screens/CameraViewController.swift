@@ -19,6 +19,7 @@
 import UIKit
 
 let animationRotateCameraButtons = 0.5
+let animationFadeView = 1.0
 
 class CameraViewController: UIViewController {
     
@@ -27,8 +28,10 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var switchCameraButton: UIButton!
     @IBOutlet weak var captureButton: UIButton!
     @IBOutlet weak var zoomLabel: UILabel!
+    @IBOutlet weak var zoomSlider: RangeSlider!
     
     @IBOutlet weak var topBarView: UIView!
+    @IBOutlet weak var flashMenuView: FlashMenu!
     @IBOutlet weak var finderView: UIView!
     @IBOutlet weak var zoomView: UIView!
     @IBOutlet weak var shutterView: UIView!
@@ -49,6 +52,7 @@ class CameraViewController: UIViewController {
         }
     }
     
+    private var zoomSliderTimer: Timer?
     var cameraViewModel = CameraViewModel()
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
@@ -66,6 +70,9 @@ class CameraViewController: UIViewController {
         
         configureViewsLayout(for: view.bounds.size)
         cameraViewModel.delegate = self
+
+        flashModeConfiguration()
+        zoomSliderConfiguration()
         cameraSliderConfiguration()
     }
     
@@ -97,10 +104,6 @@ class CameraViewController: UIViewController {
         sessionPreview.updateAspectRatioResolution()
     }
     
-    override var shouldAutorotate: Bool {
-        return false
-    }
-    
     // MARK: - IBActions
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
@@ -109,19 +112,20 @@ class CameraViewController: UIViewController {
     }
     
     @IBAction func flashModeButtonTapped(_ sender: UIButton) {
-        sessionPreview.nextFlashMode()
-        flashModeButton.setImage(sessionPreview.flashModeIcon(), for: .normal)
+        apply(fade: (flashMenuView.alpha == 1.0), to: flashMenuView)
     }
     
     @IBAction func captureButtonTapped(_ sender: UIButton) {
         captureButton.isUserInteractionEnabled = false
         sessionPreview.capture()
+        apply(fade: true, to: flashMenuView)
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
         sessionPreview.resetZoom()
         sessionPreview.changeCameraPosition()
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+        apply(fade: true, to: flashMenuView)
     }
     
     // MARK: - Private Methods
@@ -137,6 +141,43 @@ class CameraViewController: UIViewController {
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
         cameraSlider.updateStyle(style: sliderStyle)
         cameraSlider.delegate = self
+    }
+    
+    private func zoomSliderConfiguration() {
+        guard let theme = self.theme else { return }
+        
+        let sliderStyle = RangeSliderControlSyle(tintColor: theme.surfaceColor,
+                                                 optionFont: theme.subtitle2Font,
+                                                 fontColor: theme.onSurfaceColor)
+        zoomSlider.updateStyle(sliderStyle)
+        zoomSlider.delegate = self
+        zoomSlider.minimumValue = minZoom
+        zoomSlider.maximumValue = maxZoom
+        zoomSlider.setSlider(value: minZoom)
+        zoomSlider.alpha = 0.0
+        zoomLabel.isHidden = true
+    }
+    
+    private func flashModeConfiguration() {
+        guard let theme = self.theme else { return }
+        
+        let flashStyle = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
+                                        optionFont: theme.subtitle2Font,
+                                        optionColor: theme.onSurfaceColor,
+                                        backgroundColor: theme.surface60Color,
+                                        autoFlashText: theme.autoFlashText,
+                                        onFlashText: theme.onFlashText,
+                                        offFlashText: theme.offFlashText)
+        flashMenuView.updateStyle(flashStyle)
+        flashMenuView.delegate = self
+        flashMenuView.alpha = 0.0
+    }
+    
+    private func apply(fade: Bool, to object: UIView) {
+        let fadeTo: CGFloat = (fade) ? 0.0 : 1.0
+        UIView.animate(withDuration: animationFadeView) {
+            object.alpha = fadeTo
+        }
     }
     
     // MARK: - Navigation
@@ -167,14 +208,31 @@ extension CameraViewController: CameraViewModelDelegate {
 // MARK: - CaptureSessionUI Delegate
 
 extension CameraViewController: CaptureSessionUIDelegate {
-    func didChange(zoom: Double) {
+    func didChange(zoom: Float) {
         var text = String(format: "%.1f", zoom)
         guard let aprox = Double(text) else { return }
 
         if aprox - Double(Int(aprox)) == 0.0 {
             text = "\(Int(aprox))"
         }
+
         zoomLabel.text = "\(text)x"
+        apply(fade: true, to: zoomLabel)
+
+        zoomSlider.setSlider(value: zoom)
+        apply(fade: false, to: zoomSlider)
+        
+        zoomSliderTimer?.invalidate()
+        zoomSliderTimer = Timer.scheduledTimer(withTimeInterval: animationFadeFocusView,
+                                          repeats: false,
+                                          block: { [weak self] (timer) in
+                                            timer.invalidate()
+                                            guard let sSelf = self else { return }
+                                            sSelf.apply(fade: true, to: sSelf.zoomSlider)
+                                            sSelf.apply(fade: false, to: sSelf.zoomLabel)
+        })
+        
+        apply(fade: true, to: flashMenuView)
     }
     
     func didChange(orientation: UIImage.Orientation) {
@@ -186,6 +244,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
             sSelf.flashModeButton.rotate(to: orientation)
             sSelf.switchCameraButton.rotate(to: orientation)
             sSelf.zoomLabel.rotate(to: orientation)
+            sSelf.flashMenuView.rotate(to: orientation)
         }
     }
 }
@@ -194,6 +253,24 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: CameraSliderControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
+    }
+}
+
+// MARK: - RangeSliderControl Delegate
+
+extension CameraViewController: RangeSliderControlDelegate {
+    func didChangeSlider(value: Float) {
+        sessionPreview.update(zoom: Double(value))
+    }
+}
+
+// MARK: - FlashMenu Delegate
+
+extension CameraViewController: FlashMenuDelegate {
+    func selected(flashMode: FlashMode) {
+        sessionPreview.update(flashMode: flashMode)
+        apply(fade: true, to: flashMenuView)
+        flashModeButton.setImage(flashMode.icon, for: .normal)
     }
 }
 

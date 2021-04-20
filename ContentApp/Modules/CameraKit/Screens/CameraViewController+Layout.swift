@@ -69,6 +69,7 @@ extension CameraViewController {
         let viewHeight = size.height
         
         topBarView.frame.size = CGSize(width: viewWidth, height: 56)
+        flashMenuView.frame.size =  CGSize(width: 160, height: 160)
         finderView.frame.size = CGSize(width: viewWidth, height: viewWidth * aspectRatio.value)
         zoomView.frame.size = CGSize(width: viewWidth, height: 64)
         shutterView.frame.size = CGSize(width: viewWidth, height: 96)
@@ -79,8 +80,10 @@ extension CameraViewController {
         let zoomViewHeight = zoomView.bounds.height
         let shutterViewHeight = shutterView.bounds.height
         let modeViewHeight = modeView.bounds.height
+        let flashMenuViewHeight = flashMenuView.bounds.height
         
         var topViewGuide: CGFloat = 0.0
+        var flashMenuViewGuide: CGFloat = 0.0
         var finderViewGuide: CGFloat = 0.0
         var zoomViewGuide: CGFloat = 0.0
         var shutterViewGuide: CGFloat = 0.0
@@ -93,6 +96,7 @@ extension CameraViewController {
         if case1 <= viewHeight { // All elemets fits
             let offset = (viewHeight - (case1)) / 2
             topViewGuide = offset
+            flashMenuViewGuide = topViewGuide + topViewHeight
             finderViewGuide = topViewGuide + topViewHeight
             shutterViewGuide = finderViewGuide + finderViewHeight
             modeViewGuide = shutterViewGuide + shutterViewHeight
@@ -100,6 +104,7 @@ extension CameraViewController {
         } else if case2 <= viewHeight { // All elemets except the shutter fits
             let offset = (viewHeight - (case2)) / 2
             topViewGuide = offset
+            flashMenuViewGuide = topViewGuide + topViewHeight
             finderViewGuide = topViewGuide + topViewHeight
             shutterViewGuide = finderViewGuide + finderViewHeight - shutterViewHeight
             modeViewGuide = finderViewGuide + finderViewHeight
@@ -107,6 +112,7 @@ extension CameraViewController {
         } else if case3 <= viewHeight { // Only the top bar and finder fits
             let offset = (viewHeight - (case3)) / 2
             topViewGuide = offset
+            flashMenuViewGuide = topViewGuide + topViewHeight
             finderViewGuide = topViewGuide + topViewHeight
             modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
             shutterViewGuide = modeViewGuide - shutterViewHeight
@@ -115,6 +121,7 @@ extension CameraViewController {
             let offset = (viewHeight - finderViewHeight) / 2
             topViewGuide = offset
             finderViewGuide = offset
+            flashMenuViewGuide = topViewGuide + topViewHeight
             modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
             shutterViewGuide = modeViewGuide - shutterViewHeight
             zoomViewGuide = shutterViewGuide - zoomViewHeight
@@ -125,7 +132,13 @@ extension CameraViewController {
         zoomView.frame = CGRect(x: 0, y: zoomViewGuide, width: viewWidth, height: zoomViewHeight)
         shutterView.frame = CGRect(x: 0, y: shutterViewGuide, width: viewWidth, height: shutterViewHeight)
         modeView.frame = CGRect(x: 0, y: modeViewGuide, width: viewWidth, height: modeViewHeight)
-        
+
+        flashMenuView.translatesAutoresizingMaskIntoConstraints = true
+        flashMenuView.frame = CGRect(x: viewWidth - flashMenuViewHeight - cameraMargin,
+                                     y: flashMenuViewGuide + cameraMargin,
+                                     width: flashMenuViewHeight,
+                                     height: flashMenuViewHeight)
+
         configureTopViewLayout()
         configureFinderViewLayout()
         configureZoomView()
@@ -154,6 +167,7 @@ extension CameraViewController {
     private func configureZoomView() {
         zoomLabel.frame.size = cameraFeatureButtonSize
         zoomLabel.center = CGPoint(x: zoomView.frame.width / 2, y: zoomView.frame.height / 2)
+        zoomSlider.center = zoomLabel.center
     }
     
     private func configureShutterView() {

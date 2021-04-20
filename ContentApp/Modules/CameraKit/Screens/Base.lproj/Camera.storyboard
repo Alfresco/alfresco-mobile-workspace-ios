@@ -62,8 +62,18 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="6tR-lY-uHu" customClass="RangeSlider" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="62" y="12" width="232" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zuw-61-Yy5" customClass="FlashMenu" customModule="ContentApp" customModuleProvider="target">
+                                <rect key="frame" x="134" y="383" width="160" height="160"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ULu-2x-pmc" userLabel="Shutter View">
                                 <rect key="frame" x="0.0" y="702.66666666666663" width="428" height="96"/>
@@ -112,6 +122,7 @@
                         <outlet property="captureButton" destination="vye-B6-Ywp" id="T3e-Zp-j13"/>
                         <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
+                        <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
                         <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
                         <outlet property="modeView" destination="fvq-fy-4iC" id="HRs-74-qq4"/>
                         <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
@@ -119,6 +130,7 @@
                         <outlet property="switchCameraButton" destination="7ci-e2-bho" id="whO-0t-Wkd"/>
                         <outlet property="topBarView" destination="dfX-xY-wpU" id="PAX-eL-Wqf"/>
                         <outlet property="zoomLabel" destination="Z2s-So-wmT" id="dQE-ap-MjN"/>
+                        <outlet property="zoomSlider" destination="6tR-lY-uHu" id="Ud6-C0-fOp"/>
                         <outlet property="zoomView" destination="xqV-8o-SxU" id="Zp6-ie-i6s"/>
                         <segue destination="aGd-Xu-cBR" kind="show" identifier="showPreviewVCfromCameraVC" id="xR3-tt-icf"/>
                     </connections>

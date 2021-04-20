@@ -283,6 +283,7 @@
 		F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B19D2617591200407451 /* ListComponent+Delegates.swift */; };
 		F185B1A326175C8800407451 /* CameraStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */; };
 		F185B1A72617663000407451 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F185B1A92617663000407451 /* Camera.storyboard */; };
+		F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */; };
 		F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C3B262065680096743B /* PreviewViewModel.swift */; };
 		F1AC6C44262065710096743B /* FullScreenCapturedAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */; };
 		F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020B6261AF83B007799B2 /* PreviewViewController.swift */; };
@@ -608,6 +609,7 @@
 		F185B19D2617591200407451 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
 		F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStoryboardInstantiable.swift; sourceTree = "<group>"; };
 		F185B1A82617663000407451 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
+		F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashMenu.swift; sourceTree = "<group>"; };
 		F1AC6C3B262065680096743B /* PreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenCapturedAssetViewController.swift; sourceTree = "<group>"; };
 		F1B020B6261AF83B007799B2 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
@@ -1793,6 +1795,7 @@
 				4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */,
 				1346FA06261DA4CF00336990 /* CameraSlider.swift */,
 				F14E68912617066A002FDEF9 /* SessionPreview.swift */,
+				F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -2171,6 +2174,7 @@
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
+				F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
 				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
 				B9ECED3A25432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift in Sources */,

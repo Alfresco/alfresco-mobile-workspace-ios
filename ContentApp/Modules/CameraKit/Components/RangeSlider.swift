@@ -19,6 +19,12 @@
 import Foundation
 import UIKit
 
+struct RangeSliderControlSyle {
+    let tintColor: UIColor
+    let optionFont: UIFont
+    let fontColor: UIColor
+}
+
 protocol RangeSliderControlDelegate: class {
     func didChangeSlider(value: Float)
 }
@@ -26,7 +32,11 @@ protocol RangeSliderControlDelegate: class {
 class RangeSlider: UISlider {
     weak var delegate: RangeSliderControlDelegate?
     private var shouldCallDelegate = true
-        
+    
+    private var style = RangeSliderControlSyle(tintColor: .white,
+                                               optionFont: .systemFont(ofSize: 14),
+                                               fontColor: .black)
+    
     // MARK: - Public interface
     
     required init?(coder: NSCoder) {
@@ -51,26 +61,38 @@ class RangeSlider: UISlider {
         setValue(value, animated: true)
     }
     
+    func updateStyle(_ style: RangeSliderControlSyle) {
+        self.style = style
+        applyCurrentStyle()
+    }
+    
     // MARK: Private interface
+    
+    private func applyCurrentStyle() {
+        tintColor = style.tintColor
+        thumbTintColor = style.tintColor
+    }
     
     private func progressImage(with progress: Float) -> UIImage {
         return autoreleasepool { () -> UIImage in
             let layer = CALayer()
-            layer.backgroundColor = UIColor.white.cgColor
-            layer.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+            layer.backgroundColor = style.tintColor.cgColor
+            layer.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
             layer.cornerRadius = layer.bounds.height / 2
 
             let label = UILabel(frame: layer.frame)
+            label.font = style.optionFont
+            label.textColor = style.fontColor
             
             let strProgress = String(format: "%.1f", progress)
                         
             if Float(strProgress)?.truncatingRemainder(dividingBy: 1) == 0 {
                 let final = strProgress.split(separator: ".")
-                label.text = String(final[0])
+                label.text = String(final[0]) + "x"
             } else {
-                label.text = strProgress
+                label.text = strProgress + "x"
             }
-
+            label.text = ""
             layer.addSublayer(label.layer)
             label.textAlignment = .center
             

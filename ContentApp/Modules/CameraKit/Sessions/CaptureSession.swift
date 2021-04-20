@@ -25,7 +25,7 @@ protocol CaptureSessionDelegate: class {
 }
 
 protocol CaptureSessionUIDelegate: class {
-    func didChange(zoom: Double)
+    func didChange(zoom: Float)
     func didChange(orientation: UIImage.Orientation)
 }
 
@@ -35,7 +35,7 @@ class CaptureSession: NSObject {
     var overlayView: UIView?
     var resolution = CGSize.zero
     var aspectRatio = CameraAspectRatio.ar4per3
-    var zoom = 1.0
+    var zoom: Float = 1.0
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
     var orientationLast = UIDevice.current.orientation

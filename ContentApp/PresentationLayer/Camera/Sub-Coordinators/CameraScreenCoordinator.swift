@@ -90,7 +90,10 @@ class CameraScreenCoordinator: Coordinator {
                                       subtitle2Font: currentTheme.subtitle2TextStyle.font,
                                       headline6Font: currentTheme.headline6TextStyle.font,
                                       textFieldScheme: textFieldScheme,
-                                      buttonScheme: buttonScheme)
+                                      buttonScheme: buttonScheme,
+                                      autoFlashText: LocalizationConstants.Camera.autoFlash,
+                                      onFlashText: LocalizationConstants.Camera.onFlash,
+                                      offFlashText: LocalizationConstants.Camera.offFlash)
     }
     
     func cameraLocalization() -> CameraLocalization {
