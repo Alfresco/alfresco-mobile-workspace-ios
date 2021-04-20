@@ -34,7 +34,7 @@ class CaptureSession: NSObject {
     var previewLayer: AVCaptureVideoPreviewLayer?
     var overlayView: UIView?
     var resolution = CGSize.zero
-    var aspectRatio = CameraAspectRatio.ar4per3
+    var aspectRatio = CameraAspectRatio.ar4by3
     var zoom: Float = 1.0
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?

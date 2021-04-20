@@ -126,7 +126,7 @@ class SessionPreview: UIView {
     }
     
     func aspectRatio() -> CameraAspectRatio {
-        return session?.aspectRatio ?? .ar4per3
+        return session?.aspectRatio ?? .ar4by3
     }
     
     func updateAspectRatioResolution() {

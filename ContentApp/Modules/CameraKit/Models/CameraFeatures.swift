@@ -20,19 +20,19 @@ import AVFoundation
 import UIKit
 
 enum CameraAspectRatio {
-    case ar4per3
-    case ar16per9
+    case ar4by3
+    case ar16by9
     
     var value: CGFloat {
         switch self {
-        case .ar4per3:
+        case .ar4by3:
             if UIDevice.current.orientation.isLandscape &&
                 UIDevice.current.userInterfaceIdiom == .pad {
                 return CGFloat(3.0 / 4.0)
             } else {
                 return CGFloat(4.0 / 3.0)
             }
-        case .ar16per9:
+        case .ar16by9:
             if UIDevice.current.orientation.isLandscape &&
                 UIDevice.current.userInterfaceIdiom == .pad {
                 return CGFloat(9.0 / 16.0)
@@ -44,14 +44,14 @@ enum CameraAspectRatio {
     
     var size: CGSize {
         switch self {
-        case .ar4per3:
+        case .ar4by3:
             if UIDevice.current.orientation.isLandscape &&
                 UIDevice.current.userInterfaceIdiom == .pad {
                 return CGSize(width: 4032, height: 3024)
             } else {
                 return CGSize(width: 3024, height: 4032)
             }
-        case .ar16per9:
+        case .ar16by9:
             if UIDevice.current.orientation.isLandscape &&
                 UIDevice.current.userInterfaceIdiom == .pad {
                 return CGSize(width: 1920, height: 1080)

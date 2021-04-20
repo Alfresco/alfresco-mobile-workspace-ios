@@ -41,7 +41,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var sessionPreview: SessionPreview! {
         didSet {
             let session = PhotoCaptureSession()
-            session.aspectRatio = .ar4per3
+            session.aspectRatio = .ar4by3
             session.delegate = cameraViewModel
             session.uiDelegate = self
 
