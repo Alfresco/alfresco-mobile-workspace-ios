@@ -103,8 +103,7 @@ class CreateNodeViewModel {
                     sSelf.delegate?.handleCreatedNode(node: nil,
                                                       error: error)
                     AlfrescoLog.error(error)
-                } else if let node = result?.entry {
-                    let listNode = NodeChildMapper.create(from: node)
+                } else if let listNode = result {
                     sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                     sSelf.publishEventBus(with: listNode)
                 }
@@ -122,15 +121,14 @@ class CreateNodeViewModel {
                                       description: nodeDescription,
                                       nodeExtension: nodeExtension,
                                       fileData: dataTemplate,
-                                      autoRename: autoRename) { [weak self] (nodeEntry, error) in
+                                      autoRename: autoRename) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
                 sSelf.uploadDialog?.dismiss(animated: true)
                 
                 if let transferError = error {
                     sSelf.handle(error: transferError)
-                } else if let entry = nodeEntry {
-                    let listNode = NodeChildMapper.create(from: entry.entry)
+                } else if let listNode = result {
                     sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
                     sSelf.publishEventBus(with: listNode)
                 }

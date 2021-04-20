@@ -142,7 +142,7 @@ class NodeOperations {
                     nodeExtension: String,
                     fileData: Data,
                     autoRename: Bool,
-                    completionHandler: @escaping (NodeEntry?, Error?) -> Void) {
+                    completionHandler: @escaping (ListNode?, Error?) -> Void) {
         let nodeBody = NodeBodyCreate(name: name + nodeExtension,
                                       nodeType: "cm:content",
                                       aspectNames: nil,
@@ -159,7 +159,12 @@ class NodeOperations {
                             fileData: fileData,
                             autoRename: autoRename,
                             description: description) { (nodeEntry, error) in
-            completionHandler(nodeEntry, error)
+            if let node = nodeEntry?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                completionHandler(listNode, nil)
+            } else {
+                completionHandler(nil, error)
+            }
         }
     }
 
@@ -167,7 +172,7 @@ class NodeOperations {
                     name: String,
                     description: String?,
                     autoRename: Bool,
-                    completionHandler: @escaping (NodeEntry?, Error?) -> Void) {
+                    completionHandler: @escaping (ListNode?, Error?) -> Void) {
         let nodeBody = NodeBodyCreate(name: name,
                                       nodeType: "cm:folder",
                                       aspectNames: nil,
@@ -187,8 +192,9 @@ class NodeOperations {
         requestBuilder.execute { (result, error) in
             if let error = error {
                 completionHandler(nil, error)
-            } else if let nodeEntry = result?.body {
-                completionHandler(nodeEntry, nil)
+            } else if let node = result?.body?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                completionHandler(listNode, nil)
             }
         }
     }

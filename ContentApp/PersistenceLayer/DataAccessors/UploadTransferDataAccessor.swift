@@ -36,6 +36,19 @@ class UploadTransferDataAccessor: DataAccessor {
         databaseService?.store(entity: uploadTransferToBeStored)
     }
 
+    func remove(transfer: UploadTransfer) {
+        var transferToBeDeleted = transfer
+
+        if transfer.id == 0 {
+            if let queriedTransfer = query(uploadTransfer: transfer) {
+                transferToBeDeleted = queriedTransfer
+            }
+        }
+
+        databaseService?.remove(entity: transferToBeDeleted)
+        _ = DiskService.delete(itemAtPath: transfer.filePath)
+    }
+
     func query(uploadTransfer: UploadTransfer) -> UploadTransfer? {
         if let listBox = databaseService?.box(entity: UploadTransfer.self) {
             do {

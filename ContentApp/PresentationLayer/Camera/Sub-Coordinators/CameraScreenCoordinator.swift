@@ -117,6 +117,16 @@ class CameraScreenCoordinator: Coordinator {
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-//        let uploadTransfer = UploadTransfer(parentNodeId: capturedAsset., nodeName: <#T##String#>, nodeDescription: <#T##String?#>, filePath: <#T##String#>)
+        if let assetPath = capturedAsset.path {
+            let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
+                                                nodeName: capturedAsset.filename,
+                                                nodeDescription: capturedAsset.description,
+                                                filePath: assetPath)
+            let uploadTransferDataAccessor = UploadTransferDataAccessor()
+            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+
+            let syncTriggersService = coordinatorServices.syncTriggersService
+            syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+        }
     }
 }
