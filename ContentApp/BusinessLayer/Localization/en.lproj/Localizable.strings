@@ -205,3 +205,6 @@
 
 // MARK: - Camera
 "slider-camera-photo" = "Photo";
+"auto-flash" = "Auto";
+"on-flash" = "On";
+"off-flash" = "Off";

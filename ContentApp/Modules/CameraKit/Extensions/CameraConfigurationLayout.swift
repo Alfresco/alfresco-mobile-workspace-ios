@@ -24,12 +24,17 @@ struct CameraConfigurationLayout {
     var onSurface60Color: UIColor
     var onSurface5Color: UIColor
     var surfaceColor: UIColor
+    var surface60Color: UIColor
     
     var subtitle2Font: UIFont
     var headline6Font: UIFont
     
     var textFieldScheme: MDCContainerScheming
     let buttonScheme: MDCContainerScheming
+    
+    var autoFlashText: String
+    var onFlashText: String
+    var offFlashText: String
 }
 
 struct CameraLocalization {

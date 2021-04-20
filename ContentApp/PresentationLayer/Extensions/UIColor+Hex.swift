@@ -18,9 +18,19 @@
 
 import UIKit
 
-let wideResolution = CGSize(width: 3024, height: 4032)
-let focusViewSize = CGSize(width: 72, height: 72)
-let minZoom: CGFloat = 1.0
-let maxZoom: CGFloat = 10.0
-let animationFadeFocusView = 2.0
-let animationRotateCameraButtons = 0.5
+extension UIColor {
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
+        let hexString: String = hex.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        let scanner = Scanner(string: hex)
+        if hexString.hasPrefix("#") {
+            scanner.scanLocation = 1
+        }
+        var color: UInt32 = 0
+        scanner.scanHexInt32(&color)
+        let mask = 0x000000FF
+        let red   = CGFloat(Int(color >> 16) & mask) / 255.0
+        let green = CGFloat(Int(color >> 8) & mask) / 255.0
+        let blue  = CGFloat(Int(color) & mask) / 255.0
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
+    }
+}

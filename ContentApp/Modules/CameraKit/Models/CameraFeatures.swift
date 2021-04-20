@@ -19,6 +19,49 @@
 import AVFoundation
 import UIKit
 
+enum CameraAspectRatio {
+    case ar4by3
+    case ar16by9
+    
+    var value: CGFloat {
+        switch self {
+        case .ar4by3:
+            if UIDevice.current.orientation.isLandscape &&
+                UIDevice.current.userInterfaceIdiom == .pad {
+                return CGFloat(3.0 / 4.0)
+            } else {
+                return CGFloat(4.0 / 3.0)
+            }
+        case .ar16by9:
+            if UIDevice.current.orientation.isLandscape &&
+                UIDevice.current.userInterfaceIdiom == .pad {
+                return CGFloat(9.0 / 16.0)
+            } else {
+                return CGFloat(16.0 / 9.0)
+            }
+        }
+    }
+    
+    var size: CGSize {
+        switch self {
+        case .ar4by3:
+            if UIDevice.current.orientation.isLandscape &&
+                UIDevice.current.userInterfaceIdiom == .pad {
+                return CGSize(width: 4032, height: 3024)
+            } else {
+                return CGSize(width: 3024, height: 4032)
+            }
+        case .ar16by9:
+            if UIDevice.current.orientation.isLandscape &&
+                UIDevice.current.userInterfaceIdiom == .pad {
+                return CGSize(width: 1920, height: 1080)
+            } else {
+                return CGSize(width: 1080, height: 1920)
+            }
+        }
+    }
+}
+
 enum DeviceType {
     case frontCamera
     case backCamera

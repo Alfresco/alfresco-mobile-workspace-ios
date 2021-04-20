@@ -93,7 +93,7 @@ class ActionMenuViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        view.backgroundColor = currentTheme.primaryColorVariant
+        view.backgroundColor = currentTheme.surfaceColor
         activityIndicator.cycleColors = [currentTheme.primaryVariantT1Color]
     }
 }
