@@ -220,6 +220,8 @@ extension CameraViewController: CaptureSessionUIDelegate {
         apply(fade: true, to: zoomLabel)
 
         zoomSlider.setSlider(value: zoom)
+
+        guard zoom != 1.0 else {return }
         apply(fade: false, to: zoomSlider)
         
         zoomSliderTimer?.invalidate()
