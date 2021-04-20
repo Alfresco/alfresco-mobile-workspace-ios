@@ -121,7 +121,7 @@ class PreviewViewController: UIViewController {
         view.backgroundColor = theme.surfaceColor
         
         trashButton.tintColor = theme.onSurface60Color
-        trashButton.backgroundColor = theme.surfaceColor.withAlphaComponent(0.6)
+        trashButton.backgroundColor = theme.surface60Color
         
         saveButton.applyContainedTheme(withScheme: theme.buttonScheme)
         saveButton.setBackgroundColor(theme.onSurface5Color, for: .disabled)

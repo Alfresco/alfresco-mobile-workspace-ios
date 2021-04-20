@@ -63,10 +63,8 @@ class FullScreenCapturedAssetViewController: UIViewController {
     // MARK: - Private Methods
     
     private func applyComponentsThemes() {
-        guard let theme = self.theme else { return }
-
         view.backgroundColor = .black
-        closeButton.tintColor = theme.onSurface60Color
+        closeButton.tintColor = .white
         closeButton.backgroundColor = .clear
     }
     

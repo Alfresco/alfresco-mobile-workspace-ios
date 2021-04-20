@@ -157,8 +157,7 @@ class CameraSliderControl: UIControl {
             entry.sizeToFit()
         }
         for entry in sliderButtonEntries {
-            entry.sizeToFit()
-            entry.backgroundColor = sliderStyle.optionBackgroundColor.withAlphaComponent(0.6)
+            entry.backgroundColor = sliderStyle.optionBackgroundColor
             entry.layer.cornerRadius = entry.bounds.height / 2.0
             entry.layer.masksToBounds = true
         }

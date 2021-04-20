@@ -36,6 +36,7 @@ protocol PresentationTheme {
     // COLORS
 
     var surfaceColor: UIColor { get }
+    var surface60Color: UIColor { get }
     var onSurfaceColor: UIColor { get }
     var onSurface60Color: UIColor { get }
     var onSurface30Color: UIColor { get }
@@ -53,9 +54,6 @@ protocol PresentationTheme {
     var primaryT1Color: UIColor { get }
     var primary30T1Color: UIColor { get }
     var primary15T1Color: UIColor { get }
-
-    var primaryVariantT2Color: UIColor { get }
-    var primaryT2Color: UIColor { get }
 
     var dividerColor: UIColor { get }
 }
