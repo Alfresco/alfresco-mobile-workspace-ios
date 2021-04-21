@@ -118,7 +118,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func showPhotoLibrary() {
-        let coordinator = PhotoLibraryScreenCoordinator(with: presenter)
+        let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                        parentListNode: personalFilesNode())
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }

@@ -21,17 +21,21 @@ import Photos
 
 class PhotoLibraryScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
+    private let parentListNode: ListNode
 
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController,
+         parentListNode: ListNode) {
+        self.parentListNode = parentListNode
         self.presenter = presenter
     }
     
     func start() {
         let viewController = PhotoGalleryViewController.instantiateViewController()
 
-        viewController.modalPresentationStyle = .fullScreen
         viewController.photoGalleryViewModel = PhotoGalleryViewModel()
         viewController.theme = configurationLayout()
+        viewController.cameraDelegate = self
+        viewController.modalPresentationStyle = .fullScreen
 
         requestAuthorizationPhotoLibraryUsage { [weak self] (granted) in
             if granted {
@@ -81,5 +85,24 @@ class PhotoLibraryScreenCoordinator: Coordinator {
                                        primaryColor: currentTheme.primaryT1Color,
                                        headline6Font: currentTheme.headline6TextStyle.font,
                                        subtitle2Font: currentTheme.subtitle2TextStyle.font)
+    }
+}
+
+extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
+    func didEndReview(for capturedAsset: CapturedAsset) {
+        capturedAsset.providePath { [weak self] (path) in
+            guard let sSelf = self else { return }
+            if let assetPath = path {
+                let uploadTransfer = UploadTransfer(parentNodeId: sSelf.parentListNode.guid,
+                                                    nodeName: capturedAsset.filename,
+                                                    nodeDescription: capturedAsset.description,
+                                                    filePath: assetPath)
+                let uploadTransferDataAccessor = UploadTransferDataAccessor()
+                uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+
+                let syncTriggersService = sSelf.coordinatorServices.syncTriggersService
+                syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+            }
+        }
     }
 }

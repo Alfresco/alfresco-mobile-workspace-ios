@@ -42,31 +42,50 @@ class CapturedAsset {
     var description: String?
     var filename = ""
     private let folderPath: String?
+    private var phAsset: PHAsset?
     
     init(type: CapturedAssetType, data: Data, saveIn folderPath: String?) {
         self.type = type
         self.folderPath = folderPath
+        self.phAsset = nil
         self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
     }
     
-    init(phAsset: PHAsset, saveIn folderPath: String?) {
+    init(phAsset: PHAsset) {
         self.type = (phAsset.mediaType == .video) ? .video : .image
-        self.folderPath = folderPath
+        self.folderPath = ""
+        self.phAsset = phAsset
         self.filename = provideFileName()
-        
-        let poptions = PHContentEditingInputRequestOptions()
-        poptions.isNetworkAccessAllowed = true
-        phAsset.requestContentEditingInput(with: poptions) { [weak self] (input, _) in
-            guard let sSelf = self else { return }
-            do {
+        self.path = ""
+    }
+    
+    func providePath(completion: @escaping (String?) -> Void) {
+        guard let phAsset = self.phAsset else {
+            completion(nil)
+            return
+        }
+        if type == .image {
+            let options = PHContentEditingInputRequestOptions()
+            options.isNetworkAccessAllowed = true
+            phAsset.requestContentEditingInput(with: options) { [weak self] (input, _) in
+                guard let sSelf = self else { return }
                 if let imageURL = input?.fullSizeImageURL {
-                    let data = try Data(contentsOf: imageURL)
-                    sSelf.cacheToDisk(data: data)
+                    sSelf.path = imageURL.path
                 }
-            } catch {
-                AlfrescoLog.error("Failde to read data from: \(String(describing: input?.fullSizeImageURL)) ")
+                completion(sSelf.path)
             }
+        } else {
+            let options = PHVideoRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.version = .original
+            PHImageManager.default()
+                .requestAVAsset(forVideo: phAsset,
+                                options: options, resultHandler: { (asset, audioMix, info) in
+                                    if let url = asset as? AVURLAsset {
+                                        completion(url.url.path)
+                                    }
+                                })
         }
     }
     
@@ -95,9 +114,15 @@ class CapturedAsset {
     // MARK: - Private Helpers
     
     private func provideFileName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+        if let phAsset = self.phAsset,
+           let originalName = PHAssetResource.assetResources(for: phAsset).first?.originalFilename,
+           let splitName = originalName.split(separator: ".").first {
+            return String(splitName)
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+            return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+        }
     }
     
     private func cacheToDisk(data: Data) -> String? {

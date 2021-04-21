@@ -223,6 +223,7 @@
                                         <size key="customSize" width="76" height="76"/>
                                         <connections>
                                             <outlet property="assetImageView" destination="Ga5-Mt-NyL" id="pke-ut-YTY"/>
+                                            <outlet property="assetIsVideoIcon" destination="0bk-0V-pG7" id="VJn-33-yVQ"/>
                                             <outlet property="selectedIcon" destination="hJT-ww-CKY" id="7KR-Qv-8om"/>
                                             <outletCollection property="assetImageViewConstraints" destination="gQq-rY-4kS" collectionClass="NSMutableArray" id="CuL-ac-iST"/>
                                             <outletCollection property="assetImageViewConstraints" destination="hGk-oA-ktX" collectionClass="NSMutableArray" id="HQP-Jc-U9F"/>

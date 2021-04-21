@@ -26,6 +26,8 @@ class PhotoGalleryViewController: UIViewController {
     @IBOutlet weak var titlelabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    weak var cameraDelegate: CameraKitCaptureDelegate?
+    
     let itemsSize = CGSize(width: 76.0, height: 76.0)
     var distanceBetweenCells: CGFloat = 8.0
     
@@ -56,6 +58,7 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
+        photoGalleryViewModel?.fetchSelectedAssets(to: cameraDelegate)
         self.dismiss(animated: true, completion: nil)
     }
     

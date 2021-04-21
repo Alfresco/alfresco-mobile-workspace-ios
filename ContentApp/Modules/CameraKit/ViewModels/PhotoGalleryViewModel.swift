@@ -19,14 +19,10 @@
 import UIKit
 import Photos
 
-protocol PhotoGalleryViewModelDelegate: class {
-    
-}
-
 class PhotoGalleryViewModel {
-    weak var delegate: PhotoGalleryViewModelDelegate?
     private var allPhotoAssets: PHFetchResult<PHAsset>
     private var selectedIndexAssets: Array<Bool>
+    private var selectedAssets = [CapturedAsset]()
     
     private lazy var imageManager: PHCachingImageManager = {
         return PHCachingImageManager()
@@ -93,11 +89,12 @@ class PhotoGalleryViewModel {
         }
     }
     
-    func fetchSelectedAssets() -> [PHAsset] {
-        var selectedAssets = [PHAsset]()
+    func fetchSelectedAssets(to delegate: CameraKitCaptureDelegate?) {
         for (index, select) in selectedIndexAssets.enumerated() where select {
-            selectedAssets.append(asset(at: IndexPath(row: index, section: 0)))
+            let phAsset = asset(at: IndexPath(row: index, section: 0))
+            let capturedAsset = CapturedAsset(phAsset: phAsset)
+            delegate?.didEndReview(for: capturedAsset)
+//            selectedAssets.append(capturedAsset)
         }
-        return selectedAssets
     }
 }

@@ -109,7 +109,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func showPhotoLibrary() {
-        let coordinator = PhotoLibraryScreenCoordinator(with: presenter)
+        let coordinator = PhotoLibraryScreenCoordinator(with: presenter,
+                                                        parentListNode: listNode)
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
