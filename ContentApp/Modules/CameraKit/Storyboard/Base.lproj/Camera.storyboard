@@ -80,16 +80,6 @@
                                 <rect key="frame" x="0.0" y="702.66666666666663" width="428" height="96"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vye-B6-Ywp">
-                                        <rect key="frame" x="178" y="24" width="72" height="72"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="ic-camera-capture-state-normal"/>
-                                        <state key="selected" image="ic-camera-capture-state-pressed"/>
-                                        <state key="highlighted" image="ic-camera-capture-state-pressed"/>
-                                        <connections>
-                                            <action selector="captureButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="lz2-mh-CJO"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ci-e2-bho">
                                         <rect key="frame" x="368" y="38" width="44" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -97,6 +87,14 @@
                                         <state key="normal" image="ic-camera-switch"/>
                                         <connections>
                                             <action selector="switchCamerasButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="6jw-ID-Fi4"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XfX-as-TQa" customClass="CameraButton" customModule="ContentApp" customModuleProvider="target">
+                                        <rect key="frame" x="178" y="24" width="72" height="72"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="captureButton"/>
+                                        <connections>
+                                            <action selector="captureButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="KDl-Fq-juG"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -120,7 +118,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraSlider" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
-                        <outlet property="captureButton" destination="vye-B6-Ywp" id="T3e-Zp-j13"/>
+                        <outlet property="captureButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
                         <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
                         <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
@@ -489,8 +487,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic-camera-capture-state-normal" width="72" height="72"/>
-        <image name="ic-camera-capture-state-pressed" width="72" height="72"/>
         <image name="ic-camera-flash-auto" width="24" height="24"/>
         <image name="ic-camera-switch" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>

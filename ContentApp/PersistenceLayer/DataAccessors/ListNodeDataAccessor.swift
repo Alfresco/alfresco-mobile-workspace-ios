@@ -22,18 +22,8 @@ import AlfrescoContent
 
 let kMaxCount = 100
 
-class ListNodeDataAccessor {
-    private var databaseService: DatabaseService?
-    private var accountService: AccountService?
-    private let nodeOperations: NodeOperations
-
-    init() {
-        let repository = ApplicationBootstrap.shared().repository
-        databaseService = repository.service(of: DatabaseService.identifier) as? DatabaseService
-        accountService = repository.service(of: AccountService.identifier) as? AccountService
-        self.nodeOperations = NodeOperations(accountService: accountService)
-    }
-
+class ListNodeDataAccessor: DataAccessor {
+    
     // MARK: - Database operations
 
     func store(node: ListNode) {
@@ -68,10 +58,10 @@ class ListNodeDataAccessor {
     func query(node: ListNode) -> ListNode? {
         if let listBox = databaseService?.box(entity: ListNode.self) {
             do {
-                let querry: Query<ListNode> = try listBox.query {
+                let query: Query<ListNode> = try listBox.query {
                     ListNode.guid == node.guid
                 }.build()
-                let node = try querry.findUnique()
+                let node = try query.findUnique()
                 return node
             } catch {
                 AlfrescoLog.error("Unable to retrieve node information.")

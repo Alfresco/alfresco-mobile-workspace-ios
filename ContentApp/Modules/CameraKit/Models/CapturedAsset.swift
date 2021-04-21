@@ -37,20 +37,22 @@ enum CapturedAssetType {
 }
 
 class CapturedAsset {
-    
     private(set) var path: String?
     private let type: CapturedAssetType
     var description: String?
     var filename = ""
+    private let folderPath: String?
     
-    init(type: CapturedAssetType, data: Data) {
+    init(type: CapturedAssetType, data: Data, saveIn folderPath: String?) {
         self.type = type
+        self.folderPath = folderPath
         self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
     }
     
-    init(phAsset: PHAsset) {
+    init(phAsset: PHAsset, saveIn folderPath: String?) {
         self.type = (phAsset.mediaType == .video) ? .video : .image
+        self.folderPath = folderPath
         self.filename = provideFileName()
         
         let poptions = PHContentEditingInputRequestOptions()
@@ -99,29 +101,11 @@ class CapturedAsset {
     }
     
     private func cacheToDisk(data: Data) -> String? {
-        guard let mediaFolder = createMediaFolder() else { return nil }
+        guard let mediaFolder = folderPath as NSString? else { return nil }
         let imagePath = mediaFolder.appendingPathComponent("\(filename).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)
         return imagePath
     }
 
-    private func createMediaFolder() -> NSString? {
-        let fileManager = FileManager.default
-        let documentsDirectory = fileManager.urls(for: .documentDirectory,
-                                                  in: .userDomainMask)[0]
-        let documentsDirectoryPath = documentsDirectory.path as NSString
-        let mediaFolder = documentsDirectoryPath.appendingPathComponent(mediaFolderName)
-        if !fileManager.fileExists(atPath: mediaFolder) {
-            do {
-                try fileManager.createDirectory(atPath: mediaFolder,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-            } catch {
-                AlfrescoLog.error("Failed to create path: \(mediaFolder).")
-                return nil
-            }
-        }
-        return mediaFolder as NSString
-    }
 }

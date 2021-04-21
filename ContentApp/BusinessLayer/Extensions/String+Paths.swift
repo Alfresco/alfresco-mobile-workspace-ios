@@ -18,15 +18,13 @@
 
 import Foundation
 
-class PreviewViewModel {
-    let capturedAsset: CapturedAsset
-    
-    init(capturedAsset: CapturedAsset) {
-        self.capturedAsset = capturedAsset
+extension String {
+
+    func fileName() -> String {
+        return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
     }
-    
-    func updateMetadata(filename: String, description: String?) {
-        capturedAsset.filename = filename
-        capturedAsset.description = description
+
+    func fileExtension() -> String {
+        return URL(fileURLWithPath: self).pathExtension
     }
 }

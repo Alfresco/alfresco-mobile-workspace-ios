@@ -57,8 +57,6 @@ class CreateNodeViewModel {
         self.nodeName = name
         self.nodeDescription = description
 
-        guard let nodeBody = self.nodeBody() else { return }
-
         if actionMenu.type != .createFolder {
             uploadDialog = showUploadDialog(actionHandler: { [weak self] _ in
                 guard let sSelf = self else { return }
@@ -68,16 +66,14 @@ class CreateNodeViewModel {
         updateNodeDetails { [weak self] (listNode, _) in
             guard let sSelf = self, let listNode = listNode else { return }
             let shouldAutorename = (ListNode.getExtension(from: sSelf.actionMenu.type) != nil)
-            let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: listNode.guid,
-                                                                       nodeBodyCreate: nodeBody,
-                                                                       autoRename: shouldAutorename,
-                                                                       include: nil,
-                                                                       fields: nil)
+
             switch sSelf.actionMenu.type {
             case .createFolder:
-                sSelf.createNewFolder(with: requestBuilder)
+                sSelf.createNewFolder(nodeId: listNode.guid,
+                                      autoRename: shouldAutorename)
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
-                sSelf.createMSOfficeNode(with: requestBuilder, nodeBody: nodeBody)
+                sSelf.createMSOfficeNode(nodeId: listNode.guid,
+                                         autoRename: shouldAutorename)
             case .createMedia, .uploadMedia: break
             default: break
             }
@@ -94,82 +90,49 @@ class CreateNodeViewModel {
 
     // MARK: - Create Nodes
 
-    private func createNewFolder(with requestBuilder: RequestBuilder<NodeEntry>) {
-        requestBuilder.execute { [weak self] (result, error) in
-            guard let sSelf = self else { return }
-            if let error = error {
-                sSelf.delegate?.handleCreatedNode(node: nil, error: error)
-                AlfrescoLog.error(error)
-            } else if let node = result?.body?.entry {
-                let listNode = NodeChildMapper.create(from: node)
-                sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
-                sSelf.publishEventBus(with: listNode)
-            }
-        }
-    }
-
-    private func createMSOfficeNode(with requestBuilder: RequestBuilder<NodeEntry>,
-                                    nodeBody: NodeBodyCreate) {
-        guard let url = URL(string: requestBuilder.URLString) else { return }
-
-        Alamofire.upload(multipartFormData: { [weak self] (formData) in
-            guard let sSelf = self else { return }
-            sSelf.addData(in: formData, from: nodeBody)
-        }, to: url,
-        headers: AlfrescoContentAPI.customHeaders,
-        encodingCompletion: { [weak self] encodingResult in
-            guard let sSelf = self else { return }
-            sSelf.finishEncodingMultipart(with: encodingResult)
-        })
-    }
-
-    private func finishEncodingMultipart(with encodingResult: SessionManager.MultipartFormDataEncodingResult) {
-        switch encodingResult {
-        case .success(let upload, _, _) :
-            uploadRequest = upload
-            upload.responseJSON { [weak self] response in
+    private func createNewFolder(nodeId: String,
+                                 autoRename: Bool) {
+        if let name = nodeName {
+            nodeOperations.createNode(nodeId: nodeId,
+                                      name: name,
+                                      description: nodeDescription,
+                                      autoRename: autoRename) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
-                sSelf.uploadDialog?.dismiss(animated: true)
 
-                if let error = response.error {
-                    sSelf.handle(error: error)
-                } else {
-                    if let data = response.data {
-                        let resultDecode = sSelf.decode(data: data)
-                        if let nodeEntry = resultDecode.0 {
-                            let listNode = NodeChildMapper.create(from: nodeEntry.entry)
-                            sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
-                            sSelf.publishEventBus(with: listNode)
-                        }
-                        if let error = resultDecode.1 {
-                            sSelf.delegate?.handleCreatedNode(node: nil, error: error)
-                            AlfrescoLog.error(error)
-                        }
-                    }
+                if let error = error {
+                    sSelf.delegate?.handleCreatedNode(node: nil,
+                                                      error: error)
+                    AlfrescoLog.error(error)
+                } else if let listNode = result {
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.publishEventBus(with: listNode)
                 }
             }
-        case .failure(let encodingError):
-            uploadDialog?.dismiss(animated: true)
-            handle(error: encodingError)
         }
     }
 
-    private func addData(in formData: MultipartFormData, from nodeBody: NodeBodyCreate) {
+    private func createMSOfficeNode(nodeId: String,
+                                    autoRename: Bool) {
         if let dataTemplate = dataFromTemplateFile(),
-           let dataNodeType = nodeBody.nodeType.data(using: .utf8),
-           let dataAutoRename = "true".data(using: .utf8) {
+           let name = nodeName,
+           let nodeExtension = ListNode.getExtension(from: actionMenu.type) {
+            nodeOperations.createNode(nodeId: nodeId,
+                                      name: name,
+                                      description: nodeDescription,
+                                      nodeExtension: nodeExtension,
+                                      fileData: dataTemplate,
+                                      autoRename: autoRename) { [weak self] (result, error) in
+                guard let sSelf = self else { return }
 
-            formData.append(dataTemplate,
-                            withName: "filedata",
-                            fileName: nodeBody.name,
-                            mimeType: "")
-            formData.append(dataNodeType, withName: "nodeType")
-            formData.append(dataAutoRename, withName: "autoRename")
-
-        }
-        if let description = nodeDescription,
-           let dataDescription = description.data(using: .utf8) {
-            formData.append(dataDescription, withName: "cm:description")
+                sSelf.uploadDialog?.dismiss(animated: true)
+                
+                if let transferError = error {
+                    sSelf.handle(error: transferError)
+                } else if let listNode = result {
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.publishEventBus(with: listNode)
+                }
+            }
         }
     }
 
@@ -189,22 +152,10 @@ class CreateNodeViewModel {
         }
     }
 
-    private func decode(data: Data) -> (NodeEntry?, Error?) {
-        let decodeResult: (decodableObj: NodeEntry?, error: Error?)
-        decodeResult = CodableHelper.decode(NodeEntry.self, from: data)
-        if let error = decodeResult.error {
-            return (nil, error)
-        } else if let nodeEntry = decodeResult.decodableObj {
-            return (nodeEntry, nil)
-        }
-        return (nil, nil)
-    }
-
     private func publishEventBus(with listNode: ListNode) {
         let moveEvent = MoveEvent(node: parentListNode, eventType: .created)
         let eventBusService = coordinatorServices?.eventBusService
         eventBusService?.publish(event: moveEvent, on: .mainQueue)
-
     }
 
     private func dataFromTemplateFile() -> Data? {
@@ -245,24 +196,6 @@ class CreateNodeViewModel {
         return nil
     }
 
-    private func nodeBody() -> NodeBodyCreate? {
-        guard let name = self.nodeName,
-              let nodeType = ListNode.nodeType(from: actionMenu.type)
-        else { return nil }
-
-        let nodeExtension = ListNode.getExtension(from: actionMenu.type) ?? ""
-        return NodeBodyCreate(name: name + nodeExtension,
-                              nodeType: nodeType,
-                              aspectNames: nil,
-                              properties: nodeProperties(),
-                              permissions: nil,
-                              definition: nil,
-                              relativePath: nil,
-                              association: nil,
-                              secondaryChildren: nil,
-                              targets: nil)
-    }
-
     private func handle(error: Error) {
         if error.code == NSURLErrorNetworkConnectionLost ||
             error.code == NSURLErrorCancelled {
@@ -271,14 +204,5 @@ class CreateNodeViewModel {
         }
         delegate?.handleCreatedNode(node: nil, error: error)
         AlfrescoLog.error(error)
-    }
-
-    private func nodeProperties() -> JSONValue? {
-        guard let name = self.nodeName,
-              let description = self.nodeDescription
-              else { return nil }
-        return JSONValue(dictionaryLiteral:
-                            ("cm:title", JSONValue(stringLiteral: name)),
-                         ("cm:description", JSONValue(stringLiteral: description)))
     }
 }

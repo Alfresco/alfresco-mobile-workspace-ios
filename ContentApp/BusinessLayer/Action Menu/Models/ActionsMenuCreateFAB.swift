@@ -27,13 +27,13 @@ struct ActionsMenuCreateFAB {
                         ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
                                                    type: .uploadMedia),
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
-                                                   type: .createMedia),
+                                                   type: .createMedia)] /*,
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
                                    type: .createMSWord),
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
                                    type: .createMSPowerPoint),
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
-                                   type: .createMSExcel)]
+                                   type: .createMSExcel)] */
         actions.append(actions1)
         return actions
     }

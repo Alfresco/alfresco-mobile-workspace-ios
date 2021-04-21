@@ -25,18 +25,18 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
-
+    
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
         self.browseNode = browseNode
     }
-
+    
     override func start() {
         let viewModelFactory = TopLevelBrowseViewModelFactory()
         viewModelFactory.coordinatorServices = coordinatorServices
-
+        
         let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
-
+        
         let viewController = ListViewController()
         viewController.title = browseNode.title
         viewController.coordinatorServices = coordinatorServices
@@ -44,8 +44,17 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
         viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
         viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
-
+        
         presenter.pushViewController(viewController, animated: true)
+    }
+    
+    // MARK: - Private interface
+    
+    func personalFilesNode () -> ListNode {
+        return ListNode(guid: APIConstants.my,
+                        title: "Personal files",
+                        path: "",
+                        nodeType: .folder)
     }
 }
 
@@ -62,7 +71,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
     }
-
+    
     func showActionSheetForListItem(for node: ListNode,
                                     from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
@@ -77,7 +86,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
-
+    
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         let actions = ActionsMenuCreateFAB.actions()
         let actionMenuViewModel = ActionMenuViewModel(menuActions: actions,
@@ -90,23 +99,20 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
-
+    
     func showNodeCreationDialog(with actionMenu: ActionMenu,
                                 delegate: CreateNodeViewModelDelegate?) {
-        let personalFilesNode = ListNode(guid: APIConstants.my,
-                                         title: "Personal files",
-                                         path: "",
-                                         nodeType: .folder)
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
-                                                     parentListNode: personalFilesNode,
+                                                     parentListNode: personalFilesNode(),
                                                      createNodeViewModelDelegate: delegate)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
     }
     
     func showCamera() {
-        let coordinator = CameraScreenCoordinator(with: presenter)
+        let coordinator = CameraScreenCoordinator(with: presenter,
+                                                  parentListNode: personalFilesNode())
         coordinator.start()
         cameraCoordinator = coordinator
     }
@@ -116,4 +122,5 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
+    
 }

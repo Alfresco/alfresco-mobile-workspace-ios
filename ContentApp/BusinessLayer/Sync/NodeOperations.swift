@@ -134,7 +134,69 @@ class NodeOperations {
                                         }
                                     }
                                   }
+    }
 
+    func createNode(nodeId: String,
+                    name: String,
+                    description: String?,
+                    nodeExtension: String,
+                    fileData: Data,
+                    autoRename: Bool,
+                    completionHandler: @escaping (ListNode?, Error?) -> Void) {
+        let nodeBody = NodeBodyCreate(name: name + "." + nodeExtension,
+                                      nodeType: "cm:content",
+                                      aspectNames: nil,
+                                      properties: nodeProperties(for: name,
+                                                                 description: description),
+                                      permissions: nil,
+                                      definition: nil,
+                                      relativePath: nil,
+                                      association: nil,
+                                      secondaryChildren: nil,
+                                      targets: nil)
+        NodesAPI.createNode(nodeId: nodeId,
+                            nodeBody: nodeBody,
+                            fileData: fileData,
+                            autoRename: autoRename,
+                            description: description) { (nodeEntry, error) in
+            if let node = nodeEntry?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                completionHandler(listNode, nil)
+            } else {
+                completionHandler(nil, error)
+            }
+        }
+    }
+
+    func createNode(nodeId: String,
+                    name: String,
+                    description: String?,
+                    autoRename: Bool,
+                    completionHandler: @escaping (ListNode?, Error?) -> Void) {
+        let nodeBody = NodeBodyCreate(name: name,
+                                      nodeType: "cm:folder",
+                                      aspectNames: nil,
+                                      properties: nodeProperties(for: name,
+                                                                 description: description),
+                                      permissions: nil,
+                                      definition: nil,
+                                      relativePath: nil,
+                                      association: nil,
+                                      secondaryChildren: nil,
+                                      targets: nil)
+        let requestBuilder = NodesAPI.createNodeWithRequestBuilder(nodeId: nodeId,
+                                                                   nodeBodyCreate: nodeBody,
+                                                                   autoRename: autoRename,
+                                                                   include: nil,
+                                                                   fields: nil)
+        requestBuilder.execute { (result, error) in
+            if let error = error {
+                completionHandler(nil, error)
+            } else if let node = result?.body?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                completionHandler(listNode, nil)
+            }
+        }
     }
 
     func fetchContentURL(for node: ListNode?) -> URL? {
@@ -257,5 +319,16 @@ class NodeOperations {
                     }
                 }
             }
+    }
+
+    private func nodeProperties(for name: String, description: String?) -> JSONValue {
+        if let description = description {
+            return JSONValue(dictionaryLiteral:
+                                ("cm:title", JSONValue(stringLiteral: name)),
+                             ("cm:description", JSONValue(stringLiteral: description)))
+        } else {
+            return JSONValue(dictionaryLiteral:
+                                ("cm:title", JSONValue(stringLiteral: name)))
+        }
     }
 }

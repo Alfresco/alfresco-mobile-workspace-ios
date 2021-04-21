@@ -18,15 +18,15 @@
 
 import Foundation
 
-class PreviewViewModel {
-    let capturedAsset: CapturedAsset
-    
-    init(capturedAsset: CapturedAsset) {
-        self.capturedAsset = capturedAsset
-    }
-    
-    func updateMetadata(filename: String, description: String?) {
-        capturedAsset.filename = filename
-        capturedAsset.description = description
+class DataAccessor {
+    internal var databaseService: DatabaseService?
+    internal var accountService: AccountService?
+    internal let nodeOperations: NodeOperations
+
+    init() {
+        let repository = ApplicationBootstrap.shared().repository
+        databaseService = repository.service(of: DatabaseService.identifier) as? DatabaseService
+        accountService = repository.service(of: AccountService.identifier) as? AccountService
+        self.nodeOperations = NodeOperations(accountService: accountService)
     }
 }

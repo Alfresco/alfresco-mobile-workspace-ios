@@ -116,6 +116,18 @@ class SyncOperationFactory {
         return downloadOperations
     }
 
+    func uploadPendingContentOperation(transfers: [UploadTransfer]) -> [AsyncClosureOperation] {
+        guard !transfers.isEmpty else { return [] }
+        var uploadOperations: [AsyncClosureOperation] = []
+
+        for transfer in transfers {
+            let fileUploadOperation = uploadNodeContentOperation(transfer: transfer)
+            uploadOperations.append(fileUploadOperation)
+        }
+
+        return uploadOperations
+    }
+
     // MARK: - Private interface
 
     private func fetchFileNodeDetailsOperation(node: ListNode) -> AsyncClosureOperation {
@@ -242,6 +254,54 @@ class SyncOperationFactory {
             }
         }
 
+        return operation
+    }
+
+    private func uploadNodeContentOperation(transfer: UploadTransfer) -> AsyncClosureOperation {
+        let operation = AsyncClosureOperation { [weak self] completion, operation in
+            guard let sSelf = self else { return }
+
+            let transferDataAccessor = UploadTransferDataAccessor()
+
+            let handleErrorCaseForTransfer = {
+                transfer.syncStatus = .error
+                transferDataAccessor.store(uploadTransfer: transfer)
+
+                completion()
+            }
+
+            sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                let fileURL = URL(fileURLWithPath: transfer.filePath)
+                do {
+                    let fileData = try Data(contentsOf: fileURL)
+
+                    sSelf.nodeOperations.createNode(nodeId: transfer.parentNodeId,
+                                                    name: transfer.nodeName,
+                                                    description: transfer.nodeDescription,
+                                                    nodeExtension: transfer.filePath.fileExtension(),
+                                                    fileData: fileData,
+                                                    autoRename: true,
+                                                    completionHandler: { (entry, error) in
+                                                        if operation.isCancelled {
+                                                            completion()
+                                                        }
+
+                                                        if error == nil, let node = entry {
+                                                            transfer.syncStatus = .synced
+                                                            sSelf.publishSyncStatusEvent(for: node)
+                                                            transferDataAccessor.remove(transfer: transfer)
+                                                        } else {
+                                                            transfer.syncStatus = .error
+                                                            transferDataAccessor.store(uploadTransfer: transfer)
+                                                        }
+
+                                                        completion()
+                                                    })
+                } catch {
+                    handleErrorCaseForTransfer()
+                }
+            }
+        }
         return operation
     }
 
