@@ -143,7 +143,7 @@ class NodeOperations {
                     fileData: Data,
                     autoRename: Bool,
                     completionHandler: @escaping (ListNode?, Error?) -> Void) {
-        let nodeBody = NodeBodyCreate(name: name + nodeExtension,
+        let nodeBody = NodeBodyCreate(name: name + "." + nodeExtension,
                                       nodeType: "cm:content",
                                       aspectNames: nil,
                                       properties: nodeProperties(for: name,

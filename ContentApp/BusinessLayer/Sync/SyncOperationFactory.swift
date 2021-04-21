@@ -270,44 +270,38 @@ class SyncOperationFactory {
                 completion()
             }
 
-            if FileManager.default.fileExists(atPath: transfer.filePath) {
-                sSelf.nodeOperations.sessionForCurrentAccount { _ in
-                    let fileURL = URL(fileURLWithPath: transfer.filePath)
-                    do {
-                        let fileData = try Data(contentsOf: fileURL)
+            sSelf.nodeOperations.sessionForCurrentAccount { _ in
+                let fileURL = URL(fileURLWithPath: transfer.filePath)
+                do {
+                    let fileData = try Data(contentsOf: fileURL)
 
-                        sSelf.nodeOperations.createNode(nodeId: transfer.parentNodeId,
-                                                            name: transfer.nodeName,
-                                                            description: transfer.nodeDescription,
-                                                            nodeExtension: fileURL.lastPathComponent,
-                                                            fileData: fileData,
-                                                            autoRename: true,
-                                                            completionHandler: { (entry, error) in
-                                                                if operation.isCancelled {
-                                                                    completion()
-                                                                }
+                    sSelf.nodeOperations.createNode(nodeId: transfer.parentNodeId,
+                                                    name: transfer.nodeName,
+                                                    description: transfer.nodeDescription,
+                                                    nodeExtension: transfer.filePath.fileExtension(),
+                                                    fileData: fileData,
+                                                    autoRename: true,
+                                                    completionHandler: { (entry, error) in
+                                                        if operation.isCancelled {
+                                                            completion()
+                                                        }
 
-                                                                if error != nil, let node = entry {
-                                                                    transfer.syncStatus = .synced
+                                                        if error == nil, let node = entry {
+                                                            transfer.syncStatus = .synced
+                                                            sSelf.publishSyncStatusEvent(for: node)
+                                                            transferDataAccessor.remove(transfer: transfer)
+                                                        } else {
+                                                            transfer.syncStatus = .error
+                                                            transferDataAccessor.store(uploadTransfer: transfer)
+                                                        }
 
-                                                                    sSelf.publishSyncStatusEvent(for: node)
-                                                                    transferDataAccessor.remove(transfer: transfer)
-                                                                } else {
-                                                                    transfer.syncStatus = .error
-                                                                }
-
-                                                                transferDataAccessor.store(uploadTransfer: transfer)
-                                                                completion()
-                                                            })
-                    } catch {
-                        handleErrorCaseForTransfer()
-                    }
+                                                        completion()
+                                                    })
+                } catch {
+                    handleErrorCaseForTransfer()
                 }
-            } else {
-                handleErrorCaseForTransfer()
             }
         }
-
         return operation
     }
 
