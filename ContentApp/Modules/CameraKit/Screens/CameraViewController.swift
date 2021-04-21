@@ -94,8 +94,6 @@ class CameraViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = false
         sessionPreview.stopSession()
-        sessionPreview.resetZoom()
-        sessionPreview.resetToAutoFocus()
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -123,7 +121,8 @@ class CameraViewController: UIViewController {
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
-        sessionPreview.resetZoom()
+        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
+        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         sessionPreview.changeCameraPosition()
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
         apply(fade: true, to: flashMenuView)
@@ -187,7 +186,7 @@ class CameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController {
-            let previewViewModel = PreviewViewModel(capturedAsset: cameraViewModel.capturedAsset)
+            let previewViewModel = PreviewViewModel(capturedAsset: cameraViewModel?.capturedAsset)
             pvc.previewViewModel = previewViewModel
             pvc.theme = theme
             pvc.localization = localization
@@ -257,6 +256,12 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: CameraSliderControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
+        if currentSelection == 0 && sessionPreview.cameraMode == .photo {
+            // no need to reset
+            return
+        }
+        sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
+        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
     }
 }
 
