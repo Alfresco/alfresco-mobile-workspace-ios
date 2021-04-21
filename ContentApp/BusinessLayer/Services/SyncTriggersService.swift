@@ -24,6 +24,7 @@ enum SyncTriggerType: String {
     case nodeRemovedFromOffline
     case userReAuthenticated
     case userDidInitiateSync
+    case userDidInitiateUploadTransfer
 }
 
 protocol SyncTriggersServiceProtocol {
@@ -97,7 +98,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
 
         if type == .nodeMarkedOffline ||
-            type == .nodeRemovedFromOffline {
+            type == .nodeRemovedFromOffline ||
+            type == .userDidInitiateUploadTransfer {
             syncDidTriedToStartWhenSyncing = true
             startDebounceTimer()
         }

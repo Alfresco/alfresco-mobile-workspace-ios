@@ -43,6 +43,7 @@ protocol SyncServiceDelegate: class {
     case fetchingNodeDetails
     case processNodeDetails
     case processingMarkedNodes
+    case uploadPendingNodes
 }
 
 let maxConcurrentSyncOperationCount = 3
@@ -132,8 +133,7 @@ let maxConcurrentSyncOperationCount = 3
 
         if downloadOperations.isEmpty &&
             deleteOperations.isEmpty {
-            syncServiceStatus = .idle
-            delegate?.syncDidFinished()
+            processPendingUploads()
         } else {
             if !downloadOperations.isEmpty {
                 syncOperationQueue.addOperations(downloadOperations,
@@ -142,6 +142,23 @@ let maxConcurrentSyncOperationCount = 3
 
             if !deleteOperations.isEmpty {
                 syncOperationQueue.addOperations(deleteOperations,
+                                                 waitUntilFinished: false)
+            }
+        }
+    }
+
+    private func processPendingUploads() {
+        syncServiceStatus = .uploadPendingNodes
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        let uploadOperations = syncOperationFactory.uploadPendingContentOperation(transfers: pendingUploadTransfers)
+
+        if uploadOperations.isEmpty {
+            syncServiceStatus = .idle
+            delegate?.syncDidFinished()
+        } else {
+            if !uploadOperations.isEmpty {
+                syncOperationQueue.addOperations(uploadOperations,
                                                  waitUntilFinished: false)
             }
         }
@@ -157,6 +174,8 @@ let maxConcurrentSyncOperationCount = 3
                 case .processNodeDetails:
                     sSelf.processMarkedNodes()
                 case .processingMarkedNodes:
+                    sSelf.processPendingUploads()
+                case .uploadPendingNodes:
                     sSelf.syncServiceStatus = .idle
                     sSelf.delegate?.syncDidFinished()
                 case .idle:

@@ -72,9 +72,10 @@ class DiskService {
                 try fileManager.removeItem(atPath: itemAtPath)
             } catch {
                 AlfrescoLog.error("Failed to delete item at path: \(itemAtPath).")
+                return false
             }
         }
-        return false
+        return true
     }
 
     // MARK: - Path creation

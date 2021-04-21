@@ -147,7 +147,7 @@ class SessionPreview: UIView {
     func update(zoom: Double) {
         session?.zoom = Float(zoom)
     }
-    
+
     func aspectRatio() -> CameraAspectRatio {
         return session?.aspectRatio ?? .ar4by3
     }

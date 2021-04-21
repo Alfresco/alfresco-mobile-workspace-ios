@@ -22,10 +22,12 @@ import AVFoundation
 class CameraScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
-    private var cameraViewController: CameraViewController?
+    private let parentListNode: ListNode
     
-    init(with presenter: UINavigationController) {
+    init(with presenter: UINavigationController,
+         parentListNode: ListNode) {
         self.presenter = presenter
+        self.parentListNode = parentListNode
     }
     
     func start() {
@@ -38,12 +40,12 @@ class CameraScreenCoordinator: Coordinator {
         viewController.cameraViewModel = cameraViewModel
         viewController.theme = configurationLayout()
         viewController.localization = cameraLocalization()
+        viewController.cameraDelegate = self
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
         navigationViewController.modalPresentationStyle = .fullScreen
         
         self.navigationViewController = navigationViewController
-        cameraViewController = viewController
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             if granted {
@@ -118,5 +120,21 @@ class CameraScreenCoordinator: Coordinator {
                                 LocalizationConstants.TextFieldPlaceholders.description,
                                errorNodeNameSpecialCharacters:
                                 LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
+    }
+}
+
+extension CameraScreenCoordinator: CameraKitCaptureDelegate {
+    func didEndReview(for capturedAsset: CapturedAsset) {
+        if let assetPath = capturedAsset.path {
+            let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
+                                                nodeName: capturedAsset.filename,
+                                                nodeDescription: capturedAsset.description,
+                                                filePath: assetPath)
+            let uploadTransferDataAccessor = UploadTransferDataAccessor()
+            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+
+            let syncTriggersService = coordinatorServices.syncTriggersService
+            syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+        }
     }
 }

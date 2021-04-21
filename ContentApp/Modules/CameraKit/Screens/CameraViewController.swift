@@ -19,10 +19,9 @@
 import UIKit
 
 let animationRotateCameraButtons = 0.5
-let animationFadeView = 1.0
+let animationFadeView = 0.5
 
 class CameraViewController: UIViewController {
-    
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
@@ -38,27 +37,17 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var modeView: UIView!
 
     @IBOutlet weak var cameraSlider: CameraSliderControl!
-    @IBOutlet weak var sessionPreview: SessionPreview! {
-        didSet {
-            let session = PhotoCaptureSession()
-            session.aspectRatio = .ar4by3
-            session.delegate = cameraViewModel
-            session.uiDelegate = self
-            session.mediaFilesFolderPath = cameraViewModel?.mediaFilesFolderPath
-
-            sessionPreview.add(session: session)
-            sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
-
-            flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
-        }
-    }
+    @IBOutlet weak var sessionPreview: SessionPreview!
     
     private var zoomSliderTimer: Timer?
     var cameraViewModel: CameraViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
+    weak var cameraDelegate: CameraKitCaptureDelegate?
 
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
+
+    private var cameraSession: PhotoCaptureSession?
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -74,8 +63,8 @@ class CameraViewController: UIViewController {
 
         cameraButtonConfiguration()
         flashModeConfiguration()
-        zoomSliderConfiguration()
-        cameraSliderConfiguration()
+        setUpZoomSlider()
+        setUpModeSelector()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,6 +78,10 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        if cameraSession == nil {
+            setUpCameraSession()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -130,7 +123,7 @@ class CameraViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    
+
     private func cameraButtonConfiguration() {
         guard let theme = self.theme else { return }
         
@@ -141,7 +134,21 @@ class CameraViewController: UIViewController {
         captureButton.update(style: style)
     }
     
-    private func cameraSliderConfiguration() {
+    private func setUpCameraSession() {
+        let session = PhotoCaptureSession()
+        session.aspectRatio = .ar4by3
+        session.delegate = cameraViewModel
+        session.uiDelegate = self
+        session.mediaFilesFolderPath = cameraViewModel?.mediaFilesFolderPath
+        sessionPreview.add(session: session)
+        sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
+
+        flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+
+        cameraSession = session
+    }
+    
+    private func setUpModeSelector() {
         guard let theme = self.theme, let localization = self.localization else { return }
         
         let style = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
@@ -154,7 +161,7 @@ class CameraViewController: UIViewController {
         cameraSlider.delegate = self
     }
     
-    private func zoomSliderConfiguration() {
+    private func setUpZoomSlider() {
         guard let theme = self.theme else { return }
         
         let style = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
@@ -196,11 +203,13 @@ class CameraViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-           let pvc = segue.destination as? PreviewViewController {
-            let previewViewModel = PreviewViewModel(capturedAsset: cameraViewModel?.capturedAsset)
+           let pvc = segue.destination as? PreviewViewController,
+           let asset = cameraViewModel?.capturedAsset {
+            let previewViewModel = PreviewViewModel(capturedAsset: asset)
             pvc.previewViewModel = previewViewModel
             pvc.theme = theme
             pvc.localization = localization
+            pvc.cameraDelegate = cameraDelegate
         }
     }
 }

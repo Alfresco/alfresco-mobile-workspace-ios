@@ -408,6 +408,179 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
 }
 
 
+
+extension UploadTransfer: ObjectBox.__EntityRelatable {
+    internal typealias EntityType = UploadTransfer
+
+    internal var _id: EntityId<UploadTransfer> {
+        return EntityId<UploadTransfer>(self.id.value)
+    }
+}
+
+extension UploadTransfer: ObjectBox.EntityInspectable {
+    internal typealias EntityBindingType = UploadTransferBinding
+
+    /// Generated metadata used by ObjectBox to persist the entity.
+    internal static var entityInfo = ObjectBox.EntityInfo(name: "UploadTransfer", id: 2)
+
+    internal static var entityBinding = EntityBindingType()
+
+    fileprivate static func buildEntity(modelBuilder: ObjectBox.ModelBuilder) throws {
+        let entityBuilder = try modelBuilder.entityBuilder(for: UploadTransfer.self, id: 2, uid: 381938179637751040)
+        try entityBuilder.addProperty(name: "id", type: Id.entityPropertyType, flags: [.id], id: 1, uid: 5316901957059283200)
+        try entityBuilder.addProperty(name: "parentNodeId", type: String.entityPropertyType, id: 2, uid: 3942621293964620544)
+        try entityBuilder.addProperty(name: "nodeName", type: String.entityPropertyType, id: 3, uid: 433559388114328576)
+        try entityBuilder.addProperty(name: "nodeDescription", type: String.entityPropertyType, id: 4, uid: 8762750373210733056)
+        try entityBuilder.addProperty(name: "filePath", type: String.entityPropertyType, id: 5, uid: 3230068557200613376)
+        try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 6, uid: 370033443724301568)
+
+        try entityBuilder.lastProperty(id: 6, uid: 370033443724301568)
+    }
+}
+
+extension UploadTransfer {
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.id == myId }
+    internal static var id: Property<UploadTransfer, Id, Id> { return Property<UploadTransfer, Id, Id>(propertyId: 1, isPrimaryKey: true) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.parentNodeId.startsWith("X") }
+    internal static var parentNodeId: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 2, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.nodeName.startsWith("X") }
+    internal static var nodeName: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 3, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.nodeDescription.startsWith("X") }
+    internal static var nodeDescription: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 4, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.filePath.startsWith("X") }
+    internal static var filePath: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 5, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.syncStatus.startsWith("X") }
+    internal static var syncStatus: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 6, isPrimaryKey: false) }
+
+    fileprivate func __setId(identifier: ObjectBox.Id) {
+        self.id = Id(identifier)
+    }
+}
+
+extension ObjectBox.Property where E == UploadTransfer {
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .id == myId }
+
+    internal static var id: Property<UploadTransfer, Id, Id> { return Property<UploadTransfer, Id, Id>(propertyId: 1, isPrimaryKey: true) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .parentNodeId.startsWith("X") }
+
+    internal static var parentNodeId: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 2, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .nodeName.startsWith("X") }
+
+    internal static var nodeName: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 3, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .nodeDescription.startsWith("X") }
+
+    internal static var nodeDescription: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 4, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .filePath.startsWith("X") }
+
+    internal static var filePath: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 5, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .syncStatus.startsWith("X") }
+
+    internal static var syncStatus: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 6, isPrimaryKey: false) }
+
+}
+
+
+/// Generated service type to handle persisting and reading entity data. Exposed through `UploadTransfer.EntityBindingType`.
+internal class UploadTransferBinding: ObjectBox.EntityBinding {
+    internal typealias EntityType = UploadTransfer
+    internal typealias IdType = Id
+
+    internal required init() {}
+
+    internal func generatorBindingVersion() -> Int { 1 }
+
+    internal func setEntityIdUnlessStruct(of entity: EntityType, to entityId: ObjectBox.Id) {
+        entity.__setId(identifier: entityId)
+    }
+
+    internal func entityId(of entity: EntityType) -> ObjectBox.Id {
+        return entity.id.value
+    }
+
+    internal func collect(fromEntity entity: EntityType, id: ObjectBox.Id,
+                                  propertyCollector: ObjectBox.FlatBufferBuilder, store: ObjectBox.Store) throws {
+        let propertyOffset_parentNodeId = propertyCollector.prepare(string: entity.parentNodeId)
+        let propertyOffset_nodeName = propertyCollector.prepare(string: entity.nodeName)
+        let propertyOffset_nodeDescription = propertyCollector.prepare(string: entity.nodeDescription)
+        let propertyOffset_filePath = propertyCollector.prepare(string: entity.filePath)
+        let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
+
+        propertyCollector.collect(id, at: 2 + 2 * 1)
+        propertyCollector.collect(dataOffset: propertyOffset_parentNodeId, at: 2 + 2 * 2)
+        propertyCollector.collect(dataOffset: propertyOffset_nodeName, at: 2 + 2 * 3)
+        propertyCollector.collect(dataOffset: propertyOffset_nodeDescription, at: 2 + 2 * 4)
+        propertyCollector.collect(dataOffset: propertyOffset_filePath, at: 2 + 2 * 5)
+        propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 6)
+    }
+
+    internal func createEntity(entityReader: ObjectBox.FlatBufferReader, store: ObjectBox.Store) -> EntityType {
+        let entity = UploadTransfer()
+
+        entity.id = entityReader.read(at: 2 + 2 * 1)
+        entity.parentNodeId = entityReader.read(at: 2 + 2 * 2)
+        entity.nodeName = entityReader.read(at: 2 + 2 * 3)
+        entity.nodeDescription = entityReader.read(at: 2 + 2 * 4)
+        entity.filePath = entityReader.read(at: 2 + 2 * 5)
+        entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 6)) ?? .undefined
+
+        return entity
+    }
+}
+
+
 /// Helper function that allows calling Enum(rawValue: value) with a nil value, which will return nil.
 fileprivate func optConstruct<T: RawRepresentable>(_ type: T.Type, rawValue: T.RawValue?) -> T? {
     guard let rawValue = rawValue else { return nil }
@@ -419,7 +592,8 @@ fileprivate func optConstruct<T: RawRepresentable>(_ type: T.Type, rawValue: T.R
 fileprivate func cModel() throws -> OpaquePointer {
     let modelBuilder = try ObjectBox.ModelBuilder()
     try ListNode.buildEntity(modelBuilder: modelBuilder)
-    modelBuilder.lastEntity(id: 1, uid: 4924419163766400768)
+    try UploadTransfer.buildEntity(modelBuilder: modelBuilder)
+    modelBuilder.lastEntity(id: 2, uid: 381938179637751040)
     return modelBuilder.finish()
 }
 

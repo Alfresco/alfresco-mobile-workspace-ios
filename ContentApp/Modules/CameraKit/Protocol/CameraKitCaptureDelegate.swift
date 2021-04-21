@@ -18,15 +18,6 @@
 
 import Foundation
 
-class PreviewViewModel {
-    let capturedAsset: CapturedAsset
-    
-    init(capturedAsset: CapturedAsset) {
-        self.capturedAsset = capturedAsset
-    }
-    
-    func updateMetadata(filename: String, description: String?) {
-        capturedAsset.filename = filename
-        capturedAsset.description = description
-    }
+protocol CameraKitCaptureDelegate: class {
+    func didEndReview(for capturedAsset: CapturedAsset)
 }
