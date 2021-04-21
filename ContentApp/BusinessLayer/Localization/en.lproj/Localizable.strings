@@ -49,9 +49,9 @@
 "username-or-email" = "Username or email";
 "password" = "Password";
 "content-services-url" = "Content Services URL";
-"description" = "Description";
+"description" = "Add description";
 "name" = "Name";
-"file-name" = "File Name";
+"file-name" = "File name";
 
 // MARK: - Labels
 "transport-protocol" = "Transport protocol";
