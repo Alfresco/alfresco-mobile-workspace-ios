@@ -21,6 +21,7 @@ import Foundation
 struct KeyConstants {
     struct Disk {
         static let avatar = "avatar"
+        static let mediaFilesFolder = "MediaFiles"
     }
 
     struct Save {

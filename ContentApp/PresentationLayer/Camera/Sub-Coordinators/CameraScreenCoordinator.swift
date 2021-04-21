@@ -30,6 +30,12 @@ class CameraScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = CameraViewController.instantiateViewController()
+        
+        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let folderPath = DiskService.mediaFilesFolderPath(for: accountIdentifier)
+        let cameraViewModel = CameraViewModel(mediaFilesFolderPath: folderPath)
+        
+        viewController.cameraViewModel = cameraViewModel
         viewController.theme = configurationLayout()
         viewController.localization = cameraLocalization()
         

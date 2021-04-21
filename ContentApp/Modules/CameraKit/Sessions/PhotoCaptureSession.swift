@@ -165,7 +165,10 @@ class PhotoCaptureSession: CaptureSession {
             delegate?.captured(asset: nil, error: error)
             return
         }
-        delegate?.captured(asset: CapturedAsset(type: .image, data: data), error: nil)
+        delegate?.captured(asset: CapturedAsset(type: .image,
+                                                data: data,
+                                                saveIn: mediaFilesFolderPath),
+                           error: nil)
     }
     
     private func defaultConfiguration(for device: AVCaptureDevice) {

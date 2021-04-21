@@ -44,6 +44,7 @@ class CameraViewController: UIViewController {
             session.aspectRatio = .ar4by3
             session.delegate = cameraViewModel
             session.uiDelegate = self
+            session.mediaFilesFolderPath = cameraViewModel?.mediaFilesFolderPath
 
             sessionPreview.add(session: session)
             sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
@@ -53,7 +54,7 @@ class CameraViewController: UIViewController {
     }
     
     private var zoomSliderTimer: Timer?
-    var cameraViewModel = CameraViewModel()
+    var cameraViewModel: CameraViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
 
@@ -69,7 +70,7 @@ class CameraViewController: UIViewController {
         super.viewDidLoad()
         
         configureViewsLayout(for: view.bounds.size)
-        cameraViewModel.delegate = self
+        cameraViewModel?.delegate = self
 
         flashModeConfiguration()
         zoomSliderConfiguration()
@@ -80,7 +81,7 @@ class CameraViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
-        cameraViewModel.deletePreviousCapture()
+        cameraViewModel?.deletePreviousCapture()
         applyComponentsThemes()
         cameraSlider.setNeedsLayout()
     }
