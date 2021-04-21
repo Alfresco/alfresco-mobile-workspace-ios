@@ -55,4 +55,6 @@ struct DarkTheme: PresentationTheme {
     var primary15T1Color = UIColor(hex: "#2A7DE1", alpha: 0.15)
 
     var dividerColor = UIColor(hex: "#595959")
+    
+    var videoShutterColor = UIColor(hex: "#F34139")
 }

@@ -142,7 +142,7 @@ class CameraSliderControl: UIControl {
         }
     }
 
-    func updateStyle(style: CameraSliderControlSyle) {
+    func update(style: CameraSliderControlSyle) {
         sliderStyle = style
         applyCurrentStyle()
     }

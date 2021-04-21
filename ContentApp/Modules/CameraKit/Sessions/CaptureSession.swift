@@ -36,6 +36,7 @@ class CaptureSession: NSObject {
     var resolution = CGSize.zero
     var aspectRatio = CameraAspectRatio.ar4by3
     var zoom: Float = 1.0
+    var mediaFilesFolderPath: String?
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
     var orientationLast = UIDevice.current.orientation

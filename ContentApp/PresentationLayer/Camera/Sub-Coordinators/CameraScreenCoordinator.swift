@@ -32,6 +32,12 @@ class CameraScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = CameraViewController.instantiateViewController()
+        
+        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let folderPath = DiskService.mediaFilesFolderPath(for: accountIdentifier)
+        let cameraViewModel = CameraViewModel(mediaFilesFolderPath: folderPath)
+        
+        viewController.cameraViewModel = cameraViewModel
         viewController.theme = configurationLayout()
         viewController.localization = cameraLocalization()
         viewController.cameraDelegate = self
@@ -89,6 +95,8 @@ class CameraScreenCoordinator: Coordinator {
                                       onSurface5Color: currentTheme.onSurface5Color,
                                       surfaceColor: currentTheme.surfaceColor,
                                       surface60Color: currentTheme.surface60Color,
+                                      primaryColor: currentTheme.primaryT1Color,
+                                      videoShutterColor: currentTheme.videoShutterColor,
                                       subtitle2Font: currentTheme.subtitle2TextStyle.font,
                                       headline6Font: currentTheme.headline6TextStyle.font,
                                       textFieldScheme: textFieldScheme,

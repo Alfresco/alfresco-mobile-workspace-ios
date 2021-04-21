@@ -20,6 +20,7 @@ import Foundation
 import UIKit
 
 struct RangeSliderControlSyle {
+    let thumbTintColor: UIColor
     let tintColor: UIColor
     let optionFont: UIFont
     let fontColor: UIColor
@@ -33,7 +34,8 @@ class RangeSlider: UISlider {
     weak var delegate: RangeSliderControlDelegate?
     private var shouldCallDelegate = true
     
-    private var style = RangeSliderControlSyle(tintColor: .white,
+    private var style = RangeSliderControlSyle(thumbTintColor: .white,
+                                               tintColor: .white,
                                                optionFont: .systemFont(ofSize: 14),
                                                fontColor: .black)
     
@@ -61,7 +63,7 @@ class RangeSlider: UISlider {
         setValue(value, animated: true)
     }
     
-    func updateStyle(_ style: RangeSliderControlSyle) {
+    func update(style: RangeSliderControlSyle) {
         self.style = style
         applyCurrentStyle()
     }
@@ -69,14 +71,15 @@ class RangeSlider: UISlider {
     // MARK: Private interface
     
     private func applyCurrentStyle() {
-        tintColor = style.tintColor
-        thumbTintColor = style.tintColor
+        minimumTrackTintColor = style.tintColor
+        maximumTrackTintColor = style.tintColor
+        thumbTintColor = style.thumbTintColor
     }
     
     private func progressImage(with progress: Float) -> UIImage {
         return autoreleasepool { () -> UIImage in
             let layer = CALayer()
-            layer.backgroundColor = style.tintColor.cgColor
+            layer.backgroundColor = style.thumbTintColor.cgColor
             layer.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
             layer.cornerRadius = layer.bounds.height / 2
 

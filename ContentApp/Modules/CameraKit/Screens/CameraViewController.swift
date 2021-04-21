@@ -25,7 +25,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var captureButton: UIButton!
+    @IBOutlet weak var captureButton: CameraButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -40,7 +40,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var sessionPreview: SessionPreview!
     
     private var zoomSliderTimer: Timer?
-    var cameraViewModel = CameraViewModel()
+    var cameraViewModel: CameraViewModel?
     var theme: CameraConfigurationLayout?
     var localization: CameraLocalization?
     weak var cameraDelegate: CameraKitCaptureDelegate?
@@ -59,8 +59,9 @@ class CameraViewController: UIViewController {
         super.viewDidLoad()
         
         configureViewsLayout(for: view.bounds.size)
-        cameraViewModel.delegate = self
+        cameraViewModel?.delegate = self
 
+        cameraButtonConfiguration()
         flashModeConfiguration()
         setUpZoomSlider()
         setUpModeSelector()
@@ -70,7 +71,7 @@ class CameraViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
-        cameraViewModel.deletePreviousCapture()
+        cameraViewModel?.deletePreviousCapture()
         applyComponentsThemes()
         cameraSlider.setNeedsLayout()
     }
@@ -87,7 +88,6 @@ class CameraViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.isNavigationBarHidden = false
         sessionPreview.stopSession()
-        sessionPreview.resetConfiguration()
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -108,14 +108,15 @@ class CameraViewController: UIViewController {
         apply(fade: (flashMenuView.alpha == 1.0), to: flashMenuView)
     }
     
-    @IBAction func captureButtonTapped(_ sender: UIButton) {
+    @IBAction func captureButtonTapped(_ sender: CameraButton) {
         captureButton.isUserInteractionEnabled = false
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
-        sessionPreview.resetZoom()
+        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
+        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         sessionPreview.changeCameraPosition()
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
         apply(fade: true, to: flashMenuView)
@@ -123,12 +124,22 @@ class CameraViewController: UIViewController {
     
     // MARK: - Private Methods
 
+    private func cameraButtonConfiguration() {
+        guard let theme = self.theme else { return }
+        
+        let style = CameraButtonStyle(photoButtonColor: theme.primaryColor,
+                                      videoButtonColor: theme.videoShutterColor,
+                                      outerRingColor: theme.surface60Color)
+        captureButton.buttonInput = .photo
+        captureButton.update(style: style)
+    }
+    
     private func setUpCameraSession() {
         let session = PhotoCaptureSession()
         session.aspectRatio = .ar4by3
         session.delegate = cameraViewModel
         session.uiDelegate = self
-
+        session.mediaFilesFolderPath = cameraViewModel?.mediaFilesFolderPath
         sessionPreview.add(session: session)
         sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
 
@@ -139,24 +150,25 @@ class CameraViewController: UIViewController {
     
     private func setUpModeSelector() {
         guard let theme = self.theme, let localization = self.localization else { return }
-
-        let sliderStyle = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
-                                                  optionColor: theme.onSurface60Color,
-                                                  optionFont: theme.subtitle2Font,
-                                                  optionBackgroundColor: theme.surface60Color)
-
+        
+        let style = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
+                                            optionColor: theme.onSurface60Color,
+                                            optionFont: theme.subtitle2Font,
+                                            optionBackgroundColor: theme.surface60Color)
+        
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
-        cameraSlider.updateStyle(style: sliderStyle)
+        cameraSlider.update(style: style)
         cameraSlider.delegate = self
     }
     
     private func setUpZoomSlider() {
         guard let theme = self.theme else { return }
         
-        let sliderStyle = RangeSliderControlSyle(tintColor: theme.surfaceColor,
-                                                 optionFont: theme.subtitle2Font,
-                                                 fontColor: theme.onSurfaceColor)
-        zoomSlider.updateStyle(sliderStyle)
+        let style = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
+                                           tintColor: theme.surface60Color,
+                                           optionFont: theme.subtitle2Font,
+                                           fontColor: theme.onSurfaceColor)
+        zoomSlider.update(style: style)
         zoomSlider.delegate = self
         zoomSlider.minimumValue = minZoom
         zoomSlider.maximumValue = maxZoom
@@ -168,14 +180,14 @@ class CameraViewController: UIViewController {
     private func flashModeConfiguration() {
         guard let theme = self.theme else { return }
         
-        let flashStyle = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
-                                        optionFont: theme.subtitle2Font,
-                                        optionColor: theme.onSurfaceColor,
-                                        backgroundColor: theme.surface60Color,
-                                        autoFlashText: theme.autoFlashText,
-                                        onFlashText: theme.onFlashText,
-                                        offFlashText: theme.offFlashText)
-        flashMenuView.updateStyle(flashStyle)
+        let style = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
+                                   optionFont: theme.subtitle2Font,
+                                   optionColor: theme.onSurfaceColor,
+                                   backgroundColor: theme.surface60Color,
+                                   autoFlashText: theme.autoFlashText,
+                                   onFlashText: theme.onFlashText,
+                                   offFlashText: theme.offFlashText)
+        flashMenuView.update(style: style)
         flashMenuView.delegate = self
         flashMenuView.alpha = 0.0
     }
@@ -192,7 +204,7 @@ class CameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
-           let asset = cameraViewModel.capturedAsset {
+           let asset = cameraViewModel?.capturedAsset {
             let previewViewModel = PreviewViewModel(capturedAsset: asset)
             pvc.previewViewModel = previewViewModel
             pvc.theme = theme
@@ -229,6 +241,8 @@ extension CameraViewController: CaptureSessionUIDelegate {
         apply(fade: true, to: zoomLabel)
 
         zoomSlider.setSlider(value: zoom)
+
+        guard zoom != 1.0 else {return }
         apply(fade: false, to: zoomSlider)
         
         zoomSliderTimer?.invalidate()
@@ -262,6 +276,12 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: CameraSliderControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
+        if currentSelection == 0 && sessionPreview.cameraMode == .photo {
+            // no need to reset
+            return
+        }
+        sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
+        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
     }
 }
 

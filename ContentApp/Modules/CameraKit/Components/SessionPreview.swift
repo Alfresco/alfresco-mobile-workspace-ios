@@ -24,6 +24,19 @@ let minZoom: Float = 1.0
 let maxZoom: Float = 10.0
 let animationFadeFocusView = 2.0
 
+enum CameraSettings {
+    case flash
+    case focus
+    case position
+    case mode
+    case zoom
+}
+
+enum CameraMode {
+    case photo
+    case video
+}
+
 class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
@@ -49,6 +62,8 @@ class SessionPreview: UIView {
             }
         }
     }
+    
+    var cameraMode = CameraMode.photo
     
     // MARK: - Init
     
@@ -104,29 +119,35 @@ class SessionPreview: UIView {
         return false
     }
     
+    func reset(settings: [CameraSettings]) {
+        guard let photoSession = session as? PhotoCaptureSession else { return }
+        for setting in settings {
+            switch setting {
+            case .flash:
+                photoSession.flashMode = .auto
+            case .zoom:
+                lastScale = 1.0
+                session?.zoom = lastScale
+            case .focus:
+                photoSession.resetDeviceConfiguration()
+            case .position:
+                photoSession.cameraPosition = .back
+            case .mode:
+                cameraMode = .photo
+            }
+        }
+    }
+    
     func changeCameraPosition() {
         if let photoSession = session as? PhotoCaptureSession {
             photoSession.cameraPosition = (photoSession.cameraPosition == .back) ? .front : .back
         }
     }
     
-    func resetZoom() {
-        lastScale = 1.0
-        session?.zoom = lastScale
-    }
-    
     func update(zoom: Double) {
         session?.zoom = Float(zoom)
     }
-    
-    func resetConfiguration() {
-        resetZoom()
 
-        if let photoSession = session as? PhotoCaptureSession {
-            photoSession.resetDeviceConfiguration()
-        }
-    }
-    
     func aspectRatio() -> CameraAspectRatio {
         return session?.aspectRatio ?? .ar4by3
     }
