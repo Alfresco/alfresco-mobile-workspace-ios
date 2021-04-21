@@ -33,8 +33,8 @@ struct CameraButtonStyle {
 class CameraButton: UIButton {
     private var pathLayer: CAShapeLayer?
     private let animationDuration = 0.2
-    private let innerSmallGuide: CGFloat = 16.0
-    private let innerBigGuide: CGFloat = 40.0
+    private let innerSmallGuide: CGFloat = 9/7.0
+    private let innerBigProportion: CGFloat = 9/5.0
     
     var buttonInput = ButtonInput.photo
     private var style = CameraButtonStyle(photoButtonColor: .blue,
@@ -121,7 +121,7 @@ class CameraButton: UIButton {
     }
     
     private func innerBigPath() -> UIBezierPath {
-        let lenght = bounds.width - innerSmallGuide
+        let lenght = bounds.width / innerSmallGuide
         let size = CGSize(width: lenght, height: lenght)
         let center = (bounds.width - lenght) / 2
         let point = CGPoint(x: center, y: center)
@@ -131,7 +131,7 @@ class CameraButton: UIButton {
     }
     
     private func innerSmallPath() -> UIBezierPath {
-        let lenght = bounds.width - innerBigGuide
+        let lenght = bounds.width / innerBigProportion
         let size = CGSize(width: lenght, height: lenght)
         let center = (bounds.width - lenght) / 2
         let point = CGPoint(x: center, y: center)

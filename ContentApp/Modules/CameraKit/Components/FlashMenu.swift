@@ -103,7 +103,7 @@ class FlashMenu: UIView {
         applyCurrentStyle()
     }
     
-    func updateStyle(_ style: FlashMenuStyle) {
+    func update(style: FlashMenuStyle) {
         self.style = style
         applyCurrentStyle()
     }

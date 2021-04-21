@@ -43,7 +43,6 @@ class DiskService {
         if fileManager.fileExists(atPath: imagePath) {
             avatar = UIImage(contentsOfFile: imagePath)
         }
-
         return avatar
     }
 
@@ -56,14 +55,14 @@ class DiskService {
                 try fileManager.createDirectory(atPath: directoryPath,
                                                 withIntermediateDirectories: true,
                                                 attributes: nil)
+                createMediaFilesFolder(directoryPath: directoryPath)
                 return true
             } catch {
                 AlfrescoLog.error("Failed to create path: \(directoryPath).")
                 return false
             }
         }
-
-        return false
+        return true
     }
 
     static func delete(itemAtPath: String) -> Bool {
@@ -75,16 +74,33 @@ class DiskService {
                 AlfrescoLog.error("Failed to delete item at path: \(itemAtPath).")
             }
         }
-
         return false
     }
 
     // MARK: - Path creation
+    
+    static func createMediaFilesFolder(directoryPath: String) {
+        let fileManager = FileManager.default
+        let mediaFolder = directoryPath + "/" + KeyConstants.Disk.mediaFilesFolder
+        if !fileManager.fileExists(atPath: mediaFolder) {
+            do {
+                try fileManager.createDirectory(atPath: mediaFolder,
+                                                withIntermediateDirectories: true,
+                                                attributes: nil)
+            } catch {
+                AlfrescoLog.error("Failed to create path: \(mediaFolder).")
+            }
+        }
+    }
 
     static func documentsDirectoryPath() -> String {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
                                                           in: .userDomainMask)[0]
         return documentsDirectory.path
+    }
+    
+    static func mediaFilesFolderPath(for accountIdentifier: String) -> String {
+        return documentsDirectoryPath(for: accountIdentifier) + "/" + KeyConstants.Disk.mediaFilesFolder
     }
 
     static func documentsDirectoryPath(for accountIdentifier: String) -> String {
