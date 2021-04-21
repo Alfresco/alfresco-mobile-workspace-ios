@@ -10,6 +10,7 @@
 		1346FA07261DA4CF00336990 /* CameraSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1346FA06261DA4CF00336990 /* CameraSlider.swift */; };
 		3F5FE0B20F6B03156D3B7D5E /* Pods_ContentApp_ContentAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030C62496D2AEEA6A35E5E8E /* Pods_ContentApp_ContentAppUITests.framework */; };
 		4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */; };
+		4DEE4C8A2630413200D9D368 /* CameraButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DEE4C892630413200D9D368 /* CameraButton.swift */; };
 		64089C92E50C51E8734BC752 /* Pods_ContentAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 187B55C1BEC9CBAC3D8BDF62 /* Pods_ContentAppTests.framework */; };
 		B5E392CD597158BADA51B20F /* EntityInfo-ContentApp.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */; };
 		B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
@@ -315,6 +316,7 @@
 		1346FA06261DA4CF00336990 /* CameraSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraSlider.swift; sourceTree = "<group>"; };
 		187B55C1BEC9CBAC3D8BDF62 /* Pods_ContentAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ContentAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
+		4DEE4C892630413200D9D368 /* CameraButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraButton.swift; sourceTree = "<group>"; };
 		6211E23BDFC0C67D5C9B8E26 /* Pods-ContentAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.release.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		71315A10BCBC15F2FE1065A9 /* EntityInfo-ContentApp.generated.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "EntityInfo-ContentApp.generated.swift"; sourceTree = "<group>"; };
 		7D68E52E8181FA1D8942E970 /* Pods-ContentApp-ContentAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.release.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1786,6 +1788,7 @@
 		F185B19426174A4100407451 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4DEE4C892630413200D9D368 /* CameraButton.swift */,
 				4D67A3B5262D66C900E72EE0 /* RangeSlider.swift */,
 				1346FA06261DA4CF00336990 /* CameraSlider.swift */,
 				F14E68912617066A002FDEF9 /* SessionPreview.swift */,
@@ -2200,6 +2203,7 @@
 				E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
+				4DEE4C8A2630413200D9D368 /* CameraButton.swift in Sources */,
 				B9FC62A124C71C4E00246606 /* ResultsViewModel.swift in Sources */,
 				E3A87A38251CBB2100AE8175 /* String+CompareVersions.swift in Sources */,
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
