@@ -63,7 +63,7 @@ class RangeSlider: UISlider {
         setValue(value, animated: true)
     }
     
-    func updateStyle(_ style: RangeSliderControlSyle) {
+    func update(style: RangeSliderControlSyle) {
         self.style = style
         applyCurrentStyle()
     }

@@ -93,6 +93,8 @@ class CameraScreenCoordinator: Coordinator {
                                       onSurface5Color: currentTheme.onSurface5Color,
                                       surfaceColor: currentTheme.surfaceColor,
                                       surface60Color: currentTheme.surface60Color,
+                                      primaryColor: currentTheme.primaryT1Color,
+                                      videoShutterColor: currentTheme.videoShutterColor,
                                       subtitle2Font: currentTheme.subtitle2TextStyle.font,
                                       headline6Font: currentTheme.headline6TextStyle.font,
                                       textFieldScheme: textFieldScheme,

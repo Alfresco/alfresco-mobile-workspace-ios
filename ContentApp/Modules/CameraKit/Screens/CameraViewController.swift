@@ -26,7 +26,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var captureButton: UIButton!
+    @IBOutlet weak var captureButton: CameraButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -72,6 +72,7 @@ class CameraViewController: UIViewController {
         configureViewsLayout(for: view.bounds.size)
         cameraViewModel?.delegate = self
 
+        cameraButtonConfiguration()
         flashModeConfiguration()
         zoomSliderConfiguration()
         cameraSliderConfiguration()
@@ -114,7 +115,7 @@ class CameraViewController: UIViewController {
         apply(fade: (flashMenuView.alpha == 1.0), to: flashMenuView)
     }
     
-    @IBAction func captureButtonTapped(_ sender: UIButton) {
+    @IBAction func captureButtonTapped(_ sender: CameraButton) {
         captureButton.isUserInteractionEnabled = false
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
@@ -130,27 +131,37 @@ class CameraViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func cameraButtonConfiguration() {
+        guard let theme = self.theme else { return }
+        
+        let style = CameraButtonStyle(photoButtonColor: theme.primaryColor,
+                                      videoButtonColor: theme.videoShutterColor,
+                                      outerRingColor: theme.surface60Color)
+        captureButton.buttonInput = .photo
+        captureButton.update(style: style)
+    }
+    
     private func cameraSliderConfiguration() {
         guard let theme = self.theme, let localization = self.localization else { return }
-
-        let sliderStyle = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
-                                                  optionColor: theme.onSurface60Color,
-                                                  optionFont: theme.subtitle2Font,
-                                                  optionBackgroundColor: theme.surface60Color)
-
+        
+        let style = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
+                                            optionColor: theme.onSurface60Color,
+                                            optionFont: theme.subtitle2Font,
+                                            optionBackgroundColor: theme.surface60Color)
+        
         cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
-        cameraSlider.updateStyle(style: sliderStyle)
+        cameraSlider.update(style: style)
         cameraSlider.delegate = self
     }
     
     private func zoomSliderConfiguration() {
         guard let theme = self.theme else { return }
         
-        let sliderStyle = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
-                                                 tintColor: theme.surface60Color,
-                                                 optionFont: theme.subtitle2Font,
-                                                 fontColor: theme.onSurfaceColor)
-        zoomSlider.updateStyle(sliderStyle)
+        let style = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
+                                           tintColor: theme.surface60Color,
+                                           optionFont: theme.subtitle2Font,
+                                           fontColor: theme.onSurfaceColor)
+        zoomSlider.update(style: style)
         zoomSlider.delegate = self
         zoomSlider.minimumValue = minZoom
         zoomSlider.maximumValue = maxZoom
@@ -162,14 +173,14 @@ class CameraViewController: UIViewController {
     private func flashModeConfiguration() {
         guard let theme = self.theme else { return }
         
-        let flashStyle = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
-                                        optionFont: theme.subtitle2Font,
-                                        optionColor: theme.onSurfaceColor,
-                                        backgroundColor: theme.surface60Color,
-                                        autoFlashText: theme.autoFlashText,
-                                        onFlashText: theme.onFlashText,
-                                        offFlashText: theme.offFlashText)
-        flashMenuView.updateStyle(flashStyle)
+        let style = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
+                                   optionFont: theme.subtitle2Font,
+                                   optionColor: theme.onSurfaceColor,
+                                   backgroundColor: theme.surface60Color,
+                                   autoFlashText: theme.autoFlashText,
+                                   onFlashText: theme.onFlashText,
+                                   offFlashText: theme.offFlashText)
+        flashMenuView.update(style: style)
         flashMenuView.delegate = self
         flashMenuView.alpha = 0.0
     }
