@@ -56,5 +56,7 @@ protocol PresentationTheme {
     var primary15T1Color: UIColor { get }
 
     var dividerColor: UIColor { get }
+    
+    var photoShutterColor: UIColor { get }
     var videoShutterColor: UIColor { get }
 }

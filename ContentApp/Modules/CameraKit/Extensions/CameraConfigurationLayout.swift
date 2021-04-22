@@ -25,7 +25,7 @@ struct CameraConfigurationLayout {
     var onSurface5Color: UIColor
     var surfaceColor: UIColor
     var surface60Color: UIColor
-    var primaryColor: UIColor
+    var photoShutterColor: UIColor
     var videoShutterColor: UIColor
     
     var subtitle2Font: UIFont
