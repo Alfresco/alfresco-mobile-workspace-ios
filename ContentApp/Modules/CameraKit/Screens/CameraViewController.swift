@@ -127,7 +127,7 @@ class CameraViewController: UIViewController {
     private func cameraButtonConfiguration() {
         guard let theme = self.theme else { return }
         
-        let style = CameraButtonStyle(photoButtonColor: theme.primaryColor,
+        let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
         captureButton.buttonInput = .photo
