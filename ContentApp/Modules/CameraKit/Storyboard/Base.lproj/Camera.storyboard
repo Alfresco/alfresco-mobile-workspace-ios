@@ -175,7 +175,7 @@
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="3IP-MM-DeC">
                                 <rect key="frame" x="0.0" y="100" width="428" height="826"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="8" minimumInteritemSpacing="8" id="PkT-r0-Z7H">
                                     <size key="itemSize" width="76" height="76"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>

@@ -19,7 +19,6 @@
 import UIKit
 import Photos
 
-let mediaFolderName = "Media Folder"
 let prefixFileName = "IMG"
 let extPhoto = "jpeg"
 let extVideo = "mov"

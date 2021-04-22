@@ -66,6 +66,7 @@ class PhotoGalleryViewController: UIViewController {
     
     private func applyComponentsThemes() {
         guard let theme = self.theme else { return }
+        view.backgroundColor = theme.surfaceColor
         closeButton.tintColor = theme.onSurface60Color
         titlelabel.textColor = theme.onSurfaceColor
         titlelabel.font = theme.headline6Font
