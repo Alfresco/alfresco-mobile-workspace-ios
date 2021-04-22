@@ -32,7 +32,6 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     func start() {
         let viewController = PhotoGalleryViewController.instantiateViewController()
 
-        viewController.photoGalleryViewModel = PhotoGalleryViewModel()
         viewController.theme = configurationLayout()
         viewController.cameraDelegate = self
         viewController.modalPresentationStyle = .fullScreen
@@ -41,6 +40,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
             if granted {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
+                    viewController.photoGalleryViewModel = PhotoGalleryViewModel()
                     sSelf.presenter.present(viewController,
                                             animated: true)
                 }
