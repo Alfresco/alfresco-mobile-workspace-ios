@@ -40,6 +40,10 @@ class CameraButton: UIButton {
     private var style = CameraButtonStyle(photoButtonColor: .blue,
                                           videoButtonColor: .red,
                                           outerRingColor: .white)
+    override var buttonType: UIButton.ButtonType {
+        return .custom
+    }
+    
     override var isSelected: Bool {
         didSet {
             let morph = CABasicAnimation(keyPath: "path")
@@ -59,8 +63,6 @@ class CameraButton: UIButton {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
-        setTitle("", for: .normal)
         
         addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
         addTarget(self, action: #selector(touchDown), for: .touchDown)
