@@ -63,6 +63,7 @@ class FlashMenu: UIView {
         autoFlashButton.tag = 0
         autoFlashButton.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
         autoFlashButton.contentHorizontalAlignment = .left
+        autoFlashButton.accessibilityIdentifier = "autoFlashButton"
         addSubview(autoFlashButton)
         
         onFlashButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 0)
@@ -70,6 +71,7 @@ class FlashMenu: UIView {
         onFlashButton.tag = 1
         onFlashButton.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
         onFlashButton.contentHorizontalAlignment = .left
+        onFlashButton.accessibilityIdentifier = "onFlashButton"
         addSubview(onFlashButton)
         
         offFlashButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 0)
@@ -77,6 +79,7 @@ class FlashMenu: UIView {
         offFlashButton.tag = 2
         offFlashButton.addTarget(self, action: #selector(handleTap(_:)), for: .touchUpInside)
         offFlashButton.contentHorizontalAlignment = .left
+        offFlashButton.accessibilityIdentifier = "offFlashButton"
         addSubview(offFlashButton)
         
         NSLayoutConstraint.activate([
