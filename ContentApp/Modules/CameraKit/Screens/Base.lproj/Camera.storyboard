@@ -154,7 +154,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAD-Um-d5b" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="592"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
                                                 <rect key="frame" x="97" y="12" width="234" height="312"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="capturedPreviewImage">
                                                     <bool key="isElement" value="YES"/>
