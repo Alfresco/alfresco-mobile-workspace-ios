@@ -62,13 +62,7 @@ class SettingsViewModel {
             items.append([getLocalProfileItem()])
         }
 
-        var section2: [SettingsItem] = []
-        if #available(iOS 13.0, *) {
-            section2.append(getThemeItem())
-        }
-        section2.append(getDataPlanItem())
-        items.append(section2)
-
+        items.append([getThemeItem(), getDataPlanItem()])
         items.append([getVersionItem()])
 
         self.viewModelDelegate?.didUpdateDataSource()
