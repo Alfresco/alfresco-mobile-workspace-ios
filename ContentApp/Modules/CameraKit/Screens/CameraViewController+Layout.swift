@@ -67,10 +67,11 @@ extension CameraViewController {
         let aspectRatio = sessionPreview.aspectRatio()
         let viewWidth = size.width
         let viewHeight = size.height
+        let cameraHeight = min(viewHeight, viewWidth * aspectRatio.value)
         
         topBarView.frame.size = CGSize(width: viewWidth, height: 56)
         flashMenuView.frame.size =  CGSize(width: 160, height: 160)
-        finderView.frame.size = CGSize(width: viewWidth, height: viewWidth * aspectRatio.value)
+        finderView.frame.size = CGSize(width: viewWidth, height: cameraHeight)
         zoomView.frame.size = CGSize(width: viewWidth, height: 64)
         shutterView.frame.size = CGSize(width: viewWidth, height: 96)
         modeView.frame.size = CGSize(width: viewWidth, height: 64)
