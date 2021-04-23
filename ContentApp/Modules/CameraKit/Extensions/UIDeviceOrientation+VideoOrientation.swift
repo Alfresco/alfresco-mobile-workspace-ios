@@ -28,6 +28,8 @@ extension UIDeviceOrientation {
             return .landscapeRight
         case .landscapeRight:
             return .landscapeLeft
+        case .faceUp, .faceDown:
+            return .landscapeRight
         default:
             return .portrait
         }
