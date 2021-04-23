@@ -35,7 +35,7 @@ class FilePreview {
     static private var map: [String: FilePreviewType] {
         return [
             "image/gif": .gif,
-
+            "image/webp": .image,
             "image/bmp": .image,
             "image/jpeg": .image,
             "image/png": .image,
@@ -55,9 +55,7 @@ class FilePreview {
         guard let mimetype = mimetype else {
             return .rendition
         }
-        if #available(iOS 14, *), mimetype == "image/webp" {
-            return .image
-        }
+
         if let previewType = self.map[mimetype] {
             return previewType
         } else if mimetype.hasPrefix("video/") {

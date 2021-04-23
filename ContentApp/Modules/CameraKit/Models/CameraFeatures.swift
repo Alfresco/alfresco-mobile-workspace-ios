@@ -70,14 +70,17 @@ enum DeviceType {
     var captureDeviceType: AVCaptureDevice.DeviceType {
         switch self {
         case .backCamera:
-            if #available(iOS 13.0, *) {
-                if let _ = AVCaptureDevice.default(.builtInTripleCamera, for: AVMediaType.video, position: .back) {
-                    return .builtInTripleCamera
-                } else if let _ = AVCaptureDevice.default(.builtInDualCamera, for: AVMediaType.video, position: .back) {
-                    return .builtInDualCamera
-                }
+            if let _ = AVCaptureDevice.default(.builtInTripleCamera,
+                                               for: AVMediaType.video,
+                                               position: .back) {
+                return .builtInTripleCamera
+            } else if let _ = AVCaptureDevice.default(.builtInDualCamera,
+                                                      for: AVMediaType.video,
+                                                      position: .back) {
+                return .builtInDualCamera
+            } else {
+                return .builtInWideAngleCamera
             }
-            return .builtInWideAngleCamera
         case .frontCamera:
             return .builtInWideAngleCamera
         case .microphone:
