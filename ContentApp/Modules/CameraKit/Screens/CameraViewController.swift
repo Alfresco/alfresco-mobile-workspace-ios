@@ -71,14 +71,13 @@ class CameraViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
-        cameraViewModel?.deletePreviousCapture()
         applyComponentsThemes()
         cameraSlider.setNeedsLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        cameraViewModel?.deletePreviousCapture()
         if cameraSession == nil {
             setUpCameraSession()
         }
