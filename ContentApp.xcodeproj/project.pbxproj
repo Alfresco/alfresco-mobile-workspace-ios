@@ -1949,17 +1949,6 @@
 				it,
 				nl,
 				de,
-				ja,
-				"zh-Hans",
-				nb,
-				da,
-				fi,
-				sv,
-				cs,
-				pl,
-				ru,
-				"pt-BR",
-				ar,
 			);
 			mainGroup = E334C03324755D8E00F74880;
 			productRefGroup = E334C03D24755D8E00F74880 /* Products */;
