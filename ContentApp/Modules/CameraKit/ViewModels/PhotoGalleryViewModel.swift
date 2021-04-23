@@ -22,7 +22,6 @@ import Photos
 class PhotoGalleryViewModel {
     private var allPhotoAssets: PHFetchResult<PHAsset>
     private var selectedIndexAssets: Array<Bool>
-    private var selectedAssets = [CapturedAsset]()
     
     private lazy var imageManager: PHCachingImageManager = {
         return PHCachingImageManager()
@@ -94,7 +93,6 @@ class PhotoGalleryViewModel {
             let phAsset = asset(at: IndexPath(row: index, section: 0))
             let capturedAsset = CapturedAsset(phAsset: phAsset)
             delegate?.didEndReview(for: capturedAsset)
-//            selectedAssets.append(capturedAsset)
         }
     }
 }

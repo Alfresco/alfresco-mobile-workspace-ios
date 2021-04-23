@@ -107,8 +107,8 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout, UIColl
         return cell ?? UICollectionViewCell()
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay
-                            cell: UICollectionViewCell,
+    func collectionView(_ collectionView: UICollectionView,
+                        willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
 
         guard let viewModel = photoGalleryViewModel else { return }
@@ -154,15 +154,6 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout, UIColl
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return itemsSize
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: distanceBetweenCells,
-                            left: distanceBetweenCells,
-                            bottom: distanceBetweenCells,
-                            right: distanceBetweenCells)
     }
 
     func collectionView(_ collectionView: UICollectionView,

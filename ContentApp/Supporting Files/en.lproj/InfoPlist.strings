@@ -16,6 +16,6 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
-NSPhotoLibraryAddUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
+NSPhotoLibraryUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
+NSPhotoLibraryAddUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
 NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
