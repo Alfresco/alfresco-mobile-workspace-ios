@@ -19,7 +19,6 @@
 import Foundation
 
 extension String {
-
     func fileName() -> String {
         return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
     }

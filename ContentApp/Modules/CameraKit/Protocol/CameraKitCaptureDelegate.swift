@@ -19,5 +19,9 @@
 import Foundation
 
 protocol CameraKitCaptureDelegate: class {
+    /// Notifies the delegate the review session is over and delivers captured asset information.
+    /// - Note: It is expected that the receiver copies over any desired disk data as the default capture location should be
+    /// cleared out after this call.
+    /// - Parameter capturedAsset: captured asset information containing metadata and path information
     func didEndReview(for capturedAsset: CapturedAsset)
 }

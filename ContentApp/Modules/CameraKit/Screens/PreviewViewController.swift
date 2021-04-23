@@ -95,6 +95,7 @@ class PreviewViewController: UIViewController {
            let capturedAsset = previewViewModel?.capturedAsset {
             previewViewModel?.updateMetadata(filename: filename,
                                                    description: descriptionField.textView.text)
+            
             cameraDelegate?.didEndReview(for: capturedAsset)
         }
         
