@@ -289,7 +289,7 @@ extension CameraViewController: CameraSliderControlDelegate {
 
 extension CameraViewController: RangeSliderControlDelegate {
     func didChangeSlider(value: Float) {
-        sessionPreview.update(zoom: Double(value))
+        sessionPreview.update(zoom: value)
     }
 }
 
