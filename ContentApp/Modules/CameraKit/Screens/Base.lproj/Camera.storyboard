@@ -152,9 +152,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAD-Um-d5b" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="624"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="592"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
                                                 <rect key="frame" x="97" y="12" width="234" height="312"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="capturedPreviewImage">
                                                     <bool key="isElement" value="YES"/>
@@ -195,7 +195,7 @@
                                                 </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-v8-anF" customClass="MDCOutlinedTextArea">
-                                                <rect key="frame" x="24" y="456" width="380" height="56"/>
+                                                <rect key="frame" x="24" y="440" width="380" height="56"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="250" constant="56" id="Clk-z3-gvv"/>
@@ -203,7 +203,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stA-oV-pdw" customClass="MDCButton">
-                                                <rect key="frame" x="24" y="552" width="380" height="48"/>
+                                                <rect key="frame" x="24" y="520" width="380" height="48"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="saveButton">
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
@@ -231,8 +231,8 @@
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="DaO-AO-6CM"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="top" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="36" id="GDW-RP-1KR"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="Il7-Be-aeh"/>
-                                            <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="40" id="RoD-iB-NA0"/>
-                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="40" id="TQu-aK-HcY"/>
+                                            <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="24" id="RoD-iB-NA0"/>
+                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="24" id="TQu-aK-HcY"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="X0X-35-9ml"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="ZMF-7v-Fiy"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="leading" secondItem="pAD-Um-d5b" secondAttribute="leading" constant="24" id="bpT-8G-Mda"/>
