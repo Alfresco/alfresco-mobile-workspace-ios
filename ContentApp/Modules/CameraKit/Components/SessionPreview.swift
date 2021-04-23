@@ -144,8 +144,9 @@ class SessionPreview: UIView {
         }
     }
     
-    func update(zoom: Double) {
-        session?.zoom = Float(zoom)
+    func update(zoom: Float) {
+        lastScale = zoom
+        session?.zoom = lastScale
     }
 
     func aspectRatio() -> CameraAspectRatio {
@@ -208,10 +209,9 @@ class SessionPreview: UIView {
             recognizer.scale = CGFloat(lastScale)
         }
         let zoom = max(minZoom, min(maxZoom, Float(recognizer.scale)))
-        update(zoom: Double(zoom))
+        session?.zoom = Float(zoom)
         if recognizer.state == .ended {
             lastScale = zoom
         }
     }
-
 }
