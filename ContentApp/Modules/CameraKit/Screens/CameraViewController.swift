@@ -19,7 +19,7 @@
 import UIKit
 
 let animationRotateCameraButtons = 0.5
-let animationFadeView = 0.5
+let animationFadeView = 0.2
 
 class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
@@ -127,7 +127,7 @@ class CameraViewController: UIViewController {
     private func cameraButtonConfiguration() {
         guard let theme = self.theme else { return }
         
-        let style = CameraButtonStyle(photoButtonColor: theme.primaryColor,
+        let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
         captureButton.buttonInput = .photo
@@ -289,7 +289,7 @@ extension CameraViewController: CameraSliderControlDelegate {
 
 extension CameraViewController: RangeSliderControlDelegate {
     func didChangeSlider(value: Float) {
-        sessionPreview.update(zoom: Double(value))
+        sessionPreview.update(zoom: value)
     }
 }
 
