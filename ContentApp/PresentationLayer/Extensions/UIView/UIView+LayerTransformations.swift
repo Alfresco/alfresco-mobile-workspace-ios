@@ -39,11 +39,6 @@ extension UIView {
         let shadowOpacity = opacity
         let shadowRadius = CGFloat(radius)
         let shadowPath = UIBezierPath(rect: self.frame).cgPath
-        var shadowColor = #colorLiteral(red: 0.07058823529, green: 0.07058823529, blue: 0.07058823529, alpha: 1)
-        if #available(iOS 13.0, *) {
-            shadowColor = UIColor.label
-        }
-
         let shadowLayer = CALayer()
         let mutablePath = CGMutablePath()
         let maskLayer = CAShapeLayer()
@@ -61,7 +56,7 @@ extension UIView {
         shadowLayer.shadowOpacity = shadowOpacity
         shadowLayer.shadowRadius = shadowRadius
         shadowLayer.shadowPath = shadowPath
-        shadowLayer.shadowColor = shadowColor.cgColor
+        shadowLayer.shadowColor = UIColor.label.cgColor
 
         mutablePath.addRect(shadowRect)
         mutablePath.addPath(shadowLayer.shadowPath!, transform: shadowTransform)

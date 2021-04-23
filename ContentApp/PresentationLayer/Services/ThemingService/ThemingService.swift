@@ -121,9 +121,7 @@ class ThemingService: ThemingServiceProtocol {
     }
 
     func overrideUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
-        if #available(iOS 13.0, *) {
-            UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
-        }
+        UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
     }
 
     func getThemeMode() -> ThemeModeType {

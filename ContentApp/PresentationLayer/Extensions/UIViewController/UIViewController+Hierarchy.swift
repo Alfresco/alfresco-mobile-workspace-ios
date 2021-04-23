@@ -20,11 +20,13 @@ import UIKit
 
 extension UIViewController {
     static var applicationTopMost: UIViewController? {
-        return self.topMost(of: UIApplication.shared.keyWindow?.rootViewController)
+        return self.topMost(of: UIApplication.shared.windows.filter {$0.isKeyWindow}
+                                .first?.rootViewController)
     }
 
     static var applicationTopMostPresented: UIViewController? {
-        return UIApplication.shared.keyWindow?.rootViewController?.presentedViewController
+        return UIApplication.shared.windows.filter {$0.isKeyWindow}
+            .first?.rootViewController?.presentedViewController
     }
 
     static func topMost(of viewController: UIViewController?) -> UIViewController? {
