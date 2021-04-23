@@ -631,8 +631,8 @@
 		F185B19D2617591200407451 /* ListComponent+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Delegates.swift"; sourceTree = "<group>"; };
 		F185B1A226175C8800407451 /* CameraStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStoryboardInstantiable.swift; sourceTree = "<group>"; };
 		F185B1A82617663000407451 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
-		F18AAB532625731900B98181 /* GalleryConfigurationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryConfigurationLayout.swift; sourceTree = "<group>"; };
 		F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashMenu.swift; sourceTree = "<group>"; };
+		F18AAB532625731900B98181 /* GalleryConfigurationLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryConfigurationLayout.swift; sourceTree = "<group>"; };
 		F1AC6C3B262065680096743B /* PreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
 		F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenCapturedAssetViewController.swift; sourceTree = "<group>"; };
 		F1B020B6261AF83B007799B2 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };

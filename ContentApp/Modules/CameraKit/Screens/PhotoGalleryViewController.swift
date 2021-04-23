@@ -77,20 +77,22 @@ class PhotoGalleryViewController: UIViewController {
     
     private func centerCells() {
         let viewWidth = view.bounds.width
-        let numberOfCellPerRow = viewWidth / itemsSize.width
-        let rest = viewWidth / CGFloat(Int(numberOfCellPerRow))
-        let margin = rest / CGFloat(Int(numberOfCellPerRow) + 3)
+        let numberOfCellPerRow = Int(viewWidth / itemsSize.width)
+        let remainingSpace = viewWidth / CGFloat(numberOfCellPerRow)
+        let margin = remainingSpace / CGFloat(numberOfCellPerRow + 2)
+        let colletionViewPadding = margin * 2
         collectionView.contentInset = UIEdgeInsets(top: 0,
-                                                   left: margin * 2,
+                                                   left: colletionViewPadding,
                                                    bottom: 0,
-                                                   right: margin * 2)
+                                                   right: colletionViewPadding)
         distanceBetweenCells = margin
     }
 }
 
 // MARK: - UICollectionView Delegates
 
-extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
+                                      UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
