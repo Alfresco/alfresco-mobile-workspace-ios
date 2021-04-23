@@ -39,7 +39,7 @@ class RangeSlider: UISlider {
                                                optionFont: .systemFont(ofSize: 14),
                                                fontColor: .black)
     
-    var trackWidth:CGFloat = 2 {
+    var trackWidth: CGFloat = 2 {
         didSet {
             setNeedsDisplay()
         }
