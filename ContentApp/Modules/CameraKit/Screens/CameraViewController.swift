@@ -19,7 +19,7 @@
 import UIKit
 
 let animationRotateCameraButtons = 0.5
-let animationFadeView = 0.5
+let animationFadeView = 0.2
 
 class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
