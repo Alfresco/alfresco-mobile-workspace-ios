@@ -73,6 +73,7 @@ class CameraViewController: UIViewController {
         sessionPreview.startSession()
         applyComponentsThemes()
         cameraSlider.setNeedsLayout()
+        zoomSlider.setSlider(value: sessionPreview.zoom)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -114,10 +115,10 @@ class CameraViewController: UIViewController {
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
-        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
-        sessionPreview.changeCameraPosition()
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+        sessionPreview.changeCameraPosition()
+        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
         apply(fade: true, to: flashMenuView)
     }
     
@@ -143,7 +144,6 @@ class CameraViewController: UIViewController {
         sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
 
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
-
         cameraSession = session
     }
     
@@ -162,7 +162,7 @@ class CameraViewController: UIViewController {
     
     private func setUpZoomSlider() {
         guard let theme = self.theme else { return }
-        
+
         let style = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
                                            tintColor: theme.surface60Color,
                                            optionFont: theme.subtitle2Font,
@@ -171,7 +171,6 @@ class CameraViewController: UIViewController {
         zoomSlider.delegate = self
         zoomSlider.minimumValue = minZoom
         zoomSlider.maximumValue = maxZoom
-        zoomSlider.setSlider(value: minZoom)
         zoomSlider.alpha = 0.0
         zoomLabel.isHidden = true
     }
@@ -288,7 +287,7 @@ extension CameraViewController: CameraSliderControlDelegate {
 
 extension CameraViewController: RangeSliderControlDelegate {
     func didChangeSlider(value: Float) {
-        sessionPreview.update(zoom: value)
+        sessionPreview.zoom = value 
     }
 }
 

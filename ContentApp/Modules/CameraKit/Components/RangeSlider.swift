@@ -75,7 +75,7 @@ class RangeSlider: UISlider {
     
     func setSlider(value: Float) {
         shouldCallDelegate = false
-        setValue(value, animated: true)
+        setValue(value, animated: false)
     }
     
     func update(style: RangeSliderControlSyle) {
