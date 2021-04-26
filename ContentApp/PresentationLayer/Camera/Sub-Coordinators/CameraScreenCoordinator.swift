@@ -23,6 +23,7 @@ class CameraScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
     private let parentListNode: ListNode
+    private var mediaFilesFolderPath: String?
     
     init(with presenter: UINavigationController,
          parentListNode: ListNode) {
@@ -32,10 +33,9 @@ class CameraScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = CameraViewController.instantiateViewController()
-        
-        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-        let folderPath = DiskService.mediaFilesFolderPath(for: accountIdentifier)
+        let folderPath = mediaFolderPath()
         let cameraViewModel = CameraViewModel(mediaFilesFolderPath: folderPath)
+        mediaFilesFolderPath = folderPath
         
         viewController.cameraViewModel = cameraViewModel
         viewController.theme = configurationLayout()
@@ -70,7 +70,7 @@ class CameraScreenCoordinator: Coordinator {
     
     // MARK: - Private Methods
         
-    func requestAuthorizationForCameraUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
+    private func requestAuthorizationForCameraUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             completion(true)
@@ -83,7 +83,7 @@ class CameraScreenCoordinator: Coordinator {
         }
     }
 
-    func configurationLayout() -> CameraConfigurationLayout? {
+    private func configurationLayout() -> CameraConfigurationLayout? {
         guard let currentTheme = themingService?.activeTheme,
               let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
               let buttonScheme = themingService?.containerScheming(for: .dialogButton)
@@ -106,7 +106,7 @@ class CameraScreenCoordinator: Coordinator {
                                       offFlashText: LocalizationConstants.Camera.offFlash)
     }
     
-    func cameraLocalization() -> CameraLocalization {
+    private func cameraLocalization() -> CameraLocalization {
         return
             CameraLocalization(sliderPhoto:
                                 LocalizationConstants.Camera.sliderCameraPhoto,
@@ -121,15 +121,36 @@ class CameraScreenCoordinator: Coordinator {
                                errorNodeNameSpecialCharacters:
                                 LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
     }
+
+    private func mediaFolderPath() -> String {
+        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+
+        let documentsPathForAccount = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        _ = DiskService.create(directoryPath: documentsPathForAccount +
+                                "/" +
+                                KeyConstants.Disk.mediaFilesFolder)
+
+        return DiskService.mediaFilesFolderPath(for: accountIdentifier)
+    }
 }
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-        if let assetPath = capturedAsset.path {
+        if let assetPath = capturedAsset.path,
+           let mediaPath = mediaFilesFolderPath {
+
+            let assetURL = URL(fileURLWithPath: assetPath)
+            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+            let uploadFilePath = DiskService.documentsDirectoryPath(for: accountIdentifier) + "/" +
+                KeyConstants.Disk.uploadsFolder + "/" +
+                assetURL.lastPathComponent
+            _ = DiskService.copy(itemAtPath: assetPath, to: uploadFilePath)
+            _ = DiskService.delete(itemAtPath: mediaPath)
+
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                                 nodeName: capturedAsset.filename,
                                                 nodeDescription: capturedAsset.description,
-                                                filePath: assetPath)
+                                                filePath: uploadFilePath)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 

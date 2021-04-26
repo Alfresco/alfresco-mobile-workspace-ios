@@ -55,7 +55,6 @@ class DiskService {
                 try fileManager.createDirectory(atPath: directoryPath,
                                                 withIntermediateDirectories: true,
                                                 attributes: nil)
-                createMediaFilesFolder(directoryPath: directoryPath)
                 return true
             } catch {
                 AlfrescoLog.error("Failed to create path: \(directoryPath).")
@@ -78,21 +77,24 @@ class DiskService {
         return true
     }
 
-    // MARK: - Path creation
-    
-    static func createMediaFilesFolder(directoryPath: String) {
+    static func copy(itemAtPath: String, to path: String) -> Bool {
         let fileManager = FileManager.default
-        let mediaFolder = directoryPath + "/" + KeyConstants.Disk.mediaFilesFolder
-        if !fileManager.fileExists(atPath: mediaFolder) {
-            do {
-                try fileManager.createDirectory(atPath: mediaFolder,
-                                                withIntermediateDirectories: true,
-                                                attributes: nil)
-            } catch {
-                AlfrescoLog.error("Failed to create path: \(mediaFolder).")
-            }
+
+        if !fileManager.fileExists(atPath: path) {
+            let folderURL = URL(fileURLWithPath: path).deletingLastPathComponent()
+            _ = create(directoryPath: folderURL.path)
         }
+        do {
+            try fileManager.copyItem(atPath: itemAtPath, toPath: path)
+        } catch {
+            AlfrescoLog.error("Failed to copy item at path: \(itemAtPath) to path: \(path)")
+            return false
+        }
+
+        return true
     }
+
+    // MARK: - Path creation
 
     static func documentsDirectoryPath() -> String {
         let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
@@ -122,6 +124,8 @@ class DiskService {
                 if let messageBytesBaseAddress = messageBytes.baseAddress,
                    let digestBytesBlindMemory = digestBytes.bindMemory(to: UInt8.self).baseAddress {
                     let messageLength = CC_LONG(messageData.count)
+                    // Hash function just used for naming purposes, has no security implication
+                    // Scheduled for migration to SHA256 at a later point
                     CC_MD5(messageBytesBaseAddress, messageLength, digestBytesBlindMemory)
                 }
                 return 0
