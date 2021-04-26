@@ -79,6 +79,11 @@ class DiskService {
 
     static func copy(itemAtPath: String, to path: String) -> Bool {
         let fileManager = FileManager.default
+
+        if !fileManager.fileExists(atPath: path) {
+            let folderURL = URL(fileURLWithPath: path).deletingLastPathComponent()
+            _ = create(directoryPath: folderURL.path)
+        }
         do {
             try fileManager.copyItem(atPath: itemAtPath, toPath: path)
         } catch {

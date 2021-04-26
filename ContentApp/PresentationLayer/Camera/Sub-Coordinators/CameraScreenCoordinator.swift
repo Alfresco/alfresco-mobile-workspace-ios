@@ -126,7 +126,9 @@ class CameraScreenCoordinator: Coordinator {
         let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
 
         let documentsPathForAccount = DiskService.documentsDirectoryPath(for: accountIdentifier)
-        _ = DiskService.create(directoryPath: documentsPathForAccount + "/" + KeyConstants.Disk.mediaFilesFolder)
+        _ = DiskService.create(directoryPath: documentsPathForAccount +
+                                "/" +
+                                KeyConstants.Disk.mediaFilesFolder)
 
         return DiskService.mediaFilesFolderPath(for: accountIdentifier)
     }
@@ -134,12 +136,21 @@ class CameraScreenCoordinator: Coordinator {
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-        #warning("Copy and remove former media path elements")
-        if let assetPath = capturedAsset.path {
+        if let assetPath = capturedAsset.path,
+           let mediaPath = mediaFilesFolderPath {
+
+            let assetURL = URL(fileURLWithPath: assetPath)
+            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+            let uploadFilePath = DiskService.documentsDirectoryPath(for: accountIdentifier) + "/" +
+                KeyConstants.Disk.uploadsFolder + "/" +
+                assetURL.lastPathComponent
+            _ = DiskService.copy(itemAtPath: assetPath, to: uploadFilePath)
+            _ = DiskService.delete(itemAtPath: mediaPath)
+
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                                 nodeName: capturedAsset.filename,
                                                 nodeDescription: capturedAsset.description,
-                                                filePath: assetPath)
+                                                filePath: uploadFilePath)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 
