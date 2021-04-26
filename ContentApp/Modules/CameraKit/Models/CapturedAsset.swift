@@ -20,7 +20,7 @@ import UIKit
 
 let mediaFolderName = "Media Folder"
 let prefixFileName = "IMG"
-let extPhoto = "jpeg"
+let extPhoto = "jpg"
 let extVideo = "mov"
 
 enum CapturedAssetType {
