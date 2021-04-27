@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 import AlfrescoContent
 
-protocol BasicAuthViewModelDelegate: class {
+protocol BasicAuthViewModelDelegate: AnyObject {
     func logInFailed(with error: APIError)
     func logInWarning(with message: String)
     func logInSuccessful()

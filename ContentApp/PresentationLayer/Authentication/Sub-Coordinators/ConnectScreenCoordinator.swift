@@ -19,7 +19,7 @@
 import UIKit
 import AlfrescoCore
 
-protocol ConnectScreenCoordinatorDelegate: class {
+protocol ConnectScreenCoordinatorDelegate: AnyObject {
     func showAdvancedSettingsScreen()
     func showBasicAuthScreen()
     func showAimsScreen()

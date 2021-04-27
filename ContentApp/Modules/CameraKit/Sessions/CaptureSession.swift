@@ -20,11 +20,11 @@ import AVFoundation
 import UIKit
 import CoreMotion
 
-protocol CaptureSessionDelegate: class {
+protocol CaptureSessionDelegate: AnyObject {
     func captured(asset: CapturedAsset?, error: Error?)
 }
 
-protocol CaptureSessionUIDelegate: class {
+protocol CaptureSessionUIDelegate: AnyObject {
     func didChange(zoom: Float)
     func didChange(orientation: UIImage.Orientation)
 }

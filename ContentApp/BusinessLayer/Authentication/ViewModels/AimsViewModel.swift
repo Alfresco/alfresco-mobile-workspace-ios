@@ -21,7 +21,7 @@ import UIKit
 import AlfrescoAuth
 import AlfrescoContent
 
-protocol AimsViewModelDelegate: class {
+protocol AimsViewModelDelegate: AnyObject {
     func logInFailed(with error: APIError)
     func logInSuccessful()
 }

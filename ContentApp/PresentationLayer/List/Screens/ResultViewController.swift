@@ -23,7 +23,7 @@ import MaterialComponents.MDCChipView
 import MaterialComponents.MDCChipView_MaterialTheming
 import AlfrescoContent
 
-protocol ResultViewControllerDelegate: class {
+protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)

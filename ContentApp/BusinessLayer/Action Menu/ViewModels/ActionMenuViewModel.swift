@@ -19,7 +19,7 @@
 import UIKit
 import AlfrescoContent
 
-protocol ActionMenuViewModelDelegate: class {
+protocol ActionMenuViewModelDelegate: AnyObject {
     func finishedLoadingActions()
 }
 

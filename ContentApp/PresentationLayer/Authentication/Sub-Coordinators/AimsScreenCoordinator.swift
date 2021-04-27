@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol AimsScreenCoordinatorDelegate: class {
+protocol AimsScreenCoordinatorDelegate: AnyObject {
     func showNeedHelpSheet()
     func showApplicationTabBar()
 }

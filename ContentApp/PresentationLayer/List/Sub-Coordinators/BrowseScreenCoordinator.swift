@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol BrowseScreenCoordinatorDelegate: class {
+protocol BrowseScreenCoordinatorDelegate: AnyObject {
     func showTopLevelFolderScreen(from browseNode: BrowseNode)
 }
 

@@ -24,7 +24,7 @@ import Alamofire
 
 typealias ActionFinishedCompletionHandler = (() -> Void)
 
-protocol NodeActionsViewModelDelegate: class {
+protocol NodeActionsViewModelDelegate: AnyObject {
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?)

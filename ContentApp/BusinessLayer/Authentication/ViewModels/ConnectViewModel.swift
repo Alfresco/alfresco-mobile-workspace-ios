@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoAuth
 
-protocol ConnectViewModelDelegate: class {
+protocol ConnectViewModelDelegate: AnyObject {
     func authServiceAvailable(for authType: AvailableAuthType)
     func authServiceUnavailable(with error: APIError)
     func authServiceByPass()

@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol PageFetchableDelegate: class {
+protocol PageFetchableDelegate: AnyObject {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath)
 }
 

@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol TabBarScreenCoordinatorDelegate: class {
+protocol TabBarScreenCoordinatorDelegate: AnyObject {
     func showRecentScreen()
     func showFavoritesScreen()
     func showBrowseScreen()
