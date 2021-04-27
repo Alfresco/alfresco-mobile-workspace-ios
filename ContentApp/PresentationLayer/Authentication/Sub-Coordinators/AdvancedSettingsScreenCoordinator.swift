@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol AdvancedSettingsScreenCoordinatorDelegate: class {
+protocol AdvancedSettingsScreenCoordinatorDelegate: AnyObject {
     func dismiss()
     func showNeedHelpSheet()
 }

@@ -19,7 +19,7 @@
 import UIKit
 import MaterialComponents
 
-protocol TabBarScreenDelegate: class {
+protocol TabBarScreenDelegate: AnyObject {
     func showSettingsScreen()
 }
 

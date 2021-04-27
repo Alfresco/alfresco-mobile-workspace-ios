@@ -50,6 +50,13 @@ class SessionPreview: UIView {
             }
         }
     }
+
+    var zoom: Float = 1.0 {
+        didSet {
+            lastScale = zoom
+            session?.zoom = lastScale
+        }
+    }
     
     private var session: CaptureSession? {
         didSet {
@@ -58,6 +65,9 @@ class SessionPreview: UIView {
                 previewLayer = AVCaptureVideoPreviewLayer(session: session.session)
                 session.previewLayer = previewLayer
                 session.overlayView = self
+                if let photoSession = session as? PhotoCaptureSession {
+                    zoom = photoSession.naturalZoomFactor
+                }
                 session.start()
             }
         }
@@ -126,8 +136,7 @@ class SessionPreview: UIView {
             case .flash:
                 photoSession.flashMode = .auto
             case .zoom:
-                lastScale = 1.0
-                session?.zoom = lastScale
+                zoom = photoSession.naturalZoomFactor
             case .focus:
                 photoSession.resetDeviceConfiguration()
             case .position:
@@ -142,11 +151,6 @@ class SessionPreview: UIView {
         if let photoSession = session as? PhotoCaptureSession {
             photoSession.cameraPosition = (photoSession.cameraPosition == .back) ? .front : .back
         }
-    }
-    
-    func update(zoom: Float) {
-        lastScale = zoom
-        session?.zoom = lastScale
     }
 
     func aspectRatio() -> CameraAspectRatio {

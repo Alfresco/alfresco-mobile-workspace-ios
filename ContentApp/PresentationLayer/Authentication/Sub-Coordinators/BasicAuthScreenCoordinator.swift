@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol BasicAuthScreenCoordinatorDelegate: class {
+protocol BasicAuthScreenCoordinatorDelegate: AnyObject {
     func showApplicationTabBar()
 }
 

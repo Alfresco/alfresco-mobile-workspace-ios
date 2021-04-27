@@ -27,6 +27,7 @@ class PhotoCaptureSession: CaptureSession {
         didSet {
             do {
                 let deviceInput = try CaptureSession.capture(deviceInput: cameraPosition.deviceType)
+                zoom = naturalZoomFactor
                 captureDeviceInput = deviceInput
             } catch let error {
                 AlfrescoLog.error(error)
@@ -72,7 +73,7 @@ class PhotoCaptureSession: CaptureSession {
     
     override var zoom: Float {
         didSet {
-            guard let device = captureDeviceInput?.device else {return }
+            guard let device = captureDeviceInput?.device else { return }
             do {
                 try device.lockForConfiguration()
                 device.videoZoomFactor = CGFloat(zoom)
@@ -82,6 +83,10 @@ class PhotoCaptureSession: CaptureSession {
             }
             uiDelegate?.didChange(zoom: zoom)
         }
+    }
+
+    var naturalZoomFactor: Float {
+        return Float(captureDeviceInput?.device.neutralZoomFactor ?? 1.0)
     }
 
     // MARK: - Init

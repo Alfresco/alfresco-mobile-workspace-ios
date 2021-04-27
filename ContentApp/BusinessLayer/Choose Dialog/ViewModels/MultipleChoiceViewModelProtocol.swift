@@ -24,7 +24,7 @@ enum MultipleChoiceDialogType {
     case genericQuestion
 }
 
-protocol MultipleChoiceViewModelDelegate: class {
+protocol MultipleChoiceViewModelDelegate: AnyObject {
     func chose(item: MultipleChoiceItem, for type: MultipleChoiceDialogType)
 }
 

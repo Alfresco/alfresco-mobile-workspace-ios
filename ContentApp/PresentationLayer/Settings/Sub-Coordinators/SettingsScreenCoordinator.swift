@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol SettingsScreenCoordinatorDelegate: class {
+protocol SettingsScreenCoordinatorDelegate: AnyObject {
     func showThemesModeScreen()
     func showDataPlanDialog()
     func showLoginScreen()

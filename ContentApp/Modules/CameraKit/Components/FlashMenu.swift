@@ -28,7 +28,7 @@ struct FlashMenuStyle {
     var offFlashText: String
 }
 
-protocol FlashMenuDelegate: class {
+protocol FlashMenuDelegate: AnyObject {
     func selected(flashMode: FlashMode)
 }
 

@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol ListElementCollectionViewCellDelegate: class {
+protocol ListElementCollectionViewCellDelegate: AnyObject {
     func moreButtonTapped(for element: ListNode?,
                           in cell: ListElementCollectionViewCell)
 }

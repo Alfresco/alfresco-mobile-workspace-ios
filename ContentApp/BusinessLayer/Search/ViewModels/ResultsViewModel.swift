@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoContent
 
-protocol ResultsViewModelDelegate: class {
+protocol ResultsViewModelDelegate: AnyObject {
     func refreshResults()
     func isNodePathEnabled() -> Bool
 }

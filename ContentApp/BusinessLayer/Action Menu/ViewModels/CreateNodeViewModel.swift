@@ -21,7 +21,7 @@ import AlfrescoContent
 import Alamofire
 import MaterialComponents.MaterialDialogs
 
-protocol CreateNodeViewModelDelegate: class {
+protocol CreateNodeViewModelDelegate: AnyObject {
     func handleCreatedNode(node: ListNode?, error: Error?)
 }
 

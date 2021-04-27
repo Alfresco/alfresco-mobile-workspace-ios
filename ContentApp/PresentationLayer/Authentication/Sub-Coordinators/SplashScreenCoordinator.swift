@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 import FastCoding
 
-protocol SplashScreenCoordinatorDelegate: class {
+protocol SplashScreenCoordinatorDelegate: AnyObject {
     func showLoginContainerView()
     func showAdvancedSettingsScreen()
     func popViewControllerFromContainer()

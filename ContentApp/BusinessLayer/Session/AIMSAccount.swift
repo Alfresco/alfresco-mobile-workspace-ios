@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoAuth
 import AlfrescoContent
 
-protocol AIMSAccountDelegate: class {
+protocol AIMSAccountDelegate: AnyObject {
     func didReSignIn(check oldAccountIdentifier: String)
 }
 

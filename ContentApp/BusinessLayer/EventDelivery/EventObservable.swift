@@ -23,7 +23,7 @@ enum EventQueueType {
     case backgroundQueue
 }
 
-protocol EventObservable: class {
+protocol EventObservable: AnyObject {
     var supportedNodeTypes: [NodeType] { get set }
     func handle(event: BaseNodeEvent, on queue: EventQueueType)
 }

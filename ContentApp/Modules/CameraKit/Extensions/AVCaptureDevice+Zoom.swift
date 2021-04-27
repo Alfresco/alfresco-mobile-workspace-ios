@@ -16,14 +16,15 @@
 //  limitations under the License.
 //
 
-import Foundation
+import AVFoundation
 
-extension String {
-    func fileName() -> String {
-        return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
-    }
-
-    func fileExtension() -> String {
-        return URL(fileURLWithPath: self).pathExtension
-    }
+extension AVCaptureDevice {
+  var neutralZoomFactor: CGFloat {
+      if let indexOfWideAngle = self.constituentDevices.firstIndex(where: { $0.deviceType == .builtInWideAngleCamera }) {
+        if let zoomFactor = self.virtualDeviceSwitchOverVideoZoomFactors[safe: indexOfWideAngle - 1] {
+          return CGFloat(zoomFactor.doubleValue)
+        }
+      }
+    return 1.0
+  }
 }

@@ -19,7 +19,7 @@
 import UIKit
 import Foundation
 
-protocol SettingsTableViewCellDelegate: class {
+protocol SettingsTableViewCellDelegate: AnyObject {
     func signOutButtonTapped(for item: SettingsItem)
 }
 

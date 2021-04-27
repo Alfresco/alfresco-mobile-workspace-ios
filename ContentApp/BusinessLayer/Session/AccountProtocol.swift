@@ -22,7 +22,7 @@ import AlfrescoContent
 
 typealias LogoutHandler = (APIError?) -> Void
 
-protocol AccountProtocol: class {
+protocol AccountProtocol: AnyObject {
     /// Account identifier string, eg. username
     var identifier: String { get }
 

@@ -18,12 +18,9 @@
 
 import Foundation
 
-extension String {
-    func fileName() -> String {
-        return URL(fileURLWithPath: self).deletingPathExtension().lastPathComponent
-    }
-
-    func fileExtension() -> String {
-        return URL(fileURLWithPath: self).pathExtension
-    }
+extension Collection {
+    
+  subscript(safe index: Index) -> Element? {
+    return indices.contains(index) ? self[index] : nil
+  }
 }

@@ -19,7 +19,7 @@
 import UIKit
 import AlfrescoContent
 
-protocol ListItemActionDelegate: class {
+protocol ListItemActionDelegate: AnyObject {
     func showPreview(for node: ListNode,
                      from dataSource: ListComponentDataSourceProtocol)
     func showActionSheetForListItem(for node: ListNode,
@@ -32,7 +32,7 @@ protocol ListItemActionDelegate: class {
     func showPhotoLibrary()
 }
 
-protocol ListComponentActionDelegate: class {
+protocol ListComponentActionDelegate: AnyObject {
     func elementTapped(node: ListNode)
     func didUpdateList(in listComponentViewController: ListComponentViewController,
                        error: Error?,
@@ -42,7 +42,7 @@ protocol ListComponentActionDelegate: class {
     func performListAction()
 }
 
-protocol ListComponentPageUpdatingDelegate: class {
+protocol ListComponentPageUpdatingDelegate: AnyObject {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
     func shouldDisplayCreateButton(enable: Bool)
