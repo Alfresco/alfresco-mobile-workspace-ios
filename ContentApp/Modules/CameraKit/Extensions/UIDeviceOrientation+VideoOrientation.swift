@@ -29,23 +29,7 @@ extension UIDeviceOrientation {
         case .landscapeRight:
             return .landscapeLeft
         case .faceUp, .faceDown:
-            if let orientation = UIApplication.shared.windows
-                .first(where: { $0.isKeyWindow })?.windowScene?.interfaceOrientation {
-                switch orientation {
-                case .landscapeLeft:
-                    return .landscapeLeft
-                case .landscapeRight:
-                    return .landscapeRight
-                case .portrait:
-                    return .portrait
-                case .portraitUpsideDown:
-                    return.portraitUpsideDown
-                default:
-                    return .portrait
-                }
-            } else {
-                return .portrait
-            }
+            return interfaceOrientation()
         default:
             return .portrait
         }
@@ -60,23 +44,7 @@ extension UIDeviceOrientation {
         case .landscapeRight:
             return .landscapeRight
         case .faceUp, .faceDown:
-            if let orientation = UIApplication.shared.windows
-                .first(where: { $0.isKeyWindow })?.windowScene?.interfaceOrientation {
-                switch orientation {
-                case .landscapeLeft:
-                    return .landscapeRight
-                case .landscapeRight:
-                    return .landscapeLeft
-                case .portrait:
-                    return .portrait
-                case .portraitUpsideDown:
-                    return.portraitUpsideDown
-                default:
-                    return .portrait
-                }
-            } else {
-                return .portrait
-            }
+            return interfaceOrientation()
         default:
             return .portrait
         }
@@ -105,6 +73,26 @@ extension UIDeviceOrientation {
             return .up
         default:
             return .right
+        }
+    }
+
+    private func interfaceOrientation() -> AVCaptureVideoOrientation {
+        if let orientation = UIApplication.shared.windows
+            .first(where: { $0.isKeyWindow })?.windowScene?.interfaceOrientation {
+            switch orientation {
+            case .landscapeLeft:
+                return .landscapeLeft
+            case .landscapeRight:
+                return .landscapeRight
+            case .portrait:
+                return .portrait
+            case .portraitUpsideDown:
+                return.portraitUpsideDown
+            default:
+                return .portrait
+            }
+        } else {
+            return .portrait
         }
     }
 }
