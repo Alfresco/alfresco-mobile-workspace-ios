@@ -21,7 +21,7 @@ import AlfrescoAuth
 import AlfrescoContent
 import Firebase
 
-protocol FilePreviewViewModelDelegate: class {
+protocol FilePreviewViewModelDelegate: AnyObject {
     func display(previewContainer: FilePreviewProtocol)
     func didFinishLoadingPreview(error: Error?)
     func willPreparePreview()

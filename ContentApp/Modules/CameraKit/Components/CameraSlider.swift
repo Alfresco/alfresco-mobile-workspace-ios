@@ -29,7 +29,7 @@ struct CameraSliderControlSyle {
     let optionBackgroundColor: UIColor
 }
 
-protocol CameraSliderControlDelegate: class {
+protocol CameraSliderControlDelegate: AnyObject {
     func didChangeSelection(to currentSelection: Int)
 }
 

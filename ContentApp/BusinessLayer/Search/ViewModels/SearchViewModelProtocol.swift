@@ -39,7 +39,7 @@ extension SearchViewModelProtocol {
     }
 }
 
-protocol SearchViewModelDelegate: class {
+protocol SearchViewModelDelegate: AnyObject {
     /**
      Handle search results
      - results: List of search results

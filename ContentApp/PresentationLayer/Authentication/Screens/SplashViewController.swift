@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol SplashScreenDelegate: class {
+protocol SplashScreenDelegate: AnyObject {
     func showAdvancedSettingsScreen()
     func backPadButtonNeedsTo(hide: Bool)
     func backPadButton(userInteraction: Bool)

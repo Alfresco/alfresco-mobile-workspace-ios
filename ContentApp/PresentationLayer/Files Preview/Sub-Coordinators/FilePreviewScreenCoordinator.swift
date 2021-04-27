@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol FilePreviewScreenCoordinatorDelegate: class {
+protocol FilePreviewScreenCoordinatorDelegate: AnyObject {
     func navigateBack()
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
 }

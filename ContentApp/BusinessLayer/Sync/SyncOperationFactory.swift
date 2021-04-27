@@ -20,7 +20,7 @@ import Foundation
 import AlfrescoContent
 import AlfrescoCore
 
-protocol SyncOperationFactoryDelegate: class {
+protocol SyncOperationFactoryDelegate: AnyObject {
     func didComplete(with error: Error)
 }
 

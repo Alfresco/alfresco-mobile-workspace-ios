@@ -20,7 +20,7 @@ import Foundation
 import WebKit
 import PDFKit
 
-protocol PDFRendererPasswordDelegate: class {
+protocol PDFRendererPasswordDelegate: AnyObject {
     func providePDFPassword(for pdf: URL)
     func invalidPasswordProvided(for pdf: URL)
 }

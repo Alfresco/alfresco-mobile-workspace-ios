@@ -18,7 +18,7 @@
 
 import UIKit
 
-protocol CameraViewModelDelegate: class {
+protocol CameraViewModelDelegate: AnyObject {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
 }
 

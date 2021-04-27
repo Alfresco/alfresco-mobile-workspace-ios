@@ -28,7 +28,7 @@ enum ListEntrySyncStatus: String {
     case undefined = "ic-sync-status-undefined"
 }
 
-protocol ListComponentDataSourceProtocol: class {
+protocol ListComponentDataSourceProtocol: AnyObject {
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
 

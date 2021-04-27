@@ -33,7 +33,7 @@ protocol SyncServiceProtocol {
     func sync(nodeList: [ListNode])
 }
 
-protocol SyncServiceDelegate: class {
+protocol SyncServiceDelegate: AnyObject {
     func syncDidStarted()
     func syncDidFinished()
 }

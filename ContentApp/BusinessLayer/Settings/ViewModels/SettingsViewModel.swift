@@ -21,7 +21,7 @@ import AlfrescoContent
 import AlfrescoAuth
 import MaterialComponents.MaterialDialogs
 
-protocol SettingsViewModelDelegate: class {
+protocol SettingsViewModelDelegate: AnyObject {
     func didUpdateDataSource()
     func logOutWithSuccess()
     func displayError(message: String)

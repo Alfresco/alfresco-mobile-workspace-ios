@@ -26,7 +26,7 @@ struct RangeSliderControlSyle {
     let fontColor: UIColor
 }
 
-protocol RangeSliderControlDelegate: class {
+protocol RangeSliderControlDelegate: AnyObject {
     func didChangeSlider(value: Float)
 }
 
