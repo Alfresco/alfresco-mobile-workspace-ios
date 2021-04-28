@@ -39,6 +39,12 @@ class PhotoGalleryViewController: UIViewController {
             uploadButton.isEnabled = enableUploadButton
         }
     }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        PHPhotoLibrary.shared().register(self)
+    }
     
     // MARK: - View Life Cycle
     
@@ -162,6 +168,54 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return distanceBetweenCells
+    }
+}
+
+extension PhotoGalleryViewController: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        if let allPhotos = photoGalleryDataSource?.allPhotoAssets {
+            guard let change = changeInstance.changeDetails(for: allPhotos) else {
+                return
+            }
+
+            // Keep the new fetch result for future use.
+            let fetchResult = change.fetchResultAfterChanges
+            photoGalleryDataSource?.allPhotoAssets = fetchResult
+            if change.hasIncrementalChanges {
+                // If there are incremental diffs, animate them in the collection view.
+                DispatchQueue.main.async { [weak self] in
+                    guard let sSelf = self else { return }
+
+                    sSelf.collectionView.performBatchUpdates({
+                        // For indexes to make sense, updates must be in this order:
+                        // delete, insert, reload, move
+                        if let removed = change.removedIndexes, !removed.isEmpty {
+                            sSelf.collectionView.deleteItems(at: removed.map { IndexPath(item: $0,
+                                                                                         section: 0) })
+                        }
+                        if let inserted = change.insertedIndexes, !inserted.isEmpty {
+                            sSelf.collectionView.insertItems(at: inserted.map { IndexPath(item: $0,
+                                                                                          section: 0) })
+                        }
+                        if let changed = change.changedIndexes, !changed.isEmpty {
+                            sSelf.collectionView.reloadItems(at: changed.map { IndexPath(item: $0,
+                                                                                         section: 0) })
+                        }
+                        change.enumerateMoves { fromIndex, toIndex in
+                            sSelf.collectionView.moveItem(at: IndexPath(item: fromIndex, section: 0),
+                                                          to: IndexPath(item: toIndex, section: 0))
+                        }
+                    })
+                }
+            } else {
+                // Reload the collection view if incremental diffs are not available.
+                DispatchQueue.main.sync { [weak self] in
+                    guard let sSelf = self else { return }
+
+                    sSelf.collectionView.reloadData()
+                }
+            }
+        }
     }
 }
 

@@ -22,7 +22,7 @@ import Photos
 class PhotoGalleryDataSource {
     var mediaFilesFolderPath: String
 
-    private var allPhotoAssets: PHFetchResult<PHAsset>
+    var allPhotoAssets = PHFetchResult<PHAsset>()
     private var selectedIndexAssets: Array<Bool>
     private lazy var imageManager: PHCachingImageManager = {
         return PHCachingImageManager()
@@ -32,7 +32,7 @@ class PhotoGalleryDataSource {
     
     init(mediaFilesFolderPath: String) {
         self.mediaFilesFolderPath = mediaFilesFolderPath
-        
+
         let allPhotosOptions = PHFetchOptions()
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate",
                                                              ascending: false)]
