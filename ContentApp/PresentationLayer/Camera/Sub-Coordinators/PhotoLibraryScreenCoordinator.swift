@@ -40,7 +40,9 @@ class PhotoLibraryScreenCoordinator: Coordinator {
             if granted {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
-                    viewController.photoGalleryViewModel = PhotoGalleryViewModel()
+                    let accountIdentifier = sSelf.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+                    let mediaFolderPath = DiskService.mediaFilesFolderPath(for: accountIdentifier)
+                    viewController.photoGalleryViewModel = PhotoGalleryDataSource(mediaFilesFolderPath: mediaFolderPath)
                     sSelf.presenter.present(viewController,
                                             animated: true)
                 }
@@ -51,8 +53,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
                     privacyVC.viewModel = PrivacyNoticePhotosModel()
                     privacyVC.coordinatorServices = sSelf.coordinatorServices
                     sSelf.presenter.present(privacyVC,
-                                            animated: true,
-                                            completion: nil)
+                                            animated: true)
                 }
             }
         }
@@ -90,19 +91,21 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-        capturedAsset.providePath { [weak self] (path) in
-            guard let sSelf = self else { return }
-            if let assetPath = path {
-                let uploadTransfer = UploadTransfer(parentNodeId: sSelf.parentListNode.guid,
-                                                    nodeName: capturedAsset.filename,
-                                                    nodeDescription: capturedAsset.description,
-                                                    filePath: assetPath)
-                let uploadTransferDataAccessor = UploadTransferDataAccessor()
-                uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+        let assetURL = URL(fileURLWithPath: capturedAsset.path)
+        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
 
-                let syncTriggersService = sSelf.coordinatorServices.syncTriggersService
-                syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
-            }
-        }
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
+            "/" + assetURL.lastPathComponent
+        _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
+
+        let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
+                                            nodeName: capturedAsset.filename,
+                                            nodeDescription: capturedAsset.description,
+                                            filePath: uploadFilePath)
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
     }
 }

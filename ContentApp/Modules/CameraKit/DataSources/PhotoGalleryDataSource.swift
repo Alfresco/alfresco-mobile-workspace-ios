@@ -19,17 +19,20 @@
 import UIKit
 import Photos
 
-class PhotoGalleryViewModel {
+class PhotoGalleryDataSource {
+    var mediaFilesFolderPath: String
+
     private var allPhotoAssets: PHFetchResult<PHAsset>
     private var selectedIndexAssets: Array<Bool>
-    
     private lazy var imageManager: PHCachingImageManager = {
         return PHCachingImageManager()
     }()
     
     // MARK: - Init
     
-    init() {
+    init(mediaFilesFolderPath: String) {
+        self.mediaFilesFolderPath = mediaFilesFolderPath
+        
         let allPhotosOptions = PHFetchOptions()
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate",
                                                              ascending: false)]
@@ -43,20 +46,20 @@ class PhotoGalleryViewModel {
         return allPhotoAssets.count
     }
     
-    func asset(at indexPath: IndexPath) -> PHAsset {
+    func asset(for indexPath: IndexPath) -> PHAsset {
         return allPhotoAssets.object(at: indexPath.row)
     }
     
-    func assetIsVideo(_ phAsset: PHAsset) -> Bool {
+    func isVideoAsset(_ phAsset: PHAsset) -> Bool {
         return (phAsset.mediaType == .video)
     }
     
-    func assetIsSelected(at indexPath: IndexPath) -> Bool {
+    func isAssetSelected(for indexPath: IndexPath) -> Bool {
         return selectedIndexAssets[indexPath.row]
     }
     
-    func assets(selected: Bool, at indexPath: IndexPath) {
-        selectedIndexAssets[indexPath.row] = selected
+    func markAssetsAs(enabled: Bool, for indexPath: IndexPath) {
+        selectedIndexAssets[indexPath.row] = enabled
     }
     
     func anyAssetSelected() -> Bool {
@@ -88,11 +91,54 @@ class PhotoGalleryViewModel {
         }
     }
     
-    func fetchSelectedAssets(to delegate: CameraKitCaptureDelegate?) {
+    func fetchSelectedAssets(for delegate: CameraKitCaptureDelegate?) {
         for (index, select) in selectedIndexAssets.enumerated() where select {
-            let phAsset = asset(at: IndexPath(row: index, section: 0))
-            let capturedAsset = CapturedAsset(phAsset: phAsset)
-            delegate?.didEndReview(for: capturedAsset)
+            let asset = asset(for: IndexPath(row: index, section: 0))
+
+            fetchPath(for: asset) { [weak self] assetPath in
+                guard let sSelf = self else { return }
+
+                if let path = assetPath {
+                    let assetType = (asset.mediaType == .video ? CapturedAssetType.video : .image)
+
+                    let capturedAsset = CapturedAsset(type: assetType, path: path)
+                    capturedAsset.filename = sSelf.fileName(for: asset)
+                    delegate?.didEndReview(for: capturedAsset)
+                }
+            }
+        }
+    }
+
+    private func fileName(for asset: PHAsset) -> String {
+        if let originalName = PHAssetResource.assetResources(for: asset).first?.originalFilename,
+           let splitName = originalName.split(separator: ".").first {
+            return String(splitName)
+        }
+
+        return ""
+    }
+
+    private func fetchPath(for asset: PHAsset,
+                           completionHandler: @escaping (String?) -> Void) {
+        if asset.mediaType == .image {
+            let options = PHContentEditingInputRequestOptions()
+            options.isNetworkAccessAllowed = true
+            asset.requestContentEditingInput(with: options) { (input, _) in
+                completionHandler(input?.fullSizeImageURL?.path)
+            }
+        } else {
+            let options = PHVideoRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.version = .original
+            PHImageManager.default().requestAVAsset(forVideo: asset,
+                                                    options: options,
+                                                    resultHandler: { (asset, audioMix, info) in
+                                                        if let assetURL = asset as? AVURLAsset {
+                                                            completionHandler(assetURL.url.path)
+                                                        } else {
+                                                            completionHandler(nil)
+                                                        }
+                                                    })
         }
     }
 }

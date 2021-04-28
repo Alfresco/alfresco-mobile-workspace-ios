@@ -81,7 +81,6 @@ class FullScreenCapturedAssetViewController: UIViewController {
 // MARK: - UIScrollView Delegate
 
 extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
-    
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
           return imageView
     }

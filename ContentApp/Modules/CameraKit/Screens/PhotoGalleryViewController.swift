@@ -20,7 +20,6 @@ import UIKit
 import Photos
 
 class PhotoGalleryViewController: UIViewController {
-    
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var uploadButton: UIButton!
     @IBOutlet weak var titlelabel: UILabel!
@@ -31,7 +30,7 @@ class PhotoGalleryViewController: UIViewController {
     let itemsSize = CGSize(width: 76.0, height: 76.0)
     var distanceBetweenCells: CGFloat = 8.0
     
-    var photoGalleryViewModel: PhotoGalleryViewModel?
+    var photoGalleryViewModel: PhotoGalleryDataSource?
     var theme: GalleryConfigurationLayout?
     
     var enableUploadButton = false {
@@ -58,7 +57,7 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
-        photoGalleryViewModel?.fetchSelectedAssets(to: cameraDelegate)
+        photoGalleryViewModel?.fetchSelectedAssets(for: cameraDelegate)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -93,7 +92,6 @@ class PhotoGalleryViewController: UIViewController {
 
 extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
                                       UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         guard let viewModel = photoGalleryViewModel else { return 0 }
@@ -102,7 +100,6 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-
         let reuseIdentifier = String(describing: PhotoGalleryCollectionViewCell.self)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                       for: indexPath) as? PhotoGalleryCollectionViewCell
@@ -112,12 +109,11 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
-
         guard let viewModel = photoGalleryViewModel else { return }
         if let cell = cell as? PhotoGalleryCollectionViewCell {
-            let asset = viewModel.asset(at: indexPath)
-            cell.asset(selected: viewModel.assetIsSelected(at: indexPath))
-            cell.assest(isVideo: viewModel.assetIsVideo(asset))
+            let asset = viewModel.asset(for: indexPath)
+            cell.asset(selected: viewModel.isAssetSelected(for: indexPath))
+            cell.assest(isVideo: viewModel.isVideoAsset(asset))
             
             let targetSize = cell.assetImageViewTargetSize()
             viewModel.image(for: asset,
@@ -131,23 +127,21 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-
         guard let viewModel = photoGalleryViewModel else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: true)
             cell.contentView.backgroundColor = theme?.primaryColor.withAlphaComponent(0.12)
-            viewModel.assets(selected: true, at: indexPath)
+            viewModel.markAssetsAs(enabled: true, for: indexPath)
             enableUploadButton = true
         }
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         didDeselectItemAt indexPath: IndexPath) {
-
         guard let viewModel = photoGalleryViewModel else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: false)
-            viewModel.assets(selected: false, at: indexPath)
+            viewModel.markAssetsAs(enabled: false, for: indexPath)
             enableUploadButton = viewModel.anyAssetSelected()
         }
     }

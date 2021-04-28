@@ -17,7 +17,6 @@
 //
 
 import UIKit
-import Photos
 
 let prefixFileName = "IMG"
 let extPhoto = "jpg"
@@ -36,62 +35,27 @@ enum CapturedAssetType {
 }
 
 class CapturedAsset {
-    private(set) var path: String?
-    private let type: CapturedAssetType
+    let type: CapturedAssetType
+    private(set) var path = ""
     var description: String?
     var filename = ""
-    private let folderPath: String?
-    private var phAsset: PHAsset?
+    private var folderPath = ""
     
-    init(type: CapturedAssetType, data: Data, saveIn folderPath: String?) {
+    init(type: CapturedAssetType, data: Data, saveIn folderPath: String) {
         self.type = type
         self.folderPath = folderPath
-        self.phAsset = nil
-        self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
-    }
-    
-    init(phAsset: PHAsset) {
-        self.type = (phAsset.mediaType == .video) ? .video : .image
-        self.folderPath = ""
-        self.phAsset = phAsset
         self.filename = provideFileName()
-        self.path = ""
     }
-    
-    func providePath(completion: @escaping (String?) -> Void) {
-        guard let phAsset = self.phAsset else {
-            completion(nil)
-            return
-        }
-        if type == .image {
-            let options = PHContentEditingInputRequestOptions()
-            options.isNetworkAccessAllowed = true
-            phAsset.requestContentEditingInput(with: options) { [weak self] (input, _) in
-                guard let sSelf = self else { return }
-                if let imageURL = input?.fullSizeImageURL {
-                    sSelf.path = imageURL.path
-                }
-                completion(sSelf.path)
-            }
-        } else {
-            let options = PHVideoRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.version = .original
-            PHImageManager.default()
-                .requestAVAsset(forVideo: phAsset,
-                                options: options, resultHandler: { (asset, audioMix, info) in
-                                    if let url = asset as? AVURLAsset {
-                                        completion(url.url.path)
-                                    }
-                                })
-        }
+
+    init(type: CapturedAssetType, path: String) {
+        self.type = type
+        self.path = path
     }
     
     // MARK: - Public Helpers
     
     func image() -> UIImage? {
-        guard let path = path else { return nil }
         if FileManager.default.fileExists(atPath: path) {
             return UIImage(contentsOfFile: path)
         }
@@ -99,7 +63,6 @@ class CapturedAsset {
     }
     
     func deleteAsset() {
-        guard let path = path else { return }
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: path) {
             do {
@@ -113,19 +76,13 @@ class CapturedAsset {
     // MARK: - Private Helpers
     
     private func provideFileName() -> String {
-        if let phAsset = self.phAsset,
-           let originalName = PHAssetResource.assetResources(for: phAsset).first?.originalFilename,
-           let splitName = originalName.split(separator: ".").first {
-            return String(splitName)
-        } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-            return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
-        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
     }
     
-    private func cacheToDisk(data: Data) -> String? {
-        guard let mediaFolder = folderPath as NSString? else { return nil }
+    private func cacheToDisk(data: Data) -> String {
+        let mediaFolder = folderPath as NSString
         let imagePath = mediaFolder.appendingPathComponent("\(filename).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)

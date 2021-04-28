@@ -114,6 +114,20 @@ class DiskService {
         return accountDocumentsPath
     }
 
+    static func mediaFolderPath(for accountIdentifier: String) -> String {
+        let mediaFolderPath = mediaFilesFolderPath(for: accountIdentifier)
+        _ = create(directoryPath: mediaFolderPath)
+
+        return mediaFolderPath
+    }
+
+    static func uploadFolderPath(for accountIdentifier: String) -> String {
+        let uploadFilePath = documentsDirectoryPath(for: accountIdentifier) + "/" +
+            KeyConstants.Disk.uploadsFolder
+        _ = create(directoryPath: uploadFilePath)
+        return uploadFilePath
+    }
+
     static func MD5(string: String) -> Data {
         let length = Int(CC_MD5_DIGEST_LENGTH)
         let messageData = string.data(using: .utf8)!
