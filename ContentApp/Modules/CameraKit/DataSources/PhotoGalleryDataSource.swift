@@ -101,9 +101,14 @@ class PhotoGalleryDataSource {
                 if let path = assetPath {
                     let assetType = (asset.mediaType == .video ? CapturedAssetType.video : .image)
 
-                    let capturedAsset = CapturedAsset(type: assetType, path: path)
-                    capturedAsset.filename = sSelf.fileName(for: asset)
-                    delegate?.didEndReview(for: capturedAsset)
+                    let image = UIImage(contentsOfFile: path)
+                    if let assetData = image?.jpegData(compressionQuality: 1.0) {
+                        let capturedAsset = CapturedAsset(type: assetType,
+                                                          fileName: sSelf.fileName(for: asset),
+                                                          data: assetData,
+                                                          saveIn: sSelf.mediaFilesFolderPath)
+                        delegate?.didEndReview(for: capturedAsset)
+                    }
                 }
             }
         }

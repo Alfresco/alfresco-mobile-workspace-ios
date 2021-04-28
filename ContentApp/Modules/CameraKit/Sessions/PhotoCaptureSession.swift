@@ -174,6 +174,7 @@ class PhotoCaptureSession: CaptureSession {
         }
 
         delegate?.captured(asset: CapturedAsset(type: .image,
+                                                fileName: defaultFileName(),
                                                 data: data,
                                                 saveIn: mediaFolderPath),
                            error: nil)
@@ -202,6 +203,12 @@ class PhotoCaptureSession: CaptureSession {
         } catch {
             AlfrescoLog.error("An unexpected error occured while zooming.")
         }
+    }
+
+    private func defaultFileName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
     }
 }
 

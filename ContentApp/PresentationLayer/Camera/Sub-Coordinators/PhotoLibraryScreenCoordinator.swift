@@ -22,6 +22,7 @@ import Photos
 class PhotoLibraryScreenCoordinator: Coordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
+    private var galleryDataSource: PhotoGalleryDataSource?
 
     init(with presenter: UINavigationController,
          parentListNode: ListNode) {
@@ -41,8 +42,9 @@ class PhotoLibraryScreenCoordinator: Coordinator {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
                     let accountIdentifier = sSelf.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-                    let mediaFolderPath = DiskService.mediaFilesFolderPath(for: accountIdentifier)
-                    viewController.photoGalleryViewModel = PhotoGalleryDataSource(mediaFilesFolderPath: mediaFolderPath)
+                    let mediaFolderPath = DiskService.mediaFolderPath(for: accountIdentifier)
+                    sSelf.galleryDataSource = PhotoGalleryDataSource(mediaFilesFolderPath: mediaFolderPath)
+                    viewController.photoGalleryDataSource = sSelf.galleryDataSource
                     sSelf.presenter.present(viewController,
                                             animated: true)
                 }

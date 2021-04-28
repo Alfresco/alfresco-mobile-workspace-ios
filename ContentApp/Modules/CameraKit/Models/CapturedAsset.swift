@@ -19,8 +19,8 @@
 import UIKit
 
 let prefixFileName = "IMG"
-let extPhoto = "jpg"
-let extVideo = "mov"
+let extPhoto = "JPG"
+let extVideo = "MOV"
 
 enum CapturedAssetType {
     case image
@@ -38,19 +38,17 @@ class CapturedAsset {
     let type: CapturedAssetType
     private(set) var path = ""
     var description: String?
-    var filename = ""
+    var filename: String
     private var folderPath = ""
     
-    init(type: CapturedAssetType, data: Data, saveIn folderPath: String) {
+    init(type: CapturedAssetType,
+         fileName: String,
+         data: Data,
+         saveIn folderPath: String) {
         self.type = type
+        self.filename = fileName
         self.folderPath = folderPath
         self.path = cacheToDisk(data: data)
-        self.filename = provideFileName()
-    }
-
-    init(type: CapturedAssetType, path: String) {
-        self.type = type
-        self.path = path
     }
     
     // MARK: - Public Helpers
@@ -74,12 +72,6 @@ class CapturedAsset {
     }
     
     // MARK: - Private Helpers
-    
-    private func provideFileName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
-    }
     
     private func cacheToDisk(data: Data) -> String {
         let mediaFolder = folderPath as NSString

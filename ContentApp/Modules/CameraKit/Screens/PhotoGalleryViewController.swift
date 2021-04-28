@@ -30,7 +30,7 @@ class PhotoGalleryViewController: UIViewController {
     let itemsSize = CGSize(width: 76.0, height: 76.0)
     var distanceBetweenCells: CGFloat = 8.0
     
-    var photoGalleryViewModel: PhotoGalleryDataSource?
+    var photoGalleryDataSource: PhotoGalleryDataSource?
     var theme: GalleryConfigurationLayout?
     
     var enableUploadButton = false {
@@ -57,7 +57,7 @@ class PhotoGalleryViewController: UIViewController {
     }
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
-        photoGalleryViewModel?.fetchSelectedAssets(for: cameraDelegate)
+        photoGalleryDataSource?.fetchSelectedAssets(for: cameraDelegate)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -94,7 +94,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
                                       UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        guard let viewModel = photoGalleryViewModel else { return 0 }
+        guard let viewModel = photoGalleryDataSource else { return 0 }
         return viewModel.numberOfAssets()
     }
     
@@ -109,7 +109,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryViewModel else { return }
+        guard let viewModel = photoGalleryDataSource else { return }
         if let cell = cell as? PhotoGalleryCollectionViewCell {
             let asset = viewModel.asset(for: indexPath)
             cell.asset(selected: viewModel.isAssetSelected(for: indexPath))
@@ -127,7 +127,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryViewModel else { return }
+        guard let viewModel = photoGalleryDataSource else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: true)
             cell.contentView.backgroundColor = theme?.primaryColor.withAlphaComponent(0.12)
@@ -138,7 +138,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView,
                         didDeselectItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryViewModel else { return }
+        guard let viewModel = photoGalleryDataSource else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: false)
             viewModel.markAssetsAs(enabled: false, for: indexPath)
