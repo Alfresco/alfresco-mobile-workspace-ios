@@ -32,8 +32,6 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = PhotoGalleryViewController.instantiateViewController()
-
-        viewController.theme = configurationLayout()
         viewController.cameraDelegate = self
         viewController.modalPresentationStyle = .fullScreen
 
@@ -63,7 +61,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
     
     // MARK: - Private Methods
     
-    func requestAuthorizationPhotoLibraryUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
+    private func requestAuthorizationPhotoLibraryUsage(completion: @escaping ((_ granted: Bool) -> Void)) {
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
             completion(true)
@@ -74,20 +72,6 @@ class PhotoLibraryScreenCoordinator: Coordinator {
         default:
             completion(false)
         }
-    }
-    
-    func configurationLayout() -> GalleryConfigurationLayout? {
-        guard let currentTheme = themingService?.activeTheme
-        else { return  nil}
-
-        return
-            GalleryConfigurationLayout(onSurfaceColor: currentTheme.onSurfaceColor,
-                                       onSurface60Color: currentTheme.onSurface60Color,
-                                       onSurface15Color: currentTheme.onSurface15Color,
-                                       surfaceColor: currentTheme.surfaceColor,
-                                       primaryColor: currentTheme.primaryT1Color,
-                                       headline6Font: currentTheme.headline6TextStyle.font,
-                                       subtitle2Font: currentTheme.subtitle2TextStyle.font)
     }
 }
 

@@ -205,7 +205,7 @@
 "privacy-button" = "Review privacy settings";
 
 // MARK: - Camera
-"slider-camera-photo" = "Photo";
+"photo-mode" = "Photo";
 "auto-flash" = "Auto";
 "on-flash" = "On";
 "off-flash" = "Off";

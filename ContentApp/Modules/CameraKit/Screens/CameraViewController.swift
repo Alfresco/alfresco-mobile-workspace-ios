@@ -36,17 +36,14 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var shutterView: UIView!
     @IBOutlet weak var modeView: UIView!
 
-    @IBOutlet weak var cameraSlider: CameraSliderControl!
+    @IBOutlet weak var cameraSlider: ModeSelectorControl!
     @IBOutlet weak var sessionPreview: SessionPreview!
-    
-    private var zoomSliderTimer: Timer?
-    var cameraViewModel: CameraViewModel?
-    var theme: CameraConfigurationLayout?
-    var localization: CameraLocalization?
-    weak var cameraDelegate: CameraKitCaptureDelegate?
 
+    var cameraViewModel: CameraViewModel?
+    weak var cameraDelegate: CameraKitCaptureDelegate?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
 
+    private var zoomSliderTimer: Timer?
     private var cameraSession: PhotoCaptureSession?
     
     override var prefersStatusBarHidden: Bool {
@@ -125,7 +122,7 @@ class CameraViewController: UIViewController {
     // MARK: - Private Methods
 
     private func cameraButtonConfiguration() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
         
         let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
@@ -148,20 +145,20 @@ class CameraViewController: UIViewController {
     }
     
     private func setUpModeSelector() {
-        guard let theme = self.theme, let localization = self.localization else { return }
+        guard let theme = CameraKit.theme, let localization = CameraKit.localization else { return }
 
-        let style = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
+        let style = ModeSelectorControlSyle(selectedOptionColor: theme.onSurfaceColor,
                                             optionColor: theme.onSurface60Color,
                                             optionFont: theme.subtitle2Font,
                                             optionBackgroundColor: theme.surface60Color)
         
-        cameraSlider.addSlider(entries: CameraSliderEntry(entryName: localization.sliderPhoto))
+        cameraSlider.addSlider(entries: ModeSelectorEntry(entryName: localization.photoMode))
         cameraSlider.update(style: style)
         cameraSlider.delegate = self
     }
     
     private func setUpZoomSlider() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
 
         let surfaceColor = UIColor(hex: "#FFFFFF")
         let surface60Color = UIColor(hex: "#FFFFFF", alpha: 0.6)
@@ -179,15 +176,16 @@ class CameraViewController: UIViewController {
     }
     
     private func flashModeConfiguration() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme,
+              let localization = CameraKit.localization else { return }
         
         let style = FlashMenuStyle(optionTintColor: theme.onSurface60Color,
                                    optionFont: theme.subtitle2Font,
                                    optionColor: theme.onSurfaceColor,
                                    backgroundColor: theme.surface60Color,
-                                   autoFlashText: theme.autoFlashText,
-                                   onFlashText: theme.onFlashText,
-                                   offFlashText: theme.offFlashText)
+                                   autoFlashText: localization.autoFlashText,
+                                   onFlashText: localization.onFlashText,
+                                   offFlashText: localization.offFlashText)
         flashMenuView.update(style: style)
         flashMenuView.delegate = self
         flashMenuView.alpha = 0.0
@@ -208,8 +206,6 @@ class CameraViewController: UIViewController {
            let asset = cameraViewModel?.capturedAsset {
             let previewViewModel = PreviewViewModel(capturedAsset: asset)
             pvc.previewViewModel = previewViewModel
-            pvc.theme = theme
-            pvc.localization = localization
             pvc.cameraDelegate = cameraDelegate
         }
     }
@@ -273,9 +269,9 @@ extension CameraViewController: CaptureSessionUIDelegate {
     }
 }
 
-// MARK: - CameraSliderControl Delegate
+// MARK: - ModeSelectorControl Delegate
 
-extension CameraViewController: CameraSliderControlDelegate {
+extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
         if currentSelection == 0 && sessionPreview.cameraMode == .photo {
             // no need to reset

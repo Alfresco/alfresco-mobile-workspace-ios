@@ -52,6 +52,7 @@ class ApplicationBootstrap {
                                                            and: accountService,
                                                            and: connectivityService)
         self.repository.register(service: syncTriggersService)
+        configureCameraKitModule()
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -105,5 +106,39 @@ class ApplicationBootstrap {
 
     private func connectivityService() -> ConnectivityService {
         return ConnectivityService()
+    }
+
+    private func configureCameraKitModule() {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        guard let currentTheme = themingService?.activeTheme,
+              let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
+              let buttonScheme = themingService?.containerScheming(for: .dialogButton)
+        else { return }
+
+        let theme = CameraKitTheme(primaryColor: currentTheme.primaryVariantT1Color,
+                                   onSurfaceColor: currentTheme.onSurfaceColor,
+                                   onSurface60Color: currentTheme.onSurface60Color,
+                                   onSurface15Color: currentTheme.onSurface15Color,
+                                   onSurface5Color: currentTheme.onSurface5Color,
+                                   surfaceColor: currentTheme.surfaceColor,
+                                   surface60Color: currentTheme.surface60Color,
+                                   photoShutterColor: currentTheme.photoShutterColor,
+                                   videoShutterColor: currentTheme.videoShutterColor,
+                                   textFieldScheme: textFieldScheme,
+                                   buttonScheme: buttonScheme,
+                                   subtitle2Font: currentTheme.subtitle2TextStyle.font,
+                                   headline6Font: currentTheme.headline6TextStyle.font)
+        let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
+                                                 onFlashText: LocalizationConstants.Camera.onFlash,
+                                                 offFlashText: LocalizationConstants.Camera.offFlash,
+                                                 photoMode: LocalizationConstants.Camera.photoMode,
+                                                 saveButton: LocalizationConstants.General.save,
+                                                 previewScreenTitle: LocalizationConstants.ScreenTitles.previewCaptureAsset,
+                                                 fileNameTextField: LocalizationConstants.TextFieldPlaceholders.filename,
+                                                 descriptionTextField: LocalizationConstants.TextFieldPlaceholders.description,
+                                                 errorNodeNameSpecialCharacters: LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
+        CameraKit.applyTheme(theme: theme)
+        CameraKit.applyLocalization(localization: localization)
     }
 }

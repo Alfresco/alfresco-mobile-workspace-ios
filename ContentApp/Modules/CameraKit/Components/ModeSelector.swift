@@ -18,32 +18,32 @@
 
 import UIKit
 
-struct CameraSliderEntry {
+struct ModeSelectorEntry {
     let entryName: String
 }
 
-struct CameraSliderControlSyle {
+struct ModeSelectorControlSyle {
     let selectedOptionColor: UIColor
     let optionColor: UIColor
     let optionFont: UIFont
     let optionBackgroundColor: UIColor
 }
 
-protocol CameraSliderControlDelegate: AnyObject {
+protocol ModeSelectorControlDelegate: AnyObject {
     func didChangeSelection(to currentSelection: Int)
 }
 
-class CameraSliderControl: UIControl {
+class ModeSelectorControl: UIControl {
     var entryPadding = 45
-    weak var delegate: CameraSliderControlDelegate?
+    weak var delegate: ModeSelectorControlDelegate?
 
     private(set) var currentSelection: Int = 0
 
     private let scrollView = UIScrollView()
     private var sliderLabelEntries: [UILabel] = []
     private var sliderButtonEntries: [UIButton] = []
-    private var sliderStyle: CameraSliderControlSyle =
-        CameraSliderControlSyle(selectedOptionColor: .green,
+    private var sliderStyle: ModeSelectorControlSyle =
+        ModeSelectorControlSyle(selectedOptionColor: .green,
                                 optionColor: .black,
                                 optionFont: .systemFont(ofSize: 14),
                                 optionBackgroundColor: .white)
@@ -90,7 +90,7 @@ class CameraSliderControl: UIControl {
 
     // MARK: - Public interface
 
-    func addSlider(entries: CameraSliderEntry...) {
+    func addSlider(entries: ModeSelectorEntry...) {
         var previousEntryViewFrame: CGRect?
 
         for (index, entry) in entries.enumerated() {
@@ -142,7 +142,7 @@ class CameraSliderControl: UIControl {
         }
     }
 
-    func update(style: CameraSliderControlSyle) {
+    func update(style: ModeSelectorControlSyle) {
         sliderStyle = style
         applyCurrentStyle()
     }

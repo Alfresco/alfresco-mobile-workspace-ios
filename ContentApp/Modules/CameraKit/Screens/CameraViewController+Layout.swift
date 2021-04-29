@@ -26,7 +26,7 @@ extension CameraViewController {
     // MARK: - Apply Themes
     
     func applyComponentsThemes() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
 
         view.backgroundColor = theme.surfaceColor
 

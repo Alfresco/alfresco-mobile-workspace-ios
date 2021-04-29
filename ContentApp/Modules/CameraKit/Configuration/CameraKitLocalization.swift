@@ -16,31 +16,13 @@
 //  limitations under the License.
 //
 
-import UIKit
-import MaterialComponents.MaterialContainerScheme
+import Foundation
 
-struct CameraConfigurationLayout {
-    var onSurfaceColor: UIColor
-    var onSurface60Color: UIColor
-    var onSurface5Color: UIColor
-    var surfaceColor: UIColor
-    var surface60Color: UIColor
-    var photoShutterColor: UIColor
-    var videoShutterColor: UIColor
-    
-    var subtitle2Font: UIFont
-    var headline6Font: UIFont
-    
-    var textFieldScheme: MDCContainerScheming
-    let buttonScheme: MDCContainerScheming
-    
+struct CameraKitLocalization {
     var autoFlashText: String
     var onFlashText: String
     var offFlashText: String
-}
-
-struct CameraLocalization {
-    var sliderPhoto: String
+    var photoMode: String
     var saveButton: String
     var previewScreenTitle: String
     var fileNameTextField: String
