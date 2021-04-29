@@ -22,7 +22,11 @@ import Photos
 class PhotoGalleryDataSource {
     var mediaFilesFolderPath: String
 
-    var allPhotoAssets = PHFetchResult<PHAsset>()
+    var allPhotoAssets = PHFetchResult<PHAsset>() {
+        didSet {
+            selectedIndexAssets = Array(repeating: false, count: allPhotoAssets.count)
+        }
+    }
     private var selectedIndexAssets: Array<Bool>
     private lazy var imageManager: PHCachingImageManager = {
         return PHCachingImageManager()
@@ -100,14 +104,27 @@ class PhotoGalleryDataSource {
 
                 if let path = assetPath {
                     let assetType = (galleryAsset.mediaType == .video ? CapturedAssetType.video : .image)
+                    let fileName = sSelf.fileName(for: galleryAsset)
 
-                    let image = UIImage(contentsOfFile: path)
-                    if let assetData = image?.jpegData(compressionQuality: 1.0) {
-                        let capturedAsset = CapturedAsset(type: assetType,
-                                                          fileName: sSelf.fileName(for: galleryAsset),
+                    var capturedAsset: CapturedAsset?
+
+                    switch assetType {
+                    case .image:
+                        let image = UIImage(contentsOfFile: path)
+                        if let assetData = image?.jpegData(compressionQuality: 1.0) {
+                            capturedAsset = CapturedAsset(type: assetType,
+                                                          fileName: fileName,
                                                           data: assetData,
                                                           saveIn: sSelf.mediaFilesFolderPath)
-                        delegate?.didEndReview(for: capturedAsset)
+                        }
+                    case .video:
+                        capturedAsset = CapturedAsset(type: assetType,
+                                                      fileName: fileName,
+                                                      path: path)
+                    }
+
+                    if let asset = capturedAsset {
+                        delegate?.didEndReview(for: asset)
                     }
                 }
             }

@@ -36,19 +36,27 @@ enum CapturedAssetType {
 
 class CapturedAsset {
     let type: CapturedAssetType
-    private(set) var path = ""
     var description: String?
-    var filename: String
-    private var folderPath = ""
+    var fileName: String
+
+    private(set) var path = ""
     
     init(type: CapturedAssetType,
          fileName: String,
          data: Data,
          saveIn folderPath: String) {
         self.type = type
-        self.filename = fileName
-        self.folderPath = folderPath
-        self.path = cacheToDisk(data: data)
+        self.fileName = fileName
+        self.path = cacheToDisk(data: data,
+                                at: folderPath)
+    }
+
+    init(type: CapturedAssetType,
+         fileName: String,
+         path: String) {
+        self.type = type
+        self.fileName = fileName
+        self.path = path
     }
     
     // MARK: - Public Helpers
@@ -73,9 +81,9 @@ class CapturedAsset {
     
     // MARK: - Private Helpers
     
-    private func cacheToDisk(data: Data) -> String {
+    private func cacheToDisk(data: Data, at folderPath: String) -> String {
         let mediaFolder = folderPath as NSString
-        let imagePath = mediaFolder.appendingPathComponent("\(filename).\(type.ext)")
+        let imagePath = mediaFolder.appendingPathComponent("\(fileName).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)
         return imagePath

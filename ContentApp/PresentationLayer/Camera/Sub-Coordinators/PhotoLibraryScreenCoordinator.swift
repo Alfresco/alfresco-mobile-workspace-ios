@@ -101,7 +101,7 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
         _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
 
         let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
-                                            nodeName: capturedAsset.filename,
+                                            nodeName: capturedAsset.fileName,
                                             nodeDescription: capturedAsset.description,
                                             filePath: uploadFilePath)
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
