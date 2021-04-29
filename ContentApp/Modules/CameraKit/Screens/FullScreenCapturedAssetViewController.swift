@@ -24,7 +24,6 @@ class FullScreenCapturedAssetViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     
     var imageCapturedAsset: UIImage?
-    var theme: CameraConfigurationLayout?
     
     override var prefersStatusBarHidden: Bool {
         return true

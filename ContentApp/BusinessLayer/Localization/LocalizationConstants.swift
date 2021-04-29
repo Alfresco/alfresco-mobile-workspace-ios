@@ -230,7 +230,7 @@ struct LocalizationConstants {
     }
     
     struct Camera {
-        static let sliderCameraPhoto = NSLocalizedString("slider-camera-photo", comment: "")
+        static let photoMode = NSLocalizedString("photo-mode", comment: "")
         static let autoFlash = NSLocalizedString("auto-flash", comment: "")
         static let onFlash = NSLocalizedString("on-flash", comment: "")
         static let offFlash = NSLocalizedString("off-flash", comment: "")

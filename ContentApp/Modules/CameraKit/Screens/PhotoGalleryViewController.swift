@@ -24,6 +24,10 @@ class PhotoGalleryViewController: UIViewController {
     @IBOutlet weak var uploadButton: UIButton!
     @IBOutlet weak var titlelabel: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var emptyView: UIView!
+    @IBOutlet weak var emptyImageView: UIImageView!
+    @IBOutlet weak var emptyTitleLabel: UILabel!
+    @IBOutlet weak var emptySubtitleLabel: UILabel!
     
     weak var cameraDelegate: CameraKitCaptureDelegate?
     
@@ -31,7 +35,6 @@ class PhotoGalleryViewController: UIViewController {
     var distanceBetweenCells: CGFloat = 8.0
     
     var photoGalleryDataSource: PhotoGalleryDataSource?
-    var theme: GalleryConfigurationLayout?
     
     var enableUploadButton = false {
         didSet {
@@ -51,6 +54,7 @@ class PhotoGalleryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.allowsMultipleSelection = true
+        emptyView.isHidden = true
         applyComponentsThemes()
         centerCells()
         enableUploadButton = false
@@ -70,14 +74,19 @@ class PhotoGalleryViewController: UIViewController {
     // MARK: - Private Methods
     
     private func applyComponentsThemes() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
+
         view.backgroundColor = theme.surfaceColor
         closeButton.tintColor = theme.onSurface60Color
+
         titlelabel.textColor = theme.onSurfaceColor
         titlelabel.font = theme.headline6Font
+
         uploadButton.titleLabel?.font = theme.subtitle2Font
         uploadButton.setTitleColor(theme.primaryColor, for: .normal)
         uploadButton.setTitleColor(theme.onSurface15Color, for: .disabled)
+
+        emptyTitleLabel.textAlignment = .center
     }
     
     private func centerCells() {
@@ -136,7 +145,7 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
         guard let viewModel = photoGalleryDataSource else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: true)
-            cell.contentView.backgroundColor = theme?.primaryColor.withAlphaComponent(0.12)
+            cell.contentView.backgroundColor = CameraKit.theme?.primaryColor.withAlphaComponent(0.12)
             viewModel.markAssetsAs(enabled: true, for: indexPath)
             enableUploadButton = true
         }

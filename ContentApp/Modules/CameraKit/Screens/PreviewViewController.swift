@@ -39,8 +39,6 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
 
     var previewViewModel: PreviewViewModel?
-    var theme: CameraConfigurationLayout?
-    var localization: CameraLocalization?
     weak var cameraDelegate: CameraKitCaptureDelegate?
     
     var enableSaveButton = false {
@@ -118,7 +116,7 @@ class PreviewViewController: UIViewController {
     // MARK: - Private Methods
     
     private func applyComponentsThemes() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
 
         scrollView.backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -138,7 +136,7 @@ class PreviewViewController: UIViewController {
     }
     
     private func applyLocalization() {
-        guard let localization = self.localization else { return }
+        guard let localization = CameraKit.localization else { return }
         
         title = localization.previewScreenTitle
         fileNameTextField.label.text = localization.fileNameTextField
@@ -156,7 +154,6 @@ class PreviewViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showFullScreen.rawValue,
            let fscavc = segue.destination as? FullScreenCapturedAssetViewController {
-            fscavc.theme = theme
             fscavc.imageCapturedAsset = previewViewModel?.capturedAsset.image()
         }
     }
@@ -227,7 +224,7 @@ extension PreviewViewController: UITextFieldDelegate {
     }
 
     func enableSaveButton(for text: String?) {
-        guard let text = text, let localization = self.localization else {
+        guard let text = text, let localization = CameraKit.localization else {
             enableSaveButton = false
             disableErrorOnTextField()
             return
@@ -246,7 +243,7 @@ extension PreviewViewController: UITextFieldDelegate {
     }
 
     func applyErrorOnTextField(with message: String) {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
         enableSaveButton = false
         fileNameTextField.applyErrorTheme(withScheme: theme.textFieldScheme)
         fileNameTextField.leadingAssistiveLabel.text = message
@@ -254,7 +251,7 @@ extension PreviewViewController: UITextFieldDelegate {
     }
 
     func disableErrorOnTextField() {
-        guard let theme = self.theme else { return }
+        guard let theme = CameraKit.theme else { return }
         enableSaveButton = true
         fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
         fileNameTextField.leadingAssistiveLabel.text = ""

@@ -39,8 +39,6 @@ class CameraScreenCoordinator: Coordinator {
         mediaFilesFolderPath = folderPath
         
         viewController.cameraViewModel = cameraViewModel
-        viewController.theme = configurationLayout()
-        viewController.localization = cameraLocalization()
         viewController.cameraDelegate = self
         
         let navigationViewController = UINavigationController(rootViewController: viewController)
@@ -82,45 +80,6 @@ class CameraScreenCoordinator: Coordinator {
         default:
             completion(false)
         }
-    }
-
-    private func configurationLayout() -> CameraConfigurationLayout? {
-        guard let currentTheme = themingService?.activeTheme,
-              let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
-              let buttonScheme = themingService?.containerScheming(for: .dialogButton)
-        else { return  nil}
-
-        return
-            CameraConfigurationLayout(onSurfaceColor: currentTheme.onSurfaceColor,
-                                      onSurface60Color: currentTheme.onSurface60Color,
-                                      onSurface5Color: currentTheme.onSurface5Color,
-                                      surfaceColor: currentTheme.surfaceColor,
-                                      surface60Color: currentTheme.surface60Color,
-                                      photoShutterColor: currentTheme.photoShutterColor,
-                                      videoShutterColor: currentTheme.videoShutterColor,
-                                      subtitle2Font: currentTheme.subtitle2TextStyle.font,
-                                      headline6Font: currentTheme.headline6TextStyle.font,
-                                      textFieldScheme: textFieldScheme,
-                                      buttonScheme: buttonScheme,
-                                      autoFlashText: LocalizationConstants.Camera.autoFlash,
-                                      onFlashText: LocalizationConstants.Camera.onFlash,
-                                      offFlashText: LocalizationConstants.Camera.offFlash)
-    }
-    
-    private func cameraLocalization() -> CameraLocalization {
-        return
-            CameraLocalization(sliderPhoto:
-                                LocalizationConstants.Camera.sliderCameraPhoto,
-                               saveButton:
-                                LocalizationConstants.General.save,
-                               previewScreenTitle:
-                                LocalizationConstants.ScreenTitles.previewCaptureAsset,
-                               fileNameTextField:
-                                LocalizationConstants.TextFieldPlaceholders.filename,
-                               descriptionTextField:
-                                LocalizationConstants.TextFieldPlaceholders.description,
-                               errorNodeNameSpecialCharacters:
-                                LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
     }
 }
 

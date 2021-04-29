@@ -16,10 +16,27 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
+import MaterialComponents.MaterialContainerScheme
 
-extension Collection {
-  subscript(safe index: Index) -> Element? {
-    return indices.contains(index) ? self[index] : nil
-  }
+struct CameraKitTheme {
+    // Colors
+    var primaryColor: UIColor
+    var onSurfaceColor: UIColor
+    var onSurface60Color: UIColor
+    var onSurface15Color: UIColor
+    var onSurface5Color: UIColor
+    var surfaceColor: UIColor
+    var surface60Color: UIColor
+    var photoShutterColor: UIColor
+    var videoShutterColor: UIColor
+
+    // MDC Themes
+    var textFieldScheme: MDCContainerScheming
+    let buttonScheme: MDCContainerScheming
+
+    // Fonts
+    var subtitle2Font: UIFont
+    var headline6Font: UIFont
 }
+

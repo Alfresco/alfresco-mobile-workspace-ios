@@ -16,15 +16,17 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-struct GalleryConfigurationLayout {
-    var onSurfaceColor: UIColor
-    var onSurface60Color: UIColor
-    var onSurface15Color: UIColor
-    var surfaceColor: UIColor
-    var primaryColor: UIColor
-    
-    var headline6Font: UIFont
-    var subtitle2Font: UIFont
+class CameraKit {
+    static var theme: CameraKitTheme?
+    static var localization: CameraKitLocalization?
+
+    static func applyTheme(theme: CameraKitTheme) {
+        self.theme = theme
+    }
+
+    static func applyLocalization(localization: CameraKitLocalization) {
+        self.localization = localization
+    }
 }
