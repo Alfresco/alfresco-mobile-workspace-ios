@@ -163,16 +163,20 @@ class PhotoCaptureSession: CaptureSession {
     
     // MARK: - Private Methods
 
-    private func process(capturePhoto: AVCapturePhoto) {
-        guard let data = capturePhoto.fileDataRepresentation() else {
-            let error = CaptureError.error("Cannot get photo file data representation")
+    private func process(capturedPhoto: AVCapturePhoto) {
+        guard let data = capturedPhoto.fileDataRepresentation(),
+              let mediaFolderPath = mediaFilesFolderPath else {
+            let error = CaptureError.error("Cannot process captured photo")
             AlfrescoLog.error(error)
             delegate?.captured(asset: nil, error: error)
+
             return
         }
+
         delegate?.captured(asset: CapturedAsset(type: .image,
+                                                fileName: defaultFileName(),
                                                 data: data,
-                                                saveIn: mediaFilesFolderPath),
+                                                saveIn: mediaFolderPath),
                            error: nil)
     }
     
@@ -200,6 +204,12 @@ class PhotoCaptureSession: CaptureSession {
             AlfrescoLog.error("An unexpected error occured while zooming.")
         }
     }
+
+    private func defaultFileName() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+    }
 }
 
 // MARK: - AVCapturePhotoCapture Delegate
@@ -212,6 +222,6 @@ extension PhotoCaptureSession: AVCapturePhotoCaptureDelegate {
         if let error = error {
             delegate?.captured(asset: nil, error: error)
         }
-        process(capturePhoto: photo)
+        process(capturedPhoto: photo)
     }
 }

@@ -94,7 +94,7 @@ class PreviewViewController: UIViewController {
         if let filename = fileNameTextField.text,
            let capturedAsset = previewViewModel?.capturedAsset {
             previewViewModel?.updateMetadata(filename: filename,
-                                                   description: descriptionField.textView.text)
+                                             description: descriptionField.textView.text)
             cameraDelegate?.didEndReview(for: capturedAsset)
         }
         
@@ -302,3 +302,7 @@ extension PreviewViewController: MDCBaseTextAreaDelegate {
         }
     }
 }
+
+// MARK: - Storyboard Instantiable
+
+extension PreviewViewController: CameraStoryboardInstantiable { }

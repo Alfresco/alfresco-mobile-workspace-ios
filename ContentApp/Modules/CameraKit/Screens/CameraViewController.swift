@@ -301,6 +301,6 @@ extension CameraViewController: FlashMenuDelegate {
     }
 }
 
-// MARK: - Camera Storyboard Instantiable
+// MARK: - Storyboard Instantiable
 
 extension CameraViewController: CameraStoryboardInstantiable { }

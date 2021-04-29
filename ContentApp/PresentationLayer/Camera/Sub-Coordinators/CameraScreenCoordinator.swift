@@ -33,7 +33,8 @@ class CameraScreenCoordinator: Coordinator {
     
     func start() {
         let viewController = CameraViewController.instantiateViewController()
-        let folderPath = mediaFolderPath()
+        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let folderPath = DiskService.mediaFolderPath(for: accountIdentifier)
         let cameraViewModel = CameraViewModel(mediaFilesFolderPath: folderPath)
         mediaFilesFolderPath = folderPath
         
@@ -58,7 +59,7 @@ class CameraScreenCoordinator: Coordinator {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
                     let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                    privacyVC.viewModel = PrivacyNotiveCameraModel()
+                    privacyVC.viewModel = PrivacyNoticeCameraModel()
                     privacyVC.coordinatorServices = sSelf.coordinatorServices
                     sSelf.presenter.present(privacyVC,
                                             animated: true,
@@ -121,30 +122,17 @@ class CameraScreenCoordinator: Coordinator {
                                errorNodeNameSpecialCharacters:
                                 LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
     }
-
-    private func mediaFolderPath() -> String {
-        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-
-        let documentsPathForAccount = DiskService.documentsDirectoryPath(for: accountIdentifier)
-        _ = DiskService.create(directoryPath: documentsPathForAccount +
-                                "/" +
-                                KeyConstants.Disk.mediaFilesFolder)
-
-        return DiskService.mediaFilesFolderPath(for: accountIdentifier)
-    }
 }
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAsset: CapturedAsset) {
-        if let assetPath = capturedAsset.path,
-           let mediaPath = mediaFilesFolderPath {
-
-            let assetURL = URL(fileURLWithPath: assetPath)
+        if let mediaPath = mediaFilesFolderPath {
+            let assetURL = URL(fileURLWithPath: capturedAsset.path)
             let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-            let uploadFilePath = DiskService.documentsDirectoryPath(for: accountIdentifier) + "/" +
-                KeyConstants.Disk.uploadsFolder + "/" +
-                assetURL.lastPathComponent
-            _ = DiskService.copy(itemAtPath: assetPath, to: uploadFilePath)
+
+            let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
+                "/" + assetURL.lastPathComponent
+            _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
             _ = DiskService.delete(itemAtPath: mediaPath)
 
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,

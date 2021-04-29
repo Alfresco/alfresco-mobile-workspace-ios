@@ -18,10 +18,9 @@
 
 import UIKit
 
-let mediaFolderName = "Media Folder"
 let prefixFileName = "IMG"
-let extPhoto = "jpg"
-let extVideo = "mov"
+let extPhoto = "JPG"
+let extVideo = "MOV"
 
 enum CapturedAssetType {
     case image
@@ -36,23 +35,25 @@ enum CapturedAssetType {
 }
 
 class CapturedAsset {
-    private(set) var path: String?
-    private let type: CapturedAssetType
+    let type: CapturedAssetType
+    private(set) var path = ""
     var description: String?
-    var filename = ""
-    private let folderPath: String?
+    var filename: String
+    private var folderPath = ""
     
-    init(type: CapturedAssetType, data: Data, saveIn folderPath: String?) {
+    init(type: CapturedAssetType,
+         fileName: String,
+         data: Data,
+         saveIn folderPath: String) {
         self.type = type
+        self.filename = fileName
         self.folderPath = folderPath
-        self.filename = provideFileName()
         self.path = cacheToDisk(data: data)
     }
     
     // MARK: - Public Helpers
     
     func image() -> UIImage? {
-        guard let path = path else { return nil }
         if FileManager.default.fileExists(atPath: path) {
             return UIImage(contentsOfFile: path)
         }
@@ -60,7 +61,6 @@ class CapturedAsset {
     }
     
     func deleteAsset() {
-        guard let path = path else { return }
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: path) {
             do {
@@ -73,14 +73,8 @@ class CapturedAsset {
     
     // MARK: - Private Helpers
     
-    private func provideFileName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
-    }
-    
-    private func cacheToDisk(data: Data) -> String? {
-        guard let mediaFolder = folderPath as NSString? else { return nil }
+    private func cacheToDisk(data: Data) -> String {
+        let mediaFolder = folderPath as NSString
         let imagePath = mediaFolder.appendingPathComponent("\(filename).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)

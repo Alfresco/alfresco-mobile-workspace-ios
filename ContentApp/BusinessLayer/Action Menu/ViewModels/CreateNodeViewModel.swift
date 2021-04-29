@@ -74,7 +74,7 @@ class CreateNodeViewModel {
             case .createMSWord, .createMSExcel, .createMSPowerPoint:
                 sSelf.createMSOfficeNode(nodeId: listNode.guid,
                                          autoRename: shouldAutorename)
-            case .createMedia: break
+            case .createMedia, .uploadMedia: break
             default: break
             }
         }

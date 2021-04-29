@@ -172,6 +172,7 @@
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
 "action-menu-create-media" = "Take a photo";
+"action-menu-upload-media" = "Upload photos or videos";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";

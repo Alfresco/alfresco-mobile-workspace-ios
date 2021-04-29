@@ -16,19 +16,15 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-protocol PrivacyNoticeModelProtocol {
-    var title: String { get }
-    var description: String { get }
-}
-
-struct PrivacyNoticeCameraModel: PrivacyNoticeModelProtocol {
-    var title = LocalizationConstants.PrivacySettings.privacyCameraTitle
-    var description =  LocalizationConstants.PrivacySettings.privacyCameraDescription
-}
-
-struct PrivacyNoticePhotosModel: PrivacyNoticeModelProtocol {
-    var title = LocalizationConstants.PrivacySettings.privacyPhotosTitle
-    var description =  LocalizationConstants.PrivacySettings.privacyPhotosDescription
+struct GalleryConfigurationLayout {
+    var onSurfaceColor: UIColor
+    var onSurface60Color: UIColor
+    var onSurface15Color: UIColor
+    var surfaceColor: UIColor
+    var primaryColor: UIColor
+    
+    var headline6Font: UIFont
+    var subtitle2Font: UIFont
 }

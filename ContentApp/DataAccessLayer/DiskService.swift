@@ -86,8 +86,8 @@ class DiskService {
         }
         do {
             try fileManager.copyItem(atPath: itemAtPath, toPath: path)
-        } catch {
-            AlfrescoLog.error("Failed to copy item at path: \(itemAtPath) to path: \(path)")
+        } catch let error {
+            AlfrescoLog.error("Failed to copy item at path: \(itemAtPath) to path: \(path). Reason: \(error.localizedDescription)")
             return false
         }
 
@@ -101,10 +101,6 @@ class DiskService {
                                                           in: .userDomainMask)[0]
         return documentsDirectory.path
     }
-    
-    static func mediaFilesFolderPath(for accountIdentifier: String) -> String {
-        return documentsDirectoryPath(for: accountIdentifier) + "/" + KeyConstants.Disk.mediaFilesFolder
-    }
 
     static func documentsDirectoryPath(for accountIdentifier: String) -> String {
         let documentsPath = self.documentsDirectoryPath() as NSString
@@ -112,6 +108,21 @@ class DiskService {
         let accountDocumentsPath = documentsPath.appendingPathComponent(md5Path)
 
         return accountDocumentsPath
+    }
+
+    static func mediaFolderPath(for accountIdentifier: String) -> String {
+        let mediaFolderPath = documentsDirectoryPath(for: accountIdentifier) + "/" +
+            KeyConstants.Disk.mediaFilesFolder
+        _ = create(directoryPath: mediaFolderPath)
+
+        return mediaFolderPath
+    }
+
+    static func uploadFolderPath(for accountIdentifier: String) -> String {
+        let uploadFilePath = documentsDirectoryPath(for: accountIdentifier) + "/" +
+            KeyConstants.Disk.uploadsFolder
+        _ = create(directoryPath: uploadFilePath)
+        return uploadFilePath
     }
 
     static func MD5(string: String) -> Data {

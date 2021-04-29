@@ -24,6 +24,8 @@ struct ActionsMenuCreateFAB {
 
         let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
                                    type: .createFolder),
+                        ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
+                                                   type: .uploadMedia),
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
                                                    type: .createMedia)] /*,
                         ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
