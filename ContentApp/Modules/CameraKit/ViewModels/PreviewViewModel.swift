@@ -26,7 +26,7 @@ class PreviewViewModel {
     }
     
     func updateMetadata(filename: String, description: String?) {
-        capturedAsset.filename = filename
+        capturedAsset.fileName = filename
         capturedAsset.description = description
     }
 }

@@ -57,7 +57,7 @@ class PreviewViewController: UIViewController {
         applyLocalization()
         applyComponentsThemes()
         
-        fileNameTextField.text = previewViewModel?.capturedAsset.filename
+        fileNameTextField.text = previewViewModel?.capturedAsset.fileName
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self

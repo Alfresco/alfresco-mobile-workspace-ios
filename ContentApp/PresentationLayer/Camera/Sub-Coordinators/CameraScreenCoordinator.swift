@@ -136,7 +136,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             _ = DiskService.delete(itemAtPath: mediaPath)
 
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
-                                                nodeName: capturedAsset.filename,
+                                                nodeName: capturedAsset.fileName,
                                                 nodeDescription: capturedAsset.description,
                                                 filePath: uploadFilePath)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
