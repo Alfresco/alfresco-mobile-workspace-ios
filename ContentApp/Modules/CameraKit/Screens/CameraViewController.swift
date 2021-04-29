@@ -149,7 +149,7 @@ class CameraViewController: UIViewController {
     
     private func setUpModeSelector() {
         guard let theme = self.theme, let localization = self.localization else { return }
-        
+
         let style = CameraSliderControlSyle(selectedOptionColor: theme.onSurfaceColor,
                                             optionColor: theme.onSurface60Color,
                                             optionFont: theme.subtitle2Font,
@@ -163,8 +163,11 @@ class CameraViewController: UIViewController {
     private func setUpZoomSlider() {
         guard let theme = self.theme else { return }
 
-        let style = RangeSliderControlSyle(thumbTintColor: theme.surfaceColor,
-                                           tintColor: theme.surface60Color,
+        let surfaceColor = UIColor(hex: "#FFFFFF")
+        let surface60Color = UIColor(hex: "#FFFFFF", alpha: 0.6)
+
+        let style = RangeSliderControlSyle(thumbTintColor: surfaceColor,
+                                           tintColor: surface60Color,
                                            optionFont: theme.subtitle2Font,
                                            fontColor: theme.onSurfaceColor)
         zoomSlider.update(style: style)
