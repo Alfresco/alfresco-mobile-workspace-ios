@@ -81,6 +81,7 @@ class PhotoGalleryViewController: UIViewController {
 
         titlelabel.textColor = theme.onSurfaceColor
         titlelabel.font = theme.headline6Font
+        titlelabel.text = localization.galleryTitle
 
         uploadButton.titleLabel?.font = theme.subtitle2Font
         uploadButton.setTitleColor(theme.primaryColor, for: .normal)

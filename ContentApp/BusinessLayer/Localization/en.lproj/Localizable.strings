@@ -74,7 +74,8 @@
 "favorites" = "Favorites";
 "browse" = "Browse";
 "offline" = "Offline";
-"previewCaptureAsset" = "Preview";
+"preview-capture-asset" = "Preview";
+"gallery-upload" = "Photos";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";
@@ -196,8 +197,8 @@
 "empty-search-description" = "We can’t find what you’re looking for.";
 "empty-offline-title" = "No offline content";
 "empty-offline-description" = "Content that you make available offline will show up here.";
-"empty-gallery-title" = "Oops!";
-"empty-gallery-description" = "No Camera Roll photos were found.";
+"empty-gallery-title" = "No photos or videos";
+"empty-gallery-description" = "Try to add some photos or videos to your device.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";

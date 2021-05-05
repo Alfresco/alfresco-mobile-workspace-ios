@@ -146,7 +146,8 @@ class ApplicationBootstrap {
                                                  emptyGalleryTitle:
                                                     LocalizationConstants.EmptyLists.galleryTitle,
                                                  emptyGalleryDescription:
-                                                    LocalizationConstants.EmptyLists.galleryDescription)
+                                                    LocalizationConstants.EmptyLists.galleryDescription,
+                                                 galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload)
         CameraKit.applyTheme(theme: theme)
         CameraKit.applyLocalization(localization: localization)
     }
