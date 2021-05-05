@@ -128,16 +128,25 @@ class ApplicationBootstrap {
                                    textFieldScheme: textFieldScheme,
                                    buttonScheme: buttonScheme,
                                    subtitle2Font: currentTheme.subtitle2TextStyle.font,
-                                   headline6Font: currentTheme.headline6TextStyle.font)
+                                   headline6Font: currentTheme.headline6TextStyle.font,
+                                   body2Font: currentTheme.body2TextStyle.font)
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
                                                  offFlashText: LocalizationConstants.Camera.offFlash,
                                                  photoMode: LocalizationConstants.Camera.photoMode,
                                                  saveButton: LocalizationConstants.General.save,
-                                                 previewScreenTitle: LocalizationConstants.ScreenTitles.previewCaptureAsset,
-                                                 fileNameTextField: LocalizationConstants.TextFieldPlaceholders.filename,
-                                                 descriptionTextField: LocalizationConstants.TextFieldPlaceholders.description,
-                                                 errorNodeNameSpecialCharacters: LocalizationConstants.Errors.errorNodeNameSpecialCharacters)
+                                                 previewScreenTitle:
+                                                    LocalizationConstants.ScreenTitles.previewCaptureAsset,
+                                                 fileNameTextField:
+                                                    LocalizationConstants.TextFieldPlaceholders.filename,
+                                                 descriptionTextField:
+                                                    LocalizationConstants.TextFieldPlaceholders.description,
+                                                 errorNodeNameSpecialCharacters:
+                                                    LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
+                                                 emptyGalleryTitle:
+                                                    LocalizationConstants.EmptyLists.galleryTitle,
+                                                 emptyGalleryDescription:
+                                                    LocalizationConstants.EmptyLists.galleryDescription)
         CameraKit.applyTheme(theme: theme)
         CameraKit.applyLocalization(localization: localization)
     }

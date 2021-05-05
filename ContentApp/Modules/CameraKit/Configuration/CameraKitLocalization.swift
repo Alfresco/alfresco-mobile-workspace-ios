@@ -28,4 +28,6 @@ struct CameraKitLocalization {
     var fileNameTextField: String
     var descriptionTextField: String
     var errorNodeNameSpecialCharacters: String
+    var emptyGalleryTitle: String
+    var emptyGalleryDescription: String
 }

@@ -179,7 +179,7 @@
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Woy-Sw-rIu">
                                 <rect key="frame" x="0.0" y="44" width="428" height="848"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e8a-WV-pJa">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-empty-list-folder" translatesAutoresizingMaskIntoConstraints="NO" id="e8a-WV-pJa">
                                         <rect key="frame" x="182" y="238.66666666666669" width="64" height="88"/>
                                         <accessibility key="accessibilityConfiguration" identifier="emptyListImageView">
                                             <bool key="isElement" value="YES"/>
@@ -548,6 +548,7 @@
         <image name="ic-camera-flash-auto" width="24" height="24"/>
         <image name="ic-camera-switch" width="24" height="24"/>
         <image name="ic-close" width="24" height="24"/>
+        <image name="ic-empty-list-folder" width="64" height="88"/>
         <image name="ic-gallery-is-video" width="24" height="24"/>
         <image name="ic-trash" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">

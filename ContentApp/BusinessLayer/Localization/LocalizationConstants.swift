@@ -219,6 +219,8 @@ struct LocalizationConstants {
         static let searchDescription = NSLocalizedString("empty-search-description", comment: "")
         static let offlineTitle = NSLocalizedString("empty-offline-title", comment: "")
         static let offlineDescription = NSLocalizedString("empty-offline-description", comment: "")
+        static let galleryTitle = NSLocalizedString("empty-gallery-title", comment: "")
+        static let galleryDescription = NSLocalizedString("empty-gallery-description", comment: "")
     }
 
     struct PrivacySettings {
