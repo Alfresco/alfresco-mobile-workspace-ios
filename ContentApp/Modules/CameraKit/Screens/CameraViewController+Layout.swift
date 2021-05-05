@@ -174,10 +174,10 @@ extension CameraViewController {
     private func configureShutterView() {
         let switchCameraButtonX = shutterView.frame.width - switchCameraButton.bounds.width - cameraMargin
         
-        captureButton.center = CGPoint(x: shutterView.frame.width / 2, y: shutterView.frame.height / 2)
+        shutterButton.center = CGPoint(x: shutterView.frame.width / 2, y: shutterView.frame.height / 2)
         switchCameraButton.frame.size = cameraFeatureButtonSize
         switchCameraButton.frame.origin.x = switchCameraButtonX
-        switchCameraButton.center.y = captureButton.center.y
+        switchCameraButton.center.y = shutterButton.center.y
     }
     
     private func configureModeView() {

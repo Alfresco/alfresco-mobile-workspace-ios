@@ -25,7 +25,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var captureButton: CameraButton!
+    @IBOutlet weak var shutterButton: CameraButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -58,8 +58,8 @@ class CameraViewController: UIViewController {
         configureViewsLayout(for: view.bounds.size)
         cameraViewModel?.delegate = self
 
-        cameraButtonConfiguration()
-        flashModeConfiguration()
+        setUpShutterButton()
+        setUpFlashMenu()
         setUpZoomSlider()
         setUpModeSelector()
     }
@@ -106,7 +106,7 @@ class CameraViewController: UIViewController {
     }
     
     @IBAction func captureButtonTapped(_ sender: CameraButton) {
-        captureButton.isUserInteractionEnabled = false
+        shutterButton.isUserInteractionEnabled = false
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
@@ -117,18 +117,25 @@ class CameraViewController: UIViewController {
         sessionPreview.changeCameraPosition()
         sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
         apply(fade: true, to: flashMenuView)
+
+        shutterButton.isUserInteractionEnabled = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.shutterButton.isUserInteractionEnabled = true
+            
+        }
     }
     
     // MARK: - Private Methods
 
-    private func cameraButtonConfiguration() {
+    private func setUpShutterButton() {
         guard let theme = CameraKit.theme else { return }
         
         let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
-        captureButton.buttonInput = .photo
-        captureButton.update(style: style)
+        shutterButton.buttonInput = .photo
+        shutterButton.update(style: style)
     }
     
     private func setUpCameraSession() {
@@ -175,7 +182,7 @@ class CameraViewController: UIViewController {
         zoomLabel.isHidden = true
     }
     
-    private func flashModeConfiguration() {
+    private func setUpFlashMenu() {
         guard let theme = CameraKit.theme,
               let localization = CameraKit.localization else { return }
         
@@ -215,7 +222,7 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: CameraViewModelDelegate {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
-        captureButton.isUserInteractionEnabled = true
+        shutterButton.isUserInteractionEnabled = true
         if capturedAsset != nil {
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                          sender: nil)
