@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -121,13 +121,13 @@
                     </view>
                     <connections>
                         <outlet property="cameraSlider" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
-                        <outlet property="captureButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
                         <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
                         <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
                         <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
                         <outlet property="modeView" destination="fvq-fy-4iC" id="HRs-74-qq4"/>
                         <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
+                        <outlet property="shutterButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
                         <outlet property="shutterView" destination="ULu-2x-pmc" id="1wk-ju-RDg"/>
                         <outlet property="switchCameraButton" destination="7ci-e2-bho" id="whO-0t-Wkd"/>
                         <outlet property="topBarView" destination="dfX-xY-wpU" id="PAX-eL-Wqf"/>
@@ -334,7 +334,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAD-Um-d5b" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="592"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="604"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lqx-zE-Z9u">
                                                 <rect key="frame" x="97" y="12" width="234" height="312"/>
@@ -377,7 +377,7 @@
                                                 </connections>
                                             </textField>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rvJ-v8-anF" customClass="MDCOutlinedTextArea">
-                                                <rect key="frame" x="24" y="440" width="380" height="56"/>
+                                                <rect key="frame" x="24" y="452" width="380" height="56"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" priority="250" constant="56" id="Clk-z3-gvv"/>
@@ -385,7 +385,7 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="stA-oV-pdw" customClass="MDCButton">
-                                                <rect key="frame" x="24" y="520" width="380" height="48"/>
+                                                <rect key="frame" x="24" y="532" width="380" height="48"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="saveButton">
                                                     <bool key="isElement" value="YES"/>
                                                 </accessibility>
@@ -414,7 +414,7 @@
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="top" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="36" id="GDW-RP-1KR"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="Il7-Be-aeh"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="24" id="RoD-iB-NA0"/>
-                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="24" id="TQu-aK-HcY"/>
+                                            <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="36" id="TQu-aK-HcY"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="X0X-35-9ml"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="ZMF-7v-Fiy"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="leading" secondItem="pAD-Um-d5b" secondAttribute="leading" constant="24" id="bpT-8G-Mda"/>
