@@ -38,5 +38,5 @@ struct CameraKitTheme {
     // Fonts
     var subtitle2Font: UIFont
     var headline6Font: UIFont
+    var body2Font: UIFont
 }
-

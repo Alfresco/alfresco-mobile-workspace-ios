@@ -82,7 +82,8 @@ struct LocalizationConstants {
         static let favorites = NSLocalizedString("favorites", comment: "")
         static let browse = NSLocalizedString("browse", comment: "")
         static let offline = NSLocalizedString("offline", comment: "")
-        static let previewCaptureAsset = NSLocalizedString("previewCaptureAsset", comment: "")
+        static let previewCaptureAsset = NSLocalizedString("preview-capture-asset", comment: "")
+        static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
     }
 
     struct Help {
@@ -219,6 +220,8 @@ struct LocalizationConstants {
         static let searchDescription = NSLocalizedString("empty-search-description", comment: "")
         static let offlineTitle = NSLocalizedString("empty-offline-title", comment: "")
         static let offlineDescription = NSLocalizedString("empty-offline-description", comment: "")
+        static let galleryTitle = NSLocalizedString("empty-gallery-title", comment: "")
+        static let galleryDescription = NSLocalizedString("empty-gallery-description", comment: "")
     }
 
     struct PrivacySettings {

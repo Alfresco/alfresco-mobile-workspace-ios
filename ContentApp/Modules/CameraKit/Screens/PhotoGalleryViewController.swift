@@ -54,10 +54,10 @@ class PhotoGalleryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.allowsMultipleSelection = true
-        emptyView.isHidden = true
         applyComponentsThemes()
         centerCells()
         enableUploadButton = false
+        emptyView.isHidden = (photoGalleryDataSource?.numberOfAssets() == 0) ? false : true
     }
     
     // MARK: - IBActions
@@ -74,19 +74,28 @@ class PhotoGalleryViewController: UIViewController {
     // MARK: - Private Methods
     
     private func applyComponentsThemes() {
-        guard let theme = CameraKit.theme else { return }
+        guard let theme = CameraKit.theme, let localization = CameraKit.localization else { return }
 
         view.backgroundColor = theme.surfaceColor
         closeButton.tintColor = theme.onSurface60Color
 
         titlelabel.textColor = theme.onSurfaceColor
         titlelabel.font = theme.headline6Font
+        titlelabel.text = localization.galleryTitle
 
         uploadButton.titleLabel?.font = theme.subtitle2Font
         uploadButton.setTitleColor(theme.primaryColor, for: .normal)
         uploadButton.setTitleColor(theme.onSurface15Color, for: .disabled)
 
         emptyTitleLabel.textAlignment = .center
+        emptyTitleLabel.text = localization.emptyGalleryTitle
+        emptyTitleLabel.textColor = theme.onSurfaceColor
+        emptyTitleLabel.font = theme.headline6Font
+
+        emptySubtitleLabel.textAlignment = .center
+        emptySubtitleLabel.text = localization.emptyGalleryDescription
+        emptySubtitleLabel.textColor = theme.onSurface60Color
+        emptySubtitleLabel.font = theme.body2Font
     }
     
     private func centerCells() {
@@ -182,6 +191,11 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
 
 extension PhotoGalleryViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.emptyView.isHidden = (sSelf.photoGalleryDataSource?.numberOfAssets() == 0) ? false : true
+        }
+        
         if let allPhotos = photoGalleryDataSource?.allPhotoAssets {
             guard let change = changeInstance.changeDetails(for: allPhotos) else {
                 return
