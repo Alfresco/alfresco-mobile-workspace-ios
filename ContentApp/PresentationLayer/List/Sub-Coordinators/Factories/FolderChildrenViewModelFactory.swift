@@ -35,7 +35,7 @@ class FolderChildrenViewModelFactory {
         let resultViewModel = ResultsViewModel(with: coordinatorServices)
         let contextualSearchViewModel =
             ContextualSearchViewModel(accountService: coordinatorServices?.accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
+        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.name,
                                       type: .node, selected: true,
                                       nodeID: listNode.guid)
         contextualSearchViewModel.delegate = resultViewModel

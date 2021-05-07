@@ -270,7 +270,7 @@ class NodeActionsViewModel {
         guard let node = self.node else { return }
         let title = LocalizationConstants.Dialog.deleteTitle
         let message = String(format: LocalizationConstants.Dialog.deleteMessage,
-                             node.title)
+                             node.name)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel)
         cancelAction.accessibilityIdentifier = "cancelActionButton"
@@ -330,7 +330,7 @@ class NodeActionsViewModel {
                 workerQueue.async {
                     let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
                     var downloadURL = URL(fileURLWithPath: downloadPath)
-                    downloadURL.appendPathComponent(node.title)
+                    downloadURL.appendPathComponent(node.name)
                     sSelf.sessionForCurrentAccount { (_) in
                     downloadRequest = sSelf.nodeOperations.downloadContent(for: node,
                                                                            to: downloadURL,
@@ -382,7 +382,7 @@ class NodeActionsViewModel {
             let themingService = coordinatorServices?.themingService
             downloadDialogView.messageLabel.text =
                 String(format: LocalizationConstants.Dialog.downloadMessage,
-                       node?.title ?? "")
+                       node?.name ?? "")
             downloadDialogView.activityIndicator.startAnimating()
             downloadDialogView.applyTheme(themingService?.activeTheme)
 

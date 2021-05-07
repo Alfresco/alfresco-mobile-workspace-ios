@@ -34,8 +34,8 @@ struct SharedLinkMapper {
 
         return ListNode(guid: node.nodeId ?? "",
                         mimeType: node.content?.mimeType,
-                        title: node.name ?? "",
-                        path: path,
+                        name: node.name ?? "",
+                        pathElemets: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: .file,
                         favorite: node.isFavorite,

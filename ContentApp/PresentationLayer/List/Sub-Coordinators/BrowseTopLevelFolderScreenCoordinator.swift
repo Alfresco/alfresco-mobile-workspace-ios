@@ -52,8 +52,8 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     
     func personalFilesNode () -> ListNode {
         return ListNode(guid: APIConstants.my,
-                        title: "Personal files",
-                        path: "",
+                        name: "Personal files",
+                        pathElemets: "",
                         nodeType: .folder)
     }
 }

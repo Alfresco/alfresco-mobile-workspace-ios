@@ -32,8 +32,8 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "siteID", type: String.entityPropertyType, id: 4, uid: 958837345273675264)
         try entityBuilder.addProperty(name: "destination", type: String.entityPropertyType, id: 5, uid: 3656813396238663424)
         try entityBuilder.addProperty(name: "mimeType", type: String.entityPropertyType, id: 6, uid: 40203180090543360)
-        try entityBuilder.addProperty(name: "title", type: String.entityPropertyType, id: 7, uid: 7099218486325184512)
-        try entityBuilder.addProperty(name: "path", type: String.entityPropertyType, id: 8, uid: 3118078692928307712)
+        try entityBuilder.addProperty(name: "name", type: String.entityPropertyType, id: 22, uid: 4881477795382938368)
+        try entityBuilder.addProperty(name: "pathElements", type: String.entityPropertyType, id: 21, uid: 4252015497933459712)
         try entityBuilder.addProperty(name: "modifiedAt", type: Date.entityPropertyType, id: 9, uid: 1855641798515070976)
         try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 10, uid: 8877005435172031744)
         try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 11, uid: 8306138110636922368)
@@ -46,7 +46,7 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "markedFor", type: String.entityPropertyType, id: 18, uid: 1597269330570867456)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 17, uid: 186580639668120576)
 
-        try entityBuilder.lastProperty(id: 20, uid: 3222472111177428736)
+        try entityBuilder.lastProperty(id: 23, uid: 7944731142204993280)
     }
 }
 
@@ -91,14 +91,14 @@ extension ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.title.startsWith("X") }
-    internal static var title: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 7, isPrimaryKey: false) }
+    ///     box.query { ListNode.name.startsWith("X") }
+    internal static var name: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { ListNode.path.startsWith("X") }
-    internal static var path: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 8, isPrimaryKey: false) }
+    ///     box.query { ListNode.pathElements.startsWith("X") }
+    internal static var pathElements: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 21, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -224,17 +224,17 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .title.startsWith("X") }
+    ///     box.query { .name.startsWith("X") }
 
-    internal static var title: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 7, isPrimaryKey: false) }
+    internal static var name: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 22, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
-    ///     box.query { .path.startsWith("X") }
+    ///     box.query { .pathElements.startsWith("X") }
 
-    internal static var path: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 8, isPrimaryKey: false) }
+    internal static var pathElements: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 21, isPrimaryKey: false) }
 
     /// Generated entity property information.
     ///
@@ -351,8 +351,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_siteID = propertyCollector.prepare(string: entity.siteID)
         let propertyOffset_destination = propertyCollector.prepare(string: entity.destination)
         let propertyOffset_mimeType = propertyCollector.prepare(string: entity.mimeType)
-        let propertyOffset_title = propertyCollector.prepare(string: entity.title)
-        let propertyOffset_path = propertyCollector.prepare(string: entity.path)
+        let propertyOffset_name = propertyCollector.prepare(string: entity.name)
+        let propertyOffset_pathElements = propertyCollector.prepare(string: entity.pathElements)
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
@@ -371,8 +371,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_siteID, at: 2 + 2 * 4)
         propertyCollector.collect(dataOffset: propertyOffset_destination, at: 2 + 2 * 5)
         propertyCollector.collect(dataOffset: propertyOffset_mimeType, at: 2 + 2 * 6)
-        propertyCollector.collect(dataOffset: propertyOffset_title, at: 2 + 2 * 7)
-        propertyCollector.collect(dataOffset: propertyOffset_path, at: 2 + 2 * 8)
+        propertyCollector.collect(dataOffset: propertyOffset_name, at: 2 + 2 * 22)
+        propertyCollector.collect(dataOffset: propertyOffset_pathElements, at: 2 + 2 * 21)
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 13)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 14)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 15)
@@ -389,8 +389,8 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.siteID = entityReader.read(at: 2 + 2 * 4)
         entity.destination = entityReader.read(at: 2 + 2 * 5)
         entity.mimeType = entityReader.read(at: 2 + 2 * 6)
-        entity.title = entityReader.read(at: 2 + 2 * 7)
-        entity.path = entityReader.read(at: 2 + 2 * 8)
+        entity.name = entityReader.read(at: 2 + 2 * 22)
+        entity.pathElements = entityReader.read(at: 2 + 2 * 21)
         entity.modifiedAt = entityReader.read(at: 2 + 2 * 9)
         entity.favorite = entityReader.read(at: 2 + 2 * 10)
         entity.trashed = entityReader.read(at: 2 + 2 * 11)

@@ -36,8 +36,8 @@ class ListElementCollectionViewCell: ListSelectableCell {
         didSet {
             guard let node = node else { return }
 
-            title.text = node.title
-            subtitle.text = node.path
+            title.text = node.name
+            subtitle.text = node.pathElements
             iconImageView.image = FileIcon.icon(for: node)
         }
     }

@@ -51,7 +51,7 @@ class ActionMenuViewModel {
         self.excludedActions = excludedActionTypes
 
         if let listNode = listNode {
-            self.menuActions = [[ActionMenu(title: listNode.title,
+            self.menuActions = [[ActionMenu(title: listNode.name,
                                             type: .node,
                                             icon: FileIcon.icon(for: listNode))],
                                 [ActionMenu(title: "", type: .placeholder),

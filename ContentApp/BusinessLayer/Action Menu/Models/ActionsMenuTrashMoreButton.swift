@@ -21,7 +21,7 @@ import Foundation
 struct ActionsMenuTrashMoreButton {
     static func actions(for node: ListNode) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
-        let infoAction = ActionMenu(title: node.title,
+        let infoAction = ActionMenu(title: node.name,
                                     type: .node,
                                     icon: FileIcon.icon(for: node))
         let permanentlyDeleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.permanentlyDelete,

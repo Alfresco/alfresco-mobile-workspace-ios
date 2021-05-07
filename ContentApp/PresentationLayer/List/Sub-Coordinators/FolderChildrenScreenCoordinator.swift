@@ -38,7 +38,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
         let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
 
         let viewController = ListViewController()
-        viewController.title = listNode.title
+        viewController.title = listNode.name
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
         viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel

@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4924419163766400768",
-      "lastPropertyId": "20:3222472111177428736",
+      "lastPropertyId": "23:7944731142204993280",
       "name": "ListNode",
       "properties": [
         {
@@ -37,16 +37,6 @@
         {
           "id": "6:40203180090543360",
           "name": "mimeType",
-          "type": 9
-        },
-        {
-          "id": "7:7099218486325184512",
-          "name": "title",
-          "type": 9
-        },
-        {
-          "id": "8:3118078692928307712",
-          "name": "path",
           "type": 9
         },
         {
@@ -103,6 +93,16 @@
           "id": "20:3222472111177428736",
           "name": "isFolder",
           "type": 1
+        },
+        {
+          "id": "21:4252015497933459712",
+          "name": "pathElements",
+          "type": 9
+        },
+        {
+          "id": "22:4881477795382938368",
+          "name": "name",
+          "type": 9
         }
       ],
       "relations": []
@@ -156,7 +156,10 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    1132591789422262528
+    1132591789422262528,
+    3118078692928307712,
+    7099218486325184512,
+    7944731142204993280
   ],
   "retiredRelationUids": [],
   "version": 1

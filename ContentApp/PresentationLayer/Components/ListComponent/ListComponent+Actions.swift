@@ -28,7 +28,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             self.display(error: error)
         } else {
             displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
-                                         node?.truncateTailTitle() ?? ""),
+                                         node?.truncateTailName() ?? ""),
                             type: .approve)
         }
     }
@@ -71,13 +71,13 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         switch action.type {
         case .moveTrash:
             snackBarMessage = String(format: LocalizationConstants.Approved.movedTrash,
-                                     node.truncateTailTitle())
+                                     node.truncateTailName())
         case .restore:
             snackBarMessage = String(format: LocalizationConstants.Approved.restored,
-                                     node.truncateTailTitle())
+                                     node.truncateTailName())
         case .permanentlyDelete:
             snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
-                                     node.truncateTailTitle())
+                                     node.truncateTailName())
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
@@ -103,10 +103,10 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         switch action.type {
         case .markOffline:
             snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
-                                     node.truncateTailTitle())
+                                     node.truncateTailName())
         case .removeOffline:
             snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
-                                     node.truncateTailTitle())
+                                     node.truncateTailName())
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
