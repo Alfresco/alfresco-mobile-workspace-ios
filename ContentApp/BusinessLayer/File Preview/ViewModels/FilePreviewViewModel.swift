@@ -157,7 +157,7 @@ class FilePreviewViewModel {
 
     func sendAnalyticsForPreviewFile(success: Bool) {
         guard let listNode = listNode else { return }
-        let fileExtension = listNode.name.split(separator: ".").last
+        let fileExtension = listNode.title.split(separator: ".").last
         Analytics.logEvent(AnalyticsConstants.Events.filePreview,
                            parameters: [AnalyticsConstants.Parameters.fileMimetype: listNode.mimeType ?? "",
                                         AnalyticsConstants.Parameters.fileExtension: fileExtension ?? "",

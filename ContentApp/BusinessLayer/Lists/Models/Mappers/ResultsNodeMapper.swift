@@ -38,8 +38,8 @@ struct ResultsNodeMapper {
 
         return ListNode(guid: node._id,
                         mimeType: mimeType,
-                        name: node.name,
-                        pathElemets: path,
+                        title: node.name,
+                        path: path,
                         modifiedAt: node.modifiedAt,
                         nodeType: NodeType(rawValue: node.nodeType) ?? .unknown,
                         favorite: node.isFavorite,

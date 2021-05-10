@@ -38,7 +38,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 
         let viewController = ListViewController()
         viewController.isPaginationEnabled = false
-        viewController.title = listNode.name
+        viewController.title = listNode.title
         viewController.coordinatorServices = coordinatorServices
         viewController.listViewModel = offlineDataSource.offlineViewModel
         viewController.listItemActionDelegate = self

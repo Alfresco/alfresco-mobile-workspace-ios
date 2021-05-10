@@ -59,7 +59,6 @@ enum SyncStatus: String {
 }
 
 enum MarkedForStatus: String {
-    case upload
     case download
     case removal
     case undefined
@@ -82,8 +81,8 @@ class ListNode: Hashable, Entity {
     var siteID = ""
     var destination: String?
     var mimeType: String?
-    var name = ""
-    var pathElements = ""
+    var title = ""
+    var path = ""
     var modifiedAt: Date?
     var favorite: Bool?
     var trashed = false
@@ -108,9 +107,8 @@ class ListNode: Hashable, Entity {
          siteID: String = "",
          parentGuid: String? = nil,
          mimeType: String? = nil,
-         name: String,
-         description: String = "",
-         pathElemets: String,
+         title: String,
+         path: String,
          modifiedAt: Date? = nil,
          nodeType: NodeType,
          favorite: Bool? = nil,
@@ -126,8 +124,8 @@ class ListNode: Hashable, Entity {
         self.siteID = siteID
         self.parentGuid = parentGuid
         self.mimeType = mimeType
-        self.name = name
-        self.pathElements = pathElemets
+        self.title = title
+        self.path = path
         self.modifiedAt = modifiedAt
         self.nodeType = nodeType
         self.favorite = favorite
@@ -151,8 +149,8 @@ class ListNode: Hashable, Entity {
         siteID = newVersion.siteID
         destination = newVersion.destination
         mimeType = newVersion.mimeType
-        name = newVersion.name
-        pathElements = newVersion.pathElements
+        title = newVersion.title
+        path = newVersion.path
         modifiedAt = newVersion.modifiedAt
         favorite = newVersion.favorite
         nodeType = newVersion.nodeType
@@ -222,10 +220,10 @@ class ListNode: Hashable, Entity {
         return siteRole == type
     }
 
-    func truncateTailName() -> String {
+    func truncateTailTitle() -> String {
         let limitCharacters = 20
-        let text = name.prefix(limitCharacters)
-        if text == name {
+        let text = title.prefix(limitCharacters)
+        if text == title {
             return String(text)
         }
         return text + "..."

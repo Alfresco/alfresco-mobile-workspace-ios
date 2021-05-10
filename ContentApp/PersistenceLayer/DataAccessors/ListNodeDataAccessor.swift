@@ -80,7 +80,7 @@ class ListNodeDataAccessor: DataAccessor {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedAsOffline == true &&
                         ListNode.markedFor != MarkedForStatus.removal.rawValue
-                }.ordered(by: ListNode.name).build()
+                }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
@@ -94,7 +94,7 @@ class ListNodeDataAccessor: DataAccessor {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedFor == MarkedForStatus.removal.rawValue
-                }.ordered(by: ListNode.name).build()
+                }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
@@ -109,7 +109,7 @@ class ListNodeDataAccessor: DataAccessor {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.markedFor == MarkedForStatus.download.rawValue
-                }.ordered(by: ListNode.name).build()
+                }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
@@ -125,7 +125,7 @@ class ListNodeDataAccessor: DataAccessor {
             do {
                 let query: Query<ListNode> = try listBox.query {
                     ListNode.parentGuid == node.guid
-                }.ordered(by: ListNode.name).build()
+                }.ordered(by: ListNode.title).build()
                 return try query.find()
             } catch {
                 AlfrescoLog.error("Unable to retrieve offline marked nodes information.")
@@ -151,7 +151,7 @@ class ListNodeDataAccessor: DataAccessor {
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: localPath)
         localURL.appendPathComponent(node.guid)
-        localURL.appendPathComponent(node.name)
+        localURL.appendPathComponent(node.title)
 
         return localURL
     }
@@ -161,7 +161,7 @@ class ListNodeDataAccessor: DataAccessor {
         let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: localPath)
         localURL.appendPathComponent(node.guid)
-        localURL.appendPathComponent(String(format: "%@-rendition", node.name))
+        localURL.appendPathComponent(String(format: "%@-rendition", node.title))
         localURL.appendPathExtension(isImageRendition ? "png" : "pdf")
 
         return localURL

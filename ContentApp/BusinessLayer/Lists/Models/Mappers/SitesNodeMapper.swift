@@ -40,8 +40,8 @@ struct SitesNodeMapper {
         return ListNode(guid: node.guid,
                         siteID: node._id,
                         mimeType: "st:site",
-                        name: node.title,
-                        pathElemets: "",
+                        title: node.title,
+                        path: "",
                         modifiedAt: nil,
                         nodeType: .site,
                         siteRole: node.role?.rawValue)

@@ -22,7 +22,7 @@ struct ActionsMenuGeneric {
     static func actions(for node: ListNode) -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
 
-        let infoAction = ActionMenu(title: node.name,
+        let infoAction = ActionMenu(title: node.title,
                                     type: .node,
                                     icon: FileIcon.icon(for: node))
 

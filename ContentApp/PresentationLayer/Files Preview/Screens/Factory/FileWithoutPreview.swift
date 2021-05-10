@@ -51,7 +51,7 @@ class FileWithoutPreview: UIView, FilePreviewProtocol {
         titleLabel.numberOfLines = 2
         titleLabel.textAlignment = .center
         titleLabel.lineBreakMode = .byTruncatingTail
-        titleLabel.text = node?.name
+        titleLabel.text = node?.title
         titleLabel.sizeToFit()
         self.titleLabel = titleLabel
         addSubview(titleLabel)

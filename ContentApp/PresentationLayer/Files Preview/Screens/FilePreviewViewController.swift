@@ -53,7 +53,7 @@ class FilePreviewViewController: SystemThemableViewController {
         startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 
-        title = filePreviewViewModel?.listNode?.name
+        title = filePreviewViewModel?.listNode?.title
         filePreviewViewModel?.requestUpdateNodeDetails()
     }
 
@@ -301,7 +301,7 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             filePreviewViewModel?.nodeActionsViewModel?.delegate = self
             addToolbarActions()
             filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
-            filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.name
+            filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.title
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode)
         }
     }
@@ -360,7 +360,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
             filePreviewCoordinatorDelegate?.navigateBack()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                 Snackbar.display(with: String(format: LocalizationConstants.Approved.movedTrash,
-                                              node.truncateTailName()),
+                                              node.truncateTailTitle()),
                                  type: .approve, finish: nil)
             })
         default: break
@@ -373,10 +373,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         switch action.type {
         case .markOffline:
             snackBarMessage = String(format: LocalizationConstants.Approved.removeOffline,
-                                     node.truncateTailName())
+                                     node.truncateTailTitle())
         case .removeOffline:
             snackBarMessage = String(format: LocalizationConstants.Approved.markOffline,
-                                     node.truncateTailName())
+                                     node.truncateTailTitle())
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
