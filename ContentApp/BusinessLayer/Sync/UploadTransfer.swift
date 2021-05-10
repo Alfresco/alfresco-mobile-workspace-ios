@@ -50,4 +50,13 @@ class UploadTransfer: Entity {
         nodeDescription = newVersion.nodeDescription
         filePath = newVersion.filePath
     }
+    
+    func listNode() -> ListNode {
+        let node = ListNode(guid: "0", title: nodeName, path: "", nodeType: .file)
+        node.id = id
+        node.parentGuid = parentNodeId
+        node.syncStatus = syncStatus
+        node.markedFor = .upload
+        return node
+    }
 }

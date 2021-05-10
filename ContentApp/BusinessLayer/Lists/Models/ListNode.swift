@@ -59,6 +59,7 @@ enum SyncStatus: String {
 }
 
 enum MarkedForStatus: String {
+    case upload
     case download
     case removal
     case undefined
