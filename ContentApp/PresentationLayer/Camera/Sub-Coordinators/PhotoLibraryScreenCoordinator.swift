@@ -41,7 +41,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
                     guard let sSelf = self else { return }
                     let accountIdentifier = sSelf.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
                     let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
-                    sSelf.galleryDataSource = PhotoGalleryDataSource(mediaFilesFolderPath: uploadFilePath)
+                    sSelf.galleryDataSource = PhotoGalleryDataSource(folderToSavePath: uploadFilePath)
                     viewController.photoGalleryDataSource = sSelf.galleryDataSource
                     sSelf.presenter.present(viewController,
                                             animated: true)
