@@ -40,8 +40,8 @@ class PhotoLibraryScreenCoordinator: Coordinator {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
                     let accountIdentifier = sSelf.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-                    let mediaFolderPath = DiskService.mediaFolderPath(for: accountIdentifier)
-                    sSelf.galleryDataSource = PhotoGalleryDataSource(mediaFilesFolderPath: mediaFolderPath)
+                    let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+                    sSelf.galleryDataSource = PhotoGalleryDataSource(mediaFilesFolderPath: uploadFilePath)
                     viewController.photoGalleryDataSource = sSelf.galleryDataSource
                     sSelf.presenter.present(viewController,
                                             animated: true)
@@ -82,7 +82,6 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
 
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
             "/" + assetURL.lastPathComponent
-        _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
 
         let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                             nodeName: capturedAsset.fileName,
