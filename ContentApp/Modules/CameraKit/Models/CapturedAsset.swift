@@ -53,10 +53,14 @@ class CapturedAsset {
 
     init(type: CapturedAssetType,
          fileName: String,
-         path: String) {
+         path: String,
+         saveIn folderPath: String) {
         self.type = type
         self.fileName = fileName
-        self.path = path
+        
+        let locaFilePath = (folderPath as NSString).appendingPathComponent("\(timestamp()).\(type.ext)")
+        _ = DiskService.copy(itemAtPath: path, to: locaFilePath)
+        self.path = locaFilePath
     }
     
     // MARK: - Public Helpers
@@ -83,10 +87,13 @@ class CapturedAsset {
     
     private func cacheToDisk(data: Data, at folderPath: String) -> String {
         let mediaFolder = folderPath as NSString
-        let imagePath = mediaFolder.appendingPathComponent("\(fileName).\(type.ext)")
+        let imagePath = mediaFolder.appendingPathComponent("\(timestamp()).\(type.ext)")
         FileManager.default.createFile(atPath: imagePath,
                                        contents: data, attributes: nil)
         return imagePath
     }
 
+    private func timestamp() -> String {
+        return String(Date().timeIntervalSinceNow)
+    }
 }

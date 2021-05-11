@@ -25,10 +25,10 @@ protocol CameraViewModelDelegate: AnyObject {
 class CameraViewModel {
     weak var delegate: CameraViewModelDelegate?
     var capturedAsset: CapturedAsset?
-    var mediaFilesFolderPath: String
+    var folderToSavePath: String
     
-    init(mediaFilesFolderPath: String) {
-        self.mediaFilesFolderPath = mediaFilesFolderPath
+    init(folderToSavePath: String) {
+        self.folderToSavePath = folderToSavePath
     }
     
     // MARK: - Public Methods

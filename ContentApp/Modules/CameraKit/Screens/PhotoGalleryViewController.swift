@@ -118,8 +118,9 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
                                       UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        guard let viewModel = photoGalleryDataSource else { return 0 }
-        return viewModel.numberOfAssets()
+        guard let dataSource = photoGalleryDataSource else { return 0 }
+        emptyView.isHidden = (dataSource.numberOfAssets() == 0) ? false : true
+        return dataSource.numberOfAssets()
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -133,14 +134,14 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     func collectionView(_ collectionView: UICollectionView,
                         willDisplay cell: UICollectionViewCell,
                         forItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryDataSource else { return }
+        guard let dataSource = photoGalleryDataSource else { return }
         if let cell = cell as? PhotoGalleryCollectionViewCell {
-            let asset = viewModel.asset(for: indexPath)
-            cell.asset(selected: viewModel.isAssetSelected(for: indexPath))
-            cell.assest(isVideo: viewModel.isVideoAsset(asset))
+            let asset = dataSource.asset(for: indexPath)
+            cell.asset(selected: dataSource.isAssetSelected(for: indexPath))
+            cell.assest(isVideo: dataSource.isVideoAsset(asset))
             
             let targetSize = cell.assetImageViewTargetSize()
-            viewModel.image(for: asset,
+            dataSource.image(for: asset,
                             size: targetSize) { (image) in
                 DispatchQueue.main.async {
                     cell.assetImageView.image = image
@@ -151,22 +152,22 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
     
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryDataSource else { return }
+        guard let dataSource = photoGalleryDataSource else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: true)
             cell.contentView.backgroundColor = CameraKit.theme?.primaryColor.withAlphaComponent(0.12)
-            viewModel.markAssetsAs(enabled: true, for: indexPath)
+            dataSource.markAssetsAs(enabled: true, for: indexPath)
             enableUploadButton = true
         }
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         didDeselectItemAt indexPath: IndexPath) {
-        guard let viewModel = photoGalleryDataSource else { return }
+        guard let dataSource = photoGalleryDataSource else { return }
         if let cell = collectionView.cellForItem(at: indexPath) as? PhotoGalleryCollectionViewCell {
             cell.asset(selected: false)
-            viewModel.markAssetsAs(enabled: false, for: indexPath)
-            enableUploadButton = viewModel.anyAssetSelected()
+            dataSource.markAssetsAs(enabled: false, for: indexPath)
+            enableUploadButton = dataSource.anyAssetSelected()
         }
     }
     
@@ -191,10 +192,6 @@ extension PhotoGalleryViewController: UICollectionViewDelegateFlowLayout,
 
 extension PhotoGalleryViewController: PHPhotoLibraryChangeObserver {
     func photoLibraryDidChange(_ changeInstance: PHChange) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.emptyView.isHidden = (sSelf.photoGalleryDataSource?.numberOfAssets() == 0) ? false : true
-        }
         
         if let allPhotos = photoGalleryDataSource?.allPhotoAssets {
             guard let change = changeInstance.changeDetails(for: allPhotos) else {
@@ -208,7 +205,6 @@ extension PhotoGalleryViewController: PHPhotoLibraryChangeObserver {
                 // If there are incremental diffs, animate them in the collection view.
                 DispatchQueue.main.async { [weak self] in
                     guard let sSelf = self else { return }
-
                     sSelf.collectionView.performBatchUpdates({
                         // For indexes to make sense, updates must be in this order:
                         // delete, insert, reload, move
