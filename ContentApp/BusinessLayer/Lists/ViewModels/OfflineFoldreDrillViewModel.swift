@@ -50,7 +50,7 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
 // MARK: - ListViewModelProtocol
 
-extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
+extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -78,6 +78,10 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
 
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
+    }
+
+    func listNodes() -> [ListNode] {
+        return results
     }
 
     func shouldDisplayNodePath() -> Bool {

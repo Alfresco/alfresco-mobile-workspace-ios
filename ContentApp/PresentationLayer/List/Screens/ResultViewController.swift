@@ -56,7 +56,7 @@ class ResultViewController: SystemThemableViewController {
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
-        listComponentViewController.listDataSource = resultsViewModel
+        listComponentViewController.model = resultsViewModel
         listComponentViewController.coordinatorServices = coordinatorServices
         resultsViewModel?.pageUpdatingDelegate = listComponentViewController
 

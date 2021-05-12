@@ -50,9 +50,9 @@ class UploadTransferDataAccessor: DataAccessor {
     }
 
     func query(uploadTransfer: UploadTransfer) -> UploadTransfer? {
-        if let listBox = databaseService?.box(entity: UploadTransfer.self) {
+        if let transfersBox = databaseService?.box(entity: UploadTransfer.self) {
             do {
-                let querry: Query<UploadTransfer> = try listBox.query {
+                let querry: Query<UploadTransfer> = try transfersBox.query {
                     UploadTransfer.filePath == uploadTransfer.filePath
                 }.build()
                 let uploadTransfer = try querry.findUnique()
@@ -66,6 +66,21 @@ class UploadTransferDataAccessor: DataAccessor {
 
     func queryAll() -> [UploadTransfer] {
         databaseService?.queryAll(entity: UploadTransfer.self) ?? []
+    }
+
+    func queryAll(changeHandler: @escaping ([UploadTransfer]) -> Void) -> [UploadTransfer] {
+        let transfersBox = databaseService?.box(entity: UploadTransfer.self)
+        _ = transfersBox?.subscribe(resultHandler: { transfers, _ in
+            changeHandler(transfers)
+        })
+
+        do {
+            return try transfersBox?.all() ?? []
+        } catch {
+            AlfrescoLog.error("Unable to retrieve transfer information.")
+        }
+
+        return []
     }
 
     func syncStatus(for uploadTransfer: UploadTransfer) -> SyncStatus {

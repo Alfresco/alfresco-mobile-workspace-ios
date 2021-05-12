@@ -65,6 +65,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results[indexPath.row]
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+
     func shouldDisplayNodePath() -> Bool {
         return false
     }
@@ -119,6 +123,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                         AlfrescoLog.error(error)
                     }
                 }
+
+                let uploadTransferDataAccessor = UploadTransferDataAccessor()
+                //closure { results.append}
+
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
