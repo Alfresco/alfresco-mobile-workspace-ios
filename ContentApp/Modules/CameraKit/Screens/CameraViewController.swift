@@ -143,7 +143,7 @@ class CameraViewController: UIViewController {
         session.aspectRatio = .ar4by3
         session.delegate = cameraViewModel
         session.uiDelegate = self
-        session.mediaFilesFolderPath = cameraViewModel?.mediaFilesFolderPath
+        session.mediaFilesFolderPath = cameraViewModel?.folderToSavePath
         sessionPreview.add(session: session)
         sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
 

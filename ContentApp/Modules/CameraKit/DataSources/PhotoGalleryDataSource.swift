@@ -20,7 +20,7 @@ import UIKit
 import Photos
 
 class PhotoGalleryDataSource {
-    var mediaFilesFolderPath: String
+    var folderToSavePath: String
 
     var allPhotoAssets = PHFetchResult<PHAsset>() {
         didSet {
@@ -34,8 +34,8 @@ class PhotoGalleryDataSource {
     
     // MARK: - Init
     
-    init(mediaFilesFolderPath: String) {
-        self.mediaFilesFolderPath = mediaFilesFolderPath
+    init(folderToSavePath: String) {
+        self.folderToSavePath = folderToSavePath
 
         let allPhotosOptions = PHFetchOptions()
         allPhotosOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate",
@@ -115,12 +115,13 @@ class PhotoGalleryDataSource {
                             capturedAsset = CapturedAsset(type: assetType,
                                                           fileName: fileName,
                                                           data: assetData,
-                                                          saveIn: sSelf.mediaFilesFolderPath)
+                                                          saveIn: sSelf.folderToSavePath)
                         }
                     case .video:
                         capturedAsset = CapturedAsset(type: assetType,
                                                       fileName: fileName,
-                                                      path: path)
+                                                      path: path,
+                                                      saveIn: sSelf.folderToSavePath)
                     }
 
                     if let asset = capturedAsset {

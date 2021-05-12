@@ -35,7 +35,7 @@ class CameraScreenCoordinator: Coordinator {
         let viewController = CameraViewController.instantiateViewController()
         let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
         let folderPath = DiskService.mediaFolderPath(for: accountIdentifier)
-        let cameraViewModel = CameraViewModel(mediaFilesFolderPath: folderPath)
+        let cameraViewModel = CameraViewModel(folderToSavePath: folderPath)
         mediaFilesFolderPath = folderPath
         
         viewController.cameraViewModel = cameraViewModel
