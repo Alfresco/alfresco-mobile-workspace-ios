@@ -125,7 +125,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 }
 
                 let uploadTransferDataAccessor = UploadTransferDataAccessor()
-                //closure { results.append}
 
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,

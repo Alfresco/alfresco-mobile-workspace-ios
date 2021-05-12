@@ -205,6 +205,37 @@ class ListComponentViewController: SystemThemableViewController {
         model?.refreshList()
     }
 
+    private func reloadDataSource() {
+        if let model = model,
+           let dataSource = dataSource {
+            let listNodes = model.listNodes()
+
+            dataSource.state = forEach(listNodes) { listNode in
+                Cell<ListElementCollectionViewCell>()
+                    .onSize { [weak self] context in
+                        guard let sSelf = self else { return .zero}
+                        return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
+                                      height: (model.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
+                    }.onSelect { [weak self] context in
+                        guard let sSelf = self,
+                              let model = sSelf.model else { return }
+
+                        let node = model.listNode(for: context.indexPath)
+                        if model.shouldPreview(node: node) == false { return }
+                        if node.trashed == false {
+                            sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                      from: model)
+                            sSelf.listActionDelegate?.elementTapped(node: node)
+                        } else {
+                            sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                                                     from: model,
+                                                                                     delegate: sSelf)
+                        }
+                    }
+            }
+        }
+    }
+
     // MARK: Connectivity Helpers
 
     private func observeConnectivity() {
@@ -235,26 +266,8 @@ class ListComponentViewController: SystemThemableViewController {
     }
 }
 
-// MARK: - UICollectionViewDelegate
-
-extension ListComponentViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let model = model else { return }
-        let node = model.listNode(for: indexPath)
-        if model.shouldPreview(node: node) == false { return }
-        if node.trashed == false {
-            listItemActionDelegate?.showPreview(for: node,
-                                                from: model)
-            listActionDelegate?.elementTapped(node: node)
-        } else {
-            listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                               from: model,
-                                                               delegate: self)
-        }
-    }
-}
-
 // MARK: - UICollectionViewFlowLayout
+
 extension ListComponentViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
@@ -320,19 +333,8 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             }
         }
 
-        if error == nil,
-           let model = model,
-           let dataSource = dataSource {
-            let listNodes = model.listNodes()
-
-            dataSource.state = forEach(listNodes) { listNode in
-                Cell<ListElementCollectionViewCell>() 
-                .onSize { [weak self] context in
-                    guard let sSelf = self else { return .zero}
-                    return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
-                                  height: (model.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
-                }
-            }
+        if error == nil {
+            reloadDataSource()
             stopLoadingAndScrollToTop()
             listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination)
         } else {
