@@ -58,8 +58,9 @@ class CapturedAsset {
         self.type = type
         self.fileName = fileName
         
-        let locaFilePath = (folderPath as NSString).appendingPathComponent("\(timestamp()).\(type.ext)")
+        let locaFilePath = composeLocalFilePath(in: folderPath as NSString)
         _ = DiskService.copy(itemAtPath: path, to: locaFilePath)
+        
         self.path = locaFilePath
     }
     
@@ -86,14 +87,17 @@ class CapturedAsset {
     // MARK: - Private Helpers
     
     private func cacheToDisk(data: Data, at folderPath: String) -> String {
-        let mediaFolder = folderPath as NSString
-        let imagePath = mediaFolder.appendingPathComponent("\(timestamp()).\(type.ext)")
-        FileManager.default.createFile(atPath: imagePath,
+        let locaFilePath = composeLocalFilePath(in: folderPath as NSString)
+        FileManager.default.createFile(atPath: locaFilePath,
                                        contents: data, attributes: nil)
-        return imagePath
+        return locaFilePath
+    }
+    
+    private func composeLocalFilePath(in folderPath: NSString) -> String {
+        return folderPath.appendingPathComponent("\(fileName)_\(timestamp()).\(type.ext)")
     }
 
     private func timestamp() -> String {
-        return String(Date().timeIntervalSinceNow)
+        return String(Date().timeIntervalSince1970)
     }
 }
