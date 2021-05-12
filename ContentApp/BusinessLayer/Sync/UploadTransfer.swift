@@ -23,6 +23,8 @@ class UploadTransfer: Entity {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentNodeId = ""
     var nodeName = ""
+    var extensionType: String = ""
+    var mimetype: String = ""
     var nodeDescription = ""
     var filePath = ""
     // objectbox: convert = { "default": ".undefined" }
@@ -34,10 +36,14 @@ class UploadTransfer: Entity {
 
     init(parentNodeId: String,
          nodeName: String,
+         extensionType: String,
+         mimetype: String,
          nodeDescription: String?,
          filePath: String) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
+        self.extensionType = extensionType
+        self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
         self.filePath = filePath
     }
@@ -52,8 +58,9 @@ class UploadTransfer: Entity {
     }
     
     func listNode() -> ListNode {
-        let node = ListNode(guid: "0", title: nodeName, path: "", nodeType: .file)
+        let node = ListNode(guid: "0", title: nodeName + "." + extensionType, path: "", nodeType: .file)
         node.id = id
+        node.mimeType = mimetype
         node.parentGuid = parentNodeId
         node.syncStatus = syncStatus
         node.markedFor = .upload

@@ -109,7 +109,7 @@
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "5:3230068557200613376",
+      "lastPropertyId": "8:8055208131928741888",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -137,6 +137,16 @@
           "id": "5:3230068557200613376",
           "name": "filePath",
           "type": 9
+        },
+        {
+          "id": "6:370033443724301568",
+          "name": "syncStatus",
+          "type": 9
+        },
+        {
+          "id": "8:8055208131928741888",
+          "name": "extensionType",
+          "type": 9
         }
       ],
       "relations": []
@@ -151,7 +161,8 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    1132591789422262528
+    1132591789422262528,
+    7705025082092647680
   ],
   "retiredRelationUids": [],
   "version": 1

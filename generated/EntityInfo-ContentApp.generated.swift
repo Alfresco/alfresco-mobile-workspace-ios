@@ -430,11 +430,13 @@ extension UploadTransfer: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "id", type: Id.entityPropertyType, flags: [.id], id: 1, uid: 5316901957059283200)
         try entityBuilder.addProperty(name: "parentNodeId", type: String.entityPropertyType, id: 2, uid: 3942621293964620544)
         try entityBuilder.addProperty(name: "nodeName", type: String.entityPropertyType, id: 3, uid: 433559388114328576)
+        try entityBuilder.addProperty(name: "extensionType", type: String.entityPropertyType, id: 8, uid: 8055208131928741888)
+        try entityBuilder.addProperty(name: "mimetype", type: String.entityPropertyType, id: 9, uid: 5958632298443843840)
         try entityBuilder.addProperty(name: "nodeDescription", type: String.entityPropertyType, id: 4, uid: 8762750373210733056)
         try entityBuilder.addProperty(name: "filePath", type: String.entityPropertyType, id: 5, uid: 3230068557200613376)
         try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 6, uid: 370033443724301568)
 
-        try entityBuilder.lastProperty(id: 6, uid: 370033443724301568)
+        try entityBuilder.lastProperty(id: 9, uid: 5958632298443843840)
     }
 }
 
@@ -457,6 +459,18 @@ extension UploadTransfer {
     ///
     ///     box.query { UploadTransfer.nodeName.startsWith("X") }
     internal static var nodeName: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 3, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.extensionType.startsWith("X") }
+    internal static var extensionType: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 8, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.mimetype.startsWith("X") }
+    internal static var mimetype: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 9, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -510,6 +524,22 @@ extension ObjectBox.Property where E == UploadTransfer {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .extensionType.startsWith("X") }
+
+    internal static var extensionType: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 8, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { .mimetype.startsWith("X") }
+
+    internal static var mimetype: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 9, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .nodeDescription.startsWith("X") }
 
     internal static var nodeDescription: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 4, isPrimaryKey: false) }
@@ -554,6 +584,8 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
                                   propertyCollector: ObjectBox.FlatBufferBuilder, store: ObjectBox.Store) throws {
         let propertyOffset_parentNodeId = propertyCollector.prepare(string: entity.parentNodeId)
         let propertyOffset_nodeName = propertyCollector.prepare(string: entity.nodeName)
+        let propertyOffset_extensionType = propertyCollector.prepare(string: entity.extensionType)
+        let propertyOffset_mimetype = propertyCollector.prepare(string: entity.mimetype)
         let propertyOffset_nodeDescription = propertyCollector.prepare(string: entity.nodeDescription)
         let propertyOffset_filePath = propertyCollector.prepare(string: entity.filePath)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
@@ -561,6 +593,8 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(id, at: 2 + 2 * 1)
         propertyCollector.collect(dataOffset: propertyOffset_parentNodeId, at: 2 + 2 * 2)
         propertyCollector.collect(dataOffset: propertyOffset_nodeName, at: 2 + 2 * 3)
+        propertyCollector.collect(dataOffset: propertyOffset_extensionType, at: 2 + 2 * 8)
+        propertyCollector.collect(dataOffset: propertyOffset_mimetype, at: 2 + 2 * 9)
         propertyCollector.collect(dataOffset: propertyOffset_nodeDescription, at: 2 + 2 * 4)
         propertyCollector.collect(dataOffset: propertyOffset_filePath, at: 2 + 2 * 5)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 6)
@@ -572,6 +606,8 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         entity.id = entityReader.read(at: 2 + 2 * 1)
         entity.parentNodeId = entityReader.read(at: 2 + 2 * 2)
         entity.nodeName = entityReader.read(at: 2 + 2 * 3)
+        entity.extensionType = entityReader.read(at: 2 + 2 * 8)
+        entity.mimetype = entityReader.read(at: 2 + 2 * 9)
         entity.nodeDescription = entityReader.read(at: 2 + 2 * 4)
         entity.filePath = entityReader.read(at: 2 + 2 * 5)
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 6)) ?? .undefined

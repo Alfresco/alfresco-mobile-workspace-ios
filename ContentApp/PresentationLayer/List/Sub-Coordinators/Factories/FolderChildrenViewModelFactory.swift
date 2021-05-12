@@ -51,6 +51,9 @@ class FolderChildrenViewModelFactory {
         eventBusService?.register(observer: folderDrillViewModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: folderDrillViewModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         eventBusService?.register(observer: resultViewModel,
                                   for: FavouriteEvent.self,

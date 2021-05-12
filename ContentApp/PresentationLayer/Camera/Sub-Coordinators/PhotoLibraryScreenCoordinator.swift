@@ -85,6 +85,8 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
 
         let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                             nodeName: capturedAsset.fileName,
+                                            extensionType: capturedAsset.type.ext,
+                                            mimetype: capturedAsset.type.mimetype,
                                             nodeDescription: capturedAsset.description,
                                             filePath: uploadFilePath)
         let uploadTransferDataAccessor = UploadTransferDataAccessor()

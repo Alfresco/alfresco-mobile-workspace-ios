@@ -125,7 +125,11 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 }
 
                 let uploadTransferDataAccessor = UploadTransferDataAccessor()
-                //closure { results.append}
+                let uploadTransfers = uploadTransferDataAccessor.queryAll { [weak self] uploadTransfers in
+                    guard let sSelf = self else { return }
+                    sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
+                }
+                sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
 
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
@@ -137,6 +141,19 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     // MARK: - Private Utils
+    
+    private func appendFirstInResult(uploadTransfers: [UploadTransfer]) {
+        for uploadTranfer in uploadTransfers {
+            let listNode = uploadTranfer.listNode()
+            var newTransferNode = true
+            for node in results where node.id == listNode.id {
+                newTransferNode = false
+            }
+            if newTransferNode {
+                results.insert(listNode, at: 0)
+            }
+        }
+    }
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
         guard let listNode = self.listNode else {
@@ -186,6 +203,8 @@ extension FolderDrillViewModel: EventObservable {
             handleMove(event: publishedEvent)
         } else if let publishedEvent = event as? OfflineEvent {
             handleOffline(event: publishedEvent)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
         }
     }
 
@@ -223,6 +242,15 @@ extension FolderDrillViewModel: EventObservable {
             let listNode = results[indexOfOfflineNode]
             listNode.update(with: node)
             results[indexOfOfflineNode] = listNode
+        }
+    }
+    
+    private func handleSyncStatus(event: SyncStatusEvent) {
+        let eventNode = event.node
+        if let indexOfNode = results.firstIndex(of: eventNode) {
+            let copyNode = results[indexOfNode]
+            copyNode.syncStatus = eventNode.syncStatus
+            results[indexOfNode] = copyNode
         }
     }
 }
