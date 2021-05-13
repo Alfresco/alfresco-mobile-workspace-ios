@@ -49,15 +49,16 @@ protocol SyncServiceDelegate: AnyObject {
 let maxConcurrentSyncOperationCount = 3
 
 @objc class SyncService: NSObject, Service, SyncServiceProtocol {
-    let syncOperationQueue: OperationQueue
-    let syncOperationFactory: SyncOperationFactory
-    let eventBusService: EventBusService?
     var syncError: Error?
 
     @objc dynamic var syncServiceStatus: SyncServiceStatus = .idle
     weak var delegate: SyncServiceDelegate?
 
+    private let syncOperationQueue: OperationQueue
+    private let syncOperationFactory: SyncOperationFactory
+    private let eventBusService: EventBusService?
     private var kvoToken: NSKeyValueObservation?
+    private var nodeList: [ListNode] = []
 
     deinit {
         kvoToken?.invalidate()
@@ -88,16 +89,8 @@ let maxConcurrentSyncOperationCount = 3
 
             // Fetch details for existing nodes and decide whether they should be marked for download
             sSelf.delegate?.syncDidStarted()
-            sSelf.syncServiceStatus = .fetchingNodeDetails
-            let nodeDetailsOperations = sSelf.syncOperationFactory.fileNodeDetailsOperations(nodes: nodeList)
-            if nodeDetailsOperations.isEmpty {
-                sSelf.processNodeDetails()
-            } else {
-                sSelf.syncOperationQueue.addOperations(nodeDetailsOperations,
-                                                       waitUntilFinished: false)
-            }
-            sSelf.syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
-                                                                           on: sSelf.syncOperationQueue)
+            sSelf.processPendingUploads()
+            sSelf.nodeList = nodeList
         }
     }
 
@@ -117,7 +110,20 @@ let maxConcurrentSyncOperationCount = 3
 
     // MARK: - Private interface
 
-    private func processNodeDetails() {
+    private func processNodeDetails(for nodeList: [ListNode]) {
+        syncServiceStatus = .fetchingNodeDetails
+        let nodeDetailsOperations = syncOperationFactory.fileNodeDetailsOperations(nodes: nodeList)
+        if nodeDetailsOperations.isEmpty {
+            processNodeChildren()
+        } else {
+            syncOperationQueue.addOperations(nodeDetailsOperations,
+                                             waitUntilFinished: false)
+        }
+        syncOperationFactory.scheduleFolderNodeDetailsOperations(for: nodeList,
+                                                                 on: syncOperationQueue)
+    }
+
+    private func processNodeChildren() {
         syncServiceStatus = .processNodeDetails
         syncOperationQueue.addOperation(syncOperationFactory.processNodeChildren())
     }
@@ -133,7 +139,8 @@ let maxConcurrentSyncOperationCount = 3
 
         if downloadOperations.isEmpty &&
             deleteOperations.isEmpty {
-            processPendingUploads()
+            syncServiceStatus = .idle
+            delegate?.syncDidFinished()
         } else {
             if !downloadOperations.isEmpty {
                 syncOperationQueue.addOperations(downloadOperations,
@@ -154,8 +161,7 @@ let maxConcurrentSyncOperationCount = 3
         let uploadOperations = syncOperationFactory.uploadPendingContentOperation(transfers: pendingUploadTransfers)
 
         if uploadOperations.isEmpty {
-            syncServiceStatus = .idle
-            delegate?.syncDidFinished()
+            processNodeDetails(for: nodeList)
         } else {
             if !uploadOperations.isEmpty {
                 syncOperationQueue.addOperations(uploadOperations,
@@ -170,14 +176,15 @@ let maxConcurrentSyncOperationCount = 3
             if newValue.operations.isEmpty {
                 switch sSelf.syncServiceStatus {
                 case .fetchingNodeDetails:
-                    sSelf.processNodeDetails()
+                    sSelf.processNodeChildren()
                 case .processNodeDetails:
                     sSelf.processMarkedNodes()
                 case .processingMarkedNodes:
-                    sSelf.processPendingUploads()
-                case .uploadPendingNodes:
                     sSelf.syncServiceStatus = .idle
                     sSelf.delegate?.syncDidFinished()
+                case .uploadPendingNodes:
+                    sSelf.syncServiceStatus = .fetchingNodeDetails
+                    sSelf.processNodeDetails(for: sSelf.nodeList)
                 case .idle:
                     AlfrescoLog.debug("-- SYNC is now idle")
                 }
