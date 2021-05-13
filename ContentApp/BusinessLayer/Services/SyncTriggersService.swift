@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import MaterialComponents.MaterialDialogs
 
 enum SyncTriggerType: String {
     case applicationDidFinishedLaunching
@@ -105,8 +106,37 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
 
         if type == .userDidInitiateSync ||
-            type == .userReAuthenticated {
+            type == .userReAuthenticated ||
+            type == .userDidInitiateUploadTransfer {
             startSyncOperation()
+        }
+    }
+    
+    func showOverrideSyncOnCellularDataDialog(for type: SyncTriggerType) {
+        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
+        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
+            guard let sSelf = self else { return }
+            UserProfile.allowOnceSyncOverCellularData = true
+            sSelf.triggerSync(for: type)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later) { [weak self] _ in
+            guard let sSelf = self else { return }
+            UserProfile.allowOnceSyncOverCellularData = false
+            sSelf.syncDidTriedToStartOnConnectivity = true
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        DispatchQueue.main.async {
+            if let presentationContext = UIViewController.applicationTopMostPresented {
+                _ = presentationContext.showDialog(title: title,
+                                                   message: message,
+                                                   actions: [confirmAction, cancelAction],
+                                                   completionHandler: {})
+            }
         }
     }
 

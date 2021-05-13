@@ -56,31 +56,6 @@ class OfflineViewModel: PageFetchingViewModel {
         let listNodeDataAccessor = ListNodeDataAccessor()
         return listNodeDataAccessor.queryMarkedOffline()
     }
-
-    private func showOverrideSyncOnCellularDataDialog() {
-        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
-        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
-            guard let sSelf = self else { return }
-            UserProfile.allowOnceSyncOverCellularData = true
-            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(for: .userDidInitiateSync)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        DispatchQueue.main.async {
-            if let presentationContext = UIViewController.applicationTopMostPresented {
-                _ = presentationContext.showDialog(title: title,
-                                                   message: message,
-                                                   actions: [confirmAction, cancelAction],
-                                                   completionHandler: {})
-            }
-        }
-    }
 }
 
 // MARK: - ListViewModelProtocol
@@ -147,11 +122,11 @@ extension OfflineViewModel: ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
+        let syncTriggersService = coordinatorServices?.syncTriggersService
         if connectivityService?.status == .cellular &&
             UserProfile.allowSyncOverCellularData == false {
-            showOverrideSyncOnCellularDataDialog()
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateSync)
         } else {
-            let syncTriggersService = coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
     }

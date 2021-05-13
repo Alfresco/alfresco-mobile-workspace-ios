@@ -92,7 +92,17 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 
+        triggerUpload()
+    }
+    
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
         let syncTriggersService = coordinatorServices.syncTriggersService
         syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        }
     }
 }
