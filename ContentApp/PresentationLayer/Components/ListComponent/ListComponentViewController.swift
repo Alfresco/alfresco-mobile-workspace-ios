@@ -289,14 +289,15 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
 
         if error == nil {
             collectionView.reloadData()
-            collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+            stopLoading()
+
+            DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
-                sSelf.stopLoading()
 
                 if scrollToTop {
                     sSelf.scrollToSection(0)
                 }
-            })
+            }
 
             listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination)
         } else {

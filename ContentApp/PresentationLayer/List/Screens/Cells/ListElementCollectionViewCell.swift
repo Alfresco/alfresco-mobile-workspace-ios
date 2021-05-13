@@ -24,7 +24,6 @@ protocol ListElementCollectionViewCellDelegate: AnyObject {
 }
 
 class ListElementCollectionViewCell: ListSelectableCell {
-
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var subtitle: UILabel!

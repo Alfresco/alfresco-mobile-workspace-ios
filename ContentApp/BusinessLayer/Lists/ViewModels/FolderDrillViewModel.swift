@@ -177,7 +177,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             }
         }
 
-        results.insert(contentsOf: nodesToBeInserted, at: 0)
+        if !nodesToBeInserted.isEmpty {
+            results.insert(contentsOf: nodesToBeInserted, at: 0)
+        }
     }
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {

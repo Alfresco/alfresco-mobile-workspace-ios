@@ -18,7 +18,7 @@
 
 import UIKit
 
-private let detailedCellHeight: CGFloat = 54.0
+private let regularCellHeight: CGFloat = 54.0
 private let sectionCellHeight: CGFloat = 54.0
 private let compactCellHeight: CGFloat = 44.0
 
@@ -49,9 +49,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let dataSource = listDataSource
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: detailedCellHeight) }
+                             height: regularCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (dataSource.shouldDisplayNodePath(for: indexPath)) ? detailedCellHeight : compactCellHeight)
+                      height: (dataSource.shouldDisplayNodePath(for: indexPath)) ? regularCellHeight : compactCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -62,7 +62,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         if dataSource.numberOfSections() - 1 == section {
             if listDataSource?.shouldDisplayListLoadingIndicator() ?? false &&
                 coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-                return CGSize(width: self.view.bounds.width, height: detailedCellHeight)
+                return CGSize(width: self.view.bounds.width, height: regularCellHeight)
             }
         }
         return CGSize(width: 0, height: 0)
