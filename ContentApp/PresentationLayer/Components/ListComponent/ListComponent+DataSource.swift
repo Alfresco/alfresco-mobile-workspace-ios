@@ -28,43 +28,64 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
 
-        if listDataSource?.shouldDisplaySections() ?? false {
-            return CGSize(width: self.view.bounds.width, height: sectionCellHeight)
-        } else {
-            return CGSize(width: self.view.bounds.width, height: 0)
+        guard let dataSource = listDataSource else {
+            return CGSize(width: self.view.bounds.width,
+                          height: 0)
         }
+        if dataSource.shouldDisplaySections() {
+            return CGSize(width: self.view.bounds.width,
+                          height: sectionCellHeight)
+        }
+        return CGSize(width: self.view.bounds.width,
+                      height: 0)
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return listDataSource?.numberOfSections() ?? 0
+        
+        guard let dataSource = listDataSource else {
+            return 0
+        }
+        return dataSource.numberOfSections()
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
-        return listDataSource?.numberOfItems(in: section) ?? 0
+        
+        guard let dataSource = listDataSource else {
+            return 0
+        }
+        return dataSource.numberOfItems(in: section)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let dataSource = listDataSource
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: regularCellHeight) }
+
+        guard let dataSource = listDataSource else {
+            return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
+                          height: regularCellHeight)
+        }
+        let shouldDisplaySubtitle = dataSource.shouldDisplaySubtitle(for: indexPath)
+
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (dataSource.shouldDisplaySubtitle(for: indexPath)) ? regularCellHeight : compactCellHeight)
+                      height: (shouldDisplaySubtitle) ? regularCellHeight : compactCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
+        guard let dataSource = listDataSource else {
+            return CGSize(width: 0, height: 0)
+        }
 
         if dataSource.numberOfSections() - 1 == section {
-            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false &&
+            if dataSource.shouldDisplayListLoadingIndicator() &&
                 coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-                return CGSize(width: self.view.bounds.width, height: regularCellHeight)
+                return CGSize(width: self.view.bounds.width,
+                              height: regularCellHeight)
             }
         }
+
         return CGSize(width: 0, height: 0)
     }
 
@@ -74,19 +95,20 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView =
-                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                    withReuseIdentifier: identifier,
-                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
-                fatalError("Invalid ListSectionCollectionReusableView type") }
+            guard let headerView = collectionView
+                    .dequeueReusableSupplementaryView(ofKind: kind,
+                                                      withReuseIdentifier: identifier,
+                                                      for: indexPath) as? ListSectionCollectionReusableView else {
+                fatalError("Invalid ListSectionCollectionReusableView type")
+            }
             headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
             headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
             return headerView
 
         case UICollectionView.elementKindSectionFooter:
-            let footerView =
-                collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self),
+            let identifier = String(describing: ActivityIndicatorFooterView.self)
+            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                withReuseIdentifier: identifier,
                                                                 for: indexPath)
             return footerView
 
@@ -99,31 +121,35 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
         let identifier = String(describing: ListElementCollectionViewCell.self)
-
-        let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
-                                               for: indexPath) as? ListElementCollectionViewCell
-        cell?.node = node
-        cell?.delegate = self
-        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.syncStatus = listDataSource?.syncStatusForNode(at: indexPath) ?? .undefined
-        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton(for: indexPath) ?? true)
+        
+        guard let dataSource = listDataSource,
+              let cell = collectionView
+                .dequeueReusableCell(withReuseIdentifier: identifier,
+                                     for: indexPath) as? ListElementCollectionViewCell  else { return UICollectionViewCell() }
+        
+        let node = dataSource.listNode(for: indexPath)
+        
+        cell.node = node
+        cell.delegate = self
+        cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+        cell.syncStatus = dataSource.syncStatusForNode(at: indexPath)
+        cell.moreButton.isHidden = !dataSource.shouldDisplayMoreButton(for: indexPath)
 
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
-            cell?.moreButton.isHidden = true
+            cell.moreButton.isHidden = true
         }
         if listDataSource?.shouldDisplaySubtitle(for: indexPath) == false {
-            cell?.subtitle.text = ""
+            cell.subtitle.text = ""
         }
 
-        if isPaginationEnabled && collectionView.lastItemIndexPath() == indexPath &&
+        if isPaginationEnabled &&
+            collectionView.lastItemIndexPath() == indexPath &&
             coordinatorServices?.connectivityService?.hasInternetConnection() == true {
             self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
                                                                    itemAtIndexPath: indexPath)
         }
 
-        return cell ?? UICollectionViewCell()
+        return cell
     }
 }

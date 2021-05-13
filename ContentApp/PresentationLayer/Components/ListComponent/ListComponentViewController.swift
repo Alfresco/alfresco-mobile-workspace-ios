@@ -53,20 +53,23 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.pageDelegate = self
         collectionView.isPaginationEnabled = isPaginationEnabled
         collectionView.coordinatorServices = coordinatorServices
+        
+        if let dataSource = listDataSource {
+            emptyListView.isHidden = true
+            createButton.isHidden = !dataSource.shouldDisplayCreateButton()
+            listActionButton.isHidden = !dataSource.shouldDisplayListActionButton()
+            listActionButton.isUppercaseTitle = false
+            listActionButton.setTitle(dataSource.listActionTitle(), for: .normal)
+            listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
 
-        emptyListView.isHidden = true
-        createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
-        listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
-        listActionButton.isUppercaseTitle = false
-        listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
-        listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
-
-        if listDataSource?.shouldDisplayCreateButton() == true ||
-            listDataSource?.shouldDisplayListActionButton() == true {
-            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
-                                                       bottom: listBottomInset, right: 0)
+            if dataSource.shouldDisplayCreateButton() ||
+                dataSource.shouldDisplayListActionButton() {
+                collectionView.contentInset = UIEdgeInsets(top: 0,
+                                                           left: 0,
+                                                           bottom: listBottomInset,
+                                                           right: 0)
+            }
         }
-
         // Set up progress view
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -228,9 +231,9 @@ class ListComponentViewController: SystemThemableViewController {
 extension ListComponentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
-        guard let dataSource = listDataSource else { return }
+        guard let dataSource = listDataSource,
+              dataSource.shouldPreviewNode(at: indexPath) else { return }
         let node = dataSource.listNode(for: indexPath)
-        if dataSource.shouldPreviewNode(at: indexPath) == false { return }
         if node.trashed == false,
            let dataSource = listDataSource {
             listItemActionDelegate?.showPreview(for: node,
@@ -269,17 +272,18 @@ extension ListComponentViewController: PageFetchableDelegate {
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
-        guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
+        guard let dataSource = listDataSource else { return }
+        let isDataSourceEmpty = dataSource.isEmpty()
 
         emptyListView.isHidden = !isDataSourceEmpty
         if isDataSourceEmpty {
-            let emptyList = listDataSource?.emptyList()
-            emptyListImageView.image = emptyList?.icon
-            emptyListTitle.text = emptyList?.title
-            emptyListSubtitle.text = emptyList?.description
+            let emptyList = dataSource.emptyList()
+            emptyListImageView.image = emptyList.icon
+            emptyListTitle.text = emptyList.title
+            emptyListSubtitle.text = emptyList.description
         }
 
-        if listDataSource?.shouldDisplayListActionButton() == true {
+        if dataSource.shouldDisplayListActionButton() {
             listActionButton.isHidden = isDataSourceEmpty
         }
 
