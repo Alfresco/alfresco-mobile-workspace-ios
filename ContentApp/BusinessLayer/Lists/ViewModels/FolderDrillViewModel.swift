@@ -169,22 +169,15 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     // MARK: - Private Utils
     
     private func appendFirstInResult(uploadTransfers: [UploadTransfer]) {
-        for uploadTranfer in uploadTransfers {
-            let listNode = uploadTranfer.listNode()
-            var newTransferNode = true
-            for node in results {
-                if node.id == listNode.id {
-                    newTransferNode = false
-                    break
-                }
-                if node.markedFor != .upload {
-                    break
-                }
-            }
-            if newTransferNode {
-                results.insert(listNode, at: 0)
+        var nodesToBeInserted: [ListNode] = []
+        _ = uploadTransfers.map { transfer in
+            let listNode = transfer.listNode()
+            if !results.contains(listNode) {
+                nodesToBeInserted.insert(listNode, at: 0)
             }
         }
+
+        results.insert(contentsOf: nodesToBeInserted, at: 0)
     }
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {

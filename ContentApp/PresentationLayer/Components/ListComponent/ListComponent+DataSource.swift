@@ -18,9 +18,9 @@
 
 import UIKit
 
-private let listItemNodeCellHeight: CGFloat = 54.0
-private let listSectionCellHeight: CGFloat = 54.0
-private let listSiteCellHeight: CGFloat = 44.0
+private let detailedCellHeight: CGFloat = 54.0
+private let sectionCellHeight: CGFloat = 54.0
+private let compactCellHeight: CGFloat = 44.0
 
 extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                                        UICollectionViewDataSource {
@@ -29,7 +29,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
 
         if listDataSource?.shouldDisplaySections() ?? false {
-            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
+            return CGSize(width: self.view.bounds.width, height: sectionCellHeight)
         } else {
             return CGSize(width: self.view.bounds.width, height: 0)
         }
@@ -49,9 +49,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let dataSource = listDataSource
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: listItemNodeCellHeight) }
+                             height: detailedCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (dataSource.shouldDisplayNodePath(for: indexPath)) ? listItemNodeCellHeight : listSiteCellHeight)
+                      height: (dataSource.shouldDisplayNodePath(for: indexPath)) ? detailedCellHeight : compactCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -62,7 +62,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         if dataSource.numberOfSections() - 1 == section {
             if listDataSource?.shouldDisplayListLoadingIndicator() ?? false &&
                 coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
+                return CGSize(width: self.view.bounds.width, height: detailedCellHeight)
             }
         }
         return CGSize(width: 0, height: 0)

@@ -164,7 +164,7 @@ class ListNode: Hashable, Entity {
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid
+        return lhs.guid == rhs.guid && lhs.id == rhs.id
     }
 
     func shouldUpdate() -> Bool {
