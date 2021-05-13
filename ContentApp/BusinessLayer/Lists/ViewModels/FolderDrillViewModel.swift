@@ -146,7 +146,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 }
 
                 let uploadTransfers = sSelf.uploadTransferDataAccessor
-                    .queryAll { [weak self] uploadTransfers in
+                    .queryAll(for: sSelf.listNode?.guid ?? APIConstants.my) { [weak self] uploadTransfers in
                     guard let sSelf = self else { return }
                     sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
                 }
