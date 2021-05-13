@@ -24,7 +24,8 @@ enum ListEntrySyncStatus: String {
     case error = "ic-sync-status-error"
     case pending = "ic-sync-status-pending"
     case inProgress = "ic-sync-status-in-progress"
-    case synced = "ic-sync-status-synced"
+    case downloaded = "ic-sync-status-synced"
+    case uploaded = "ic-sync-status-uploaded"
     case undefined = "ic-sync-status-undefined"
 }
 

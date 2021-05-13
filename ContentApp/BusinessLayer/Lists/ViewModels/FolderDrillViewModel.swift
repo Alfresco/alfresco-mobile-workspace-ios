@@ -67,6 +67,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
 
     func shouldDisplayNodePath() -> Bool {
+        if listNode?.markedFor == .upload {
+            return true
+        }
         return false
     }
 
@@ -92,7 +95,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             case .inProgress:
                 entryListStatus = .inProgress
             case .synced:
-                entryListStatus = .synced
+                entryListStatus = .uploaded
             default:
                 entryListStatus = .undefined
             }

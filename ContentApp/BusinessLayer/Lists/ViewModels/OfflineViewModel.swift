@@ -169,7 +169,7 @@ extension OfflineViewModel: ListViewModelProtocol {
             case .inProgress:
                 entryListStatus = .inProgress
             case .synced:
-                entryListStatus = .synced
+                entryListStatus = .downloaded
             default:
                 entryListStatus = .undefined
             }

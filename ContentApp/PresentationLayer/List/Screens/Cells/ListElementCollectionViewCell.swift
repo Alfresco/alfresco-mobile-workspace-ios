@@ -89,7 +89,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     func startRotateSyncIcon() {
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.toValue = NSNumber(value: .pi * 2.0)
-        rotationAnimation.duration = 0.5
+        rotationAnimation.duration = 3.0
         rotationAnimation.isCumulative = true
         rotationAnimation.repeatCount = .infinity
         syncStatusImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")

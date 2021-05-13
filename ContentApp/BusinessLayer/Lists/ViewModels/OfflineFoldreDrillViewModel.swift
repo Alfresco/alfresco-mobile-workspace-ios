@@ -126,7 +126,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
             case .inProgress:
                 entryListStatus = .inProgress
             case .synced:
-                entryListStatus = .synced
+                entryListStatus = .downloaded
             default:
                 entryListStatus = .undefined
             }
