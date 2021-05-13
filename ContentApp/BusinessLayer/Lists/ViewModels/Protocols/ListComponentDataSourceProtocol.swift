@@ -44,7 +44,7 @@ protocol ListComponentDataSourceProtocol: AnyObject {
     func shouldDisplaySections() -> Bool
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayCreateButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool
     func shouldDisplayListActionButton() -> Bool
     func shouldDisplayMoreButton(node: ListNode) -> Bool
     func shouldDisplayPullToRefreshOffline() -> Bool
@@ -70,9 +70,9 @@ extension ListComponentDataSourceProtocol {
     func shouldEnableListActionButton() -> Bool {
         return false
     }
-
-    func shouldDisplayNodePath() -> Bool {
-        true
+    
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
+        return true
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {

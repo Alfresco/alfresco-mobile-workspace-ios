@@ -73,8 +73,10 @@ struct LocalizationConstants {
         static let signingIn = NSLocalizedString("signing-in", comment: "")
         static let syncing = NSLocalizedString("syncing", comment: "")
         static let syncFailed = NSLocalizedString("sync-failed", comment: "")
+        static let waitUpload = NSLocalizedString("wait-upload", comment: "")
         static let uploading = NSLocalizedString("uploading", comment: "")
         static let uploadFailed = NSLocalizedString("upload-failed", comment: "")
+        static let uploaded = NSLocalizedString("uploaded", comment: "")
     }
 
     struct ScreenTitles {

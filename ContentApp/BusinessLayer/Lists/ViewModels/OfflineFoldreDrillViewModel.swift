@@ -80,7 +80,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
         return results[indexPath.row]
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
         return false
     }
 

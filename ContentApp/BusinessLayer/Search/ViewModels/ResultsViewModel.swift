@@ -79,7 +79,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
         if let delegate = self.delegate {
             return delegate.isNodePathEnabled()
         }

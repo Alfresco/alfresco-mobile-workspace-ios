@@ -65,9 +65,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
-
-    func shouldDisplayNodePath() -> Bool {
-        if listNode?.markedFor == .upload {
+    
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
+        if listNode(for: indexPath) .markedFor == .upload {
             return true
         }
         return false

@@ -73,7 +73,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
         return listCondition == APIConstants.QuerryConditions.whereFavoritesFileFolder
     }
 

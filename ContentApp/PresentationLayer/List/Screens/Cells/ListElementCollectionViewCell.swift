@@ -46,24 +46,11 @@ class ListElementCollectionViewCell: ListSelectableCell {
         didSet {
             syncStatusImageView.isHidden = !(syncStatus != .undefined)
             syncStatusImageView.image = !syncStatus.rawValue.isEmpty ? UIImage(named: syncStatus.rawValue) : nil
-
-            switch syncStatus {
-            case .error:
-                if node?.markedFor == .upload {
-                    subtitle.text = LocalizationConstants.Labels.uploadFailed
-                } else {
-                    subtitle.text = LocalizationConstants.Labels.syncFailed
-                }
-                stopRotateSyncIcon()
-            case .inProgress:
-                if node?.markedFor == .upload {
-                    subtitle.text = LocalizationConstants.Labels.uploading
-                } else {
-                    subtitle.text = LocalizationConstants.Labels.syncing
-                }
-                startRotateSyncIcon()
-            default:
-                stopRotateSyncIcon()
+            
+            if node?.markedFor == .upload {
+                applyLayoutForUploading()
+            } else {
+                applyLayoutForDownloading()
             }
         }
     }
@@ -86,7 +73,36 @@ class ListElementCollectionViewCell: ListSelectableCell {
     
     // MARK: - Private Methods
     
-    func startRotateSyncIcon() {
+    private func applyLayoutForUploading() {
+        switch syncStatus {
+        case .error:
+            subtitle.text = LocalizationConstants.Labels.uploadFailed
+            stopRotateSyncIcon()
+        case .inProgress:
+            subtitle.text = LocalizationConstants.Labels.uploading
+            startRotateSyncIcon()
+        case .uploaded:
+            subtitle.text = LocalizationConstants.Labels.uploaded
+        default:
+            subtitle.text = LocalizationConstants.Labels.waitUpload
+            stopRotateSyncIcon()
+        }
+    }
+    
+    private func applyLayoutForDownloading() {
+        switch syncStatus {
+        case .error:
+            subtitle.text = LocalizationConstants.Labels.syncFailed
+            stopRotateSyncIcon()
+        case .inProgress:
+            subtitle.text = LocalizationConstants.Labels.syncing
+            startRotateSyncIcon()
+        default:
+            stopRotateSyncIcon()
+        }
+    }
+    
+    private func startRotateSyncIcon() {
         let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
         rotationAnimation.toValue = NSNumber(value: .pi * 2.0)
         rotationAnimation.duration = 3.0
@@ -95,7 +111,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         syncStatusImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
     }
     
-    func stopRotateSyncIcon() {
+    private func stopRotateSyncIcon() {
         syncStatusImageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }
