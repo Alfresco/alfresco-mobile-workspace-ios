@@ -51,7 +51,7 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
                              height: regularCellHeight) }
         return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (dataSource.shouldDisplayNodePath(for: indexPath)) ? regularCellHeight : compactCellHeight)
+                      height: (dataSource.shouldDisplaySubtitle(for: indexPath)) ? regularCellHeight : compactCellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -108,13 +108,13 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
         cell?.node = node
         cell?.delegate = self
         cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.syncStatus = listDataSource?.syncStatus(for: node) ?? .undefined
-        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton(node: node) ?? true)
+        cell?.syncStatus = listDataSource?.syncStatusForNode(at: indexPath) ?? .undefined
+        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton(for: indexPath) ?? true)
 
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
             cell?.moreButton.isHidden = true
         }
-        if listDataSource?.shouldDisplayNodePath(for: indexPath) == false {
+        if listDataSource?.shouldDisplaySubtitle(for: indexPath) == false {
             cell?.subtitle.text = ""
         }
 

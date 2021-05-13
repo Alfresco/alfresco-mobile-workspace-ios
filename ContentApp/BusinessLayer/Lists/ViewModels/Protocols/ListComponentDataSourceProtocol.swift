@@ -44,13 +44,13 @@ protocol ListComponentDataSourceProtocol: AnyObject {
     func shouldDisplaySections() -> Bool
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayCreateButton() -> Bool
-    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool
     func shouldDisplayListActionButton() -> Bool
-    func shouldDisplayMoreButton(node: ListNode) -> Bool
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool
     func shouldDisplayPullToRefreshOffline() -> Bool
     func shouldEnableListActionButton() -> Bool
-    func shouldPreview(node: ListNode) -> Bool
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus
 }
 
 extension ListComponentDataSourceProtocol {
@@ -71,7 +71,7 @@ extension ListComponentDataSourceProtocol {
         return false
     }
     
-    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -79,7 +79,7 @@ extension ListComponentDataSourceProtocol {
         return false
     }
 
-    func shouldDisplayMoreButton(node: ListNode) -> Bool {
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -87,7 +87,7 @@ extension ListComponentDataSourceProtocol {
         false
     }
 
-    func shouldPreview(node: ListNode) -> Bool {
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -99,7 +99,8 @@ extension ListComponentDataSourceProtocol {
         return ""
     }
 
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let listNode = listNode(for: indexPath)
+        return listNode.isMarkedOffline() ? .markedForOffline : .undefined
     }
 }

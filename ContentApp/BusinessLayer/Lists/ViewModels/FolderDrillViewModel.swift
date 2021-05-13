@@ -66,7 +66,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results[indexPath.row]
     }
     
-    func shouldDisplayNodePath(for indexPath: IndexPath) -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         if listNode(for: indexPath) .markedFor == .upload {
             return true
         }
@@ -82,9 +82,28 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
     
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
-        if node.isAFileType() && node.markedFor == .upload {
-            let nodeSyncStatus = node.syncStatus
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        let listNode = listNode(for: indexPath)
+        if listNode.markedFor == .upload &&
+            listNode.syncStatus != .synced {
+            return false
+        }
+        return true
+    }
+    
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        let listNode = listNode(for: indexPath)
+        if listNode.markedFor == .upload &&
+            listNode.syncStatus != .synced {
+            return false
+        }
+        return true
+    }
+    
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let listNode = listNode(for: indexPath)
+        if listNode.isAFileType() && listNode.markedFor == .upload {
+            let nodeSyncStatus = listNode.syncStatus
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {
@@ -103,7 +122,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             return entryListStatus
         }
 
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
+        return listNode.isMarkedOffline() ? .markedForOffline : .undefined
     }
 
     func performListAction() {
@@ -276,9 +295,7 @@ extension FolderDrillViewModel: EventObservable {
         let eventNode = event.node
         guard eventNode.markedFor == .upload else { return }
         for (index, listNode) in results.enumerated() where listNode.id == eventNode.id {
-            let copyNode = results[index]
-            copyNode.syncStatus = eventNode.syncStatus
-            results[index] = copyNode
+            results[index] = eventNode
             return
         }
     }

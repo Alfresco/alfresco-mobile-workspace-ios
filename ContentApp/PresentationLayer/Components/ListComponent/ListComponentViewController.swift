@@ -226,10 +226,11 @@ class ListComponentViewController: SystemThemableViewController {
 // MARK: - UICollectionViewDelegate
 
 extension ListComponentViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
         guard let dataSource = listDataSource else { return }
         let node = dataSource.listNode(for: indexPath)
-        if dataSource.shouldPreview(node: node) == false { return }
+        if dataSource.shouldPreviewNode(at: indexPath) == false { return }
         if node.trashed == false,
            let dataSource = listDataSource {
             listItemActionDelegate?.showPreview(for: node,

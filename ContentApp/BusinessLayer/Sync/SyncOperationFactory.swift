@@ -289,9 +289,12 @@ class SyncOperationFactory {
                                                             completion()
                                                         }
 
-                                                        if error == nil, entry != nil {
+                                                        if error == nil, let node = entry {
+                                                            node.id = transfer.id
+                                                            node.syncStatus = .synced
+                                                            node.markedFor = .upload
                                                             transfer.syncStatus = .synced
-                                                            sSelf.publishSyncStatusEvent(for: transfer.listNode())
+                                                            sSelf.publishSyncStatusEvent(for: node)
                                                             transferDataAccessor.remove(transfer: transfer)
                                                         } else {
                                                             transfer.syncStatus = .error
