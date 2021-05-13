@@ -167,7 +167,7 @@ class FavoritesViewController: SystemSearchViewController {
         // Set up the folders and files view
         let folderAndFilesViewController = ListComponentViewController.instantiateViewController()
         folderAndFilesViewController.listActionDelegate = self
-        folderAndFilesViewController.model = folderAndFilesListViewModel
+        folderAndFilesViewController.listDataSource = folderAndFilesListViewModel
         folderAndFilesViewController.coordinatorServices = coordinatorServices
         folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
 
@@ -177,7 +177,7 @@ class FavoritesViewController: SystemSearchViewController {
         // Set up the libraries view
         let librariesViewController = ListComponentViewController.instantiateViewController()
         librariesViewController.listActionDelegate = self
-        librariesViewController.model = librariesListViewModel
+        librariesViewController.listDataSource = librariesListViewModel
         librariesViewController.coordinatorServices = coordinatorServices
         librariesListViewModel?.pageUpdatingDelegate = librariesViewController
 

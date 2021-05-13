@@ -62,14 +62,6 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return groupedLists[indexPath.section].list[indexPath.row]
     }
 
-    func listNodes() -> [ListNode] {
-        var listNodes: [ListNode] = []
-        for groupedList in groupedLists {
-            listNodes += groupedList.list
-        }
-        return listNodes
-    }
-
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
         return groupedLists[indexPath.section].titleGroup
     }

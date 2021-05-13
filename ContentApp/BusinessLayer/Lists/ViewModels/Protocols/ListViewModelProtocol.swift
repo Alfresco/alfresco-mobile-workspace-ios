@@ -20,7 +20,7 @@ import UIKit
 import AlfrescoContent
 import AlfrescoAuth
 
-protocol ListViewModelProtocol: ListComponentModelProtocol {
+protocol ListViewModelProtocol: ListComponentDataSourceProtocol {
     var pageUpdatingDelegate: ListComponentPageUpdatingDelegate? { get set }
 
     init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?)

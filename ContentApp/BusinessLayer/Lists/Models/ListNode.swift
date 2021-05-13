@@ -19,7 +19,6 @@
 import Foundation
 import AlfrescoContent
 import ObjectBox
-import DeepDiff
 
 enum NodeType: String {
     case site = "st:site"
@@ -76,7 +75,7 @@ enum SiteRole: String {
 
 typealias CreatedNodeType = (String, String, String)
 
-class ListNode: Hashable, Entity, DiffAware {
+class ListNode: Hashable, Entity {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentGuid: String?
     var guid = ""

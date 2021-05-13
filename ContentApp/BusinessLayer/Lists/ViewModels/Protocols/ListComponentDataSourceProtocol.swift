@@ -28,7 +28,7 @@ enum ListEntrySyncStatus: String {
     case undefined = "ic-sync-status-undefined"
 }
 
-protocol ListComponentModelProtocol: AnyObject {
+protocol ListComponentDataSourceProtocol: AnyObject {
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
 
@@ -36,7 +36,6 @@ protocol ListComponentModelProtocol: AnyObject {
     func numberOfItems(in section: Int) -> Int
     func refreshList()
 
-    func listNodes() -> [ListNode]
     func listNode(for indexPath: IndexPath) -> ListNode
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func listActionTitle() -> String?
@@ -53,7 +52,7 @@ protocol ListComponentModelProtocol: AnyObject {
     func syncStatus(for node: ListNode) -> ListEntrySyncStatus
 }
 
-extension ListComponentModelProtocol {
+extension ListComponentDataSourceProtocol {
 
     func shouldDisplaySections() -> Bool {
         return false

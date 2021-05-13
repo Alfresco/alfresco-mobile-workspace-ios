@@ -66,10 +66,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results[indexPath.row]
     }
 
-    func listNodes() -> [ListNode] {
-        return results
-    }
-
     func shouldDisplayNodePath() -> Bool {
         return false
     }

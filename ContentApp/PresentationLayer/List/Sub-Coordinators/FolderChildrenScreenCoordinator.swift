@@ -51,7 +51,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
 extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListComponentDataSourceProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
                                    presenter: self.presenter)
@@ -64,7 +64,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from model: ListComponentModelProtocol,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices)

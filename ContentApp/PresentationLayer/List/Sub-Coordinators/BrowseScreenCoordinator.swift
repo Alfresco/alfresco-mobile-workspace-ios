@@ -76,7 +76,7 @@ extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
 
 extension BrowseScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListComponentDataSourceProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -91,7 +91,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from model: ListComponentModelProtocol,
+                                    from dataSource: ListComponentDataSourceProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

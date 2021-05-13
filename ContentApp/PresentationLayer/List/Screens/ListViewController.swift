@@ -33,7 +33,7 @@ class ListViewController: SystemSearchViewController {
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
-        listComponentViewController.model = listViewModel
+        listComponentViewController.listDataSource = listViewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
         listComponentViewController.isPaginationEnabled = self.isPaginationEnabled
         listViewModel?.pageUpdatingDelegate = listComponentViewController

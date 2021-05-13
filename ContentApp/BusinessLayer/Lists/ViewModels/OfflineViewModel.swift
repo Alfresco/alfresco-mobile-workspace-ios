@@ -117,10 +117,6 @@ extension OfflineViewModel: ListViewModelProtocol {
         return results[indexPath.row]
     }
 
-    func listNodes() -> [ListNode] {
-        return results
-    }
-
     func shouldDisplaySettingsButton() -> Bool {
         return true
     }

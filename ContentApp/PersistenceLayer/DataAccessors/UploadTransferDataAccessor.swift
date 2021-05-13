@@ -67,19 +67,19 @@ class UploadTransferDataAccessor: DataAccessor {
     func queryAll() -> [UploadTransfer] {
         databaseService?.queryAll(entity: UploadTransfer.self) ?? []
     }
-
+    
     func queryAll(changeHandler: @escaping ([UploadTransfer]) -> Void) -> [UploadTransfer] {
         let transfersBox = databaseService?.box(entity: UploadTransfer.self)
         _ = transfersBox?.subscribe(resultHandler: { transfers, _ in
             changeHandler(transfers)
         })
-
+        
         do {
             return try transfersBox?.all() ?? []
         } catch {
             AlfrescoLog.error("Unable to retrieve transfer information.")
         }
-
+        
         return []
     }
 

@@ -65,10 +65,6 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results[indexPath.row]
     }
 
-    func listNodes() -> [ListNode] {
-        return results
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }

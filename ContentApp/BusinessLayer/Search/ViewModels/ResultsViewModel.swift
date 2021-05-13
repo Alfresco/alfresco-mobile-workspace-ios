@@ -54,7 +54,7 @@ extension ResultsViewModel: SearchViewModelDelegate {
 
 // MARK: - ListComponentDataSourceProtocol
 
-extension ResultsViewModel: ListComponentModelProtocol {
+extension ResultsViewModel: ListComponentDataSourceProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -73,10 +73,6 @@ extension ResultsViewModel: ListComponentModelProtocol {
 
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
-    }
-
-    func listNodes() -> [ListNode] {
-        return results
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {

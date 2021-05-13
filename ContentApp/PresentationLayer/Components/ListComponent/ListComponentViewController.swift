@@ -20,7 +20,6 @@ import UIKit
 import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
-import Micro
 
 class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
@@ -33,12 +32,12 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var listActionButton: MDCButton!
     var refreshControl: UIRefreshControl?
 
-    var isPaginationEnabled = true
-    var model: ListComponentModelProtocol?
-    var dataSource: ListComponentDataSource?
+    var listDataSource: ListComponentDataSourceProtocol?
 
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+
+    var isPaginationEnabled = true
 
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
@@ -48,33 +47,22 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Configure collection view data source and delegate
-        guard let model = model,
-              let services = coordinatorServices else { return }
-        let dataSourceConfiguration =
-            ListComponentDataSourceConfiguration(collectionView: collectionView,
-                                                 model: model,
-                                                 isPaginationEnabled: isPaginationEnabled,
-                                                 cellDelegate: self,
-                                                 services: services)
-        let dataSource = ListComponentDataSource(with: dataSourceConfiguration)
-        self.dataSource = dataSource
-
-        collectionView.dataSource = dataSource
-        collectionView.delegate = dataSource
+        // Configure collectionview data source and delegate
+        collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.pageDelegate = self
         collectionView.isPaginationEnabled = isPaginationEnabled
         collectionView.coordinatorServices = coordinatorServices
 
         emptyListView.isHidden = true
-        createButton.isHidden = !model.shouldDisplayCreateButton()
-        listActionButton.isHidden = !model.shouldDisplayListActionButton()
+        createButton.isHidden = !(listDataSource?.shouldDisplayCreateButton() ?? false)
+        listActionButton.isHidden = !(listDataSource?.shouldDisplayListActionButton() ?? false)
         listActionButton.isUppercaseTitle = false
-        listActionButton.setTitle(model.listActionTitle(), for: .normal)
+        listActionButton.setTitle(listDataSource?.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
 
-        if model.shouldDisplayCreateButton() == true ||
-            model.shouldDisplayListActionButton() == true {
+        if listDataSource?.shouldDisplayCreateButton() == true ||
+            listDataSource?.shouldDisplayListActionButton() == true {
             collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
                                                        bottom: listBottomInset, right: 0)
         }
@@ -111,7 +99,7 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        listActionButton.isEnabled = (model?.shouldEnableListActionButton() ?? false)
+        listActionButton.isEnabled = (listDataSource?.shouldEnableListActionButton() ?? false)
         handleConnectivity()
 
         if coordinatorServices?.syncService?.syncServiceStatus != .idle {
@@ -197,12 +185,12 @@ class ListComponentViewController: SystemThemableViewController {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
 
-            sSelf.model?.refreshList()
+            sSelf.listDataSource?.refreshList()
         }
     }
 
     @objc private func handleReSignIn(notification: Notification) {
-        model?.refreshList()
+        listDataSource?.refreshList()
     }
 
     // MARK: Connectivity Helpers
@@ -223,7 +211,7 @@ class ListComponentViewController: SystemThemableViewController {
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
 
-            if model?.shouldDisplayPullToRefreshOffline() == false {
+            if listDataSource?.shouldDisplayPullToRefreshOffline() == false {
                 refreshControl?.removeFromSuperview()
             }
         } else {
@@ -239,31 +227,19 @@ class ListComponentViewController: SystemThemableViewController {
 
 extension ListComponentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let model = model else { return }
-        let node = model.listNode(for: indexPath)
-        if model.shouldPreview(node: node) == false { return }
-        if node.trashed == false {
+        guard let dataSource = listDataSource else { return }
+        let node = dataSource.listNode(for: indexPath)
+        if dataSource.shouldPreview(node: node) == false { return }
+        if node.trashed == false,
+           let dataSource = listDataSource {
             listItemActionDelegate?.showPreview(for: node,
-                                                from: model)
+                                                from: dataSource)
             listActionDelegate?.elementTapped(node: node)
         } else {
             listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                               from: model,
+                                                               from: dataSource,
                                                                delegate: self)
         }
-    }
-}
-
-// MARK: - UICollectionViewFlowLayout
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let model = model
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: listItemNodeCellHeight) }
-        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (model.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
     }
 }
 
@@ -272,9 +248,9 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout {
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
         guard let node = element,
-              let model = model else { return }
+              let dataSource = listDataSource else { return }
         listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                           from: model,
+                                                           from: dataSource,
                                                            delegate: self)
     }
 }
@@ -292,51 +268,43 @@ extension ListComponentViewController: PageFetchableDelegate {
 extension ListComponentViewController: ListComponentPageUpdatingDelegate {
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
-        guard let isListEmpty = model?.isEmpty() else { return }
+        guard let isDataSourceEmpty = listDataSource?.isEmpty() else { return }
 
-        emptyListView.isHidden = !isListEmpty
-        if isListEmpty {
-            let emptyList = model?.emptyList()
+        emptyListView.isHidden = !isDataSourceEmpty
+        if isDataSourceEmpty {
+            let emptyList = listDataSource?.emptyList()
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
         }
 
-        if model?.shouldDisplayListActionButton() == true {
-            listActionButton.isHidden = isListEmpty
+        if listDataSource?.shouldDisplayListActionButton() == true {
+            listActionButton.isHidden = isDataSourceEmpty
         }
 
         // If loading the first page or missing pagination scroll to top
-        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil) &&
-            error == nil &&
-            !isListEmpty
+        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil)
+            && error == nil
+            && !isDataSourceEmpty
 
-        let stopLoadingAndScrollToTop = { [weak self] in
-            guard let sSelf = self else { return }
+        if error == nil {
+            collectionView.reloadData()
+            collectionView.performBatchUpdates(nil, completion: { [weak self] _ in
+                guard let sSelf = self else { return }
+                sSelf.stopLoading()
 
-            sSelf.stopLoading()
-            if scrollToTop {
-                sSelf.scrollToSection(0)
-            }
-        }
-
-        if error == nil,
-           let model = model,
-           let dataSource = dataSource {
-            let listNodes = model.listNodes()
-
-            dataSource.state = forEach(listNodes) { listNode in
-                Cell<ListElementCollectionViewCell>() 
-                .onSize { [weak self] context in
-                    guard let sSelf = self else { return .zero}
-                    return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
-                                  height: (model.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
+                if scrollToTop {
+                    sSelf.scrollToSection(0)
                 }
-            }
-            stopLoadingAndScrollToTop()
+            })
+
             listActionDelegate?.didUpdateList(in: self, error: error, pagination: pagination)
         } else {
-            stopLoadingAndScrollToTop()
+            stopLoading()
+
+            if scrollToTop {
+                scrollToSection(0)
+            }
         }
     }
 
