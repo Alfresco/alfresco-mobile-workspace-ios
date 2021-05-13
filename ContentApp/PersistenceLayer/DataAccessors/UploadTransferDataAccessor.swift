@@ -20,6 +20,7 @@ import Foundation
 import ObjectBox
 
 class UploadTransferDataAccessor: DataAccessor {
+    var allTransfersQueryObserver: Observer?
 
     // MARK: - Database operations
 
@@ -52,10 +53,10 @@ class UploadTransferDataAccessor: DataAccessor {
     func query(uploadTransfer: UploadTransfer) -> UploadTransfer? {
         if let transfersBox = databaseService?.box(entity: UploadTransfer.self) {
             do {
-                let querry: Query<UploadTransfer> = try transfersBox.query {
+                let query: Query<UploadTransfer> = try transfersBox.query {
                     UploadTransfer.filePath == uploadTransfer.filePath
                 }.build()
-                let uploadTransfer = try querry.findUnique()
+                let uploadTransfer = try query.findUnique()
                 return uploadTransfer
             } catch {
                 AlfrescoLog.error("Unable to retrieve transfer information.")
@@ -74,13 +75,13 @@ class UploadTransferDataAccessor: DataAccessor {
         guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
         
         do {
-            let querry: Query<UploadTransfer> = try transfersBox.query {
+            let query: Query<UploadTransfer> = try transfersBox.query {
                 UploadTransfer.parentNodeId == parentNodeId
             }.build()
-            _ = querry.subscribe(resultHandler: { transfers, _ in
+            allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
                 changeHandler(transfers)
             })
-            return try querry.find()
+            return try query.find()
         } catch {
             AlfrescoLog.error("Unable to retrieve transfer information.")
         }
