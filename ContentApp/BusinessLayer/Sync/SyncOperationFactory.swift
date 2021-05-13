@@ -260,11 +260,14 @@ class SyncOperationFactory {
     private func uploadNodeContentOperation(transfer: UploadTransfer) -> AsyncClosureOperation {
         let operation = AsyncClosureOperation { [weak self] completion, operation in
             guard let sSelf = self else { return }
+            transfer.syncStatus = .inProgress
+            sSelf.publishSyncStatusEvent(for: transfer.listNode())
 
             let transferDataAccessor = UploadTransferDataAccessor()
 
             let handleErrorCaseForTransfer = {
                 transfer.syncStatus = .error
+                sSelf.publishSyncStatusEvent(for: transfer.listNode())
                 transferDataAccessor.store(uploadTransfer: transfer)
 
                 completion()
@@ -286,12 +289,13 @@ class SyncOperationFactory {
                                                             completion()
                                                         }
 
-                                                        if error == nil, let node = entry {
+                                                        if error == nil, entry != nil {
                                                             transfer.syncStatus = .synced
-                                                            sSelf.publishSyncStatusEvent(for: node)
+                                                            sSelf.publishSyncStatusEvent(for: transfer.listNode())
                                                             transferDataAccessor.remove(transfer: transfer)
                                                         } else {
                                                             transfer.syncStatus = .error
+                                                            sSelf.publishSyncStatusEvent(for: transfer.listNode())
                                                             transferDataAccessor.store(uploadTransfer: transfer)
                                                         }
 

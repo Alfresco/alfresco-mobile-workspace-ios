@@ -262,6 +262,7 @@ extension OfflineViewModel: EventObservable {
         let eventNode = event.node
         if let indexOfNode = results.firstIndex(of: eventNode) {
             results[indexOfNode] = eventNode
+            refreshList()
         }
     }
 }

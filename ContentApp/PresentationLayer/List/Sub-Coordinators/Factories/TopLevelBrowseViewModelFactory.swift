@@ -116,6 +116,9 @@ class TopLevelBrowseViewModelFactory {
         eventBusService?.register(observer: viewModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: viewModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 

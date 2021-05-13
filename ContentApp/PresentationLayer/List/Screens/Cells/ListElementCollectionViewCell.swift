@@ -49,10 +49,21 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
             switch syncStatus {
             case .error:
-                subtitle.text = LocalizationConstants.Labels.syncFailed
+                if node?.markedFor == .upload {
+                    subtitle.text = LocalizationConstants.Labels.uploadFailed
+                } else {
+                    subtitle.text = LocalizationConstants.Labels.syncFailed
+                }
+                stopRotateSyncIcon()
             case .inProgress:
-                subtitle.text = LocalizationConstants.Labels.syncing
-            default: break
+                if node?.markedFor == .upload {
+                    subtitle.text = LocalizationConstants.Labels.uploading
+                } else {
+                    subtitle.text = LocalizationConstants.Labels.syncing
+                }
+                startRotateSyncIcon()
+            default:
+                stopRotateSyncIcon()
             }
         }
     }
@@ -71,5 +82,20 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {
         delegate?.moreButtonTapped(for: node, in: self)
+    }
+    
+    // MARK: - Private Methods
+    
+    func startRotateSyncIcon() {
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = NSNumber(value: .pi * 2.0)
+        rotationAnimation.duration = 0.5
+        rotationAnimation.isCumulative = true
+        rotationAnimation.repeatCount = .infinity
+        syncStatusImageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+    }
+    
+    func stopRotateSyncIcon() {
+        syncStatusImageView.layer.removeAnimation(forKey: "rotationAnimation")
     }
 }

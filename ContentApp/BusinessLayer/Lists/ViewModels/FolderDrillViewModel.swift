@@ -28,6 +28,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listNode: ListNode?
 
     var supportedNodeTypes: [NodeType] = []
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
 
     // MARK: - Init
 
@@ -81,6 +82,30 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
+    
+    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
+        if node.isAFileType() && node.markedFor == .upload {
+            let nodeSyncStatus = node.syncStatus
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .synced
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
+        }
+
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    }
 
     func performListAction() {
         // Do nothing
@@ -124,8 +149,8 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                     }
                 }
 
-                let uploadTransferDataAccessor = UploadTransferDataAccessor()
-                let uploadTransfers = uploadTransferDataAccessor.queryAll { [weak self] uploadTransfers in
+                let uploadTransfers = sSelf.uploadTransferDataAccessor
+                    .queryAll { [weak self] uploadTransfers in
                     guard let sSelf = self else { return }
                     sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
                 }
@@ -146,8 +171,14 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         for uploadTranfer in uploadTransfers {
             let listNode = uploadTranfer.listNode()
             var newTransferNode = true
-            for node in results where node.id == listNode.id {
-                newTransferNode = false
+            for node in results {
+                if node.id == listNode.id {
+                    newTransferNode = false
+                    break
+                }
+                if node.markedFor != .upload {
+                    break
+                }
             }
             if newTransferNode {
                 results.insert(listNode, at: 0)
@@ -247,10 +278,12 @@ extension FolderDrillViewModel: EventObservable {
     
     private func handleSyncStatus(event: SyncStatusEvent) {
         let eventNode = event.node
-        if let indexOfNode = results.firstIndex(of: eventNode) {
-            let copyNode = results[indexOfNode]
+        guard eventNode.markedFor == .upload else { return }
+        for (index, listNode) in results.enumerated() where listNode.id == eventNode.id {
+            let copyNode = results[index]
             copyNode.syncStatus = eventNode.syncStatus
-            results[indexOfNode] = copyNode
+            results[index] = copyNode
+            return
         }
     }
 }

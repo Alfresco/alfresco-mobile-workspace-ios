@@ -67,6 +67,8 @@
 "signing-in" = "Signing in";
 "syncing" = "Syncing...";
 "sync-failed" = "Sync failed";
+"uploading" = "Uploading...";
+"upload-failed" = "Upload failed";
 
 // MARK: - Tabs Titles
 "settings" = "Settings";
