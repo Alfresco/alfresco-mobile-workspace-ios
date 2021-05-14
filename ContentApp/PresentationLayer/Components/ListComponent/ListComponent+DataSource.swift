@@ -94,27 +94,34 @@ class ListComponentDataSource: DataSource {
     
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let identifierElement = String(describing: ListElementCollectionViewCell.self)
         let identifierSection = String(describing: ListSectionCollectionViewCell.self)
-        
-        if let node = configuration.model.listNode(for: indexPath),
-           let cell = collectionView
-            .dequeueReusableCell(withReuseIdentifier: identifierElement,
-                                 for: indexPath) as? ListElementCollectionViewCell {
+
+        let node = configuration.model.listNode(for: indexPath)
+        if node.guid == listNodeSectionIdentifier {
+            guard let cell = collectionView
+                        .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                             for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
+            cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
+            cell.applyTheme(configuration.services.themingService?.activeTheme)
+            return cell
+        } else {
+            guard let cell = collectionView
+                .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                     for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             cell.syncStatus = configuration.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.model.shouldDisplayMoreButton(for: indexPath)
-            
+
             if node.nodeType == .fileLink || node.nodeType == .folderLink {
                 cell.moreButton.isHidden = true
             }
             if configuration.model.shouldDisplaySubtitle(for: indexPath) == false {
                 cell.subtitle.text = ""
             }
-            
+
             if configuration.isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&
                 configuration.services.connectivityService?.hasInternetConnection() == true {
@@ -123,15 +130,7 @@ class ListComponentDataSource: DataSource {
                                                                       itemAtIndexPath: indexPath)
                 }
             }
-
-            return cell
-        } else if let cell = collectionView
-                    .dequeueReusableCell(withReuseIdentifier: identifierSection,
-                                         for: indexPath) as? ListSectionCollectionViewCell {
-            cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
-            cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         }
-        return UICollectionViewCell()
     }
 }
