@@ -23,7 +23,7 @@ import AlfrescoContent
 
 class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
     var listRequest: SearchRequest?
-    var groupedLists: [GroupedList] = []
+    var groupedLists: [AnyObject] = []
     var coordinatorServices: CoordinatorServices?
     var supportedNodeTypes: [NodeType] = []
 
@@ -37,7 +37,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
-        return groupedLists.isEmpty
+        return results.isEmpty
     }
 
     func emptyList() -> EmptyListProtocol {
@@ -45,11 +45,11 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     func numberOfSections() -> Int {
-        return groupedLists.count
+        return (groupedLists.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
-        return groupedLists[section].list.count
+        return groupedLists.count
     }
 
     func refreshList() {
@@ -58,16 +58,22 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return groupedLists[indexPath.section].list[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if let listNode = groupedLists[indexPath.row] as? ListNode {
+            return listNode
+        }
+        return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return groupedLists[indexPath.section].titleGroup
+        if let section = groupedLists[indexPath.row] as? GroupedList {
+            return section.titleGroup
+        }
+        return ""
     }
 
     func shouldDisplaySections() -> Bool {
-        return true
+        return false
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
@@ -80,7 +86,7 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
 
     override func updatedResults(results: [ListNode], pagination: Pagination) {
         groupedLists = []
-        addInGroupList(self.results)
+        createSectionArray(self.results)
         pageUpdatingDelegate?.didUpdateList(error: nil,
                                             pagination: pagination)
     }
@@ -125,16 +131,8 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
     }
 
     // MARK: - Private methods
-
-    private func add(element: ListNode, inGroupType type: GroupedListType) {
-        for groupedList in groupedLists where groupedList.type == type {
-            groupedList.list.append(element)
-            return
-        }
-        groupedLists.append(GroupedList(type: type, list: [element]))
-    }
-
-    private func addInGroupList(_ results: [ListNode]) {
+    
+    private func createSectionArray(_ results: [ListNode]) {
         for element in results {
             if let date = element.modifiedAt {
                 var groupType: GroupedListType = .today
@@ -149,11 +147,26 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 } else {
                     groupType = .older
                 }
-                self.add(element: element, inGroupType: groupType)
+                add(element: element, type: groupType)
             } else {
-                groupedLists.first?.list.append(element)
+                add(element: element, type: .today)
             }
         }
+    }
+    
+    private func add(element: ListNode, type: GroupedListType) {
+        let section = GroupedList(type: type)
+        var newGroupList = true
+        for element in groupedLists {
+            if let group = element as? GroupedList, group == section {
+                newGroupList = false
+            }
+        }
+
+        if newGroupList {
+            groupedLists.append(section)
+        }
+        groupedLists.append(element)
     }
 }
 

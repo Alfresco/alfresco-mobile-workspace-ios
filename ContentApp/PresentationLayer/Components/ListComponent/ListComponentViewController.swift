@@ -232,8 +232,9 @@ extension ListComponentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         guard let dataSource = listDataSource,
-              dataSource.shouldPreviewNode(at: indexPath) else { return }
-        let node = dataSource.listNode(for: indexPath)
+              dataSource.shouldPreviewNode(at: indexPath),
+              let node = dataSource.listNode(for: indexPath) else { return }
+        
         if node.trashed == false,
            let dataSource = listDataSource {
             listItemActionDelegate?.showPreview(for: node,

@@ -88,7 +88,7 @@ extension OfflineViewModel: ListViewModelProtocol {
         return LocalizationConstants.Buttons.syncAll
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
+    func listNode(for indexPath: IndexPath) -> ListNode? {
         return results[indexPath.row]
     }
 
@@ -105,7 +105,7 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        let listNode = listNode(for: indexPath)
+        guard let listNode = listNode(for: indexPath) else { return false }
         let listNodeDataAccessor = ListNodeDataAccessor()
 
         if listNode.isAFolderType() {
@@ -133,7 +133,7 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let listNode = listNode(for: indexPath)
+        guard let listNode = listNode(for: indexPath) else { return .undefined}
         if listNode.isAFileType() {
             let nodeSyncStatus = listNode.hasSyncStatus()
             var entryListStatus: ListEntrySyncStatus

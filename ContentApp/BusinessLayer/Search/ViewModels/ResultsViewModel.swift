@@ -71,7 +71,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return results.count
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
+    func listNode(for indexPath: IndexPath) -> ListNode? {
         return results[indexPath.row]
     }
 

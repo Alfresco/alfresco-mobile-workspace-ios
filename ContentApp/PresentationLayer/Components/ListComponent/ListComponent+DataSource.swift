@@ -93,18 +93,6 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView = collectionView
-                    .dequeueReusableSupplementaryView(ofKind: kind,
-                                                      withReuseIdentifier: identifier,
-                                                      for: indexPath) as? ListSectionCollectionReusableView else {
-                fatalError("Invalid ListSectionCollectionReusableView type")
-            }
-            headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
-            return headerView
-
         case UICollectionView.elementKindSectionFooter:
             let identifier = String(describing: ActivityIndicatorFooterView.self)
             let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
@@ -121,35 +109,46 @@ extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
 
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let identifier = String(describing: ListElementCollectionViewCell.self)
         
-        guard let dataSource = listDataSource,
-              let cell = collectionView
-                .dequeueReusableCell(withReuseIdentifier: identifier,
-                                     for: indexPath) as? ListElementCollectionViewCell  else { return UICollectionViewCell() }
+        guard let dataSource = listDataSource else { return UICollectionViewCell() }
         
-        let node = dataSource.listNode(for: indexPath)
+        let identifierElement = String(describing: ListElementCollectionViewCell.self)
+        let identifierSection = String(describing: ListSectionCollectionViewCell.self)
         
-        cell.node = node
-        cell.delegate = self
-        cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell.syncStatus = dataSource.syncStatusForNode(at: indexPath)
-        cell.moreButton.isHidden = !dataSource.shouldDisplayMoreButton(for: indexPath)
+        if let node = dataSource.listNode(for: indexPath),
+           let cell = collectionView
+            .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                 for: indexPath) as? ListElementCollectionViewCell {
+            cell.node = node
+            cell.delegate = self
+            cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+            cell.syncStatus = dataSource.syncStatusForNode(at: indexPath)
+            cell.moreButton.isHidden = !dataSource.shouldDisplayMoreButton(for: indexPath)
+            
+            if node.nodeType == .fileLink || node.nodeType == .folderLink {
+                cell.moreButton.isHidden = true
+            }
+            if listDataSource?.shouldDisplaySubtitle(for: indexPath) == false {
+                cell.subtitle.text = ""
+            }
+            
+            if isPaginationEnabled &&
+                collectionView.lastItemIndexPath() == indexPath &&
+                coordinatorServices?.connectivityService?.hasInternetConnection() == true {
+                self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
+                                                                       itemAtIndexPath: indexPath)
+            }
+            
+            return cell
 
-        if node.nodeType == .fileLink || node.nodeType == .folderLink {
-            cell.moreButton.isHidden = true
+        } else if let cell = collectionView
+                    .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                         for: indexPath) as? ListSectionCollectionViewCell {
+            cell.titleLabel.text = dataSource.titleForSectionHeader(at: indexPath)
+            cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+            return cell
         }
-        if listDataSource?.shouldDisplaySubtitle(for: indexPath) == false {
-            cell.subtitle.text = ""
-        }
-
-        if isPaginationEnabled &&
-            collectionView.lastItemIndexPath() == indexPath &&
-            coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-            self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
-                                                                   itemAtIndexPath: indexPath)
-        }
-
-        return cell
+        
+        return UICollectionViewCell()
     }
 }
