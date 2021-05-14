@@ -62,13 +62,12 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: nil)
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode? {
+    func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
     
     func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        guard let listNode = listNode(for: indexPath) else { return false }
-        if listNode.markedFor == .upload {
+        if listNode(for: indexPath) .markedFor == .upload {
             return true
         }
         return false
@@ -84,7 +83,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
     
     func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        guard let listNode = listNode(for: indexPath) else { return false }
+        let listNode = listNode(for: indexPath)
         if listNode.markedFor == .upload &&
             listNode.syncStatus != .synced {
             return false
@@ -93,7 +92,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
     
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        guard let listNode = listNode(for: indexPath) else { return false }
+        let listNode = listNode(for: indexPath)
         if listNode.markedFor == .upload &&
             listNode.syncStatus != .synced {
             return false
@@ -102,7 +101,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
     
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        guard let listNode = listNode(for: indexPath) else { return .undefined }
+        let listNode = listNode(for: indexPath)
         if listNode.isAFileType() && listNode.markedFor == .upload {
             let nodeSyncStatus = listNode.syncStatus
             var entryListStatus: ListEntrySyncStatus

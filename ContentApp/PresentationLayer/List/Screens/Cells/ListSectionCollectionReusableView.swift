@@ -18,7 +18,7 @@
 
 import UIKit
 
-class ListSectionCollectionViewCell: UICollectionViewCell {
+class ListSectionCollectionReusableView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel!
 
     func applyTheme(_ currentTheme: PresentationTheme?) {

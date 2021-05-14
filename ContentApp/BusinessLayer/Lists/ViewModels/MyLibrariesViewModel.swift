@@ -57,7 +57,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: nil)
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode? {
+    func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 

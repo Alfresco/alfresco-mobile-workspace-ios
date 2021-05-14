@@ -57,7 +57,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         request(with: nil)
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode? {
+    func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 

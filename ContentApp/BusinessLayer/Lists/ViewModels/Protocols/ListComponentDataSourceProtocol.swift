@@ -37,7 +37,7 @@ protocol ListComponentDataSourceProtocol: AnyObject {
     func numberOfItems(in section: Int) -> Int
     func refreshList()
 
-    func listNode(for indexPath: IndexPath) -> ListNode?
+    func listNode(for indexPath: IndexPath) -> ListNode
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func listActionTitle() -> String?
 
@@ -100,7 +100,7 @@ extension ListComponentDataSourceProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        guard let listNode = listNode(for: indexPath) else { return .undefined }
+        let listNode = listNode(for: indexPath)
         return listNode.isMarkedOffline() ? .markedForOffline : .undefined
     }
 }

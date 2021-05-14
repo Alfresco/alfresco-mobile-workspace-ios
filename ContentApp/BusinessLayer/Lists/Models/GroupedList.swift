@@ -31,9 +31,11 @@ enum GroupedListType {
 class GroupedList {
     var titleGroup: String
     var type: GroupedListType
+    var list: [ListNode]
 
-    init(type: GroupedListType) {
+    init(type: GroupedListType, list: [ListNode]) {
         self.type = type
+        self.list = list
         switch type {
         case .today:
             titleGroup = LocalizationConstants.GroupListSection.today
@@ -50,9 +52,5 @@ class GroupedList {
         default:
             titleGroup = ""
         }
-    }
-    
-    static func == (lhs: GroupedList, rhs: GroupedList) -> Bool {
-        return lhs.type == rhs.type && lhs.titleGroup == rhs.titleGroup
     }
 }
