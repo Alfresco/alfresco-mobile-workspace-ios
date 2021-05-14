@@ -74,6 +74,8 @@ enum SiteRole: String {
     case unknown = "unknown"
 }
 
+let listNodeSectionIdentifier = "list-section"
+
 typealias CreatedNodeType = (String, String, String)
 
 class ListNode: Hashable, Entity, DiffAware {

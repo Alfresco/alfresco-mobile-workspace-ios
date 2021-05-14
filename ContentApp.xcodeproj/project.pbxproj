@@ -240,7 +240,7 @@
 		E3AF925A25C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3AF925925C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift */; };
 		E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAE824C194DA00E72712 /* GroupedList.swift */; };
 		E3B1EAEB24C1960D00E72712 /* Date+Grouped.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */; };
-		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */; };
+		E3B1EAED24C1B33D00E72712 /* ListSectionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionViewCell.swift */; };
 		E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3BEB134255C3390008228AD /* Double+TimeFormat.swift */; };
 		E3C7FB9B2507C1B200A228FC /* FilePreviewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */; };
 		E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */; };
@@ -582,7 +582,7 @@
 		E3AF925925C445070016F8A9 /* MultipleChoiceViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChoiceViewModelProtocol.swift; sourceTree = "<group>"; };
 		E3B1EAE824C194DA00E72712 /* GroupedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedList.swift; sourceTree = "<group>"; };
 		E3B1EAEA24C1960D00E72712 /* Date+Grouped.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Grouped.swift"; sourceTree = "<group>"; };
-		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionReusableView.swift; sourceTree = "<group>"; };
+		E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListSectionCollectionViewCell.swift; sourceTree = "<group>"; };
 		E3BEB134255C3390008228AD /* Double+TimeFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+TimeFormat.swift"; sourceTree = "<group>"; };
 		E3C7FB9A2507C1B200A228FC /* FilePreviewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewProtocol.swift; sourceTree = "<group>"; };
 		E3C7FB9C2507C22100A228FC /* FileWithoutPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWithoutPreview.swift; sourceTree = "<group>"; };
@@ -1580,7 +1580,7 @@
 				E3A33E3024B7317D005FFB40 /* RecentSearchCollectionViewCell.swift */,
 				E32B642F24B360F100085472 /* ListElementCollectionViewCell.swift */,
 				E32B643024B360F100085472 /* ListElementCollectionViewCell.xib */,
-				E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionReusableView.swift */,
+				E3B1EAEC24C1B33D00E72712 /* ListSectionCollectionViewCell.swift */,
 				E3E9ED4224CB24E100F1A2C2 /* BrowseStaticNodeCollectionViewCell.swift */,
 				E3E9ED4824CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift */,
 				B9958E0524D7E3570058BCE1 /* ListSelectableCell.swift */,
@@ -2353,7 +2353,7 @@
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */,
-				E3B1EAED24C1B33D00E72712 /* ListSectionCollectionReusableView.swift in Sources */,
+				E3B1EAED24C1B33D00E72712 /* ListSectionCollectionViewCell.swift in Sources */,
 				E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */,
 				B9ECECFF254302EF0097DB3F /* EventBusService.swift in Sources */,
 				E334C04024755D8E00F74880 /* AppDelegate.swift in Sources */,
