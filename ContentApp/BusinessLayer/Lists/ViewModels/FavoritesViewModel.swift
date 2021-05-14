@@ -61,6 +61,10 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         favoritesList(with: nil)
     }
 
+    func listNodes() -> [ListNode] {
+            return results
+        }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }

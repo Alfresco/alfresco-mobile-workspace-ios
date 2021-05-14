@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "DeepDiff",
+        "repositoryURL": "https://github.com/onmyway133/DeepDiff.git",
+        "state": {
+          "branch": null,
+          "revision": "010ebbe1ce5ebeaee37a3d2f4a8c03f0e75b8045",
+          "version": "2.3.1"
+        }
+      },
+      {
+        "package": "Micro",
+        "repositoryURL": "https://github.com/onmyway133/Micro.git",
+        "state": {
+          "branch": null,
+          "revision": "92ec0baea923f4cd029f047243fc7b78dc66846f",
+          "version": "1.2.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

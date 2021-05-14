@@ -88,6 +88,10 @@ extension OfflineViewModel: ListViewModelProtocol {
         return LocalizationConstants.Buttons.syncAll
     }
 
+    func listNodes() -> [ListNode] {
+            return results
+        }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }

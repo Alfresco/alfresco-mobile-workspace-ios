@@ -58,6 +58,14 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         recentsList(with: nil)
     }
 
+    func listNodes() -> [ListNode] {
+            var listNodes: [ListNode] = []
+            for groupedList in groupedLists {
+                listNodes += groupedList.list
+            }
+            return listNodes
+        }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return groupedLists[indexPath.section].list[indexPath.row]
     }

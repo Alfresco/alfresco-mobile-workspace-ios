@@ -62,6 +62,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: nil)
     }
 
+    func listNodes() -> [ListNode] {
+            return results
+        }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }

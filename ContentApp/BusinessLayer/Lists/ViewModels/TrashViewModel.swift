@@ -51,6 +51,10 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return results.count
     }
 
+    func listNodes() -> [ListNode] {
+            return results
+        }
+
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }

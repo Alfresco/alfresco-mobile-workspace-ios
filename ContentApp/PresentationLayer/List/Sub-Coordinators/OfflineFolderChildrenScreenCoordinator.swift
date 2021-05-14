@@ -51,7 +51,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 
 extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentDataSourceProtocol) {
+                     from dataSource: ListComponentModelProtocol) {
         if node.isAFolderType() {
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,
                                                                      listNode: node)
@@ -74,7 +74,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentDataSourceProtocol,
+                                    from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices,

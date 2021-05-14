@@ -54,7 +54,7 @@ extension ResultsViewModel: SearchViewModelDelegate {
 
 // MARK: - ListComponentDataSourceProtocol
 
-extension ResultsViewModel: ListComponentDataSourceProtocol {
+extension ResultsViewModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -70,6 +70,10 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
+
+    func listNodes() -> [ListNode] {
+            return results
+        }
 
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]

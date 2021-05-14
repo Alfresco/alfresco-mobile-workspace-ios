@@ -63,7 +63,7 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
 
 extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentDataSourceProtocol) {
+                     from dataSource: ListComponentModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -78,7 +78,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentDataSourceProtocol,
+                                    from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,
