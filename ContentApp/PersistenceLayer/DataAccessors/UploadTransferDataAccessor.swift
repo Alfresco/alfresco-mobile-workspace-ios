@@ -47,14 +47,16 @@ class UploadTransferDataAccessor: DataAccessor {
         }
 
         databaseService?.remove(entity: transferToBeDeleted)
-        _ = DiskService.delete(itemAtPath: transfer.filePath)
+        if let uploadURL = uploadLocalPath(for: transfer) {
+            _ = DiskService.delete(itemAtPath: uploadURL.path)
+        }
     }
 
     func query(uploadTransfer: UploadTransfer) -> UploadTransfer? {
         if let transfersBox = databaseService?.box(entity: UploadTransfer.self) {
             do {
                 let query: Query<UploadTransfer> = try transfersBox.query {
-                    UploadTransfer.filePath == uploadTransfer.filePath
+                    UploadTransfer.localFilenamePath == uploadTransfer.localFilenamePath
                 }.build()
                 let uploadTransfer = try query.findUnique()
                 return uploadTransfer
@@ -63,6 +65,23 @@ class UploadTransferDataAccessor: DataAccessor {
             }
         }
         return nil
+    }
+    
+    func uploadLocalPath(for transfer: UploadTransfer) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: uploadFilePath)
+        localURL.appendPathComponent(transfer.localFilenamePath)
+
+        return localURL
+    }
+
+    func isUploadContentLocal(for transfer: UploadTransfer) -> Bool {
+        if let uploadURLPath = uploadLocalPath(for: transfer)?.path {
+            let fileManager = FileManager.default
+            return fileManager.fileExists(atPath: uploadURLPath)
+        }
+        return false
     }
 
     func queryAll() -> [UploadTransfer] {

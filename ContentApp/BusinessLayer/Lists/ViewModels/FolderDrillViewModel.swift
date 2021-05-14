@@ -88,20 +88,10 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
     
     func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        guard let listNode = listNode(for: indexPath) else { return false }
-        if listNode.markedFor == .upload &&
-            listNode.syncStatus != .synced {
-            return false
-        }
         return true
     }
     
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        guard let listNode = listNode(for: indexPath) else { return false }
-        if listNode.markedFor == .upload &&
-            listNode.syncStatus != .synced {
-            return false
-        }
         return true
     }
     

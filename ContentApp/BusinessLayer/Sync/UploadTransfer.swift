@@ -26,7 +26,7 @@ class UploadTransfer: Entity {
     var extensionType: String = ""
     var mimetype: String = ""
     var nodeDescription = ""
-    var filePath = ""
+    var localFilenamePath = ""
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus = .pending
 
@@ -39,13 +39,13 @@ class UploadTransfer: Entity {
          extensionType: String,
          mimetype: String,
          nodeDescription: String?,
-         filePath: String) {
+         localFilenamePath: String) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
         self.extensionType = extensionType
         self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
-        self.filePath = filePath
+        self.localFilenamePath = localFilenamePath
     }
 
     // MARK: - Public Helpers
@@ -54,7 +54,7 @@ class UploadTransfer: Entity {
         parentNodeId = newVersion.parentNodeId
         nodeName = newVersion.nodeName
         nodeDescription = newVersion.nodeDescription
-        filePath = newVersion.filePath
+        localFilenamePath = newVersion.localFilenamePath
     }
     
     func listNode() -> ListNode {
@@ -64,6 +64,15 @@ class UploadTransfer: Entity {
         node.parentGuid = parentNodeId
         node.syncStatus = syncStatus
         node.markedFor = .upload
+        node.uploadLocalPath = localFilenamePath
         return node
+    }
+    
+    func updateListNode(with newVersion: ListNode) -> ListNode {
+        newVersion.id = id
+        newVersion.syncStatus = syncStatus
+        newVersion.markedFor = .upload
+        newVersion.uploadLocalPath = localFilenamePath
+        return newVersion
     }
 }

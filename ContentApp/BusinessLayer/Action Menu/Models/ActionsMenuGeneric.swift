@@ -31,7 +31,9 @@ struct ActionsMenuGeneric {
         if let action = offlineAction(for: node) {
             actions2.append(action)
         }
-        actions2.append(favoriteAction(for: node))
+        if let action = favoriteAction(for: node) {
+            actions2.append(action)
+        }
 
         if let action = downloadAction(for: node) {
             actions2.append(action)
@@ -49,7 +51,11 @@ struct ActionsMenuGeneric {
 
     // MARK: Private Helpers
 
-    static private func favoriteAction(for node: ListNode) -> ActionMenu {
+    static private func favoriteAction(for node: ListNode) -> ActionMenu? {
+        if node.markedFor == .upload &&
+            node.syncStatus != .synced {
+            return nil
+        }
         let addFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.addFavorite,
                                       type: .addFavorite)
         let removeFavAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeFavorite,
@@ -58,6 +64,10 @@ struct ActionsMenuGeneric {
     }
 
     static private func offlineAction(for node: ListNode) -> ActionMenu? {
+        if node.markedFor == .upload &&
+            node.syncStatus != .synced {
+            return nil
+        }
         let markOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.markOffline,
                                        type: .markOffline)
         let removeOffAction = ActionMenu(title: LocalizationConstants.ActionMenu.removeOffline,
@@ -82,6 +92,10 @@ struct ActionsMenuGeneric {
     }
 
     static private func deleteAction(for node: ListNode) -> ActionMenu? {
+        if node.markedFor == .upload &&
+            node.syncStatus != .synced {
+            return nil
+        }
         let deleteAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveTrash,
                                       type: .moveTrash)
         switch node.nodeType {

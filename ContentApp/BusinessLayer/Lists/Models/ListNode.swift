@@ -93,6 +93,7 @@ class ListNode: Hashable, Entity, DiffAware {
     var markedAsOffline = false
     var isFile = false
     var isFolder = false
+    var uploadLocalPath: String?
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType = .unknown
@@ -123,7 +124,8 @@ class ListNode: Hashable, Entity, DiffAware {
          trashed: Bool = false,
          destination: String? = nil,
          isFile: Bool = false,
-         isFolder: Bool = false) {
+         isFolder: Bool = false,
+         uploadLocalPath: String = "") {
         self.guid = guid
         self.siteID = siteID
         self.parentGuid = parentGuid
@@ -141,6 +143,7 @@ class ListNode: Hashable, Entity, DiffAware {
         self.destination = destination
         self.isFile = isFile
         self.isFolder = isFolder
+        self.uploadLocalPath = uploadLocalPath
     }
 
     // Default initializer required by ObjectBox
@@ -164,6 +167,7 @@ class ListNode: Hashable, Entity, DiffAware {
         markedFor = newVersion.markedFor
         isFile = newVersion.isFile
         isFolder = newVersion.isFolder
+        uploadLocalPath = newVersion.uploadLocalPath
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {

@@ -99,7 +99,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 extensionType: capturedAsset.type.ext,
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
-                                                filePath: uploadFilePath)
+                                                localFilenamePath: assetURL.lastPathComponent)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 

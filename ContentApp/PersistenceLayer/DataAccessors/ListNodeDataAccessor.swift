@@ -145,6 +145,15 @@ class ListNodeDataAccessor: DataAccessor {
     }
 
     // MARK: - Path construction
+    
+    func uploadLocalPath(for node: ListNode) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: uploadFilePath)
+        localURL.appendPathComponent(node.uploadLocalPath ?? "")
+
+        return localURL
+    }
 
     func fileLocalPath(for node: ListNode) -> URL? {
         guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
@@ -182,6 +191,14 @@ class ListNodeDataAccessor: DataAccessor {
             }
         }
 
+        return false
+    }
+    
+    func isUploadContentLocal(for node: ListNode) -> Bool {
+        if let uploadURLPath = uploadLocalPath(for: node)?.path {
+            let fileManager = FileManager.default
+            return fileManager.fileExists(atPath: uploadURLPath)
+        }
         return false
     }
 

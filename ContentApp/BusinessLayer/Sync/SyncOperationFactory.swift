@@ -274,14 +274,14 @@ class SyncOperationFactory {
             }
 
             sSelf.nodeOperations.sessionForCurrentAccount { _ in
-                let fileURL = URL(fileURLWithPath: transfer.filePath)
+                guard let fileURL = transferDataAccessor.uploadLocalPath(for: transfer) else { return }
                 do {
                     let fileData = try Data(contentsOf: fileURL)
 
                     sSelf.nodeOperations.createNode(nodeId: transfer.parentNodeId,
                                                     name: transfer.nodeName,
                                                     description: transfer.nodeDescription,
-                                                    nodeExtension: transfer.filePath.fileExtension(),
+                                                    nodeExtension: fileURL.path.fileExtension(),
                                                     fileData: fileData,
                                                     autoRename: true,
                                                     completionHandler: { (entry, error) in
@@ -290,15 +290,14 @@ class SyncOperationFactory {
                                                         }
 
                                                         if error == nil, let node = entry {
-                                                            node.id = transfer.id
-                                                            node.syncStatus = .synced
-                                                            node.markedFor = .upload
                                                             transfer.syncStatus = .synced
-                                                            sSelf.publishSyncStatusEvent(for: node)
+                                                            let listNode = transfer.updateListNode(with: node)
+                                                            sSelf.publishSyncStatusEvent(for: listNode)
                                                             transferDataAccessor.remove(transfer: transfer)
                                                         } else {
                                                             transfer.syncStatus = .error
-                                                            sSelf.publishSyncStatusEvent(for: transfer.listNode())
+                                                            let listNode = transfer.listNode()
+                                                            sSelf.publishSyncStatusEvent(for: listNode)
                                                             transferDataAccessor.store(uploadTransfer: transfer)
                                                         }
 

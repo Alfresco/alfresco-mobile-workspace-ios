@@ -46,15 +46,9 @@ class FilePreviewViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        progressView.progress = 0
-        progressView.mode = .indeterminate
-        view.bringSubviewToFront(progressView)
-
-        startLoading()
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-
-        title = filePreviewViewModel?.listNode?.title
-        filePreviewViewModel?.requestUpdateNodeDetails()
+        
+        startPreviewingNode()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -109,6 +103,17 @@ class FilePreviewViewController: SystemThemableViewController {
     }
 
     // MARK: - Private Helpers
+    
+    private func startPreviewingNode() {
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+        view.bringSubviewToFront(progressView)
+
+        startLoading()
+
+        title = filePreviewViewModel?.listNode?.title
+        filePreviewViewModel?.requestUpdateNodeDetails()
+    }
 
     private func addToolbarActions() {
         guard let actions = filePreviewViewModel?.actionMenuViewModel?.actionsForToolbar() else {

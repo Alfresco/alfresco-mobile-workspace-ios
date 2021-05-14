@@ -80,15 +80,15 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
         let assetURL = URL(fileURLWithPath: capturedAsset.path)
         let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
 
-        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
+        _ = DiskService.uploadFolderPath(for: accountIdentifier) +
             "/" + assetURL.lastPathComponent
-
+        
         let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                             nodeName: capturedAsset.fileName,
                                             extensionType: capturedAsset.type.ext,
                                             mimetype: capturedAsset.type.mimetype,
                                             nodeDescription: capturedAsset.description,
-                                            filePath: uploadFilePath)
+                                            localFilenamePath: assetURL.lastPathComponent)
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 
