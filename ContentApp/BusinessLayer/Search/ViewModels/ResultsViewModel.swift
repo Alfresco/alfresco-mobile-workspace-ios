@@ -75,7 +75,7 @@ extension ResultsViewModel: ListComponentModelProtocol {
         return results
     }
     
-    func listNode(for indexPath: IndexPath) -> ListNode? {
+    func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 

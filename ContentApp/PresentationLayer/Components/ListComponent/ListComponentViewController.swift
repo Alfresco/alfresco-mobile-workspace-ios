@@ -220,8 +220,8 @@ class ListComponentViewController: SystemThemableViewController {
                                       height: (model.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
                     }.onSelect { [weak self] context in
                         guard let sSelf = self,
-                              let model = sSelf.model,
-                              let node = model.listNode(for: context.indexPath) else { return }
+                              let model = sSelf.model else { return }
+                        let node = model.listNode(for: context.indexPath)
 
                         if model.shouldPreviewNode(at: context.indexPath) == false { return }
                         if node.trashed == false {
