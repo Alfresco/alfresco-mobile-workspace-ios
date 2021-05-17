@@ -182,9 +182,12 @@ extension OfflineFolderDrillViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let eventNode = event.node
-        if let indexOfNode = results.firstIndex(of: eventNode) {
-            results[indexOfNode] = eventNode
+        let node = event.node
+
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            results.remove(at: indexOfOfflineNode)
+            let idx = indexOfOfflineNode > 0 ? indexOfOfflineNode - 1 : 0
+            results.insert(node, at: idx)
         }
     }
 

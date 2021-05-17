@@ -231,7 +231,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: Event observable
 
 extension FolderDrillViewModel: EventObservable {
-
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -274,10 +273,11 @@ extension FolderDrillViewModel: EventObservable {
 
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
+
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            let listNode = results[indexOfOfflineNode]
-            listNode.update(with: node)
-            results[indexOfOfflineNode] = listNode
+            results.remove(at: indexOfOfflineNode)
+            let idx = indexOfOfflineNode > 0 ? indexOfOfflineNode - 1 : 0
+            results.insert(node, at: idx)
         }
     }
     

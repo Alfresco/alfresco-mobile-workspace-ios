@@ -180,7 +180,8 @@ class ListNode: Hashable, Entity, DiffAware {
             a.syncStatus == b.syncStatus &&
             a.modifiedAt == b.modifiedAt &&
             a.favorite == b.favorite &&
-            a.allowableOperations == b.allowableOperations
+            a.allowableOperations == b.allowableOperations &&
+            a.markedAsOffline == b.markedAsOffline
     }
 
     func shouldUpdate() -> Bool {
