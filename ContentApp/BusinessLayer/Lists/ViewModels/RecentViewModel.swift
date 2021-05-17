@@ -70,10 +70,6 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return ""
     }
 
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }

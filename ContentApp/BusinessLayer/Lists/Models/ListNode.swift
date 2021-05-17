@@ -171,7 +171,16 @@ class ListNode: Hashable, Entity, DiffAware {
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid && lhs.id == rhs.id
+        return lhs.guid == rhs.guid &&
+            lhs.id == rhs.id
+    }
+
+    static func compareContent(_ a: ListNode, _ b: ListNode) -> Bool { // swiftlint:disable:this identifier_name
+        return a.markedFor == b.markedFor &&
+            a.syncStatus == b.syncStatus &&
+            a.modifiedAt == b.modifiedAt &&
+            a.favorite == b.favorite &&
+            a.allowableOperations == b.allowableOperations
     }
 
     func shouldUpdate() -> Bool {

@@ -42,7 +42,6 @@ protocol ListComponentModelProtocol: AnyObject {
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func listActionTitle() -> String?
 
-    func shouldDisplaySections() -> Bool
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayCreateButton() -> Bool
     func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool
@@ -55,11 +54,6 @@ protocol ListComponentModelProtocol: AnyObject {
 }
 
 extension ListComponentModelProtocol {
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
     func shouldDisplayCreateButton() -> Bool {
         return false
     }

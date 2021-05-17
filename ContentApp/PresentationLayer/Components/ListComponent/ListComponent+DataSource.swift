@@ -39,18 +39,6 @@ class ListComponentDataSource: DataSource {
         super.init(collectionView: configuration.collectionView)
     }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if configuration.model.shouldDisplaySections() {
-            return CGSize(width: collectionView.bounds.width,
-                          height: sectionCellHeight)
-        } else {
-            return CGSize(width: collectionView.bounds.width,
-                          height: 0)
-        }
-    }
-    
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
         return configuration.model.numberOfItems(in: section)
