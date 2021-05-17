@@ -53,6 +53,14 @@ class FilePreviewScreenCoordinator: Coordinator {
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices
         viewController.filePreviewViewModel = filePreviewViewModel
+        
+        eventBusService?.register(observer: filePreviewViewModel,
+                                          for: FavouriteEvent.self,
+                                          nodeTypes: [.file])
+        
+        eventBusService?.register(observer: filePreviewViewModel,
+                                          for: SyncStatusEvent.self,
+                                          nodeTypes: [.file])
 
         presenter.pushViewController(viewController, animated: true)
         filePreviewViewController = viewController

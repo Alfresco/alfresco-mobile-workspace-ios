@@ -310,6 +310,10 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
             mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode)
         }
     }
+    
+    func reloadPreview() {
+        startPreviewingNode()
+    }
 }
 
 // MARK: - ActionMenuViewModel Delegate

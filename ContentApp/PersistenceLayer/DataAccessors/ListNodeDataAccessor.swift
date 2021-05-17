@@ -150,9 +150,11 @@ class ListNodeDataAccessor: DataAccessor {
         guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
         var localURL = URL(fileURLWithPath: uploadFilePath)
-        localURL.appendPathComponent(node.uploadLocalPath ?? "")
-
-        return localURL
+        if let path = node.uploadLocalPath, !path.isEmpty {
+            localURL.appendPathComponent(path)
+            return localURL
+        }
+        return nil
     }
 
     func fileLocalPath(for node: ListNode) -> URL? {

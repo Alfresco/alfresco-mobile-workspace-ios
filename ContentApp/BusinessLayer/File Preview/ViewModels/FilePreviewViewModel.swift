@@ -29,6 +29,7 @@ protocol FilePreviewViewModelDelegate: AnyObject {
     func requestFileUnlock(retry: Bool)
     func update(listNode: ListNode)
     func didFinishNodeDetails(error: Error?)
+    func reloadPreview()
 }
 
 struct RenditionServiceConfiguration {
@@ -345,6 +346,12 @@ extension FilePreviewViewModel: EventObservable {
             let node = publishedEvent.node
             listNode.favorite = node.favorite
             self.viewModelDelegate?.update(listNode: listNode)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            let node = publishedEvent.node
+            if node.id == listNode?.id && listNode?.guid == "0" {
+                listNode = node
+                viewModelDelegate?.reloadPreview()
+            }
         }
     }
 }
