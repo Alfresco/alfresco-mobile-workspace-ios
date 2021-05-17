@@ -33,7 +33,6 @@ protocol ListComponentModelProtocol: AnyObject {
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
 
-    func numberOfSections() -> Int
     func numberOfItems(in section: Int) -> Int
     func refreshList()
 

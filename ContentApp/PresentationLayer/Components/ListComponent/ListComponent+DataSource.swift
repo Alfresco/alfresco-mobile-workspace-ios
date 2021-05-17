@@ -51,10 +51,6 @@ class ListComponentDataSource: DataSource {
         }
     }
     
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return configuration.model.numberOfSections()
-    }
-    
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
         return configuration.model.numberOfItems(in: section)
@@ -63,13 +59,12 @@ class ListComponentDataSource: DataSource {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        if configuration.model.numberOfSections() - 1 == section {
-            if configuration.model.shouldDisplayListLoadingIndicator() &&
-                configuration.services.connectivityService?.hasInternetConnection() == true {
-                return CGSize(width: collectionView.bounds.width,
-                              height: regularCellHeight)
-            }
+        if configuration.model.shouldDisplayListLoadingIndicator() &&
+            configuration.services.connectivityService?.hasInternetConnection() == true {
+            return CGSize(width: collectionView.bounds.width,
+                          height: regularCellHeight)
         }
+
         return CGSize(width: 0, height: 0)
     }
     

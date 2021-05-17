@@ -44,10 +44,6 @@ class RecentViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return EmptyRecents()
     }
 
-    func numberOfSections() -> Int {
-        return (groupedLists.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return groupedLists.count
     }

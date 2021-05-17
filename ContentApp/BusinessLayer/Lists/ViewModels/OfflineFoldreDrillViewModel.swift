@@ -59,10 +59,6 @@ extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
         return EmptyFolder()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
