@@ -276,8 +276,7 @@ extension FolderDrillViewModel: EventObservable {
 
         if let indexOfOfflineNode = results.firstIndex(of: node) {
             results.remove(at: indexOfOfflineNode)
-            let idx = indexOfOfflineNode > 0 ? indexOfOfflineNode - 1 : 0
-            results.insert(node, at: idx)
+            results.insert(node, at: indexOfOfflineNode)
         }
     }
     
