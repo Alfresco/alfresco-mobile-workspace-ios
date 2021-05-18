@@ -145,9 +145,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                               skipCount: paginationRequest?.skipCount)
         updateNodeDetailsIfNecessary { [weak self] (_) in
             guard let sSelf = self else { return }
-            let guid = sSelf.listNode?.guid ?? APIConstants.my
+            let parentGuid = sSelf.listNode?.guid ?? APIConstants.my
 
-            sSelf.nodeOperations.fetchNodeChildren(for: guid,
+            sSelf.nodeOperations.fetchNodeChildren(for: parentGuid,
                                                    pagination: reqPagination,
                                                    relativePath: relativePath) { (result, error) in
                 var listNodes: [ListNode] = []
@@ -159,17 +159,19 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                     }
                 }
 
-                let uploadTransfers = sSelf.uploadTransferDataAccessor
-                    .queryAll(for: guid) { [weak self] uploadTransfers in
+                // Insert nodes to be uploaded
+                let responsePagination = result?.list?.pagination
+                let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
                     guard let sSelf = self else { return }
-                    sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
+                    sSelf.insert(uploadTransfers: uploadTransfers,
+                                 totalItems: responsePagination?.totalItems ?? 0)
                 }
-                sSelf.appendFirstInResult(uploadTransfers: uploadTransfers)
-
+                sSelf.insert(uploadTransfers: uploadTransfers,
+                             totalItems: responsePagination?.totalItems ?? 0)
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
+                                                          responsePagination: responsePagination)
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         }
@@ -177,17 +179,28 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     // MARK: - Private Utils
     
-    private func appendFirstInResult(uploadTransfers: [UploadTransfer]) {
-        var nodesToBeInserted: [ListNode] = []
+    private func insert(uploadTransfers: [UploadTransfer], totalItems: Int64) {
         _ = uploadTransfers.map { transfer in
             let listNode = transfer.listNode()
             if !results.contains(listNode) {
-                nodesToBeInserted.insert(listNode, at: 0)
-            }
-        }
+                var increaseIndex = false
+                var insertionIndex = results.insertionIndex { node in
+                    if node.title.localizedCompare(listNode.title) == .orderedSame {
+                        increaseIndex = true
+                    }
+                    return (node.title.localizedCompare(listNode.title) == .orderedAscending)  && !node.isFolder
+                }
 
-        if !nodesToBeInserted.isEmpty {
-            results.insert(contentsOf: nodesToBeInserted, at: 0)
+                if increaseIndex {
+                    insertionIndex += 1
+                }
+
+                if insertionIndex < results.count - 1 {
+                    results.insert(listNode, at: insertionIndex)
+                } else if insertionIndex >= totalItems {
+                    results.insert(listNode, at: results.count - 1)
+                }
+            }
         }
     }
 
