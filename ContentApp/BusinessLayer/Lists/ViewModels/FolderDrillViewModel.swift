@@ -264,7 +264,7 @@ extension FolderDrillViewModel: EventObservable {
         case .restore:
             refreshList()
         case .created:
-            if self.listNode?.guid == node.guid || listNode == nil {
+            if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
                 refreshList()
             }
         default: break
