@@ -24,4 +24,7 @@ protocol CameraKitCaptureDelegate: AnyObject {
     /// cleared out after this call.
     /// - Parameter capturedAsset: captured asset information containing metadata and path information
     func didEndReview(for capturedAsset: CapturedAsset)
+    
+    /// Notifies the delegate the review session is over and will begin to deliver captured asset information.
+    func willStartReview()
 }

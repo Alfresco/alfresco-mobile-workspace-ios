@@ -98,7 +98,7 @@ class PhotoGalleryDataSource {
     func fetchSelectedAssets(for delegate: CameraKitCaptureDelegate?) {
         for (index, select) in selectedIndexAssets.enumerated() where select {
             let galleryAsset = asset(for: IndexPath(row: index, section: 0))
-
+            delegate?.willStartReview()
             fetchPath(for: galleryAsset) { [weak self] assetPath in
                 guard let sSelf = self else { return }
 

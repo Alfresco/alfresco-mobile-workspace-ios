@@ -117,4 +117,14 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
         }
     }
+    
+    func willStartReview() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+            guard let sSelf = self else { return }
+            Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
+                             type: .approve,
+                             presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                             finish: nil)
+        })
+    }
 }

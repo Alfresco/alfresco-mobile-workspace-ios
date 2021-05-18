@@ -116,6 +116,8 @@
 "approved-created" = "%@ was created";
 "approved-mark-offline" = "%@ will be made available offline.";
 "approved-remove-offline" = "%@ will no longer be available offline.";
+"approved-upload-photo" = "Photo scheduled for upload.";
+"approved-upload-media" = "Media scheduled for upload.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
