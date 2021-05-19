@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is used to map your photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow photo library access to upload photos and videos to Mobile Workspace.</string>
 	<key>NSCameraUsageDescription</key>
