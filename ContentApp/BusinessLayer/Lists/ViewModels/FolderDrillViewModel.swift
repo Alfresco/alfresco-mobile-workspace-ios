@@ -91,9 +91,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     }
     
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let listNode = listNode(for: indexPath)
-        if listNode.isAFileType() && listNode.markedFor == .upload {
-            let nodeSyncStatus = listNode.syncStatus
+        let node = listNode(for: indexPath)
+        if node.isAFileType() && node.markedFor == .upload {
+            let nodeSyncStatus = node.syncStatus
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {
@@ -112,7 +112,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
             return entryListStatus
         }
 
-        return listNode.isMarkedOffline() ? .markedForOffline : .undefined
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
     }
 
     func performListAction() {
