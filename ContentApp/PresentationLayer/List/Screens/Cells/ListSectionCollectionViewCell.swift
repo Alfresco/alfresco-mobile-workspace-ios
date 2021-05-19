@@ -17,20 +17,13 @@
 //
 
 import UIKit
-import AlfrescoContent
-import AlfrescoAuth
 
-protocol ListViewModelProtocol: ListComponentModelProtocol {
-    var pageUpdatingDelegate: ListComponentPageUpdatingDelegate? { get set }
+class ListSectionCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
 
-    init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?)
-    func shouldDisplaySettingsButton() -> Bool
-    func fetchNextListPage(index: IndexPath, userInfo: Any?)
-    func performListAction()
-}
-
-extension ListViewModelProtocol {
-    func shouldDisplaySettingsButton() -> Bool {
-        return false
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
     }
 }

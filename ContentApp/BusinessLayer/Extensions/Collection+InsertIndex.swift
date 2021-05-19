@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,14 +16,20 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class ListSectionCollectionReusableView: UICollectionReusableView {
-    @IBOutlet weak var titleLabel: UILabel!
+extension RandomAccessCollection {
+    func insertionIndex(for predicate: (Element) -> Bool) -> Index {
+        var slice: SubSequence = self[...]
 
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        guard let currentTheme = currentTheme else { return }
-        backgroundColor = currentTheme.surfaceColor
-        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        while !slice.isEmpty {
+            let middle = slice.index(slice.startIndex, offsetBy: slice.count / 2)
+            if predicate(slice[middle]) {
+                slice = slice[index(after: middle)...]
+            } else {
+                slice = slice[..<middle]
+            }
+        }
+        return slice.startIndex
     }
 }

@@ -28,6 +28,7 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
     var listNode: ListNode?
 
     var supportedNodeTypes: [NodeType] = []
+    let uploadTransferDataAccessor = UploadTransferDataAccessor()
 
     // MARK: - Init
 
@@ -47,10 +48,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return EmptyFolder()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
@@ -60,12 +57,19 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         currentPage = 1
         request(with: nil)
     }
-
+    
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
-
-    func shouldDisplayNodePath() -> Bool {
+    
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+        if listNode(for: indexPath).markedFor == .upload {
+            return true
+        }
         return false
     }
 
@@ -76,6 +80,39 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
+    }
+    
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let listNode = listNode(for: indexPath)
+        if listNode.isAFileType() && listNode.markedFor == .upload {
+            let nodeSyncStatus = listNode.syncStatus
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .uploaded
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
+        }
+
+        return listNode.isMarkedOffline() ? .markedForOffline : .undefined
     }
 
     func performListAction() {
@@ -108,7 +145,9 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                                               skipCount: paginationRequest?.skipCount)
         updateNodeDetailsIfNecessary { [weak self] (_) in
             guard let sSelf = self else { return }
-            sSelf.nodeOperations.fetchNodeChildren(for: sSelf.listNode?.guid ?? APIConstants.my,
+            let parentGuid = sSelf.listNode?.guid ?? APIConstants.my
+
+            sSelf.nodeOperations.fetchNodeChildren(for: parentGuid,
                                                    pagination: reqPagination,
                                                    relativePath: relativePath) { (result, error) in
                 var listNodes: [ListNode] = []
@@ -119,16 +158,51 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                         AlfrescoLog.error(error)
                     }
                 }
+
+                // Insert nodes to be uploaded
+                let responsePagination = result?.list?.pagination
+                let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
+                    guard let sSelf = self else { return }
+                    sSelf.insert(uploadTransfers: uploadTransfers,
+                                 totalItems: responsePagination?.totalItems ?? 0)
+                }
+                sSelf.insert(uploadTransfers: uploadTransfers,
+                             totalItems: responsePagination?.totalItems ?? 0)
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
                                                           requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
+                                                          responsePagination: responsePagination)
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         }
     }
 
     // MARK: - Private Utils
+    
+    private func insert(uploadTransfers: [UploadTransfer], totalItems: Int64) {
+        _ = uploadTransfers.map { transfer in
+            let listNode = transfer.listNode()
+            if !results.contains(listNode) {
+                var increaseIndex = false
+                var insertionIndex = results.insertionIndex { node in
+                    if node.title.localizedCompare(listNode.title) == .orderedSame {
+                        increaseIndex = true
+                    }
+                    return (node.title.localizedCompare(listNode.title) == .orderedAscending)  && !node.isFolder
+                }
+
+                if increaseIndex {
+                    insertionIndex += 1
+                }
+
+                if insertionIndex < results.count - 1 {
+                    results.insert(listNode, at: insertionIndex)
+                } else if insertionIndex >= totalItems {
+                    results.insert(listNode, at: results.count - 1)
+                }
+            }
+        }
+    }
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
         guard let listNode = self.listNode else {
@@ -170,7 +244,6 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
 // MARK: Event observable
 
 extension FolderDrillViewModel: EventObservable {
-
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -178,6 +251,8 @@ extension FolderDrillViewModel: EventObservable {
             handleMove(event: publishedEvent)
         } else if let publishedEvent = event as? OfflineEvent {
             handleOffline(event: publishedEvent)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            handleSyncStatus(event: publishedEvent)
         }
     }
 
@@ -202,7 +277,7 @@ extension FolderDrillViewModel: EventObservable {
         case .restore:
             refreshList()
         case .created:
-            if self.listNode?.guid == node.guid || listNode == nil {
+            if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
                 refreshList()
             }
         default: break
@@ -211,10 +286,19 @@ extension FolderDrillViewModel: EventObservable {
 
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
+
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            let listNode = results[indexOfOfflineNode]
-            listNode.update(with: node)
-            results[indexOfOfflineNode] = listNode
+            results.remove(at: indexOfOfflineNode)
+            results.insert(node, at: indexOfOfflineNode)
+        }
+    }
+    
+    private func handleSyncStatus(event: SyncStatusEvent) {
+        let eventNode = event.node
+        guard eventNode.markedFor == .upload else { return }
+        for (index, listNode) in results.enumerated() where listNode.id == eventNode.id {
+            results[index] = eventNode
+            return
         }
     }
 }

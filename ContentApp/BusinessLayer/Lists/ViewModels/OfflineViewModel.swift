@@ -56,31 +56,6 @@ class OfflineViewModel: PageFetchingViewModel {
         let listNodeDataAccessor = ListNodeDataAccessor()
         return listNodeDataAccessor.queryMarkedOffline()
     }
-
-    private func showOverrideSyncOnCellularDataDialog() {
-        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
-        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
-            guard let sSelf = self else { return }
-            UserProfile.allowOnceSyncOverCellularData = true
-            let syncTriggersService = sSelf.coordinatorServices?.syncTriggersService
-            syncTriggersService?.triggerSync(for: .userDidInitiateSync)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later)
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        DispatchQueue.main.async {
-            if let presentationContext = UIViewController.applicationTopMostPresented {
-                _ = presentationContext.showDialog(title: title,
-                                                   message: message,
-                                                   actions: [confirmAction, cancelAction],
-                                                   completionHandler: {})
-            }
-        }
-    }
 }
 
 // MARK: - ListViewModelProtocol
@@ -92,10 +67,6 @@ extension OfflineViewModel: ListViewModelProtocol {
 
     func emptyList() -> EmptyListProtocol {
         return EmptyOffline()
-    }
-
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -113,6 +84,10 @@ extension OfflineViewModel: ListViewModelProtocol {
         return LocalizationConstants.Buttons.syncAll
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
@@ -129,13 +104,14 @@ extension OfflineViewModel: ListViewModelProtocol {
         return shouldEnableListButton
     }
 
-    func shouldPreview(node: ListNode) -> Bool {
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        let listNode = listNode(for: indexPath)
         let listNodeDataAccessor = ListNodeDataAccessor()
 
-        if node.isAFolderType() {
+        if listNode.isAFolderType() {
             return true
         }
-        if listNodeDataAccessor.isContentDownloaded(for: node) {
+        if listNodeDataAccessor.isContentDownloaded(for: listNode) {
             return true
         }
         return false
@@ -147,18 +123,19 @@ extension OfflineViewModel: ListViewModelProtocol {
 
     func performListAction() {
         let connectivityService = coordinatorServices?.connectivityService
+        let syncTriggersService = coordinatorServices?.syncTriggersService
         if connectivityService?.status == .cellular &&
             UserProfile.allowSyncOverCellularData == false {
-            showOverrideSyncOnCellularDataDialog()
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateSync)
         } else {
-            let syncTriggersService = coordinatorServices?.syncTriggersService
             syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
     }
 
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
-        if node.isAFileType() {
-            let nodeSyncStatus = node.hasSyncStatus()
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let listNode = listNode(for: indexPath)
+        if listNode.isAFileType() {
+            let nodeSyncStatus = listNode.hasSyncStatus()
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {
@@ -169,7 +146,7 @@ extension OfflineViewModel: ListViewModelProtocol {
             case .inProgress:
                 entryListStatus = .inProgress
             case .synced:
-                entryListStatus = .synced
+                entryListStatus = .downloaded
             default:
                 entryListStatus = .undefined
             }

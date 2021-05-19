@@ -17,113 +17,103 @@
 //
 
 import UIKit
+import Micro
 
-private let listItemNodeCellHeight: CGFloat = 54.0
-private let listSectionCellHeight: CGFloat = 54.0
-private let listSiteCellHeight: CGFloat = 44.0
+let regularCellHeight: CGFloat = 54.0
+let sectionCellHeight: CGFloat = 54.0
+let compactCellHeight: CGFloat = 44.0
 
-extension ListComponentViewController: UICollectionViewDelegateFlowLayout,
-                                       UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+struct ListComponentDataSourceConfiguration {
+    let collectionView: UICollectionView
+    let model: ListComponentModelProtocol
+    var isPaginationEnabled = true
+    weak var cellDelegate: ListElementCollectionViewCellDelegate?
+    let services: CoordinatorServices
+}
 
-        if listDataSource?.shouldDisplaySections() ?? false {
-            return CGSize(width: self.view.bounds.width, height: listSectionCellHeight)
-        } else {
-            return CGSize(width: self.view.bounds.width, height: 0)
-        }
+class ListComponentDataSource: DataSource {
+    var configuration: ListComponentDataSourceConfiguration
+    
+    init(with configuration: ListComponentDataSourceConfiguration) {
+        self.configuration = configuration
+        super.init(collectionView: configuration.collectionView)
     }
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return listDataSource?.numberOfSections() ?? 0
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
+        return configuration.model.numberOfItems(in: section)
     }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return listDataSource?.numberOfItems(in: section) ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let dataSource = listDataSource
-        else { return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                             height: listItemNodeCellHeight) }
-        return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width,
-                      height: (dataSource.shouldDisplayNodePath()) ? listItemNodeCellHeight : listSiteCellHeight)
-    }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        guard let dataSource = listDataSource else { return CGSize(width: 0, height: 0) }
-
-        if dataSource.numberOfSections() - 1 == section {
-            if listDataSource?.shouldDisplayListLoadingIndicator() ?? false &&
-                coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-                return CGSize(width: self.view.bounds.width, height: listItemNodeCellHeight)
-            }
+        if configuration.model.shouldDisplayListLoadingIndicator() &&
+            configuration.services.connectivityService?.hasInternetConnection() == true {
+            return CGSize(width: collectionView.bounds.width,
+                          height: regularCellHeight)
         }
+
         return CGSize(width: 0, height: 0)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
-        case UICollectionView.elementKindSectionHeader:
-            let identifier = String(describing: ListSectionCollectionReusableView.self)
-            guard let headerView =
-                    collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                    withReuseIdentifier: identifier,
-                                                                    for: indexPath) as? ListSectionCollectionReusableView else {
-                fatalError("Invalid ListSectionCollectionReusableView type") }
-            headerView.titleLabel.text = listDataSource?.titleForSectionHeader(at: indexPath)
-            headerView.applyTheme(coordinatorServices?.themingService?.activeTheme)
-            return headerView
-
         case UICollectionView.elementKindSectionFooter:
             let footerView =
                 collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                 withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self),
                                                                 for: indexPath)
+            
             return footerView
-
+            
         default:
             assert(false, "Unexpected element kind")
         }
-
+        
         return UICollectionReusableView()
     }
+    
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let identifierElement = String(describing: ListElementCollectionViewCell.self)
+        let identifierSection = String(describing: ListSectionCollectionViewCell.self)
 
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let node = listDataSource?.listNode(for: indexPath) else { return UICollectionViewCell() }
-        let identifier = String(describing: ListElementCollectionViewCell.self)
+        let node = configuration.model.listNode(for: indexPath)
+        if node.guid == listNodeSectionIdentifier {
+            guard let cell = collectionView
+                        .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                             for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
+            cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
+            cell.applyTheme(configuration.services.themingService?.activeTheme)
+            return cell
+        } else {
+            guard let cell = collectionView
+                .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                     for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+            cell.node = node
+            cell.delegate = configuration.cellDelegate
+            cell.applyTheme(configuration.services.themingService?.activeTheme)
+            cell.syncStatus = configuration.model.syncStatusForNode(at: indexPath)
+            cell.moreButton.isHidden = !configuration.model.shouldDisplayMoreButton(for: indexPath)
 
-        let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: identifier,
-                                               for: indexPath) as? ListElementCollectionViewCell
-        cell?.node = node
-        cell?.delegate = self
-        cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell?.syncStatus = listDataSource?.syncStatus(for: node) ?? .undefined
-        cell?.moreButton.isHidden = !(listDataSource?.shouldDisplayMoreButton(node: node) ?? true)
+            if node.nodeType == .fileLink || node.nodeType == .folderLink {
+                cell.moreButton.isHidden = true
+            }
+            if configuration.model.shouldDisplaySubtitle(for: indexPath) == false {
+                cell.subtitle.text = ""
+            }
 
-        if node.nodeType == .fileLink || node.nodeType == .folderLink {
-            cell?.moreButton.isHidden = true
+            if configuration.isPaginationEnabled &&
+                collectionView.lastItemIndexPath() == indexPath &&
+                configuration.services.connectivityService?.hasInternetConnection() == true {
+                if let collectionView = collectionView as? PageFetchableCollectionView {
+                    collectionView.pageDelegate?.fetchNextContentPage(for: collectionView,
+                                                                      itemAtIndexPath: indexPath)
+                }
+            }
+            return cell
         }
-        if listDataSource?.shouldDisplayNodePath() == false {
-            cell?.subtitle.text = ""
-        }
-
-        if isPaginationEnabled && collectionView.lastItemIndexPath() == indexPath &&
-            coordinatorServices?.connectivityService?.hasInternetConnection() == true {
-            self.collectionView.pageDelegate?.fetchNextContentPage(for: self.collectionView,
-                                                                   itemAtIndexPath: indexPath)
-        }
-
-        return cell ?? UICollectionViewCell()
     }
 }

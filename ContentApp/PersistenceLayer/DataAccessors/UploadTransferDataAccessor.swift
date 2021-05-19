@@ -20,6 +20,7 @@ import Foundation
 import ObjectBox
 
 class UploadTransferDataAccessor: DataAccessor {
+    var allTransfersQueryObserver: Observer?
 
     // MARK: - Database operations
 
@@ -46,16 +47,18 @@ class UploadTransferDataAccessor: DataAccessor {
         }
 
         databaseService?.remove(entity: transferToBeDeleted)
-        _ = DiskService.delete(itemAtPath: transfer.filePath)
+        if let uploadURL = uploadLocalPath(for: transfer) {
+            _ = DiskService.delete(itemAtPath: uploadURL.path)
+        }
     }
 
     func query(uploadTransfer: UploadTransfer) -> UploadTransfer? {
-        if let listBox = databaseService?.box(entity: UploadTransfer.self) {
+        if let transfersBox = databaseService?.box(entity: UploadTransfer.self) {
             do {
-                let querry: Query<UploadTransfer> = try listBox.query {
-                    UploadTransfer.filePath == uploadTransfer.filePath
+                let query: Query<UploadTransfer> = try transfersBox.query {
+                    UploadTransfer.localFilenamePath == uploadTransfer.localFilenamePath
                 }.build()
-                let uploadTransfer = try querry.findUnique()
+                let uploadTransfer = try query.findUnique()
                 return uploadTransfer
             } catch {
                 AlfrescoLog.error("Unable to retrieve transfer information.")
@@ -63,9 +66,45 @@ class UploadTransferDataAccessor: DataAccessor {
         }
         return nil
     }
+    
+    func uploadLocalPath(for transfer: UploadTransfer) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: uploadFilePath)
+        localURL.appendPathComponent(transfer.localFilenamePath)
+
+        return localURL
+    }
+
+    func isUploadContentLocal(for transfer: UploadTransfer) -> Bool {
+        if let uploadURLPath = uploadLocalPath(for: transfer)?.path {
+            let fileManager = FileManager.default
+            return fileManager.fileExists(atPath: uploadURLPath)
+        }
+        return false
+    }
 
     func queryAll() -> [UploadTransfer] {
         databaseService?.queryAll(entity: UploadTransfer.self) ?? []
+    }
+    
+    func queryAll(for parentNodeId: String,
+                  changeHandler: @escaping ([UploadTransfer]) -> Void) -> [UploadTransfer] {
+
+        guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
+        
+        do {
+            let query: Query<UploadTransfer> = try transfersBox.query {
+                UploadTransfer.parentNodeId == parentNodeId
+            }.build()
+            allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
+                changeHandler(transfers)
+            })
+            return try query.find()
+        } catch {
+            AlfrescoLog.error("Unable to retrieve transfer information.")
+        }
+        return []
     }
 
     func syncStatus(for uploadTransfer: UploadTransfer) -> SyncStatus {

@@ -50,17 +50,13 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 
 // MARK: - ListViewModelProtocol
 
-extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
+extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
 
     func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
-    }
-
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
     }
 
     func numberOfItems(in section: Int) -> Int {
@@ -76,30 +72,36 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
                    error: nil)
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return false
     }
 
-    func shouldPreview(node: ListNode) -> Bool {
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        let listNode = listNode(for: indexPath)
         let listNodeDataAccessor = ListNodeDataAccessor()
 
-        if node.isAFolderType() {
+        if listNode.isAFolderType() {
             return true
         }
 
-        if listNodeDataAccessor.isContentDownloaded(for: node) {
+        if listNodeDataAccessor.isContentDownloaded(for: listNode) {
             return true
         }
 
         return false
     }
 
-    func shouldDisplayMoreButton(node: ListNode) -> Bool {
-        if node.isAFolderType() {
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        let listNode = listNode(for: indexPath)
+        if listNode.isAFolderType() {
             return false
         }
         return true
@@ -113,9 +115,10 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
         // Do nothing
     }
 
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
-        if node.isAFileType() {
-            let nodeSyncStatus = node.hasSyncStatus()
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let listNode = listNode(for: indexPath)
+        if listNode.isAFileType() {
+            let nodeSyncStatus = listNode.hasSyncStatus()
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {
@@ -126,7 +129,7 @@ extension OfflineFolderDrillViewModel: ListComponentDataSourceProtocol {
             case .inProgress:
                 entryListStatus = .inProgress
             case .synced:
-                entryListStatus = .synced
+                entryListStatus = .downloaded
             default:
                 entryListStatus = .undefined
             }
@@ -179,9 +182,11 @@ extension OfflineFolderDrillViewModel: EventObservable {
     }
 
     private func handleOffline(event: OfflineEvent) {
-        let eventNode = event.node
-        if let indexOfNode = results.firstIndex(of: eventNode) {
-            results[indexOfNode] = eventNode
+        let node = event.node
+
+        if let indexOfOfflineNode = results.firstIndex(of: node) {
+            results.remove(at: indexOfOfflineNode)
+            results.insert(node, at: indexOfOfflineNode)
         }
     }
 

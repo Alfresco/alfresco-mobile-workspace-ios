@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4924419163766400768",
-      "lastPropertyId": "20:3222472111177428736",
+      "lastPropertyId": "21:6666884979958749184",
       "name": "ListNode",
       "properties": [
         {
@@ -103,13 +103,18 @@
           "id": "20:3222472111177428736",
           "name": "isFolder",
           "type": 1
+        },
+        {
+          "id": "21:6666884979958749184",
+          "name": "uploadLocalPath",
+          "type": 9
         }
       ],
       "relations": []
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "5:3230068557200613376",
+      "lastPropertyId": "9:5958632298443843840",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -137,6 +142,21 @@
           "id": "5:3230068557200613376",
           "name": "filePath",
           "type": 9
+        },
+        {
+          "id": "6:370033443724301568",
+          "name": "syncStatus",
+          "type": 9
+        },
+        {
+          "id": "8:8055208131928741888",
+          "name": "extensionType",
+          "type": 9
+        },
+        {
+          "id": "9:5958632298443843840",
+          "name": "mimetype",
+          "type": 9
         }
       ],
       "relations": []
@@ -151,7 +171,8 @@
   "retiredEntityUids": [],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
-    1132591789422262528
+    1132591789422262528,
+    7705025082092647680
   ],
   "retiredRelationUids": [],
   "version": 1

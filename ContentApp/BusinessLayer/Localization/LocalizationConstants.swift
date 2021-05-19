@@ -73,6 +73,10 @@ struct LocalizationConstants {
         static let signingIn = NSLocalizedString("signing-in", comment: "")
         static let syncing = NSLocalizedString("syncing", comment: "")
         static let syncFailed = NSLocalizedString("sync-failed", comment: "")
+        static let waitUpload = NSLocalizedString("wait-upload", comment: "")
+        static let uploading = NSLocalizedString("uploading", comment: "")
+        static let uploadFailed = NSLocalizedString("upload-failed", comment: "")
+        static let uploaded = NSLocalizedString("uploaded", comment: "")
     }
 
     struct ScreenTitles {
@@ -123,6 +127,8 @@ struct LocalizationConstants {
         static let created = NSLocalizedString("approved-created", comment: "")
         static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
+        static let uploadPhoto = NSLocalizedString("approved-upload-photo", comment: "")
+        static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
     }
 
     struct Theme {

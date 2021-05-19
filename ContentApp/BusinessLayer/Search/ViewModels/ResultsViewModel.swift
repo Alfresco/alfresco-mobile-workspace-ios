@@ -54,7 +54,7 @@ extension ResultsViewModel: SearchViewModelDelegate {
 
 // MARK: - ListComponentDataSourceProtocol
 
-extension ResultsViewModel: ListComponentDataSourceProtocol {
+extension ResultsViewModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return results.isEmpty
     }
@@ -63,14 +63,14 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return EmptySearch()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
@@ -79,7 +79,7 @@ extension ResultsViewModel: ListComponentDataSourceProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         if let delegate = self.delegate {
             return delegate.isNodePathEnabled()
         }
@@ -157,10 +157,10 @@ extension ResultsViewModel {
 
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
+
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            let listNode = results[indexOfOfflineNode]
-            listNode.update(with: node)
-            results[indexOfOfflineNode] = listNode
+            results.remove(at: indexOfOfflineNode)
+            results.insert(node, at: indexOfOfflineNode)
         }
     }
 }

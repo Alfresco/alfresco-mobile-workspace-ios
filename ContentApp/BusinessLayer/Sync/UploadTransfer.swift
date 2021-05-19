@@ -23,10 +23,12 @@ class UploadTransfer: Entity {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentNodeId = ""
     var nodeName = ""
+    var extensionType: String = ""
+    var mimetype: String = ""
     var nodeDescription = ""
-    var filePath = ""
+    var localFilenamePath = ""
     // objectbox: convert = { "default": ".undefined" }
-    var syncStatus: SyncStatus = .undefined
+    var syncStatus: SyncStatus = .pending
 
     // Default initializer required by ObjectBox
 
@@ -34,12 +36,16 @@ class UploadTransfer: Entity {
 
     init(parentNodeId: String,
          nodeName: String,
+         extensionType: String,
+         mimetype: String,
          nodeDescription: String?,
-         filePath: String) {
+         localFilenamePath: String) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
+        self.extensionType = extensionType
+        self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
-        self.filePath = filePath
+        self.localFilenamePath = localFilenamePath
     }
 
     // MARK: - Public Helpers
@@ -48,6 +54,25 @@ class UploadTransfer: Entity {
         parentNodeId = newVersion.parentNodeId
         nodeName = newVersion.nodeName
         nodeDescription = newVersion.nodeDescription
-        filePath = newVersion.filePath
+        localFilenamePath = newVersion.localFilenamePath
+    }
+    
+    func listNode() -> ListNode {
+        let node = ListNode(guid: "0", title: nodeName + "." + extensionType, path: "", nodeType: .file)
+        node.id = id
+        node.mimeType = mimetype
+        node.parentGuid = parentNodeId
+        node.syncStatus = syncStatus
+        node.markedFor = .upload
+        node.uploadLocalPath = localFilenamePath
+        return node
+    }
+    
+    func updateListNode(with newVersion: ListNode) -> ListNode {
+        newVersion.id = id
+        newVersion.syncStatus = syncStatus
+        newVersion.markedFor = .upload
+        newVersion.uploadLocalPath = localFilenamePath
+        return newVersion
     }
 }

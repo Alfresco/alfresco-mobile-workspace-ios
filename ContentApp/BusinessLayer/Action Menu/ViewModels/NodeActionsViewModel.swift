@@ -130,6 +130,7 @@ class NodeActionsViewModel {
 
     private func requestMarkOffline(action: ActionMenu) {
         if let node = self.node {
+            node.id = 0
             node.syncStatus = .pending
             node.markedAsOffline = true
             listNodeDataAccessor.store(node: node)

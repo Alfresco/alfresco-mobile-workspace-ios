@@ -29,6 +29,7 @@ protocol FilePreviewViewModelDelegate: AnyObject {
     func requestFileUnlock(retry: Bool)
     func update(listNode: ListNode)
     func didFinishNodeDetails(error: Error?)
+    func reloadPreview()
 }
 
 struct RenditionServiceConfiguration {
@@ -112,6 +113,12 @@ class FilePreviewViewModel {
             previewOffline(with: size)
             return
         }
+        
+        if listNode.markedFor == .upload {
+            previewOffline(with: size)
+            return
+        }
+        
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
 
         switch filePreviewType {
@@ -171,7 +178,7 @@ class FilePreviewViewModel {
 
         if listNode.shouldUpdate() == false &&
             listNode.nodeType != .fileLink ||
-            listNodeDataAccessor.isContentDownloaded(for: listNode) {
+            isListNodeLocal() {
 
             actionMenuViewModel = ActionMenuViewModel(node: listNode,
                                                       toolbarDisplayed: true,
@@ -184,6 +191,17 @@ class FilePreviewViewModel {
             return false
         }
         return true
+    }
+    
+    private func isListNodeLocal() -> Bool {
+        guard let listNode = self.listNode else { return false }
+
+        if listNodeDataAccessor.isUploadContentLocal(for: listNode) ||
+            listNodeDataAccessor.isContentDownloaded(for: listNode) {
+            return true
+        }
+        
+        return false
     }
 
     private func requestFullScreenExperience() -> CGSize {
@@ -200,6 +218,10 @@ class FilePreviewViewModel {
 
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
+        
+        if listNodeDataAccessor.isUploadContentLocal(for: listNode) {
+            previewURL = listNodeDataAccessor.uploadLocalPath(for: listNode)
+        }
 
         switch filePreviewType {
         case .video, .image, .gif, .audio, .text:
@@ -324,6 +346,12 @@ extension FilePreviewViewModel: EventObservable {
             let node = publishedEvent.node
             listNode.favorite = node.favorite
             self.viewModelDelegate?.update(listNode: listNode)
+        } else if let publishedEvent = event as? SyncStatusEvent {
+            let node = publishedEvent.node
+            if node.id == listNode?.id && listNode?.guid == "0" {
+                listNode = node
+                viewModelDelegate?.reloadPreview()
+            }
         }
     }
 }

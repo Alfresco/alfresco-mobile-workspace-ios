@@ -47,10 +47,6 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return EmptyFavoritesLibraries()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
@@ -60,11 +56,15 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         currentPage = 1
         favoritesList(with: nil)
     }
-
+    
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
-
+    
     func shouldDisplayListLoadingIndicator() -> Bool {
         return self.shouldDisplayNextPageLoadingIndicator
     }
@@ -73,7 +73,7 @@ class FavoritesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return true
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return listCondition == APIConstants.QuerryConditions.whereFavoritesFileFolder
     }
 
@@ -186,10 +186,10 @@ extension FavoritesViewModel: EventObservable {
 
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
+
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            let listNode = results[indexOfOfflineNode]
-            listNode.update(with: node)
-            results[indexOfOfflineNode] = listNode
+            results.remove(at: indexOfOfflineNode)
+            results.insert(node, at: indexOfOfflineNode)
         }
     }
 }

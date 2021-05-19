@@ -21,6 +21,8 @@ import UIKit
 let prefixFileName = "IMG"
 let extPhoto = "JPG"
 let extVideo = "MOV"
+let mimetypePhoto = "image/jpeg"
+let mimetypeVideo = "video/quicktime"
 
 enum CapturedAssetType {
     case image
@@ -30,6 +32,13 @@ enum CapturedAssetType {
         switch self {
         case .image: return extPhoto
         case .video: return extVideo
+        }
+    }
+    
+    var mimetype: String {
+        switch self {
+        case .image: return mimetypePhoto
+        case .video: return mimetypeVideo
         }
     }
 }

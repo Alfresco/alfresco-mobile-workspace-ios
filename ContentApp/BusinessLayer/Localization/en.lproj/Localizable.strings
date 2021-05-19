@@ -67,6 +67,10 @@
 "signing-in" = "Signing in";
 "syncing" = "Syncing...";
 "sync-failed" = "Sync failed";
+"uploading" = "Uploading...";
+"wait-upload" = "Waiting to be uploaded";
+"uploaded" = "Uploaded";
+"upload-failed" = "Upload failed";
 
 // MARK: - Tabs Titles
 "settings" = "Settings";
@@ -112,6 +116,8 @@
 "approved-created" = "%@ was created";
 "approved-mark-offline" = "%@ will be made available offline.";
 "approved-remove-offline" = "%@ will no longer be available offline.";
+"approved-upload-photo" = "Photo scheduled for upload.";
+"approved-upload-media" = "Media scheduled for upload.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";

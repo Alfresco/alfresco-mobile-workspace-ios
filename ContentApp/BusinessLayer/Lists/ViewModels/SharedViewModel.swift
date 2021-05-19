@@ -43,10 +43,6 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         return EmptyFolder()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
@@ -57,6 +53,10 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
         request(with: nil)
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
@@ -157,10 +157,10 @@ extension SharedViewModel {
 
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
+
         if let indexOfOfflineNode = results.firstIndex(of: node) {
-            let listNode = results[indexOfOfflineNode]
-            listNode.update(with: node)
-            results[indexOfOfflineNode] = listNode
+            results.remove(at: indexOfOfflineNode)
+            results.insert(node, at: indexOfOfflineNode)
         }
     }
 }

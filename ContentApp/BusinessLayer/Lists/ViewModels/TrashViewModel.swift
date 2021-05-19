@@ -43,14 +43,14 @@ class TrashViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return EmptyFolder()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }

@@ -19,6 +19,7 @@
 import Foundation
 import AlfrescoContent
 import ObjectBox
+import DeepDiff
 
 enum NodeType: String {
     case site = "st:site"
@@ -59,6 +60,7 @@ enum SyncStatus: String {
 }
 
 enum MarkedForStatus: String {
+    case upload
     case download
     case removal
     case undefined
@@ -72,9 +74,11 @@ enum SiteRole: String {
     case unknown = "unknown"
 }
 
+let listNodeSectionIdentifier = "list-section"
+
 typealias CreatedNodeType = (String, String, String)
 
-class ListNode: Hashable, Entity {
+class ListNode: Hashable, Entity, DiffAware {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentGuid: String?
     var guid = ""
@@ -89,6 +93,7 @@ class ListNode: Hashable, Entity {
     var markedAsOffline = false
     var isFile = false
     var isFolder = false
+    var uploadLocalPath: String?
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType = .unknown
@@ -119,7 +124,8 @@ class ListNode: Hashable, Entity {
          trashed: Bool = false,
          destination: String? = nil,
          isFile: Bool = false,
-         isFolder: Bool = false) {
+         isFolder: Bool = false,
+         uploadLocalPath: String = "") {
         self.guid = guid
         self.siteID = siteID
         self.parentGuid = parentGuid
@@ -137,6 +143,7 @@ class ListNode: Hashable, Entity {
         self.destination = destination
         self.isFile = isFile
         self.isFolder = isFolder
+        self.uploadLocalPath = uploadLocalPath
     }
 
     // Default initializer required by ObjectBox
@@ -160,10 +167,21 @@ class ListNode: Hashable, Entity {
         markedFor = newVersion.markedFor
         isFile = newVersion.isFile
         isFolder = newVersion.isFolder
+        uploadLocalPath = newVersion.uploadLocalPath
     }
 
     static func == (lhs: ListNode, rhs: ListNode) -> Bool {
-        return lhs.guid == rhs.guid
+        return lhs.guid == rhs.guid &&
+            lhs.id == rhs.id
+    }
+
+    static func compareContent(_ a: ListNode, _ b: ListNode) -> Bool { // swiftlint:disable:this identifier_name
+        return a.markedFor == b.markedFor &&
+            a.syncStatus == b.syncStatus &&
+            a.modifiedAt == b.modifiedAt &&
+            a.favorite == b.favorite &&
+            a.allowableOperations == b.allowableOperations &&
+            a.markedAsOffline == b.markedAsOffline
     }
 
     func shouldUpdate() -> Bool {

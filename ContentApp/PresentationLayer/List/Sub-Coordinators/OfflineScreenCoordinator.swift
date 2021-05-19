@@ -69,7 +69,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentDataSourceProtocol) {
+                     from dataSource: ListComponentModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() {
                 if dataSource === offlineDataSource?.resultsViewModel {
@@ -106,7 +106,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentDataSourceProtocol,
+                                    from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel: ActionMenuViewModel

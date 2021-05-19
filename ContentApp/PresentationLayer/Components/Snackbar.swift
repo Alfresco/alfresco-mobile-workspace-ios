@@ -33,10 +33,14 @@ class Snackbar {
     static func display(with message: String,
                         type: SnackBarType,
                         automaticallyDismisses: Bool = true,
+                        presentationHostViewOverride: UIView? = nil,
                         finish: (() -> Void)?) {
         let snackbar = Snackbar(with: message,
                                 type: type,
                                 automaticallyDismisses: automaticallyDismisses)
+        if let view = presentationHostViewOverride {
+            snackbar.snackBar.presentationHostViewOverride = view
+        }
         snackbar.show(completion: finish)
     }
 

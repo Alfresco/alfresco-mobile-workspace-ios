@@ -24,40 +24,36 @@ enum ListEntrySyncStatus: String {
     case error = "ic-sync-status-error"
     case pending = "ic-sync-status-pending"
     case inProgress = "ic-sync-status-in-progress"
-    case synced = "ic-sync-status-synced"
+    case downloaded = "ic-sync-status-synced"
+    case uploaded = "ic-sync-status-uploaded"
     case undefined = "ic-sync-status-undefined"
 }
 
-protocol ListComponentDataSourceProtocol: AnyObject {
+protocol ListComponentModelProtocol: AnyObject {
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
 
-    func numberOfSections() -> Int
     func numberOfItems(in section: Int) -> Int
     func refreshList()
 
+    func listNodes() -> [ListNode]
     func listNode(for indexPath: IndexPath) -> ListNode
+
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func listActionTitle() -> String?
 
-    func shouldDisplaySections() -> Bool
     func shouldDisplayListLoadingIndicator() -> Bool
     func shouldDisplayCreateButton() -> Bool
-    func shouldDisplayNodePath() -> Bool
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool
     func shouldDisplayListActionButton() -> Bool
-    func shouldDisplayMoreButton(node: ListNode) -> Bool
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool
     func shouldDisplayPullToRefreshOffline() -> Bool
     func shouldEnableListActionButton() -> Bool
-    func shouldPreview(node: ListNode) -> Bool
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus
 }
 
-extension ListComponentDataSourceProtocol {
-
-    func shouldDisplaySections() -> Bool {
-        return false
-    }
-
+extension ListComponentModelProtocol {
     func shouldDisplayCreateButton() -> Bool {
         return false
     }
@@ -69,16 +65,16 @@ extension ListComponentDataSourceProtocol {
     func shouldEnableListActionButton() -> Bool {
         return false
     }
-
-    func shouldDisplayNodePath() -> Bool {
-        true
+    
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+        return true
     }
 
     func shouldDisplayListLoadingIndicator() -> Bool {
         return false
     }
 
-    func shouldDisplayMoreButton(node: ListNode) -> Bool {
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -86,7 +82,7 @@ extension ListComponentDataSourceProtocol {
         false
     }
 
-    func shouldPreview(node: ListNode) -> Bool {
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
         return true
     }
 
@@ -98,7 +94,7 @@ extension ListComponentDataSourceProtocol {
         return ""
     }
 
-    func syncStatus(for node: ListNode) -> ListEntrySyncStatus {
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        return listNode(for: indexPath).isMarkedOffline() ? .markedForOffline : .undefined
     }
 }

@@ -96,13 +96,35 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
 
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                                 nodeName: capturedAsset.fileName,
+                                                extensionType: capturedAsset.type.ext,
+                                                mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
-                                                filePath: uploadFilePath)
+                                                localFilenamePath: assetURL.lastPathComponent)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
 
-            let syncTriggersService = coordinatorServices.syncTriggersService
-            syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+            triggerUpload()
         }
+    }
+
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        }
+    }
+    
+    func willStartReview() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+            guard let sSelf = self else { return }
+            Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
+                             type: .approve,
+                             presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                             finish: nil)
+        })
     }
 }

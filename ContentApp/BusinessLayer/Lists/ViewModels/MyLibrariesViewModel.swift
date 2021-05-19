@@ -43,10 +43,6 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return EmptyFolder()
     }
 
-    func numberOfSections() -> Int {
-        return (results.isEmpty) ? 0 : 1
-    }
-
     func numberOfItems(in section: Int) -> Int {
         return results.count
     }
@@ -57,6 +53,10 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         request(with: nil)
     }
 
+    func listNodes() -> [ListNode] {
+        return results
+    }
+    
     func listNode(for indexPath: IndexPath) -> ListNode {
         return results[indexPath.row]
     }
@@ -65,7 +65,7 @@ class MyLibrariesViewModel: PageFetchingViewModel, ListViewModelProtocol {
         return self.shouldDisplayNextPageLoadingIndicator
     }
 
-    func shouldDisplayNodePath() -> Bool {
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return false
     }
 
