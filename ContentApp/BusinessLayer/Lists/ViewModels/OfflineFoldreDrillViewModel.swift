@@ -85,14 +85,14 @@ extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
     }
 
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        let listNode = listNode(for: indexPath)
+        let node = listNode(for: indexPath)
         let listNodeDataAccessor = ListNodeDataAccessor()
 
-        if listNode.isAFolderType() {
+        if node.isAFolderType() {
             return true
         }
 
-        if listNodeDataAccessor.isContentDownloaded(for: listNode) {
+        if listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
 
@@ -100,8 +100,8 @@ extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
     }
 
     func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        let listNode = listNode(for: indexPath)
-        if listNode.isAFolderType() {
+        let node = listNode(for: indexPath)
+        if node.isAFolderType() {
             return false
         }
         return true
@@ -116,9 +116,9 @@ extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let listNode = listNode(for: indexPath)
-        if listNode.isAFileType() {
-            let nodeSyncStatus = listNode.hasSyncStatus()
+        let node = listNode(for: indexPath)
+        if node.isAFileType() {
+            let nodeSyncStatus = node.hasSyncStatus()
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {

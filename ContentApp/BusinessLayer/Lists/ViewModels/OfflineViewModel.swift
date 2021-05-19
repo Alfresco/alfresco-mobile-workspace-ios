@@ -105,13 +105,13 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        let listNode = listNode(for: indexPath)
+        let node = listNode(for: indexPath)
         let listNodeDataAccessor = ListNodeDataAccessor()
 
-        if listNode.isAFolderType() {
+        if node.isAFolderType() {
             return true
         }
-        if listNodeDataAccessor.isContentDownloaded(for: listNode) {
+        if listNodeDataAccessor.isContentDownloaded(for: node) {
             return true
         }
         return false
@@ -133,9 +133,9 @@ extension OfflineViewModel: ListViewModelProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let listNode = listNode(for: indexPath)
-        if listNode.isAFileType() {
-            let nodeSyncStatus = listNode.hasSyncStatus()
+        let node = listNode(for: indexPath)
+        if node.isAFileType() {
+            let nodeSyncStatus = node.hasSyncStatus()
             var entryListStatus: ListEntrySyncStatus
 
             switch nodeSyncStatus {
