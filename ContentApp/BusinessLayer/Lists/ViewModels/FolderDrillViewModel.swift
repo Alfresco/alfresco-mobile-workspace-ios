@@ -198,7 +198,11 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
                 if insertionIndex < results.count - 1 {
                     results.insert(listNode, at: insertionIndex)
                 } else if insertionIndex >= totalItems {
-                    results.insert(listNode, at: results.count - 1)
+                    if results.isEmpty {
+                        results.insert(listNode, at: 0)
+                    } else {
+                        results.insert(listNode, at: results.count - 1)
+                    }
                 }
             }
         }
