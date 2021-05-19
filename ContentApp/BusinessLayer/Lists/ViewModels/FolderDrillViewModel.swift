@@ -183,26 +183,32 @@ class FolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
         _ = uploadTransfers.map { transfer in
             let listNode = transfer.listNode()
             if !results.contains(listNode) {
-                var increaseIndex = false
-                var insertionIndex = results.insertionIndex { node in
-                    if node.title.localizedCompare(listNode.title) == .orderedSame {
-                        increaseIndex = true
-                    }
-                    return (node.title.localizedCompare(listNode.title) == .orderedAscending)  && !node.isFolder
-                }
-
-                if increaseIndex {
-                    insertionIndex += 1
-                }
-
-                if insertionIndex < results.count - 1 {
-                    results.insert(listNode, at: insertionIndex)
-                } else if insertionIndex >= totalItems {
-                    if results.isEmpty {
-                        results.insert(listNode, at: 0)
+                
+                var insertionIndex = 0
+                
+                for (index, node) in results.enumerated() {
+                    if node.isFolder {
+                        insertionIndex = index + 1
                     } else {
-                        results.insert(listNode, at: results.count - 1)
+                        if node.title.localizedCompare(listNode.title) == .orderedAscending {
+                            insertionIndex = index + 1
+                        } else if node.title.localizedCompare(listNode.title) == .orderedSame {
+                            insertionIndex = index + 1
+                            break
+                        } else {
+                            insertionIndex = index
+                            break
+                        }
                     }
+                }
+                
+                if results.isEmpty {
+                    results.insert(listNode, at: 0)
+                } else if insertionIndex < results.count {
+                    results.insert(listNode, at: insertionIndex)
+                } else if insertionIndex >= totalItems ||
+                            results.count + 1 == totalItems {
+                    results.insert(listNode, at: results.count)
                 }
             }
         }
