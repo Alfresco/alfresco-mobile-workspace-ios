@@ -22,6 +22,8 @@ class CameraKit {
     static var theme: CameraKitTheme?
     static var localization: CameraKitLocalization?
 
+    static let cameraWorkerQueue = DispatchQueue(label: "CameraWorkerQueue")
+
     static func applyTheme(theme: CameraKitTheme) {
         self.theme = theme
     }

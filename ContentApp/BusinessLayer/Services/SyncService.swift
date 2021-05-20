@@ -83,6 +83,8 @@ let maxConcurrentSyncOperationCount = 3
     }
 
     func sync(nodeList: [ListNode]) {
+        guard syncServiceStatus == .idle else { return }
+
         syncOperationFactory.syncIsCancelled = false
         OperationQueueService.worker.async { [weak self] in
             guard let sSelf = self else { return }
@@ -175,6 +177,9 @@ let maxConcurrentSyncOperationCount = 3
             guard let sSelf = self else { return }
             if newValue.operations.isEmpty {
                 switch sSelf.syncServiceStatus {
+                case .uploadPendingNodes:
+                    sSelf.syncServiceStatus = .fetchingNodeDetails
+                    sSelf.processNodeDetails(for: sSelf.nodeList)
                 case .fetchingNodeDetails:
                     sSelf.processNodeChildren()
                 case .processNodeDetails:
@@ -182,9 +187,6 @@ let maxConcurrentSyncOperationCount = 3
                 case .processingMarkedNodes:
                     sSelf.syncServiceStatus = .idle
                     sSelf.delegate?.syncDidFinished()
-                case .uploadPendingNodes:
-                    sSelf.syncServiceStatus = .fetchingNodeDetails
-                    sSelf.processNodeDetails(for: sSelf.nodeList)
                 case .idle:
                     AlfrescoLog.debug("-- SYNC is now idle")
                 }

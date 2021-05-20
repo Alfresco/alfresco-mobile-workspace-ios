@@ -94,7 +94,7 @@ class PreviewViewController: UIViewController {
             cameraDelegate?.willStartReview()
             previewViewModel?.updateMetadata(filename: filename,
                                              description: descriptionField.textView.text)
-            cameraDelegate?.didEndReview(for: capturedAsset)
+            cameraDelegate?.didEndReview(for: [capturedAsset])
         }
         
         navigationController?.dismiss(animated: true, completion: nil)

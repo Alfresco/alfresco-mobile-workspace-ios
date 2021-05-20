@@ -211,7 +211,6 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         let nodes = listNodeDataAccessor.queryMarkedOffline()
 
         guard let syncService = self.syncService,
-              syncService.syncServiceStatus == .idle,
               accountService?.activeAccount != nil else { return }
 
         if isSyncAllowedOverConnectivity() == false {

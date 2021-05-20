@@ -76,21 +76,23 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 }
 
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
-    func didEndReview(for capturedAsset: CapturedAsset) {
-        let assetURL = URL(fileURLWithPath: capturedAsset.path)
-        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+    func didEndReview(for capturedAssets: [CapturedAsset]) {
+        for capturedAsset in capturedAssets {
+            let assetURL = URL(fileURLWithPath: capturedAsset.path)
+            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
 
-        _ = DiskService.uploadFolderPath(for: accountIdentifier) +
-            "/" + assetURL.lastPathComponent
-        
-        let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
-                                            nodeName: capturedAsset.fileName,
-                                            extensionType: capturedAsset.type.ext,
-                                            mimetype: capturedAsset.type.mimetype,
-                                            nodeDescription: capturedAsset.description,
-                                            localFilenamePath: assetURL.lastPathComponent)
-        let uploadTransferDataAccessor = UploadTransferDataAccessor()
-        uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+            _ = DiskService.uploadFolderPath(for: accountIdentifier) +
+                "/" + assetURL.lastPathComponent
+
+            let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
+                                                nodeName: capturedAsset.fileName,
+                                                extensionType: capturedAsset.type.ext,
+                                                mimetype: capturedAsset.type.mimetype,
+                                                nodeDescription: capturedAsset.description,
+                                                localFilenamePath: assetURL.lastPathComponent)
+            let uploadTransferDataAccessor = UploadTransferDataAccessor()
+            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+        }
 
         triggerUpload()
     }
