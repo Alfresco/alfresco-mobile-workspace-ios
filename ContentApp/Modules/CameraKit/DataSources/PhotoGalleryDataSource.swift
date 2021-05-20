@@ -96,7 +96,10 @@ class PhotoGalleryDataSource {
     }
     
     func fetchSelectedAssets(for delegate: CameraKitCaptureDelegate?) {
+        let fetchGroup = DispatchGroup()
+        var capturedAssets: [CapturedAsset] = []
         for (index, select) in selectedIndexAssets.enumerated() where select {
+            fetchGroup.enter()
             let galleryAsset = asset(for: IndexPath(row: index, section: 0))
             delegate?.willStartReview()
             fetchPath(for: galleryAsset) { [weak self] assetPath in
@@ -125,10 +128,16 @@ class PhotoGalleryDataSource {
                     }
 
                     if let asset = capturedAsset {
-                        delegate?.didEndReview(for: asset)
+                        capturedAssets.append(asset)
                     }
                 }
+
+                fetchGroup.leave()
             }
+        }
+
+        fetchGroup.notify(queue: CameraKit.cameraWorkerQueue) {
+            delegate?.didEndReview(for: capturedAssets)
         }
     }
 
