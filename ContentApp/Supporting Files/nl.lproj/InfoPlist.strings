@@ -19,3 +19,4 @@
 NSPhotoLibraryUsageDescription = "U kunt foto's en video's uit uw fotobibliotheek uploaden naar deze app.";
 NSPhotoLibraryAddUsageDescription = "U kunt foto's en video's uit uw fotobibliotheek uploaden naar deze app.";
 NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the medata of captured photos.";

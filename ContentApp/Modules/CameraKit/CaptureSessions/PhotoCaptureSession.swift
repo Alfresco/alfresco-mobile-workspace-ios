@@ -230,7 +230,7 @@ extension PhotoCaptureSession: AVCapturePhotoFileDataRepresentationCustomizer {
     
     func getFileRepresentationWithLocationData(photo: AVCapturePhoto) -> Data? {
         var properties = photo.metadata
-        if let gpsDictionary = location.gpsLocation(){
+        if let gpsDictionary = location.gpsLocation() {
             properties[kCGImagePropertyGPSDictionary as String] = gpsDictionary
         }
         return photo.fileDataRepresentation(with: self)

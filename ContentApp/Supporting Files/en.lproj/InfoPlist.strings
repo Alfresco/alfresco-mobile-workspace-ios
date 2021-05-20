@@ -19,4 +19,4 @@
 NSPhotoLibraryUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
 NSPhotoLibraryAddUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
 NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
-NSLocationAlwaysAndWhenInUseUsageDescription = "Your location is used to map your photos.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the medata of captured photos.";
