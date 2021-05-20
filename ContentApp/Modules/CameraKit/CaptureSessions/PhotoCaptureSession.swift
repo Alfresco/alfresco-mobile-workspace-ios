@@ -16,10 +16,14 @@
 //  limitations under the License.
 //
 
+import CoreLocation
 import AVFoundation
 import UIKit
 
 class PhotoCaptureSession: CaptureSession {
+    
+    private let location = CLLocationManager()
+    
     let photoOutput = AVCapturePhotoOutput()
     var flashMode = FlashMode.auto
     
@@ -164,7 +168,7 @@ class PhotoCaptureSession: CaptureSession {
     // MARK: - Private Methods
 
     private func process(capturedPhoto: AVCapturePhoto) {
-        guard let data = capturedPhoto.fileDataRepresentation(),
+        guard let data = getFileRepresentationWithLocationData(photo: capturedPhoto),
               let mediaFolderPath = mediaFilesFolderPath else {
             let error = CaptureError.error("Cannot process captured photo")
             AlfrescoLog.error(error)
@@ -209,6 +213,27 @@ class PhotoCaptureSession: CaptureSession {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
         return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+    }
+}
+
+extension PhotoCaptureSession: AVCapturePhotoFileDataRepresentationCustomizer {
+    
+    func replacementMetadata(for photo: AVCapturePhoto) -> [String: Any]? {
+        var properties = photo.metadata
+        if let gpsDictionary = location.gpsLocation() {
+            properties[kCGImagePropertyGPSDictionary as String] = gpsDictionary
+        }
+        return properties
+    }
+    
+    // MARK: - GPS Location
+    
+    func getFileRepresentationWithLocationData(photo: AVCapturePhoto) -> Data? {
+        var properties = photo.metadata
+        if let gpsDictionary = location.gpsLocation() {
+            properties[kCGImagePropertyGPSDictionary as String] = gpsDictionary
+        }
+        return photo.fileDataRepresentation(with: self)
     }
 }
 
