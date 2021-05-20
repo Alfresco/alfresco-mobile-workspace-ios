@@ -68,8 +68,6 @@
 "syncing" = "Syncing...";
 "sync-failed" = "Sync failed";
 "uploading" = "Uploading...";
-"wait-upload" = "Waiting to be uploaded";
-"uploaded" = "Uploaded";
 "upload-failed" = "Upload failed";
 
 // MARK: - Tabs Titles
