@@ -43,7 +43,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     var syncStatus: ListEntrySyncStatus = .undefined {
         didSet {
-            syncStatusImageView.isHidden = !(syncStatus != .undefined)
+            syncStatusImageView.isHidden = !(syncStatus != .undefined && syncStatus != .uploaded)
             syncStatusImageView.image = !syncStatus.rawValue.isEmpty ? UIImage(named: syncStatus.rawValue) : nil
             
             if node?.markedFor == .upload {
@@ -77,13 +77,11 @@ class ListElementCollectionViewCell: ListSelectableCell {
         case .error:
             subtitle.text = LocalizationConstants.Labels.uploadFailed
             stopRotateSyncIcon()
-        case .inProgress:
+        case .pending, .inProgress:
             subtitle.text = LocalizationConstants.Labels.uploading
             startRotateSyncIcon()
-        case .uploaded:
-            subtitle.text = LocalizationConstants.Labels.uploaded
         default:
-            subtitle.text = LocalizationConstants.Labels.waitUpload
+            subtitle.text = ""
             stopRotateSyncIcon()
         }
     }

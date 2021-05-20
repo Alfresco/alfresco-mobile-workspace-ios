@@ -16,7 +16,7 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
-NSPhotoLibraryAddUsageDescription = "Allow photo library access to upload photos and videos to Mobile Workspace.";
-NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
+NSPhotoLibraryUsageDescription = "Mobile Workspace requires library access to upload photos from your library.";
+NSPhotoLibraryAddUsageDescription = "Mobile Workspace requires library access to upload photos from your library.";
+NSCameraUsageDescription = "Mobile Workspace requires camera access to capture photos and videos for upload.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the medata of captured photos.";

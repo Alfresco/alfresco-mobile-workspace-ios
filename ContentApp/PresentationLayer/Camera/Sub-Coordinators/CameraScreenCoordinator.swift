@@ -95,8 +95,9 @@ class CameraScreenCoordinator: NSObject, Coordinator {
 // MARK: - CameraKitCapture Delegate
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
-    func didEndReview(for capturedAsset: CapturedAsset) {
-        if let mediaPath = mediaFilesFolderPath {
+    func didEndReview(for capturedAssets: [CapturedAsset]) {
+        if let mediaPath = mediaFilesFolderPath,
+           let capturedAsset = capturedAssets.first {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
             let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
 

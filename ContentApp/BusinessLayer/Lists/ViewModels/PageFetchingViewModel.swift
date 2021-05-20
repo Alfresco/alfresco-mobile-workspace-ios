@@ -50,7 +50,7 @@ class PageFetchingViewModel {
     }
 
     final func fetchNextListPage(index: IndexPath, userInfo: Any?) {
-        pageFetchingGroup.notify(queue: .global()) { [weak self] in
+        pageFetchingGroup.notify(queue: OperationQueueService.worker) { [weak self] in
             guard let sSelf = self else { return }
 
             let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService

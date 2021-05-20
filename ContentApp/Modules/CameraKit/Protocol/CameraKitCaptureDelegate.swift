@@ -23,7 +23,7 @@ protocol CameraKitCaptureDelegate: AnyObject {
     /// - Note: It is expected that the receiver copies over any desired disk data as the default capture location should be
     /// cleared out after this call.
     /// - Parameter capturedAsset: captured asset information containing metadata and path information
-    func didEndReview(for capturedAsset: CapturedAsset)
+    func didEndReview(for capturedAssets: [CapturedAsset])
     
     /// Notifies the delegate the review session is over and will begin to deliver captured asset information.
     func willStartReview()
