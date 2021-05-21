@@ -18,14 +18,12 @@
 
 import UIKit
 import AVFoundation
-import CoreLocation
 
 class CameraScreenCoordinator: NSObject, Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
     private let parentListNode: ListNode
     private var mediaFilesFolderPath: String?
-    private var locationManager: CLLocationManager?
     
     init(with presenter: UINavigationController,
          parentListNode: ListNode) {
@@ -48,7 +46,7 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         
         self.navigationViewController = navigationViewController
         
-        requestAuhtorizationForLocatioInUse()
+        coordinatorServices.locationService?.requestAuhtorizationForLocatioInUse()
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             if granted {
@@ -85,17 +83,25 @@ class CameraScreenCoordinator: NSObject, Coordinator {
             completion(false)
         }
     }
-    
-    private func requestAuhtorizationForLocatioInUse() {
-        locationManager = CLLocationManager()
-        locationManager?.requestWhenInUseAuthorization()
-    }
 }
 
 // MARK: - CameraKitCapture Delegate
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
+        
+        coordinatorServices.locationService?.stopUpdatingLocation()
+        
+        if !capturedAssets.isEmpty {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                guard let sSelf = self else { return }
+                Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
+                                 type: .approve,
+                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                                 finish: nil)
+            })
+        }
+        
         if let mediaPath = mediaFilesFolderPath,
            let capturedAsset = capturedAssets.first {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
@@ -128,15 +134,5 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             UserProfile.allowSyncOverCellularData == false {
             syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
         }
-    }
-    
-    func willStartReview() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
-            guard let sSelf = self else { return }
-            Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
-                             type: .approve,
-                             presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
-                             finish: nil)
-        })
     }
 }

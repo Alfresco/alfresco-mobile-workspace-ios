@@ -21,6 +21,7 @@ import Foundation
 class CameraKit {
     static var theme: CameraKitTheme?
     static var localization: CameraKitLocalization?
+    static var location: GPSLocation?
 
     static let cameraWorkerQueue = DispatchQueue(label: "CameraWorkerQueue")
 
