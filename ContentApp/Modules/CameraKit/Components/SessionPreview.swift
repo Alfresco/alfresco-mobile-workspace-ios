@@ -112,8 +112,7 @@ class SessionPreview: UIView {
         session?.stop()
     }
     
-    func capture(with location: GPSLocation?) {
-        session?.lastLocation = location
+    func capture() {
         session?.capture()
     }
     

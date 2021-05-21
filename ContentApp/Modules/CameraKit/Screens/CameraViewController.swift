@@ -17,7 +17,6 @@
 //
 
 import UIKit
-import CoreLocation
 
 let animationRotateCameraButtons = 0.5
 let animationFadeView = 0.2
@@ -56,7 +55,6 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        cameraViewModel?.requestLocation()
         cameraViewModel?.delegate = self
         
         configureViewsLayout(for: view.bounds.size)
@@ -101,6 +99,7 @@ class CameraViewController: UIViewController {
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
         sessionPreview.stopSession()
+        cameraDelegate?.didEndReview(for: [])
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -110,7 +109,7 @@ class CameraViewController: UIViewController {
     
     @IBAction func captureButtonTapped(_ sender: CameraButton) {
         shutterButton.isUserInteractionEnabled = false
-        sessionPreview.capture(with: cameraViewModel?.fetchLocation())
+        sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
 
@@ -125,7 +124,6 @@ class CameraViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.shutterButton.isUserInteractionEnabled = true
-            
         }
     }
     
@@ -214,8 +212,7 @@ class CameraViewController: UIViewController {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
            let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(capturedAsset: asset,
-                                                    locationManager: cameraViewModel?.clLocationManager())
+            let previewViewModel = PreviewViewModel(capturedAsset: asset)
             pvc.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
         }

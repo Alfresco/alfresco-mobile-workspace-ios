@@ -40,7 +40,6 @@ class CaptureSession: NSObject {
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
     var orientationLast = UIDevice.current.orientation
-    var lastLocation: GPSLocation?
 
     private var motionManager: CMMotionManager?
     

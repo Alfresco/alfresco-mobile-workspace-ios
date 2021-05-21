@@ -38,6 +38,7 @@ class ApplicationBootstrap {
         self.repository.register(service: applicationRouter())
         self.repository.register(service: operationQueueService())
         self.repository.register(service: databaseService())
+        self.repository.register(service: locationService())
 
         let accountService = self.accountService(with: connectivityService)
         self.repository.register(service: accountService)
@@ -52,6 +53,7 @@ class ApplicationBootstrap {
                                                            and: accountService,
                                                            and: connectivityService)
         self.repository.register(service: syncTriggersService)
+        
         configureCameraKitModule()
     }
 
@@ -106,6 +108,10 @@ class ApplicationBootstrap {
 
     private func connectivityService() -> ConnectivityService {
         return ConnectivityService()
+    }
+    
+    private func locationService() -> LocationService {
+        return LocationService()
     }
 
     private func configureCameraKitModule() {

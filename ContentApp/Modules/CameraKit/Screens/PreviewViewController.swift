@@ -91,12 +91,10 @@ class PreviewViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text,
            let capturedAsset = previewViewModel?.capturedAsset {
-            cameraDelegate?.willStartReview()
             previewViewModel?.updateMetadata(filename: filename,
                                              description: descriptionField.textView.text)
             cameraDelegate?.didEndReview(for: [capturedAsset])
         }
-        previewViewModel?.stopUpdatingLocation()
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
