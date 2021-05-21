@@ -22,8 +22,6 @@ import UIKit
 
 class PhotoCaptureSession: CaptureSession {
     
-    private let location = CLLocationManager()
-    
     let photoOutput = AVCapturePhotoOutput()
     var flashMode = FlashMode.auto
     
@@ -220,7 +218,7 @@ extension PhotoCaptureSession: AVCapturePhotoFileDataRepresentationCustomizer {
     
     func replacementMetadata(for photo: AVCapturePhoto) -> [String: Any]? {
         var properties = photo.metadata
-        if let gpsDictionary = location.gpsLocation() {
+        if let gpsDictionary = lastLocation {
             properties[kCGImagePropertyGPSDictionary as String] = gpsDictionary
         }
         return properties
@@ -230,7 +228,7 @@ extension PhotoCaptureSession: AVCapturePhotoFileDataRepresentationCustomizer {
     
     func getFileRepresentationWithLocationData(photo: AVCapturePhoto) -> Data? {
         var properties = photo.metadata
-        if let gpsDictionary = location.gpsLocation() {
+        if let gpsDictionary = lastLocation {
             properties[kCGImagePropertyGPSDictionary as String] = gpsDictionary
         }
         return photo.fileDataRepresentation(with: self)

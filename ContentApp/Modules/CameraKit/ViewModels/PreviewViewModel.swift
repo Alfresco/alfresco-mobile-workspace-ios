@@ -17,16 +17,27 @@
 //
 
 import Foundation
+import CoreLocation
 
 class PreviewViewModel {
     let capturedAsset: CapturedAsset
+    private var locationManager: CLLocationManager?
     
-    init(capturedAsset: CapturedAsset) {
+    // MARK: - Init
+    
+    init(capturedAsset: CapturedAsset, locationManager: CLLocationManager?) {
         self.capturedAsset = capturedAsset
+        self.locationManager = locationManager
     }
+    
+    // MARK: - Public Methods
     
     func updateMetadata(filename: String, description: String?) {
         capturedAsset.fileName = filename
         capturedAsset.description = description
+    }
+    
+    func stopUpdatingLocation() {
+        locationManager?.stopUpdatingLocation()
     }
 }

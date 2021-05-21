@@ -20,8 +20,10 @@ import Foundation
 import AVFoundation
 import CoreLocation
 
+typealias GPSLocation = Dictionary<CFString, Any>
+
 extension CLLocationManager {
-    func gpsLocation() -> NSMutableDictionary? {
+    func gpsLocation(from lastLocation: CLLocation?) -> GPSLocation? {
         
         if authorizationStatus == .notDetermined ||
             authorizationStatus == .denied ||
@@ -29,8 +31,8 @@ extension CLLocationManager {
             return nil
         }
 
-        if let location = location {
-            let gpsDictionary = NSMutableDictionary()
+        if let location = lastLocation {
+            var gpsDictionary = GPSLocation()
             var latitude = location.coordinate.latitude
             var longitude = location.coordinate.longitude
             var altitude = location.altitude

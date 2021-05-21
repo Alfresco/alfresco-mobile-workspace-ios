@@ -96,7 +96,7 @@ class PreviewViewController: UIViewController {
                                              description: descriptionField.textView.text)
             cameraDelegate?.didEndReview(for: [capturedAsset])
         }
-        
+        previewViewModel?.stopUpdatingLocation()
         navigationController?.dismiss(animated: true, completion: nil)
     }
 

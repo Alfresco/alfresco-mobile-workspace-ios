@@ -17,15 +17,18 @@
 //
 
 import UIKit
+import CoreLocation
 
 protocol CameraViewModelDelegate: AnyObject {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
 }
 
-class CameraViewModel {
+class CameraViewModel: NSObject {
     weak var delegate: CameraViewModelDelegate?
     var capturedAsset: CapturedAsset?
     var folderToSavePath: String
+    private var locationManager: CLLocationManager?
+    private var lastLocation: CLLocation?
     
     init(folderToSavePath: String) {
         self.folderToSavePath = folderToSavePath
@@ -33,10 +36,30 @@ class CameraViewModel {
     
     // MARK: - Public Methods
     
+    func clLocationManager() -> CLLocationManager? {
+        return locationManager
+    }
+    
+    func requestLocation() {
+        locationManager = CLLocationManager()
+        locationManager?.delegate = self
+        locationManager?.startUpdatingLocation()
+    }
+    
+    func startUpdatingLocation() {
+        locationManager?.startUpdatingLocation()
+    }
+    
+    func fetchLocation() -> GPSLocation? {
+        return locationManager?.gpsLocation(from: lastLocation)
+    }
+    
     func deletePreviousCapture() {
         capturedAsset?.deleteAsset()
     }
 }
+
+// MARK: - CaptureSession Delegate
 
 extension CameraViewModel: CaptureSessionDelegate {
     func captured(asset: CapturedAsset?, error: Error?) {
@@ -45,5 +68,14 @@ extension CameraViewModel: CaptureSessionDelegate {
             sSelf.capturedAsset = asset
             sSelf.delegate?.finishProcess(capturedAsset: asset, error: error)
         }
+    }
+}
+
+// MARK: - CLLocationManager Delegate
+
+extension CameraViewModel: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager,
+                         didUpdateLocations locations: [CLLocation]) {
+        lastLocation = locations.first
     }
 }

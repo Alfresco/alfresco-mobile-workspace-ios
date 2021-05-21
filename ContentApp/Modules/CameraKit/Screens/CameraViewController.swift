@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 let animationRotateCameraButtons = 0.5
 let animationFadeView = 0.2
@@ -55,8 +56,10 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureViewsLayout(for: view.bounds.size)
+        cameraViewModel?.requestLocation()
         cameraViewModel?.delegate = self
+        
+        configureViewsLayout(for: view.bounds.size)
 
         setUpShutterButton()
         setUpFlashMenu()
@@ -107,7 +110,7 @@ class CameraViewController: UIViewController {
     
     @IBAction func captureButtonTapped(_ sender: CameraButton) {
         shutterButton.isUserInteractionEnabled = false
-        sessionPreview.capture()
+        sessionPreview.capture(with: cameraViewModel?.fetchLocation())
         apply(fade: true, to: flashMenuView)
     }
 
@@ -211,7 +214,8 @@ class CameraViewController: UIViewController {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
            let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(capturedAsset: asset)
+            let previewViewModel = PreviewViewModel(capturedAsset: asset,
+                                                    locationManager: cameraViewModel?.clLocationManager())
             pvc.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
         }
