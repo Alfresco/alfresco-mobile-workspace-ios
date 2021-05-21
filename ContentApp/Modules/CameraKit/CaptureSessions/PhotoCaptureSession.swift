@@ -118,7 +118,7 @@ class PhotoCaptureSession: CaptureSession {
         settings.isHighResolutionPhotoEnabled = true
 
         if let connection = photoOutput.connection(with: .video) {
-            connection.videoOrientation = orientationLast.captureOrientation
+            connection.videoOrientation = lastOrientation.captureOrientation
         }
         photoOutput.capturePhoto(with: settings, delegate: self)
     }
