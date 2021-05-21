@@ -37,6 +37,10 @@ class UploadTransferDataAccessor: DataAccessor {
         databaseService?.store(entity: uploadTransferToBeStored)
     }
 
+    func store(uploadTransfers: [UploadTransfer]) {
+        databaseService?.store(entities: uploadTransfers)
+    }
+
     func remove(transfer: UploadTransfer) {
         var transferToBeDeleted = transfer
 

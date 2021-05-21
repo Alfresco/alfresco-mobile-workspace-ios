@@ -77,6 +77,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
+        var uploadTransfers: [UploadTransfer] = []
         for capturedAsset in capturedAssets {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
             let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
@@ -90,9 +91,11 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
                                                 localFilenamePath: assetURL.lastPathComponent)
-            let uploadTransferDataAccessor = UploadTransferDataAccessor()
-            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+            uploadTransfers.append(uploadTransfer)
         }
+
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
 
         triggerUpload()
     }

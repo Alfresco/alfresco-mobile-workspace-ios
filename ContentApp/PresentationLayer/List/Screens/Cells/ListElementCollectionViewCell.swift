@@ -43,8 +43,9 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     var syncStatus: ListEntrySyncStatus = .undefined {
         didSet {
-            syncStatusImageView.isHidden = !(syncStatus != .undefined && syncStatus != .uploaded)
-            syncStatusImageView.image = !syncStatus.rawValue.isEmpty ? UIImage(named: syncStatus.rawValue) : nil
+            let showSyncStatus = (syncStatus != .undefined && syncStatus != .uploaded)
+            syncStatusImageView.isHidden = !showSyncStatus
+            syncStatusImageView.image = showSyncStatus ? UIImage(named: syncStatus.rawValue) : nil
             
             if node?.markedFor == .upload {
                 applyLayoutForUploading()
