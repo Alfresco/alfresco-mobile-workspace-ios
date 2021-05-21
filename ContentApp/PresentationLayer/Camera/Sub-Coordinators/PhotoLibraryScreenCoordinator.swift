@@ -77,6 +77,7 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
+
         if !capturedAssets.isEmpty {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
                 guard let sSelf = self else { return }
@@ -86,6 +87,8 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                  finish: nil)
             })
         }
+        
+        var uploadTransfers: [UploadTransfer] = []
         
         for capturedAsset in capturedAssets {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
@@ -100,9 +103,11 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
                                                 localFilenamePath: assetURL.lastPathComponent)
-            let uploadTransferDataAccessor = UploadTransferDataAccessor()
-            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
+            uploadTransfers.append(uploadTransfer)
         }
+
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
 
         triggerUpload()
     }
