@@ -31,24 +31,25 @@ class RecentScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let recentViewModelFactory = RecentViewModelFactory()
-        recentViewModelFactory.coordinatorServices = coordinatorServices
-
-        let recentDataSource = recentViewModelFactory.recentDataSource()
-
-        let viewController = ListViewController()
-        viewController.title = LocalizationConstants.ScreenTitles.recent
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel = recentDataSource.recentViewModel
-        viewController.tabBarScreenDelegate = presenter
-        viewController.listItemActionDelegate = self
-        viewController.searchViewModel = recentDataSource.globalSearchViewModel
-        viewController.resultViewModel = recentDataSource.resultsViewModel
-
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        presenter.viewControllers = [navigationViewController]
-        self.navigationViewController = navigationViewController
-        recentViewController = viewController
+        #warning("Uncomment")
+//        let recentViewModelFactory = RecentViewModelFactory()
+//        recentViewModelFactory.coordinatorServices = coordinatorServices
+//
+//        let recentDataSource = recentViewModelFactory.recentDataSource()
+//
+//        let viewController = ListViewController()
+//        viewController.title = LocalizationConstants.ScreenTitles.recent
+//        viewController.coordinatorServices = coordinatorServices
+//        viewController.listViewModel = recentDataSource.recentViewModel
+//        viewController.tabBarScreenDelegate = presenter
+//        viewController.listItemActionDelegate = self
+//        viewController.searchViewModel = recentDataSource.globalSearchViewModel
+//        viewController.resultViewModel = recentDataSource.resultsViewModel
+//
+//        let navigationViewController = UINavigationController(rootViewController: viewController)
+//        presenter.viewControllers = [navigationViewController]
+//        self.navigationViewController = navigationViewController
+//        recentViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
@@ -63,7 +64,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
 
 extension RecentScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -78,7 +79,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

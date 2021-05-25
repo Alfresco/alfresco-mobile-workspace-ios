@@ -32,20 +32,20 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     }
     
     override func start() {
-        let viewModelFactory = TopLevelBrowseViewModelFactory()
-        viewModelFactory.coordinatorServices = coordinatorServices
-        
-        let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
-        
-        let viewController = ListViewController()
-        viewController.title = browseNode.title
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
-        viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
-        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
-        viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
-        
-        presenter.pushViewController(viewController, animated: true)
+        #warning("Uncomment")
+        let viewModelFactory = TopLevelBrowseViewModelFactory(services: coordinatorServices)
+//
+//        let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
+//
+//        let viewController = ListViewController()
+//        viewController.title = browseNode.title
+//        viewController.coordinatorServices = coordinatorServices
+//        viewController.listItemActionDelegate = self
+//        viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
+//        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
+//        viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
+//
+//        presenter.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Private interface
@@ -60,7 +60,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
                                    presenter: self.presenter)
@@ -73,7 +73,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices)

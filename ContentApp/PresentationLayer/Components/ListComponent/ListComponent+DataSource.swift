@@ -23,19 +23,26 @@ let regularCellHeight: CGFloat = 54.0
 let sectionCellHeight: CGFloat = 54.0
 let compactCellHeight: CGFloat = 44.0
 
+protocol ListComponentDataSourceDelegate: AnyObject {
+    func shouldDisplayListLoadingIndicator() -> Bool
+    func isPaginationEnabled() -> Bool
+}
+
 struct ListComponentDataSourceConfiguration {
     let collectionView: UICollectionView
-    let model: ListComponentModelProtocol
-    var isPaginationEnabled = true
+    let model: ListModelProtocol
     weak var cellDelegate: ListElementCollectionViewCellDelegate?
     let services: CoordinatorServices
 }
 
 class ListComponentDataSource: DataSource {
     var configuration: ListComponentDataSourceConfiguration
+    weak var delegate: ListComponentDataSourceDelegate?
     
-    init(with configuration: ListComponentDataSourceConfiguration) {
+    init(with configuration: ListComponentDataSourceConfiguration,
+         delegate: ListComponentDataSourceDelegate) {
         self.configuration = configuration
+        self.delegate = delegate
         super.init(collectionView: configuration.collectionView)
     }
     
@@ -47,7 +54,9 @@ class ListComponentDataSource: DataSource {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        if configuration.model.shouldDisplayListLoadingIndicator() &&
+        let shouldDisplayListLoadingIndicator = delegate?.shouldDisplayListLoadingIndicator() ?? false
+
+        if shouldDisplayListLoadingIndicator &&
             configuration.services.connectivityService?.hasInternetConnection() == true {
             return CGSize(width: collectionView.bounds.width,
                           height: regularCellHeight)
@@ -83,15 +92,15 @@ class ListComponentDataSource: DataSource {
         let node = configuration.model.listNode(for: indexPath)
         if node.guid == listNodeSectionIdentifier {
             guard let cell = collectionView
-                        .dequeueReusableCell(withReuseIdentifier: identifierSection,
-                                             for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
+                    .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                         for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
             cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         } else {
             guard let cell = collectionView
-                .dequeueReusableCell(withReuseIdentifier: identifierElement,
-                                     for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+                    .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                         for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
@@ -105,7 +114,8 @@ class ListComponentDataSource: DataSource {
                 cell.subtitle.text = ""
             }
 
-            if configuration.isPaginationEnabled &&
+            let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
+            if isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&
                 configuration.services.connectivityService?.hasInternetConnection() == true {
                 if let collectionView = collectionView as? PageFetchableCollectionView {

@@ -54,34 +54,35 @@ class ResultViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let listComponentViewController = ListComponentViewController.instantiateViewController()
-        listComponentViewController.listActionDelegate = self
-        listComponentViewController.model = resultsViewModel
-        listComponentViewController.coordinatorServices = coordinatorServices
-        resultsViewModel?.pageUpdatingDelegate = listComponentViewController
-
-        if let listComponentView = listComponentViewController.view {
-            listComponentView.translatesAutoresizingMaskIntoConstraints = false
-
-            view.insertSubview(listComponentView, aboveSubview: chipsCollectionView)
-            listComponentView.topAnchor.constraint(equalTo: chipsCollectionView.bottomAnchor,
-                                                   constant: 5).isActive = true
-            listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                                                    constant: 0).isActive = true
-            listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor,
-                                                     constant: 0).isActive = true
-            listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                      constant: 0).isActive = true
-        }
-        resultsListController = listComponentViewController
-        resultsListController?.listItemActionDelegate = self.listItemActionDelegate
-
-        // Set up progress view
-        progressView.progress = 0
-        progressView.mode = .indeterminate
-
-        addLocalization()
-        addChipsCollectionViewFlowLayout()
+        #warning("Uncomment")
+//        let listComponentViewController = ListComponentViewController.instantiateViewController()
+//        listComponentViewController.listActionDelegate = self
+//        listComponentViewController.model = resultsViewModel
+//        listComponentViewController.coordinatorServices = coordinatorServices
+//        resultsViewModel?.pageUpdatingDelegate = listComponentViewController
+//
+//        if let listComponentView = listComponentViewController.view {
+//            listComponentView.translatesAutoresizingMaskIntoConstraints = false
+//
+//            view.insertSubview(listComponentView, aboveSubview: chipsCollectionView)
+//            listComponentView.topAnchor.constraint(equalTo: chipsCollectionView.bottomAnchor,
+//                                                   constant: 5).isActive = true
+//            listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
+//                                                    constant: 0).isActive = true
+//            listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor,
+//                                                     constant: 0).isActive = true
+//            listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+//                                                      constant: 0).isActive = true
+//        }
+//        resultsListController = listComponentViewController
+//        resultsListController?.listItemActionDelegate = self.listItemActionDelegate
+//
+//        // Set up progress view
+//        progressView.progress = 0
+//        progressView.mode = .indeterminate
+//
+//        addLocalization()
+//        addChipsCollectionViewFlowLayout()
     }
 
     override func viewDidAppear(_ animated: Bool) {

@@ -39,11 +39,16 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = listNode.title
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
+
+//        viewController.viewModel =
+        
+
         viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel
         viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
         viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
+
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listItemActionDelegate = self
 
         presenter.pushViewController(viewController, animated: true)
     }
@@ -51,7 +56,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
 extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
                                    presenter: self.presenter)
@@ -64,7 +69,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices)

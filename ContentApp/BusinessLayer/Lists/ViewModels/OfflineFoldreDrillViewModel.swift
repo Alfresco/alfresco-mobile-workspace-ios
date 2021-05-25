@@ -51,6 +51,10 @@ class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol 
 // MARK: - ListViewModelProtocol
 
 extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
+    func isPaginationEnabled() -> Bool {
+        return false
+    }
+
     func isEmpty() -> Bool {
         return results.isEmpty
     }

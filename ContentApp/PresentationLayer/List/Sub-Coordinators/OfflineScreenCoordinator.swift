@@ -33,27 +33,27 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let offlineViewModelFactory = OfflineViewModelFactory()
-        offlineViewModelFactory.coordinatorServices = coordinatorServices
-
-        let offlineDataSource = offlineViewModelFactory.offlineDataSource()
-
-        let viewController = ListViewController()
-        viewController.isPaginationEnabled = false
-        viewController.title = LocalizationConstants.ScreenTitles.offline
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel = offlineDataSource.offlineViewModel
-        viewController.tabBarScreenDelegate = presenter
-        viewController.listItemActionDelegate = self
-        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
-        viewController.resultViewModel = offlineDataSource.resultsViewModel
-
-        self.offlineDataSource = offlineDataSource
-
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        self.presenter.viewControllers?.append(navigationViewController)
-        self.navigationViewController = navigationViewController
-        offlineViewController = viewController
+        #warning("Uncomment")
+//        let offlineViewModelFactory = OfflineViewModelFactory()
+//        offlineViewModelFactory.coordinatorServices = coordinatorServices
+//
+//        let offlineDataSource = offlineViewModelFactory.offlineDataSource()
+//
+//        let viewController = ListViewController()
+//        viewController.title = LocalizationConstants.ScreenTitles.offline
+//        viewController.coordinatorServices = coordinatorServices
+//        viewController.listViewModel = offlineDataSource.offlineViewModel
+//        viewController.tabBarScreenDelegate = presenter
+//        viewController.listItemActionDelegate = self
+//        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
+//        viewController.resultViewModel = offlineDataSource.resultsViewModel
+//
+//        self.offlineDataSource = offlineDataSource
+//
+//        let navigationViewController = UINavigationController(rootViewController: viewController)
+//        self.presenter.viewControllers?.append(navigationViewController)
+//        self.navigationViewController = navigationViewController
+//        offlineViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {
@@ -69,7 +69,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() {
                 if dataSource === offlineDataSource?.resultsViewModel {
@@ -106,7 +106,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel: ActionMenuViewModel

@@ -33,8 +33,8 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var listActionButton: MDCButton!
     var refreshControl: UIRefreshControl?
 
-    var isPaginationEnabled = true
-    var model: ListComponentModelProtocol?
+    var pageController: ListPageController?
+    var viewModel: ListComponentViewModel?
     var dataSource: ListComponentDataSource?
 
     weak var listActionDelegate: ListComponentActionDelegate?
@@ -49,32 +49,31 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         // Configure collection view data source and delegate
-        guard let model = model,
+        guard let model = pageController?.dataSource,
+              let viewModel = self.viewModel,
               let services = coordinatorServices else { return }
         let dataSourceConfiguration =
             ListComponentDataSourceConfiguration(collectionView: collectionView,
                                                  model: model,
-                                                 isPaginationEnabled: isPaginationEnabled,
                                                  cellDelegate: self,
                                                  services: services)
-        let dataSource = ListComponentDataSource(with: dataSourceConfiguration)
+        let dataSource = ListComponentDataSource(with: dataSourceConfiguration,
+                                                 delegate: self)
         self.dataSource = dataSource
 
         collectionView.dataSource = dataSource
         collectionView.delegate = dataSource
         collectionView.pageDelegate = self
-        collectionView.isPaginationEnabled = isPaginationEnabled
-        collectionView.coordinatorServices = coordinatorServices
 
         emptyListView.isHidden = true
-        createButton.isHidden = !model.shouldDisplayCreateButton()
-        listActionButton.isHidden = !model.shouldDisplayListActionButton()
+        createButton.isHidden = !viewModel.shouldDisplayCreateButton()
+        listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
         listActionButton.isUppercaseTitle = false
-        listActionButton.setTitle(model.listActionTitle(), for: .normal)
+        listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
 
-        if model.shouldDisplayCreateButton() ||
-            model.shouldDisplayListActionButton() {
+        if viewModel.shouldDisplayCreateButton() ||
+            viewModel.shouldDisplayListActionButton() {
             collectionView.contentInset = UIEdgeInsets(top: 0,
                                                        left: 0,
                                                        bottom: listBottomInset,
@@ -113,7 +112,9 @@ class ListComponentViewController: SystemThemableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        listActionButton.isEnabled = (model?.shouldEnableListActionButton() ?? false)
+        guard let viewModel = self.viewModel else { return }
+
+        listActionButton.isEnabled = viewModel.shouldEnableListActionButton()
         handleConnectivity()
 
         if coordinatorServices?.syncService?.syncServiceStatus != .idle {
@@ -199,42 +200,40 @@ class ListComponentViewController: SystemThemableViewController {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
 
-            sSelf.model?.refreshList()
+            sSelf.pageController?.refreshList()
         }
     }
 
     @objc private func handleReSignIn(notification: Notification) {
-        model?.refreshList()
+        pageController?.refreshList()
     }
 
     private func reloadDataSource() {
-        if let model = model,
-           let dataSource = dataSource {
-            let listNodes = model.listNodes()
+        guard let model = pageController?.dataSource,
+              let dataSource = self.dataSource else { return }
 
-            dataSource.state = forEach(listNodes) { listNode in
-                Cell<ListElementCollectionViewCell>()
-                    .onSize { [weak self] context in
-                        guard let sSelf = self else { return .zero}
-                        return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
-                                      height: (model.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
-                    }.onSelect { [weak self] context in
-                        guard let sSelf = self,
-                              let model = sSelf.model else { return }
-                        let node = model.listNode(for: context.indexPath)
+        dataSource.state = forEach(model.listNodes()) { listNode in
+            Cell<ListElementCollectionViewCell>()
+                .onSize { [weak self] context in
+                    guard let sSelf = self else { return .zero}
 
-                        if model.shouldPreviewNode(at: context.indexPath) == false { return }
-                        if node.trashed == false {
-                            sSelf.listItemActionDelegate?.showPreview(for: node,
-                                                                      from: model)
-                            sSelf.listActionDelegate?.elementTapped(node: node)
-                        } else {
-                            sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                                                     from: model,
-                                                                                     delegate: sSelf)
-                        }
+                    return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
+                                  height: (model.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
+                }.onSelect { [weak self] context in
+                    guard let sSelf = self else { return }
+                    let node = model.listNode(for: context.indexPath)
+
+                    if model.shouldPreviewNode(at: context.indexPath) == false { return }
+                    if node.trashed == false {
+                        sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                  from: model)
+                        sSelf.listActionDelegate?.elementTapped(node: node)
+                    } else {
+                        sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                                                 from: model,
+                                                                                 delegate: sSelf)
                     }
-            }
+                }
         }
     }
 
@@ -256,7 +255,7 @@ class ListComponentViewController: SystemThemableViewController {
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
 
-            if model?.shouldDisplayPullToRefreshOffline() == false {
+            if viewModel?.shouldDisplayPullToRefreshOffline() == false {
                 refreshControl?.removeFromSuperview()
             }
         } else {
@@ -266,6 +265,11 @@ class ListComponentViewController: SystemThemableViewController {
         }
         listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
     }
+
+    internal func isPaginationEnabled() -> Bool {
+        guard let isPaginationEnabled = pageController?.isPaginationEnabled else { return true }
+        return isPaginationEnabled
+    }
 }
 
 // MARK: - ListElementCollectionViewCell Delegate
@@ -273,7 +277,7 @@ class ListComponentViewController: SystemThemableViewController {
 extension ListComponentViewController: ListElementCollectionViewCellDelegate {
     func moreButtonTapped(for element: ListNode?, in cell: ListElementCollectionViewCell) {
         guard let node = element,
-              let model = model else { return }
+              let model = pageController?.dataSource else { return }
         listItemActionDelegate?.showActionSheetForListItem(for: node,
                                                            from: model,
                                                            delegate: self)
@@ -284,26 +288,27 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
 
 extension ListComponentViewController: PageFetchableDelegate {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath) {
-        listActionDelegate?.fetchNextListPage(in: self, for: itemAtIndexPath)
+        pageController?.fetchNextPage(userInfo: nil)
     }
 }
 
-// MARK: - ListComponentPageUpdatingDelegate
+// MARK: - ListPageControllerDelegate
 
-extension ListComponentViewController: ListComponentPageUpdatingDelegate {
+extension ListComponentViewController: ListPageControllerDelegate {
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
-        guard let isListEmpty = model?.isEmpty() else { return }
+        guard let model = pageController?.dataSource else { return }
+        let isListEmpty = model.isEmpty()
 
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {
-            let emptyList = model?.emptyList()
+            let emptyList = viewModel?.emptyList()
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
         }
 
-        if model?.shouldDisplayListActionButton() == true {
+        if pageController?.shouldDisplayNextPageLoadingIndicator == true {
             listActionButton.isHidden = isListEmpty
         }
 
@@ -329,17 +334,22 @@ extension ListComponentViewController: ListComponentPageUpdatingDelegate {
             stopLoadingAndScrollToTop()
         }
     }
+}
 
-    func shouldDisplayCreateButton(enable: Bool) {
-        createButton.isHidden = !enable
-        if enable {
-            collectionView.contentInset = UIEdgeInsets(top: 0, left: 0,
-                                                       bottom: listBottomInset, right: 0)
-        }
-    }
+// MARK: - ListComponentViewModelDelegate
 
+extension ListComponentViewController: ListComponentViewModelDelegate {
     func didUpdateListActionState(enable: Bool) {
         listActionButton.isEnabled = enable
+    }
+}
+
+// MARK: - ListComponentDataSourceDelegate
+
+extension ListComponentViewController: ListComponentDataSourceDelegate {
+    func shouldDisplayListLoadingIndicator() -> Bool {
+        guard let displayLoadingIndicator = pageController?.shouldDisplayNextPageLoadingIndicator else { return false }
+        return displayLoadingIndicator
     }
 }
 

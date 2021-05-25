@@ -21,8 +21,8 @@ import AlfrescoContent
 
 class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
-    var listViewModel: ListViewModelProtocol?
-    var isPaginationEnabled = true
+    var pageController: ListPageController?
+    var viewModel: ListComponentViewModel?
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
@@ -32,11 +32,13 @@ class ListViewController: SystemSearchViewController {
         super.viewDidLoad()
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
-        listComponentViewController.listActionDelegate = self
-        listComponentViewController.model = listViewModel
+        listComponentViewController.pageController = pageController
         listComponentViewController.coordinatorServices = self.coordinatorServices
-        listComponentViewController.isPaginationEnabled = self.isPaginationEnabled
-        listViewModel?.pageUpdatingDelegate = listComponentViewController
+
+        listComponentViewController.listActionDelegate = self
+        pageController?.delegate = listComponentViewController
+        viewModel?.delegate = listComponentViewController
+
 
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,12 +57,12 @@ class ListViewController: SystemSearchViewController {
         listController?.listItemActionDelegate = self.listItemActionDelegate
 
         configureNavigationBar()
-        if listViewModel?.shouldDisplaySettingsButton() ?? false {
+        if viewModel?.shouldDisplaySettingsButton() ?? false {
             addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         }
 
         listController?.startLoading()
-        listViewModel?.refreshList()
+        pageController?.refreshList()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -104,12 +106,7 @@ extension ListViewController: ListComponentActionDelegate {
         listController?.stopLoading()
     }
 
-    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
-                           for itemAtIndexPath: IndexPath) {
-        listViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
-    }
-
     func performListAction() {
-        listViewModel?.performListAction()
+        viewModel?.performListAction()
     }
 }

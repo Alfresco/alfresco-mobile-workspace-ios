@@ -79,6 +79,10 @@
 		B9A21CC22555255100F93383 /* ActionsMenuTrashMoreButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A21CC12555255100F93383 /* ActionsMenuTrashMoreButton.swift */; };
 		B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */; };
 		B9A8E26B24D2F73A00ED9C3B /* PageFetchingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */; };
+		B9A90E6B2657DB2100B89766 /* ListPageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6A2657DB2100B89766 /* ListPageController.swift */; };
+		B9A90E6D2657F9A900B89766 /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */; };
+		B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6E265B96B000B89766 /* ListComponentModel.swift */; };
+		B9A90E71265D189700B89766 /* FolderDrillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E70265D189700B89766 /* FolderDrillModel.swift */; };
 		B9A9F124263AEAB800F4428D /* CameraKitTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F123263AEAB800F4428D /* CameraKitTheme.swift */; };
 		B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F125263AEB7900F4428D /* CameraKit.swift */; };
 		B9A9F128263AF3CD00F4428D /* CameraKitLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F127263AF3CD00F4428D /* CameraKitLocalization.swift */; };
@@ -408,6 +412,10 @@
 		B9A21CC12555255100F93383 /* ActionsMenuTrashMoreButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsMenuTrashMoreButton.swift; sourceTree = "<group>"; };
 		B9A8E26824CEAC2F00ED9C3B /* ListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentViewController.swift; sourceTree = "<group>"; };
 		B9A8E26A24D2F73A00ED9C3B /* PageFetchingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageFetchingViewModel.swift; sourceTree = "<group>"; };
+		B9A90E6A2657DB2100B89766 /* ListPageController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPageController.swift; sourceTree = "<group>"; };
+		B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentViewModel.swift; sourceTree = "<group>"; };
+		B9A90E6E265B96B000B89766 /* ListComponentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentModel.swift; sourceTree = "<group>"; };
+		B9A90E70265D189700B89766 /* FolderDrillModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDrillModel.swift; sourceTree = "<group>"; };
 		B9A9F123263AEAB800F4428D /* CameraKitTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitTheme.swift; sourceTree = "<group>"; };
 		B9A9F125263AEB7900F4428D /* CameraKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKit.swift; sourceTree = "<group>"; };
 		B9A9F127263AF3CD00F4428D /* CameraKitLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitLocalization.swift; sourceTree = "<group>"; };
@@ -1114,6 +1122,7 @@
 				B9B17B0E25DBE95D00F534E6 /* ListComponent+DataSource.swift */,
 				B9B17B1625DBED9600F534E6 /* ListComponent+Actions.swift */,
 				F185B19D2617591200407451 /* ListComponent+Delegates.swift */,
+				B9A90E6A2657DB2100B89766 /* ListPageController.swift */,
 			);
 			path = ListComponent;
 			sourceTree = "<group>";
@@ -1432,6 +1441,7 @@
 				E3E2BDA324CC280B00D8A7EC /* TrashViewModel.swift */,
 				B9233FC425A70ADC006EA4DA /* OfflineViewModel.swift */,
 				E315151525AC493000DF8735 /* OfflineFoldreDrillViewModel.swift */,
+				B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1442,8 +1452,10 @@
 				E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */,
 				E3B1EAE824C194DA00E72712 /* GroupedList.swift */,
 				E32B642624B326EB00085472 /* ListNode.swift */,
+				B9A90E6E265B96B000B89766 /* ListComponentModel.swift */,
 				E31CF0A725AF06C400620ADA /* Mappers */,
 				E31CF0A625AF06B300620ADA /* EmptyList */,
+				B9A90E70265D189700B89766 /* FolderDrillModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2324,6 +2336,7 @@
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
+				B9A90E71265D189700B89766 /* FolderDrillModel.swift in Sources */,
 				E315151625AC493000DF8735 /* OfflineFoldreDrillViewModel.swift in Sources */,
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
 				B9BB9F202636D1F400C2FB85 /* AVCaptureDevice+Zoom.swift in Sources */,
@@ -2425,6 +2438,7 @@
 				F1B020BC261B0255007799B2 /* CameraScreenCoordinator.swift in Sources */,
 				B9233F6B25A5C700006EA4DA /* ListNodeDataAccessor.swift in Sources */,
 				E3A7F32D258A5B880089734D /* OfflineScreenCoordinator.swift in Sources */,
+				B9A90E6D2657F9A900B89766 /* ListComponentViewModel.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
@@ -2487,6 +2501,7 @@
 				B9ECED28254308280097DB3F /* EventObservable.swift in Sources */,
 				B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */,
 				B96B09B624BD8FDB0063D3C6 /* SystemThemableViewController.swift in Sources */,
+				B9A90E6B2657DB2100B89766 /* ListPageController.swift in Sources */,
 				4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */,
 				F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */,
 				B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */,
@@ -2506,6 +2521,7 @@
 				E3436F8A250B8C4A00634C62 /* AVPlayer+Playing.swift in Sources */,
 				B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
+				B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
 				F185B1812617495300407451 /* CameraViewController.swift in Sources */,

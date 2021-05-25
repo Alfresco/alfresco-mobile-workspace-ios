@@ -21,9 +21,9 @@ import AlfrescoContent
 
 protocol ListItemActionDelegate: AnyObject {
     func showPreview(for node: ListNode,
-                     from model: ListComponentModelProtocol)
+                     from model: ListModelProtocol)
     func showActionSheetForListItem(for node: ListNode,
-                                    from model: ListComponentModelProtocol,
+                                    from model: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate)
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate)
     func showNodeCreationDialog(with actionMenu: ActionMenu,
@@ -37,8 +37,7 @@ protocol ListComponentActionDelegate: AnyObject {
     func didUpdateList(in listComponentViewController: ListComponentViewController,
                        error: Error?,
                        pagination: Pagination?)
-    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
-                           for itemAtIndexPath: IndexPath)
+
     func performListAction()
 }
 

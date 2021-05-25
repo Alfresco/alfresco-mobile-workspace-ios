@@ -19,17 +19,8 @@
 import Foundation
 import AlfrescoContent
 
-enum ListEntrySyncStatus: String {
-    case markedForOffline = "ic-sync-status-marked"
-    case error = "ic-sync-status-error"
-    case pending = "ic-sync-status-pending"
-    case inProgress = "ic-sync-status-in-progress"
-    case downloaded = "ic-sync-status-synced"
-    case uploaded = "ic-sync-status-uploaded"
-    case undefined = "ic-sync-status-undefined"
-}
-
 protocol ListComponentModelProtocol: AnyObject {
+    func isPaginationEnabled() -> Bool
     func isEmpty() -> Bool
     func emptyList() -> EmptyListProtocol
 
@@ -54,6 +45,10 @@ protocol ListComponentModelProtocol: AnyObject {
 }
 
 extension ListComponentModelProtocol {
+    func isPaginationEnabled() -> Bool {
+        return true
+    }
+
     func shouldDisplayCreateButton() -> Bool {
         return false
     }

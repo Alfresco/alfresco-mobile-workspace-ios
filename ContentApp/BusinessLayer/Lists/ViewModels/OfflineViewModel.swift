@@ -61,6 +61,10 @@ class OfflineViewModel: PageFetchingViewModel {
 // MARK: - ListViewModelProtocol
 
 extension OfflineViewModel: ListViewModelProtocol {
+    func isPaginationEnabled() -> Bool {
+        return false
+    }
+
     func isEmpty() -> Bool {
         return results.isEmpty
     }
