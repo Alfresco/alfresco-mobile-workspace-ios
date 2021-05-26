@@ -59,4 +59,16 @@ class ListComponentViewModel {
     }
 
     func performListAction() { }
+
+    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+        return false
+    }
+
+    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        return true
+    }
 }

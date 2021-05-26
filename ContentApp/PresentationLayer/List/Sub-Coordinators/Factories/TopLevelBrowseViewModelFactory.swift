@@ -40,16 +40,15 @@ class TopLevelBrowseViewModelFactory {
     }
 
     func listViewModel(from type: BrowseType?) -> ListComponentViewModel {
-        #warning("Uncomment")
         switch type {
         case .personalFiles:
             return personalFilesViewModel()
-//        case .myLibraries:
-//            return myLibrariesViewModel()
-//        case .shared:
-//            return sharedViewModel()
-//        case .trash:
-//            return trashViewModel()
+        case .myLibraries:
+            return myLibrariesViewModel()
+        case .shared:
+            return sharedViewModel()
+        case .trash:
+            return trashViewModel()
         default:
             return defaultViewModel()
         }
@@ -129,43 +128,46 @@ class TopLevelBrowseViewModelFactory {
         return viewModel
     }
 
-    private func myLibrariesViewModel() -> ListViewModelProtocol {
+    private func myLibrariesViewModel() -> ListComponentViewModel {
         let eventBusService = services.eventBusService
 
-        let viewModel = MyLibrariesViewModel(with: services,
-                                             listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = MyLibrariesModel(services: services)
+        let viewModel = MyLibrariesViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.site])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.site])
         return viewModel
     }
 
-    private func sharedViewModel() -> ListViewModelProtocol {
+    private func sharedViewModel() -> ListComponentViewModel {
         let eventBusService = services.eventBusService
 
-        let viewModel = SharedViewModel(with: services,
-                                        listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = SharedModel(services: services)
+        let viewModel = SharedViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
         return viewModel
     }
 
-    private func trashViewModel() -> ListViewModelProtocol {
+    private func trashViewModel() -> ListComponentViewModel {
         let eventBusService = services.eventBusService
 
-        let viewModel = TrashViewModel(with: services,
-                              listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = TrashModel(services: services)
+        let viewModel = TrashViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
         return viewModel

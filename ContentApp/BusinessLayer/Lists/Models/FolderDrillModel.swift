@@ -17,11 +17,10 @@
 //
 
 import Foundation
-import AlfrescoAuth
 import AlfrescoContent
 
 class FolderDrillModel: ListModelProtocol {
-    private var coordinatorServices: CoordinatorServices
+    private var services: CoordinatorServices
     private let nodeOperations: NodeOperations
     private let uploadTransferDataAccessor = UploadTransferDataAccessor()
     private var results: [ListNode] = []
@@ -36,9 +35,9 @@ class FolderDrillModel: ListModelProtocol {
     weak var delegate: ListModelDelegate?
 
     init(listNode: ListNode?, services: CoordinatorServices) {
-        self.coordinatorServices = services
+        self.services = services
         self.listNode = listNode
-        self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
+        self.nodeOperations = NodeOperations(accountService: services.accountService)
     }
 
     func isEmpty() -> Bool {
@@ -59,21 +58,6 @@ class FolderDrillModel: ListModelProtocol {
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
         return ""
-    }
-
-    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        if listNode(for: indexPath).markedFor == .upload {
-            return true
-        }
-        return false
-    }
-
-    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        return true
-    }
-
-    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        return true
     }
 
     func fetchItems(with requestPagination: RequestPagination,

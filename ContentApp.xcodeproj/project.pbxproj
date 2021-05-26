@@ -83,6 +83,9 @@
 		B9A90E6D2657F9A900B89766 /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */; };
 		B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6E265B96B000B89766 /* ListComponentModel.swift */; };
 		B9A90E71265D189700B89766 /* FolderDrillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E70265D189700B89766 /* FolderDrillModel.swift */; };
+		B9A90E73265E656400B89766 /* MyLibrariesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E72265E656400B89766 /* MyLibrariesModel.swift */; };
+		B9A90E75265E702600B89766 /* SharedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E74265E702600B89766 /* SharedModel.swift */; };
+		B9A90E77265E8E6B00B89766 /* TrashModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E76265E8E6B00B89766 /* TrashModel.swift */; };
 		B9A9F124263AEAB800F4428D /* CameraKitTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F123263AEAB800F4428D /* CameraKitTheme.swift */; };
 		B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F125263AEB7900F4428D /* CameraKit.swift */; };
 		B9A9F128263AF3CD00F4428D /* CameraKitLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F127263AF3CD00F4428D /* CameraKitLocalization.swift */; };
@@ -416,6 +419,9 @@
 		B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentViewModel.swift; sourceTree = "<group>"; };
 		B9A90E6E265B96B000B89766 /* ListComponentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListComponentModel.swift; sourceTree = "<group>"; };
 		B9A90E70265D189700B89766 /* FolderDrillModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDrillModel.swift; sourceTree = "<group>"; };
+		B9A90E72265E656400B89766 /* MyLibrariesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyLibrariesModel.swift; sourceTree = "<group>"; };
+		B9A90E74265E702600B89766 /* SharedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedModel.swift; sourceTree = "<group>"; };
+		B9A90E76265E8E6B00B89766 /* TrashModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashModel.swift; sourceTree = "<group>"; };
 		B9A9F123263AEAB800F4428D /* CameraKitTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitTheme.swift; sourceTree = "<group>"; };
 		B9A9F125263AEB7900F4428D /* CameraKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKit.swift; sourceTree = "<group>"; };
 		B9A9F127263AF3CD00F4428D /* CameraKitLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraKitLocalization.swift; sourceTree = "<group>"; };
@@ -1449,13 +1455,16 @@
 		E35583F224BF40AD007011EF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E31CF0A725AF06C400620ADA /* Mappers */,
+				E31CF0A625AF06B300620ADA /* EmptyList */,
 				E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */,
 				E3B1EAE824C194DA00E72712 /* GroupedList.swift */,
 				E32B642624B326EB00085472 /* ListNode.swift */,
 				B9A90E6E265B96B000B89766 /* ListComponentModel.swift */,
-				E31CF0A725AF06C400620ADA /* Mappers */,
-				E31CF0A625AF06B300620ADA /* EmptyList */,
 				B9A90E70265D189700B89766 /* FolderDrillModel.swift */,
+				B9A90E72265E656400B89766 /* MyLibrariesModel.swift */,
+				B9A90E74265E702600B89766 /* SharedModel.swift */,
+				B9A90E76265E8E6B00B89766 /* TrashModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2384,6 +2393,7 @@
 				E321380C24C5ABD00025A833 /* ListCoordinatorProtocol.swift in Sources */,
 				B9A21CC22555255100F93383 /* ActionsMenuTrashMoreButton.swift in Sources */,
 				13382593262D87ED000FFD4E /* DataAccessor.swift in Sources */,
+				B9A90E73265E656400B89766 /* MyLibrariesModel.swift in Sources */,
 				E3AE301824CEB08400CF4271 /* FolderChildrenScreenCoordinator.swift in Sources */,
 				E30FCD8425A6F73500C4ABAF /* OfflineEvent.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
@@ -2494,6 +2504,7 @@
 				F168F47326248DEA0002D3A5 /* PhotoGalleryCollectionViewCell.swift in Sources */,
 				E31184D4247BB0600044BE0D /* BasicAuthViewController.swift in Sources */,
 				E334C07B24755F0200F74880 /* UIConstants.swift in Sources */,
+				B9A90E77265E8E6B00B89766 /* TrashModel.swift in Sources */,
 				E37ECED224869BC2003D72E8 /* ActivityIndicatorView.swift in Sources */,
 				B99D9BBD2486724D00FBFC9B /* AuthenticationProviderProtocol.swift in Sources */,
 				E3E2BDA024CC27F200D8A7EC /* MyLibrariesViewModel.swift in Sources */,
@@ -2523,6 +2534,7 @@
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */,
 				E3ADD05824926F5C006DF519 /* SettingsViewController.swift in Sources */,
+				B9A90E75265E702600B89766 /* SharedModel.swift in Sources */,
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
 				F185B1812617495300407451 /* CameraViewController.swift in Sources */,
 				B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */,

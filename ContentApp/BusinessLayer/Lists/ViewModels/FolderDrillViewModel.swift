@@ -26,7 +26,7 @@ class FolderDrillViewModel: ListComponentViewModel {
         return EmptyFolder()
     }
     
-    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         if model.listNode(for: indexPath).markedFor == .upload {
             return true
         }
@@ -39,11 +39,11 @@ class FolderDrillViewModel: ListComponentViewModel {
         return listNode.hasPermissionToCreate()
     }
     
-    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+    override func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
         return true
     }
     

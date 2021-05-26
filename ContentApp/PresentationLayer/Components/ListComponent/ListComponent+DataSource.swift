@@ -30,7 +30,7 @@ protocol ListComponentDataSourceDelegate: AnyObject {
 
 struct ListComponentDataSourceConfiguration {
     let collectionView: UICollectionView
-    let model: ListModelProtocol
+    let viewModel: ListComponentViewModel
     weak var cellDelegate: ListElementCollectionViewCellDelegate?
     let services: CoordinatorServices
 }
@@ -48,7 +48,7 @@ class ListComponentDataSource: DataSource {
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return configuration.model.numberOfItems(in: section)
+        return configuration.viewModel.model.numberOfItems(in: section)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -89,12 +89,12 @@ class ListComponentDataSource: DataSource {
         let identifierElement = String(describing: ListElementCollectionViewCell.self)
         let identifierSection = String(describing: ListSectionCollectionViewCell.self)
 
-        let node = configuration.model.listNode(for: indexPath)
+        let node = configuration.viewModel.model.listNode(for: indexPath)
         if node.guid == listNodeSectionIdentifier {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierSection,
                                          for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
-            cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
+            cell.titleLabel.text = configuration.viewModel.model.titleForSectionHeader(at: indexPath)
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         } else {
@@ -104,13 +104,13 @@ class ListComponentDataSource: DataSource {
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
-            cell.syncStatus = configuration.model.syncStatusForNode(at: indexPath)
-            cell.moreButton.isHidden = !configuration.model.shouldDisplayMoreButton(for: indexPath)
+            cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
+            cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
             if node.nodeType == .fileLink || node.nodeType == .folderLink {
                 cell.moreButton.isHidden = true
             }
-            if configuration.model.shouldDisplaySubtitle(for: indexPath) == false {
+            if configuration.viewModel.shouldDisplaySubtitle(for: indexPath) == false {
                 cell.subtitle.text = ""
             }
 

@@ -49,12 +49,11 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewDidLoad()
 
         // Configure collection view data source and delegate
-        guard let model = pageController?.dataSource,
-              let viewModel = self.viewModel,
+        guard let viewModel = self.viewModel,
               let services = coordinatorServices else { return }
         let dataSourceConfiguration =
             ListComponentDataSourceConfiguration(collectionView: collectionView,
-                                                 model: model,
+                                                 viewModel: viewModel,
                                                  cellDelegate: self,
                                                  services: services)
         let dataSource = ListComponentDataSource(with: dataSourceConfiguration,
@@ -210,6 +209,7 @@ class ListComponentViewController: SystemThemableViewController {
 
     private func reloadDataSource() {
         guard let model = pageController?.dataSource,
+              let viewModel = viewModel,
               let dataSource = self.dataSource else { return }
 
         dataSource.state = forEach(model.listNodes()) { listNode in
@@ -218,12 +218,12 @@ class ListComponentViewController: SystemThemableViewController {
                     guard let sSelf = self else { return .zero}
 
                     return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
-                                  height: (model.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
+                                  height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
                 }.onSelect { [weak self] context in
                     guard let sSelf = self else { return }
                     let node = model.listNode(for: context.indexPath)
 
-                    if model.shouldPreviewNode(at: context.indexPath) == false { return }
+                    if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
                     if node.trashed == false {
                         sSelf.listItemActionDelegate?.showPreview(for: node,
                                                                   from: model)

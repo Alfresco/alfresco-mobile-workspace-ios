@@ -45,11 +45,6 @@ protocol ListModelProtocol: AnyObject {
     func listNodes() -> [ListNode]
     func listNode(for indexPath: IndexPath) -> ListNode
     func titleForSectionHeader(at indexPath: IndexPath) -> String
-
-    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool
-    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool
-
-    func shouldPreviewNode(at indexPath: IndexPath) -> Bool
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus
 
     func fetchItems(with requestPagination: RequestPagination,
