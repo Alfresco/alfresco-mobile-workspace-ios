@@ -28,7 +28,11 @@ class FolderDrillModel: ListModelProtocol {
     internal var supportedNodeTypes: [NodeType] = []
 
     var listNode: ListNode?
-    var rawListNodes: [ListNode] = []
+    var rawListNodes: [ListNode] = [] {
+        didSet {
+            results = rawListNodes
+        }
+    }
     weak var delegate: ListModelDelegate?
 
     init(listNode: ListNode?, services: CoordinatorServices) {
@@ -58,7 +62,10 @@ class FolderDrillModel: ListModelProtocol {
     }
 
     func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        return true
+        if listNode(for: indexPath).markedFor == .upload {
+            return true
+        }
+        return false
     }
 
     func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
@@ -82,6 +89,8 @@ class FolderDrillModel: ListModelProtocol {
             sSelf.nodeOperations.fetchNodeChildren(for: parentGuid,
                                                    pagination: reqPagination,
                                                    relativePath: relativePath) { (result, error) in
+                guard let sSelf = self else { return }
+
                 var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = NodeChildMapper.map(entries)

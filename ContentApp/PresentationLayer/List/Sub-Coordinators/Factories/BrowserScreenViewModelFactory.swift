@@ -23,15 +23,19 @@ typealias BrowseDataSource = (browseViewModel: BrowseViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
 class BrowseViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
+    private let services: CoordinatorServices
+
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
 
     func browseDataSource() -> BrowseDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
+        let eventBusService = services.eventBusService
 
         let browseViewModel = BrowseViewModel()
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+        let resultViewModel = ResultsViewModel(with: services)
         let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
+            GlobalSearchViewModel(accountService: services.accountService)
 
         globalSearchViewModel.delegate = resultViewModel
         resultViewModel.delegate = globalSearchViewModel

@@ -32,20 +32,25 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     }
     
     override func start() {
-        #warning("Uncomment")
         let viewModelFactory = TopLevelBrowseViewModelFactory(services: coordinatorServices)
-//
-//        let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
-//
-//        let viewController = ListViewController()
-//        viewController.title = browseNode.title
-//        viewController.coordinatorServices = coordinatorServices
-//        viewController.listItemActionDelegate = self
-//        viewController.listViewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
-//        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
-//        viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
-//
-//        presenter.pushViewController(viewController, animated: true)
+        let topLevelBrowseDataSource = viewModelFactory.topLevelBrowseDataSource(browseNode: browseNode)
+
+        let viewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        let viewController = ListViewController()
+        viewController.title = browseNode.title
+
+        viewController.pageController = pageController
+        viewController.viewModel = viewModel
+        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
+        viewController.resultViewModel = topLevelBrowseDataSource.resultsViewModel
+
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listItemActionDelegate = self
+
+        presenter.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Private interface

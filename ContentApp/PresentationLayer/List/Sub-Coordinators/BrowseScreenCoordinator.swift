@@ -35,9 +35,7 @@ class BrowseScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let viewModelFactory = BrowseViewModelFactory()
-        viewModelFactory.coordinatorServices = coordinatorServices
-
+        let viewModelFactory = BrowseViewModelFactory(services: coordinatorServices)
         let browseDataSource = viewModelFactory.browseDataSource()
 
         let viewController = BrowseViewController.instantiateViewController()
@@ -51,7 +49,13 @@ class BrowseScreenCoordinator: PresentingCoordinator,
         viewController.resultViewModel = browseDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
-        self.presenter.viewControllers?.append(navigationViewController)
+        let indexForNavigationController = self.presenter.viewControllers?.endIndex ?? 0
+        if indexForNavigationController == 0 {
+            self.presenter.viewControllers = [navigationViewController]
+        } else {
+            self.presenter.viewControllers?.insert(navigationViewController, at: indexForNavigationController)
+        }
+
         self.navigationViewController = navigationViewController
         browseViewController = viewController
     }

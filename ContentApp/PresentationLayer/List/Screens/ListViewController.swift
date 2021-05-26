@@ -33,12 +33,12 @@ class ListViewController: SystemSearchViewController {
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.pageController = pageController
+        listComponentViewController.viewModel = viewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
 
         listComponentViewController.listActionDelegate = self
         pageController?.delegate = listComponentViewController
         viewModel?.delegate = listComponentViewController
-
 
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false

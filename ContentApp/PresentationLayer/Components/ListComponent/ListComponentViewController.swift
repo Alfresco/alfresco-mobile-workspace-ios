@@ -267,7 +267,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
 
     internal func isPaginationEnabled() -> Bool {
-        guard let isPaginationEnabled = pageController?.isPaginationEnabled else { return true }
+        guard let isPaginationEnabled = pageController?.isPaginationEnabled() else { return true }
         return isPaginationEnabled
     }
 }
@@ -306,10 +306,6 @@ extension ListComponentViewController: ListPageControllerDelegate {
             emptyListImageView.image = emptyList?.icon
             emptyListTitle.text = emptyList?.title
             emptyListSubtitle.text = emptyList?.description
-        }
-
-        if pageController?.shouldDisplayNextPageLoadingIndicator == true {
-            listActionButton.isHidden = isListEmpty
         }
 
         // If loading the first page or missing pagination scroll to top

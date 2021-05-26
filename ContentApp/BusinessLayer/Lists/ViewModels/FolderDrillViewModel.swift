@@ -35,7 +35,7 @@ class FolderDrillViewModel: ListComponentViewModel {
 
     override func shouldDisplayCreateButton() -> Bool {
         guard let model = model as? FolderDrillModel,
-              let listNode = model.listNode else { return false }
+              let listNode = model.listNode else { return true }
         return listNode.hasPermissionToCreate()
     }
     

@@ -32,18 +32,13 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     }
 
     override func start() {
-        let viewModelFactory = FolderChildrenViewModelFactory()
-        viewModelFactory.coordinatorServices = coordinatorServices
-
+        let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
         let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
 
         let viewController = ListViewController()
         viewController.title = listNode.title
 
-//        viewController.viewModel =
-        
-
-        viewController.listViewModel = folderChildrenDataSource.folderDrillDownViewModel
+        viewController.viewModel = folderChildrenDataSource.folderDrillDownViewModel
         viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
         viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
 

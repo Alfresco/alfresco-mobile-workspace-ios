@@ -29,10 +29,10 @@ struct PaginatedResponse {
 }
 
 protocol ListPageControllerProtocol: AnyObject {
-    var isPaginationEnabled: Bool { get set}
     var dataSource: ListModelProtocol { get }
     var delegate: ListPageControllerDelegate? { get set }
 
+    func isPaginationEnabled() -> Bool
     func fetchNextPage(userInfo: Any?)
     func refreshList()
     func clear()
@@ -44,28 +44,25 @@ protocol ListPageControllerDelegate: AnyObject {
 }
 
 class ListPageController: ListPageControllerProtocol {
-    var services: CoordinatorServices?
+    let services: CoordinatorServices
     var dataSource: ListModelProtocol
     weak var delegate: ListPageControllerDelegate?
-    var isPaginationEnabled: Bool {
-        get {
-            return self.isPaginationEnabled &&
-                services?.connectivityService?.hasInternetConnection() == true
-        }
-
-        set {
-            self.isPaginationEnabled = newValue
-        }
-    }
+    var paginationEnabled: Bool
     var currentPage = 1
     var pageSkipCount = 0
     var hasMoreItems = true
     var shouldDisplayNextPageLoadingIndicator = false
-    private var refreshedList = false
 
-    init(dataSource: ListModelProtocol) {
+    init(dataSource: ListModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
+        paginationEnabled = true
+        self.services = services
         self.dataSource.delegate = self
+    }
+
+    func isPaginationEnabled() -> Bool {
+        return paginationEnabled &&
+            services.connectivityService?.hasInternetConnection() == true
     }
 
     func fetchNextPage(userInfo: Any?) {
@@ -74,7 +71,6 @@ class ListPageController: ListPageControllerProtocol {
             DispatchQueue.main.async { [weak self] in
                 guard let sSelf = self else { return }
                 sSelf.pageSkipCount = 0
-                sSelf.refreshedList = false
                 sSelf.update(with: sSelf.dataSource.rawListNodes,
                              pagination: nil,
                              error: nil)
@@ -82,21 +78,18 @@ class ListPageController: ListPageControllerProtocol {
         }
 
         if hasMoreItems {
-            let skipCount = refreshedList ? APIConstants.pageSize : dataSource.rawListNodes.count
+            pageSkipCount = dataSource.rawListNodes.isEmpty ? 0 : dataSource.rawListNodes.count
             let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
-                                             skipCount: skipCount)
-            if skipCount != pageSkipCount {
-                pageSkipCount = skipCount
-                dataSource.fetchItems(with: nextPage, userInfo: userInfo) { [weak self] paginatedResponse in
-                    guard let sSelf = self else { return }
-                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-                }
+                                             skipCount: pageSkipCount)
+
+            dataSource.fetchItems(with: nextPage, userInfo: userInfo) { [weak self] paginatedResponse in
+                guard let sSelf = self else { return }
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         }
     }
 
     func refreshList() {
-        refreshedList = true
         currentPage = 1
         fetchNextPage(userInfo: nil)
     }
@@ -109,7 +102,6 @@ class ListPageController: ListPageControllerProtocol {
 
     private func handlePaginatedResponse(response: PaginatedResponse) {
         if let error = response.error {
-            refreshedList = false
             pageSkipCount = 0
             update(with: [],
                    pagination: nil,
@@ -123,7 +115,6 @@ class ListPageController: ListPageControllerProtocol {
                 incrementPage(for: response.requestPagination)
             }
 
-            refreshedList = false
             pageSkipCount = 0
             update(with: results,
                    pagination: response.responsePagination,
