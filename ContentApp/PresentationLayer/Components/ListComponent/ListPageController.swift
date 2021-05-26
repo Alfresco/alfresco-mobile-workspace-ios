@@ -50,6 +50,7 @@ class ListPageController: ListPageControllerProtocol {
     var paginationEnabled: Bool
     var currentPage = 1
     var pageSkipCount = 0
+    var totalItems: Int64 = 0
     var hasMoreItems = true
     var shouldDisplayNextPageLoadingIndicator = false
 
@@ -116,6 +117,7 @@ class ListPageController: ListPageControllerProtocol {
             }
 
             pageSkipCount = 0
+            totalItems = response.responsePagination?.maxItems ?? 0
             update(with: results,
                    pagination: response.responsePagination,
                    error: nil)
@@ -134,12 +136,8 @@ class ListPageController: ListPageControllerProtocol {
         } else if pagination?.skipCount == 0 || error == nil {
             self.dataSource.rawListNodes = []
         }
-
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.delegate?.didUpdateList(error: error,
-                                          pagination: pagination)
-        }
+        delegate?.didUpdateList(error: error,
+                                pagination: pagination)
     }
 
     private final func incrementPage(for paginationRequest: RequestPagination?) {
@@ -177,6 +175,16 @@ class ListPageController: ListPageControllerProtocol {
 }
 
 extension ListPageController: ListModelDelegate {
+    func needsDisplayStateRefresh() {
+        let pagination = Pagination(count: Int64(dataSource.numberOfItems(in: 0)),
+                                    hasMoreItems: hasMoreItems,
+                                    totalItems: totalItems,
+                                    skipCount: Int64(pageSkipCount),
+                                    maxItems: Int64(0))
+        delegate?.didUpdateList(error: nil,
+                                pagination: pagination)
+    }
+
     func needsDataSourceReload() {
         refreshList()
     }

@@ -95,10 +95,12 @@ extension TrashModel: EventObservable {
             if rawListNodes.contains(node) == false {
                 rawListNodes.insert(node,
                                     at: rawListNodes.endIndex)
+                delegate?.needsDisplayStateRefresh()
             }
         case .restore, .permanentlyDelete:
             if let indexOfRemovedFavorite = rawListNodes.firstIndex(of: node) {
                 rawListNodes.remove(at: indexOfRemovedFavorite)
+                delegate?.needsDisplayStateRefresh()
             }
         case .created: break
         }

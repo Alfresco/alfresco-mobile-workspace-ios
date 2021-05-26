@@ -32,6 +32,7 @@ enum ListEntrySyncStatus: String {
 #warning("Rename to ListComponentModelDelegate after refactor")
 protocol ListModelDelegate: AnyObject {
     func needsDataSourceReload()
+    func needsDisplayStateRefresh()
 }
 
 #warning("Rename to ListComponentModelProtocol after refactor")
