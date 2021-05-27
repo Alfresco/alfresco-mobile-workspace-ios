@@ -122,7 +122,7 @@ class ApplicationBootstrap {
               let buttonScheme = themingService?.containerScheming(for: .dialogButton)
         else { return }
 
-        let theme = CameraKitTheme(primaryColor: currentTheme.primaryVariantT1Color,
+        let theme = CameraKitTheme(primaryColor: currentTheme.primaryT1Color,
                                    onSurfaceColor: currentTheme.onSurfaceColor,
                                    onSurface60Color: currentTheme.onSurface60Color,
                                    onSurface15Color: currentTheme.onSurface15Color,
@@ -135,7 +135,8 @@ class ApplicationBootstrap {
                                    buttonScheme: buttonScheme,
                                    subtitle2Font: currentTheme.subtitle2TextStyle.font,
                                    headline6Font: currentTheme.headline6TextStyle.font,
-                                   body2Font: currentTheme.body2TextStyle.font)
+                                   body2Font: currentTheme.body2TextStyle.font,
+                                   overlineFont: currentTheme.overlineTextStyle.font)
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
                                                  offFlashText: LocalizationConstants.Camera.offFlash,

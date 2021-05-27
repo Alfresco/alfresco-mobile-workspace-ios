@@ -18,7 +18,8 @@
 
 import UIKit
 
-let cameraFeatureButtonSize = CGSize(width: 40, height: 40)
+let cameraFeature40Size = CGSize(width: 40, height: 40)
+let cameraFeature16Size = CGSize(width: 16, height: 16)
 let cameraMargin: CGFloat = 16.0
 
 extension CameraViewController {
@@ -151,11 +152,11 @@ extension CameraViewController {
         let topBarViewHeight = topBarView.frame.height
         let flashModeButtonX = topBarView.frame.width - flashModeButton.bounds.width - cameraMargin
         
-        closeButton.frame.size = cameraFeatureButtonSize
+        closeButton.frame.size = cameraFeature40Size
         closeButton.frame.origin = CGPoint(x: cameraMargin, y: 0)
         closeButton.center.y = topBarViewHeight / 2.0
 
-        flashModeButton.frame.size = cameraFeatureButtonSize
+        flashModeButton.frame.size = cameraFeature40Size
         flashModeButton.frame.origin = CGPoint(x: flashModeButtonX, y: 0)
         flashModeButton.center.y = topBarViewHeight / 2.0
     }
@@ -166,17 +167,17 @@ extension CameraViewController {
     }
     
     private func configureZoomView() {
-        zoomLabel.frame.size = cameraFeatureButtonSize
+        zoomLabel.frame.size = cameraFeature40Size
         zoomLabel.center = CGPoint(x: zoomView.frame.width / 2, y: zoomView.frame.height / 2)
         zoomSlider.center = zoomLabel.center
     }
     
     private func configureShutterView() {
-        let switchCameraButtonX = shutterView.frame.width - switchCameraButton.bounds.width - cameraMargin
-        
         shutterButton.center = CGPoint(x: shutterView.frame.width / 2, y: shutterView.frame.height / 2)
-        switchCameraButton.frame.size = cameraFeatureButtonSize
-        switchCameraButton.frame.origin.x = switchCameraButtonX
+
+        switchCameraButton.frame.size = cameraFeature40Size
+        switchCameraButton.frame.origin.x = shutterView.frame.width
+            - switchCameraButton.frame.width - cameraMargin
         switchCameraButton.center.y = shutterButton.center.y
     }
     
