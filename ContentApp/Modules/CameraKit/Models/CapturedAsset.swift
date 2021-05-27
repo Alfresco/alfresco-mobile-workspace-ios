@@ -103,10 +103,10 @@ class CapturedAsset {
     }
     
     private func composeLocalFilePath(in folderPath: NSString) -> String {
-        return folderPath.appendingPathComponent("\(fileName)_\(timestamp()).\(type.ext)")
+        return folderPath.appendingPathComponent("\(fileName)_\(uniqueIdentifier()).\(type.ext)")
     }
 
-    private func timestamp() -> String {
+    private func uniqueIdentifier() -> String {
         return String(Date().timeIntervalSince1970)
     }
 }
