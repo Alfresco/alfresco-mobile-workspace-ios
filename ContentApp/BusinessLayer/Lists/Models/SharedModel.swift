@@ -110,6 +110,7 @@ extension SharedModel: EventObservable {
             if node.nodeType == .file {
                 if let indexOfMovedNode = rawListNodes.firstIndex(of: node) {
                     rawListNodes.remove(at: indexOfMovedNode)
+                    delegate?.needsDisplayStateRefresh()
                 }
             } else {
                 delegate?.needsDataSourceReload()
@@ -126,6 +127,7 @@ extension SharedModel: EventObservable {
         if let indexOfOfflineNode = rawListNodes.firstIndex(of: node) {
             rawListNodes.remove(at: indexOfOfflineNode)
             rawListNodes.insert(node, at: indexOfOfflineNode)
+            delegate?.needsDisplayStateRefresh()
         }
     }
 }

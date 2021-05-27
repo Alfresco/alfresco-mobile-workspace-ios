@@ -107,6 +107,7 @@ extension MyLibrariesModel: EventObservable {
         case .moveToTrash:
             if let indexOfMovedNode = rawListNodes.firstIndex(of: node) {
                 rawListNodes.remove(at: indexOfMovedNode)
+                delegate?.needsDisplayStateRefresh()
             }
         case .restore:
             delegate?.needsDataSourceReload()

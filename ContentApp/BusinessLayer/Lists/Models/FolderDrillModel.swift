@@ -203,6 +203,7 @@ extension FolderDrillModel: EventObservable {
             if node.nodeType == .file {
                 if let indexOfMovedNode = results.firstIndex(of: node) {
                     results.remove(at: indexOfMovedNode)
+                    delegate?.needsDisplayStateRefresh()
                 }
             } else {
                 delegate?.needsDataSourceReload()
@@ -223,6 +224,7 @@ extension FolderDrillModel: EventObservable {
         if let indexOfOfflineNode = results.firstIndex(of: node) {
             results.remove(at: indexOfOfflineNode)
             results.insert(node, at: indexOfOfflineNode)
+            delegate?.needsDisplayStateRefresh()
         }
     }
 
