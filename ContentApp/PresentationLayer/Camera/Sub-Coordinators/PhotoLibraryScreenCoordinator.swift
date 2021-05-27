@@ -77,6 +77,9 @@ class PhotoLibraryScreenCoordinator: Coordinator {
 
 extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
+        
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
+        else { return }
 
         if !capturedAssets.isEmpty {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
@@ -92,8 +95,6 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
         
         for capturedAsset in capturedAssets {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
-            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-
             _ = DiskService.uploadFolderPath(for: accountIdentifier) +
                 "/" + assetURL.lastPathComponent
 

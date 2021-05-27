@@ -92,6 +92,9 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
         
         coordinatorServices.locationService?.stopUpdatingLocation()
         
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,
+              let mediaPath = mediaFilesFolderPath else { return }
+        
         if !capturedAssets.isEmpty {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
                 guard let sSelf = self else { return }
@@ -102,16 +105,12 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             })
         }
         
-        if let mediaPath = mediaFilesFolderPath,
-           let capturedAsset = capturedAssets.first {
+        if let capturedAsset = capturedAssets.first {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
-            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-
             let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
                 "/" + assetURL.lastPathComponent
             _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
-            _ = DiskService.delete(itemAtPath: mediaPath)
-
+            
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                                 nodeName: capturedAsset.fileName,
                                                 extensionType: capturedAsset.type.ext,
@@ -120,9 +119,10 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 localFilenamePath: assetURL.lastPathComponent)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
-
-            triggerUpload()
         }
+
+        _ = DiskService.delete(itemAtPath: mediaPath)
+        triggerUpload()
     }
 
     func triggerUpload() {
