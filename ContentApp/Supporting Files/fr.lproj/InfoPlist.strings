@@ -19,4 +19,4 @@
 NSPhotoLibraryUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
 NSPhotoLibraryAddUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
 NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
-NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the medata of captured photos.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the metadata of captured photos.";
