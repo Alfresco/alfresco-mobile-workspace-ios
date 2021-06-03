@@ -90,9 +90,9 @@ let maxConcurrentSyncOperationCount = 3
             guard let sSelf = self else { return }
 
             // Fetch details for existing nodes and decide whether they should be marked for download
+            sSelf.nodeList = nodeList
             sSelf.delegate?.syncDidStarted()
             sSelf.processPendingUploads()
-            sSelf.nodeList = nodeList
         }
     }
 
