@@ -131,7 +131,7 @@
 
 // MARK: - Search
 "searching" = "Searching...";
-"no-recent-search" = "There is no recent searches.";
+"no-recent-search" = "There are no recent searches.";
 "recent-search" = "Recent searches";
 "files" = "Files";
 "folders" = "Folders";

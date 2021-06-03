@@ -51,7 +51,6 @@ class SharedModel: ListModelProtocol {
     }
 
     func fetchItems(with requestPagination: RequestPagination,
-                    userInfo: Any?,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
         let accountService = services.accountService
         accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in

@@ -32,20 +32,21 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     }
 
     override func start() {
-        let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
-        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
-
-        let viewController = ListViewController()
-        viewController.title = listNode.title
-
-        viewController.viewModel = folderChildrenDataSource.folderDrillDownViewModel
-        viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
-        viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
-
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
-
-        presenter.pushViewController(viewController, animated: true)
+        #warning("Uncomment")
+//        let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
+//        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
+//
+//        let viewController = ListViewController()
+//        viewController.title = listNode.title
+//
+//        viewController.viewModel = folderChildrenDataSource.folderDrillDownViewModel
+//        viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
+//        viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
+//
+//        viewController.coordinatorServices = coordinatorServices
+//        viewController.listItemActionDelegate = self
+//
+//        presenter.pushViewController(viewController, animated: true)
     }
 }
 

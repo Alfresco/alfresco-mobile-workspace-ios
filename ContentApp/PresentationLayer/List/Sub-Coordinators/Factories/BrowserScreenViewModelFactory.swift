@@ -19,7 +19,6 @@
 import Foundation
 
 typealias BrowseDataSource = (browseViewModel: BrowseViewModel,
-                              resultsViewModel: ResultsViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
 class BrowseViewModelFactory {
@@ -33,23 +32,19 @@ class BrowseViewModelFactory {
         let eventBusService = services.eventBusService
 
         let browseViewModel = BrowseViewModel()
-        let resultViewModel = ResultsViewModel(with: services)
-        let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: services.accountService)
+        let searchModel = GlobalSearchModel(with: services)
+        let globalSearchViewModel = GlobalSearchViewModel(model: searchModel)
 
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
-        return (browseViewModel, resultViewModel, globalSearchViewModel)
+        return (browseViewModel, globalSearchViewModel)
     }
 }

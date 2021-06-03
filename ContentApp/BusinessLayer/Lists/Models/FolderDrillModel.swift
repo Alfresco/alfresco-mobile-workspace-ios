@@ -61,7 +61,6 @@ class FolderDrillModel: ListModelProtocol {
     }
 
     func fetchItems(with requestPagination: RequestPagination,
-                    userInfo: Any?,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
         let relativePath = (listNode?.nodeType == .site) ? APIConstants.Path.relativeSites : nil
         let reqPagination = RequestPagination(maxItems: requestPagination.maxItems,

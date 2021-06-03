@@ -18,57 +18,58 @@
 
 import Foundation
 
-typealias FolderChildrenDataSource = (folderDrillDownViewModel: FolderDrillViewModel,
-                                      resultsViewModel: ResultsViewModel,
-                                      contextualSearchViewModel: ContextualSearchViewModel)
-
-class FolderChildrenViewModelFactory {
-    var services: CoordinatorServices
-
-    init(services: CoordinatorServices) {
-        self.services = services
-    }
-
-    func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
-        let eventBusService = services.eventBusService
-
-        let folderDrillModel = FolderDrillModel(listNode: listNode,
-                                                services: services)
-        let folderDrillViewModel = FolderDrillViewModel(model: folderDrillModel)
-
-        let resultViewModel = ResultsViewModel(with: services)
-        let contextualSearchViewModel =
-            ContextualSearchViewModel(accountService: services.accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
-                                      type: .node, selected: true,
-                                      nodeID: listNode.guid)
-        contextualSearchViewModel.delegate = resultViewModel
-        contextualSearchViewModel.searchChipNode = chipNode
-        resultViewModel.delegate = contextualSearchViewModel
-
-        eventBusService?.register(observer: folderDrillModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: folderDrillModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: folderDrillModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: folderDrillModel,
-                                  for: SyncStatusEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        return (folderDrillViewModel, resultViewModel, contextualSearchViewModel)
-    }
-}
+#warning("Uncomment")
+//typealias FolderChildrenDataSource = (folderDrillDownViewModel: FolderDrillViewModel,
+//                                      resultsViewModel: ResultsViewModel,
+//                                      contextualSearchViewModel: ContextualSearchViewModel)
+//
+//class FolderChildrenViewModelFactory {
+//    var services: CoordinatorServices
+//
+//    init(services: CoordinatorServices) {
+//        self.services = services
+//    }
+//
+//    func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
+//        let eventBusService = services.eventBusService
+//
+//        let folderDrillModel = FolderDrillModel(listNode: listNode,
+//                                                services: services)
+//        let folderDrillViewModel = FolderDrillViewModel(model: folderDrillModel)
+//
+//        let resultViewModel = ResultsViewModel(with: services)
+//        let contextualSearchViewModel =
+//            ContextualSearchViewModel(accountService: services.accountService)
+//        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
+//                                      type: .node, selected: true,
+//                                      nodeID: listNode.guid)
+//        contextualSearchViewModel.delegate = resultViewModel
+//        contextualSearchViewModel.searchChipNode = chipNode
+//        resultViewModel.delegate = contextualSearchViewModel
+//
+//        eventBusService?.register(observer: folderDrillModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//        eventBusService?.register(observer: folderDrillModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: folderDrillModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//        eventBusService?.register(observer: folderDrillModel,
+//                                  for: SyncStatusEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        return (folderDrillViewModel, resultViewModel, contextualSearchViewModel)
+//    }
+//}

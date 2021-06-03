@@ -18,45 +18,46 @@
 
 import Foundation
 
-typealias RecentDataSource = (recentViewModel: RecentViewModel,
-                              resultsViewModel: ResultsViewModel,
-                              globalSearchViewModel: GlobalSearchViewModel)
-
-class RecentViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
-
-    func recentDataSource() -> RecentDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
-
-        let recentViewModel = RecentViewModel(with: coordinatorServices,
-                                            listRequest: nil)
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: recentViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: recentViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: recentViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        return (recentViewModel, resultViewModel, globalSearchViewModel)
-    }
-}
+#warning("Uncomment")
+//typealias RecentDataSource = (recentViewModel: RecentViewModel,
+//                              resultsViewModel: ResultsViewModel,
+//                              globalSearchViewModel: GlobalSearchViewModel)
+//
+//class RecentViewModelFactory {
+//    var coordinatorServices: CoordinatorServices?
+//
+//    func recentDataSource() -> RecentDataSource {
+//        let eventBusService = coordinatorServices?.eventBusService
+//
+//        let recentViewModel = RecentViewModel(with: coordinatorServices,
+//                                            listRequest: nil)
+//        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+//        let globalSearchViewModel =
+//            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
+//        globalSearchViewModel.delegate = resultViewModel
+//        resultViewModel.delegate = globalSearchViewModel
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: recentViewModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file])
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: recentViewModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//        eventBusService?.register(observer: recentViewModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        return (recentViewModel, resultViewModel, globalSearchViewModel)
+//    }
+//}

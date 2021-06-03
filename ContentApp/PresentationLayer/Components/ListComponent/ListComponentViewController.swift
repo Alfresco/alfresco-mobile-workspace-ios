@@ -288,7 +288,7 @@ extension ListComponentViewController: ListElementCollectionViewCellDelegate {
 
 extension ListComponentViewController: PageFetchableDelegate {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath) {
-        pageController?.fetchNextPage(userInfo: nil)
+        pageController?.fetchNextPage()
     }
 }
 
@@ -298,8 +298,15 @@ extension ListComponentViewController: ListPageControllerDelegate {
     func didUpdateList(error: Error?,
                        pagination: Pagination?) {
         guard let model = pageController?.dataSource else { return }
-        let isListEmpty = model.isEmpty()
 
+        // When no error or pagination information is present just perform a data source reload
+        // as this might be a filter action
+        if error == nil && pagination == nil {
+            reloadDataSource()
+            return
+        }
+
+        let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {
             let emptyList = viewModel?.emptyList()
@@ -309,10 +316,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
         }
 
         // If loading the first page or missing pagination scroll to top
-        let scrollToTop = (pagination?.skipCount == 0 || pagination == nil) &&
-            error == nil &&
-            !isListEmpty
-
+        let scrollToTop = pagination?.skipCount == 0 || pagination == nil
         let stopLoadingAndScrollToTop = { [weak self] in
             guard let sSelf = self else { return }
 

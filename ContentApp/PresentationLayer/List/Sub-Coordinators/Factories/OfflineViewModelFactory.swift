@@ -18,50 +18,51 @@
 
 import Foundation
 
-typealias OfflineDataSource = (offlineViewModel: OfflineViewModel,
-                              resultsViewModel: ResultsViewModel,
-                              globalSearchViewModel: GlobalSearchViewModel)
-
-class OfflineViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
-
-    func offlineDataSource() -> OfflineDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
-
-        let offlineViewModel = OfflineViewModel(with: coordinatorServices,
-                                                listRequest: nil)
-        coordinatorServices?.syncService?.delegate = offlineViewModel
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-
-        eventBusService?.register(observer: resultViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: offlineViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        eventBusService?.register(observer: offlineViewModel,
-                                  for: SyncStatusEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        return (offlineViewModel, resultViewModel, globalSearchViewModel)
-    }
-}
+#warning("Uncomment")
+//typealias OfflineDataSource = (offlineViewModel: OfflineViewModel,
+//                              resultsViewModel: ResultsViewModel,
+//                              globalSearchViewModel: GlobalSearchViewModel)
+//
+//class OfflineViewModelFactory {
+//    var coordinatorServices: CoordinatorServices?
+//
+//    func offlineDataSource() -> OfflineDataSource {
+//        let eventBusService = coordinatorServices?.eventBusService
+//
+//        let offlineViewModel = OfflineViewModel(with: coordinatorServices,
+//                                                listRequest: nil)
+//        coordinatorServices?.syncService?.delegate = offlineViewModel
+//        let resultViewModel = ResultsViewModel(with: coordinatorServices)
+//        let globalSearchViewModel =
+//            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
+//        globalSearchViewModel.delegate = resultViewModel
+//        resultViewModel.delegate = globalSearchViewModel
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: offlineViewModel,
+//                                  for: FavouriteEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//        eventBusService?.register(observer: offlineViewModel,
+//                                  for: MoveEvent.self,
+//                                  nodeTypes: [.file, .folder, .site])
+//
+//        eventBusService?.register(observer: resultViewModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//        eventBusService?.register(observer: offlineViewModel,
+//                                  for: OfflineEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        eventBusService?.register(observer: offlineViewModel,
+//                                  for: SyncStatusEvent.self,
+//                                  nodeTypes: [.file, .folder])
+//
+//        return (offlineViewModel, resultViewModel, globalSearchViewModel)
+//    }
+//}

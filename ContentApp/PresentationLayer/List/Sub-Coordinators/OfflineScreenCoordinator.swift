@@ -26,7 +26,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var offlineFolderChildrenScreenCoordinator: OfflineFolderChildrenScreenCoordinator?
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
-    private var offlineDataSource: OfflineDataSource?
+//    private var offlineDataSource: OfflineDataSource?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -67,69 +67,70 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     }
 }
 
-extension OfflineScreenCoordinator: ListItemActionDelegate {
-    func showPreview(for node: ListNode,
-                     from dataSource: ListModelProtocol) {
-        if let navigationViewController = self.navigationViewController {
-            if node.isAFolderType() {
-                if dataSource === offlineDataSource?.resultsViewModel {
-                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                      listNode: node)
-                    coordinator.start()
-                    self.folderDrillDownCoordinator = coordinator
-                } else {
-                    let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                             listNode: node)
-                    coordinator.start()
-                    self.offlineFolderChildrenScreenCoordinator = coordinator
-                }
-            } else if node.isAFileType() {
-                if dataSource === offlineDataSource?.resultsViewModel {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                } else {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node,
-                                                                   excludedActions: [.moveTrash,
-                                                                                     .addFavorite,
-                                                                                     .removeFavorite],
-                                                                   shouldPreviewLatestContent: false)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                }
-            } else {
-                AlfrescoLog.error("Unable to show preview for unknown node type")
-            }
-        }
-    }
-
-    func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListModelProtocol,
-                                    delegate: NodeActionsViewModelDelegate) {
-        if let navigationViewController = self.navigationViewController {
-            let actionMenuViewModel: ActionMenuViewModel
-
-            if dataSource === offlineDataSource?.resultsViewModel {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                              coordinatorServices: coordinatorServices)
-            } else {
-                actionMenuViewModel = ActionMenuViewModel(node: node,
-                                                          coordinatorServices: coordinatorServices,
-                                                          excludedActionTypes: [.moveTrash,
-                                                                                .addFavorite,
-                                                                                .removeFavorite])
-            }
-
-            let nodeActionsModel = NodeActionsViewModel(node: node,
-                                                        delegate: delegate,
-                                                        coordinatorServices: coordinatorServices)
-            let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
-                                                          actionMenuViewModel: actionMenuViewModel,
-                                                          nodeActionViewModel: nodeActionsModel)
-            coordinator.start()
-            actionMenuCoordinator = coordinator
-        }
-    }
-}
+#warning("Uncomment")
+//extension OfflineScreenCoordinator: ListItemActionDelegate {
+//    func showPreview(for node: ListNode,
+//                     from dataSource: ListModelProtocol) {
+//        if let navigationViewController = self.navigationViewController {
+//            if node.isAFolderType() {
+//                if dataSource === offlineDataSource?.resultsViewModel {
+//                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
+//                                                                      listNode: node)
+//                    coordinator.start()
+//                    self.folderDrillDownCoordinator = coordinator
+//                } else {
+//                    let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
+//                                                                             listNode: node)
+//                    coordinator.start()
+//                    self.offlineFolderChildrenScreenCoordinator = coordinator
+//                }
+//            } else if node.isAFileType() {
+//                if dataSource === offlineDataSource?.resultsViewModel {
+//                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+//                                                                   listNode: node)
+//                    coordinator.start()
+//                    self.filePreviewCoordinator = coordinator
+//                } else {
+//                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+//                                                                   listNode: node,
+//                                                                   excludedActions: [.moveTrash,
+//                                                                                     .addFavorite,
+//                                                                                     .removeFavorite],
+//                                                                   shouldPreviewLatestContent: false)
+//                    coordinator.start()
+//                    self.filePreviewCoordinator = coordinator
+//                }
+//            } else {
+//                AlfrescoLog.error("Unable to show preview for unknown node type")
+//            }
+//        }
+//    }
+//
+//    func showActionSheetForListItem(for node: ListNode,
+//                                    from dataSource: ListModelProtocol,
+//                                    delegate: NodeActionsViewModelDelegate) {
+//        if let navigationViewController = self.navigationViewController {
+//            let actionMenuViewModel: ActionMenuViewModel
+//
+//            if dataSource === offlineDataSource?.resultsViewModel {
+//                actionMenuViewModel = ActionMenuViewModel(node: node,
+//                                                              coordinatorServices: coordinatorServices)
+//            } else {
+//                actionMenuViewModel = ActionMenuViewModel(node: node,
+//                                                          coordinatorServices: coordinatorServices,
+//                                                          excludedActionTypes: [.moveTrash,
+//                                                                                .addFavorite,
+//                                                                                .removeFavorite])
+//            }
+//
+//            let nodeActionsModel = NodeActionsViewModel(node: node,
+//                                                        delegate: delegate,
+//                                                        coordinatorServices: coordinatorServices)
+//            let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
+//                                                          actionMenuViewModel: actionMenuViewModel,
+//                                                          nodeActionViewModel: nodeActionsModel)
+//            coordinator.start()
+//            actionMenuCoordinator = coordinator
+//        }
+//    }
+//}

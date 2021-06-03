@@ -40,13 +40,20 @@ class BrowseScreenCoordinator: PresentingCoordinator,
 
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
+
+        let searchViewModel = browseDataSource.globalSearchViewModel
+        let browseViewModel = browseDataSource.browseViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+        viewController.searchPageController = searchPageController
+
+        viewController.listViewModel = browseViewModel
+        viewController.searchViewModel = searchViewModel
+
         viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
-        viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.listViewModel = browseDataSource.browseViewModel
-        viewController.searchViewModel = browseDataSource.globalSearchViewModel
-        viewController.resultViewModel = browseDataSource.resultsViewModel
+        viewController.browseScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         let indexForNavigationController = self.presenter.viewControllers?.endIndex ?? 0

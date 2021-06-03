@@ -30,25 +30,26 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let favoritesViewModelFactory = FavoritesViewModelFactory()
-        favoritesViewModelFactory.coordinatorServices = coordinatorServices
-
-        let favoritesDataSource = favoritesViewModelFactory.favoritesDataSource()
-
-        let viewController = FavoritesViewController()
-        viewController.title = LocalizationConstants.ScreenTitles.favorites
-        viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
-        viewController.tabBarScreenDelegate = presenter
-        viewController.folderAndFilesListViewModel = favoritesDataSource.foldersAndFilesViewModel
-        viewController.librariesListViewModel = favoritesDataSource.librariesViewModel
-        viewController.searchViewModel = favoritesDataSource.globalSearchViewModel
-        viewController.resultViewModel = favoritesDataSource.resultsViewModel
-
-        let navigationViewController = UINavigationController(rootViewController: viewController)
-        presenter.viewControllers?.append(navigationViewController)
-        self.navigationViewController = navigationViewController
-        favoritesViewController = viewController
+        #warning("Uncomment")
+//        let favoritesViewModelFactory = FavoritesViewModelFactory()
+//        favoritesViewModelFactory.coordinatorServices = coordinatorServices
+//
+//        let favoritesDataSource = favoritesViewModelFactory.favoritesDataSource()
+//
+//        let viewController = FavoritesViewController()
+//        viewController.title = LocalizationConstants.ScreenTitles.favorites
+//        viewController.coordinatorServices = coordinatorServices
+//        viewController.listItemActionDelegate = self
+//        viewController.tabBarScreenDelegate = presenter
+//        viewController.folderAndFilesListViewModel = favoritesDataSource.foldersAndFilesViewModel
+//        viewController.librariesListViewModel = favoritesDataSource.librariesViewModel
+//        viewController.searchViewModel = favoritesDataSource.globalSearchViewModel
+//        viewController.resultViewModel = favoritesDataSource.resultsViewModel
+//
+//        let navigationViewController = UINavigationController(rootViewController: viewController)
+//        presenter.viewControllers?.append(navigationViewController)
+//        self.navigationViewController = navigationViewController
+//        favoritesViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {

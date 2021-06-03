@@ -41,6 +41,7 @@ protocol ListModelProtocol: AnyObject {
     var rawListNodes: [ListNode] { get set}
 
     func isEmpty() -> Bool
+    func clear()
     func numberOfItems(in section: Int) -> Int
 
     func listNodes() -> [ListNode]
@@ -49,12 +50,15 @@ protocol ListModelProtocol: AnyObject {
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus
 
     func fetchItems(with requestPagination: RequestPagination,
-                    userInfo: Any?,
                     completionHandler: @escaping PagedResponseCompletionHandler)
 }
 
 #warning("Rename to ListComponentModelProtocol after refactor")
 extension ListModelProtocol {
+    func clear() {
+        rawListNodes = []
+    }
+
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
         return listNode(for: indexPath).isMarkedOffline() ? .markedForOffline : .undefined
     }

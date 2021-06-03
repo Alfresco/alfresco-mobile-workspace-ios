@@ -19,37 +19,39 @@
 import UIKit
 
 class SystemSearchViewController: SystemThemableViewController {
-    var searchViewModel: SearchViewModelProtocol?
-    var resultViewModel: ResultsViewModel?
-    weak var listItemActionDelegate: ListItemActionDelegate?
-    var tagSearchController: UISearchController?
+    private var resultsViewController: ResultViewController?
+    private var searchController: UISearchController?
+    private let searchButtonAspectRatio: CGFloat = 30.0
 
-    let searchButtonAspectRatio: CGFloat = 30.0
+    var searchViewModel: SearchViewModel?
+    var searchPageController: ListPageController?
+
+    weak var listItemActionDelegate: ListItemActionDelegate?
 
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationBar()
-        tagSearchController = createSearchController()
+        searchController = createSearchController()
 
         if searchViewModel?.shouldDisplaySearchBar() ?? false {
-            navigationItem.searchController = tagSearchController
+            navigationItem.searchController = searchController
         }
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
             addSearchButton()
         }
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        rvc.viewWillTransition(to: size, with: coordinator)
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        resultsViewController?.viewWillTransition(to: size, with: coordinator)
     }
 
     // MARK: - Public Methods
 
     func cancelSearchMode() {
-        searchViewModel?.lastSearchedString = nil
+        searchViewModel?.searchModel.searchString = nil
         self.navigationItem.searchController?.searchBar.text = ""
         self.navigationItem.searchController?.isActive = false
     }
@@ -70,12 +72,12 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func searchButtonTapped() {
-        navigationItem.searchController = tagSearchController
-        tagSearchController?.searchBar.alpha = 0.0
+        navigationItem.searchController = searchController
+        searchController?.searchBar.alpha = 0.0
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.tagSearchController?.isActive = true
-            sSelf.tagSearchController?.searchBar.becomeFirstResponder()
+            sSelf.searchController?.isActive = true
+            sSelf.searchController?.searchBar.becomeFirstResponder()
         }
     }
 
@@ -102,12 +104,17 @@ class SystemSearchViewController: SystemThemableViewController {
     private func addSearchButton() {
         let searchButton = UIButton(type: .custom)
         searchButton.accessibilityIdentifier = "searchButton"
-        searchButton.frame = CGRect(x: 0.0, y: 0.0, width: searchButtonAspectRatio, height: searchButtonAspectRatio)
+        searchButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: searchButtonAspectRatio,
+                                    height: searchButtonAspectRatio)
         searchButton.imageView?.contentMode = .scaleAspectFill
         searchButton.layer.cornerRadius = searchButtonAspectRatio / 2
         searchButton.layer.masksToBounds = true
-        searchButton.addTarget(self, action: #selector(searchButtonTapped), for: UIControl.Event.touchUpInside)
-        searchButton.setImage(UIImage(named: "ic-search"), for: .normal)
+        searchButton.addTarget(self,
+                               action: #selector(searchButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        searchButton.setImage(UIImage(named: "ic-search"),
+                              for: .normal)
 
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
@@ -121,11 +128,14 @@ class SystemSearchViewController: SystemThemableViewController {
 
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
+        rvc.pageController = searchPageController
         rvc.coordinatorServices = coordinatorServices
         rvc.resultScreenDelegate = self
-        rvc.resultsViewModel = resultViewModel
+        rvc.resultsViewModel = searchViewModel
         rvc.listItemActionDelegate = self.listItemActionDelegate
-        let searchController = UISearchController(searchResultsController: rvc)
+        resultsViewController = rvc
+
+        let searchController = UISearchController(searchResultsController: resultsViewController)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
@@ -134,6 +144,7 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.smartQuotesType = .no
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
+
         return searchController
     }
 }
@@ -142,34 +153,33 @@ class SystemSearchViewController: SystemThemableViewController {
 
 extension SystemSearchViewController: ResultViewControllerDelegate {
     func chipTapped(chip: SearchChipItem) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
+        guard let searchViewModel = self.searchViewModel else { return }
 
-        rvc.startLoading()
-        rvc.reloadChips(searchViewModel.searchChipTapped(tappedChip: chip))
-        searchViewModel.performLiveSearch(for: navigationItem.searchController?.searchBar.text)
+        resultsViewController?.startLoading()
+        resultsViewController?.reloadChips(searchViewModel.searchModel.searchChipIndexes(for: chip))
+
+        searchViewModel.searchModel.searchString = navigationItem.searchController?.searchBar.text
+        searchViewModel.searchModel.searchType = .simple
+
+        resultsViewController?.pageController?.refreshList()
     }
 
     func recentSearchTapped(string: String) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchBar = navigationItem.searchController?.searchBar,
+        guard let searchBar = navigationItem.searchController?.searchBar,
             let searchViewModel = self.searchViewModel else { return }
 
-        rvc.startLoading()
+        resultsViewController?.startLoading()
         searchBar.text = string
-        searchViewModel.performLiveSearch(for: string)
+
+        searchViewModel.searchModel.searchString = string
+        searchViewModel.searchModel.searchType = .simple
+
+        resultsViewController?.pageController?.refreshList()
     }
 
     func elementListTapped(elementList: ListNode) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchBar = navigationItem.searchController?.searchBar else { return }
-        rvc.recentSearchesViewModel.save(recentSearch: searchBar.text)
-    }
-
-    func fetchNextSearchResultsPage(for index: IndexPath) {
-        guard let searchBar = navigationItem.searchController?.searchBar, let searchViewModel = self.searchViewModel else { return }
-        let searchString = searchBar.text
-        searchViewModel.fetchNextSearchResultsPage(for: searchString, index: index)
+        guard let searchBar = navigationItem.searchController?.searchBar else { return }
+        resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
     }
 }
 
@@ -177,11 +187,10 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
 
 extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
-        guard let rvc = searchController.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
-        rvc.updateChips(searchViewModel.defaultSearchChips())
-        rvc.updateRecentSearches()
-        rvc.clearDataSource()
+        guard let searchViewModel = self.searchViewModel else { return }
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips())
+        resultsViewController?.updateRecentSearches()
+        resultsViewController?.clearDataSource()
 
         UIView.animate(withDuration: 0.2) {
             searchController.searchBar.alpha = 1.0
@@ -197,9 +206,8 @@ extension SystemSearchViewController: UISearchControllerDelegate {
                 sSelf.navigationController?.view.layoutIfNeeded()
             }
         }
-        guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
-        rvc.clearDataSource()
-        searchViewModel?.lastSearchedString = nil
+        resultsViewController?.clearDataSource()
+        searchViewModel?.searchModel.searchString = nil
     }
 }
 
@@ -207,28 +215,34 @@ extension SystemSearchViewController: UISearchControllerDelegate {
 
 extension SystemSearchViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            let searchViewModel = self.searchViewModel else { return }
+        guard let searchViewModel = self.searchViewModel else { return }
 
-        searchViewModel.performSearch(for: searchBar.text)
-        rvc.recentSearchesViewModel.save(recentSearch: searchBar.text)
-        rvc.startLoading()
+        searchViewModel.searchModel.searchString = searchBar.text
+        searchViewModel.searchModel.searchType = .simple
+
+        resultsViewController?.pageController?.refreshList()
+        resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
+        resultsViewController?.startLoading()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController else { return }
-        rvc.view.isHidden = false
-        searchViewModel?.lastSearchedString = nil
+        resultsViewController?.view.isHidden = false
+        searchViewModel?.searchModel.searchString = nil
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        guard let rvc = navigationItem.searchController?.searchResultsController as? ResultViewController,
-            var searchViewModel = self.searchViewModel else { return }
-        searchViewModel.lastSearchedString = searchText
-        searchViewModel.performLiveSearch(for: searchText)
-        rvc.updateRecentSearches()
+        guard let searchViewModel = self.searchViewModel else { return }
         if searchText.canPerformLiveSearch() {
-            rvc.startLoading()
+            resultsViewController?.startLoading()
+
+            searchViewModel.searchModel.searchString = searchText
+            searchViewModel.searchModel.searchType = .live
+
+            resultsViewController?.pageController?.refreshList()
+            resultsViewController?.updateRecentSearches()
+        } else {
+            resultsViewController?.stopLoading()
+            resultsViewController?.clearDataSource()
         }
     }
 }
