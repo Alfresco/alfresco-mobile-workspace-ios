@@ -19,7 +19,7 @@
 import Foundation
 
 typealias BrowseDataSource = (browseViewModel: BrowseViewModel,
-                              globalSearchViewModel: GlobalSearchViewModel)
+                              globalSearchViewModel: SearchViewModel)
 
 class BrowseViewModelFactory {
     private let services: CoordinatorServices

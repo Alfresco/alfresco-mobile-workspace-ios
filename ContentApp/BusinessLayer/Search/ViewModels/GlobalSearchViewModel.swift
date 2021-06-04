@@ -19,24 +19,16 @@
 import Foundation
 
 class GlobalSearchViewModel: SearchViewModel {
-    private var displaySearchBar = true
-    private var displaySearchButton = false
-
-    // MARK: - Public methods
-
-    override func emptyList() -> EmptyListProtocol {
-        return EmptySearch()
-    }
 
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return searchModel.isNodePathEnabled()
     }
 
     override func shouldDisplaySearchBar() -> Bool {
-        return displaySearchBar
+        return true
     }
 
     override func shouldDisplaySearchButton() -> Bool {
-        return displaySearchButton
+        return false
     }
 }

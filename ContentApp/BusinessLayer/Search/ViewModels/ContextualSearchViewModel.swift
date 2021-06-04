@@ -17,157 +17,18 @@
 //
 
 import Foundation
-import AlfrescoContent
 
-#warning("Uncomment")
-//class ContextualSearchViewModel: PageFetchingViewModel, SearchViewModelProtocol {
-//    var accountService: AccountService?
-//    var searchChips: [SearchChipItem] = []
-//    var searchChipNode: SearchChipItem?
-//
-//    weak var delegate: SearchViewModelDelegate?
-//
-//    private var liveSearchTimer: Timer?
-//    private let searchTimerBuffer = 0.7
-//    var lastSearchedString: String?
-//
-//    // MARK: - Init
-//
-//    init(accountService: AccountService?) {
-//        super.init()
-//        self.accountService = accountService
-//    }
-//
-//    // MARK: - Public methods
-//
-//    func shouldDisplaySearchBar() -> Bool {
-//        return false
-//    }
-//
-//    func shouldDisplaySearchButton() -> Bool {
-//        return true
-//    }
-//
-//    func defaultSearchChips() -> [SearchChipItem] {
-//        searchChips = []
-//        if let searchChipNode = self.searchChipNode {
-//            searchChipNode.selected = true
-//            searchChips.append(searchChipNode)
-//        }
-//        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFiles, type: .file))
-//        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFolders, type: .folder))
-//
-//        return searchChips
-//    }
-//
-//    func searchChipTapped(tappedChip: SearchChipItem) -> [Int] {
-//        return []
-//    }
-//
-//    func performSearch(for string: String?, paginationRequest: RequestPagination?) {
-//        lastSearchedString = string
-//        if paginationRequest == nil {
-//            currentPage = 1
-//            results = []
-//        }
-//
-//        liveSearchTimer?.invalidate()
-//        guard let searchString = string?.trimmingCharacters(in: .whitespacesAndNewlines),
-//              !searchString.isEmpty else {
-//            self.delegate?.handle(results: [])
-//            return
-//        }
-//        pageFetchingGroup.enter()
-//        performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
-//    }
-//
-//    func performLiveSearch(for string: String?) {
-//        liveSearchTimer?.invalidate()
-//        guard let searchString = string, searchString.canPerformLiveSearch() else {
-//            self.delegate?.handle(results: [])
-//            return
-//        }
-//        liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer, repeats: false, block: { [weak self] (timer) in
-//            timer.invalidate()
-//            guard let sSelf = self else { return }
-//            sSelf.performSearch(for: searchString)
-//        })
-//    }
-//
-//    func fetchNextSearchResultsPage(for string: String?, index: IndexPath) {
-//        fetchNextListPage(index: index, userInfo: string ?? "")
-//    }
-//
-//    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
-//        if let searchTerm = userInfo as? String {
-//            self.performSearch(for: searchTerm, paginationRequest: requestPagination)
-//        }
-//    }
-//
-//    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
-//        updateResults(results: results, pagination: pagination, error: error)
-//        self.delegate?.handle(results: results, pagination: pagination, error: error)
-//    }
-//
-//    // MARK: Private Methods
-//
-//    private func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
-//        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-//            guard let sSelf = self else { return }
-//            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-//            let searchChipsState = sSelf.searchChipsState()
-//            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
-//                                                                         chipFilters: sSelf.searchChips,
-//                                                                         pagination: paginationRequest)
-//            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
-//
-//                var listNodes: [ListNode] = []
-//                if let entries = result?.list?.entries {
-//                    listNodes = ResultsNodeMapper.map(entries)
-//                }
-//
-//                let paginatedResponse = PaginatedResponse(results: listNodes,
-//                                                          error: error,
-//                                                          requestPagination: paginationRequest,
-//                                                          responsePagination: result?.list?.pagination)
-//
-//                if sSelf.changedSearchChipsState(with: searchChipsState) == false {
-//                    sSelf.handlePaginatedResponse(response: paginatedResponse)
-//                } else {
-//                    sSelf.pageFetchingGroup.leave()
-//                }
-//            }
-//        })
-//    }
-//
-//    private func searchChipsState() -> String {
-//        var state = ""
-//        for chip in searchChips where chip.selected == true {
-//            state += chip.type.rawValue
-//        }
-//        return state
-//    }
-//
-//    private func changedSearchChipsState(with oldState: String) -> Bool {
-//        // Mixed items displayed in search results list when server is responding slow and user changes the filter
-//        let state = self.searchChipsState()
-//        if oldState == state {
-//            return false
-//        }
-//        return true
-//    }
-//}
-//
-//extension ContextualSearchViewModel: ResultsViewModelDelegate {
-//    func refreshResults() {
-//        performSearch(for: lastSearchedString, paginationRequest: nil)
-//    }
-//
-//    func isNodePathEnabled() -> Bool {
-//        for chip in searchChips where chip.selected && chip.type == .library {
-//            return false
-//        }
-//
-//        return true
-//    }
-//}
+class ContextualSearchViewModel: SearchViewModel {
+
+    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+        return searchModel.isNodePathEnabled()
+    }
+
+    override func shouldDisplaySearchBar() -> Bool {
+        return false
+    }
+
+    override func shouldDisplaySearchButton() -> Bool {
+        return true
+    }
+}

@@ -26,6 +26,10 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
 
+    override func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
+    }
+
     func shouldDisplaySearchBar() -> Bool {
         return true
     }
