@@ -173,6 +173,19 @@ class SessionPreview: UIView {
             UIPinchGestureRecognizer(target: self,
                                      action: #selector(handleZoomPinch(recognizer:)))
         addGestureRecognizer(zoomPinchGesture)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didRotate),
+                                               name: UIDevice.orientationDidChangeNotification,
+                                               object: nil)
+    }
+    
+    @objc private func didRotate() {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            previewLayer?.connection?.videoOrientation = UIDevice.current.orientation.cameraOrientation
+        } else {
+            previewLayer?.connection?.videoOrientation = .portrait
+        }
     }
     
     private func addFocusView(at point: CGPoint) {
