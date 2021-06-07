@@ -32,21 +32,29 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     }
 
     override func start() {
-        #warning("Uncomment")
-//        let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
-//        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
-//
-//        let viewController = ListViewController()
-//        viewController.title = listNode.title
-//
-//        viewController.viewModel = folderChildrenDataSource.folderDrillDownViewModel
-//        viewController.searchViewModel = folderChildrenDataSource.contextualSearchViewModel
-//        viewController.resultViewModel = folderChildrenDataSource.resultsViewModel
-//
-//        viewController.coordinatorServices = coordinatorServices
-//        viewController.listItemActionDelegate = self
-//
-//        presenter.pushViewController(viewController, animated: true)
+        let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
+        let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
+
+        let viewController = ListViewController()
+        viewController.title = listNode.title
+
+        let viewModel = folderChildrenDataSource.folderDrillDownViewModel
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        let searchViewModel = folderChildrenDataSource.contextualSearchViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.searchPageController = searchPageController
+        viewController.viewModel = viewModel
+        viewController.searchViewModel = searchViewModel
+
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listItemActionDelegate = self
+
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

@@ -33,6 +33,17 @@ class TopLevelBrowseViewModelFactory {
         let globalSearchViewModel = self.globalSearchViewModel(from: browseNode.type,
                                                                with: browseNode.title)
 
+        let eventBusService = services.eventBusService
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+
         return (topLevelBrowseViewModel, globalSearchViewModel)
     }
 

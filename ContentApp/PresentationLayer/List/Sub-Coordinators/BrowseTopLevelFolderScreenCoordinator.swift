@@ -49,7 +49,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         viewController.pageController = pageController
         viewController.searchPageController = searchPageController
         viewController.viewModel = viewModel
-        viewController.searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
+        viewController.searchViewModel = searchViewModel
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
