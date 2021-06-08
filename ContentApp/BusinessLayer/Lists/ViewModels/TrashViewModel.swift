@@ -20,9 +20,6 @@ import Foundation
 import AlfrescoContent
 
 class TrashViewModel: ListComponentViewModel {
-    override func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
-    }
 
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return true

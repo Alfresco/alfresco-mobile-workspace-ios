@@ -118,7 +118,7 @@ class TopLevelBrowseViewModelFactory {
         let eventBusService = services.eventBusService
 
         let model = MyLibrariesModel(services: services)
-        let viewModel = MyLibrariesViewModel(model: model)
+        let viewModel = ListComponentViewModel(model: model)
 
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
@@ -133,7 +133,7 @@ class TopLevelBrowseViewModelFactory {
         let eventBusService = services.eventBusService
 
         let model = SharedModel(services: services)
-        let viewModel = SharedViewModel(model: model)
+        let viewModel = ListComponentViewModel(model: model)
 
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,

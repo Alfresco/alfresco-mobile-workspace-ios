@@ -44,8 +44,6 @@ class FolderChildrenViewModelFactory {
         let contextualSearchViewModel =
             ContextualSearchViewModel(model: searchModel)
 
-        
-
         eventBusService?.register(observer: folderDrillModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])

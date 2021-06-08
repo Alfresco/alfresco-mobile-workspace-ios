@@ -101,6 +101,31 @@ class FolderDrillModel: ListModelProtocol {
         }
     }
 
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        let node = listNode(for: indexPath)
+        if node.isAFileType() && node.markedFor == .upload {
+            let nodeSyncStatus = node.syncStatus
+            var entryListStatus: ListEntrySyncStatus
+
+            switch nodeSyncStatus {
+            case .pending:
+                entryListStatus = .pending
+            case .error:
+                entryListStatus = .error
+            case .inProgress:
+                entryListStatus = .inProgress
+            case .synced:
+                entryListStatus = .uploaded
+            default:
+                entryListStatus = .undefined
+            }
+
+            return entryListStatus
+        }
+
+        return node.isMarkedOffline() ? .markedForOffline : .undefined
+    }
+
     // MARK: - Private interface
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {

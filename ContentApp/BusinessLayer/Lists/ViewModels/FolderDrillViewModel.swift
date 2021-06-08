@@ -22,10 +22,6 @@ import AlfrescoAuth
 import AlfrescoContent
 
 class FolderDrillViewModel: ListComponentViewModel {
-    override func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
-    }
-    
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         if model.listNode(for: indexPath).markedFor == .upload {
             return true
@@ -37,38 +33,5 @@ class FolderDrillViewModel: ListComponentViewModel {
         guard let model = model as? FolderDrillModel,
               let listNode = model.listNode else { return true }
         return listNode.hasPermissionToCreate()
-    }
-    
-    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    override func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let node = model.listNode(for: indexPath)
-        if node.isAFileType() && node.markedFor == .upload {
-            let nodeSyncStatus = node.syncStatus
-            var entryListStatus: ListEntrySyncStatus
-
-            switch nodeSyncStatus {
-            case .pending:
-                entryListStatus = .pending
-            case .error:
-                entryListStatus = .error
-            case .inProgress:
-                entryListStatus = .inProgress
-            case .synced:
-                entryListStatus = .uploaded
-            default:
-                entryListStatus = .undefined
-            }
-
-            return entryListStatus
-        }
-
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
     }
 }

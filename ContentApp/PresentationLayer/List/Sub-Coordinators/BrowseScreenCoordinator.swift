@@ -56,13 +56,7 @@ class BrowseScreenCoordinator: PresentingCoordinator,
         viewController.listItemActionDelegate = self
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
-        let indexForNavigationController = self.presenter.viewControllers?.endIndex ?? 0
-        if indexForNavigationController == 0 {
-            self.presenter.viewControllers = [navigationViewController]
-        } else {
-            self.presenter.viewControllers?.insert(navigationViewController, at: indexForNavigationController)
-        }
-
+        presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         browseViewController = viewController
     }
