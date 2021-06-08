@@ -41,6 +41,7 @@ protocol ListPageControllerProtocol: AnyObject {
 protocol ListPageControllerDelegate: AnyObject {
     func didUpdateList(error: Error?,
                        pagination: Pagination?)
+    func forceDisplayRefresh(for indexPath: IndexPath)
 }
 
 class ListPageController: ListPageControllerProtocol {
@@ -184,6 +185,10 @@ class ListPageController: ListPageControllerProtocol {
 }
 
 extension ListPageController: ListModelDelegate {
+    func forceDisplayRefresh(for indexPath: IndexPath) {
+        delegate?.forceDisplayRefresh(for: indexPath)
+    }
+
     func needsDisplayStateRefresh() {
         let pagination = Pagination(count: Int64(dataSource.numberOfItems(in: 0)),
                                     hasMoreItems: hasMoreItems,

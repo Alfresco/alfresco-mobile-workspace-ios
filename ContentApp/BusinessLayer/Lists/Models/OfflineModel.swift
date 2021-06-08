@@ -142,21 +142,21 @@ extension OfflineModel: EventObservable {
     private func handleOffline(event: OfflineEvent) {
         let eventNode = event.node
         switch event.eventType {
-        case .marked:
-            delegate?.needsDataSourceReload()
         case .removed:
             if let indexOfNode = rawListNodes.firstIndex(of: eventNode) {
                 rawListNodes.remove(at: indexOfNode)
-                delegate?.needsDisplayStateRefresh()
             }
+        default: break
         }
+
+        delegate?.needsDataSourceReload()
     }
 
     private func handleSyncStatus(event: SyncStatusEvent) {
         let eventNode = event.node
         if let indexOfNode = rawListNodes.firstIndex(of: eventNode) {
             rawListNodes[indexOfNode] = eventNode
-            delegate?.needsDisplayStateRefresh()
+            delegate?.needsDataSourceReload()
         }
     }
 }

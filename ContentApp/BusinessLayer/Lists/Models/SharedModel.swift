@@ -123,10 +123,13 @@ extension SharedModel: EventObservable {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
 
-        if let indexOfOfflineNode = rawListNodes.firstIndex(of: node) {
-            rawListNodes.remove(at: indexOfOfflineNode)
-            rawListNodes.insert(node, at: indexOfOfflineNode)
-            delegate?.needsDisplayStateRefresh()
+        if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
+            listNode.guid == node.guid
+        }) {
+            rawListNodes[indexOfOfflineNode] = node
+
+            let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
+            delegate?.forceDisplayRefresh(for: indexPath)
         }
     }
 }

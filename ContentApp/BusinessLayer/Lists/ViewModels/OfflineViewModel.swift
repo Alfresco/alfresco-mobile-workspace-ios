@@ -91,10 +91,8 @@ extension OfflineViewModel: SyncServiceDelegate {
     func syncDidFinished() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-
             sSelf.shouldEnableListButton = true
             sSelf.delegate?.didUpdateListActionState(enable: true)
-            sSelf.model.delegate?.needsDisplayStateRefresh()
         }
     }
 }

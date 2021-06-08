@@ -332,6 +332,13 @@ extension ListComponentViewController: ListPageControllerDelegate {
             stopLoadingAndScrollToTop()
         }
     }
+
+    func forceDisplayRefresh(for indexPath: IndexPath) {
+        guard let model = pageController?.dataSource else { return }
+        if model.listNodes().indices.contains(indexPath.row) {
+            collectionView.reloadItems(at: [indexPath])
+        }
+    }
 }
 
 // MARK: - ListComponentViewModelDelegate

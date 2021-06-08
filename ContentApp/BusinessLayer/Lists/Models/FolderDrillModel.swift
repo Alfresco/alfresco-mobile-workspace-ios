@@ -245,10 +245,13 @@ extension FolderDrillModel: EventObservable {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
 
-        if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results.remove(at: indexOfOfflineNode)
-            results.insert(node, at: indexOfOfflineNode)
-            delegate?.needsDisplayStateRefresh()
+        if let indexOfOfflineNode = results.firstIndex(where: { listNode in
+            listNode.guid == node.guid
+        }) {
+            rawListNodes[indexOfOfflineNode] = node
+
+            let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
+            delegate?.forceDisplayRefresh(for: indexPath)
         }
     }
 
@@ -257,6 +260,7 @@ extension FolderDrillModel: EventObservable {
         guard eventNode.markedFor == .upload else { return }
         for (index, listNode) in results.enumerated() where listNode.id == eventNode.id {
             results[index] = eventNode
+            delegate?.needsDisplayStateRefresh()
             return
         }
     }
