@@ -22,7 +22,7 @@ protocol CameraViewModelDelegate: AnyObject {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
 }
 
-class CameraViewModel {
+class CameraViewModel: NSObject {
     weak var delegate: CameraViewModelDelegate?
     var capturedAsset: CapturedAsset?
     var folderToSavePath: String
@@ -32,11 +32,13 @@ class CameraViewModel {
     }
     
     // MARK: - Public Methods
-    
+
     func deletePreviousCapture() {
         capturedAsset?.deleteAsset()
     }
 }
+
+// MARK: - CaptureSession Delegate
 
 extension CameraViewModel: CaptureSessionDelegate {
     func captured(asset: CapturedAsset?, error: Error?) {

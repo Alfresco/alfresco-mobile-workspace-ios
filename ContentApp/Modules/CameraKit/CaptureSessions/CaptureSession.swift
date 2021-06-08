@@ -39,7 +39,7 @@ class CaptureSession: NSObject {
     var mediaFilesFolderPath: String?
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
-    var orientationLast = UIDevice.current.orientation
+    var lastOrientation = UIDevice.current.orientation
 
     private var motionManager: CMMotionManager?
     
@@ -92,23 +92,23 @@ class CaptureSession: NSObject {
     }
     
     func outputAccelertionData(_ acceleration: CMAcceleration) {
-        var orientationNew: UIDeviceOrientation
+        var newOrientation: UIDeviceOrientation
         if acceleration.x >= 0.75 {
-            orientationNew = .landscapeLeft
+            newOrientation = .landscapeLeft
         } else if acceleration.x <= -0.75 {
-            orientationNew = .landscapeRight
+            newOrientation = .landscapeRight
         } else if acceleration.y <= -0.75 {
-            orientationNew = .portrait
+            newOrientation = .portrait
         } else if acceleration.y >= 0.75 {
-            orientationNew = .portraitUpsideDown
+            newOrientation = .portraitUpsideDown
         } else {
             return
         }
-        if orientationNew == orientationLast {
+        if newOrientation == lastOrientation {
             return
         }
-        orientationLast = orientationNew
-        uiDelegate?.didChange(orientation: orientationLast.imageOrientation)
+        lastOrientation = newOrientation
+        uiDelegate?.didChange(orientation: lastOrientation.imageOrientation)
     }
     
     // MARK: - Static Public Methods

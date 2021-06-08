@@ -21,9 +21,13 @@ import Foundation
 class PreviewViewModel {
     let capturedAsset: CapturedAsset
     
+    // MARK: - Init
+    
     init(capturedAsset: CapturedAsset) {
         self.capturedAsset = capturedAsset
     }
+    
+    // MARK: - Public Methods
     
     func updateMetadata(filename: String, description: String?) {
         capturedAsset.fileName = filename

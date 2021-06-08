@@ -18,14 +18,12 @@
 
 import UIKit
 import AVFoundation
-import CoreLocation
 
 class CameraScreenCoordinator: NSObject, Coordinator {
     private let presenter: UINavigationController
     private var navigationViewController: UINavigationController?
     private let parentListNode: ListNode
     private var mediaFilesFolderPath: String?
-    private var locationManager: CLLocationManager?
     
     init(with presenter: UINavigationController,
          parentListNode: ListNode) {
@@ -48,7 +46,7 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         
         self.navigationViewController = navigationViewController
         
-        requestAuhtorizationForLocatioInUse()
+        coordinatorServices.locationService?.requestAuhtorizationForLocatioInUse()
         
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             if granted {
@@ -85,27 +83,34 @@ class CameraScreenCoordinator: NSObject, Coordinator {
             completion(false)
         }
     }
-    
-    private func requestAuhtorizationForLocatioInUse() {
-        locationManager = CLLocationManager()
-        locationManager?.requestWhenInUseAuthorization()
-    }
 }
 
 // MARK: - CameraKitCapture Delegate
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
-        if let mediaPath = mediaFilesFolderPath,
-           let capturedAsset = capturedAssets.first {
+        
+        coordinatorServices.locationService?.stopUpdatingLocation()
+        
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,
+              let mediaPath = mediaFilesFolderPath else { return }
+        
+        if !capturedAssets.isEmpty {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                guard let sSelf = self else { return }
+                Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
+                                 type: .approve,
+                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                                 finish: nil)
+            })
+        }
+        
+        if let capturedAsset = capturedAssets.first {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
-            let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-
             let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
                 "/" + assetURL.lastPathComponent
             _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
-            _ = DiskService.delete(itemAtPath: mediaPath)
-
+            
             let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
                                                 nodeName: capturedAsset.fileName,
                                                 extensionType: capturedAsset.type.ext,
@@ -114,9 +119,10 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
                                                 localFilenamePath: assetURL.lastPathComponent)
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
-
-            triggerUpload()
         }
+
+        _ = DiskService.delete(itemAtPath: mediaPath)
+        triggerUpload()
     }
 
     func triggerUpload() {
@@ -128,15 +134,5 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             UserProfile.allowSyncOverCellularData == false {
             syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
         }
-    }
-    
-    func willStartReview() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
-            guard let sSelf = self else { return }
-            Snackbar.display(with: LocalizationConstants.Approved.uploadPhoto,
-                             type: .approve,
-                             presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
-                             finish: nil)
-        })
     }
 }

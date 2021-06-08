@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>If allowed, your location will be added to the medata of captured photos.</string>
+	<string>If allowed, your location will be added to the metadata of captured photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Mobile Workspace requires library access to upload photos from your library.</string>
 	<key>NSCameraUsageDescription</key>

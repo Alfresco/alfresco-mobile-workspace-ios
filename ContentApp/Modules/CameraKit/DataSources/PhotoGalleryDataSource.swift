@@ -101,7 +101,6 @@ class PhotoGalleryDataSource {
         for (index, select) in selectedIndexAssets.enumerated() where select {
             fetchGroup.enter()
             let galleryAsset = asset(for: IndexPath(row: index, section: 0))
-            delegate?.willStartReview()
             fetchPath(for: galleryAsset) { [weak self] assetPath in
                 guard let sSelf = self else { return }
 

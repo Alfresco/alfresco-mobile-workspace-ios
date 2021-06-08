@@ -38,6 +38,7 @@ class ApplicationBootstrap {
         self.repository.register(service: applicationRouter())
         self.repository.register(service: operationQueueService())
         self.repository.register(service: databaseService())
+        self.repository.register(service: locationService())
 
         let accountService = self.accountService(with: connectivityService)
         self.repository.register(service: accountService)
@@ -52,6 +53,7 @@ class ApplicationBootstrap {
                                                            and: accountService,
                                                            and: connectivityService)
         self.repository.register(service: syncTriggersService)
+        
         configureCameraKitModule()
     }
 
@@ -107,6 +109,10 @@ class ApplicationBootstrap {
     private func connectivityService() -> ConnectivityService {
         return ConnectivityService()
     }
+    
+    private func locationService() -> LocationService {
+        return LocationService()
+    }
 
     private func configureCameraKitModule() {
         let identifier = MaterialDesignThemingService.identifier
@@ -116,7 +122,7 @@ class ApplicationBootstrap {
               let buttonScheme = themingService?.containerScheming(for: .dialogButton)
         else { return }
 
-        let theme = CameraKitTheme(primaryColor: currentTheme.primaryVariantT1Color,
+        let theme = CameraKitTheme(primaryColor: currentTheme.primaryT1Color,
                                    onSurfaceColor: currentTheme.onSurfaceColor,
                                    onSurface60Color: currentTheme.onSurface60Color,
                                    onSurface15Color: currentTheme.onSurface15Color,
@@ -129,7 +135,8 @@ class ApplicationBootstrap {
                                    buttonScheme: buttonScheme,
                                    subtitle2Font: currentTheme.subtitle2TextStyle.font,
                                    headline6Font: currentTheme.headline6TextStyle.font,
-                                   body2Font: currentTheme.body2TextStyle.font)
+                                   body2Font: currentTheme.body2TextStyle.font,
+                                   overlineFont: currentTheme.overlineTextStyle.font)
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
                                                  offFlashText: LocalizationConstants.Camera.offFlash,
