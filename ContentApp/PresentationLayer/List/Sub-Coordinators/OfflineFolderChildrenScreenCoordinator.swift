@@ -31,21 +31,22 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        #warning("Uncomment")
-//        let offlineViewModelFactory = OfflineFolderChildrenViewModelFactory()
-//        offlineViewModelFactory.coordinatorServices = coordinatorServices
-//
-//        let offlineDataSource = offlineViewModelFactory.offlineDataSource(for: listNode)
-//
-//        let viewController = ListViewController()
-//        viewController.title = listNode.title
-//        viewController.coordinatorServices = coordinatorServices
-//        viewController.listViewModel = offlineDataSource.offlineViewModel
-//        viewController.listItemActionDelegate = self
-//        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
-//        viewController.resultViewModel = offlineDataSource.resultsViewModel
+        let offlineViewModelFactory = OfflineFolderChildrenViewModelFactory(services: coordinatorServices)
+        let viewModel = offlineViewModelFactory.offlineDataSource(for: listNode)
 
-//        presenter.pushViewController(viewController, animated: true)
+        let viewController = ListViewController()
+        viewController.title = listNode.title
+
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.viewModel = viewModel
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listItemActionDelegate = self
+
+        presenter.pushViewController(viewController, animated: true)
     }
 }
 

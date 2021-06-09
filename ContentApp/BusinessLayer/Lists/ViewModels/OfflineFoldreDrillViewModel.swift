@@ -19,77 +19,18 @@
 import Foundation
 import AlfrescoContent
 
-class OfflineFolderDrillViewModel: PageFetchingViewModel, ListViewModelProtocol {
-    var supportedNodeTypes: [NodeType] = []
-    var parentListNode: ListNode?
+class OfflineFolderDrillViewModel: ListComponentViewModel {
 
-    // MARK: - Init
-
-    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
-        super.init()
-        refreshList()
-    }
-
-    // MARK: - PageFetchingViewModel
-
-    override func fetchItems(with requestPagination: RequestPagination,
-                             userInfo: Any?,
-                             completionHandler: @escaping PagedResponseCompletionHandler) {
-        refreshList()
-    }
-
-    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
-}
-
-// MARK: - ListViewModelProtocol
-
-extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
-    func isPaginationEnabled() -> Bool {
-        return false
-    }
-
-    func isEmpty() -> Bool {
-        return results.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
+    override func emptyList() -> EmptyListProtocol {
         return EmptyFolder()
     }
 
-    func numberOfItems(in section: Int) -> Int {
-        return results.count
-    }
-
-    func refreshList() {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        results = listNodeDataAccessor.queryChildren(for: parentListNode)
-
-        handlePage(results: results,
-                   pagination: nil,
-                   error: nil)
-    }
-
-    func listNodes() -> [ListNode] {
-        return results
-    }
-    
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
-    }
-
-    func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return false
     }
 
-    func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        let node = listNode(for: indexPath)
+    override func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
+        let node = model.listNode(for: indexPath)
         let listNodeDataAccessor = ListNodeDataAccessor()
 
         if node.isAFolderType() {
@@ -103,103 +44,15 @@ extension OfflineFolderDrillViewModel: ListComponentModelProtocol {
         return false
     }
 
-    func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
-        let node = listNode(for: indexPath)
+    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        let node = model.listNode(for: indexPath)
         if node.isAFolderType() {
             return false
         }
         return true
     }
 
-    func shouldDisplayPullToRefreshOffline() -> Bool {
+    override func shouldDisplayPullToRefreshOffline() -> Bool {
         true
-    }
-
-    func performListAction() {
-        // Do nothing
-    }
-
-    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let node = listNode(for: indexPath)
-        if node.isAFileType() {
-            let nodeSyncStatus = node.hasSyncStatus()
-            var entryListStatus: ListEntrySyncStatus
-
-            switch nodeSyncStatus {
-            case .pending:
-                entryListStatus = .pending
-            case .error:
-                entryListStatus = .error
-            case .inProgress:
-                entryListStatus = .inProgress
-            case .synced:
-                entryListStatus = .downloaded
-            default:
-                entryListStatus = .undefined
-            }
-
-            return entryListStatus
-        }
-
-        return .undefined
-    }
-}
-
-// MARK: Event observable
-
-extension OfflineFolderDrillViewModel: EventObservable {
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        if let publishedEvent = event as? FavouriteEvent {
-            handleFavorite(event: publishedEvent)
-        } else if let publishedEvent = event as? MoveEvent {
-            handleMove(event: publishedEvent)
-        } else if let publishedEvent = event as? OfflineEvent {
-            handleOffline(event: publishedEvent)
-        } else if let publishedEvent = event as? SyncStatusEvent {
-            handleSyncStatus(event: publishedEvent)
-        }
-    }
-
-    private func handleFavorite(event: FavouriteEvent) {
-        let eventNode = event.node
-        for listNode in results where listNode == eventNode {
-            listNode.favorite = eventNode.favorite
-        }
-    }
-
-    private func handleMove(event: MoveEvent) {
-        let eventNode = event.node
-        switch event.eventType {
-        case .moveToTrash:
-            if eventNode.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: eventNode) {
-                    results.remove(at: indexOfMovedNode)
-                }
-            } else {
-                refreshList()
-            }
-        case .restore:
-            refreshList()
-
-        default: break
-        }
-    }
-
-    private func handleOffline(event: OfflineEvent) {
-        let node = event.node
-
-        if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results.remove(at: indexOfOfflineNode)
-            results.insert(node, at: indexOfOfflineNode)
-        }
-    }
-
-    private func handleSyncStatus(event: SyncStatusEvent) {
-        let eventNode = event.node
-        if let indexOfNode = results.firstIndex(of: eventNode) {
-            let copyNode = results[indexOfNode]
-            copyNode.syncStatus = eventNode.syncStatus
-            results[indexOfNode] = copyNode
-        }
     }
 }

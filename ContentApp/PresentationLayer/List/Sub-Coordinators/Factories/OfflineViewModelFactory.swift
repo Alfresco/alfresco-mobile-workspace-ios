@@ -49,7 +49,6 @@ class OfflineViewModelFactory {
         eventBusService?.register(observer: offlineModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-
         eventBusService?.register(observer: offlineModel,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file, .folder])

@@ -81,29 +81,29 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() {
                 if dataSource === offlineDataSource?.offlineViewModel.model {
-                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                      listNode: node)
-                    coordinator.start()
-                    self.folderDrillDownCoordinator = coordinator
-                } else {
                     let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
                                                                              listNode: node)
                     coordinator.start()
                     self.offlineFolderChildrenScreenCoordinator = coordinator
+                } else {
+                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                                      listNode: node)
+                    coordinator.start()
+                    self.folderDrillDownCoordinator = coordinator
                 }
             } else if node.isAFileType() {
                 if dataSource === offlineDataSource?.offlineViewModel.model {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                } else {
                     let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
                                                                    listNode: node,
                                                                    excludedActions: [.moveTrash,
                                                                                      .addFavorite,
                                                                                      .removeFavorite],
                                                                    shouldPreviewLatestContent: false)
+                    coordinator.start()
+                    self.filePreviewCoordinator = coordinator
+                } else {
+                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                                   listNode: node)
                     coordinator.start()
                     self.filePreviewCoordinator = coordinator
                 }
