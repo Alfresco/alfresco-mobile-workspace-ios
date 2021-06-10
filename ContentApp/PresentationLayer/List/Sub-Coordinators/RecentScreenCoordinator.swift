@@ -31,25 +31,33 @@ class RecentScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        #warning("Uncomment")
-//        let recentViewModelFactory = RecentViewModelFactory()
-//        recentViewModelFactory.coordinatorServices = coordinatorServices
-//
-//        let recentDataSource = recentViewModelFactory.recentDataSource()
-//
-//        let viewController = ListViewController()
-//        viewController.title = LocalizationConstants.ScreenTitles.recent
-//        viewController.coordinatorServices = coordinatorServices
-//        viewController.listViewModel = recentDataSource.recentViewModel
-//        viewController.tabBarScreenDelegate = presenter
-//        viewController.listItemActionDelegate = self
-//        viewController.searchViewModel = recentDataSource.globalSearchViewModel
-//        viewController.resultViewModel = recentDataSource.resultsViewModel
-//
-//        let navigationViewController = UINavigationController(rootViewController: viewController)
-//        presenter.viewControllers = [navigationViewController]
-//        self.navigationViewController = navigationViewController
-//        recentViewController = viewController
+        let recentViewModelFactory = RecentViewModelFactory(services: coordinatorServices)
+        let recentDataSource = recentViewModelFactory.recentDataSource()
+
+        let viewController = ListViewController()
+        viewController.title = LocalizationConstants.ScreenTitles.recent
+        viewController.coordinatorServices = coordinatorServices
+
+        let viewModel = recentDataSource.recentViewModel
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        let searchViewModel = recentDataSource.globalSearchViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.searchPageController = searchPageController
+        viewController.viewModel = viewModel
+        viewController.searchViewModel = searchViewModel
+
+        viewController.tabBarScreenDelegate = presenter
+        viewController.listItemActionDelegate = self
+
+        let navigationViewController = UINavigationController(rootViewController: viewController)
+        presenter.viewControllers = [navigationViewController]
+        self.navigationViewController = navigationViewController
+        recentViewController = viewController
     }
 
     func scrollToTopOrPopToRoot() {

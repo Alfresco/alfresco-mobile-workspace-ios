@@ -59,7 +59,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
         self.offlineDataSource = offlineDataSource
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
-        self.presenter.viewControllers = [navigationViewController]
+        presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         offlineViewController = viewController
     }
