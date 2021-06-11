@@ -27,15 +27,11 @@ class RecentViewModel: ListComponentViewModel {
         return EmptyRecents()
     }
 
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        let listNode = model.listNode(for: indexPath)
-        if listNode.guid == listNodeSectionIdentifier {
-            return listNode.title
-        }
-        return ""
+    override func shouldDisplaySettingsButton() -> Bool {
+        return true
     }
 
-    override func shouldDisplaySettingsButton() -> Bool {
+    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return true
     }
 }
