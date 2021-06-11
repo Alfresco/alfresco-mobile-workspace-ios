@@ -18,87 +18,85 @@
 
 import Foundation
 
-#warning("Uncomment")
-//typealias FavoritesDataSource = (foldersAndFilesViewModel: FavoritesViewModel,
-//                                 librariesViewModel: FavoritesViewModel,
-//                                 globalSearchViewModel: GlobalSearchViewModel,
-//                                 resultsViewModel: ResultsViewModel)
-//
-//class FavoritesViewModelFactory {
-//    var coordinatorServices: CoordinatorServices?
-//
-//    func favoritesDataSource() -> FavoritesDataSource {
-//
-//        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-//        let foldersAndFilesViewModel = FavoritesViewModel(with: coordinatorServices,
-//                                                          listRequest: nil)
-//        let librariesViewModel = FavoritesViewModel(with: coordinatorServices,
-//                                                    listRequest: nil)
-//        let globalSearchViewModel =
-//            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
-//
-//        foldersAndFilesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesFileFolder
-//        librariesViewModel.listCondition = APIConstants.QuerryConditions.whereFavoritesSite
-//        globalSearchViewModel.delegate = resultViewModel
-//        resultViewModel.delegate = globalSearchViewModel
-//
-//        registerForMoveEvent(resultViewModel: resultViewModel,
-//                             foldersAndFilesViewModel: foldersAndFilesViewModel,
-//                             librariesViewModel: librariesViewModel)
-//
-//        registerForFavouriteEvent(resultViewModel: resultViewModel,
-//                                  foldersAndFilesViewModel: foldersAndFilesViewModel,
-//                                  librariesViewModel: librariesViewModel)
-//
-//        registerForOfflineEvent(resultViewModel: resultViewModel,
-//                                foldersAndFilesViewModel: foldersAndFilesViewModel,
-//                                librariesViewModel: librariesViewModel)
-//
-//        return (foldersAndFilesViewModel, librariesViewModel, globalSearchViewModel, resultViewModel)
-//    }
-//
-//    private func registerForFavouriteEvent(resultViewModel: ResultsViewModel,
-//                                           foldersAndFilesViewModel: FavoritesViewModel,
-//                                           librariesViewModel: FavoritesViewModel) {
-//        let eventBusService = coordinatorServices?.eventBusService
-//
-//        eventBusService?.register(observer: resultViewModel,
-//                                  for: FavouriteEvent.self,
-//                                  nodeTypes: [.file, .folder, .site])
-//        eventBusService?.register(observer: foldersAndFilesViewModel,
-//                                  for: FavouriteEvent.self,
-//                                  nodeTypes: [.file, .folder])
-//        eventBusService?.register(observer: librariesViewModel,
-//                                  for: FavouriteEvent.self,
-//                                  nodeTypes: [.site])
-//    }
-//
-//    private func registerForMoveEvent(resultViewModel: ResultsViewModel,
-//                                      foldersAndFilesViewModel: FavoritesViewModel,
-//                                      librariesViewModel: FavoritesViewModel) {
-//        let eventBusService = coordinatorServices?.eventBusService
-//
-//        eventBusService?.register(observer: resultViewModel,
-//                                  for: MoveEvent.self,
-//                                  nodeTypes: [.file, .folder, .site])
-//        eventBusService?.register(observer: foldersAndFilesViewModel,
-//                                  for: MoveEvent.self,
-//                                  nodeTypes: [.file, .folder, .site])
-//        eventBusService?.register(observer: librariesViewModel,
-//                                  for: MoveEvent.self,
-//                                  nodeTypes: [.site])
-//    }
-//
-//    private func registerForOfflineEvent(resultViewModel: ResultsViewModel,
-//                                         foldersAndFilesViewModel: FavoritesViewModel,
-//                                         librariesViewModel: FavoritesViewModel) {
-//        let eventBusService = coordinatorServices?.eventBusService
-//
-//        eventBusService?.register(observer: resultViewModel,
-//                                  for: OfflineEvent.self,
-//                                  nodeTypes: [.file, .folder])
-//        eventBusService?.register(observer: foldersAndFilesViewModel,
-//                                  for: OfflineEvent.self,
-//                                  nodeTypes: [.file, .folder])
-//    }
-//}
+typealias FavoritesDataSource = (foldersAndFilesViewModel: FavoritesViewModel,
+                                 librariesViewModel: FavoritesViewModel,
+                                 globalSearchViewModel: GlobalSearchViewModel)
+
+class FavoritesViewModelFactory {
+    var services: CoordinatorServices
+
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
+
+    func favoritesDataSource() -> FavoritesDataSource {
+        let foldersAndFilesModel = FavoritesModel(services: services,
+                                                  listCondition: APIConstants.QuerryConditions.whereFavoritesFileFolder)
+        let librariesModel = FavoritesModel(services: services,
+                                            listCondition: APIConstants.QuerryConditions.whereFavoritesSite)
+        let foldersAndFilesViewModel = FavoritesViewModel(model: foldersAndFilesModel)
+        let librariesViewModel = FavoritesViewModel(model: librariesModel)
+        
+        let searchModel = GlobalSearchModel(with: services)
+        let globalSearchViewModel = GlobalSearchViewModel(model: searchModel)
+
+        registerForMoveEvent(foldersAndFilesModel: foldersAndFilesModel,
+                             librariesModel: librariesModel,
+                             globalSearchModel: searchModel)
+
+        registerForFavouriteEvent(foldersAndFilesModel: foldersAndFilesModel,
+                                  librariesModel: librariesModel,
+                                  globalSearchModel: searchModel)
+
+        registerForOfflineEvent(foldersAndFilesModel: foldersAndFilesModel,
+                                librariesModel: librariesModel,
+                                globalSearchModel: searchModel)
+
+        return (foldersAndFilesViewModel, librariesViewModel, globalSearchViewModel)
+    }
+
+    private func registerForFavouriteEvent(foldersAndFilesModel: FavoritesModel,
+                                           librariesModel: FavoritesModel,
+                                           globalSearchModel: GlobalSearchModel) {
+        let eventBusService = services.eventBusService
+
+        eventBusService?.register(observer: foldersAndFilesModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: librariesModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.site])
+        eventBusService?.register(observer: globalSearchModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+    }
+
+    private func registerForMoveEvent(foldersAndFilesModel: FavoritesModel,
+                                      librariesModel: FavoritesModel,
+                                      globalSearchModel: GlobalSearchModel) {
+        let eventBusService = services.eventBusService
+
+        eventBusService?.register(observer: foldersAndFilesModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: librariesModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.site])
+        eventBusService?.register(observer: globalSearchModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+    }
+
+    private func registerForOfflineEvent(foldersAndFilesModel: FavoritesModel,
+                                         librariesModel: FavoritesModel,
+                                         globalSearchModel: GlobalSearchModel) {
+        let eventBusService = services.eventBusService
+
+        eventBusService?.register(observer: foldersAndFilesModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: globalSearchModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+    }
+}
