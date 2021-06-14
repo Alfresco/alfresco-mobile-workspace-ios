@@ -18,24 +18,36 @@
 
 import Foundation
 
-typealias TopLevelBrowseDataSource = (topLevelBrowseViewModel: ListViewModelProtocol,
-                                     resultsViewModel: ResultsViewModel,
-                                     globalSearchViewModel: SearchViewModelProtocol)
+typealias TopLevelBrowseDataSource = (topLevelBrowseViewModel: ListComponentViewModel,
+                                     globalSearchViewModel: SearchViewModel)
 
 class TopLevelBrowseViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
+    let services: CoordinatorServices
+
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
 
     func topLevelBrowseDataSource(browseNode: BrowseNode) -> TopLevelBrowseDataSource {
         let topLevelBrowseViewModel = listViewModel(from: browseNode.type)
-        let resultsViewModel = self.resultsViewModel()
         let globalSearchViewModel = self.globalSearchViewModel(from: browseNode.type,
-                                                               with: browseNode.title,
-                                                               with: resultsViewModel)
+                                                               with: browseNode.title)
 
-        return (topLevelBrowseViewModel, resultsViewModel, globalSearchViewModel)
+        let eventBusService = services.eventBusService
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: globalSearchViewModel.searchModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+
+        return (topLevelBrowseViewModel, globalSearchViewModel)
     }
 
-    func listViewModel(from type: BrowseType?) -> ListViewModelProtocol {
+    func listViewModel(from type: BrowseType?) -> ListComponentViewModel {
         switch type {
         case .personalFiles:
             return personalFilesViewModel()
@@ -51,9 +63,7 @@ class TopLevelBrowseViewModelFactory {
     }
 
     func globalSearchViewModel(from type: BrowseType?,
-                               with title: String?,
-                               with resultViewModel: ResultsViewModel) -> SearchViewModelProtocol {
-        let accountService = coordinatorServices?.accountService
+                               with title: String?) -> SearchViewModel {
         var searchChip: SearchChipItem?
 
         switch type {
@@ -67,115 +77,102 @@ class TopLevelBrowseViewModelFactory {
                 ProfileService.featchPersonalFilesID()
             }
         default:
-            let globalSearchViewModel = GlobalSearchViewModel(accountService: accountService)
-            resultViewModel.delegate = globalSearchViewModel
-            globalSearchViewModel.delegate = resultViewModel
-            globalSearchViewModel.displaySearchBar = false
-            globalSearchViewModel.displaySearchButton = false
+            let searchModel = GlobalSearchModel(with: services)
+            let globalSearchViewModel = GlobalSearchViewModel(model: searchModel)
+        
             return globalSearchViewModel
         }
 
-        let contextualSearchViewModel = ContextualSearchViewModel(accountService: accountService)
+        let searchModel = ContextualSearchModel(with: services)
+        searchModel.searchChipNode = searchChip
+        let contextualSearchViewModel = ContextualSearchViewModel(model: searchModel)
 
-        contextualSearchViewModel.searchChipNode = searchChip
-        resultViewModel.delegate = contextualSearchViewModel
-        contextualSearchViewModel.delegate = resultViewModel
         return contextualSearchViewModel
-    }
-
-    func resultsViewModel() -> ResultsViewModel {
-        let eventBusService = coordinatorServices?.eventBusService
-
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        return resultViewModel
     }
 
     // MARK: - Private builders
 
-    private func personalFilesViewModel() -> ListViewModelProtocol {
-        let eventBusService = coordinatorServices?.eventBusService
+    private func personalFilesViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
 
-        let viewModel = FolderDrillViewModel(with: coordinatorServices,
-                                             listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = FolderDrillModel(listNode: nil,
+                                     services: services)
+        let viewModel = FolderDrillViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file, .folder])
         return viewModel
     }
 
-    private func myLibrariesViewModel() -> ListViewModelProtocol {
-        let eventBusService = coordinatorServices?.eventBusService
+    private func myLibrariesViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
 
-        let viewModel = MyLibrariesViewModel(with: coordinatorServices,
-                                             listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = MyLibrariesModel(services: services)
+        let viewModel = ListComponentViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.site])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.site])
         return viewModel
     }
 
-    private func sharedViewModel() -> ListViewModelProtocol {
-        let eventBusService = coordinatorServices?.eventBusService
+    private func sharedViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
 
-        let viewModel = SharedViewModel(with: coordinatorServices,
-                                        listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = SharedModel(services: services)
+        let viewModel = ListComponentViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
         return viewModel
     }
 
-    private func trashViewModel() -> ListViewModelProtocol {
-        let eventBusService = coordinatorServices?.eventBusService
+    private func trashViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
 
-        let viewModel = TrashViewModel(with: coordinatorServices,
-                              listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = TrashModel(services: services)
+        let viewModel = TrashViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
         return viewModel
     }
 
-    private func defaultViewModel() -> ListViewModelProtocol {
-        let eventBusService = coordinatorServices?.eventBusService
+    private func defaultViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
 
-        let viewModel = FolderDrillViewModel(with: coordinatorServices,
-                                             listRequest: nil)
-        eventBusService?.register(observer: viewModel,
+        let model = FolderDrillModel(listNode: nil,
+                                     services: services)
+        let viewModel = FolderDrillViewModel(model: model)
+
+        eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: viewModel,
+        eventBusService?.register(observer: model,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
         return viewModel

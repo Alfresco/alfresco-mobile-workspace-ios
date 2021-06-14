@@ -19,52 +19,54 @@
 import Foundation
 
 typealias FolderChildrenDataSource = (folderDrillDownViewModel: FolderDrillViewModel,
-                                      resultsViewModel: ResultsViewModel,
-                                      contextualSearchViewModel: ContextualSearchViewModel)
+                                      contextualSearchViewModel: SearchViewModel)
 
 class FolderChildrenViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
+    var services: CoordinatorServices
+
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
 
     func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
+        let eventBusService = services.eventBusService
 
-        let folderDrillViewModel = FolderDrillViewModel(with: coordinatorServices,
-                                                        listRequest: nil)
-        folderDrillViewModel.listNode = listNode
+        let folderDrillModel = FolderDrillModel(listNode: listNode,
+                                                services: services)
+        let folderDrillViewModel = FolderDrillViewModel(model: folderDrillModel)
 
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let contextualSearchViewModel =
-            ContextualSearchViewModel(accountService: coordinatorServices?.accountService)
-        let chipNode = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
+        let searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,
                                       type: .node, selected: true,
                                       nodeID: listNode.guid)
-        contextualSearchViewModel.delegate = resultViewModel
-        contextualSearchViewModel.searchChipNode = chipNode
-        resultViewModel.delegate = contextualSearchViewModel
+        let searchModel = ContextualSearchModel(with: services)
+        searchModel.searchChipNode = searchChip
 
-        eventBusService?.register(observer: folderDrillViewModel,
+        let contextualSearchViewModel =
+            ContextualSearchViewModel(model: searchModel)
+
+        eventBusService?.register(observer: folderDrillModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: folderDrillViewModel,
+        eventBusService?.register(observer: folderDrillModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: folderDrillViewModel,
+        eventBusService?.register(observer: folderDrillModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: folderDrillViewModel,
+        eventBusService?.register(observer: folderDrillModel,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file, .folder])
 
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
-        return (folderDrillViewModel, resultViewModel, contextualSearchViewModel)
+        return (folderDrillViewModel, contextualSearchViewModel)
     }
 }

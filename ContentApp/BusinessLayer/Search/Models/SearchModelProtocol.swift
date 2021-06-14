@@ -17,18 +17,21 @@
 //
 
 import Foundation
+import AlfrescoContent
 
-class GlobalSearchViewModel: SearchViewModel {
+enum SearchType {
+    case live
+    case simple
+}
 
-    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        return searchModel.isNodePathEnabled()
-    }
+protocol SearchModelProtocol: ListModelProtocol, EventObservable {
+    var searchChips: [SearchChipItem] { get set }
+    var searchString: String? { get set }
+    var searchType: SearchType { get set }
 
-    override func shouldDisplaySearchBar() -> Bool {
-        return true
-    }
-
-    override func shouldDisplaySearchButton() -> Bool {
-        return false
-    }
+    func isNodePathEnabled() -> Bool
+    func defaultSearchChips() -> [SearchChipItem]
+    func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
+    func performSearch(for string: String, paginationRequest: RequestPagination?)
+    func performLiveSearch(for string: String, paginationRequest: RequestPagination?)
 }

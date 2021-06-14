@@ -35,23 +35,28 @@ class BrowseScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let viewModelFactory = BrowseViewModelFactory()
-        viewModelFactory.coordinatorServices = coordinatorServices
-
+        let viewModelFactory = BrowseViewModelFactory(services: coordinatorServices)
         let browseDataSource = viewModelFactory.browseDataSource()
 
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
+
+        let searchViewModel = browseDataSource.globalSearchViewModel
+        let browseViewModel = browseDataSource.browseViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+        viewController.searchPageController = searchPageController
+
+        viewController.listViewModel = browseViewModel
+        viewController.searchViewModel = searchViewModel
+
         viewController.coordinatorServices = coordinatorServices
-        viewController.listItemActionDelegate = self
-        viewController.browseScreenCoordinatorDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.listViewModel = browseDataSource.browseViewModel
-        viewController.searchViewModel = browseDataSource.globalSearchViewModel
-        viewController.resultViewModel = browseDataSource.resultsViewModel
+        viewController.browseScreenCoordinatorDelegate = self
+        viewController.listItemActionDelegate = self
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
-        self.presenter.viewControllers?.append(navigationViewController)
+        presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         browseViewController = viewController
     }
@@ -76,7 +81,7 @@ extension BrowseScreenCoordinator: BrowseScreenCoordinatorDelegate {
 
 extension BrowseScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -91,7 +96,7 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

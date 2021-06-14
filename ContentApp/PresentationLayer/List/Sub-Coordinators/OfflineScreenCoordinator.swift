@@ -33,25 +33,33 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     }
 
     func start() {
-        let offlineViewModelFactory = OfflineViewModelFactory()
-        offlineViewModelFactory.coordinatorServices = coordinatorServices
-
+        let offlineViewModelFactory = OfflineViewModelFactory(services: coordinatorServices)
         let offlineDataSource = offlineViewModelFactory.offlineDataSource()
 
         let viewController = ListViewController()
-        viewController.isPaginationEnabled = false
         viewController.title = LocalizationConstants.ScreenTitles.offline
+
+        let viewModel = offlineDataSource.offlineViewModel
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        let searchViewModel = offlineDataSource.globalSearchViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.searchPageController = searchPageController
+        viewController.viewModel = viewModel
+        viewController.searchViewModel = searchViewModel
         viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel = offlineDataSource.offlineViewModel
+        
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
-        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
-        viewController.resultViewModel = offlineDataSource.resultsViewModel
 
         self.offlineDataSource = offlineDataSource
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
-        self.presenter.viewControllers?.append(navigationViewController)
+        presenter.viewControllers?.append(navigationViewController)
         self.navigationViewController = navigationViewController
         offlineViewController = viewController
     }
@@ -69,33 +77,33 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
 extension OfflineScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() {
-                if dataSource === offlineDataSource?.resultsViewModel {
-                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
-                                                                      listNode: node)
-                    coordinator.start()
-                    self.folderDrillDownCoordinator = coordinator
-                } else {
+                if dataSource === offlineDataSource?.offlineViewModel.model {
                     let coordinator = OfflineFolderChildrenScreenCoordinator(with: navigationViewController,
                                                                              listNode: node)
                     coordinator.start()
                     self.offlineFolderChildrenScreenCoordinator = coordinator
+                } else {
+                    let coordinator = FolderChildrenScreenCoordinator(with: navigationViewController,
+                                                                      listNode: node)
+                    coordinator.start()
+                    self.folderDrillDownCoordinator = coordinator
                 }
             } else if node.isAFileType() {
-                if dataSource === offlineDataSource?.resultsViewModel {
-                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
-                                                                   listNode: node)
-                    coordinator.start()
-                    self.filePreviewCoordinator = coordinator
-                } else {
+                if dataSource === offlineDataSource?.offlineViewModel.model {
                     let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
                                                                    listNode: node,
                                                                    excludedActions: [.moveTrash,
                                                                                      .addFavorite,
                                                                                      .removeFavorite],
                                                                    shouldPreviewLatestContent: false)
+                    coordinator.start()
+                    self.filePreviewCoordinator = coordinator
+                } else {
+                    let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                                   listNode: node)
                     coordinator.start()
                     self.filePreviewCoordinator = coordinator
                 }
@@ -106,12 +114,12 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel: ActionMenuViewModel
 
-            if dataSource === offlineDataSource?.resultsViewModel {
+            if dataSource === offlineDataSource?.offlineViewModel.model {
                 actionMenuViewModel = ActionMenuViewModel(node: node,
                                                               coordinatorServices: coordinatorServices)
             } else {

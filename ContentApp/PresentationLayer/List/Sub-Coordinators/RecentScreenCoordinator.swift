@@ -31,19 +31,28 @@ class RecentScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let recentViewModelFactory = RecentViewModelFactory()
-        recentViewModelFactory.coordinatorServices = coordinatorServices
-
+        let recentViewModelFactory = RecentViewModelFactory(services: coordinatorServices)
         let recentDataSource = recentViewModelFactory.recentDataSource()
 
         let viewController = ListViewController()
         viewController.title = LocalizationConstants.ScreenTitles.recent
         viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel = recentDataSource.recentViewModel
+
+        let viewModel = recentDataSource.recentViewModel
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        let searchViewModel = recentDataSource.globalSearchViewModel
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.searchPageController = searchPageController
+        viewController.viewModel = viewModel
+        viewController.searchViewModel = searchViewModel
+
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
-        viewController.searchViewModel = recentDataSource.globalSearchViewModel
-        viewController.resultViewModel = recentDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -63,7 +72,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
 
 extension RecentScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -78,7 +87,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

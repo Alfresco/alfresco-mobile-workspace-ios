@@ -31,19 +31,20 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     }
 
     func start() {
-        let offlineViewModelFactory = OfflineFolderChildrenViewModelFactory()
-        offlineViewModelFactory.coordinatorServices = coordinatorServices
-
-        let offlineDataSource = offlineViewModelFactory.offlineDataSource(for: listNode)
+        let offlineViewModelFactory = OfflineFolderChildrenViewModelFactory(services: coordinatorServices)
+        let viewModel = offlineViewModelFactory.offlineDataSource(for: listNode)
 
         let viewController = ListViewController()
-        viewController.isPaginationEnabled = false
         viewController.title = listNode.title
+
+        let pageController = ListPageController(dataSource: viewModel.model,
+                                                services: coordinatorServices)
+
+        viewController.pageController = pageController
+        viewController.viewModel = viewModel
+        
         viewController.coordinatorServices = coordinatorServices
-        viewController.listViewModel = offlineDataSource.offlineViewModel
         viewController.listItemActionDelegate = self
-        viewController.searchViewModel = offlineDataSource.globalSearchViewModel
-        viewController.resultViewModel = offlineDataSource.resultsViewModel
 
         presenter.pushViewController(viewController, animated: true)
     }
@@ -51,7 +52,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 
 extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if node.isAFolderType() {
             let coordinator = OfflineFolderChildrenScreenCoordinator(with: presenter,
                                                                      listNode: node)
@@ -74,7 +75,7 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices,

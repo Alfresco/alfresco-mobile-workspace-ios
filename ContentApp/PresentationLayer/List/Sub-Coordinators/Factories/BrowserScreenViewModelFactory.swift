@@ -19,33 +19,32 @@
 import Foundation
 
 typealias BrowseDataSource = (browseViewModel: BrowseViewModel,
-                              resultsViewModel: ResultsViewModel,
-                              globalSearchViewModel: GlobalSearchViewModel)
+                              globalSearchViewModel: SearchViewModel)
 
 class BrowseViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
+    private let services: CoordinatorServices
+
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
 
     func browseDataSource() -> BrowseDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
+        let eventBusService = services.eventBusService
 
         let browseViewModel = BrowseViewModel()
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
+        let searchModel = GlobalSearchModel(with: services)
+        let globalSearchViewModel = GlobalSearchViewModel(model: searchModel)
 
-        globalSearchViewModel.delegate = resultViewModel
-        resultViewModel.delegate = globalSearchViewModel
-
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: searchModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
 
-        return (browseViewModel, resultViewModel, globalSearchViewModel)
+        return (browseViewModel, globalSearchViewModel)
     }
 }

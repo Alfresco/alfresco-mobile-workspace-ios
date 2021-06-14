@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,17 +18,23 @@
 
 import Foundation
 
-class GlobalSearchViewModel: SearchViewModel {
+class SearchViewModel: ListComponentViewModel {
+    var searchModel: SearchModelProtocol
 
-    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        return searchModel.isNodePathEnabled()
+    init(model: SearchModelProtocol) {
+        searchModel = model
+        super.init(model: model)
     }
 
-    override func shouldDisplaySearchBar() -> Bool {
+    override func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
+    }
+
+    func shouldDisplaySearchBar() -> Bool {
         return true
     }
 
-    override func shouldDisplaySearchButton() -> Bool {
-        return false
+    func shouldDisplaySearchButton() -> Bool {
+        return true
     }
 }

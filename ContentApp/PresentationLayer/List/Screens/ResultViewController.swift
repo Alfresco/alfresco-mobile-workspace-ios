@@ -27,11 +27,9 @@ protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
-    func fetchNextSearchResultsPage(for index: IndexPath)
 }
 
 class ResultViewController: SystemThemableViewController {
-    var resultsListController: ListComponentViewController?
     @IBOutlet weak var chipsCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchCollectionView: UICollectionView!
     @IBOutlet weak var recentSearchesView: UIView!
@@ -39,15 +37,17 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var progressView: MDCProgressView!
 
     weak var resultScreenDelegate: ResultViewControllerDelegate?
-
-    var resultsViewModel: ResultsViewModel?
-    var recentSearchesViewModel = RecentSearchesViewModel()
-    var searchChipsViewModel = SearchChipsViewModel()
     weak var listItemActionDelegate: ListItemActionDelegate?
 
-    let recentSearchCellHeight: CGFloat = 44.0
-    let chipSearchCellMinimHeight: CGFloat = 32.0
-    let chipSearchCellMinimWidth: CGFloat = 52.0
+    var resultsListController: ListComponentViewController?
+    var pageController: ListPageController?
+    var resultsViewModel: SearchViewModel?
+    var recentSearchesViewModel = RecentSearchesViewModel()
+    
+    private var searchChipsViewModel = SearchChipsViewModel()
+    private let recentSearchCellHeight: CGFloat = 44.0
+    private let chipSearchCellMinimHeight: CGFloat = 32.0
+    private let chipSearchCellMinimWidth: CGFloat = 52.0
 
     // MARK: - View Life Cycle
 
@@ -56,9 +56,10 @@ class ResultViewController: SystemThemableViewController {
 
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
-        listComponentViewController.model = resultsViewModel
         listComponentViewController.coordinatorServices = coordinatorServices
-        resultsViewModel?.pageUpdatingDelegate = listComponentViewController
+        listComponentViewController.pageController = pageController
+        listComponentViewController.viewModel = resultsViewModel
+        pageController?.delegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +131,7 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func clearDataSource() {
-        resultsViewModel?.clear()
+        pageController?.clear()
         recentSearchesView.isHidden = false
     }
 
@@ -138,7 +139,6 @@ class ResultViewController: SystemThemableViewController {
         recentSearchesViewModel.reloadRecentSearch()
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ?
             LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
-        stopLoading()
         recentSearchCollectionView.reloadData()
     }
 
@@ -331,11 +331,6 @@ extension ResultViewController: ListComponentActionDelegate {
                        pagination: Pagination?) {
         stopLoading()
         recentSearchesView.isHidden = (pagination == nil && error == nil) ? false : true
-    }
-
-    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
-                           for itemAtIndexPath: IndexPath) {
-        self.resultScreenDelegate?.fetchNextSearchResultsPage(for: itemAtIndexPath)
     }
 
     func performListAction() {

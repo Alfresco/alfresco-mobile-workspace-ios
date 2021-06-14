@@ -19,15 +19,6 @@
 import Foundation
 import AlfrescoContent
 
-struct PaginatedResponse {
-    var results: [ListNode]
-    var error: Error?
-    var requestPagination: RequestPagination?
-    var responsePagination: Pagination?
-}
-
-typealias PagedResponseCompletionHandler = ((PaginatedResponse) -> Void)
-
 class PageFetchingViewModel {
     weak var pageUpdatingDelegate: ListComponentPageUpdatingDelegate?
 

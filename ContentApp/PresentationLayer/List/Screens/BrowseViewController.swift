@@ -19,15 +19,14 @@
 import UIKit
 
 class BrowseViewController: SystemSearchViewController {
-
     @IBOutlet weak var collectionView: UICollectionView!
+
+    private let sectionCellHeight: CGFloat = 1.0
+    private let listBrowseCellHeight: CGFloat = 44.0
 
     var listViewModel: BrowseViewModel?
     weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-
-    let sectionCellHeight: CGFloat = 1.0
-    let listBrowseCellHeight: CGFloat = 44.0
 
     // MARK: - View Life Cycle
 

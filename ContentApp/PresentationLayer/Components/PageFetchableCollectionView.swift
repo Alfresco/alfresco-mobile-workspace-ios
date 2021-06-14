@@ -20,12 +20,11 @@ import UIKit
 
 protocol PageFetchableDelegate: AnyObject {
     func fetchNextContentPage(for collectionView: UICollectionView, itemAtIndexPath: IndexPath)
+    func isPaginationEnabled() -> Bool
 }
 
 class PageFetchableCollectionView: UICollectionView {
     weak var pageDelegate: PageFetchableDelegate?
-    var isPaginationEnabled: Bool?
-    var coordinatorServices: CoordinatorServices?
 
     private var lastItemIndexPath: IndexPath?
 
@@ -43,8 +42,9 @@ class PageFetchableCollectionView: UICollectionView {
 
 extension PageFetchableCollectionView: UICollectionViewDataSourcePrefetching {
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        if isPaginationEnabled ?? true &&
-            coordinatorServices?.connectivityService?.hasInternetConnection() == true {
+        guard let isPaginationEnabled = pageDelegate?.isPaginationEnabled() else { return }
+
+        if isPaginationEnabled {
             for indexPath in indexPaths where indexPath == lastItemIndexPath {
                 pageDelegate?.fetchNextContentPage(for: self, itemAtIndexPath: indexPath)
             }

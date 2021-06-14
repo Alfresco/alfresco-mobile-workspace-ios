@@ -23,31 +23,40 @@ let regularCellHeight: CGFloat = 54.0
 let sectionCellHeight: CGFloat = 54.0
 let compactCellHeight: CGFloat = 44.0
 
+protocol ListComponentDataSourceDelegate: AnyObject {
+    func shouldDisplayListLoadingIndicator() -> Bool
+    func isPaginationEnabled() -> Bool
+}
+
 struct ListComponentDataSourceConfiguration {
     let collectionView: UICollectionView
-    let model: ListComponentModelProtocol
-    var isPaginationEnabled = true
+    let viewModel: ListComponentViewModel
     weak var cellDelegate: ListElementCollectionViewCellDelegate?
     let services: CoordinatorServices
 }
 
 class ListComponentDataSource: DataSource {
     var configuration: ListComponentDataSourceConfiguration
+    weak var delegate: ListComponentDataSourceDelegate?
     
-    init(with configuration: ListComponentDataSourceConfiguration) {
+    init(with configuration: ListComponentDataSourceConfiguration,
+         delegate: ListComponentDataSourceDelegate) {
         self.configuration = configuration
+        self.delegate = delegate
         super.init(collectionView: configuration.collectionView)
     }
     
     override func collectionView(_ collectionView: UICollectionView,
                                  numberOfItemsInSection section: Int) -> Int {
-        return configuration.model.numberOfItems(in: section)
+        return configuration.viewModel.model.numberOfItems(in: section)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        if configuration.model.shouldDisplayListLoadingIndicator() &&
+        let shouldDisplayListLoadingIndicator = delegate?.shouldDisplayListLoadingIndicator() ?? false
+
+        if shouldDisplayListLoadingIndicator &&
             configuration.services.connectivityService?.hasInternetConnection() == true {
             return CGSize(width: collectionView.bounds.width,
                           height: regularCellHeight)
@@ -80,32 +89,33 @@ class ListComponentDataSource: DataSource {
         let identifierElement = String(describing: ListElementCollectionViewCell.self)
         let identifierSection = String(describing: ListSectionCollectionViewCell.self)
 
-        let node = configuration.model.listNode(for: indexPath)
+        let node = configuration.viewModel.model.listNode(for: indexPath)
         if node.guid == listNodeSectionIdentifier {
             guard let cell = collectionView
-                        .dequeueReusableCell(withReuseIdentifier: identifierSection,
-                                             for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
-            cell.titleLabel.text = configuration.model.titleForSectionHeader(at: indexPath)
+                    .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                         for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
+            cell.titleLabel.text = configuration.viewModel.model.titleForSectionHeader(at: indexPath)
             cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         } else {
             guard let cell = collectionView
-                .dequeueReusableCell(withReuseIdentifier: identifierElement,
-                                     for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+                    .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                         for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
-            cell.syncStatus = configuration.model.syncStatusForNode(at: indexPath)
-            cell.moreButton.isHidden = !configuration.model.shouldDisplayMoreButton(for: indexPath)
+            cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
+            cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
             if node.nodeType == .fileLink || node.nodeType == .folderLink {
                 cell.moreButton.isHidden = true
             }
-            if configuration.model.shouldDisplaySubtitle(for: indexPath) == false {
+            if configuration.viewModel.shouldDisplaySubtitle(for: indexPath) == false {
                 cell.subtitle.text = ""
             }
 
-            if configuration.isPaginationEnabled &&
+            let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
+            if isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&
                 configuration.services.connectivityService?.hasInternetConnection() == true {
                 if let collectionView = collectionView as? PageFetchableCollectionView {

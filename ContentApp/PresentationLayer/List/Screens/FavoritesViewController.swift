@@ -26,8 +26,11 @@ class FavoritesViewController: SystemSearchViewController {
     var folderAndFilesViewController: ListComponentViewController?
     var librariesViewController: ListComponentViewController?
 
-    var folderAndFilesListViewModel: ListViewModelProtocol?
-    var librariesListViewModel: ListViewModelProtocol?
+    var folderAndFilesListViewModel: ListComponentViewModel?
+    var librariesListViewModel: ListComponentViewModel?
+
+    var folderAndFilesPageController: ListPageController?
+    var librariesPageController: ListPageController?
 
     lazy var scrollView: UIScrollView = setupScrollView()
     lazy var tabBar: MDCTabBarView = setupTabBarView()
@@ -166,20 +169,22 @@ class FavoritesViewController: SystemSearchViewController {
     func setupScrollingContent() {
         // Set up the folders and files view
         let folderAndFilesViewController = ListComponentViewController.instantiateViewController()
-        folderAndFilesViewController.listActionDelegate = self
-        folderAndFilesViewController.model = folderAndFilesListViewModel
         folderAndFilesViewController.coordinatorServices = coordinatorServices
-        folderAndFilesListViewModel?.pageUpdatingDelegate = folderAndFilesViewController
+        folderAndFilesViewController.pageController = folderAndFilesPageController
+        folderAndFilesViewController.pageController?.delegate = folderAndFilesViewController
+        folderAndFilesViewController.viewModel = folderAndFilesListViewModel
+        folderAndFilesViewController.listActionDelegate = self
 
         self.folderAndFilesViewController = folderAndFilesViewController
         self.folderAndFilesViewController?.listItemActionDelegate = self.listItemActionDelegate
 
         // Set up the libraries view
         let librariesViewController = ListComponentViewController.instantiateViewController()
-        librariesViewController.listActionDelegate = self
-        librariesViewController.model = librariesListViewModel
         librariesViewController.coordinatorServices = coordinatorServices
-        librariesListViewModel?.pageUpdatingDelegate = librariesViewController
+        librariesViewController.pageController = librariesPageController
+        librariesViewController.pageController?.delegate = librariesViewController
+        librariesViewController.viewModel = librariesListViewModel
+        librariesViewController.listActionDelegate = self
 
         self.librariesViewController = librariesViewController
         self.librariesViewController?.listItemActionDelegate = self.listItemActionDelegate
@@ -213,9 +218,9 @@ class FavoritesViewController: SystemSearchViewController {
         }
 
         folderAndFilesViewController.startLoading()
-        folderAndFilesListViewModel?.refreshList()
+        folderAndFilesPageController?.refreshList()
         librariesViewController.startLoading()
-        librariesListViewModel?.refreshList()
+        librariesPageController?.refreshList()
     }
 
     func selectTabItem(item: UITabBarItem) {
@@ -284,15 +289,6 @@ extension FavoritesViewController: ListComponentActionDelegate {
             folderAndFilesViewController?.stopLoading()
         } else if listComponentViewController == librariesViewController {
             librariesViewController?.stopLoading()
-        }
-    }
-
-    func fetchNextListPage(in listComponentViewController: ListComponentViewController,
-                           for itemAtIndexPath: IndexPath) {
-        if listComponentViewController == folderAndFilesViewController {
-            folderAndFilesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
-        } else if listComponentViewController == librariesViewController {
-            librariesListViewModel?.fetchNextListPage(index: itemAtIndexPath, userInfo: nil)
         }
     }
 }

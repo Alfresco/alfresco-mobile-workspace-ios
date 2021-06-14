@@ -30,20 +30,33 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
     }
 
     override func start() {
-        let favoritesViewModelFactory = FavoritesViewModelFactory()
-        favoritesViewModelFactory.coordinatorServices = coordinatorServices
-
+        let favoritesViewModelFactory = FavoritesViewModelFactory(services: coordinatorServices)
         let favoritesDataSource = favoritesViewModelFactory.favoritesDataSource()
 
         let viewController = FavoritesViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
+
+        let folderAndFilesViewModel = favoritesDataSource.foldersAndFilesViewModel
+        let librariesViewModel = favoritesDataSource.librariesViewModel
+        let searchViewModel = favoritesDataSource.globalSearchViewModel
+
+        let folderAndFilesPageController = ListPageController(dataSource: folderAndFilesViewModel.model,
+                                                              services: coordinatorServices)
+        let librariesPageController = ListPageController(dataSource: librariesViewModel.model,
+                                                         services: coordinatorServices)
+        let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
+                                                      services: coordinatorServices)
+
+        viewController.folderAndFilesListViewModel = folderAndFilesViewModel
+        viewController.librariesListViewModel = librariesViewModel
+        viewController.searchViewModel = searchViewModel
+        viewController.folderAndFilesPageController = folderAndFilesPageController
+        viewController.librariesPageController = librariesPageController
+        viewController.searchPageController = searchPageController
+
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
         viewController.tabBarScreenDelegate = presenter
-        viewController.folderAndFilesListViewModel = favoritesDataSource.foldersAndFilesViewModel
-        viewController.librariesListViewModel = favoritesDataSource.librariesViewModel
-        viewController.searchViewModel = favoritesDataSource.globalSearchViewModel
-        viewController.resultViewModel = favoritesDataSource.resultsViewModel
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers?.append(navigationViewController)
@@ -63,7 +76,7 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
 
 extension FavoritesScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListComponentModelProtocol) {
+                     from dataSource: ListModelProtocol) {
         if let navigationViewController = self.navigationViewController {
             if node.isAFolderType() || node.nodeType == .site {
                 startFolderCoordinator(for: node,
@@ -78,7 +91,7 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
     }
 
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListComponentModelProtocol,
+                                    from dataSource: ListModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         if let navigationViewController = self.navigationViewController {
             let actionMenuViewModel = ActionMenuViewModel(node: node,

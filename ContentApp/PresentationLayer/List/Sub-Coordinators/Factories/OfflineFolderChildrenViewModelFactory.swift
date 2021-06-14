@@ -18,52 +18,33 @@
 
 import Foundation
 
-typealias OfflineFolderChildrenDataSource = (offlineViewModel: OfflineFolderDrillViewModel,
-                                             resultsViewModel: ResultsViewModel,
-                                             globalSearchViewModel: GlobalSearchViewModel)
-
 class OfflineFolderChildrenViewModelFactory {
-    var coordinatorServices: CoordinatorServices?
+    var services: CoordinatorServices
 
-    func offlineDataSource(for listNode: ListNode) -> OfflineFolderChildrenDataSource {
-        let eventBusService = coordinatorServices?.eventBusService
+    init(services: CoordinatorServices) {
+        self.services = services
+    }
 
-        let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(with: coordinatorServices,
-                                                           listRequest: nil)
-        offlineFolderDrillViewModel.parentListNode = listNode
-        let resultViewModel = ResultsViewModel(with: coordinatorServices)
-        let globalSearchViewModel =
-            GlobalSearchViewModel(accountService: coordinatorServices?.accountService)
-        globalSearchViewModel.delegate = resultViewModel
-        globalSearchViewModel.displaySearchBar = false
-        globalSearchViewModel.displaySearchButton = false
-        resultViewModel.delegate = globalSearchViewModel
+    func offlineDataSource(for listNode: ListNode) -> OfflineFolderDrillViewModel {
+        let eventBusService = services.eventBusService
 
-        eventBusService?.register(observer: resultViewModel,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineFolderDrillViewModel,
+        let offlineFolderDrillModel = OfflineFolderDrillModel(services: services,
+                                                              parentListNode: listNode)
+        let offlineFolderDrillViewModel = OfflineFolderDrillViewModel(model: offlineFolderDrillModel)
+
+        eventBusService?.register(observer: offlineFolderDrillModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
-
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: offlineFolderDrillModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: offlineFolderDrillViewModel,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder, .site])
-
-        eventBusService?.register(observer: resultViewModel,
+        eventBusService?.register(observer: offlineFolderDrillModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: offlineFolderDrillViewModel,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-
-        eventBusService?.register(observer: offlineFolderDrillViewModel,
+        eventBusService?.register(observer: offlineFolderDrillModel,
                                   for: SyncStatusEvent.self,
                                   nodeTypes: [.file, .folder])
-
-        return (offlineFolderDrillViewModel, resultViewModel, globalSearchViewModel)
+        
+        return offlineFolderDrillViewModel
     }
 }

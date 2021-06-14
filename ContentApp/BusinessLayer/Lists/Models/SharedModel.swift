@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,81 +17,46 @@
 //
 
 import Foundation
-import UIKit
-import AlfrescoAuth
 import AlfrescoContent
 
-class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObservable {
-    var listRequest: SearchRequest?
-    var coordinatorServices: CoordinatorServices?
-    var supportedNodeTypes: [NodeType] = []
+class SharedModel: ListModelProtocol {
+    private var services: CoordinatorServices
+    internal var supportedNodeTypes: [NodeType] = []
+    
+    var delegate: ListModelDelegate?
+    var rawListNodes: [ListNode] = []
 
-    // MARK: - Init
-
-    required init(with coordinatorServices: CoordinatorServices?, listRequest: SearchRequest?) {
-        self.coordinatorServices = coordinatorServices
-        self.listRequest = listRequest
+    init(services: CoordinatorServices) {
+        self.services = services
     }
-
-    // MARK: - ListViewModelProtocol
 
     func isEmpty() -> Bool {
-        return results.isEmpty
-    }
-
-    func emptyList() -> EmptyListProtocol {
-        return EmptyFolder()
+        return rawListNodes.isEmpty
     }
 
     func numberOfItems(in section: Int) -> Int {
-        return results.count
-    }
-
-    func refreshList() {
-        refreshedList = true
-        currentPage = 1
-        request(with: nil)
+        return rawListNodes.count
     }
 
     func listNodes() -> [ListNode] {
-        return results
+        return rawListNodes
     }
-    
+
     func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
+        return rawListNodes[indexPath.row]
     }
 
-    func shouldDisplayListLoadingIndicator() -> Bool {
-        return self.shouldDisplayNextPageLoadingIndicator
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
     }
 
-    override func fetchItems(with requestPagination: RequestPagination, userInfo: Any?, completionHandler: @escaping PagedResponseCompletionHandler) {
-        request(with: requestPagination)
-    }
-
-    override func handlePage(results: [ListNode], pagination: Pagination?, error: Error?) {
-        updateResults(results: results, pagination: pagination, error: error)
-    }
-
-    override func updatedResults(results: [ListNode], pagination: Pagination) {
-        pageUpdatingDelegate?.didUpdateList(error: nil,
-                                            pagination: pagination)
-    }
-
-    func performListAction() {
-        // Do nothing
-    }
-
-    // MARK: - Public methods
-
-    func request(with paginationRequest: RequestPagination?) {
-        pageFetchingGroup.enter()
-        let accountService = coordinatorServices?.accountService
-        accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
+    func fetchItems(with requestPagination: RequestPagination,
+                    completionHandler: @escaping PagedResponseCompletionHandler) {
+        let accountService = services.accountService
+        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let skipCount = paginationRequest?.skipCount
-            let maxItems = paginationRequest?.maxItems ?? APIConstants.pageSize
+            let skipCount = requestPagination.skipCount
+            let maxItems = requestPagination.maxItems ?? APIConstants.pageSize
             SharedLinksAPI.listSharedLinks(skipCount: skipCount,
                                            maxItems: maxItems,
                                            _where: nil,
@@ -109,9 +74,9 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
                 }
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
-                                                          requestPagination: paginationRequest,
+                                                          requestPagination: requestPagination,
                                                           responsePagination: result?.list.pagination)
-                sSelf.handlePaginatedResponse(response: paginatedResponse)
+                completionHandler(paginatedResponse)
             }
         })
     }
@@ -119,8 +84,7 @@ class SharedViewModel: PageFetchingViewModel, ListViewModelProtocol, EventObserv
 
 // MARK: - Event observable
 
-extension SharedViewModel {
-
+extension SharedModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
         if let publishedEvent = event as? FavouriteEvent {
             handleFavorite(event: publishedEvent)
@@ -133,7 +97,7 @@ extension SharedViewModel {
 
     private func handleFavorite(event: FavouriteEvent) {
         let node = event.node
-        for listNode in results where listNode == node {
+        for listNode in rawListNodes where listNode == node {
             listNode.favorite = node.favorite
         }
     }
@@ -143,14 +107,15 @@ extension SharedViewModel {
         switch event.eventType {
         case .moveToTrash:
             if node.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: node) {
-                    results.remove(at: indexOfMovedNode)
+                if let indexOfMovedNode = rawListNodes.firstIndex(of: node) {
+                    rawListNodes.remove(at: indexOfMovedNode)
+                    delegate?.needsDisplayStateRefresh()
                 }
             } else {
-                refreshList()
+                delegate?.needsDataSourceReload()
             }
         case .restore:
-            refreshList()
+            delegate?.needsDataSourceReload()
         default: break
         }
     }
@@ -158,9 +123,14 @@ extension SharedViewModel {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
 
-        if let indexOfOfflineNode = results.firstIndex(of: node) {
-            results.remove(at: indexOfOfflineNode)
-            results.insert(node, at: indexOfOfflineNode)
+        if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
+            listNode.guid == node.guid
+        }) {
+            rawListNodes[indexOfOfflineNode] = node
+
+            let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
+            delegate?.forceDisplayRefresh(for: indexPath)
         }
     }
 }
+
