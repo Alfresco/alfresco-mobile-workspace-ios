@@ -52,7 +52,7 @@ class RecentModel: ListModelProtocol {
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        let listNode = listNode(for: indexPath)
+        let listNode = self.listNode(for: indexPath)
         if listNode.guid == listNodeSectionIdentifier {
             return listNode.title
         }
