@@ -41,13 +41,6 @@ protocol ListComponentActionDelegate: AnyObject {
     func performListAction()
 }
 
-protocol ListComponentPageUpdatingDelegate: AnyObject {
-    func didUpdateList(error: Error?,
-                       pagination: Pagination?)
-    func shouldDisplayCreateButton(enable: Bool)
-    func didUpdateListActionState(enable: Bool)
-}
-
 extension ListItemActionDelegate {
     func showNodeCreationSheet(delegate: NodeActionsViewModelDelegate) {
         // Do nothing
