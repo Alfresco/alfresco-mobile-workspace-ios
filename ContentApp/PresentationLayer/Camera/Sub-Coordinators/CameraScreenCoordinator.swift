@@ -89,7 +89,6 @@ class CameraScreenCoordinator: NSObject, Coordinator {
 
 extension CameraScreenCoordinator: CameraKitCaptureDelegate {
     func didEndReview(for capturedAssets: [CapturedAsset]) {
-        
         coordinatorServices.locationService?.stopUpdatingLocation()
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,

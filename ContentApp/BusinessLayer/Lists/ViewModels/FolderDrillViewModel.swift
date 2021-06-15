@@ -23,7 +23,7 @@ import AlfrescoContent
 
 class FolderDrillViewModel: ListComponentViewModel {
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        if model.listNode(for: indexPath).markedFor == .upload {
+        if model.listNode(for: indexPath).syncStatus == .error {
             return true
         }
         return false

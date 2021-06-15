@@ -208,18 +208,18 @@ class ListComponentViewController: SystemThemableViewController {
         guard let model = pageController?.dataSource,
               let viewModel = viewModel,
               let dataSource = self.dataSource else { return }
-        
+
         dataSource.state = forEach(model.listNodes()) { listNode in
             Cell<ListElementCollectionViewCell>()
                 .onSize { [weak self] context in
                     guard let sSelf = self else { return .zero}
-                    
+
                     return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
                                   height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
                 }.onSelect { [weak self] context in
                     guard let sSelf = self else { return }
                     let node = model.listNode(for: context.indexPath)
-                    
+
                     if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
                     if node.trashed == false {
                         sSelf.listItemActionDelegate?.showPreview(for: node,

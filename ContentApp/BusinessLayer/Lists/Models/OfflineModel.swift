@@ -115,7 +115,7 @@ extension OfflineModel: EventObservable {
 
     private func handleFavorite(event: FavouriteEvent) {
         let eventNode = event.node
-        for listNode in rawListNodes where listNode == eventNode {
+        for listNode in rawListNodes where listNode.guid == eventNode.guid {
             listNode.favorite = eventNode.favorite
         }
     }
@@ -125,7 +125,9 @@ extension OfflineModel: EventObservable {
         switch event.eventType {
         case .moveToTrash:
             if eventNode.nodeType == .file {
-                if let indexOfMovedNode = rawListNodes.firstIndex(of: eventNode) {
+                if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                    listNode.guid == eventNode.guid
+                }) {
                     rawListNodes.remove(at: indexOfMovedNode)
                     delegate?.needsDisplayStateRefresh()
                 }
@@ -143,7 +145,9 @@ extension OfflineModel: EventObservable {
         let eventNode = event.node
         switch event.eventType {
         case .removed:
-            if let indexOfNode = rawListNodes.firstIndex(of: eventNode) {
+            if let indexOfNode = rawListNodes.firstIndex(where: { listNode in
+                listNode.guid == eventNode.guid
+            }) {
                 rawListNodes.remove(at: indexOfNode)
             }
         default: break
@@ -154,7 +158,9 @@ extension OfflineModel: EventObservable {
 
     private func handleSyncStatus(event: SyncStatusEvent) {
         let eventNode = event.node
-        if let indexOfNode = rawListNodes.firstIndex(of: eventNode) {
+        if let indexOfNode = rawListNodes.firstIndex(where: { listNode in
+            listNode.guid == eventNode.guid
+        }) {
             rawListNodes[indexOfNode] = eventNode
             delegate?.needsDataSourceReload()
         }

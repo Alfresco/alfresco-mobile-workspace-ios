@@ -78,8 +78,9 @@ class ListElementCollectionViewCell: ListSelectableCell {
         case .error:
             subtitle.text = LocalizationConstants.Labels.uploadFailed
             stopRotateSyncIcon()
-        case .pending, .inProgress:
-            subtitle.text = LocalizationConstants.Labels.uploading
+        case .pending:
+            syncStatusImageView.image = UIImage(named: ListEntrySyncStatus.uploaded.rawValue)
+        case .inProgress:
             startRotateSyncIcon()
         default:
             subtitle.text = ""

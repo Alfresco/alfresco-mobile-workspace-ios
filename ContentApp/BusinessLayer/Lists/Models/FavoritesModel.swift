@@ -117,7 +117,9 @@ extension FavoritesModel: EventObservable {
         case .addToFavourite:
             delegate?.needsDataSourceReload()
         case .removeFromFavourites:
-            if let indexOfRemovedFavorite = rawListNodes.firstIndex(of: node) {
+            if let indexOfRemovedFavorite = rawListNodes.firstIndex(where: { listNode in
+                listNode.guid == node.guid
+            }) {
                 rawListNodes.remove(at: indexOfRemovedFavorite)
                 delegate?.needsDisplayStateRefresh()
             }
@@ -129,7 +131,9 @@ extension FavoritesModel: EventObservable {
         switch event.eventType {
         case .moveToTrash:
             if node.nodeType == .file {
-                if let indexOfMovedNode = rawListNodes.firstIndex(of: node) {
+                if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                    listNode.guid == node.guid
+                }) {
                     rawListNodes.remove(at: indexOfMovedNode)
                     delegate?.needsDisplayStateRefresh()
                 }

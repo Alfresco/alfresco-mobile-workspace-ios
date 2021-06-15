@@ -149,7 +149,7 @@ extension RecentModel: EventObservable {
 
     private func handleFavorite(event: FavouriteEvent) {
         let node = event.node
-        for listNode in rawListNodes where listNode == node {
+        for listNode in rawListNodes where listNode.guid == node.guid {
             listNode.favorite = node.favorite
         }
     }
@@ -159,7 +159,9 @@ extension RecentModel: EventObservable {
         switch event.eventType {
         case .moveToTrash:
             if node.nodeType == .file {
-                if let indexOfMovedNode = rawListNodes.firstIndex(of: node) {
+                if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                    listNode.guid == node.guid
+                }) {
                     rawListNodes.remove(at: indexOfMovedNode)
                     delegate?.needsDisplayStateRefresh()
                 }

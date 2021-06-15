@@ -97,7 +97,9 @@ extension TrashModel: EventObservable {
                 delegate?.needsDisplayStateRefresh()
             }
         case .restore, .permanentlyDelete:
-            if let indexOfRemovedFavorite = rawListNodes.firstIndex(of: node) {
+            if let indexOfRemovedFavorite = rawListNodes.firstIndex(where: { listNode in
+                listNode.guid == node.guid
+            }) {
                 rawListNodes.remove(at: indexOfRemovedFavorite)
                 delegate?.needsDisplayStateRefresh()
             }

@@ -23,15 +23,10 @@ class FolderDrillModel: ListModelProtocol {
     private var services: CoordinatorServices
     private let nodeOperations: NodeOperations
     private let uploadTransferDataAccessor = UploadTransferDataAccessor()
-    private var results: [ListNode] = []
     internal var supportedNodeTypes: [NodeType] = []
 
     var listNode: ListNode?
-    var rawListNodes: [ListNode] = [] {
-        didSet {
-            results = rawListNodes
-        }
-    }
+    var rawListNodes: [ListNode] = []
     weak var delegate: ListModelDelegate?
 
     init(listNode: ListNode?, services: CoordinatorServices) {
@@ -41,19 +36,19 @@ class FolderDrillModel: ListModelProtocol {
     }
 
     func isEmpty() -> Bool {
-        results.isEmpty
+        rawListNodes.isEmpty
     }
 
     func numberOfItems(in section: Int) -> Int {
-        return results.count
+        return rawListNodes.count
     }
 
     func listNodes() -> [ListNode] {
-        return results
+        return rawListNodes
     }
 
     func listNode(for indexPath: IndexPath) -> ListNode {
-        return results[indexPath.row]
+        return rawListNodes[indexPath.row]
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
@@ -165,11 +160,11 @@ class FolderDrillModel: ListModelProtocol {
     private func insert(uploadTransfers: [UploadTransfer], totalItems: Int64) {
         _ = uploadTransfers.map { transfer in
             let listNode = transfer.listNode()
-            if !results.contains(listNode) {
+            if !rawListNodes.contains(listNode) {
 
                 var insertionIndex = 0
 
-                for (index, node) in results.enumerated() {
+                for (index, node) in rawListNodes.enumerated() {
                     if node.isFolder {
                         insertionIndex = index + 1
                     } else {
@@ -185,13 +180,13 @@ class FolderDrillModel: ListModelProtocol {
                     }
                 }
 
-                if results.isEmpty {
-                    results.insert(listNode, at: 0)
-                } else if insertionIndex < results.count {
-                    results.insert(listNode, at: insertionIndex)
+                if rawListNodes.isEmpty {
+                    rawListNodes.insert(listNode, at: 0)
+                } else if insertionIndex < rawListNodes.count {
+                    rawListNodes.insert(listNode, at: insertionIndex)
                 } else if insertionIndex >= totalItems ||
-                            results.count + 1 == totalItems {
-                    results.insert(listNode, at: results.count)
+                            rawListNodes.count + 1 == totalItems {
+                    rawListNodes.insert(listNode, at: rawListNodes.count)
                 }
             }
         }
@@ -215,7 +210,7 @@ extension FolderDrillModel: EventObservable {
 
     private func handleFavorite(event: FavouriteEvent) {
         let node = event.node
-        for listNode in results where listNode == node {
+        for listNode in rawListNodes where listNode.guid == node.guid {
             listNode.favorite = node.favorite
         }
     }
@@ -225,8 +220,10 @@ extension FolderDrillModel: EventObservable {
         switch event.eventType {
         case .moveToTrash:
             if node.nodeType == .file {
-                if let indexOfMovedNode = results.firstIndex(of: node) {
-                    results.remove(at: indexOfMovedNode)
+                if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                    listNode.guid == node.guid
+                }) {
+                    rawListNodes.remove(at: indexOfMovedNode)
                     delegate?.needsDisplayStateRefresh()
                 }
             } else {
@@ -245,7 +242,7 @@ extension FolderDrillModel: EventObservable {
     private func handleOffline(event: OfflineEvent) {
         let node = event.node
 
-        if let indexOfOfflineNode = results.firstIndex(where: { listNode in
+        if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
             listNode.guid == node.guid
         }) {
             rawListNodes[indexOfOfflineNode] = node
@@ -258,8 +255,8 @@ extension FolderDrillModel: EventObservable {
     private func handleSyncStatus(event: SyncStatusEvent) {
         let eventNode = event.node
         guard eventNode.markedFor == .upload else { return }
-        for (index, listNode) in results.enumerated() where listNode.id == eventNode.id {
-            results[index] = eventNode
+        for (index, listNode) in rawListNodes.enumerated() where listNode.id == eventNode.id {
+            rawListNodes[index] = eventNode
             delegate?.needsDisplayStateRefresh()
             return
         }

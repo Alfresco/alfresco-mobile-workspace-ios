@@ -28,7 +28,7 @@ class UploadTransfer: Entity {
     var nodeDescription = ""
     var localFilenamePath = ""
     // objectbox: convert = { "default": ".undefined" }
-    var syncStatus: SyncStatus = .inProgress
+    var syncStatus: SyncStatus = .pending
 
     // Default initializer required by ObjectBox
 

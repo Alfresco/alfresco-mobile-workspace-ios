@@ -18,7 +18,6 @@
 
 import Foundation
 
-
 typealias RecentDataSource = (recentViewModel: RecentViewModel,
                               globalSearchViewModel: GlobalSearchViewModel)
 
