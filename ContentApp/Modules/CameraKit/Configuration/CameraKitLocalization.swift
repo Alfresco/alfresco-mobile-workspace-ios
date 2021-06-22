@@ -23,6 +23,7 @@ struct CameraKitLocalization {
     var onFlashText: String
     var offFlashText: String
     var photoMode: String
+    var videoMode: String
     var saveButton: String
     var previewScreenTitle: String
     var fileNameTextField: String

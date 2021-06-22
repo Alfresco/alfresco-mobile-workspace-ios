@@ -146,6 +146,10 @@ class ModeSelectorControl: UIControl {
         sliderStyle = style
         applyCurrentStyle()
     }
+    
+    func currentSelector() -> Int {
+        return currentSelection
+    }
 
     // MARK: - Private interface
 

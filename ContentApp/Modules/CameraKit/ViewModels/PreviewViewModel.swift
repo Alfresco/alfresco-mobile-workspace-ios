@@ -16,10 +16,10 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
 class PreviewViewModel {
-    let capturedAsset: CapturedAsset
+    private let capturedAsset: CapturedAsset
     
     // MARK: - Init
     
@@ -28,6 +28,30 @@ class PreviewViewModel {
     }
     
     // MARK: - Public Methods
+    
+    func isAssetVideo() -> Bool {
+        return capturedAsset.type == .video
+    }
+    
+    func videoUrl() -> URL {
+        return URL(fileURLWithPath: capturedAsset.path)
+    }
+    
+    func asset() -> CapturedAsset {
+        return capturedAsset
+    }
+    
+    func assetFilename() -> String {
+        return capturedAsset.fileName
+    }
+    
+    func assetDescription() -> String? {
+        return capturedAsset.description
+    }
+    
+    func assetThumbnailImage() -> UIImage? {
+        return capturedAsset.thumbnailImage()
+    }
     
     func updateMetadata(filename: String, description: String?) {
         capturedAsset.fileName = filename

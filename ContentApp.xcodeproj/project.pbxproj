@@ -293,6 +293,7 @@
 		E3FADB9725386AA200BA6F9B /* ActionsMenuGeneric.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9625386AA200BA6F9B /* ActionsMenuGeneric.swift */; };
 		E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */; };
 		F115D4712657DAE00049EF8D /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115D4702657DAE00049EF8D /* LocationService.swift */; };
+		F1244502266DF92000F35968 /* VideoCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1244501266DF92000F35968 /* VideoCaptureSession.swift */; };
 		F137B6D0260495FE00A60054 /* UINavigationBar+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */; };
 		F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */; };
 		F14E688A261702A9002FDEF9 /* CaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E6889261702A9002FDEF9 /* CaptureSession.swift */; };
@@ -647,6 +648,7 @@
 		E3FADB9C2538703000BA6F9B /* ActionMenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionMenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		EDBCCC9743F68B2977020A4A /* Pods-ContentAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.release.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		F115D4702657DAE00049EF8D /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		F1244501266DF92000F35968 /* VideoCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureSession.swift; sourceTree = "<group>"; };
 		F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Subviews.swift"; sourceTree = "<group>"; };
 		F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+IsEmpty.swift"; sourceTree = "<group>"; };
 		F14E6889261702A9002FDEF9 /* CaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSession.swift; sourceTree = "<group>"; };
@@ -1846,6 +1848,7 @@
 			children = (
 				F14E6889261702A9002FDEF9 /* CaptureSession.swift */,
 				F14E68962617157A002FDEF9 /* PhotoCaptureSession.swift */,
+				F1244501266DF92000F35968 /* VideoCaptureSession.swift */,
 			);
 			path = CaptureSessions;
 			sourceTree = "<group>";
@@ -2434,6 +2437,7 @@
 				E3CF862D24E69EDF001C86B5 /* FilePreviewViewModel.swift in Sources */,
 				1346FA07261DA4CF00336990 /* ModeSelector.swift in Sources */,
 				E3ABECE725519C4B005F0A66 /* MoveEvent.swift in Sources */,
+				F1244502266DF92000F35968 /* VideoCaptureSession.swift in Sources */,
 				B9E7D603249119370056292B /* AccountProtocol.swift in Sources */,
 				B9B7530525AC422B004F16E5 /* SyncService.swift in Sources */,
 				B9E7D60524911D380056292B /* BasicAuthAccount.swift in Sources */,

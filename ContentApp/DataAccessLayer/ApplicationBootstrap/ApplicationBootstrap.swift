@@ -141,6 +141,7 @@ class ApplicationBootstrap {
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
                                                  offFlashText: LocalizationConstants.Camera.offFlash,
                                                  photoMode: LocalizationConstants.Camera.photoMode,
+                                                 videoMode: LocalizationConstants.Camera.videoMode,
                                                  saveButton: LocalizationConstants.General.save,
                                                  previewScreenTitle:
                                                     LocalizationConstants.ScreenTitles.previewCaptureAsset,

@@ -17,6 +17,8 @@
 //
 
 import UIKit
+import AVKit
+import AVFoundation
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_OutlinedTextFields
@@ -27,6 +29,7 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var trashButton: UIButton!
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var capturedAssetImageView: UIImageView!
     
     @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
@@ -55,7 +58,7 @@ class PreviewViewController: UIViewController {
         applyLocalization()
         applyComponentsThemes()
         
-        fileNameTextField.text = previewViewModel?.capturedAsset.fileName
+        fileNameTextField.text = previewViewModel?.assetFilename()
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
@@ -63,7 +66,7 @@ class PreviewViewController: UIViewController {
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
-        if let image = previewViewModel?.capturedAsset.image() {
+        if let image = previewViewModel?.assetThumbnailImage() {
             capturedAssetImageView.image = image
             if image.imageOrientation == .down ||
                 image.imageOrientation == .up {
@@ -73,6 +76,9 @@ class PreviewViewController: UIViewController {
         capturedAssetImageView.layer.cornerRadius = 8.0
         
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
+        playButton.layer.cornerRadius = playButton.bounds.height / 2.0
+        
+        playButton.isHidden = !(previewViewModel?.isAssetVideo() ?? false)
         
         enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
         
@@ -90,7 +96,7 @@ class PreviewViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text,
-           let capturedAsset = previewViewModel?.capturedAsset {
+           let capturedAsset = previewViewModel?.asset() {
             previewViewModel?.updateMetadata(filename: filename,
                                              description: descriptionField.textView.text)
             cameraDelegate?.didEndReview(for: [capturedAsset])
@@ -99,13 +105,21 @@ class PreviewViewController: UIViewController {
     }
 
     @IBAction func trashButtonTapped(_ sender: UIButton) {
-        previewViewModel?.capturedAsset.deleteAsset()
+        previewViewModel?.asset().deleteAsset()
         navigationController?.popViewController(animated: true)
     }
-
+    
+    @IBAction func playButtonTapped(_ sender: UIButton) {
+        playVideoCaptured()
+    }
+    
     @IBAction func fullScreenTapGesture(_ sender: UITapGestureRecognizer) {
-        performSegue(withIdentifier: SegueIdentifiers.showFullScreen.rawValue,
-                     sender: nil)
+        if previewViewModel?.isAssetVideo() == true {
+            playVideoCaptured()
+        } else {
+            performSegue(withIdentifier: SegueIdentifiers.showFullScreen.rawValue,
+                         sender: nil)
+        }
     }
 
     @IBAction func contentViewTapGesture(_ sender: UITapGestureRecognizer) {
@@ -113,6 +127,16 @@ class PreviewViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func playVideoCaptured() {
+        guard let url = previewViewModel?.videoUrl() else { return }
+        let player = AVPlayer(url: url)
+        let playerVC = AVPlayerViewController()
+        playerVC.player = player
+        present(playerVC, animated: true) {
+            playerVC.player?.play()
+        }
+    }
     
     private func applyComponentsThemes() {
         guard let theme = CameraKit.theme else { return }
@@ -123,6 +147,9 @@ class PreviewViewController: UIViewController {
         
         trashButton.tintColor = theme.onSurface60Color
         trashButton.backgroundColor = theme.surface60Color
+        
+        playButton.tintColor = theme.onSurface60Color
+        playButton.backgroundColor = theme.surface60Color
         
         saveButton.applyContainedTheme(withScheme: theme.buttonScheme)
         saveButton.setBackgroundColor(theme.onSurface5Color, for: .disabled)
@@ -153,7 +180,7 @@ class PreviewViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showFullScreen.rawValue,
            let fscavc = segue.destination as? FullScreenCapturedAssetViewController {
-            fscavc.imageCapturedAsset = previewViewModel?.capturedAsset.image()
+            fscavc.imageCapturedAsset = previewViewModel?.assetThumbnailImage()
         }
     }
 }

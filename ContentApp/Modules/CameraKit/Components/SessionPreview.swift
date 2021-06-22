@@ -102,6 +102,12 @@ class SessionPreview: UIView {
     
     func add(session: CaptureSession) {
         self.session = session
+        
+        if session is VideoCaptureSession {
+            cameraMode = .video
+        } else  if session is PhotoCaptureSession {
+            cameraMode = .photo
+        }
     }
     
     func startSession() {
@@ -113,7 +119,15 @@ class SessionPreview: UIView {
     }
     
     func capture() {
-        session?.capture()
+        if let videoSession = session as? VideoCaptureSession {
+            if videoSession.isRecording {
+                videoSession.stopRecording()
+            } else {
+                videoSession.capture()
+            }
+        } else {
+            session?.capture()
+        }
     }
     
     func update(flashMode: FlashMode) {
@@ -125,6 +139,8 @@ class SessionPreview: UIView {
     func shouldDisplayFlash() -> Bool {
         if let photoSession = session as? PhotoCaptureSession {
             return photoSession.captureDeviceInput?.device.hasFlash ?? false
+        } else if let videoSession = session as? VideoCaptureSession {
+            return videoSession.captureDeviceInput?.device.hasTorch ?? false
         }
         return false
     }
@@ -142,6 +158,8 @@ class SessionPreview: UIView {
             case .position:
                 photoSession.cameraPosition = .back
             case .mode:
+                session = PhotoCaptureSession()
+                session?.aspectRatio = .ar4by3
                 cameraMode = .photo
             }
         }

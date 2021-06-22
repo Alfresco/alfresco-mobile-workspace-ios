@@ -209,7 +209,7 @@ class PhotoCaptureSession: CaptureSession {
     private func defaultFileName() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
+        return "\(prefixImageFileName)_\(dateFormatter.string(from: Date()))"
     }
 }
 

@@ -17,8 +17,10 @@
 //
 
 import UIKit
+import AVFoundation
 
-let prefixFileName = "IMG"
+let prefixImageFileName = "IMG"
+let prefixVideoFileName = "VIDEO"
 let extPhoto = "JPG"
 let extVideo = "MOV"
 let mimetypePhoto = "image/jpeg"
@@ -73,12 +75,35 @@ class CapturedAsset {
         self.path = locaFilePath
     }
     
+    init(type: CapturedAssetType,
+         fileName: String,
+         path: String) {
+        self.type = type
+        self.fileName = fileName
+        self.path = path
+    }
+    
     // MARK: - Public Helpers
     
-    func image() -> UIImage? {
-        if FileManager.default.fileExists(atPath: path) {
-            return UIImage(contentsOfFile: path)
+    func thumbnailImage() -> UIImage? {
+        switch type {
+        case .image:
+            if FileManager.default.fileExists(atPath: path) {
+                return UIImage(contentsOfFile: path)
+            }
+        case .video:
+            let asset = AVAsset(url: URL(fileURLWithPath: path))
+            let imageGenerator = AVAssetImageGenerator(asset: asset)
+            do {
+                let cgimage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 30),
+                                                             actualTime: nil)
+                let orientation = orientation(for: asset)
+                return UIImage(cgImage: cgimage, scale: 1.0, orientation: orientation)
+            } catch {
+                return nil
+            }
         }
+        
         return nil
     }
     
@@ -108,5 +133,24 @@ class CapturedAsset {
 
     private func uniqueIdentifier() -> String {
         return String(Date().timeIntervalSince1970)
+    }
+    
+    private func orientation(for asset: AVAsset) -> UIImage.Orientation {
+        guard let transform = asset.tracks(withMediaType: AVMediaType.video).first?.preferredTransform else {
+            return .right
+        }
+        
+        let size = asset.tracks(withMediaType: AVMediaType.video).first?.naturalSize ?? .zero
+        
+        switch (transform.tx, transform.ty) {
+        case (0, 0):
+            return .down
+        case (size.width, size.height):
+            return .up
+        case (0, size.width):
+            return .left
+        default:
+            return .right
+        }
     }
 }

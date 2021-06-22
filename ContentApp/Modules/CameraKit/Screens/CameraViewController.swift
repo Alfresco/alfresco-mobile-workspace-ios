@@ -20,6 +20,8 @@ import UIKit
 
 let animationRotateCameraButtons = 0.5
 let animationFadeView = 0.2
+let photoSlider = 0
+let videoSlider = 1
 
 class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
@@ -44,7 +46,7 @@ class CameraViewController: UIViewController {
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
 
     private var zoomSliderTimer: Timer?
-    private var cameraSession: PhotoCaptureSession?
+    private var cameraSession: CaptureSession?
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -78,7 +80,7 @@ class CameraViewController: UIViewController {
         super.viewDidAppear(animated)
         cameraViewModel?.deletePreviousCapture()
         if cameraSession == nil {
-            setUpCameraSession()
+            setUpCameraSession(for: cameraSlider.currentSelector())
         }
     }
     
@@ -108,7 +110,9 @@ class CameraViewController: UIViewController {
     }
     
     @IBAction func captureButtonTapped(_ sender: CameraButton) {
-        shutterButton.isUserInteractionEnabled = false
+        if cameraSlider.currentSelector() == photoSlider {
+            shutterButton.isUserInteractionEnabled = false
+        }
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
@@ -135,13 +139,23 @@ class CameraViewController: UIViewController {
         let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
-        shutterButton.buttonInput = .photo
+        shutterButton.buttonInput = (cameraSlider.currentSelector() == photoSlider) ? .photo : .video
         shutterButton.update(style: style)
     }
     
-    private func setUpCameraSession() {
-        let session = PhotoCaptureSession()
-        session.aspectRatio = .ar4by3
+    private func setUpCameraSession(for slider: Int) {
+        setUpShutterButton()
+
+        var session: CaptureSession
+        
+        if slider == photoSlider {
+            session = PhotoCaptureSession()
+            session.aspectRatio = .ar4by3
+        } else {
+            session = VideoCaptureSession()
+            session.aspectRatio = .ar16by9
+        }
+
         session.delegate = cameraViewModel
         session.uiDelegate = self
         session.mediaFilesFolderPath = cameraViewModel?.folderToSavePath
@@ -150,6 +164,8 @@ class CameraViewController: UIViewController {
 
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
         cameraSession = session
+        
+        configureViewsLayout(for: view.bounds.size)
     }
     
     private func setUpModeSelector() {
@@ -160,7 +176,8 @@ class CameraViewController: UIViewController {
                                             optionFont: theme.subtitle2Font,
                                             optionBackgroundColor: theme.surface60Color)
         
-        cameraSlider.addSlider(entries: ModeSelectorEntry(entryName: localization.photoMode))
+        cameraSlider.addSlider(entries: ModeSelectorEntry(entryName: localization.photoMode),
+                               ModeSelectorEntry(entryName: localization.videoMode))
         cameraSlider.update(style: style)
         cameraSlider.delegate = self
     }
@@ -281,10 +298,12 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
-        if currentSelection == 0 && sessionPreview.cameraMode == .photo {
+        if (currentSelection == photoSlider && sessionPreview.cameraMode == .photo) ||
+            (currentSelection == videoSlider && sessionPreview.cameraMode == .video) {
             // no need to reset
             return
         }
+        setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
     }

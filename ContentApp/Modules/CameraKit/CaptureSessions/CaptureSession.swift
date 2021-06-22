@@ -136,7 +136,8 @@ class CaptureSession: NSObject {
 
         for format in input.device.formats {
             let dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
-            if dimension.width >= width && dimension.height >= height {
+            if (dimension.width == width && dimension.height == height) ||
+                (dimension.width == height && dimension.height == width) {
                 for range in format.videoSupportedFrameRateRanges {
                     if Int(range.maxFrameRate) >= frameRate &&
                         Int(range.minFrameRate) <= frameRate {

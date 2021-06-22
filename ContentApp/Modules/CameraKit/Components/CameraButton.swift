@@ -79,6 +79,7 @@ class CameraButton: UIButton {
             
             pathLayer?.add(colorChange, forKey: "darkColor")
             isSelected = !isSelected
+            backgroundColor = style.outerRingColor
             
         } else {
             isSelected = true
@@ -93,6 +94,7 @@ class CameraButton: UIButton {
         if buttonInput == .video {
             morph.fillMode = .forwards
             morph.isRemovedOnCompletion = false
+            backgroundColor = style.outerRingColor
         }
         morph.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
         pathLayer?.add(morph, forKey: "")

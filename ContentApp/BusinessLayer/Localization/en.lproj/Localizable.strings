@@ -175,7 +175,7 @@
 "action-menu-create-folder" = "New folder";
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
-"action-menu-create-media" = "Take a photo";
+"action-menu-create-media" = "Take a photo or video";
 "action-menu-upload-media" = "Upload photos or videos";
 
 // MARK: - Dialog
@@ -212,6 +212,7 @@
 
 // MARK: - Camera
 "photo-mode" = "Photo";
+"video-mode" = "Video";
 "auto-flash" = "Auto";
 "on-flash" = "On";
 "off-flash" = "Off";

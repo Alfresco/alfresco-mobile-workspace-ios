@@ -60,6 +60,10 @@ enum CameraAspectRatio {
             }
         }
     }
+    
+    var frameRate: CMTimeScale {
+        return CMTimeScale(30.0)
+    }
 }
 
 enum DeviceType {
@@ -121,6 +125,15 @@ enum FlashMode {
         case .auto: return .auto
         }
     }
+    
+    var captureTorchMode: AVCaptureDevice.TorchMode {
+        switch self {
+        case .off: return .off
+        case .on: return .on
+        case .auto: return .auto
+        }
+    }
+
     var icon: UIImage? {
         switch self {
         case .off: return UIImage(named: "ic-camera-flash-off")
