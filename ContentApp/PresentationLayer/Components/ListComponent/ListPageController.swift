@@ -54,8 +54,9 @@ class ListPageController: ListPageControllerProtocol {
     var totalItems: Int64 = 0
     var hasMoreItems = true
     var shouldDisplayNextPageLoadingIndicator = false
-
-    private var shouldReloadPages = false
+    
+    private var shouldRefreshList = true
+    private var requestInProgress = false
 
     init(dataSource: ListModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
@@ -80,16 +81,16 @@ class ListPageController: ListPageControllerProtocol {
             }
         }
 
-        if hasMoreItems {
-            if shouldReloadPages {
+        if hasMoreItems && !requestInProgress {
+            if shouldRefreshList {
                 pageSkipCount = 0
-                shouldReloadPages = false
+                shouldRefreshList = false
             } else {
                 pageSkipCount = dataSource.rawListNodes.isEmpty ? 0 : dataSource.rawListNodes.count
             }
             let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
                                              skipCount: pageSkipCount)
-
+            requestInProgress = true
             dataSource.fetchItems(with: nextPage) { [weak self] paginatedResponse in
                 guard let sSelf = self else { return }
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
@@ -100,7 +101,7 @@ class ListPageController: ListPageControllerProtocol {
     func refreshList() {
         currentPage = 1
         hasMoreItems = true
-        shouldReloadPages = true
+        shouldRefreshList = true
 
         fetchNextPage()
     }
@@ -114,6 +115,7 @@ class ListPageController: ListPageControllerProtocol {
     // MARK: - Private interface
 
     private func handlePaginatedResponse(response: PaginatedResponse) {
+        requestInProgress = false
         if let error = response.error {
             update(with: [],
                    pagination: nil,
