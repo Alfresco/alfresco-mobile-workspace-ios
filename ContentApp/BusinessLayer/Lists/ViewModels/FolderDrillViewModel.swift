@@ -22,13 +22,6 @@ import AlfrescoAuth
 import AlfrescoContent
 
 class FolderDrillViewModel: ListComponentViewModel {
-    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        if model.listNode(for: indexPath).syncStatus == .error {
-            return true
-        }
-        return false
-    }
-
     override func shouldDisplayCreateButton() -> Bool {
         guard let model = model as? FolderDrillModel,
               let listNode = model.listNode else { return true }
