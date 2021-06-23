@@ -83,9 +83,12 @@ class FolderDrillModel: ListModelProtocol {
                 let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
                     guard let sSelf = self else { return }
                     sSelf.insert(uploadTransfers: uploadTransfers,
+                                 to: &sSelf.rawListNodes,
                                  totalItems: responsePagination?.totalItems ?? 0)
+                    sSelf.delegate?.needsDisplayStateRefresh()
                 }
                 sSelf.insert(uploadTransfers: uploadTransfers,
+                             to: &listNodes,
                              totalItems: responsePagination?.totalItems ?? 0)
                 let paginatedResponse = PaginatedResponse(results: listNodes,
                                                           error: error,
@@ -157,14 +160,15 @@ class FolderDrillModel: ListModelProtocol {
         }
     }
 
-    private func insert(uploadTransfers: [UploadTransfer], totalItems: Int64) {
-        _ = uploadTransfers.map { transfer in
+    private func insert(uploadTransfers: [UploadTransfer],
+                        to list: inout [ListNode],
+                        totalItems: Int64) {
+        uploadTransfers.forEach { transfer in
             let listNode = transfer.listNode()
-            if !rawListNodes.contains(listNode) {
-
+            if !list.contains(listNode) {
                 var insertionIndex = 0
 
-                for (index, node) in rawListNodes.enumerated() {
+                for (index, node) in list.enumerated() {
                     if node.isFolder {
                         insertionIndex = index + 1
                     } else {
@@ -180,13 +184,13 @@ class FolderDrillModel: ListModelProtocol {
                     }
                 }
 
-                if rawListNodes.isEmpty {
-                    rawListNodes.insert(listNode, at: 0)
-                } else if insertionIndex < rawListNodes.count {
-                    rawListNodes.insert(listNode, at: insertionIndex)
+                if list.isEmpty {
+                    list.insert(listNode, at: 0)
+                } else if insertionIndex < list.count {
+                    list.insert(listNode, at: insertionIndex)
                 } else if insertionIndex >= totalItems ||
-                            rawListNodes.count + 1 == totalItems {
-                    rawListNodes.insert(listNode, at: rawListNodes.count)
+                            list.count + 1 == totalItems {
+                    list.insert(listNode, at: list.count)
                 }
             }
         }
