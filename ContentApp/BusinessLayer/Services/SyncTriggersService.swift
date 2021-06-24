@@ -99,8 +99,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
 
         if type == .nodeMarkedOffline ||
-            type == .nodeRemovedFromOffline ||
-            type == .userDidInitiateUploadTransfer {
+            type == .nodeRemovedFromOffline {
             syncDidTriedToStartWhenSyncing = true
             startDebounceTimer()
         }
