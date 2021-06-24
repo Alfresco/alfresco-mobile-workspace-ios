@@ -168,9 +168,11 @@ class ListPageController: ListPageControllerProtocol {
                 self.dataSource.rawListNodes.append(contentsOf: results)
             }
 
-            if let pagination = pagination {
+            if let totalItems = pagination?.totalItems {
+                // Because the list node collection could mutate in certain situations: upload,
+                // consider counts past the raw collection size
                 shouldDisplayNextPageLoadingIndicator =
-                    (Int64(self.dataSource.rawListNodes.count) == pagination.totalItems) ? false : true
+                    (Int64(self.dataSource.rawListNodes.count) >= totalItems) ? false : true
             }
         }
     }
@@ -180,8 +182,12 @@ class ListPageController: ListPageControllerProtocol {
         if !results.isEmpty {
             self.dataSource.rawListNodes = results
 
-            shouldDisplayNextPageLoadingIndicator =
-                (Int64(results.count) == pagination?.totalItems) ? false : true
+            if let totalItems = pagination?.totalItems {
+                // Because the list node collection could mutate in certain situations: upload,
+                // consider counts past the raw collection size
+                shouldDisplayNextPageLoadingIndicator =
+                    (Int64(results.count) >= totalItems) ? false : true
+            }
         }
     }
 }

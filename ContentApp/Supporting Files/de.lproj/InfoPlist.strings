@@ -20,4 +20,4 @@ NSPhotoLibraryUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotomed
 NSPhotoLibraryAddUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotomediathek in diese App hochladen.";
 NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
 NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the metadata of captured photos.";
-NSMicrophoneUsageDescription = "Mobile Workspace requires microphone access to capture audios for upload.";
+NSMicrophoneUsageDescription = "Mobile Workspace requires microphone access to capture videos for upload.";
