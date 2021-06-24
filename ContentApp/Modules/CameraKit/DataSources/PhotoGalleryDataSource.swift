@@ -100,6 +100,7 @@ class PhotoGalleryDataSource {
         var capturedAssets: [CapturedAsset] = []
         for (index, select) in selectedIndexAssets.enumerated() where select {
             fetchGroup.enter()
+
             let galleryAsset = asset(for: IndexPath(row: index, section: 0))
             fetchPath(for: galleryAsset) { [weak self] assetPath in
                 guard let sSelf = self else { return }
@@ -108,30 +109,12 @@ class PhotoGalleryDataSource {
                     let assetType = (galleryAsset.mediaType == .video ? CapturedAssetType.video : .image)
                     let fileName = sSelf.fileName(for: galleryAsset)
 
-                    var capturedAsset: CapturedAsset?
+                    sSelf.handleFetchedAsset(with: path, fileName: fileName, assetType: assetType) { capturedAsset in
+                        capturedAssets.append(capturedAsset)
 
-                    switch assetType {
-                    case .image:
-                        let image = UIImage(contentsOfFile: path)
-                        if let assetData = image?.jpegData(compressionQuality: 1.0) {
-                            capturedAsset = CapturedAsset(type: assetType,
-                                                          fileName: fileName,
-                                                          data: assetData,
-                                                          saveIn: sSelf.folderToSavePath)
-                        }
-                    case .video:
-                        capturedAsset = CapturedAsset(type: assetType,
-                                                      fileName: fileName,
-                                                      path: path,
-                                                      saveIn: sSelf.folderToSavePath)
-                    }
-
-                    if let asset = capturedAsset {
-                        capturedAssets.append(asset)
+                        fetchGroup.leave()
                     }
                 }
-
-                fetchGroup.leave()
             }
         }
 
@@ -151,25 +134,57 @@ class PhotoGalleryDataSource {
 
     private func fetchPath(for asset: PHAsset,
                            completionHandler: @escaping (String?) -> Void) {
-        if asset.mediaType == .image {
-            let options = PHContentEditingInputRequestOptions()
-            options.isNetworkAccessAllowed = true
-            asset.requestContentEditingInput(with: options) { (input, _) in
-                completionHandler(input?.fullSizeImageURL?.path)
+        let workerQueue = CameraKit.cameraWorkerQueue
+        workerQueue.async {
+            if asset.mediaType == .image {
+                let options = PHContentEditingInputRequestOptions()
+                options.isNetworkAccessAllowed = true
+                asset.requestContentEditingInput(with: options) { (input, _) in
+                    completionHandler(input?.fullSizeImageURL?.path)
+                }
+            } else {
+                let options = PHVideoRequestOptions()
+                options.isNetworkAccessAllowed = true
+                options.version = .original
+                PHImageManager.default().requestAVAsset(forVideo: asset,
+                                                        options: options,
+                                                        resultHandler: { (asset, audioMix, info) in
+                                                            if let assetURL = asset as? AVURLAsset {
+                                                                completionHandler(assetURL.url.path)
+                                                            } else {
+                                                                completionHandler(nil)
+                                                            }
+                                                        })
             }
-        } else {
-            let options = PHVideoRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.version = .original
-            PHImageManager.default().requestAVAsset(forVideo: asset,
-                                                    options: options,
-                                                    resultHandler: { (asset, audioMix, info) in
-                                                        if let assetURL = asset as? AVURLAsset {
-                                                            completionHandler(assetURL.url.path)
-                                                        } else {
-                                                            completionHandler(nil)
-                                                        }
-                                                    })
+        }
+    }
+
+    private func handleFetchedAsset(with path: String,
+                                    fileName: String,
+                                    assetType: CapturedAssetType,
+                                    completionHandler: @escaping (CapturedAsset) -> Void) {
+        let workerQueue = CameraKit.cameraWorkerQueue
+
+        workerQueue.async { [weak self] in
+            guard let sSelf = self else { return }
+
+            switch assetType {
+            case .image:
+                let image = UIImage(contentsOfFile: path)
+                if let assetData = image?.jpegData(compressionQuality: 1.0) {
+                    let capturedAsset = CapturedAsset(type: assetType,
+                                                  fileName: fileName,
+                                                  data: assetData,
+                                                  saveIn: sSelf.folderToSavePath)
+                    completionHandler(capturedAsset)
+                }
+            case .video:
+                let capturedAsset = CapturedAsset(type: assetType,
+                                                  fileName: fileName,
+                                                  path: path,
+                                                  saveIn: sSelf.folderToSavePath)
+                completionHandler(capturedAsset)
+            }
         }
     }
 }

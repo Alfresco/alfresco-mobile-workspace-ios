@@ -75,9 +75,6 @@ class ListElementCollectionViewCell: ListSelectableCell {
     
     private func applyLayoutForUploading() {
         switch syncStatus {
-        case .error:
-            subtitle.text = LocalizationConstants.Labels.uploadFailed
-            stopRotateSyncIcon()
         case .pending:
             syncStatusImageView.image = UIImage(named: ListEntrySyncStatus.uploaded.rawValue)
         case .inProgress:
