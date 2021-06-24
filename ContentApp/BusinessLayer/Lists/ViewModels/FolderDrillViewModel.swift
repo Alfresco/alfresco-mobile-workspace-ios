@@ -27,4 +27,15 @@ class FolderDrillViewModel: ListComponentViewModel {
               let listNode = model.listNode else { return true }
         return listNode.hasPermissionToCreate()
     }
+
+    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        switch model.syncStatusForNode(at: indexPath) {
+        case .pending:
+            return false
+        case .inProgress:
+            return false
+        default:
+            return true
+        }
+    }
 }
