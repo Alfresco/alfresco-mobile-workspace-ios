@@ -54,9 +54,9 @@ enum CameraAspectRatio {
         case .ar16by9:
             if UIDevice.current.orientation.isLandscape &&
                 UIDevice.current.userInterfaceIdiom == .pad {
-                return CGSize(width: 1920, height: 1080)
+                return CGSize(width: 3840, height: 2160)
             } else {
-                return CGSize(width: 1080, height: 1920)
+                return CGSize(width: 2160, height: 3840)
             }
         }
     }

@@ -46,24 +46,21 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         
         self.navigationViewController = navigationViewController
         
-        coordinatorServices.locationService?.requestAuhtorizationForLocatioInUse()
-        
         requestAuthorizationForCameraUsage { [weak self] (granted) in
+            guard let sSelf = self else { return }
             if granted {
-                DispatchQueue.main.async {
-                    guard let sSelf = self else { return }
-                    sSelf.presenter.present(navigationViewController,
-                                            animated: true)
+                sSelf.requestAuthorizationForMicrofone { granted in
+                    sSelf.coordinatorServices.locationService?.requestAuhtorizationForLocatioInUse()
+                    DispatchQueue.main.async {
+                        guard let sSelf = self else { return }
+                        sSelf.presenter.present(navigationViewController,
+                                                animated: true)
+                    }
                 }
             } else {
                 DispatchQueue.main.async {
                     guard let sSelf = self else { return }
-                    let privacyVC = PrivacyNoticeViewController.instantiateViewController()
-                    privacyVC.viewModel = PrivacyNoticeCameraModel()
-                    privacyVC.coordinatorServices = sSelf.coordinatorServices
-                    sSelf.presenter.present(privacyVC,
-                                            animated: true,
-                                            completion: nil)
+                    sSelf.presentCameraPrivacyNotice()
                 }
             }
         }
@@ -82,6 +79,21 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         default:
             completion(false)
         }
+    }
+    
+    private func requestAuthorizationForMicrofone(completion: @escaping ((_ granted: Bool) -> Void)) {
+        AVAudioSession.sharedInstance().requestRecordPermission { granted in
+            completion(granted)
+        }
+    }
+    
+    private func presentCameraPrivacyNotice() {
+        let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+        privacyVC.viewModel = PrivacyNoticeCameraModel()
+        privacyVC.coordinatorServices = coordinatorServices
+        presenter.present(privacyVC,
+                          animated: true,
+                          completion: nil)
     }
 }
 

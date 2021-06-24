@@ -133,16 +133,13 @@ class SessionPreview: UIView {
     func update(flashMode: FlashMode) {
         if let photoSession = session as? PhotoCaptureSession {
             photoSession.flashMode = flashMode
+        } else if let videoSession = session as? VideoCaptureSession {
+            videoSession.flashMode = flashMode
         }
     }
     
     func shouldDisplayFlash() -> Bool {
-        if let photoSession = session as? PhotoCaptureSession {
-            return photoSession.captureDeviceInput?.device.hasFlash ?? false
-        } else if let videoSession = session as? VideoCaptureSession {
-            return videoSession.captureDeviceInput?.device.hasTorch ?? false
-        }
-        return false
+        return session?.shouldDisplayFlashMode() ?? false
     }
     
     func reset(settings: [CameraSettings]) {
@@ -158,17 +155,17 @@ class SessionPreview: UIView {
             case .position:
                 photoSession.cameraPosition = .back
             case .mode:
-                session = PhotoCaptureSession()
-                session?.aspectRatio = .ar4by3
+                let cameraPosition = photoSession.cameraPosition
+                let newSession = PhotoCaptureSession()
+                newSession.cameraPosition = cameraPosition
+                session = newSession
                 cameraMode = .photo
             }
         }
     }
     
     func changeCameraPosition() {
-        if let photoSession = session as? PhotoCaptureSession {
-            photoSession.cameraPosition = (photoSession.cameraPosition == .back) ? .front : .back
-        }
+        session?.toggleCameraPosition()
     }
 
     func aspectRatio() -> CameraAspectRatio {

@@ -22,51 +22,11 @@ import UIKit
 class VideoCaptureSession: CaptureSession {
     
     var isRecording = false
-    let movieOutput = AVCaptureMovieFileOutput()
     var videoFileName: String?
+    let movieOutput = AVCaptureMovieFileOutput()
+    let sessionPresets: [AVCaptureSession.Preset] = [.hd4K3840x2160, .hd1920x1080, .hd1280x720, .vga640x480]
     
-    var cameraPosition = CameraPosition.back {
-        didSet {
-            do {
-                let deviceInput = try CaptureSession.capture(deviceInput: cameraPosition.deviceType)
-                zoom = naturalZoomFactor
-                captureDeviceInput = deviceInput
-            } catch let error {
-                AlfrescoLog.error(error)
-            }
-        }
-    }
-    
-    var captureDeviceInput: AVCaptureDeviceInput? {
-        didSet {
-            if let oldValue = oldValue {
-                session.removeInput(oldValue)
-            }
-            if let captureDeviceInput = captureDeviceInput {
-                session.addInput(captureDeviceInput)
-            }
-        }
-    }
-    
-    override var zoom: Float {
-        didSet {
-            guard let device = captureDeviceInput?.device else { return }
-            do {
-                try device.lockForConfiguration()
-                device.videoZoomFactor = CGFloat(zoom)
-                device.unlockForConfiguration()
-            } catch {
-                AlfrescoLog.error("An unexpected error occured while zooming.")
-            }
-            uiDelegate?.didChange(zoom: zoom)
-        }
-    }
-
-    var naturalZoomFactor: Float {
-        return Float(captureDeviceInput?.device.neutralZoomFactor ?? 1.0)
-    }
-    
-    var flashMode = FlashMode.auto {
+    override var flashMode: FlashMode {
         didSet {
             guard let device = captureDeviceInput?.device else { return }
             
@@ -78,33 +38,6 @@ class VideoCaptureSession: CaptureSession {
                 device.unlockForConfiguration()
             } catch {
                 AlfrescoLog.error("An unexpected error occured while activated tourch.")
-            }
-        }
-    }
-    
-    override var aspectRatio: CameraAspectRatio {
-        didSet {
-            resolution = aspectRatio.size
-        }
-    }
-    
-    override var resolution: CGSize {
-        didSet {
-            guard let deviceInput = captureDeviceInput else { return }
-            do {
-                try deviceInput.device.lockForConfiguration()
-                if let format = CaptureSession.device(input: deviceInput,
-                                                      resolution: resolution) {
-                    deviceInput.device.activeFormat = format
-                } else {
-                    session.sessionPreset = .photo
-                }
-                let cmTime = CMTime(value: 1, timescale: aspectRatio.frameRate)
-                deviceInput.device.activeVideoMinFrameDuration = cmTime
-                deviceInput.device.activeVideoMaxFrameDuration = cmTime
-                deviceInput.device.unlockForConfiguration()
-            } catch {
-                AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
             }
         }
     }
@@ -130,35 +63,61 @@ class VideoCaptureSession: CaptureSession {
     
     // MARK: - Public Methods
     
+    func stopRecording() {
+        movieOutput.stopRecording()
+    }
+    
     override func capture() {
         guard !isRecording,
               let mediaFolderPath = mediaFilesFolderPath else { return }
         
         var videoURL = URL(fileURLWithPath: mediaFolderPath)
-        let fileName = defaultFileName()
+        let fileName = defaultFileName(with: prefixVideoFileName)
         videoFileName = fileName
         videoURL.appendPathComponent("\(fileName).\(extVideo)")
         if let connection = movieOutput.connection(with: .video) {
             connection.videoOrientation = lastOrientation.captureOrientation
         }
-        
+        addGPSLocationData()
         movieOutput.startRecording(to: videoURL, recordingDelegate: self)
     }
     
-    func stopRecording() {
-        movieOutput.stopRecording()
+    override func shouldDisplayFlashMode() -> Bool {
+        return captureDeviceInput?.device.hasTorch ?? false
     }
     
-    func togglePosition() {
+    override func toggleCameraPosition() {
         cameraPosition = cameraPosition == .back ? .front : .back
+    }
+    
+    override func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
+        do {
+            try deviceInput.device.lockForConfiguration()
+            for preset in sessionPresets {
+                if deviceInput.device.supportsSessionPreset(preset) {
+                    session.sessionPreset = preset
+                    break
+                }
+            }
+            let cmTime = CMTime(value: 1, timescale: aspectRatio.frameRate)
+            deviceInput.device.activeVideoMinFrameDuration = cmTime
+            deviceInput.device.activeVideoMaxFrameDuration = cmTime
+            deviceInput.device.unlockForConfiguration()
+        } catch {
+            AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
+        }
     }
     
     // MARK: - Private Methods
     
-    private func defaultFileName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixVideoFileName)_\(dateFormatter.string(from: Date()))"
+    private func addGPSLocationData() {
+        guard let gpsDictionary = CameraKit.location else { return }
+        
+        let gpsProperties = AVMutableMetadataItem()
+        gpsProperties.identifier = .quickTimeMetadataLocationISO6709
+        gpsProperties.value = gpsDictionary as (NSCopying & NSObjectProtocol)?
+        gpsProperties.dataType = AVMetadataIdentifier.quickTimeMetadataLocationISO6709.rawValue
+        movieOutput.metadata?.append(gpsProperties)
     }
 }
 
@@ -180,8 +139,9 @@ extension VideoCaptureSession: AVCaptureFileOutputRecordingDelegate {
         if let error = error {
             delegate?.captured(asset: nil, error: error)
         } else {
+            let filename = videoFileName ?? defaultFileName(with: prefixVideoFileName)
             delegate?.captured(asset: CapturedAsset(type: .video,
-                                                    fileName: videoFileName ?? defaultFileName(),
+                                                    fileName: filename,
                                                     path: outputFileURL.path),
                                error: nil)
         }

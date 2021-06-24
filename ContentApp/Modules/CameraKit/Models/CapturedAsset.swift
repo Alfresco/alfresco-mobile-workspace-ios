@@ -144,9 +144,9 @@ class CapturedAsset {
         
         switch (transform.tx, transform.ty) {
         case (0, 0):
-            return .down
-        case (size.width, size.height):
             return .up
+        case (size.width, size.height):
+            return .down
         case (0, size.width):
             return .left
         default:

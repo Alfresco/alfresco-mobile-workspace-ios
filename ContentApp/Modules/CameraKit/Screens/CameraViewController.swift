@@ -119,9 +119,9 @@ class CameraViewController: UIViewController {
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
-        flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
         sessionPreview.changeCameraPosition()
-        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
+        flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+        sessionPreview.reset(settings: [.flash, .focus, .zoom])
         apply(fade: true, to: flashMenuView)
 
         shutterButton.isUserInteractionEnabled = false
