@@ -118,10 +118,14 @@ class CameraViewController: UIViewController {
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
-        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         sessionPreview.changeCameraPosition()
+        setUpCameraSession(for: cameraSlider.currentSelector())
+        
+        flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+
         sessionPreview.reset(settings: [.flash, .focus, .zoom])
+        
         apply(fade: true, to: flashMenuView)
 
         shutterButton.isUserInteractionEnabled = false
@@ -149,11 +153,9 @@ class CameraViewController: UIViewController {
         var session: CaptureSession
         
         if slider == photoSlider {
-            session = PhotoCaptureSession()
-            session.aspectRatio = .ar4by3
+            session = PhotoCaptureSession(position: sessionPreview.cameraPosition)
         } else {
-            session = VideoCaptureSession()
-            session.aspectRatio = .ar16by9
+            session = VideoCaptureSession(position: sessionPreview.cameraPosition)
         }
 
         session.delegate = cameraViewModel

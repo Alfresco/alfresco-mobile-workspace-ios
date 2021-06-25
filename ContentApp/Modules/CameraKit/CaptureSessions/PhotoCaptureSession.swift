@@ -26,10 +26,11 @@ class PhotoCaptureSession: CaptureSession {
     
     // MARK: - Init
     
-    init(position: CameraPosition = .back) {
+    init(position: CameraPosition = .back, aspectRatio: CameraAspectRatio = .ar4by3) {
         super.init()
         defer {
             self.cameraPosition = position
+            self.aspectRatio = aspectRatio
         }
         
         self.photoOutput.isHighResolutionCaptureEnabled = true

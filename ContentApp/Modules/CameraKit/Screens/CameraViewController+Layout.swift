@@ -87,8 +87,7 @@ extension CameraViewController {
         var zoomViewGuide: CGFloat = 0.0
         var shutterViewGuide: CGFloat = 0.0
         var modeViewGuide: CGFloat = 0.0
-        
-        //TODO: tested
+
         let finderView16by9 = min(viewHeight, (viewWidth * CameraAspectRatio.ar16by9.value))
         let finderView4by3 = min(viewHeight, (viewWidth * CameraAspectRatio.ar4by3.value))
         let expandedFinderView = max(finderView4by3, finderView16by9)

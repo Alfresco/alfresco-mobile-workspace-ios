@@ -51,6 +51,8 @@ class SessionPreview: UIView {
         }
     }
 
+    var cameraPosition: CameraPosition = .back
+    
     var zoom: Float = 1.0 {
         didSet {
             lastScale = zoom
@@ -119,23 +121,11 @@ class SessionPreview: UIView {
     }
     
     func capture() {
-        if let videoSession = session as? VideoCaptureSession {
-            if videoSession.isRecording {
-                videoSession.stopRecording()
-            } else {
-                videoSession.capture()
-            }
-        } else {
-            session?.capture()
-        }
+        session?.capture()
     }
     
     func update(flashMode: FlashMode) {
-        if let photoSession = session as? PhotoCaptureSession {
-            photoSession.flashMode = flashMode
-        } else if let videoSession = session as? VideoCaptureSession {
-            videoSession.flashMode = flashMode
-        }
+        session?.flashMode = flashMode
     }
     
     func shouldDisplayFlash() -> Bool {
@@ -143,29 +133,24 @@ class SessionPreview: UIView {
     }
     
     func reset(settings: [CameraSettings]) {
-        guard let photoSession = session as? PhotoCaptureSession else { return }
         for setting in settings {
             switch setting {
             case .flash:
-                photoSession.flashMode = .auto
+                session?.flashMode = .auto
             case .zoom:
-                zoom = photoSession.naturalZoomFactor
+                zoom = session?.naturalZoomFactor ?? 1
             case .focus:
-                photoSession.resetDeviceConfiguration()
+                session?.resetDeviceConfiguration()
             case .position:
-                photoSession.cameraPosition = .back
+                session?.cameraPosition = .back
             case .mode:
-                let cameraPosition = photoSession.cameraPosition
-                let newSession = PhotoCaptureSession()
-                newSession.cameraPosition = cameraPosition
-                session = newSession
-                cameraMode = .photo
+                break
             }
         }
     }
     
     func changeCameraPosition() {
-        session?.toggleCameraPosition()
+        cameraPosition = cameraPosition == .back ? .front : .back
     }
 
     func aspectRatio() -> CameraAspectRatio {

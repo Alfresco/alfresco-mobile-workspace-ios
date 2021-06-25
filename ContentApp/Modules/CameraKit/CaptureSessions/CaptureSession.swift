@@ -196,7 +196,7 @@ class CaptureSession: NSObject {
         return "\(prefix)_\(dateFormatter.string(from: Date()))"
     }
     
-    // MARK: - Private Methods
+    // MARK: - CMMotion Manager
     
     private func initializeMotionManager() {
         guard let operation = OperationQueue.current else { return }
@@ -248,28 +248,5 @@ class CaptureSession: NSObject {
         }
         
         return try AVCaptureDeviceInput(device: captureDevice)
-    }
-    
-    static func device(input: AVCaptureDeviceInput,
-                       resolution: CGSize,
-                       frameRate: Int = 30) -> AVCaptureDevice.Format? {
-
-        let width = Int(resolution.width)
-        let height = Int(resolution.height)
-        guard width > 0, height > 0 else { return nil }
-
-        for format in input.device.formats {
-            let dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
-            if (dimension.width == width && dimension.height == height) ||
-                (dimension.width == height && dimension.height == width) {
-                for range in format.videoSupportedFrameRateRanges {
-                    if Int(range.maxFrameRate) >= frameRate &&
-                        Int(range.minFrameRate) <= frameRate {
-                        return format
-                    }
-                }
-            }
-        }
-        return nil
     }
 }

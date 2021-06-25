@@ -44,32 +44,37 @@ class VideoCaptureSession: CaptureSession {
     
     // MARK: - Init
     
-    init(position: CameraPosition = .back) {
+    init(position: CameraPosition = .back, aspectRatio: CameraAspectRatio = .ar16by9) {
         super.init()
         
         defer {
-            cameraPosition = position
-            do {
-                let microphoneInput = try CaptureSession.capture(deviceInput: .microphone)
-                session.addInput(microphoneInput)
-            } catch let error {
-                AlfrescoLog.error(error)
+            self.cameraPosition = position
+            self.aspectRatio = aspectRatio
+            
+            if let deviceInput = captureDeviceInput {
+                updateSessionPreset(for: deviceInput)
             }
         }
         
-        session.sessionPreset = .photo
+        do {
+            let microphoneInput = try CaptureSession.capture(deviceInput: .microphone)
+            session.addInput(microphoneInput)
+        } catch let error {
+            AlfrescoLog.error(error)
+        }
+        
         session.addOutput(movieOutput)
     }
     
     // MARK: - Public Methods
     
-    func stopRecording() {
-        movieOutput.stopRecording()
-    }
-    
     override func capture() {
-        guard !isRecording,
-              let mediaFolderPath = mediaFilesFolderPath else { return }
+        if isRecording {
+            movieOutput.stopRecording()
+            return
+        }
+        
+        guard let mediaFolderPath = mediaFilesFolderPath else { return }
         
         var videoURL = URL(fileURLWithPath: mediaFolderPath)
         let fileName = defaultFileName(with: prefixVideoFileName)
@@ -84,10 +89,6 @@ class VideoCaptureSession: CaptureSession {
     
     override func shouldDisplayFlashMode() -> Bool {
         return captureDeviceInput?.device.hasTorch ?? false
-    }
-    
-    override func toggleCameraPosition() {
-        cameraPosition = cameraPosition == .back ? .front : .back
     }
     
     override func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {

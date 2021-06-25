@@ -34,13 +34,13 @@ class FullScreenPhotoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = imageCapturedAsset
-        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
-        applyComponentsThemes()
-        
+
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(zoomImageGesture(_:)))
         tapGesture.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(tapGesture)
+        
+        applyComponentsThemes()
     }
     
     // MARK: - IBActions
@@ -65,6 +65,7 @@ class FullScreenPhotoViewController: UIViewController {
         view.backgroundColor = .black
         closeButton.tintColor = .white
         closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
     }
     
     private func zoomRectForScale(_ scale: CGFloat, center: CGPoint) -> CGRect {

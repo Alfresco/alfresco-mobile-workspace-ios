@@ -32,29 +32,7 @@ class FullScreenVideoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
-        
-        if let mediaPreview: MediaPreview = .fromNib(), let url = videoURL {
-            mediaPreview.frame = CGRect(origin: .zero, size: view.bounds.size)
-            mediaPreview.play(from: url, isAudioFile: false) { (error) in
-                
-            }
-            view.addSubview(mediaPreview)
-            
-            NSLayoutConstraint.activate([
-                mediaPreview.topAnchor.constraint(equalTo: view.topAnchor,
-                                                      constant: 0),
-                mediaPreview.leftAnchor.constraint(equalTo: view.leftAnchor,
-                                                       constant: 0),
-                mediaPreview.rightAnchor.constraint(equalTo: view.rightAnchor,
-                                                        constant: 0),
-                mediaPreview.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                                         constant: 0)
-            ])
-            
-            videoPreview = mediaPreview
-        }
+        displayMediaPreview()
         view.bringSubviewToFront(closeButton)
         applyComponentsThemes()
     }
@@ -67,10 +45,28 @@ class FullScreenVideoViewController: UIViewController {
     
     // MARK: - Private Methods
     
+    private func displayMediaPreview() {
+        guard let url = videoURL, let mediaPreview: MediaPreview = .fromNib() else { return }
+        
+        mediaPreview.frame = CGRect(origin: .zero, size: view.bounds.size)
+        mediaPreview.play(from: url, isAudioFile: false) { (error) in
+        }
+        view.addSubview(mediaPreview)
+        
+        NSLayoutConstraint.activate([
+            mediaPreview.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            mediaPreview.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0),
+            mediaPreview.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 0),
+            mediaPreview.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+        
+        videoPreview = mediaPreview
+    }
+    
     private func applyComponentsThemes() {
         view.backgroundColor = .black
         closeButton.tintColor = .white
         closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
     }
-    
 }
