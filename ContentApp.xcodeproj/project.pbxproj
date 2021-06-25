@@ -296,6 +296,7 @@
 		F1244502266DF92000F35968 /* VideoCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1244501266DF92000F35968 /* VideoCaptureSession.swift */; };
 		F137B6D0260495FE00A60054 /* UINavigationBar+Subviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */; };
 		F13998CB25F7675B0062F652 /* UITextField+IsEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */; };
+		F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1448CD22685AC1A00D90494 /* FullScreenVideoViewController.swift */; };
 		F14E688A261702A9002FDEF9 /* CaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E6889261702A9002FDEF9 /* CaptureSession.swift */; };
 		F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68912617066A002FDEF9 /* SessionPreview.swift */; };
 		F14E68972617157A002FDEF9 /* PhotoCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14E68962617157A002FDEF9 /* PhotoCaptureSession.swift */; };
@@ -314,7 +315,7 @@
 		F185B1A72617663000407451 /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F185B1A92617663000407451 /* Camera.storyboard */; };
 		F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */; };
 		F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C3B262065680096743B /* PreviewViewModel.swift */; };
-		F1AC6C44262065710096743B /* FullScreenCapturedAssetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */; };
+		F1AC6C44262065710096743B /* FullScreenPhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1AC6C43262065700096743B /* FullScreenPhotoViewController.swift */; };
 		F1B020B7261AF83B007799B2 /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020B6261AF83B007799B2 /* PreviewViewController.swift */; };
 		F1B020BC261B0255007799B2 /* CameraScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */; };
 		F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */; };
@@ -651,6 +652,7 @@
 		F1244501266DF92000F35968 /* VideoCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCaptureSession.swift; sourceTree = "<group>"; };
 		F137B6CF260495FE00A60054 /* UINavigationBar+Subviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Subviews.swift"; sourceTree = "<group>"; };
 		F13998CA25F7675B0062F652 /* UITextField+IsEmpty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+IsEmpty.swift"; sourceTree = "<group>"; };
+		F1448CD22685AC1A00D90494 /* FullScreenVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenVideoViewController.swift; sourceTree = "<group>"; };
 		F14E6889261702A9002FDEF9 /* CaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSession.swift; sourceTree = "<group>"; };
 		F14E68912617066A002FDEF9 /* SessionPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionPreview.swift; sourceTree = "<group>"; };
 		F14E68962617157A002FDEF9 /* PhotoCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCaptureSession.swift; sourceTree = "<group>"; };
@@ -669,7 +671,7 @@
 		F185B1A82617663000407451 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Camera.storyboard; sourceTree = "<group>"; };
 		F188EE62262DCC4D0019F4E7 /* FlashMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlashMenu.swift; sourceTree = "<group>"; };
 		F1AC6C3B262065680096743B /* PreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewViewModel.swift; sourceTree = "<group>"; };
-		F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenCapturedAssetViewController.swift; sourceTree = "<group>"; };
+		F1AC6C43262065700096743B /* FullScreenPhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullScreenPhotoViewController.swift; sourceTree = "<group>"; };
 		F1B020B6261AF83B007799B2 /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		F1B020BB261B0255007799B2 /* CameraScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScreenCoordinator.swift; sourceTree = "<group>"; };
 		F1E295CD261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyNoticeModelProtocol.swift; sourceTree = "<group>"; };
@@ -1897,7 +1899,8 @@
 				F185B1802617495300407451 /* CameraViewController.swift */,
 				F1E613E02629608B0013A5D8 /* CameraViewController+Layout.swift */,
 				F1B020B6261AF83B007799B2 /* PreviewViewController.swift */,
-				F1AC6C43262065700096743B /* FullScreenCapturedAssetViewController.swift */,
+				F1AC6C43262065700096743B /* FullScreenPhotoViewController.swift */,
+				F1448CD22685AC1A00D90494 /* FullScreenVideoViewController.swift */,
 				F168F464262484FC0002D3A5 /* PhotoGalleryViewController.swift */,
 			);
 			path = Screens;
@@ -2353,7 +2356,7 @@
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */,
 				F168F45926246B590002D3A5 /* PhotoLibraryScreenCoordinator.swift in Sources */,
-				F1AC6C44262065710096743B /* FullScreenCapturedAssetViewController.swift in Sources */,
+				F1AC6C44262065710096743B /* FullScreenPhotoViewController.swift in Sources */,
 				B9B7530B25AC8543004F16E5 /* AsyncOperation.swift in Sources */,
 				B90E3833255A7B1400FAFB81 /* BrowserScreenViewModelFactory.swift in Sources */,
 				E3ADD06024927B35006DF519 /* SettingsViewModel.swift in Sources */,
@@ -2420,6 +2423,7 @@
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
+				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,

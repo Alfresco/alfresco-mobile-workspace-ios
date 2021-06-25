@@ -18,7 +18,7 @@
 
 import UIKit
 
-class FullScreenCapturedAssetViewController: UIViewController {
+class FullScreenPhotoViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
@@ -79,7 +79,7 @@ class FullScreenCapturedAssetViewController: UIViewController {
 
 // MARK: - UIScrollView Delegate
 
-extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
+extension FullScreenPhotoViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
           return imageView
     }
@@ -110,4 +110,4 @@ extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
 
 // MARK: - Storyboard Instantiable
 
-extension FullScreenCapturedAssetViewController: CameraStoryboardInstantiable { }
+extension FullScreenPhotoViewController: CameraStoryboardInstantiable { }

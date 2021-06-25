@@ -476,7 +476,8 @@
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
                         <outlet property="scrollViewTopConstraint" destination="BtO-aq-tej" id="Ixo-6q-B2b"/>
                         <outlet property="trashButton" destination="KME-9f-KQ8" id="A18-M8-a1x"/>
-                        <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreen" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
+                        <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreenPhoto" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
+                        <segue destination="jNE-G7-pYk" kind="presentation" identifier="showFullScreenVideo" id="vzf-pO-5xg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NuX-St-XqT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -493,10 +494,10 @@
             </objects>
             <point key="canvasLocation" x="888.78504672897191" y="62.850971922246224"/>
         </scene>
-        <!--Full Screen Captured Asset View Controller-->
+        <!--Full Screen Photo View Controller-->
         <scene sceneID="vhb-Ir-nlI">
             <objects>
-                <viewController storyboardIdentifier="FullScreenCapturedAssetViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odl-F0-g3H" customClass="FullScreenCapturedAssetViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenCapturedAssetViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odl-F0-g3H" customClass="FullScreenPhotoViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1tF-Pj-IvM">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -556,7 +557,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X6u-XA-a2d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="62"/>
+            <point key="canvasLocation" x="1822" y="-290"/>
+        </scene>
+        <!--Full Screen Video View Controller-->
+        <scene sceneID="CnT-4v-hC6">
+            <objects>
+                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="jNE-G7-pYk" customClass="FullScreenVideoViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6xb-jq-NdT">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2tB-Hp-hMH">
+                                <rect key="frame" x="16" y="60" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="closeButton"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="5W5-a7-YYn"/>
+                                    <constraint firstAttribute="width" constant="40" id="JGj-FJ-yth"/>
+                                </constraints>
+                                <state key="normal" image="ic-close"/>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="jNE-G7-pYk" eventType="touchUpInside" id="6GL-Og-K51"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3ZL-2t-hyW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="2tB-Hp-hMH" firstAttribute="top" secondItem="3ZL-2t-hyW" secondAttribute="top" constant="16" id="X9J-PM-br1"/>
+                            <constraint firstItem="2tB-Hp-hMH" firstAttribute="leading" secondItem="3ZL-2t-hyW" secondAttribute="leading" constant="16" id="ndr-f5-Ugc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="2tB-Hp-hMH" id="xbA-x5-Vhf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5OI-W5-mJ0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821" y="433"/>
         </scene>
     </scenes>
     <resources>

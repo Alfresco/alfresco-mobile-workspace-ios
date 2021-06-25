@@ -110,14 +110,16 @@ class PreviewViewController: UIViewController {
     }
     
     @IBAction func playButtonTapped(_ sender: UIButton) {
-        playVideoCaptured()
+        performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
+                     sender: nil)
     }
     
     @IBAction func fullScreenTapGesture(_ sender: UITapGestureRecognizer) {
         if previewViewModel?.isAssetVideo() == true {
-            playVideoCaptured()
+            performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
+                         sender: nil)
         } else {
-            performSegue(withIdentifier: SegueIdentifiers.showFullScreen.rawValue,
+            performSegue(withIdentifier: SegueIdentifiers.showFullScreenPhoto.rawValue,
                          sender: nil)
         }
     }
@@ -127,16 +129,6 @@ class PreviewViewController: UIViewController {
     }
     
     // MARK: - Private Methods
-    
-    private func playVideoCaptured() {
-        guard let url = previewViewModel?.videoUrl() else { return }
-        let player = AVPlayer(url: url)
-        let playerVC = AVPlayerViewController()
-        playerVC.player = player
-        present(playerVC, animated: true) {
-            playerVC.player?.play()
-        }
-    }
     
     private func applyComponentsThemes() {
         guard let theme = CameraKit.theme else { return }
@@ -178,9 +170,12 @@ class PreviewViewController: UIViewController {
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == SegueIdentifiers.showFullScreen.rawValue,
-           let fscavc = segue.destination as? FullScreenCapturedAssetViewController {
-            fscavc.imageCapturedAsset = previewViewModel?.assetThumbnailImage()
+        if segue.identifier == SegueIdentifiers.showFullScreenPhoto.rawValue,
+           let fspvc = segue.destination as? FullScreenPhotoViewController {
+            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage()
+        } else if segue.identifier == SegueIdentifiers.showFullScreenVideo.rawValue,
+                  let fsvvc = segue.destination as? FullScreenVideoViewController {
+            fsvvc.videoURL = previewViewModel?.videoUrl()
         }
     }
 }
