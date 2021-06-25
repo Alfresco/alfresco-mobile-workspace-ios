@@ -308,6 +308,7 @@ extension CameraViewController: ModeSelectorControlDelegate {
         setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
+        setUpCameraSession(for: currentSelection)
     }
 }
 
