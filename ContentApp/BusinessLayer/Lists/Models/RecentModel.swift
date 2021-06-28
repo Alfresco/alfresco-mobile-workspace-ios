@@ -19,12 +19,12 @@
 import Foundation
 import AlfrescoContent
 
-class RecentModel: ListModelProtocol {
+class RecentModel: ListComponentModelProtocol {
     internal var supportedNodeTypes: [NodeType] = []
     private var services: CoordinatorServices
     private var groupedLists: [ListNode] = []
 
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = [] {
         didSet {
             createSectionArray(rawListNodes)

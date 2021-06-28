@@ -19,12 +19,12 @@
 import Foundation
 import AlfrescoContent
 
-class OfflineFolderDrillModel: ListModelProtocol {
+class OfflineFolderDrillModel: ListComponentModelProtocol {
     internal var supportedNodeTypes: [NodeType] = []
     private var services: CoordinatorServices
     private var parentListNode: ListNode
 
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
 
     init(services: CoordinatorServices, parentListNode: ListNode) {

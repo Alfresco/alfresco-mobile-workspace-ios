@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoContent
 
-class FolderDrillModel: ListModelProtocol {
+class FolderDrillModel: ListComponentModelProtocol {
     private var services: CoordinatorServices
     private let nodeOperations: NodeOperations
     private let uploadTransferDataAccessor = UploadTransferDataAccessor()
@@ -27,7 +27,7 @@ class FolderDrillModel: ListModelProtocol {
 
     var listNode: ListNode?
     var rawListNodes: [ListNode] = []
-    weak var delegate: ListModelDelegate?
+    weak var delegate: ListComponentModelDelegate?
 
     init(listNode: ListNode?, services: CoordinatorServices) {
         self.services = services

@@ -26,7 +26,7 @@ class SearchModel: SearchModelProtocol {
     private let searchTimerBuffer = 0.7
     private var searchCompletionHandler: PagedResponseCompletionHandler?
 
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
     var searchChips: [SearchChipItem] = []
     var searchString: String?
@@ -175,7 +175,7 @@ class SearchModel: SearchModelProtocol {
 
 // MARK: - ListModelProtocol
 
-extension SearchModel: ListModelProtocol {
+extension SearchModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return rawListNodes.isEmpty
     }

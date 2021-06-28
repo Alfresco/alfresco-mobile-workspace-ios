@@ -19,11 +19,11 @@
 import Foundation
 import AlfrescoContent
 
-class SharedModel: ListModelProtocol {
+class SharedModel: ListComponentModelProtocol {
     private var services: CoordinatorServices
     internal var supportedNodeTypes: [NodeType] = []
     
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
 
     init(services: CoordinatorServices) {

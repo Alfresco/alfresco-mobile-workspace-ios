@@ -24,9 +24,9 @@ protocol ListComponentViewModelDelegate: AnyObject {
 
 class ListComponentViewModel {
     weak var delegate: ListComponentViewModelDelegate?
-    var model: ListModelProtocol
+    var model: ListComponentModelProtocol
 
-    init(model: ListModelProtocol) {
+    init(model: ListComponentModelProtocol) {
         self.model = model
     }
 
