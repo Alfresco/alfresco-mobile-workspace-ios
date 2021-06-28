@@ -19,12 +19,12 @@
 import Foundation
 import AlfrescoContent
 
-class FavoritesModel: ListModelProtocol {
+class FavoritesModel: ListComponentModelProtocol {
     internal var supportedNodeTypes: [NodeType] = []
     private var services: CoordinatorServices
     
     var listCondition: String = APIConstants.QuerryConditions.whereFavoritesFileFolder
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
 
     init(services: CoordinatorServices, listCondition: String) {

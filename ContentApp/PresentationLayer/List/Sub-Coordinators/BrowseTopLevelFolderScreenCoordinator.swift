@@ -69,7 +69,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
 extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func showPreview(for node: ListNode,
-                     from dataSource: ListModelProtocol) {
+                     from dataSource: ListComponentModelProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
                                    presenter: self.presenter)
@@ -82,7 +82,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func showActionSheetForListItem(for node: ListNode,
-                                    from dataSource: ListModelProtocol,
+                                    from dataSource: ListComponentModelProtocol,
                                     delegate: NodeActionsViewModelDelegate) {
         let actionMenuViewModel = ActionMenuViewModel(node: node,
                                                       coordinatorServices: coordinatorServices)

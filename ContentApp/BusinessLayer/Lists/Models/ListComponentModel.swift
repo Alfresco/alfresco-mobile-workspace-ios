@@ -29,16 +29,14 @@ enum ListEntrySyncStatus: String {
     case undefined = "ic-sync-status-undefined"
 }
 
-#warning("Rename to ListComponentModelDelegate after refactor")
-protocol ListModelDelegate: AnyObject {
+protocol ListComponentModelDelegate: AnyObject {
     func needsDataSourceReload()
     func needsDisplayStateRefresh()
     func forceDisplayRefresh(for indexPath: IndexPath)
 }
 
-#warning("Rename to ListComponentModelProtocol after refactor")
-protocol ListModelProtocol: AnyObject {
-    var delegate: ListModelDelegate? { get set }
+protocol ListComponentModelProtocol: AnyObject {
+    var delegate: ListComponentModelDelegate? { get set }
     var rawListNodes: [ListNode] { get set}
 
     func isEmpty() -> Bool
@@ -55,7 +53,7 @@ protocol ListModelProtocol: AnyObject {
 }
 
 #warning("Rename to ListComponentModelProtocol after refactor")
-extension ListModelProtocol {
+extension ListComponentModelProtocol {
     func clear() {
         rawListNodes = []
     }
