@@ -24,7 +24,7 @@ enum SearchType {
     case simple
 }
 
-protocol SearchModelProtocol: ListModelProtocol, EventObservable {
+protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     var searchChips: [SearchChipItem] { get set }
     var searchString: String? { get set }
     var searchType: SearchType { get set }

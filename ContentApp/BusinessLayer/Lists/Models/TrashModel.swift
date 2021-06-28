@@ -19,12 +19,12 @@
 import Foundation
 import AlfrescoContent
 
-class TrashModel: ListModelProtocol {
+class TrashModel: ListComponentModelProtocol {
     private var services: CoordinatorServices
     internal var supportedNodeTypes: [NodeType] = []
 
     var rawListNodes: [ListNode] = []
-    var delegate: ListModelDelegate?
+    var delegate: ListComponentModelDelegate?
 
     init(services: CoordinatorServices) {
         self.services = services

@@ -29,7 +29,7 @@ struct PaginatedResponse {
 }
 
 protocol ListPageControllerProtocol: AnyObject {
-    var dataSource: ListModelProtocol { get }
+    var dataSource: ListComponentModelProtocol { get }
     var delegate: ListPageControllerDelegate? { get set }
 
     func isPaginationEnabled() -> Bool
@@ -46,7 +46,7 @@ protocol ListPageControllerDelegate: AnyObject {
 
 class ListPageController: ListPageControllerProtocol {
     let services: CoordinatorServices
-    var dataSource: ListModelProtocol
+    var dataSource: ListComponentModelProtocol
     weak var delegate: ListPageControllerDelegate?
     var paginationEnabled: Bool
     var currentPage = 1
@@ -58,7 +58,7 @@ class ListPageController: ListPageControllerProtocol {
     private var shouldRefreshList = true
     private var requestInProgress = false
 
-    init(dataSource: ListModelProtocol, services: CoordinatorServices) {
+    init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
         paginationEnabled = true
         self.services = services
@@ -192,7 +192,7 @@ class ListPageController: ListPageControllerProtocol {
     }
 }
 
-extension ListPageController: ListModelDelegate {
+extension ListPageController: ListComponentModelDelegate {
     func forceDisplayRefresh(for indexPath: IndexPath) {
         delegate?.forceDisplayRefresh(for: indexPath)
     }
