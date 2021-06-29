@@ -98,6 +98,10 @@ class CaptureSession: NSObject {
     
     // MARK: - Init
 
+    deinit {
+        session.stopRunning()
+    }
+
     override init() {
         self.session = AVCaptureSession()
         super.init()

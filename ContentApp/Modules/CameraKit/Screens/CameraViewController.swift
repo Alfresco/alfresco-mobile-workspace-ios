@@ -27,7 +27,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var shutterButton: CameraButton!
+    @IBOutlet weak var shutterButton: ShutterButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -81,6 +81,8 @@ class CameraViewController: UIViewController {
         cameraViewModel?.deletePreviousCapture()
         if cameraSession == nil {
             setUpCameraSession(for: cameraSlider.currentSelector())
+        } else {
+            sessionPreview.update(flashMode: flashMenuView.flashMode)
         }
     }
     
@@ -109,7 +111,7 @@ class CameraViewController: UIViewController {
         apply(fade: (flashMenuView.alpha == 1.0), to: flashMenuView)
     }
     
-    @IBAction func captureButtonTapped(_ sender: CameraButton) {
+    @IBAction func captureButtonTapped(_ sender: ShutterButton) {
         if cameraSlider.currentSelector() == photoSlider {
             shutterButton.isUserInteractionEnabled = false
         }
@@ -140,7 +142,7 @@ class CameraViewController: UIViewController {
     private func setUpShutterButton() {
         guard let theme = CameraKit.theme else { return }
         
-        let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
+        let style = ShutterButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
         shutterButton.buttonInput = (cameraSlider.currentSelector() == photoSlider) ? .photo : .video
@@ -300,13 +302,10 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
-        if (currentSelection == photoSlider && sessionPreview.cameraMode == .photo) ||
-            (currentSelection == videoSlider && sessionPreview.cameraMode == .video) {
-            // no need to reset
-            return
-        }
+        // TODO: Not an ideal workaround, problem should be traced and fixed
         setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
+        flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         setUpCameraSession(for: currentSelection)
     }

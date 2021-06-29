@@ -52,7 +52,6 @@ protocol ListComponentModelProtocol: AnyObject {
                     completionHandler: @escaping PagedResponseCompletionHandler)
 }
 
-#warning("Rename to ListComponentModelProtocol after refactor")
 extension ListComponentModelProtocol {
     func clear() {
         rawListNodes = []

@@ -81,11 +81,6 @@ class ModeSelectorControl: UIControl {
             scrollView.widthAnchor.constraint(equalTo: self.widthAnchor),
             scrollView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
-
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.scrollToCurrentSelection(animated: false)
-        }
     }
 
     // MARK: - Public interface

@@ -32,11 +32,6 @@ enum CameraSettings {
     case zoom
 }
 
-enum CameraMode {
-    case photo
-    case video
-}
-
 class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
@@ -75,8 +70,6 @@ class SessionPreview: UIView {
         }
     }
     
-    var cameraMode = CameraMode.photo
-    
     // MARK: - Init
     
     override init(frame: CGRect) {
@@ -103,13 +96,9 @@ class SessionPreview: UIView {
     // MARK: - Public Methods
     
     func add(session: CaptureSession) {
+        stopSession()
+
         self.session = session
-        
-        if session is VideoCaptureSession {
-            cameraMode = .video
-        } else  if session is PhotoCaptureSession {
-            cameraMode = .photo
-        }
     }
     
     func startSession() {
