@@ -160,6 +160,11 @@ class FilePreviewViewModel {
         nodeOperations.renditionTimer?.invalidate()
     }
 
+    func shouldDisplayActionsToolbar() -> Bool {
+        guard let listNode = listNode else { return  false}
+        return listNode.syncStatus != .error
+    }
+
     // MARK: - Analytics
 
     func sendAnalyticsForPreviewFile(success: Bool) {
