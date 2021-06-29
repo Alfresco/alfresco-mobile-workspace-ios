@@ -297,17 +297,32 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
     }
 
     func didFinishNodeDetails(error: Error?) {
-        if error != nil {
+        let handleError = { [weak self] in
+            guard let sSelf = self else { return }
+
             Snackbar.display(with: LocalizationConstants.Errors.errorUnknown,
                              type: .error, automaticallyDismisses: false, finish: nil)
-            toolbar.isHidden = true
+            sSelf.toolbar.isHidden = true
+        }
+
+        guard let filePreviewViewModel = filePreviewViewModel else {
+            handleError()
+            return
+        }
+
+        if error != nil {
+            handleError()
         } else {
-            toolbar.isHidden = false
-            filePreviewViewModel?.nodeActionsViewModel?.delegate = self
-            addToolbarActions()
-            filePreviewViewModel?.requestFilePreview(with: containerFilePreview.bounds.size)
-            filePreviewTitleLabel.text = filePreviewViewModel?.listNode?.title
-            mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel?.listNode)
+            if filePreviewViewModel.shouldDisplayActionsToolbar() {
+                toolbar.isHidden = false
+                filePreviewViewModel.nodeActionsViewModel?.delegate = self
+                addToolbarActions()
+            } else {
+                toolbar.isHidden = true
+            }
+            filePreviewViewModel.requestFilePreview(with: containerFilePreview.bounds.size)
+            filePreviewTitleLabel.text = filePreviewViewModel.listNode?.title
+            mimeTypeImageView.image = FileIcon.icon(for: filePreviewViewModel.listNode)
         }
     }
     
@@ -415,11 +430,18 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
 
 extension FilePreviewViewController: FilePreviewDelegate {
     func enableFullScreen(_ enable: Bool) {
+        guard let filePreviewViewModel = filePreviewViewModel else {
+            return
+        }
+
         isFullScreen = enable
         containerFilePreview.backgroundColor = (isFullScreen) ? .black : .clear
         navigationController?.setNavigationBarHidden(isFullScreen, animated: true)
         setNeedsStatusBarAppearanceUpdate()
-        toolbar.isHidden = enable
+
+        if filePreviewViewModel.shouldDisplayActionsToolbar() {
+            toolbar.isHidden = enable
+        }
     }
 }
 

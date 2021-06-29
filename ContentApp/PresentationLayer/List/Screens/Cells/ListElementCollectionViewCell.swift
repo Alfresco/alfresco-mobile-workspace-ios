@@ -31,6 +31,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var syncStatusImageView: UIImageView!
     weak var delegate: ListElementCollectionViewCellDelegate?
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+
     var node: ListNode? {
         didSet {
             guard let node = node else { return }

@@ -34,6 +34,8 @@ class FolderDrillViewModel: ListComponentViewModel {
             return false
         case .inProgress:
             return false
+        case .error:
+            return false
         default:
             return true
         }
