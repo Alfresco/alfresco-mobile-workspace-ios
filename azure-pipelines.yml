@@ -19,12 +19,6 @@ variables:
 steps:
 - checkout: self
 
-- task: CmdLine@2
-  displayName: Adding Alfresco private podspec repository
-  inputs:
-    script: |
-      pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
-
 - task: Cache@2
   inputs:
     key: 'cocoapods | Podfile.lock'
