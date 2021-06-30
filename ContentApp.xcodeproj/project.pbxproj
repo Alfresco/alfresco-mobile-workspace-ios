@@ -2163,7 +2163,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"$PODS_ROOT/ObjectBox/generate_sources.sh\" -- --output \"$PROJECT_DIR/generated/EntityInfo-ContentApp.generated.swift\" --model-json \"$PROJECT_DIR/model-ContentApp.json\"";
+			shellScript = "\"$PODS_ROOT/ObjectBox/generate_sources.sh\" -- --output \"$PROJECT_DIR/generated/EntityInfo-ContentApp.generated.swift\" --model-json \"$PROJECT_DIR/model-ContentApp.json\"\n";
 		};
 		888315EFE3C4586A7E490643 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
