@@ -131,6 +131,8 @@ extension CameraViewController {
         configureZoomView()
         configureShutterView()
         configureModeView()
+        configureTimerView()
+
     }
     
     private func configureTopViewLayout() {
@@ -167,7 +169,11 @@ extension CameraViewController {
     }
     
     private func configureModeView() {
-        cameraSlider.center = CGPoint(x: modeView.frame.width / 2, y: modeView.frame.height / 2)
-        cameraSlider.translatesAutoresizingMaskIntoConstraints = true
+        modeSelector.center = CGPoint(x: modeView.frame.width / 2, y: modeView.frame.height / 2)
+        modeSelector.translatesAutoresizingMaskIntoConstraints = true
+    }
+
+    private func configureTimerView() {
+        timerView?.center = modeSelector.center
     }
 }

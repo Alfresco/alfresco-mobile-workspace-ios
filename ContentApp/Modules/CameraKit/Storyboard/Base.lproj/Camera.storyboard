@@ -120,11 +120,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="cameraSlider" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
                         <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
                         <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
                         <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
+                        <outlet property="modeSelector" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
                         <outlet property="modeView" destination="fvq-fy-4iC" id="HRs-74-qq4"/>
                         <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
                         <outlet property="shutterButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
