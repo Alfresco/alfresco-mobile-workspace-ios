@@ -96,4 +96,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.orientationLock
     }
+
+    func application(_ application: UIApplication,
+                     shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+        if extensionPointIdentifier == UIApplication.ExtensionPointIdentifier.keyboard {
+            return false
+        }
+
+        return true
+    }
 }
