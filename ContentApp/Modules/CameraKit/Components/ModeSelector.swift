@@ -81,6 +81,8 @@ class ModeSelectorControl: UIControl {
             scrollView.widthAnchor.constraint(equalTo: self.widthAnchor),
             scrollView.heightAnchor.constraint(equalTo: self.heightAnchor),
         ])
+
+        scrollToCurrentSelection(animated: true)
     }
 
     // MARK: - Public interface
