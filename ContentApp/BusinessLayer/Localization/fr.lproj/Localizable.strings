@@ -49,8 +49,9 @@
 "username-or-email" = "Nom d'utilisateur ou e-mail";
 "password" = "Mot de passe";
 "content-services-url" = "URL de Content Services";
-"description" = "Description";
+"description" = "Ajouter une description";
 "name" = "Nom";
+"file-name" = "Nom de fichier";
 
 // MARK: - Labels
 "transport-protocol" = "Protocole de transport";
@@ -73,6 +74,8 @@
 "favorites" = "Favoris";
 "browse" = "Parcourir";
 "offline" = "Hors ligne";
+"preview-capture-asset" = "Aperçu";
+"gallery-upload" = "Photos";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL d'Alfresco Content Services";
@@ -109,6 +112,8 @@
 "approved-created" = "%@ a été créé";
 "approved-mark-offline" = "%@ sera disponible hors ligne.";
 "approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
+"approved-upload-photo" = "Importation de la photo prévue.";
+"approved-upload-media" = "Importation du fichier multimédia prévue.";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -169,6 +174,8 @@
 "action-menu-create-folder" = "Nouveau dossier";
 "action-menu-mark-offline" = "Rendre disponible hors ligne";
 "action-menu-remove-offline" = "Supprimer hors ligne";
+"action-menu-create-media" = "Prendre une photo ou une vidéo";
+"action-menu-upload-media" = "Importer des photos ou des vidéos";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
@@ -192,8 +199,19 @@
 "empty-search-description" = "Nous n'avons pas trouvé ce que vous recherchez.";
 "empty-offline-title" = "Aucun contenu hors ligne";
 "empty-offline-description" = "Le contenu disponible hors ligne s'affichera ici.";
+"empty-gallery-title" = "Aucune photo ou vidéo";
+"empty-gallery-description" = "Essayez d'ajouter des photos ou des vidéos dans votre appareil.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
 "privacy-photos-description" = "Pour enregistrer des images ou des vidéos sur votre appareil, Mobile Workspace a besoin d'accéder à vos photos.";
+"privacy-camera-title" = "Mobile Workspace a besoin d'accéder à votre appareil photo";
+"privacy-camera-description" = "Pour prendre des photos et des vidéos et les importer, Mobile Workspace a besoin d'accéder à vos photos.";
 "privacy-button" = "Passer en revue les paramètres de confidentialité";
+
+// MARK: - Camera
+"photo-mode" = "Photo";
+"video-mode" = "Vidéo";
+"auto-flash" = "Auto";
+"on-flash" = "Activé";
+"off-flash" = "Désactivé";

@@ -16,8 +16,8 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
-NSPhotoLibraryAddUsageDescription = "Vous pouvez importer des photos et des vidéos dans cette application depuis votre bibliothèque.";
-NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
-NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the metadata of captured photos.";
-NSMicrophoneUsageDescription = "Mobile Workspace requires microphone access to capture videos for upload.";
+NSPhotoLibraryUsageDescription = "Pour importer des photos depuis votre bibliothèque, Mobile Workspace a besoin d'y accéder.";
+NSPhotoLibraryAddUsageDescription = "Pour importer des photos depuis votre bibliothèque, Mobile Workspace a besoin d'y accéder.";
+NSCameraUsageDescription = "Pour prendre des photos et des vidéos et les importer, Mobile Workspace a besoin d'accéder à votre appareil photo.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Si vous acceptez, votre géolocalisation sera ajoutée aux métadonnées des photos que vous prenez.";
+NSMicrophoneUsageDescription = "Pour prendre des vidéos et les importer, Mobile Workspace a besoin d'accéder à votre microphone.";
