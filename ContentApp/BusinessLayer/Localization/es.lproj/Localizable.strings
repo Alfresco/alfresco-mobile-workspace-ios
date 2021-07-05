@@ -49,8 +49,9 @@
 "username-or-email" = "Nombre de usuario o correo electr.";
 "password" = "Contraseña";
 "content-services-url" = "URL de servicios de contenido";
-"description" = "Descripción";
+"description" = "Añadir descripción";
 "name" = "Nombre";
+"file-name" = "Nombre de fichero";
 
 // MARK: - Labels
 "transport-protocol" = "Protocolo de transporte";
@@ -73,6 +74,8 @@
 "favorites" = "Favoritos";
 "browse" = "Explorar";
 "offline" = "Sin conexión";
+"preview-capture-asset" = "Vista previa";
+"gallery-upload" = "Fotos";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL de Alfresco Content Services";
@@ -109,6 +112,8 @@
 "approved-created" = "%@ se ha creado";
 "approved-mark-offline" = "%@ estará disponible sin conexión.";
 "approved-remove-offline" = "%@ ya no estará disponible sin conexión.";
+"approved-upload-photo" = "Foto programada para cargar.";
+"approved-upload-media" = "Ficheros multimedia programados para cargar.";
 
 // MARK: - Settings Screen
 "theme" = "Apariencia";
@@ -169,6 +174,8 @@
 "action-menu-create-folder" = "Nueva carpeta";
 "action-menu-mark-offline" = "Disponible sin conexión";
 "action-menu-remove-offline" = "Quitar sin conexión";
+"action-menu-create-media" = "Hacer una foto o un vídeo";
+"action-menu-upload-media" = "Cargar fotos o vídeos";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
@@ -192,8 +199,19 @@
 "empty-search-description" = "No podemos encontrar lo que busca.";
 "empty-offline-title" = "Contenido sin conexión";
 "empty-offline-description" = "Contenido disponible sin conexión se mostrará aquí.";
+"empty-gallery-title" = "No hay fotos o vídeos";
+"empty-gallery-description" = "Intente añadir algunas fotos o vídeos a su dispositivo.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
 "privacy-photos-description" = "Para guardar imágenes o vídeos en su dispositivo, Mobile Workspace necesita acceso a sus fotos.";
+"privacy-camera-title" = "Mobile Workspace necesita acceso a las fotos";
+"privacy-camera-description" = "Para tomar y cargar fotos y vídeos, Mobile Workspace necesita acceder a sus fotos.";
 "privacy-button" = "Revisar ajustes de privacidad";
+
+// MARK: - Camera
+"photo-mode" = "Foto";
+"video-mode" = "Vídeo";
+"auto-flash" = "Automático";
+"on-flash" = "Encendido";
+"off-flash" = "Apagado";

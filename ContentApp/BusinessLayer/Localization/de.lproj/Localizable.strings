@@ -51,6 +51,7 @@
 "content-services-url" = "Content Services-URL";
 "description" = "Beschreibung";
 "name" = "Name";
+"file-name" = "Dateiname";
 
 // MARK: - Labels
 "transport-protocol" = "Transportprotokoll";
@@ -73,6 +74,8 @@
 "favorites" = "Favoriten";
 "browse" = "Durchsuchen";
 "offline" = "Offline";
+"preview-capture-asset" = "Vorschau";
+"gallery-upload" = "Fotos";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services-URL";
@@ -109,6 +112,8 @@
 "approved-created" = "%@ wurde erstellt";
 "approved-mark-offline" = "%@ wird offline zur Verfügung gestellt.";
 "approved-remove-offline" = "%@ ist offline nicht mehr verfügbar.";
+"approved-upload-photo" = "Zum Hochladen vorgesehenes Foto.";
+"approved-upload-media" = "Zum Hochladen vorgesehene Medien.";
 
 // MARK: - Settings Screen
 "theme" = "Aussehen";
@@ -169,6 +174,8 @@
 "action-menu-create-folder" = "Neuer Ordner";
 "action-menu-mark-offline" = "Offline zur Verfügung stellen";
 "action-menu-remove-offline" = "Offline entfernen";
+"action-menu-create-media" = "Fotos oder Videos aufnehmen";
+"action-menu-upload-media" = "Fotos oder Videos hochladen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";
@@ -192,8 +199,19 @@
 "empty-search-description" = "Wir können das von Ihnen Gesuchte nicht finden.";
 "empty-offline-title" = "Keine Offlineinhalte";
 "empty-offline-description" = "Offline zur Verfügung gestellte Inhalte werden hier zu sehen sein.";
+"empty-gallery-title" = "Keine Fotos oder Videos";
+"empty-gallery-description" = "Versuchen Sie einige Fotos oder Videos zu Ihrem Gerät hinzuzufügen.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";
-"privacy-photos-description" = "Um Bilder oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
+"privacy-photos-description" = "Um Fotos oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
+"privacy-camera-title" = "Mobile Workspace benötigt Kamerazugriff";
+"privacy-camera-description" = "Um Fotos und Videos aufzunehmen und hochzuladen, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
 "privacy-button" = "Datenschutzeinstellungen prüfen";
+
+// MARK: - Camera
+"photo-mode" = "Foto";
+"video-mode" = "Video";
+"auto-flash" = "Audio";
+"on-flash" = "An";
+"off-flash" = "Aus";

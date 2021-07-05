@@ -16,8 +16,8 @@
 //  limitations under the License.
 //
 
-NSPhotoLibraryUsageDescription = "Puoi caricare foto e video dalla tua Libreria foto in questa app.";
-NSPhotoLibraryAddUsageDescription = "Puoi caricare foto e video dalla tua Libreria foto in questa app.";
-NSCameraUsageDescription = "Allow camera access to upload photos and videos to Mobile Workspace.";
-NSLocationAlwaysAndWhenInUseUsageDescription = "If allowed, your location will be added to the metadata of captured photos.";
-NSMicrophoneUsageDescription = "Mobile Workspace requires microphone access to capture videos for upload.";
+NSPhotoLibraryUsageDescription = "Mobile Workspace richiede l'accesso alla libreria per caricare le foto contenute nella tua libreria.";
+NSPhotoLibraryAddUsageDescription = "Mobile Workspace richiede l'accesso alla libreria per caricare le foto contenute nella tua libreria.";
+NSCameraUsageDescription = "Mobile Workspace richiede l'accesso alla fotocamera per acquisire foto e video da caricare.";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Se consentito, la tua località verrà aggiunta ai medatati delle foto acquisite.";
+NSMicrophoneUsageDescription = "Mobile Workspace richiede l'accesso al microfono per acquisire video da caricare.";

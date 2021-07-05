@@ -49,8 +49,9 @@
 "username-or-email" = "Gebruikersnaam of e-mailadres";
 "password" = "Wachtwoord";
 "content-services-url" = "URL contentservices";
-"description" = "Beschrijving";
+"description" = "Beschrijving toevoegen";
 "name" = "Naam";
+"file-name" = "Bestandsnaam";
 
 // MARK: - Labels
 "transport-protocol" = "Transportprotocol";
@@ -73,6 +74,8 @@
 "favorites" = "Favorieten";
 "browse" = "Bladeren";
 "offline" = "Offline";
+"preview-capture-asset" = "Preview";
+"gallery-upload" = "Foto's";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services-URL";
@@ -109,6 +112,8 @@
 "approved-created" = "%@ is gemaakt";
 "approved-mark-offline" = "%@ wordt offline beschikbaar gemaakt.";
 "approved-remove-offline" = "%@ is niet langer offline beschikbaar.";
+"approved-upload-photo" = "Foto gepland om te uploaden.";
+"approved-upload-media" = "Media gepland om te uploaden.";
 
 // MARK: - Settings Screen
 "theme" = "Weergave";
@@ -169,6 +174,8 @@
 "action-menu-create-folder" = "Nieuwe map";
 "action-menu-mark-offline" = "Offline beschikbaar maken";
 "action-menu-remove-offline" = "Offline verwijderen";
+"action-menu-create-media" = "Een foto maken of een video opnemen";
+"action-menu-upload-media" = "Foto's of video's uploaden";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
@@ -192,8 +199,19 @@
 "empty-search-description" = "We kunnen niet vinden wat u zoekt.";
 "empty-offline-title" = "Geen offlinecontent";
 "empty-offline-description" = "Content die u offline beschikbaar maakt, wordt hier weergegeven.";
+"empty-gallery-title" = "Geen foto's of video's";
+"empty-gallery-description" = "Probeer foto's of video's toe te voegen aan uw apparaat.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
 "privacy-photos-description" = "Om afbeeldingen of video's op uw apparaat op te slaan, heeft Mobile Workspace toegang tot uw foto's nodig.";
+"privacy-camera-title" = "Mobile Workspace heeft toegang tot de camera nodig";
+"privacy-camera-description" = "Om foto's te maken en video's op te nemen, en deze te uploaden, heeft Mobile Workspace toegang tot uw foto's nodig.";
 "privacy-button" = "Privacy-instellingen bekijken";
+
+// MARK: - Camera
+"photo-mode" = "Foto";
+"video-mode" = "Video";
+"auto-flash" = "Auto";
+"on-flash" = "Aan";
+"off-flash" = "Uit";
