@@ -211,9 +211,7 @@ class ListComponentViewController: SystemThemableViewController {
 
         dataSource.state = forEach(model.listNodes()) { listNode in
             if listNode.guid == listNodeSectionIdentifier {
-                return Cell<ListSectionCollectionViewCell>() { context, cell in
-                    cell.titleLabel.text = ""
-                }
+                return Cell<ListSectionCollectionViewCell>()
                 .onSize { [weak self] context in
                     guard let sSelf = self else { return .zero}
                     return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
@@ -244,13 +242,12 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
         
-        reloadDataOnMainThread()
+        self.forceRefresh()
     }
     
-    private func reloadDataOnMainThread() {
-        OperationQueueService.main.asyncAfter(deadline: .now()+0.3) {
-            self.collectionView.reloadData()
-        }
+    private func forceRefresh() {
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.forceDisplayRefresh(for: indexPath)
     }
     
     // MARK: Connectivity Helpers
