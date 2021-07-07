@@ -208,12 +208,14 @@ class ListComponentViewController: SystemThemableViewController {
         guard let model = pageController?.dataSource,
               let viewModel = viewModel,
               let dataSource = self.dataSource else { return }
-
+       
+        var indexPaths: [IndexPath] = []
         dataSource.state = forEach(model.listNodes()) { listNode in
             if listNode.guid == listNodeSectionIdentifier {
                 return Cell<ListSectionCollectionViewCell>()
                 .onSize { [weak self] context in
                     guard let sSelf = self else { return .zero}
+                    indexPaths.append(context.indexPath)
                     return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
                                   height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
                 }
@@ -242,12 +244,13 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
         
-        self.forceRefresh()
+        self.forceRefresh(with: indexPaths)
     }
     
-    private func forceRefresh() {
-        let indexPath = IndexPath(row: 0, section: 0)
-        self.forceDisplayRefresh(for: indexPath)
+    private func forceRefresh(with indexPaths: [IndexPath]) {
+        for indexPath in indexPaths {
+            self.forceDisplayRefresh(for: indexPath)
+        }
     }
     
     // MARK: Connectivity Helpers
