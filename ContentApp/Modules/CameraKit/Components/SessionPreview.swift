@@ -146,10 +146,6 @@ class SessionPreview: UIView {
         return session?.aspectRatio ?? .ar4by3
     }
     
-    func updateAspectRatioResolution() {
-        session?.deviceOrientationChanged()
-    }
-    
     // MARK: - Private Methods
     
     private func setupView() {

@@ -35,12 +35,7 @@ class CaptureSession: NSObject {
     var overlayView: UIView?
     
     var flashMode = FlashMode.off
-    var resolution = CGSize.zero {
-        didSet {
-            guard let deviceInput = captureDeviceInput else { return }
-            updateSessionPreset(for: deviceInput)
-        }
-    }
+
     var zoom: Float = 1.0 {
         didSet {
             guard let device = captureDeviceInput?.device else { return }
@@ -54,11 +49,7 @@ class CaptureSession: NSObject {
             uiDelegate?.didChange(zoom: zoom)
         }
     }
-    var aspectRatio = CameraAspectRatio.ar4by3 {
-        didSet {
-            resolution = aspectRatio.size
-        }
-    }
+    var aspectRatio = CameraAspectRatio.ar4by3
     var naturalZoomFactor: Float {
         return Float(captureDeviceInput?.device.neutralZoomFactor ?? 1.0)
     }
@@ -130,10 +121,6 @@ class CaptureSession: NSObject {
     }
     
     func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
-    }
-    
-    func deviceOrientationChanged() {
-        resolution = aspectRatio.size
     }
     
     func focus(at point: CGPoint) -> Bool {
@@ -211,12 +198,12 @@ class CaptureSession: NSObject {
             .startAccelerometerUpdates(to: operation,
                                        withHandler: { [weak self] (accelerometer, error) in
                                         guard let sSelf = self else { return }
-            if let error = error {
-                AlfrescoLog.error("CMMotionManager fail, error: \(error.localizedDescription)")
-            } else if let acceleration = accelerometer?.acceleration {
-                sSelf.outputAccelertionData(acceleration)
-            }
-        })
+                                        if let error = error {
+                                            AlfrescoLog.error("CMMotionManager fail, error: \(error.localizedDescription)")
+                                        } else if let acceleration = accelerometer?.acceleration {
+                                            sSelf.outputAccelertionData(acceleration)
+                                        }
+                                       })
     }
     
     func outputAccelertionData(_ acceleration: CMAcceleration) {

@@ -29,17 +29,17 @@ class PhotoCaptureSession: CaptureSession {
     init(position: CameraPosition = .back, aspectRatio: CameraAspectRatio = .ar4by3) {
         super.init()
         defer {
-            self.cameraPosition = position
+            cameraPosition = position
             self.aspectRatio = aspectRatio
         }
         
-        self.photoOutput.isHighResolutionCaptureEnabled = true
+        photoOutput.isHighResolutionCaptureEnabled = true
         let format = [AVVideoCodecKey: AVVideoCodecType.jpeg]
         let capturePhotoSettings = [AVCapturePhotoSettings(format: format)]
-        self.photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
+        photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
                                                        completionHandler: nil)
-        self.session.sessionPreset = .photo
-        self.session.addOutput(self.photoOutput)
+        session.sessionPreset = .photo
+        session.addOutput(photoOutput)
     }
     
     // MARK: - Public Methods
@@ -65,6 +65,7 @@ class PhotoCaptureSession: CaptureSession {
     override func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
         do {
             try deviceInput.device.lockForConfiguration()
+            // TODO: An investigation start point for the aspect ratio video issue
             for preset in sessionPresets {
                 if deviceInput.device.supportsSessionPreset(preset) {
                     session.sessionPreset = preset
@@ -73,7 +74,7 @@ class PhotoCaptureSession: CaptureSession {
             }
             deviceInput.device.unlockForConfiguration()
         } catch {
-            AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
+            AlfrescoLog.error("An unexpected error occured while setting the camera resolution")
         }
     }
 

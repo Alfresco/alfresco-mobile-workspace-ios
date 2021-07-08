@@ -60,10 +60,6 @@ enum CameraAspectRatio {
             }
         }
     }
-    
-    var frameRate: CMTimeScale {
-        return CMTimeScale(30.0)
-    }
 }
 
 enum DeviceType {

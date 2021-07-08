@@ -41,7 +41,7 @@ class TimerViewConfig: ObservableObject, Equatable {
 struct TimerView: View {
     @State var minutes: Int = 0
     @State var seconds: Int = 0
-    @State var timer: Timer? = nil
+    @State var timer: Timer?
 
     @ObservedObject var config: TimerViewConfig
     private let dateFormatter = DateFormatter()

@@ -76,16 +76,13 @@ class CameraViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
         applyComponentsThemes()
-        modeSelector.setNeedsLayout()
         zoomSlider.setSlider(value: sessionPreview.zoom)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         cameraViewModel?.deletePreviousCapture()
-        if cameraSession == nil {
-            setUpCameraSession(for: modeSelector.currentSelection)
-        } else {
+        if cameraSession != nil {
             sessionPreview.update(flashMode: flashMenuView.flashMode)
         }
     }
@@ -100,7 +97,6 @@ class CameraViewController: UIViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         configureViewsLayout(for: size)
-        sessionPreview.updateAspectRatioResolution()
     }
 
     // MARK: - IBActions
@@ -176,6 +172,7 @@ class CameraViewController: UIViewController {
         sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
 
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+
         cameraSession = session
         
         configureViewsLayout(for: view.bounds.size)
@@ -334,7 +331,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
-        // TODO: Not an ideal workaround, problem should be traced and fixed
+        // TODO: Not an ideal workaround, problem should be traced and fixed at root cause
         setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
         flashMenuView.flashMode = .auto

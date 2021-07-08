@@ -49,7 +49,7 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             guard let sSelf = self else { return }
             if granted {
-                sSelf.requestAuthorizationForMicrofone { granted in
+                sSelf.requestAuthorizationForMicrophone { granted in
                     sSelf.coordinatorServices.locationService?.requestAuhtorizationForLocatioInUse()
                     DispatchQueue.main.async {
                         guard let sSelf = self else { return }
@@ -81,7 +81,7 @@ class CameraScreenCoordinator: NSObject, Coordinator {
         }
     }
     
-    private func requestAuthorizationForMicrofone(completion: @escaping ((_ granted: Bool) -> Void)) {
+    private func requestAuthorizationForMicrophone(completion: @escaping ((_ granted: Bool) -> Void)) {
         AVAudioSession.sharedInstance().requestRecordPermission { granted in
             completion(granted)
         }

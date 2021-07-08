@@ -20,11 +20,11 @@ import AVFoundation
 import UIKit
 
 class VideoCaptureSession: CaptureSession {
-    
     var isRecording = false
     var videoFileName: String?
     let movieOutput = AVCaptureMovieFileOutput()
     let sessionPresets: [AVCaptureSession.Preset] = [.hd4K3840x2160, .hd1920x1080, .hd1280x720, .vga640x480]
+    var frameRate = CMTimeScale(30.0)
     
     override var flashMode: FlashMode {
         didSet {
@@ -48,12 +48,8 @@ class VideoCaptureSession: CaptureSession {
         super.init()
         
         defer {
-            self.cameraPosition = position
+            cameraPosition = position
             self.aspectRatio = aspectRatio
-            
-            if let deviceInput = captureDeviceInput {
-                updateSessionPreset(for: deviceInput)
-            }
         }
         
         do {
@@ -62,7 +58,20 @@ class VideoCaptureSession: CaptureSession {
         } catch let error {
             AlfrescoLog.error(error)
         }
-        
+
+        if let device = captureDeviceInput?.device {
+            do {
+                try device.lockForConfiguration()
+                for preset in sessionPresets {
+                    if device.supportsSessionPreset(preset) {
+                        session.sessionPreset = preset
+                        break
+                    }
+                }
+                device.unlockForConfiguration()
+            } catch {}
+        }
+
         session.addOutput(movieOutput)
     }
     
@@ -100,12 +109,12 @@ class VideoCaptureSession: CaptureSession {
                     break
                 }
             }
-            let cmTime = CMTime(value: 1, timescale: aspectRatio.frameRate)
+            let cmTime = CMTime(value: 1, timescale: frameRate)
             deviceInput.device.activeVideoMinFrameDuration = cmTime
             deviceInput.device.activeVideoMaxFrameDuration = cmTime
             deviceInput.device.unlockForConfiguration()
         } catch {
-            AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
+            AlfrescoLog.error("An unexpected error occured while setting the camera resolution")
         }
     }
     
@@ -125,7 +134,6 @@ class VideoCaptureSession: CaptureSession {
 // MARK: AVCaptureFileOutputRecording Delegate
 
 extension VideoCaptureSession: AVCaptureFileOutputRecordingDelegate {
-    
     func fileOutput(_ output: AVCaptureFileOutput,
                     didStartRecordingTo fileURL: URL,
                     from connections: [AVCaptureConnection]) {
