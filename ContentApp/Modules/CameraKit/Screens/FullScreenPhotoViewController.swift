@@ -41,6 +41,13 @@ class FullScreenPhotoViewController: UIViewController {
         scrollView.addGestureRecognizer(tapGesture)
         
         applyComponentsThemes()
+        
+        ControllerRotation.lockOrientation(.all)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ControllerRotation.lockOrientation(.portrait, andRotateTo: .portrait)
     }
     
     // MARK: - IBActions

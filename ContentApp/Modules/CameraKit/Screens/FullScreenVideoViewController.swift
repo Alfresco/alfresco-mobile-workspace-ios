@@ -35,6 +35,19 @@ class FullScreenVideoViewController: UIViewController {
         displayMediaPreview()
         view.bringSubviewToFront(closeButton)
         applyComponentsThemes()
+        
+        ControllerRotation.lockOrientation(.all)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ControllerRotation.lockOrientation(.portrait, andRotateTo: .portrait)
+    }
+    
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        videoPreview?.recalculateFrame(from: size)
     }
     
     // MARK: - IBActions
