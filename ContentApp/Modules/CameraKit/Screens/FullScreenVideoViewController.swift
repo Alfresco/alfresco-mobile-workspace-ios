@@ -49,6 +49,7 @@ class FullScreenVideoViewController: UIViewController {
         guard let url = videoURL, let mediaPreview: MediaPreview = .fromNib() else { return }
         
         mediaPreview.frame = CGRect(origin: .zero, size: view.bounds.size)
+        mediaPreview.applyTheme(CameraKit.theme)
         mediaPreview.play(from: url, isAudioFile: false) { (error) in
         }
         view.addSubview(mediaPreview)

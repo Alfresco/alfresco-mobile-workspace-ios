@@ -322,6 +322,34 @@ class MediaPreview: UIView, FilePreviewProtocol {
             backgroundColor = currentTheme.backgroundColor
         }
     }
+    
+    func applyTheme(_ theme: CameraKitTheme?) {
+        guard let theme = theme else { return }
+        
+        currentTimeClockLabel.textColor = theme.onSurfaceColor
+        currentTimeClockLabel.font = theme.body2Font
+        
+        currentTimeMinutesLabel.textColor = theme.onSurfaceColor
+        currentTimeMinutesLabel.font = theme.body2Font
+        currentTimeMinutesLabel.textAlignment = .right
+        
+        currentTimeSecondsLabel.textColor = theme.onSurfaceColor
+        currentTimeSecondsLabel.font = theme.body2Font
+        currentTimeSecondsLabel.textAlignment = .left
+        
+        videoSlider.tintColor = theme.primaryColor
+        videoSlider.thumbTintColor = theme.primaryColor
+        videoSlider.maximumTrackTintColor = theme.primaryColor.withAlphaComponent(0.3)
+        videoSlider.setThumbImage(UIImage(named: "ic-player-slider-thumb"), for: .normal)
+        
+        actionsView.backgroundColor = theme.surfaceColor
+        actionsView.layer.borderColor = theme.onSurface15Color.cgColor
+
+        backwardButton.tintColor = theme.onSurface60Color
+        forwardButton.tintColor = theme.onSurface60Color
+
+        playPauseButton.tintColor = theme.primaryColor
+    }
 
     func recalculateFrame(from size: CGSize) {
         frame = CGRect(origin: .zero, size: size)
