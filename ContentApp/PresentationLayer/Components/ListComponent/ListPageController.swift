@@ -102,7 +102,6 @@ class ListPageController: ListPageControllerProtocol {
         currentPage = 1
         hasMoreItems = true
         shouldRefreshList = true
-
         fetchNextPage()
     }
 
@@ -147,6 +146,10 @@ class ListPageController: ListPageControllerProtocol {
             }
         } else if pagination?.skipCount == 0 || error == nil {
             self.dataSource.rawListNodes = []
+            if let totalItems = pagination?.totalItems {
+                shouldDisplayNextPageLoadingIndicator =
+                    (Int64(self.dataSource.rawListNodes.count) >= totalItems) ? false : true
+            }
         }
         delegate?.didUpdateList(error: error,
                                 pagination: pagination)
@@ -198,6 +201,7 @@ extension ListPageController: ListComponentModelDelegate {
     }
 
     func needsDisplayStateRefresh() {
+        requestInProgress = false
         let pagination = Pagination(count: Int64(dataSource.numberOfItems(in: 0)),
                                     hasMoreItems: hasMoreItems,
                                     totalItems: totalItems,

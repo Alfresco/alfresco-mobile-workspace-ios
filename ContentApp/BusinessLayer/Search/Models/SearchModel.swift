@@ -69,7 +69,7 @@ class SearchModel: SearchModelProtocol {
         handleSearch(for: sString, paginationRequest: paginationRequest)
 
     }
-
+    
     func performLiveSearch(for string: String,
                            paginationRequest: RequestPagination?) {
         liveSearchTimer?.invalidate()

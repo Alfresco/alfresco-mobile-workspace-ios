@@ -129,7 +129,7 @@ class ResultViewController: SystemThemableViewController {
         progressView.setHidden(true, animated: false)
         resultsListController?.refreshControl?.endRefreshing()
     }
-
+    
     func clearDataSource() {
         pageController?.clear()
         recentSearchesView.isHidden = false
