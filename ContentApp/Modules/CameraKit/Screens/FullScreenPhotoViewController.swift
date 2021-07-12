@@ -18,7 +18,7 @@
 
 import UIKit
 
-class FullScreenCapturedAssetViewController: UIViewController {
+class FullScreenPhotoViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
@@ -34,13 +34,20 @@ class FullScreenCapturedAssetViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = imageCapturedAsset
-        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
-        applyComponentsThemes()
-        
+
         let tapGesture = UITapGestureRecognizer(target: self,
                                                 action: #selector(zoomImageGesture(_:)))
         tapGesture.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(tapGesture)
+        
+        applyComponentsThemes()
+        
+        ControllerRotation.lockOrientation(.all)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        ControllerRotation.lockOrientation(.portrait, andRotateTo: .portrait)
     }
     
     // MARK: - IBActions
@@ -65,6 +72,7 @@ class FullScreenCapturedAssetViewController: UIViewController {
         view.backgroundColor = .black
         closeButton.tintColor = .white
         closeButton.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        closeButton.layer.cornerRadius = closeButton.bounds.height / 2.0
     }
     
     private func zoomRectForScale(_ scale: CGFloat, center: CGPoint) -> CGRect {
@@ -79,7 +87,7 @@ class FullScreenCapturedAssetViewController: UIViewController {
 
 // MARK: - UIScrollView Delegate
 
-extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
+extension FullScreenPhotoViewController: UIScrollViewDelegate {
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
           return imageView
     }
@@ -110,4 +118,4 @@ extension FullScreenCapturedAssetViewController: UIScrollViewDelegate {
 
 // MARK: - Storyboard Instantiable
 
-extension FullScreenCapturedAssetViewController: CameraStoryboardInstantiable { }
+extension FullScreenPhotoViewController: CameraStoryboardInstantiable { }

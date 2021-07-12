@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -92,7 +92,7 @@
                                             <action selector="switchCamerasButtonTapped:" destination="nj7-Z3-jPD" eventType="touchUpInside" id="6jw-ID-Fi4"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XfX-as-TQa" customClass="CameraButton" customModule="ContentApp" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XfX-as-TQa" customClass="ShutterButton" customModule="ContentApp" customModuleProvider="target">
                                         <rect key="frame" x="178" y="24" width="72" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <accessibility key="accessibilityConfiguration" identifier="captureButton"/>
@@ -120,11 +120,11 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="cameraSlider" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
                         <outlet property="closeButton" destination="Z0X-Ts-kZm" id="czF-h9-962"/>
                         <outlet property="finderView" destination="Sex-j9-UbZ" id="d7i-5a-wCl"/>
                         <outlet property="flashMenuView" destination="zuw-61-Yy5" id="7ZH-Qp-rQn"/>
                         <outlet property="flashModeButton" destination="yXa-57-gSk" id="SiS-rI-Uwu"/>
+                        <outlet property="modeSelector" destination="4bR-ue-MhG" id="lLk-GO-i18"/>
                         <outlet property="modeView" destination="fvq-fy-4iC" id="HRs-74-qq4"/>
                         <outlet property="sessionPreview" destination="Mpj-Nv-eD8" id="8t8-l6-fSS"/>
                         <outlet property="shutterButton" destination="XfX-as-TQa" id="oke-4n-5ei"/>
@@ -404,6 +404,18 @@
                                                     <action selector="saveButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="Unf-WI-yxN"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pry-JY-ii6">
+                                                <rect key="frame" x="109" y="272" width="40" height="40"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="G42-mL-nZ1"/>
+                                                    <constraint firstAttribute="width" constant="40" id="i1K-ib-Wpo"/>
+                                                </constraints>
+                                                <state key="normal" image="ic-player-outline-play"/>
+                                                <connections>
+                                                    <action selector="playButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="t1C-EI-g5e"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <gestureRecognizers/>
@@ -413,9 +425,11 @@
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="DaO-AO-6CM"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="top" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="36" id="GDW-RP-1KR"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="Il7-Be-aeh"/>
+                                            <constraint firstItem="Pry-JY-ii6" firstAttribute="leading" secondItem="Lqx-zE-Z9u" secondAttribute="leading" constant="12" id="MmG-lY-CVt"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="24" id="RoD-iB-NA0"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="36" id="TQu-aK-HcY"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="X0X-35-9ml"/>
+                                            <constraint firstItem="Pry-JY-ii6" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="YcM-tg-TES"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="ZMF-7v-Fiy"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="leading" secondItem="pAD-Um-d5b" secondAttribute="leading" constant="24" id="bpT-8G-Mda"/>
                                             <constraint firstItem="Lqx-zE-Z9u" firstAttribute="top" secondItem="pAD-Um-d5b" secondAttribute="top" constant="12" id="f6e-T5-eDE"/>
@@ -456,12 +470,14 @@
                         <outlet property="contentView" destination="pAD-Um-d5b" id="ylJ-c6-fJG"/>
                         <outlet property="descriptionField" destination="rvJ-v8-anF" id="gmY-aS-Tyf"/>
                         <outlet property="fileNameTextField" destination="tlp-el-y3t" id="0bh-vZ-s9W"/>
+                        <outlet property="playButton" destination="Pry-JY-ii6" id="H5C-wk-aAJ"/>
                         <outlet property="saveButton" destination="stA-oV-pdw" id="Lwp-uE-F0G"/>
                         <outlet property="saveButtonBottomConstraint" destination="kUT-Rn-cqH" id="YhC-vD-8sb"/>
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
                         <outlet property="scrollViewTopConstraint" destination="BtO-aq-tej" id="Ixo-6q-B2b"/>
                         <outlet property="trashButton" destination="KME-9f-KQ8" id="A18-M8-a1x"/>
-                        <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreen" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
+                        <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreenPhoto" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
+                        <segue destination="jNE-G7-pYk" kind="presentation" identifier="showFullScreenVideo" id="vzf-pO-5xg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NuX-St-XqT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -478,10 +494,10 @@
             </objects>
             <point key="canvasLocation" x="888.78504672897191" y="62.850971922246224"/>
         </scene>
-        <!--Full Screen Captured Asset View Controller-->
+        <!--Full Screen Photo View Controller-->
         <scene sceneID="vhb-Ir-nlI">
             <objects>
-                <viewController storyboardIdentifier="FullScreenCapturedAssetViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odl-F0-g3H" customClass="FullScreenCapturedAssetViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FullScreenCapturedAssetViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Odl-F0-g3H" customClass="FullScreenPhotoViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1tF-Pj-IvM">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -541,7 +557,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X6u-XA-a2d" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="62"/>
+            <point key="canvasLocation" x="1822" y="-290"/>
+        </scene>
+        <!--Full Screen Video View Controller-->
+        <scene sceneID="CnT-4v-hC6">
+            <objects>
+                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="jNE-G7-pYk" customClass="FullScreenVideoViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6xb-jq-NdT">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2tB-Hp-hMH">
+                                <rect key="frame" x="16" y="60" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="closeButton"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="5W5-a7-YYn"/>
+                                    <constraint firstAttribute="width" constant="40" id="JGj-FJ-yth"/>
+                                </constraints>
+                                <state key="normal" image="ic-close"/>
+                                <connections>
+                                    <action selector="closeButtonTapped:" destination="jNE-G7-pYk" eventType="touchUpInside" id="6GL-Og-K51"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="3ZL-2t-hyW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="2tB-Hp-hMH" firstAttribute="top" secondItem="3ZL-2t-hyW" secondAttribute="top" constant="16" id="X9J-PM-br1"/>
+                            <constraint firstItem="2tB-Hp-hMH" firstAttribute="leading" secondItem="3ZL-2t-hyW" secondAttribute="leading" constant="16" id="ndr-f5-Ugc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="2tB-Hp-hMH" id="xbA-x5-Vhf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5OI-W5-mJ0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1821" y="433"/>
         </scene>
     </scenes>
     <resources>
@@ -550,6 +602,7 @@
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-emptry-list-gallery" width="64" height="64"/>
         <image name="ic-gallery-is-video" width="24" height="24"/>
+        <image name="ic-player-outline-play" width="24" height="24"/>
         <image name="ic-trash" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

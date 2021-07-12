@@ -33,7 +33,6 @@ protocol FlashMenuDelegate: AnyObject {
 }
 
 class FlashMenu: UIView {
-    
     private var style = FlashMenuStyle(optionTintColor: .black,
                                        optionFont: .systemFont(ofSize: 14),
                                        optionColor: .black,
@@ -45,10 +44,13 @@ class FlashMenu: UIView {
     private let autoFlashButton = UIButton()
     private let onFlashButton = UIButton()
     private let offFlashButton = UIButton()
+
+    var flashMode: FlashMode
     
     // MARK: - Public Methods
     
     required init?(coder: NSCoder) {
+        flashMode = .auto
         super.init(coder: coder)
         
         layer.cornerRadius = 8.0
@@ -113,11 +115,13 @@ class FlashMenu: UIView {
     
     @objc private func handleTap(_ sender: UIButton) {
         switch sender.tag {
-        case 0: delegate?.selected(flashMode: .auto)
-        case 1: delegate?.selected(flashMode: .on)
-        case 2: delegate?.selected(flashMode: .off)
+        case 0: flashMode = .auto
+        case 1: flashMode = .on
+        case 2: flashMode = .off
         default: break
         }
+
+        delegate?.selected(flashMode: flashMode)
     }
     
     // MARK: - Private Methods

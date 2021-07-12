@@ -32,11 +32,6 @@ enum CameraSettings {
     case zoom
 }
 
-enum CameraMode {
-    case photo
-    case video
-}
-
 class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
@@ -51,6 +46,8 @@ class SessionPreview: UIView {
         }
     }
 
+    var cameraPosition: CameraPosition = .back
+    
     var zoom: Float = 1.0 {
         didSet {
             lastScale = zoom
@@ -72,8 +69,6 @@ class SessionPreview: UIView {
             }
         }
     }
-    
-    var cameraMode = CameraMode.photo
     
     // MARK: - Init
     
@@ -101,6 +96,8 @@ class SessionPreview: UIView {
     // MARK: - Public Methods
     
     func add(session: CaptureSession) {
+        stopSession()
+
         self.session = session
     }
     
@@ -117,48 +114,36 @@ class SessionPreview: UIView {
     }
     
     func update(flashMode: FlashMode) {
-        if let photoSession = session as? PhotoCaptureSession {
-            photoSession.flashMode = flashMode
-        }
+        session?.flashMode = flashMode
     }
     
     func shouldDisplayFlash() -> Bool {
-        if let photoSession = session as? PhotoCaptureSession {
-            return photoSession.captureDeviceInput?.device.hasFlash ?? false
-        }
-        return false
+        return session?.shouldDisplayFlashMode() ?? false
     }
     
     func reset(settings: [CameraSettings]) {
-        guard let photoSession = session as? PhotoCaptureSession else { return }
         for setting in settings {
             switch setting {
             case .flash:
-                photoSession.flashMode = .auto
+                session?.flashMode = .auto
             case .zoom:
-                zoom = photoSession.naturalZoomFactor
+                zoom = session?.naturalZoomFactor ?? 1
             case .focus:
-                photoSession.resetDeviceConfiguration()
+                session?.resetDeviceConfiguration()
             case .position:
-                photoSession.cameraPosition = .back
+                session?.cameraPosition = .back
             case .mode:
-                cameraMode = .photo
+                break
             }
         }
     }
     
     func changeCameraPosition() {
-        if let photoSession = session as? PhotoCaptureSession {
-            photoSession.cameraPosition = (photoSession.cameraPosition == .back) ? .front : .back
-        }
+        cameraPosition = cameraPosition == .back ? .front : .back
     }
 
     func aspectRatio() -> CameraAspectRatio {
         return session?.aspectRatio ?? .ar4by3
-    }
-    
-    func updateAspectRatioResolution() {
-        session?.deviceOrientationChanged()
     }
     
     // MARK: - Private Methods

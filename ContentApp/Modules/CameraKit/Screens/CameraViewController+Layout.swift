@@ -68,20 +68,17 @@ extension CameraViewController {
         let aspectRatio = sessionPreview.aspectRatio()
         let viewWidth = size.width
         let viewHeight = size.height
-        let cameraHeight = min(viewHeight, viewWidth * aspectRatio.value)
         
         topBarView.frame.size = CGSize(width: viewWidth, height: 56)
         flashMenuView.frame.size =  CGSize(width: 160, height: 160)
-        finderView.frame.size = CGSize(width: viewWidth, height: cameraHeight)
         zoomView.frame.size = CGSize(width: viewWidth, height: 64)
         shutterView.frame.size = CGSize(width: viewWidth, height: 96)
         modeView.frame.size = CGSize(width: viewWidth, height: 64)
         
         let topViewHeight = topBarView.bounds.height
-        let finderViewHeight = finderView.bounds.height
         let zoomViewHeight = zoomView.bounds.height
         let shutterViewHeight = shutterView.bounds.height
-        let modeViewHeight = modeView.bounds.height
+        var modeViewHeight = modeView.bounds.height
         let flashMenuViewHeight = flashMenuView.bounds.height
         
         var topViewGuide: CGFloat = 0.0
@@ -90,47 +87,35 @@ extension CameraViewController {
         var zoomViewGuide: CGFloat = 0.0
         var shutterViewGuide: CGFloat = 0.0
         var modeViewGuide: CGFloat = 0.0
-        
-        let case1 = topViewHeight + finderViewHeight + shutterViewHeight + modeViewHeight
-        let case2 = topViewHeight + finderViewHeight + modeViewHeight
-        let case3 = topViewHeight + finderViewHeight
-        
-        if case1 <= viewHeight { // All elemets fits
-            let offset = (viewHeight - (case1)) / 2
+
+        let finderView16by9 = min(viewHeight, (viewWidth * CameraAspectRatio.ar16by9.value))
+        let finderView4by3 = min(viewHeight, (viewWidth * CameraAspectRatio.ar4by3.value))
+        let expandedFinderView = max(finderView4by3, finderView16by9)
+        let compactFinderView = min(finderView4by3, finderView16by9)
+        let currentFinderView = min(viewHeight, (viewWidth * aspectRatio.value))
+        let finderViewDiff = expandedFinderView - compactFinderView
+
+        if topViewHeight + expandedFinderView <= viewHeight {
+            modeViewHeight += max(0, finderViewDiff - (shutterViewHeight + modeViewHeight))
+            let offset = (viewHeight - (topViewHeight + expandedFinderView)) / 2
             topViewGuide = offset
-            flashMenuViewGuide = topViewGuide + topViewHeight
             finderViewGuide = topViewGuide + topViewHeight
-            shutterViewGuide = finderViewGuide + finderViewHeight
-            modeViewGuide = shutterViewGuide + shutterViewHeight
-            zoomViewGuide = shutterViewGuide - zoomViewHeight
-        } else if case2 <= viewHeight { // All elemets except the shutter fits
-            let offset = (viewHeight - (case2)) / 2
-            topViewGuide = offset
-            flashMenuViewGuide = topViewGuide + topViewHeight
-            finderViewGuide = topViewGuide + topViewHeight
-            shutterViewGuide = finderViewGuide + finderViewHeight - shutterViewHeight
-            modeViewGuide = finderViewGuide + finderViewHeight
-            zoomViewGuide = shutterViewGuide - zoomViewHeight
-        } else if case3 <= viewHeight { // Only the top bar and finder fits
-            let offset = (viewHeight - (case3)) / 2
-            topViewGuide = offset
-            flashMenuViewGuide = topViewGuide + topViewHeight
-            finderViewGuide = topViewGuide + topViewHeight
-            modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
+            modeViewGuide = finderViewGuide + expandedFinderView - modeViewHeight
             shutterViewGuide = modeViewGuide - shutterViewHeight
-            zoomViewGuide = shutterViewGuide - zoomViewHeight
-        } else { // Overlay everything on top of the finder
-            let offset = (viewHeight - finderViewHeight) / 2
+        } else {
+            modeViewHeight += max(0, finderViewDiff - shutterViewHeight - modeViewHeight)
+            let offset = (viewHeight - expandedFinderView) / 2
             topViewGuide = offset
             finderViewGuide = offset
-            flashMenuViewGuide = topViewGuide + topViewHeight
-            modeViewGuide = finderViewGuide + finderViewHeight - modeViewHeight
+            modeViewGuide = finderViewGuide + expandedFinderView - modeViewHeight
             shutterViewGuide = modeViewGuide - shutterViewHeight
-            zoomViewGuide = shutterViewGuide - zoomViewHeight
         }
         
+        zoomViewGuide = shutterViewGuide - zoomViewHeight
+        flashMenuViewGuide = topViewGuide + topViewHeight
+        
         topBarView.frame = CGRect(x: 0, y: topViewGuide, width: viewWidth, height: topViewHeight)
-        finderView.frame = CGRect(x: 0, y: finderViewGuide, width: viewWidth, height: finderViewHeight)
+        finderView.frame = CGRect(x: 0, y: finderViewGuide, width: viewWidth, height: currentFinderView)
         zoomView.frame = CGRect(x: 0, y: zoomViewGuide, width: viewWidth, height: zoomViewHeight)
         shutterView.frame = CGRect(x: 0, y: shutterViewGuide, width: viewWidth, height: shutterViewHeight)
         modeView.frame = CGRect(x: 0, y: modeViewGuide, width: viewWidth, height: modeViewHeight)
@@ -146,6 +131,8 @@ extension CameraViewController {
         configureZoomView()
         configureShutterView()
         configureModeView()
+        configureTimerView()
+
     }
     
     private func configureTopViewLayout() {
@@ -182,7 +169,11 @@ extension CameraViewController {
     }
     
     private func configureModeView() {
-        cameraSlider.center = CGPoint(x: modeView.frame.width / 2, y: modeView.frame.height / 2)
-        cameraSlider.translatesAutoresizingMaskIntoConstraints = true
+        modeSelector.center = CGPoint(x: modeView.frame.width / 2, y: modeView.frame.height / 2)
+        modeSelector.translatesAutoresizingMaskIntoConstraints = true
+    }
+
+    private func configureTimerView() {
+        timerView?.center = modeSelector.center
     }
 }

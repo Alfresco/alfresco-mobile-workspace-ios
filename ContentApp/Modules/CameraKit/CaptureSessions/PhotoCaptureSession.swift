@@ -22,92 +22,27 @@ import UIKit
 class PhotoCaptureSession: CaptureSession {
     
     let photoOutput = AVCapturePhotoOutput()
-    var flashMode = FlashMode.auto
+    let sessionPresets: [AVCaptureSession.Preset] = [.photo, .high, .medium, .low]
     
-    var cameraPosition = CameraPosition.back {
-        didSet {
-            do {
-                let deviceInput = try CaptureSession.capture(deviceInput: cameraPosition.deviceType)
-                zoom = naturalZoomFactor
-                captureDeviceInput = deviceInput
-            } catch let error {
-                AlfrescoLog.error(error)
-            }
-        }
-    }
-
-    var captureDeviceInput: AVCaptureDeviceInput? {
-        didSet {
-            if let oldValue = oldValue {
-                session.removeInput(oldValue)
-            }
-            if let captureDeviceInput = captureDeviceInput {
-                session.addInput(captureDeviceInput)
-                defaultConfiguration(for: captureDeviceInput.device)
-            }
-        }
-    }
-    
-    override var aspectRatio: CameraAspectRatio {
-        didSet {
-            resolution = aspectRatio.size
-        }
-    }
-    
-    override var resolution: CGSize {
-        didSet {
-            guard let deviceInput = captureDeviceInput else { return }
-            do {
-                try deviceInput.device.lockForConfiguration()
-                if let format = CaptureSession.device(input: deviceInput,
-                                                      resolution: resolution) {
-                    deviceInput.device.activeFormat = format
-                } else {
-                    session.sessionPreset = .photo
-                }
-                deviceInput.device.unlockForConfiguration()
-            } catch {
-                AlfrescoLog.error("An unexpected error occured while setting the camera resolution to \(resolution)")
-            }
-        }
-    }
-    
-    override var zoom: Float {
-        didSet {
-            guard let device = captureDeviceInput?.device else { return }
-            do {
-                try device.lockForConfiguration()
-                device.videoZoomFactor = CGFloat(zoom)
-                device.unlockForConfiguration()
-            } catch {
-                AlfrescoLog.error("An unexpected error occured while zooming.")
-            }
-            uiDelegate?.didChange(zoom: zoom)
-        }
-    }
-
-    var naturalZoomFactor: Float {
-        return Float(captureDeviceInput?.device.neutralZoomFactor ?? 1.0)
-    }
-
     // MARK: - Init
     
-    init(position: CameraPosition = .back) {
+    init(position: CameraPosition = .back, aspectRatio: CameraAspectRatio = .ar4by3) {
         super.init()
         defer {
-            self.cameraPosition = position
+            cameraPosition = position
+            self.aspectRatio = aspectRatio
         }
         
-        self.photoOutput.isHighResolutionCaptureEnabled = true
+        photoOutput.isHighResolutionCaptureEnabled = true
         let format = [AVVideoCodecKey: AVVideoCodecType.jpeg]
         let capturePhotoSettings = [AVCapturePhotoSettings(format: format)]
-        self.photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
+        photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
                                                        completionHandler: nil)
-        self.session.sessionPreset = .photo
-        self.session.addOutput(self.photoOutput)
+        session.sessionPreset = .photo
+        session.addOutput(photoOutput)
     }
     
-    // MARK: - Capture Methods
+    // MARK: - Public Methods
     
     override func capture() {
         guard session.isRunning else { return }
@@ -123,45 +58,26 @@ class PhotoCaptureSession: CaptureSession {
         photoOutput.capturePhoto(with: settings, delegate: self)
     }
     
-    // MARK: - Public Methods
-    
-    func resetDeviceConfiguration() {
-        if let device = captureDeviceInput?.device {
-            defaultConfiguration(for: device)
-        }
+    override func shouldDisplayFlashMode() -> Bool {
+        return captureDeviceInput?.device.hasFlash ?? false
     }
     
-    func togglePosition() {
-        cameraPosition = cameraPosition == .back ? .front : .back
-    }
-    
-    override func focus(at point: CGPoint) -> Bool {
-        var shouldDisplayFocus = false
-        if let device = captureDeviceInput?.device,
-           device.isFocusPointOfInterestSupported {
-            do {
-                try device.lockForConfiguration()
-                shouldDisplayFocus = true
-                device.focusPointOfInterest = point
-                device.focusMode = .autoFocus
-                if device.isSmoothAutoFocusSupported {
-                    device.isSmoothAutoFocusEnabled = true
+    override func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
+        do {
+            try deviceInput.device.lockForConfiguration()
+            // TODO: An investigation start point for the aspect ratio video issue
+            for preset in sessionPresets {
+                if deviceInput.device.supportsSessionPreset(preset) {
+                    session.sessionPreset = preset
+                    break
                 }
-                if device.isExposurePointOfInterestSupported {
-                    device.exposureMode = .autoExpose
-                }
-                let whiteBalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
-                if device.isWhiteBalanceModeSupported(whiteBalanceMode) {
-                    device.whiteBalanceMode = whiteBalanceMode
-                }
-                device.unlockForConfiguration()
-            } catch let error {
-                AlfrescoLog.error("Error while focusing at point \(point): \(error.localizedDescription)")
             }
+            deviceInput.device.unlockForConfiguration()
+        } catch {
+            AlfrescoLog.error("An unexpected error occured while setting the camera resolution")
         }
-        return shouldDisplayFocus
     }
-    
+
     // MARK: - Private Methods
 
     private func process(capturedPhoto: AVCapturePhoto) {
@@ -175,41 +91,10 @@ class PhotoCaptureSession: CaptureSession {
         }
 
         delegate?.captured(asset: CapturedAsset(type: .image,
-                                                fileName: defaultFileName(),
+                                                fileName: defaultFileName(with: prefixImageFileName),
                                                 data: data,
                                                 saveIn: mediaFolderPath),
                            error: nil)
-    }
-    
-    private func defaultConfiguration(for device: AVCaptureDevice) {
-        do {
-            try device.lockForConfiguration()
-
-            let focusMode: AVCaptureDevice.FocusMode = .continuousAutoFocus
-            let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
-            let whitebalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
-
-            if device.isFocusModeSupported(focusMode) {
-                device.focusMode = focusMode
-            }
-            if device.isExposureModeSupported(exposureMode) {
-                device.exposureMode = exposureMode
-            }
-
-            if device.isWhiteBalanceModeSupported(whitebalanceMode) {
-                device.whiteBalanceMode = .continuousAutoWhiteBalance
-            }
-
-            device.unlockForConfiguration()
-        } catch {
-            AlfrescoLog.error("An unexpected error occured while zooming.")
-        }
-    }
-
-    private func defaultFileName() -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
-        return "\(prefixFileName)_\(dateFormatter.string(from: Date()))"
     }
 }
 

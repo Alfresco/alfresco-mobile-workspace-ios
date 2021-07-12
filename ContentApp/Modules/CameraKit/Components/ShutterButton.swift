@@ -24,50 +24,53 @@ enum ButtonInput {
     case video
 }
 
-struct CameraButtonStyle {
+struct ShutterButtonStyle {
     let photoButtonColor: UIColor
     let videoButtonColor: UIColor
     let outerRingColor: UIColor
 }
 
-class CameraButton: UIButton {
+class ShutterButton: UIButton {
     private var pathLayer: CAShapeLayer?
     private let animationDuration = 0.2
     private let innerSmallGuide: CGFloat = 9/7.0
     private let innerBigProportion: CGFloat = 9/5.0
-    
+    private var morph: CABasicAnimation?
+
     var buttonInput = ButtonInput.photo
-    private var style = CameraButtonStyle(photoButtonColor: .blue,
+    private var style = ShutterButtonStyle(photoButtonColor: .blue,
                                           videoButtonColor: .red,
                                           outerRingColor: .white)
     override var buttonType: UIButton.ButtonType {
         return .custom
     }
-    
+
     override var isSelected: Bool {
         didSet {
             let morph = CABasicAnimation(keyPath: "path")
+            morph.delegate = self
             morph.duration = animationDuration
             morph.timingFunction = CAMediaTimingFunction(name: .easeIn)
             morph.toValue = currentInnerPath().cgPath
-            
+
             if buttonInput == .video {
                 morph.fillMode = .forwards
                 morph.isRemovedOnCompletion = false
             }
-            pathLayer?.add(morph, forKey: "")
+            pathLayer?.add(morph, forKey: morph.keyPath)
+            self.morph = morph
         }
     }
-    
+
     // MARK: - Public interface
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        
+
         addTarget(self, action: #selector(touchUpInside), for: .touchUpInside)
-        addTarget(self, action: #selector(touchDown), for: .touchDown)
+        setup()
     }
-    
+
     @objc func touchUpInside(sender: UIButton) {
         if buttonInput == .video {
             let colorChange = CABasicAnimation(keyPath: "fillColor")
@@ -76,39 +79,28 @@ class CameraButton: UIButton {
             colorChange.fillMode = .forwards
             colorChange.isRemovedOnCompletion = false
             colorChange.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            
+
             pathLayer?.add(colorChange, forKey: "darkColor")
             isSelected = !isSelected
-            
         } else {
+
             isSelected = true
         }
     }
-    
-    @objc func touchDown(sender: UIButton) {
-        let morph = CABasicAnimation(keyPath: "fillColor")
-        morph.duration = animationDuration
-        morph.toValue = buttonInput == .video ? style.videoButtonColor : style.photoButtonColor
-        
-        if buttonInput == .video {
-            morph.fillMode = .forwards
-            morph.isRemovedOnCompletion = false
-        }
-        morph.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-        pathLayer?.add(morph, forKey: "")
-    }
-     
-    func update(style: CameraButtonStyle) {
+
+    func update(style: ShutterButtonStyle) {
         self.style = style
+        isSelected = false
+        backgroundColor = style.outerRingColor
+        self.pathLayer?.removeFromSuperlayer()
         setup()
     }
-    
+
     // MARK: - Private interface
-    
+
     private func setup() {
-        backgroundColor = style.outerRingColor
         layer.cornerRadius = frame.height / 2
-        
+
         let pathLayer = CAShapeLayer()
         pathLayer.path = currentInnerPath().cgPath
         pathLayer.strokeColor = nil
@@ -117,11 +109,11 @@ class CameraButton: UIButton {
         self.pathLayer = pathLayer
         tintColor = .clear
     }
-    
+
     private func currentInnerPath() -> UIBezierPath {
-        return (isSelected) ? innerSmallPath() : innerBigPath()
+        return isSelected ? innerSmallPath() : innerBigPath()
     }
-    
+
     private func innerBigPath() -> UIBezierPath {
         let lenght = bounds.width / innerSmallGuide
         let size = CGSize(width: lenght, height: lenght)
@@ -131,7 +123,7 @@ class CameraButton: UIButton {
         return UIBezierPath(roundedRect: CGRect(origin: point, size: size),
                             cornerRadius: cornerRadius)
     }
-    
+
     private func innerSmallPath() -> UIBezierPath {
         let lenght = bounds.width / innerBigProportion
         let size = CGSize(width: lenght, height: lenght)
@@ -140,5 +132,13 @@ class CameraButton: UIButton {
         let cornerRadius = buttonInput == .video ? 4 : lenght / 2
         return UIBezierPath(roundedRect: CGRect(origin: point, size: size),
                             cornerRadius: cornerRadius)
+    }
+}
+
+extension ShutterButton: CAAnimationDelegate {
+    func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
+        if buttonInput == .video {
+            pathLayer?.path = currentInnerPath().cgPath
+        }
     }
 }

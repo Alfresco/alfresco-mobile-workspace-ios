@@ -17,15 +17,18 @@
 //
 
 import UIKit
+import SwiftUI
 
 let animationRotateCameraButtons = 0.5
 let animationFadeView = 0.2
+let photoSlider = 0
+let videoSlider = 1
 
 class CameraViewController: UIViewController {
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
-    @IBOutlet weak var shutterButton: CameraButton!
+    @IBOutlet weak var shutterButton: ShutterButton!
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -36,15 +39,17 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var shutterView: UIView!
     @IBOutlet weak var modeView: UIView!
 
-    @IBOutlet weak var cameraSlider: ModeSelectorControl!
+    @IBOutlet weak var modeSelector: ModeSelectorControl!
     @IBOutlet weak var sessionPreview: SessionPreview!
+    var timerView: UIView?
 
     var cameraViewModel: CameraViewModel?
     weak var cameraDelegate: CameraKitCaptureDelegate?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
 
     private var zoomSliderTimer: Timer?
-    private var cameraSession: PhotoCaptureSession?
+    private var cameraSession: CaptureSession?
+    private var timerViewConfig: TimerViewConfig?
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -63,6 +68,7 @@ class CameraViewController: UIViewController {
         setUpFlashMenu()
         setUpZoomSlider()
         setUpModeSelector()
+        setUpTimerView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,15 +76,14 @@ class CameraViewController: UIViewController {
         navigationController?.isNavigationBarHidden = true
         sessionPreview.startSession()
         applyComponentsThemes()
-        cameraSlider.setNeedsLayout()
         zoomSlider.setSlider(value: sessionPreview.zoom)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         cameraViewModel?.deletePreviousCapture()
-        if cameraSession == nil {
-            setUpCameraSession()
+        if cameraSession != nil {
+            sessionPreview.update(flashMode: flashMenuView.flashMode)
         }
     }
     
@@ -92,9 +97,8 @@ class CameraViewController: UIViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         configureViewsLayout(for: size)
-        sessionPreview.updateAspectRatioResolution()
     }
-    
+
     // MARK: - IBActions
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
@@ -107,17 +111,28 @@ class CameraViewController: UIViewController {
         apply(fade: (flashMenuView.alpha == 1.0), to: flashMenuView)
     }
     
-    @IBAction func captureButtonTapped(_ sender: CameraButton) {
-        shutterButton.isUserInteractionEnabled = false
+    @IBAction func captureButtonTapped(_ sender: ShutterButton) {
+        if modeSelector.currentSelection == photoSlider {
+            shutterButton.isUserInteractionEnabled = false
+        } else if modeSelector.currentSelection == videoSlider {
+            timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
+            timerView?.isHidden = !(timerView?.isHidden ?? true)
+            modeSelector.isHidden = !modeSelector.isHidden
+            switchCameraButton.isHidden = !switchCameraButton.isHidden
+        }
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
 
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
+        sessionPreview.changeCameraPosition()
+        setUpCameraSession(for: modeSelector.currentSelection)
+        
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
-        sessionPreview.changeCameraPosition()
-        sessionPreview.reset(settings: [.flash, .focus, .zoom, .mode])
+
+        sessionPreview.reset(settings: [.flash, .focus, .zoom])
+        
         apply(fade: true, to: flashMenuView)
 
         shutterButton.isUserInteractionEnabled = false
@@ -132,16 +147,24 @@ class CameraViewController: UIViewController {
     private func setUpShutterButton() {
         guard let theme = CameraKit.theme else { return }
         
-        let style = CameraButtonStyle(photoButtonColor: theme.photoShutterColor,
+        let style = ShutterButtonStyle(photoButtonColor: theme.photoShutterColor,
                                       videoButtonColor: theme.videoShutterColor,
                                       outerRingColor: theme.surface60Color)
-        shutterButton.buttonInput = .photo
+        shutterButton.buttonInput = (modeSelector.currentSelection == photoSlider) ? .photo : .video
         shutterButton.update(style: style)
     }
     
-    private func setUpCameraSession() {
-        let session = PhotoCaptureSession()
-        session.aspectRatio = .ar4by3
+    private func setUpCameraSession(for slider: Int) {
+        setUpShutterButton()
+
+        var session: CaptureSession
+        
+        if slider == photoSlider {
+            session = PhotoCaptureSession(position: sessionPreview.cameraPosition)
+        } else {
+            session = VideoCaptureSession(position: sessionPreview.cameraPosition)
+        }
+
         session.delegate = cameraViewModel
         session.uiDelegate = self
         session.mediaFilesFolderPath = cameraViewModel?.folderToSavePath
@@ -149,7 +172,10 @@ class CameraViewController: UIViewController {
         sessionPreview.previewLayer?.videoGravity = .resizeAspectFill
 
         flashModeButton.isHidden = !sessionPreview.shouldDisplayFlash()
+
         cameraSession = session
+        
+        configureViewsLayout(for: view.bounds.size)
     }
     
     private func setUpModeSelector() {
@@ -160,9 +186,33 @@ class CameraViewController: UIViewController {
                                             optionFont: theme.subtitle2Font,
                                             optionBackgroundColor: theme.surface60Color)
         
-        cameraSlider.addSlider(entries: ModeSelectorEntry(entryName: localization.photoMode))
-        cameraSlider.update(style: style)
-        cameraSlider.delegate = self
+        modeSelector.addSlider(entries: ModeSelectorEntry(entryName: localization.photoMode),
+                               ModeSelectorEntry(entryName: localization.videoMode))
+        modeSelector.update(style: style)
+        modeSelector.delegate = self
+    }
+
+    private func setUpTimerView() {
+        guard let theme = CameraKit.theme else { return }
+
+        let config = TimerViewConfig()
+        config.font = theme.subtitle2Font
+        config.fontColor = theme.onSurfaceColor
+        config.roundedBorderColor = theme.surface60Color
+        timerViewConfig = config
+
+        let timer = TimerView(config: config)
+        let hostingController = UIHostingController(rootView: timer)
+        if let hostView = hostingController.view {
+            hostView.backgroundColor = .clear
+            hostView.frame = CGRect(x: .zero,
+                                    y: .zero,
+                                    width: config.borderWidth,
+                                    height: config.borderHeight)
+            modeView.addSubview(hostView)
+            hostView.isHidden = true
+            timerView = hostView
+        }
     }
     
     private func setUpZoomSlider() {
@@ -281,12 +331,12 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
-        if currentSelection == 0 && sessionPreview.cameraMode == .photo {
-            // no need to reset
-            return
-        }
+        // TODO: Not an ideal workaround, problem should be traced and fixed at root cause
+        setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
+        flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
+        setUpCameraSession(for: currentSelection)
     }
 }
 

@@ -33,17 +33,65 @@ class CaptureSession: NSObject {
     let session: AVCaptureSession
     var previewLayer: AVCaptureVideoPreviewLayer?
     var overlayView: UIView?
-    var resolution = CGSize.zero
+    
+    var flashMode = FlashMode.off
+
+    var zoom: Float = 1.0 {
+        didSet {
+            guard let device = captureDeviceInput?.device else { return }
+            do {
+                try device.lockForConfiguration()
+                device.videoZoomFactor = CGFloat(zoom)
+                device.unlockForConfiguration()
+            } catch {
+                AlfrescoLog.error("An unexpected error occured while zooming.")
+            }
+            uiDelegate?.didChange(zoom: zoom)
+        }
+    }
     var aspectRatio = CameraAspectRatio.ar4by3
-    var zoom: Float = 1.0
-    var mediaFilesFolderPath: String?
+    var naturalZoomFactor: Float {
+        return Float(captureDeviceInput?.device.neutralZoomFactor ?? 1.0)
+    }
+    var cameraPosition = CameraPosition.back {
+        didSet {
+            do {
+                let deviceInput = try CaptureSession.capture(deviceInput: cameraPosition.deviceType)
+                try deviceInput.device.lockForConfiguration()
+                zoom = naturalZoomFactor
+                updateSessionPreset(for: deviceInput)
+                captureDeviceInput = deviceInput
+                deviceInput.device.unlockForConfiguration()
+            } catch let error {
+                AlfrescoLog.error(error)
+            }
+        }
+    }
+    var captureDeviceInput: AVCaptureDeviceInput? {
+        didSet {
+            if let oldValue = oldValue {
+                session.removeInput(oldValue)
+            }
+            if let captureDeviceInput = captureDeviceInput {
+                session.addInput(captureDeviceInput)
+                defaultConfiguration(for: captureDeviceInput.device)
+            }
+        }
+    }
+    
     weak var delegate: CaptureSessionDelegate?
     weak var uiDelegate: CaptureSessionUIDelegate?
+
     var lastOrientation = UIDevice.current.orientation
+    var mediaFilesFolderPath: String?
 
     private var motionManager: CMMotionManager?
     
     // MARK: - Init
+
+    deinit {
+        session.stopRunning()
+    }
 
     override init() {
         self.session = AVCaptureSession()
@@ -61,20 +109,87 @@ class CaptureSession: NSObject {
         session.stopRunning()
     }
     
-    func focus(at point: CGPoint) -> Bool {
-        return false
-    }
-    
     func capture() {
     }
     
-    func deviceOrientationChanged() {
-        resolution = aspectRatio.size
+    func toggleCameraPosition() {
+        cameraPosition = cameraPosition == .back ? .front : .back
     }
     
-    // MARK: - Private Methods
+    func shouldDisplayFlashMode() -> Bool {
+        return false
+    }
     
-    func initializeMotionManager() {
+    func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
+    }
+    
+    func focus(at point: CGPoint) -> Bool {
+        var shouldDisplayFocus = false
+        if let device = captureDeviceInput?.device,
+           device.isFocusPointOfInterestSupported {
+            do {
+                try device.lockForConfiguration()
+                shouldDisplayFocus = true
+                device.focusPointOfInterest = point
+                device.focusMode = .autoFocus
+                if device.isSmoothAutoFocusSupported {
+                    device.isSmoothAutoFocusEnabled = true
+                }
+                if device.isExposurePointOfInterestSupported {
+                    device.exposureMode = .autoExpose
+                }
+                let whiteBalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+                if device.isWhiteBalanceModeSupported(whiteBalanceMode) {
+                    device.whiteBalanceMode = whiteBalanceMode
+                }
+                device.unlockForConfiguration()
+            } catch let error {
+                AlfrescoLog.error("Error while focusing at point \(point): \(error.localizedDescription)")
+            }
+        }
+        return shouldDisplayFocus
+    }
+    
+    func resetDeviceConfiguration() {
+        if let device = captureDeviceInput?.device {
+            defaultConfiguration(for: device)
+        }
+    }
+    
+    func defaultConfiguration(for device: AVCaptureDevice) {
+        do {
+            try device.lockForConfiguration()
+
+            let focusMode: AVCaptureDevice.FocusMode = .continuousAutoFocus
+            let exposureMode: AVCaptureDevice.ExposureMode = .continuousAutoExposure
+            let whitebalanceMode: AVCaptureDevice.WhiteBalanceMode = .continuousAutoWhiteBalance
+
+            if device.isFocusModeSupported(focusMode) {
+                device.focusMode = focusMode
+            }
+            if device.isExposureModeSupported(exposureMode) {
+                device.exposureMode = exposureMode
+            }
+
+            if device.isWhiteBalanceModeSupported(whitebalanceMode) {
+                device.whiteBalanceMode = .continuousAutoWhiteBalance
+            }
+
+            device.unlockForConfiguration()
+        } catch {
+            AlfrescoLog.error("An unexpected error occured while zooming.")
+        }
+    }
+    
+    func defaultFileName(with prefix: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        return "\(prefix)_\(dateFormatter.string(from: Date()))"
+    }
+    
+    // MARK: - CMMotion Manager
+    
+    private func initializeMotionManager() {
         guard let operation = OperationQueue.current else { return }
         motionManager = CMMotionManager()
         motionManager?.accelerometerUpdateInterval = 0.2
@@ -83,12 +198,12 @@ class CaptureSession: NSObject {
             .startAccelerometerUpdates(to: operation,
                                        withHandler: { [weak self] (accelerometer, error) in
                                         guard let sSelf = self else { return }
-            if let error = error {
-                AlfrescoLog.error("CMMotionManager fail, error: \(error.localizedDescription)")
-            } else if let acceleration = accelerometer?.acceleration {
-                sSelf.outputAccelertionData(acceleration)
-            }
-        })
+                                        if let error = error {
+                                            AlfrescoLog.error("CMMotionManager fail, error: \(error.localizedDescription)")
+                                        } else if let acceleration = accelerometer?.acceleration {
+                                            sSelf.outputAccelertionData(acceleration)
+                                        }
+                                       })
     }
     
     func outputAccelertionData(_ acceleration: CMAcceleration) {
@@ -124,27 +239,5 @@ class CaptureSession: NSObject {
         }
         
         return try AVCaptureDeviceInput(device: captureDevice)
-    }
-    
-    static func device(input: AVCaptureDeviceInput,
-                       resolution: CGSize,
-                       frameRate: Int = 30) -> AVCaptureDevice.Format? {
-
-        let width = Int(resolution.width)
-        let height = Int(resolution.height)
-        guard width > 0, height > 0 else { return nil }
-
-        for format in input.device.formats {
-            let dimension = CMVideoFormatDescriptionGetDimensions(format.formatDescription)
-            if dimension.width >= width && dimension.height >= height {
-                for range in format.videoSupportedFrameRateRanges {
-                    if Int(range.maxFrameRate) >= frameRate &&
-                        Int(range.minFrameRate) <= frameRate {
-                        return format
-                    }
-                }
-            }
-        }
-        return nil
     }
 }
