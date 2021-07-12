@@ -31,6 +31,8 @@ class SearchModel: SearchModelProtocol {
     var searchChips: [SearchChipItem] = []
     var searchString: String?
     var searchType: SearchType = .simple
+    private var refreshGroup = DispatchGroup()
+    var paginatedResponse: PaginatedResponse?
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -94,10 +96,13 @@ class SearchModel: SearchModelProtocol {
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let searchChipsState = sSelf.searchChipsState()
+           
+            // enter group
+            sSelf.queueRefreshOperationRequest()
             QueriesAPI.findSites(term: searchString,
                                  skipCount: paginationRequest?.skipCount,
                                  maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
-                guard let sSelf = self else { return }
+                guard self != nil else { return }
 
                 var listNodes: [ListNode] = []
                 if let entries = results?.list.entries {
@@ -108,12 +113,14 @@ class SearchModel: SearchModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
-
-                if sSelf.changedSearchChipsState(with: searchChipsState) == false,
-                   let completionHandler = sSelf.searchCompletionHandler {
-                    completionHandler(paginatedResponse)
-                }
+                self?.paginatedResponse = paginatedResponse
+                
+                // leave group
+                sSelf.dequeueRefreshOperationRequests()
             }
+            
+            // notify
+            sSelf.refreshSearchResults(response: sSelf.paginatedResponse)
         })
     }
 
@@ -125,9 +132,8 @@ class SearchModel: SearchModelProtocol {
             let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
                                                                          chipFilters: sSelf.searchChips,
                                                                          pagination: paginationRequest)
-            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { [self] (result, error) in
                 guard let sSelf = self else { return }
-
                 var listNodes: [ListNode] = []
                 if let entries = result?.list?.entries {
                     listNodes = ResultsNodeMapper.map(entries)
@@ -136,7 +142,6 @@ class SearchModel: SearchModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
-
                 if sSelf.changedSearchChipsState(with: searchChipsState) == false,
                    let completionHandler = sSelf.searchCompletionHandler {
                     completionHandler(paginatedResponse)
@@ -145,6 +150,22 @@ class SearchModel: SearchModelProtocol {
         })
     }
 
+    private func queueRefreshOperationRequest() {
+        refreshGroup.enter()
+    }
+
+    private func dequeueRefreshOperationRequests() {
+        refreshGroup.leave()
+    }
+    
+    private func refreshSearchResults(response: PaginatedResponse?) {
+        refreshGroup.notify(queue: DispatchQueue.main) {
+            if let completionHandler = self.searchCompletionHandler, let response = self.paginatedResponse {
+                completionHandler(response)
+            }
+        }
+    }
+        
     func isSearchForLibraries() -> Bool {
         for chip in searchChips where chip.type == .library {
             return chip.selected
