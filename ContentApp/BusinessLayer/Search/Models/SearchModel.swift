@@ -25,14 +25,13 @@ class SearchModel: SearchModelProtocol {
     private var liveSearchTimer: Timer?
     private let searchTimerBuffer = 0.7
     private var searchCompletionHandler: PagedResponseCompletionHandler?
+    private var searchRequestGroup = DispatchGroup()
 
     var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
     var searchChips: [SearchChipItem] = []
     var searchString: String?
     var searchType: SearchType = .simple
-    private var refreshGroup = DispatchGroup()
-    var paginatedResponse: PaginatedResponse?
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -92,13 +91,12 @@ class SearchModel: SearchModelProtocol {
     // MARK: - Public interface
 
     func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
+        queueSearchRequestOperation()
+
         services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let searchChipsState = sSelf.searchChipsState()
-           
-            // enter group
-            sSelf.queueRefreshOperationRequest()
+
             QueriesAPI.findSites(term: searchString,
                                  skipCount: paginationRequest?.skipCount,
                                  maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
@@ -113,22 +111,20 @@ class SearchModel: SearchModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: results?.list.pagination)
-                self?.paginatedResponse = paginatedResponse
-                
-                // leave group
-                sSelf.dequeueRefreshOperationRequests()
+                if let completionHandler = sSelf.searchCompletionHandler {
+                    completionHandler(paginatedResponse)
+                }
+                sSelf.dequeueSearchRequestOperation()
             }
-            
-            // notify
-            sSelf.refreshSearchResults(response: sSelf.paginatedResponse)
         })
     }
 
     func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
+        queueSearchRequestOperation()
+
         services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let searchChipsState = sSelf.searchChipsState()
             let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
                                                                          chipFilters: sSelf.searchChips,
                                                                          pagination: paginationRequest)
@@ -142,28 +138,12 @@ class SearchModel: SearchModelProtocol {
                                                           error: error,
                                                           requestPagination: paginationRequest,
                                                           responsePagination: result?.list?.pagination)
-                if sSelf.changedSearchChipsState(with: searchChipsState) == false,
-                   let completionHandler = sSelf.searchCompletionHandler {
+                if let completionHandler = sSelf.searchCompletionHandler {
                     completionHandler(paginatedResponse)
                 }
+                sSelf.dequeueSearchRequestOperation()
             }
         })
-    }
-
-    private func queueRefreshOperationRequest() {
-        refreshGroup.enter()
-    }
-
-    private func dequeueRefreshOperationRequests() {
-        refreshGroup.leave()
-    }
-    
-    private func refreshSearchResults(response: PaginatedResponse?) {
-        refreshGroup.notify(queue: DispatchQueue.main) {
-            if let completionHandler = self.searchCompletionHandler, let response = self.paginatedResponse {
-                completionHandler(response)
-            }
-        }
     }
         
     func isSearchForLibraries() -> Bool {
@@ -192,6 +172,18 @@ class SearchModel: SearchModelProtocol {
         }
         return true
     }
+
+    private func queueSearchRequestOperation() {
+        searchRequestGroup.enter()
+    }
+
+    private func dequeueSearchRequestOperation() {
+        searchRequestGroup.leave()
+    }
+
+    private func waitForSearchRequestCompletion() {
+        searchRequestGroup.wait()
+    }
 }
 
 // MARK: - ListModelProtocol
@@ -219,6 +211,8 @@ extension SearchModel: ListComponentModelProtocol {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
+        waitForSearchRequestCompletion()
+
         searchCompletionHandler = completionHandler
 
         guard let string = searchString else {
