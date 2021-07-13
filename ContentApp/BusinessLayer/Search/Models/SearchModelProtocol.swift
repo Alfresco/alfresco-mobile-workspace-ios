@@ -32,6 +32,10 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     func isNodePathEnabled() -> Bool
     func defaultSearchChips() -> [SearchChipItem]
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
-    func performSearch(for string: String, paginationRequest: RequestPagination?)
-    func performLiveSearch(for string: String, paginationRequest: RequestPagination?)
+    func performSearch(for string: String,
+                       paginationRequest: RequestPagination?,
+                       completionHandler: SearchCompletionHandler)
+    func performLiveSearch(for string: String,
+                           paginationRequest: RequestPagination?,
+                           completionHandler: SearchCompletionHandler)
 }
