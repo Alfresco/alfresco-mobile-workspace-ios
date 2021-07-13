@@ -97,8 +97,8 @@ class CapturedAsset {
             do {
                 let cgimage = try imageGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 30),
                                                              actualTime: nil)
-                let orientation = orientation(for: asset)
-                return UIImage(cgImage: cgimage, scale: 1.0, orientation: orientation)
+                let assetOrientation = orientation(for: asset)
+                return UIImage(cgImage: cgimage, scale: 1.0, orientation: assetOrientation)
             } catch {
                 return nil
             }
