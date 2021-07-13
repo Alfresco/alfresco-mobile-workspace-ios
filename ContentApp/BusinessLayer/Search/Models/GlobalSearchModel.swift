@@ -56,11 +56,17 @@ class GlobalSearchModel: SearchModel {
         return true
     }
 
-    override func handleSearch(for searchString: String, paginationRequest: RequestPagination?) {
+    override func handleSearch(for searchString: String,
+                               paginationRequest: RequestPagination?,
+                               completionHandler: SearchCompletionHandler) {
         if isSearchForLibraries() {
-            performLibrariesSearch(searchString: searchString, paginationRequest: paginationRequest)
+            performLibrariesSearch(searchString: searchString,
+                                   paginationRequest: paginationRequest,
+                                   completionHandler: completionHandler)
         } else {
-            performFileFolderSearch(searchString: searchString, paginationRequest: paginationRequest)
+            performFileFolderSearch(searchString: searchString,
+                                    paginationRequest: paginationRequest,
+                                    completionHandler: completionHandler)
         }
     }
 }

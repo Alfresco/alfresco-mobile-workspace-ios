@@ -160,7 +160,6 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
 
         searchViewModel.searchModel.searchString = navigationItem.searchController?.searchBar.text
         searchViewModel.searchModel.searchType = .simple
-
         resultsViewController?.pageController?.refreshList()
     }
 

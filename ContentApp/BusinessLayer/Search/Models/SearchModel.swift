@@ -24,7 +24,7 @@ class SearchModel: SearchModelProtocol {
     private var services: CoordinatorServices
     private var liveSearchTimer: Timer?
     private let searchTimerBuffer = 0.7
-    private var searchCompletionHandler: PagedResponseCompletionHandler?
+    private var lastSearchCompletionOperation: SearchCompletionHandler?
 
     var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
@@ -51,7 +51,8 @@ class SearchModel: SearchModelProtocol {
     }
 
     func performSearch(for string: String,
-                       paginationRequest: RequestPagination?) {
+                       paginationRequest: RequestPagination?,
+                       completionHandler: SearchCompletionHandler) {
         searchString = string
         if paginationRequest == nil {
             rawListNodes = []
@@ -66,12 +67,15 @@ class SearchModel: SearchModelProtocol {
             return
         }
 
-        handleSearch(for: sString, paginationRequest: paginationRequest)
+        handleSearch(for: sString,
+                     paginationRequest: paginationRequest,
+                     completionHandler: completionHandler)
 
     }
-
+    
     func performLiveSearch(for string: String,
-                           paginationRequest: RequestPagination?) {
+                           paginationRequest: RequestPagination?,
+                           completionHandler: SearchCompletionHandler) {
         liveSearchTimer?.invalidate()
         liveSearchTimer = Timer.scheduledTimer(withTimeInterval: searchTimerBuffer,
                                                repeats: false,
@@ -79,67 +83,67 @@ class SearchModel: SearchModelProtocol {
                                                 timer.invalidate()
                                                 guard let sSelf = self else { return }
                                                 sSelf.performSearch(for: string,
-                                                                    paginationRequest: paginationRequest)
+                                                                    paginationRequest: paginationRequest,
+                                                                    completionHandler: completionHandler)
                                                })
     }
 
-    func handleSearch(for searchString: String, paginationRequest: RequestPagination?) {
+    func handleSearch(for searchString: String,
+                      paginationRequest: RequestPagination?,
+                      completionHandler: SearchCompletionHandler) {
         // Override in children class
     }
 
     // MARK: - Public interface
 
-    func performLibrariesSearch(searchString: String, paginationRequest: RequestPagination?) {
-        services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
-            guard let sSelf = self else { return }
+    func performLibrariesSearch(searchString: String,
+                                paginationRequest: RequestPagination?,
+                                completionHandler: SearchCompletionHandler) {
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let searchChipsState = sSelf.searchChipsState()
+
             QueriesAPI.findSites(term: searchString,
                                  skipCount: paginationRequest?.skipCount,
-                                 maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { (results, error) in
+                                 maxItems: paginationRequest?.maxItems ?? APIConstants.pageSize) { [weak self] (results, error) in
                 guard let sSelf = self else { return }
+                if completionHandler == sSelf.lastSearchCompletionOperation {
+                    var listNodes: [ListNode] = []
+                    if let entries = results?.list.entries {
+                        listNodes = SitesNodeMapper.map(entries)
+                    }
 
-                var listNodes: [ListNode] = []
-                if let entries = results?.list.entries {
-                    listNodes = SitesNodeMapper.map(entries)
-                }
-
-                let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: results?.list.pagination)
-
-                if sSelf.changedSearchChipsState(with: searchChipsState) == false,
-                   let completionHandler = sSelf.searchCompletionHandler {
-                    completionHandler(paginatedResponse)
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: results?.list.pagination)
+                    completionHandler.handler(paginatedResponse)
                 }
             }
         })
     }
 
-    func performFileFolderSearch(searchString: String, paginationRequest: RequestPagination?) {
+    func performFileFolderSearch(searchString: String,
+                                 paginationRequest: RequestPagination?,
+                                 completionHandler: SearchCompletionHandler) {
         services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            let searchChipsState = sSelf.searchChipsState()
             let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
                                                                          chipFilters: sSelf.searchChips,
                                                                          pagination: paginationRequest)
-            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { (result, error) in
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
-                var listNodes: [ListNode] = []
-                if let entries = result?.list?.entries {
-                    listNodes = ResultsNodeMapper.map(entries)
-                }
-                let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                          error: error,
-                                                          requestPagination: paginationRequest,
-                                                          responsePagination: result?.list?.pagination)
-
-                if sSelf.changedSearchChipsState(with: searchChipsState) == false,
-                   let completionHandler = sSelf.searchCompletionHandler {
-                    completionHandler(paginatedResponse)
+                if completionHandler == sSelf.lastSearchCompletionOperation {
+                    var listNodes: [ListNode] = []
+                    if let entries = result?.list?.entries {
+                        listNodes = ResultsNodeMapper.map(entries)
+                    }
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list?.pagination)
+                    completionHandler.handler(paginatedResponse)
                 }
             }
         })
@@ -198,21 +202,24 @@ extension SearchModel: ListComponentModelProtocol {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
-        searchCompletionHandler = completionHandler
-
         guard let string = searchString else {
             rawListNodes = []
             delegate?.needsDisplayStateRefresh()
             return
         }
 
+        let completionHandler = SearchCompletionHandler(completionHandler: completionHandler)
+        lastSearchCompletionOperation = completionHandler
+
         switch searchType {
         case .simple:
             self.performSearch(for: string,
-                               paginationRequest: requestPagination)
+                               paginationRequest: requestPagination,
+                               completionHandler: completionHandler)
         case .live :
             self.performLiveSearch(for: string,
-                                   paginationRequest: requestPagination)
+                                   paginationRequest: requestPagination,
+                                   completionHandler: completionHandler)
         }
     }
 }
@@ -271,3 +278,14 @@ extension SearchModel: EventObservable {
     }
 }
 
+class SearchCompletionHandler: Equatable {
+    static func == (lhs: SearchCompletionHandler, rhs: SearchCompletionHandler) -> Bool {
+        return lhs === rhs
+    }
+
+    var handler: PagedResponseCompletionHandler
+
+    init(completionHandler: @escaping PagedResponseCompletionHandler) {
+        handler = completionHandler
+    }
+}

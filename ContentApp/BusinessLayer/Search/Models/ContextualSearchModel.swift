@@ -37,8 +37,10 @@ class ContextualSearchModel: SearchModel {
     }
 
     override func handleSearch(for searchString: String,
-                               paginationRequest: RequestPagination?) {
+                               paginationRequest: RequestPagination?,
+                               completionHandler: SearchCompletionHandler) {
         performFileFolderSearch(searchString: searchString,
-                                paginationRequest: paginationRequest)
+                                paginationRequest: paginationRequest,
+                                completionHandler: completionHandler)
     }
 }
