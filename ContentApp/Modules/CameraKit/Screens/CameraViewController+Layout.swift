@@ -49,6 +49,11 @@ extension CameraViewController {
         zoomLabel.textColor = theme.onSurfaceColor
         zoomLabel.backgroundColor = theme.surface60Color
         
+        multiPhotosView.backgroundColor = .clear
+        multiPhotosNumberIndicatorView.backgroundColor = theme.primaryColor
+        multiPhotosNumberLabel.font = theme.overlineFont
+        multiPhotosNumberLabel.textColor = theme.surfaceColor
+        
         let image = UIImage(color: theme.surfaceColor,
                             size: navigationController?.navigationBar.bounds.size)
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
@@ -166,6 +171,26 @@ extension CameraViewController {
         switchCameraButton.frame.origin.x = shutterView.frame.width
             - switchCameraButton.frame.width - cameraMargin
         switchCameraButton.center.y = shutterButton.center.y
+        
+        multiPhotosView.frame.size = cameraFeature40Size
+        multiPhotosView.frame.origin.x = cameraMargin
+        multiPhotosView.center.y = shutterButton.center.y
+        
+        multiPhotosImageView.frame.size = cameraFeature40Size
+        multiPhotosImageView.frame.origin = .zero
+        multiPhotosImageView.layer.cornerRadius = 8.0
+        
+        multiPhotosNumberIndicatorView.frame.size = cameraFeature16Size
+        multiPhotosNumberIndicatorView.frame.origin.x = multiPhotosView.frame.height -
+            multiPhotosNumberIndicatorView.frame.height * 0.70
+        multiPhotosNumberIndicatorView.frame.origin.y = -multiPhotosNumberIndicatorView.frame.height * 0.30
+        multiPhotosNumberIndicatorView.layer.cornerRadius = cameraFeature16Size.height / 2.0
+        
+        multiPhotosNumberLabel.frame.size = cameraFeature16Size
+        multiPhotosNumberLabel.frame.origin = .zero
+        
+        multiPhotosButton.frame = multiPhotosImageView.frame
+        
     }
     
     private func configureModeView() {

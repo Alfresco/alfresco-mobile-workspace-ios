@@ -20,11 +20,12 @@ import UIKit
 
 protocol CameraViewModelDelegate: AnyObject {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
+    func deleteAllCapturedAssets()
 }
 
 class CameraViewModel: NSObject {
     weak var delegate: CameraViewModelDelegate?
-    var capturedAsset: CapturedAsset?
+    var capturedAssets: [CapturedAsset] = []
     var folderToSavePath: String
     
     init(folderToSavePath: String) {
@@ -34,7 +35,15 @@ class CameraViewModel: NSObject {
     // MARK: - Public Methods
 
     func deletePreviousCapture() {
-        capturedAsset?.deleteAsset()
+        deleteAllCapturedAssets()
+    }
+    
+    func deleteAllCapturedAssets() {
+        for asset in capturedAssets {
+            asset.deleteAsset()
+        }
+        capturedAssets = []
+        delegate?.deleteAllCapturedAssets()
     }
 }
 
@@ -44,7 +53,9 @@ extension CameraViewModel: CaptureSessionDelegate {
     func captured(asset: CapturedAsset?, error: Error?) {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
-            sSelf.capturedAsset = asset
+            if let capturedAsset = asset {
+                sSelf.capturedAssets.append(capturedAsset)
+            }
             sSelf.delegate?.finishProcess(capturedAsset: asset, error: error)
         }
     }

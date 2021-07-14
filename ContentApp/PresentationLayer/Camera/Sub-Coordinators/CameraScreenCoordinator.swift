@@ -116,7 +116,7 @@ extension CameraScreenCoordinator: CameraKitCaptureDelegate {
             })
         }
         
-        if let capturedAsset = capturedAssets.first {
+        for capturedAsset in capturedAssets {
             let assetURL = URL(fileURLWithPath: capturedAsset.path)
             let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
                 "/" + assetURL.lastPathComponent

@@ -132,7 +132,7 @@ class CapturedAsset {
     }
 
     private func uniqueIdentifier() -> String {
-        return String(Date().timeIntervalSince1970)
+        return UUID().uuidString
     }
     
     private func orientation(for asset: AVAsset) -> UIImage.Orientation {

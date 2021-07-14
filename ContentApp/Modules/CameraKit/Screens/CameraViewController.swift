@@ -29,6 +29,13 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
     @IBOutlet weak var shutterButton: ShutterButton!
+    
+    @IBOutlet weak var multiPhotosView: UIView!
+    @IBOutlet weak var multiPhotosImageView: UIImageView!
+    @IBOutlet weak var multiPhotosNumberIndicatorView: UIView!
+    @IBOutlet weak var multiPhotosNumberLabel: UILabel!
+    @IBOutlet weak var multiPhotosButton: UIButton!
+    
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
     
@@ -60,6 +67,10 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if cameraViewModel?.capturedAssets.isEmpty == true {
+            multiPhotosView.isHidden = true
+        }
+        
         cameraViewModel?.delegate = self
         
         configureViewsLayout(for: view.bounds.size)
@@ -81,7 +92,9 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cameraViewModel?.deletePreviousCapture()
+        if !CameraKit.enterprise {
+            cameraViewModel?.deletePreviousCapture()
+        }
         if cameraSession != nil {
             sessionPreview.update(flashMode: flashMenuView.flashMode)
         }
@@ -102,9 +115,18 @@ class CameraViewController: UIViewController {
     // MARK: - IBActions
     
     @IBAction func closeButtonTapped(_ sender: UIButton) {
-        sessionPreview.stopSession()
-        cameraDelegate?.didEndReview(for: [])
-        self.dismiss(animated: true, completion: nil)
+        guard let numberOfCapturedAssets = cameraViewModel?.capturedAssets.count,
+              numberOfCapturedAssets != 0 else {
+            dismissCamera()
+            return
+        }
+        CameraKit.shouldDiscard(numberOfCapturedAssets: numberOfCapturedAssets,
+                                in: self) { [weak self] discarded in
+            guard let sSelf = self else { return }
+            if discarded {
+                sSelf.dismissCamera()
+            }
+        }
     }
     
     @IBAction func flashModeButtonTapped(_ sender: UIButton) {
@@ -123,7 +145,14 @@ class CameraViewController: UIViewController {
         sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
-
+    
+    @IBAction func multiPhotosButtonTapped(_ sender: UIButton) {
+        if cameraViewModel?.capturedAssets.isEmpty == false {
+            performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
+                         sender: nil)
+        }
+    }
+    
     @IBAction func switchCamerasButtonTapped(_ sender: UIButton) {
         sessionPreview.changeCameraPosition()
         setUpCameraSession(for: modeSelector.currentSelection)
@@ -143,6 +172,13 @@ class CameraViewController: UIViewController {
     }
     
     // MARK: - Private Methods
+    
+    private func dismissCamera() {
+        sessionPreview.stopSession()
+        cameraDelegate?.didEndReview(for: [])
+        cameraViewModel?.deleteAllCapturedAssets()
+        dismiss(animated: true, completion: nil)
+    }
 
     private func setUpShutterButton() {
         guard let theme = CameraKit.theme else { return }
@@ -261,8 +297,8 @@ class CameraViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
-           let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(capturedAsset: asset)
+           let assets = cameraViewModel?.capturedAssets {
+            let previewViewModel = PreviewViewModel(capturedAssets: assets)
             pvc.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
         }
@@ -272,11 +308,24 @@ class CameraViewController: UIViewController {
 // MARK: - CameraViewModel Delegate
 
 extension CameraViewController: CameraViewModelDelegate {
+    func deleteAllCapturedAssets() {
+        if CameraKit.enterprise {
+            multiPhotosView.isHidden = true
+        }
+    }
+    
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
         shutterButton.isUserInteractionEnabled = true
-        if capturedAsset != nil {
+        guard error == nil else { return }
+        
+        if !CameraKit.enterprise {
+            multiPhotosView.isHidden = true
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-                         sender: nil)
+                                     sender: nil)
+        } else {
+            multiPhotosImageView.image = capturedAsset?.thumbnailImage()
+            multiPhotosView.isHidden = false
+            multiPhotosNumberLabel.text = String(cameraViewModel?.capturedAssets.count ?? 0)
         }
     }
 }
@@ -323,6 +372,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
             sSelf.switchCameraButton.rotate(to: orientation)
             sSelf.zoomLabel.rotate(to: orientation)
             sSelf.flashMenuView.rotate(to: orientation)
+            sSelf.multiPhotosView.rotate(to: orientation)
         }
     }
 }

@@ -17,8 +17,13 @@
 //
 
 import Foundation
+import UIKit
+import MaterialComponents.MaterialDialogs
+
+public typealias CameraKitDismissHandler = (_ option: Bool) -> Void
 
 class CameraKit {
+    static var enterprise = false
     static var theme: CameraKitTheme?
     static var localization: CameraKitLocalization?
     static var location: GPSLocation?
@@ -31,5 +36,32 @@ class CameraKit {
 
     static func applyLocalization(localization: CameraKitLocalization) {
         self.localization = localization
+    }
+
+    static func shouldDiscard(numberOfCapturedAssets: Int,
+                              in viewController: UIViewController,
+                              handler: @escaping CameraKitDismissHandler) {
+        
+        let title = (numberOfCapturedAssets == 1) ? LocalizationConstants.Dialog.discardPhotoTitle
+            : LocalizationConstants.Dialog.discardPhotosTitle
+        let message = (numberOfCapturedAssets == 1) ? LocalizationConstants.Dialog.discardPhotoMessage
+            : String(format: LocalizationConstants.Dialog.discardPhotosMessage, numberOfCapturedAssets)
+
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            handler(false)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        let discardAction = MDCAlertAction(title: LocalizationConstants.General.discard) { _ in
+            handler(true)
+        }
+        discardAction.accessibilityIdentifier = "discardActionButton"
+        
+        DispatchQueue.main.async {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [cancelAction, discardAction],
+                                          completionHandler: {})
+        }
     }
 }

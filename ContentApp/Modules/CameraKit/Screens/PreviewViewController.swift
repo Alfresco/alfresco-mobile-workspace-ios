@@ -50,6 +50,8 @@ class PreviewViewController: UIViewController {
         }
     }
     
+    var selectedAssetIndex = 0
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -58,7 +60,7 @@ class PreviewViewController: UIViewController {
         applyLocalization()
         applyComponentsThemes()
         
-        fileNameTextField.text = previewViewModel?.assetFilename()
+        fileNameTextField.text = previewViewModel?.assetFilename(at: selectedAssetIndex)
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
@@ -66,7 +68,7 @@ class PreviewViewController: UIViewController {
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
         
-        if let image = previewViewModel?.assetThumbnailImage() {
+        if let image = previewViewModel?.assetThumbnailImage(at: selectedAssetIndex) {
             capturedAssetImageView.image = image
             if image.imageOrientation == .down ||
                 image.imageOrientation == .up {
@@ -78,8 +80,7 @@ class PreviewViewController: UIViewController {
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
         playButton.layer.cornerRadius = playButton.bounds.height / 2.0
         
-        playButton.isHidden = !(previewViewModel?.isAssetVideo() ?? false)
-        
+        playButton.isHidden = !(previewViewModel?.isAssetVideo(at: selectedAssetIndex) ?? false)
         enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
         
         NotificationCenter.default.addObserver(self,
@@ -96,16 +97,16 @@ class PreviewViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         if let filename = fileNameTextField.text,
-           let capturedAsset = previewViewModel?.asset() {
+           let capturedAssets = previewViewModel?.capturedAssets {
             previewViewModel?.updateMetadata(filename: filename,
                                              description: descriptionField.textView.text)
-            cameraDelegate?.didEndReview(for: [capturedAsset])
+            cameraDelegate?.didEndReview(for: capturedAssets)
         }
         navigationController?.dismiss(animated: true, completion: nil)
     }
 
     @IBAction func trashButtonTapped(_ sender: UIButton) {
-        previewViewModel?.asset().deleteAsset()
+        previewViewModel?.asset(at: selectedAssetIndex).deleteAsset()
         navigationController?.popViewController(animated: true)
     }
     
@@ -115,7 +116,7 @@ class PreviewViewController: UIViewController {
     }
     
     @IBAction func fullScreenTapGesture(_ sender: UITapGestureRecognizer) {
-        if previewViewModel?.isAssetVideo() == true {
+        if previewViewModel?.isAssetVideo(at: selectedAssetIndex) == true {
             performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
                          sender: nil)
         } else {
@@ -172,10 +173,10 @@ class PreviewViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showFullScreenPhoto.rawValue,
            let fspvc = segue.destination as? FullScreenPhotoViewController {
-            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage()
+            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage(at: selectedAssetIndex)
         } else if segue.identifier == SegueIdentifiers.showFullScreenVideo.rawValue,
                   let fsvvc = segue.destination as? FullScreenVideoViewController {
-            fsvvc.videoURL = previewViewModel?.videoUrl()
+            fsvvc.videoURL = previewViewModel?.videoUrl(for: selectedAssetIndex)
         }
     }
 }

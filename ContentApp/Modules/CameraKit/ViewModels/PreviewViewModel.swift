@@ -19,42 +19,44 @@
 import UIKit
 
 class PreviewViewModel {
-    private let capturedAsset: CapturedAsset
+    let capturedAssets: [CapturedAsset]
     
     // MARK: - Init
     
-    init(capturedAsset: CapturedAsset) {
-        self.capturedAsset = capturedAsset
+    init(capturedAssets: [CapturedAsset]) {
+        self.capturedAssets = capturedAssets
     }
     
     // MARK: - Public Methods
     
-    func isAssetVideo() -> Bool {
-        return capturedAsset.type == .video
+    func isAssetVideo(at index: Int) -> Bool {
+        return capturedAssets[index].type == .video
     }
     
-    func videoUrl() -> URL {
-        return URL(fileURLWithPath: capturedAsset.path)
+    func videoUrl(for index: Int) -> URL {
+        return URL(fileURLWithPath: capturedAssets[index].path)
     }
     
-    func asset() -> CapturedAsset {
-        return capturedAsset
+    func asset(at index: Int) -> CapturedAsset {
+        return capturedAssets[index]
     }
     
-    func assetFilename() -> String {
-        return capturedAsset.fileName
+    func assetFilename(at index: Int) -> String {
+        return capturedAssets[index].fileName
     }
     
-    func assetDescription() -> String? {
-        return capturedAsset.description
+    func assetDescription(at index: Int) -> String? {
+        return capturedAssets[index].description
     }
     
-    func assetThumbnailImage() -> UIImage? {
-        return capturedAsset.thumbnailImage()
+    func assetThumbnailImage(at index: Int) -> UIImage? {
+        return capturedAssets[index].thumbnailImage()
     }
     
     func updateMetadata(filename: String, description: String?) {
-        capturedAsset.fileName = filename
-        capturedAsset.description = description
+        for (index, capturedAsset) in capturedAssets.enumerated() {
+            capturedAsset.fileName = filename + "-\(String(index + 1))"
+            capturedAsset.description = description
+        }
     }
 }

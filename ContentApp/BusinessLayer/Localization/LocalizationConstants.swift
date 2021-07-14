@@ -31,6 +31,7 @@ struct LocalizationConstants {
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
         static let save = NSLocalizedString("save", comment: "")
+        static let discard = NSLocalizedString("discard", comment: "")
     }
 
     struct Buttons {
@@ -206,8 +207,12 @@ struct LocalizationConstants {
         static let sessionExpiredTitle =  NSLocalizedString("dialog-session-expired-title", comment: "")
         static let sessionExpiredMessage =  NSLocalizedString("dialog-session-expired-message", comment: "")
         static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
-
+        
         static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
+        static let discardPhotosTitle = NSLocalizedString("dialog-discard-photos-title", comment: "")
+        static let discardPhotoTitle = NSLocalizedString("dialog-discard-photo-title", comment: "")
+        static let discardPhotosMessage = NSLocalizedString("dialog-discard-photos-message", comment: "")
+        static let discardPhotoMessage = NSLocalizedString("dialog-discard-photo-message", comment: "")
     }
 
     struct EmptyLists {
