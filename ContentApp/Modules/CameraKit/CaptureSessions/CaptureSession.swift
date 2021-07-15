@@ -58,7 +58,6 @@ class CaptureSession: NSObject {
             do {
                 let deviceInput = try CaptureSession.capture(deviceInput: cameraPosition.deviceType)
                 zoom = naturalZoomFactor
-                updateSessionPreset(for: deviceInput)
                 captureDeviceInput = deviceInput
             } catch let error {
                 AlfrescoLog.error(error)
