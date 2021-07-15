@@ -77,6 +77,7 @@ class CameraViewController: UIViewController {
         sessionPreview.startSession()
         applyComponentsThemes()
         zoomSlider.setSlider(value: sessionPreview.zoom)
+        modeSelector.setNeedsLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
