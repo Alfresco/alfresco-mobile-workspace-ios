@@ -23,7 +23,7 @@ class VideoCaptureSession: CaptureSession {
     var isRecording = false
     var videoFileName: String?
     let movieOutput = AVCaptureMovieFileOutput()
-    let sessionPresets: [AVCaptureSession.Preset] = [.hd4K3840x2160, .hd1920x1080, .hd1280x720, .vga640x480]
+    let sessionPresets: [AVCaptureSession.Preset] = [.high, .medium, .low]
     var frameRate = CMTimeScale(30.0)
     
     override var flashMode: FlashMode {

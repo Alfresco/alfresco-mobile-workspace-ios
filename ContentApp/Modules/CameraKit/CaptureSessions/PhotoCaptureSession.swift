@@ -22,7 +22,7 @@ import UIKit
 class PhotoCaptureSession: CaptureSession {
     
     let photoOutput = AVCapturePhotoOutput()
-    let sessionPresets: [AVCaptureSession.Preset] = [.photo, .high, .medium, .low]
+    let sessionPresets: [AVCaptureSession.Preset] = [.photo]
     
     // MARK: - Init
     
@@ -38,7 +38,6 @@ class PhotoCaptureSession: CaptureSession {
         let capturePhotoSettings = [AVCapturePhotoSettings(format: format)]
         photoOutput.setPreparedPhotoSettingsArray(capturePhotoSettings,
                                                        completionHandler: nil)
-        session.sessionPreset = .photo
         session.addOutput(photoOutput)
     }
     
