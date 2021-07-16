@@ -88,6 +88,7 @@ class CameraViewController: UIViewController {
         sessionPreview.startSession()
         applyComponentsThemes()
         zoomSlider.setSlider(value: sessionPreview.zoom)
+        modeSelector.setNeedsLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -381,8 +382,6 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
-        // TODO: Not an ideal workaround, problem should be traced and fixed at root cause
-        setUpCameraSession(for: currentSelection)
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
         flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)

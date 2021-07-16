@@ -181,8 +181,10 @@ class ModeSelectorControl: UIControl {
     }
 
     @objc private func handleTap(_ sender: UIButton) {
-        currentSelection = sender.tag
-        scrollToCurrentSelection(animated: true)
+        if sender.tag != currentSelection {
+            currentSelection = sender.tag
+            scrollToCurrentSelection(animated: true)
+        }
     }
 
     private func scrollToCurrentSelection(animated: Bool) {
