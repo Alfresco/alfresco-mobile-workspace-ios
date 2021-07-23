@@ -64,7 +64,7 @@ class ListViewController: SystemSearchViewController {
         listController?.startLoading()
         pageController?.refreshList()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         listController?.viewWillAppear(animated)
