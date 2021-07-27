@@ -28,6 +28,7 @@ class FolderDrillModel: ListComponentModelProtocol {
     var listNode: ListNode?
     var rawListNodes: [ListNode] = []
     weak var delegate: ListComponentModelDelegate?
+    var folderChildrenDelegate: FolderChildrenScreenCoordinatorDelegate?
 
     init(listNode: ListNode?, services: CoordinatorServices) {
         self.services = services
@@ -73,62 +74,60 @@ class FolderDrillModel: ListComponentModelProtocol {
     
     private func fetchItemsForDocumentLibrary(with requestPagination: RequestPagination,
                                               completionHandler: @escaping PagedResponseCompletionHandler) {
-        self.getNodeDetails(for: listNode) { success in
-            if success == true {
-                let reqPagination = RequestPagination(maxItems: requestPagination.maxItems,
-                                                      skipCount: requestPagination.skipCount)
-                self.updateNodeDetailsIfNecessary { [weak self] (_) in
+        self.getNodeDetails(for: listNode) { node in
+            guard let node = node else { return }
+            self.listNode = node
+            let reqPagination = RequestPagination(maxItems: requestPagination.maxItems,
+                                                  skipCount: requestPagination.skipCount)
+            self.updateNodeDetailsIfNecessary { [weak self] (_) in
+                guard let sSelf = self else { return }
+                let parentGuid = sSelf.listNode?.guid ?? APIConstants.my
+                sSelf.nodeOperations.fetchNodeChildren(for: parentGuid,
+                                                       pagination: reqPagination) { (result, error) in
                     guard let sSelf = self else { return }
-                    let parentGuid = sSelf.listNode?.guid ?? APIConstants.my
-                    sSelf.nodeOperations.fetchNodeChildren(for: parentGuid,
-                                                           pagination: reqPagination) { (result, error) in
-                        guard let sSelf = self else { return }
-                        
-                        var listNodes: [ListNode] = []
-                        if let entries = result?.list?.entries {
-                            listNodes = NodeChildMapper.map(entries)
-                        } else {
-                            if let error = error {
-                                AlfrescoLog.error(error)
-                            }
+                    
+                    var listNodes: [ListNode] = []
+                    if let entries = result?.list?.entries {
+                        listNodes = NodeChildMapper.map(entries)
+                    } else {
+                        if let error = error {
+                            AlfrescoLog.error(error)
                         }
-                        
-                        // Insert nodes to be uploaded
-                        let responsePagination = result?.list?.pagination
-                        let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
-                            guard let sSelf = self else { return }
-                            sSelf.insert(uploadTransfers: uploadTransfers,
-                                         to: &sSelf.rawListNodes,
-                                         totalItems: responsePagination?.totalItems ?? 0)
-                            sSelf.delegate?.needsDisplayStateRefresh()
-                        }
-                        sSelf.insert(uploadTransfers: uploadTransfers,
-                                     to: &listNodes,
-                                     totalItems: responsePagination?.totalItems ?? 0)
-                        let paginatedResponse = PaginatedResponse(results: listNodes,
-                                                                  error: error,
-                                                                  requestPagination: requestPagination,
-                                                                  responsePagination: responsePagination)
-                        completionHandler(paginatedResponse)
                     }
+                    
+                    // Insert nodes to be uploaded
+                    let responsePagination = result?.list?.pagination
+                    let uploadTransfers = sSelf.uploadTransferDataAccessor.queryAll(for: parentGuid) { uploadTransfers in
+                        guard let sSelf = self else { return }
+                        sSelf.insert(uploadTransfers: uploadTransfers,
+                                     to: &sSelf.rawListNodes,
+                                     totalItems: responsePagination?.totalItems ?? 0)
+                        sSelf.delegate?.needsDisplayStateRefresh()
+                    }
+                    sSelf.insert(uploadTransfers: uploadTransfers,
+                                 to: &listNodes,
+                                 totalItems: responsePagination?.totalItems ?? 0)
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: requestPagination,
+                                                              responsePagination: responsePagination)
+                    completionHandler(paginatedResponse)
                 }
             }
         }
     }
     
-    private func getNodeDetails(for listNode: ListNode?, completionHandler: @escaping (Bool) -> Void) {
+    private func getNodeDetails(for listNode: ListNode?, completionHandler: @escaping (ListNode?) -> Void) {
         let guid = listNode?.guid ?? APIConstants.my
         let relativePath = (listNode?.nodeType == .site) ? APIConstants.Path.relativeSites : nil
-        nodeOperations.fetchNodeDetails(for: guid, relativePath: relativePath) { [weak self] (result, error) in
-            guard let sSelf = self else { return }
-
+        nodeOperations.fetchNodeDetails(for: guid, relativePath: relativePath) {(result, error) in
             if let error = error {
                 AlfrescoLog.error(error)
-                completionHandler(false)
+                completionHandler(nil)
             } else if let entry = result?.entry {
-                sSelf.listNode = NodeChildMapper.create(from: entry)
-                print("NODE ID: \(sSelf.listNode?.guid ?? "")")
-                completionHandler(true)
+                let node = NodeChildMapper.create(from: entry)
+                self.folderChildrenDelegate?.updateListNode(with: node)
+                completionHandler(node)
             }
         }
     }
