@@ -24,11 +24,12 @@ protocol FolderChildrenScreenCoordinatorDelegate: AnyObject {
 
 class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
-    var listNode: ListNode
+    private var listNode: ListNode
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var model: FolderDrillModel?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -38,7 +39,8 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     override func start() {
         let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
         let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
-        viewModelFactory.model?.folderChildrenDelegate = self
+        self.model = viewModelFactory.model
+        self.model?.folderChildrenDelegate = self
 
         let viewController = ListViewController()
         viewController.title = listNode.title
