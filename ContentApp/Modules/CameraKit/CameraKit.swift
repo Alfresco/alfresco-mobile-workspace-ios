@@ -23,7 +23,6 @@ import MaterialComponents.MaterialDialogs
 public typealias CameraKitDismissHandler = (_ option: Bool) -> Void
 
 class CameraKit {
-    static var enterprise = false
     static var theme: CameraKitTheme?
     static var localization: CameraKitLocalization?
     static var location: GPSLocation?

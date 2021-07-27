@@ -220,3 +220,8 @@
 "auto-flash" = "Auto";
 "on-flash" = "On";
 "off-flash" = "Off";
+
+// MARK: - Alert
+"alert-title" = "Alert";
+"camera-unavailable" = "Device does not support camera";
+"mixed-captured-asset-error" = "If you wish to change the mode, your already captured assets will be discarded. Do you wish to proceed?";

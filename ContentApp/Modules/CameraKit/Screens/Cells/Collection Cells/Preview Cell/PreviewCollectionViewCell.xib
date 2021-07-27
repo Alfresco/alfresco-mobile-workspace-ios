@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PreviewCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="244" height="332"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="244" height="332"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gz8-Bk-vVn" userLabel="baseView">
+                        <rect key="frame" x="0.0" y="0.0" width="244" height="322"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="etJ-fV-FCJ" userLabel="Captured Asset Image View">
+                                <rect key="frame" x="5" y="5" width="234" height="312"/>
+                                <accessibility key="accessibilityConfiguration" identifier="capturedPreviewImage">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <gestureRecognizers/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="whJ-Gc-4ZO" userLabel="Trash Button">
+                                <rect key="frame" x="192" y="270" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="9CM-fc-uFa"/>
+                                    <constraint firstAttribute="width" constant="40" id="iu8-71-0qb"/>
+                                </constraints>
+                                <state key="normal" image="ic-trash"/>
+                                <connections>
+                                    <action selector="trashButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DXc-lQ-VIb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNn-ju-9UD" userLabel="Play Button">
+                                <rect key="frame" x="12" y="270" width="40" height="40"/>
+                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="kTh-l9-btq"/>
+                                    <constraint firstAttribute="width" constant="40" id="xj2-qP-Jg7"/>
+                                </constraints>
+                                <state key="normal" image="ic-player-outline-play"/>
+                                <connections>
+                                    <action selector="playButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cv5-mK-Izs"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DNn-ju-9UD" firstAttribute="leading" secondItem="gz8-Bk-vVn" secondAttribute="leading" constant="12" id="2xZ-wl-VY2"/>
+                            <constraint firstAttribute="height" constant="322" id="7c2-Ai-uPe"/>
+                            <constraint firstAttribute="bottom" secondItem="DNn-ju-9UD" secondAttribute="bottom" constant="12" id="ETZ-fc-ire"/>
+                            <constraint firstAttribute="width" constant="244" id="OjD-DN-9U3"/>
+                            <constraint firstAttribute="trailing" secondItem="etJ-fV-FCJ" secondAttribute="trailing" constant="5" id="Tew-z8-uW8"/>
+                            <constraint firstItem="etJ-fV-FCJ" firstAttribute="top" secondItem="gz8-Bk-vVn" secondAttribute="top" constant="5" id="TvX-gU-jZO"/>
+                            <constraint firstItem="etJ-fV-FCJ" firstAttribute="leading" secondItem="gz8-Bk-vVn" secondAttribute="leading" constant="5" id="hng-25-Ozu"/>
+                            <constraint firstAttribute="trailing" secondItem="whJ-Gc-4ZO" secondAttribute="trailing" constant="12" id="lWm-zG-8wK"/>
+                            <constraint firstAttribute="bottom" secondItem="whJ-Gc-4ZO" secondAttribute="bottom" constant="12" id="lzb-u5-dNG"/>
+                            <constraint firstAttribute="bottom" secondItem="etJ-fV-FCJ" secondAttribute="bottom" constant="5" id="v0K-dG-w9J"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="gz8-Bk-vVn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Ja8-oN-rHW"/>
+                <constraint firstItem="gz8-Bk-vVn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="dYy-t5-A3l"/>
+            </constraints>
+            <size key="customSize" width="244" height="332"/>
+            <connections>
+                <outlet property="baseView" destination="gz8-Bk-vVn" id="ItM-qE-eJh"/>
+                <outlet property="baseViewHeightContraint" destination="7c2-Ai-uPe" id="2mr-bt-8nH"/>
+                <outlet property="baseViewWidthConstraint" destination="OjD-DN-9U3" id="W5L-E6-ZdO"/>
+                <outlet property="capturedAssetImageView" destination="etJ-fV-FCJ" id="wul-RJ-jhP"/>
+                <outlet property="playButton" destination="DNn-ju-9UD" id="pOf-YJ-f7j"/>
+                <outlet property="trashButton" destination="whJ-Gc-4ZO" id="BaC-jp-YPK"/>
+            </connections>
+            <point key="canvasLocation" x="215.94202898550725" y="62.946428571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="ic-player-outline-play" width="24" height="24"/>
+        <image name="ic-trash" width="24" height="24"/>
+    </resources>
+</document>

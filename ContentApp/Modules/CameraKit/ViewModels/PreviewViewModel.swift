@@ -17,46 +17,95 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
+
+public typealias PreviewErrorDismissHandler = (_ index: Int) -> Void
+public typealias DeleteCapturedAssetHandler = (_ index: Int) -> Void
 
 class PreviewViewModel {
-    let capturedAssets: [CapturedAsset]
+    var assets: [CapturedAsset]
+    let capturedAssets = Observable<[CapturedAsset]>([])
+    let visibleCellIndex = Observable<Int>(0)
+    let enableSaveButton = Observable<Bool>(false)
+    var callback: DeleteCapturedAssetHandler! = nil
     
     // MARK: - Init
-    
-    init(capturedAssets: [CapturedAsset]) {
-        self.capturedAssets = capturedAssets
+    init(assets: [CapturedAsset]) {
+        self.assets = assets
+        self.capturedAssets.value = assets
     }
     
     // MARK: - Public Methods
-    
-    func isAssetVideo(at index: Int) -> Bool {
-        return capturedAssets[index].type == .video
+    func isAssetVideo(for capturedAsset: CapturedAsset) -> Bool {
+        return capturedAsset.type == .video
     }
     
-    func videoUrl(for index: Int) -> URL {
-        return URL(fileURLWithPath: capturedAssets[index].path)
+    func videoUrl(for capturedAsset: CapturedAsset) -> URL {
+        return URL(fileURLWithPath: capturedAsset.path)
     }
     
-    func asset(at index: Int) -> CapturedAsset {
-        return capturedAssets[index]
+    func assetFilename(for capturedAsset: CapturedAsset) -> String {
+        return capturedAsset.fileName
     }
     
-    func assetFilename(at index: Int) -> String {
-        return capturedAssets[index].fileName
+    func assetDescription(for capturedAsset: CapturedAsset) -> String {
+        return capturedAsset.description ?? ""
     }
     
-    func assetDescription(at index: Int) -> String? {
-        return capturedAssets[index].description
+    func assetThumbnailImage(for capturedAsset: CapturedAsset) -> UIImage? {
+        return capturedAsset.thumbnailImage()
     }
     
-    func assetThumbnailImage(at index: Int) -> UIImage? {
-        return capturedAssets[index].thumbnailImage()
+    // MARK: - Validate File Names
+    func validateFileNames(in viewController: UIViewController,
+                           handler: @escaping PreviewErrorDismissHandler) {
+        guard let localization = CameraKit.localization else {
+            return
+        }
+        var errorMessage = ""
+        var errorIndex: Int = -1
+        for (index, capturedAsset) in self.capturedAssets.value.enumerated() {
+            let fileName = capturedAsset.fileName
+            if hasSpecialCharacters(fileName) == true {
+                let message = String(format: localization.errorNodeNameSpecialCharacters,
+                                     specialCharacters())
+                errorMessage = message
+                errorIndex = index
+                break
+            }
+        }
+        
+        if errorIndex >= 0 && !errorMessage.isEmpty {
+            self.showAlertForWrongFileName(in: viewController, and: errorMessage)
+        }
+        handler(errorIndex)
     }
     
-    func updateMetadata(filename: String, description: String?) {
-        for (index, capturedAsset) in capturedAssets.enumerated() {
-            capturedAsset.fileName = filename + "-\(String(index + 1))"
-            capturedAsset.description = description
+    func hasSpecialCharacters(_ string: String) -> Bool {
+        let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
+        if string.rangeOfCharacter(from: characterset) != nil {
+            return true
+        }
+        return false
+    }
+
+    func specialCharacters() -> String {
+        return "* \" < > \\ / ? : |"
+    }
+    
+    func showAlertForWrongFileName(in viewController: UIViewController,
+                                   and message: String) {
+        let title = LocalizationConstants.Alert.alertTitle
+        let confirmButtonTitle = LocalizationConstants.General.ok
+
+        let confirmAction = MDCAlertAction(title: confirmButtonTitle) {  _ in
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+    
+        if let viewController = viewController as? PreviewViewController {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [confirmAction]) {}
         }
     }
 }

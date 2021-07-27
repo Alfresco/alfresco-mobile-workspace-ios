@@ -29,27 +29,21 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var flashModeButton: UIButton!
     @IBOutlet weak var switchCameraButton: UIButton!
     @IBOutlet weak var shutterButton: ShutterButton!
-    
-    @IBOutlet weak var multiPhotosView: UIView!
-    @IBOutlet weak var multiPhotosImageView: UIImageView!
-    @IBOutlet weak var multiPhotosNumberIndicatorView: UIView!
-    @IBOutlet weak var multiPhotosNumberLabel: UILabel!
-    @IBOutlet weak var multiPhotosButton: UIButton!
-    
     @IBOutlet weak var zoomLabel: UILabel!
     @IBOutlet weak var zoomSlider: RangeSlider!
-    
+
     @IBOutlet weak var topBarView: UIView!
     @IBOutlet weak var flashMenuView: FlashMenu!
     @IBOutlet weak var finderView: UIView!
     @IBOutlet weak var zoomView: UIView!
     @IBOutlet weak var shutterView: UIView!
     @IBOutlet weak var modeView: UIView!
-
+    
     @IBOutlet weak var modeSelector: ModeSelectorControl!
     @IBOutlet weak var sessionPreview: SessionPreview!
     var timerView: UIView?
-
+    var currentCameraMode: Int = 0 // 0 camera, 1 video
+    
     var cameraViewModel: CameraViewModel?
     weak var cameraDelegate: CameraKitCaptureDelegate?
     var uiOrientation: UIImage.Orientation = UIDevice.current.orientation.imageOrientation
@@ -58,23 +52,24 @@ class CameraViewController: UIViewController {
     private var cameraSession: CaptureSession?
     private var timerViewConfig: TimerViewConfig?
     
+    // --- multi photos view ---
+    @IBOutlet weak var multiPhotosView: UIView!
+    @IBOutlet weak var multiPhotosImageView: UIImageView!
+    @IBOutlet weak var multiPhotosNumberIndicatorView: UIView!
+    @IBOutlet weak var multiPhotosNumberLabel: UILabel!
+    @IBOutlet weak var multiPhotosButton: UIButton!
+ 
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if cameraViewModel?.capturedAssets.isEmpty == true {
-            multiPhotosView.isHidden = true
-        }
-        
+        updateMultiPhotosViewUI()
         cameraViewModel?.delegate = self
-        
         configureViewsLayout(for: view.bounds.size)
-
         setUpShutterButton()
         setUpFlashMenu()
         setUpZoomSlider()
@@ -93,7 +88,7 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !CameraKit.enterprise {
+        if !ConfigurationManager.shared.isEnterpriseUser() {
             cameraViewModel?.deletePreviousCapture()
         }
         if cameraSession != nil {
@@ -299,9 +294,13 @@ class CameraViewController: UIViewController {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
            let assets = cameraViewModel?.capturedAssets {
-            let previewViewModel = PreviewViewModel(capturedAssets: assets)
-            pvc.previewViewModel = previewViewModel
+            let previewViewModel = PreviewViewModel(assets: assets)
+            pvc.controller.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
+            previewViewModel.callback = { (deletedIndex) in
+                self.cameraViewModel?.capturedAssets.remove(at: deletedIndex)
+                self.updateMultiPhotosViewUI()
+            }
         }
     }
 }
@@ -310,23 +309,37 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: CameraViewModelDelegate {
     func deleteAllCapturedAssets() {
-        if CameraKit.enterprise {
-            multiPhotosView.isHidden = true
-        }
+        updateMultiPhotosViewUI()
     }
     
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
         shutterButton.isUserInteractionEnabled = true
         guard error == nil else { return }
         
-        if !CameraKit.enterprise {
+        if !ConfigurationManager.shared.isEnterpriseUser() {
             multiPhotosView.isHidden = true
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                                      sender: nil)
         } else {
-            multiPhotosImageView.image = capturedAsset?.thumbnailImage()
+            if self.cameraViewModel?.isAssetVideo(for: capturedAsset!) == true && ConfigurationManager.shared.isMultipleVideosCapturedAllowed() == false {
+                multiPhotosView.isHidden = true
+                performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
+                                         sender: nil)
+            } else {
+                updateMultiPhotosViewUI()
+            }
+        }
+    }
+    
+    private func updateMultiPhotosViewUI() {
+        if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isEnterpriseUser() {
+            multiPhotosView.isHidden = true
+        } else {
+            let capturedAssetsCount = cameraViewModel?.capturedAssets.count ?? 0
+            let image = cameraViewModel?.capturedAssets.last?.thumbnailImage()
+            multiPhotosNumberLabel.text = String(capturedAssetsCount)
             multiPhotosView.isHidden = false
-            multiPhotosNumberLabel.text = String(cameraViewModel?.capturedAssets.count ?? 0)
+            multiPhotosImageView.image = image
         }
     }
 }
@@ -386,6 +399,27 @@ extension CameraViewController: ModeSelectorControlDelegate {
         flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         setUpCameraSession(for: currentSelection)
+        warnEnterpriseUserForMixingOfCapturedAssets(for: currentSelection)
+    }
+    
+    private func warnEnterpriseUserForMixingOfCapturedAssets(for currentSelection: Int) {
+        let capturedAssetsCount = self.cameraViewModel?.capturedAssets.count ?? 0
+        if ConfigurationManager.shared.isEnterpriseUser() && capturedAssetsCount > 0 && currentSelection != self.currentCameraMode {
+            cameraViewModel?.warnUserForMixingAssets(in: self, handler: { userSelection in
+                if userSelection == true {
+                    self.cameraViewModel?.capturedAssets.removeAll()
+                    self.deleteAllCapturedAssets()
+                    self.currentCameraMode = currentSelection
+                } else {
+                    if self.modeSelector.currentSelection == videoSlider {
+                        self.modeSelector.currentSelection = 1
+                    } else {
+                        self.modeSelector.currentSelection = 0
+                    }
+                    self.modeSelector.handleTap(UIButton())
+                }
+            })
+        }
     }
 }
 

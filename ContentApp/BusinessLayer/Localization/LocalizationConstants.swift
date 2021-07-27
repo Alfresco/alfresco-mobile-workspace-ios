@@ -246,4 +246,10 @@ struct LocalizationConstants {
         static let onFlash = NSLocalizedString("on-flash", comment: "")
         static let offFlash = NSLocalizedString("off-flash", comment: "")
     }
+    
+    struct Alert {
+        static let alertTitle = NSLocalizedString("alert-title", comment: "")
+        static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
+        static let recordVideoWarningMessage = NSLocalizedString("mixed-captured-asset-error", comment: "")
+    }
 }

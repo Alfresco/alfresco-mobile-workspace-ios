@@ -156,7 +156,6 @@ class ApplicationBootstrap {
                                                  emptyGalleryDescription:
                                                     LocalizationConstants.EmptyLists.galleryDescription,
                                                  galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload)
-        CameraKit.enterprise = true
         CameraKit.applyTheme(theme: theme)
         CameraKit.applyLocalization(localization: localization)
     }

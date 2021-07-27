@@ -17,6 +17,9 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
+
+public typealias CameraDidDismissVideoSessionHandler = (_ option: Bool) -> Void
 
 protocol CameraViewModelDelegate: AnyObject {
     func finishProcess(capturedAsset: CapturedAsset?, error: Error?)
@@ -45,6 +48,10 @@ class CameraViewModel: NSObject {
         capturedAssets = []
         delegate?.deleteAllCapturedAssets()
     }
+    
+    func isAssetVideo(for capturedAsset: CapturedAsset) -> Bool {
+        return capturedAsset.type == .video
+    }
 }
 
 // MARK: - CaptureSession Delegate
@@ -57,6 +64,34 @@ extension CameraViewModel: CaptureSessionDelegate {
                 sSelf.capturedAssets.append(capturedAsset)
             }
             sSelf.delegate?.finishProcess(capturedAsset: asset, error: error)
+        }
+    }
+}
+
+
+// MARK:- Disable multiple videos capture
+extension CameraViewModel {
+    func warnUserForMixingAssets(in viewController: UIViewController,
+                                 handler: @escaping CameraDidDismissVideoSessionHandler) {
+        
+        let title = LocalizationConstants.Alert.alertTitle
+        let message = LocalizationConstants.Alert.recordVideoWarningMessage
+
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later) { _ in
+            handler(false)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        let continueAction = MDCAlertAction(title: LocalizationConstants.General.yes) { _ in
+            handler(true)
+        }
+        continueAction.accessibilityIdentifier = "continueActionButton"
+        
+        DispatchQueue.main.async {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [cancelAction, continueAction],
+                                          completionHandler: {})
         }
     }
 }

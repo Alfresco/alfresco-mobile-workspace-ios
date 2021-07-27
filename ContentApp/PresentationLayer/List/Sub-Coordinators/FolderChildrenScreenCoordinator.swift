@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
 
 class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
@@ -111,10 +112,16 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func showCamera() {
-        let coordinator = CameraScreenCoordinator(with: presenter,
-                                                  parentListNode: listNode)
-        coordinator.start()
-        cameraCoordinator = coordinator
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let coordinator = CameraScreenCoordinator(with: presenter,
+                                                      parentListNode: listNode)
+            coordinator.start()
+            cameraCoordinator = coordinator
+        } else {
+            let title = LocalizationConstants.Alert.alertTitle
+            let message = LocalizationConstants.Alert.cameraUnavailable
+            self.showAlert(with: title, and: message)
+        }
     }
     
     func showPhotoLibrary() {
@@ -122,5 +129,16 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                         parentListNode: listNode)
         coordinator.start()
         photoLibraryCoordinator = coordinator
+    }
+    
+    private func showAlert(with title: String,
+                           and message: String) {
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) {  _ in
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = presenter.showDialog(title: title,
+                                  message: message,
+                                  actions: [confirmAction],
+                                  completionHandler: {})
     }
 }
