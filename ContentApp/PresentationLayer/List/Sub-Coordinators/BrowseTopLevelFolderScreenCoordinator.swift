@@ -139,7 +139,6 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
-    
     private func showAlert(with title: String,
                            and message: String) {
         let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) {  _ in
