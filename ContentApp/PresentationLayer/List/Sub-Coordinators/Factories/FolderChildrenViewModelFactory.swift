@@ -23,6 +23,7 @@ typealias FolderChildrenDataSource = (folderDrillDownViewModel: FolderDrillViewM
 
 class FolderChildrenViewModelFactory {
     var services: CoordinatorServices
+    var model: FolderDrillModel?
 
     init(services: CoordinatorServices) {
         self.services = services
@@ -33,6 +34,7 @@ class FolderChildrenViewModelFactory {
 
         let folderDrillModel = FolderDrillModel(listNode: listNode,
                                                 services: services)
+        self.model = folderDrillModel
         let folderDrillViewModel = FolderDrillViewModel(model: folderDrillModel)
 
         let searchChip = SearchChipItem(name: LocalizationConstants.Search.searchIn + listNode.title,

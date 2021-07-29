@@ -18,6 +18,10 @@
 
 import UIKit
 
+protocol FolderChildrenScreenCoordinatorDelegate: AnyObject {
+    func updateListNode(with node: ListNode)
+}
+
 class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var listNode: ListNode
@@ -25,6 +29,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
+    private var model: FolderDrillModel?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -34,6 +39,8 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     override func start() {
         let viewModelFactory = FolderChildrenViewModelFactory(services: coordinatorServices)
         let folderChildrenDataSource = viewModelFactory.folderChildrenDataSource(for: listNode)
+        self.model = viewModelFactory.model
+        self.model?.folderChildrenDelegate = self
 
         let viewController = ListViewController()
         viewController.title = listNode.title
@@ -122,5 +129,11 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                         parentListNode: listNode)
         coordinator.start()
         photoLibraryCoordinator = coordinator
+    }
+}
+
+extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {
+    func updateListNode(with node: ListNode) {
+        self.listNode = node
     }
 }
