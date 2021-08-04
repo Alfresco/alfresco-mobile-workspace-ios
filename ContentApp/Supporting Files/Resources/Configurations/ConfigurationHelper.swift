@@ -20,6 +20,4 @@ import Foundation
 
 struct ConfigurationKeys {
     static let isEnterpriseUser = "isEnterpriseUser"
-    static let isMultipleVideosCapturedAllowed = "isMultipleVideosCapturedAllowed"
-    static let isSimultaneousImageAndVideoCapturedAllowed = "isSimultaneousImageAndVideoCapturedAllowed"
 }

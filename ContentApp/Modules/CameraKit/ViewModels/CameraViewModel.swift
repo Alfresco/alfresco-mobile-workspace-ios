@@ -69,29 +69,3 @@ extension CameraViewModel: CaptureSessionDelegate {
 }
 
 
-// MARK:- Disable multiple videos capture
-extension CameraViewModel {
-    func warnUserForMixingAssets(in viewController: UIViewController,
-                                 handler: @escaping CameraDidDismissVideoSessionHandler) {
-        
-        let title = LocalizationConstants.Alert.alertTitle
-        let message = LocalizationConstants.Alert.recordVideoWarningMessage
-
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later) { _ in
-            handler(false)
-        }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        let continueAction = MDCAlertAction(title: LocalizationConstants.General.yes) { _ in
-            handler(true)
-        }
-        continueAction.accessibilityIdentifier = "continueActionButton"
-        
-        DispatchQueue.main.async {
-            _ = viewController.showDialog(title: title,
-                                          message: message,
-                                          actions: [cancelAction, continueAction],
-                                          completionHandler: {})
-        }
-    }
-}

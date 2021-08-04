@@ -58,7 +58,6 @@ class PhotoGalleryViewController: UIViewController {
         centerCells()
         enableUploadButton = false
         emptyView.isHidden = (photoGalleryDataSource?.numberOfAssets() == 0) ? false : true
-        print("Enterprise User ----->> \(ConfigurationManager.shared.isEnterpriseUser())")
     }
     
     // MARK: - IBActions

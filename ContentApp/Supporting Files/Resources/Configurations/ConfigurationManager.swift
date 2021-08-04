@@ -36,18 +36,4 @@ class ConfigurationManager: NSObject {
         }
         return false
     }
-    
-    func isMultipleVideosCapturedAllowed() -> Bool {
-        if let configuartions = self.loadConfigurations() {
-            return configuartions[ConfigurationKeys.isMultipleVideosCapturedAllowed] as? Bool ?? false
-        }
-        return false
-    }
-    
-    func isSimultaneousImageAndVideoCapturedAllowed() -> Bool {
-        if let configuartions = self.loadConfigurations() {
-            return configuartions[ConfigurationKeys.isSimultaneousImageAndVideoCapturedAllowed] as? Bool ?? false
-        }
-        return false
-    }
 }

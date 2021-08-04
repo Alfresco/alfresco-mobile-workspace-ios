@@ -21,20 +21,32 @@ import Foundation
 struct ActionsMenuCreateFAB {
     static func actions() -> [[ActionMenu]] {
         var actions = [[ActionMenu]]()
-
-        let actions1 = [ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
-                                   type: .createFolder),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
-                                                   type: .uploadMedia),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
-                                                   type: .createMedia)] /*,
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
-                                   type: .createMSWord),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
-                                   type: .createMSPowerPoint),
-                        ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
-                                   type: .createMSExcel)] */
+        
+        let actionCreateFolder = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                            type: .createFolder)
+        var actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
+                                           type: .uploadMedia)
+        var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
+                                           type: .createMedia)
+        
+        if !ConfigurationManager.shared.isEnterpriseUser() {
+            actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
+                                           type: .uploadMedia)
+            actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createSingleMedia,
+                                           type: .createMedia)
+        }
+        
+        let actions1 = [actionCreateFolder,
+                        actionUploadMedia,
+                        actionCreateMedia] /*,
+         ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
+         type: .createMSWord),
+         ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
+         type: .createMSPowerPoint),
+         ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
+         type: .createMSExcel)] */
         actions.append(actions1)
+        
         return actions
     }
 }

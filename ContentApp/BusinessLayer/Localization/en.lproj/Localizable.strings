@@ -175,8 +175,11 @@
 "action-menu-create-folder" = "New folder";
 "action-menu-mark-offline" = "Make available offline";
 "action-menu-remove-offline" = "Remove offline";
-"action-menu-create-media" = "Take a photo or video";
+"action-menu-create-media" = "Take photos or videos";
 "action-menu-upload-media" = "Upload photos or videos";
+"action-menu-create-single-media" = "Take a photo or video";
+"action-menu-upload-single-media" = "Upload a photo or video";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";
@@ -224,4 +227,3 @@
 // MARK: - Alert
 "alert-title" = "Alert";
 "camera-unavailable" = "Device does not support camera";
-"mixed-captured-asset-error" = "If you wish to change the mode, your already captured assets will be discarded. Do you wish to proceed?";

@@ -180,7 +180,7 @@ class CaptureSession: NSObject {
     
     func defaultFileName(with prefix: String) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd_HHmmss"
+        dateFormatter.dateFormat = "yyyyMMdd_HHmmssSS"
         return "\(prefix)_\(dateFormatter.string(from: Date()))"
     }
     

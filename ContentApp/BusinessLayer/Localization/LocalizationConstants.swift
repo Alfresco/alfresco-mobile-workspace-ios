@@ -197,6 +197,9 @@ struct LocalizationConstants {
         static let removeOffline = NSLocalizedString("action-menu-remove-offline", comment: "")
         static let createMedia = NSLocalizedString("action-menu-create-media", comment: "")
         static let uploadMedia = NSLocalizedString("action-menu-upload-media", comment: "")
+        static let createSingleMedia = NSLocalizedString("action-menu-create-single-media", comment: "")
+        static let uploadSingleMedia = NSLocalizedString("action-menu-upload-single-media", comment: "")
+
     }
 
     struct Dialog {
@@ -250,6 +253,5 @@ struct LocalizationConstants {
     struct Alert {
         static let alertTitle = NSLocalizedString("alert-title", comment: "")
         static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
-        static let recordVideoWarningMessage = NSLocalizedString("mixed-captured-asset-error", comment: "")
     }
 }

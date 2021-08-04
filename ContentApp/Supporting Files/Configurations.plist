@@ -4,9 +4,5 @@
 <dict>
 	<key>isEnterpriseUser</key>
 	<true/>
-	<key>isMultipleVideosCapturedAllowed</key>
-	<false/>
-	<key>isSimultaneousImageAndVideoCapturedAllowed</key>
-	<false/>
 </dict>
 </plist>

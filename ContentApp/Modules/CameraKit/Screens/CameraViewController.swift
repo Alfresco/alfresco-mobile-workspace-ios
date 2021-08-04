@@ -321,13 +321,7 @@ extension CameraViewController: CameraViewModelDelegate {
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                                      sender: nil)
         } else {
-            if self.cameraViewModel?.isAssetVideo(for: capturedAsset!) == true && ConfigurationManager.shared.isMultipleVideosCapturedAllowed() == false {
-                multiPhotosView.isHidden = true
-                performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
-                                         sender: nil)
-            } else {
-                updateMultiPhotosViewUI()
-            }
+            updateMultiPhotosViewUI()
         }
     }
     
@@ -399,27 +393,6 @@ extension CameraViewController: ModeSelectorControlDelegate {
         flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)
         setUpCameraSession(for: currentSelection)
-        warnEnterpriseUserForMixingOfCapturedAssets(for: currentSelection)
-    }
-    
-    private func warnEnterpriseUserForMixingOfCapturedAssets(for currentSelection: Int) {
-        let capturedAssetsCount = self.cameraViewModel?.capturedAssets.count ?? 0
-        if ConfigurationManager.shared.isEnterpriseUser() && capturedAssetsCount > 0 && currentSelection != self.currentCameraMode {
-            cameraViewModel?.warnUserForMixingAssets(in: self, handler: { userSelection in
-                if userSelection == true {
-                    self.cameraViewModel?.capturedAssets.removeAll()
-                    self.deleteAllCapturedAssets()
-                    self.currentCameraMode = currentSelection
-                } else {
-                    if self.modeSelector.currentSelection == videoSlider {
-                        self.modeSelector.currentSelection = 1
-                    } else {
-                        self.modeSelector.currentSelection = 0
-                    }
-                    self.modeSelector.handleTap(UIButton())
-                }
-            })
-        }
     }
 }
 
