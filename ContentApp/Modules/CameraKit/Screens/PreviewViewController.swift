@@ -136,9 +136,21 @@ class PreviewViewController: UIViewController {
         guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
         capturedAsset.deleteAsset()
         self.previewViewModel?.capturedAssets.value.remove(at: index)
+        self.updateVisibleCellIndex()
         self.previewViewModel?.callback?(index)
         if self.previewViewModel?.capturedAssets.value.isEmpty == true {
             navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func updateVisibleCellIndex() {
+        guard let capturedAssets = self.previewViewModel?.capturedAssets.value, let visibleCellIndex = self.previewViewModel?.visibleCellIndex.value  else { return }
+        if !capturedAssets.isEmpty {
+            if visibleCellIndex >= capturedAssets.count {
+                self.previewViewModel?.visibleCellIndex.value = capturedAssets.count - 1
+            } else {
+                self.previewViewModel?.visibleCellIndex.value = visibleCellIndex
+            }
         }
     }
         
