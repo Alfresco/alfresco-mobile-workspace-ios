@@ -19,14 +19,13 @@
 import UIKit
 import MaterialComponents.MaterialDialogs
 
-public typealias PreviewErrorDismissHandler = (_ index: Int) -> Void
+public typealias PreviewErrorDismissHandler = (_ index: Int, _ message: String?) -> Void
 public typealias DeleteCapturedAssetHandler = (_ index: Int) -> Void
 
 class PreviewViewModel {
     var assets: [CapturedAsset]
     let capturedAssets = Observable<[CapturedAsset]>([])
     let visibleCellIndex = Observable<Int>(0)
-    let enableSaveButton = Observable<Bool>(false)
     var callback: DeleteCapturedAssetHandler! = nil
     
     // MARK: - Init
@@ -57,7 +56,7 @@ class PreviewViewModel {
     }
     
     // MARK: - Validate File Names
-    func validateFileNames(in viewController: UIViewController,
+    func validateFileNames(in viewController: UIViewController?,
                            handler: @escaping PreviewErrorDismissHandler) {
         guard let localization = CameraKit.localization else {
             return
@@ -72,15 +71,21 @@ class PreviewViewModel {
                 errorMessage = message
                 errorIndex = index
                 break
+            } else if fileName.isEmpty {
+                let message = String(format: localization.errorEmptyFileName,
+                                     specialCharacters())
+                errorMessage = message
+                errorIndex = index
+                break
             }
         }
         
-        if errorIndex >= 0 && !errorMessage.isEmpty {
-            self.showAlertForWrongFileName(in: viewController, and: errorMessage)
+        if errorIndex >= 0 && !errorMessage.isEmpty && viewController != nil {
+            self.showAlertForWrongFileName(in: viewController!, and: errorMessage)
         }
-        handler(errorIndex)
+        handler(errorIndex, errorMessage)
     }
-    
+
     func hasSpecialCharacters(_ string: String) -> Bool {
         let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
         if string.rangeOfCharacter(from: characterset) != nil {

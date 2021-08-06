@@ -23,7 +23,8 @@ class PreviewController: NSObject {
     var capturedAssetsViewModel = [PreviewCellViewModel]()
     var didTrashCapturedAsset: ((Int, CapturedAsset) -> Void)?
     var didPlayCapturedAsset: ((Int, CapturedAsset) -> Void)?
-    
+    var didDisplayErrorOnSaveButton: ((Int, String) -> Void)?
+
     // MARK: - Cell Identifiers
     func cellIdentifier(for viewModel: RowViewModel) -> String {
         switch viewModel {
@@ -60,14 +61,9 @@ class PreviewController: NSObject {
             return
         }
         
-        var enableSaveButton = true
-        for capturedAsset in previewViewModel.capturedAssets.value {
-            let fileName = capturedAsset.fileName
-            if fileName.isEmpty {
-                enableSaveButton = false
-                break
-            }
-        }
-        self.previewViewModel?.enableSaveButton.value = enableSaveButton
+        previewViewModel.validateFileNames(in: nil, handler: { (index, error) in
+            let errorMessage = error ?? ""
+            self.didDisplayErrorOnSaveButton?(index, errorMessage)
+        })
     }
 }

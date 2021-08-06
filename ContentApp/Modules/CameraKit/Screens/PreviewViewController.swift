@@ -88,12 +88,13 @@ class PreviewViewController: UIViewController {
             guard let capturdAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
             self.fileNameTextField.text = self.previewViewModel?.assetFilename(for: capturdAsset)
             self.descriptionField.textView.text = self.previewViewModel?.assetDescription(for: capturdAsset)
+            self.controller.enableSaveButtonAction()
         })
         
-        /* observe save button */
-        self.previewViewModel?.enableSaveButton.addObserver({ (value) in
-            self.saveButton.isEnabled = value
-        })
+        /* observer save button error message */
+        self.controller.didDisplayErrorOnSaveButton = {(index, message) in
+            self.enableSaveButton(for: index, and: message)
+        }
         
         /* observer delete asset */
         self.controller.didTrashCapturedAsset = { (index, capturedAsset) in
@@ -109,7 +110,7 @@ class PreviewViewController: UIViewController {
     // MARK: - IBActions
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
         self.view.endEditing(true)
-        self.previewViewModel?.validateFileNames(in: self, handler: { (index) in
+        self.previewViewModel?.validateFileNames(in: self, handler: { (index, error) in
             self.scrollCollectionView(to: index)
             if index < 0 {
                 self.uploadCapturedAssets()
@@ -157,6 +158,37 @@ class PreviewViewController: UIViewController {
     private func playButtonTapped(at index: Int, and capturedAsset: CapturedAsset) {
         performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
                      sender: nil)
+    }
+    
+    private func enableSaveButton(for index: Int, and message: String) {
+        if index >= 0 && !message.isEmpty {
+            self.saveButton.isEnabled = false
+        } else {
+            self.saveButton.isEnabled = true
+        }
+        self.displayErrorOnTextField(for: index, and: message)
+    }
+    
+    private func displayErrorOnTextField(for index: Int, and message: String) {
+        if index == self.previewViewModel?.visibleCellIndex.value {
+            applyErrorOnTextField(with: message)
+        } else {
+            disableErrorOnTextField()
+        }
+    }
+    
+    private func applyErrorOnTextField(with message: String) {
+        guard let theme = CameraKit.theme else { return }
+        fileNameTextField.applyErrorTheme(withScheme: theme.textFieldScheme)
+        fileNameTextField.leadingAssistiveLabel.text = message
+        fileNameTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
+    }
+
+    private func disableErrorOnTextField() {
+        guard let theme = CameraKit.theme else { return }
+        fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
+        fileNameTextField.leadingAssistiveLabel.text = ""
+        fileNameTextField.trailingView = nil
     }
     
     // MARK: - Private Methods

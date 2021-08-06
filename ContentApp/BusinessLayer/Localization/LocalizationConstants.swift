@@ -112,6 +112,7 @@ struct LocalizationConstants {
         static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
         static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
         static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
+        static let errorEmptyFileName = NSLocalizedString("error-file-name-empty", comment: "")
     }
 
     struct Approved {

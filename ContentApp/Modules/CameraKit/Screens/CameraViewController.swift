@@ -80,10 +80,14 @@ class CameraViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
-        sessionPreview.startSession()
+        self.perform(#selector(sessionStart), with: nil, afterDelay: 0.1)
         applyComponentsThemes()
         zoomSlider.setSlider(value: sessionPreview.zoom)
         modeSelector.setNeedsLayout()
+    }
+    
+    @objc private func sessionStart() {
+        sessionPreview.startSession()
     }
     
     override func viewDidAppear(_ animated: Bool) {
