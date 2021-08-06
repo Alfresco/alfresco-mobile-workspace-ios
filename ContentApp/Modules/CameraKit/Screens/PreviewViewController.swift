@@ -86,6 +86,7 @@ class PreviewViewController: UIViewController {
         /* observe visible cell index */
         self.previewViewModel?.visibleCellIndex.addObserver({ (index) in
             guard let capturdAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
+            self.updateTextViewLocalization()
             self.fileNameTextField.text = self.previewViewModel?.assetFilename(for: capturdAsset)
             self.descriptionField.textView.text = self.previewViewModel?.assetDescription(for: capturdAsset)
             self.controller.enableSaveButtonAction()
@@ -105,6 +106,12 @@ class PreviewViewController: UIViewController {
         self.controller.didPlayCapturedAsset = { (index, capturedAsset) in
             self.playButtonTapped(at: index, and: capturedAsset)
         }
+    }
+    
+    private func updateTextViewLocalization() {
+        guard let localization = CameraKit.localization, let theme = CameraKit.theme else { return }
+        descriptionField.label.text = localization.descriptionTextField
+        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
     }
 
     // MARK: - IBActions
