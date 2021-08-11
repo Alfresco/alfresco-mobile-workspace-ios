@@ -60,8 +60,8 @@ class CameraViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ApplicationBootstrap.shared().configureCameraKitTheme()
         cameraViewModel?.delegate = self
-        
         configureViewsLayout(for: view.bounds.size)
 
         setUpShutterButton()
