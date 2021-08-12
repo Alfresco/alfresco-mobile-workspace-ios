@@ -66,8 +66,8 @@ class CameraViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         updateMultiPhotosViewUI()
+        ApplicationBootstrap.shared().configureCameraKitTheme()
         cameraViewModel?.delegate = self
         configureViewsLayout(for: view.bounds.size)
         setUpShutterButton()

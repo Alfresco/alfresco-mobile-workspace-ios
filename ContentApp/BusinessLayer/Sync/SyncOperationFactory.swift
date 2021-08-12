@@ -66,7 +66,7 @@ class SyncOperationFactory {
 
             let listNodeDataAccessor = ListNodeDataAccessor()
 
-            _ = sSelf.nodesWithChildren.keys.map({ (node) in
+            sSelf.nodesWithChildren.keys.forEach({ node in
                 if let onlineNodes = sSelf.nodesWithChildren[node] {
                     let querriedNodeChildren = listNodeDataAccessor.queryChildren(for: node)
                     sSelf.compareAndUpdate(queriedNodeChildren: querriedNodeChildren,
@@ -176,10 +176,7 @@ class SyncOperationFactory {
                 } else if let entries = result?.list?.entries {
                     let onlineNodes = NodeChildMapper.map(entries)
 
-                    if sSelf.nodesWithChildren[node] == nil {
-                        sSelf.nodesWithChildren[node] = []
-                    }
-                    sSelf.nodesWithChildren[node]?.append(contentsOf: onlineNodes)
+                    sSelf.nodesWithChildren[node] = onlineNodes
 
                     for onlineNode in onlineNodes {
                         onlineNode.removeAllowableOperationUnknown()
@@ -391,10 +388,11 @@ class SyncOperationFactory {
 
     private func compareAndUpdate(queriedNodeChildren: [ListNode],
                                   with onlineNodeChildren: [ListNode]) {
-        var queriedSet = Set(queriedNodeChildren)
-        queriedSet.subtract(Set(onlineNodeChildren))
+        let childrenToRemove = queriedNodeChildren.filter { node in
+            return !onlineNodeChildren.contains { $0.guid == node.guid }
+        }
 
-        for node in queriedSet {
+        for node in childrenToRemove {
             node.markedFor = .removal
             node.syncStatus = .undefined
 

@@ -115,13 +115,18 @@ class ApplicationBootstrap {
     }
 
     private func configureCameraKitModule() {
+        self.configureCameraKitTheme()
+        self.configureCameraKitLocalization()
+    }
+    
+    func configureCameraKitTheme() {
         let identifier = MaterialDesignThemingService.identifier
         let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
         guard let currentTheme = themingService?.activeTheme,
               let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
               let buttonScheme = themingService?.containerScheming(for: .dialogButton)
         else { return }
-
+        
         let theme = CameraKitTheme(primaryColor: currentTheme.primaryT1Color,
                                    onSurfaceColor: currentTheme.onSurfaceColor,
                                    onSurface60Color: currentTheme.onSurface60Color,
@@ -138,6 +143,10 @@ class ApplicationBootstrap {
                                    headline6Font: currentTheme.headline6TextStyle.font,
                                    body2Font: currentTheme.body2TextStyle.font,
                                    overlineFont: currentTheme.overlineTextStyle.font)
+        CameraKit.applyTheme(theme: theme)
+    }
+    
+    private func configureCameraKitLocalization() {
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
                                                  offFlashText: LocalizationConstants.Camera.offFlash,
@@ -158,7 +167,6 @@ class ApplicationBootstrap {
                                                     LocalizationConstants.EmptyLists.galleryDescription,
                                                  galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload,
                                                  errorEmptyFileName: LocalizationConstants.Errors.errorEmptyFileName)
-        CameraKit.applyTheme(theme: theme)
         CameraKit.applyLocalization(localization: localization)
     }
 }
