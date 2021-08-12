@@ -213,10 +213,8 @@ struct LocalizationConstants {
         static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
         
         static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
-        static let discardPhotosTitle = NSLocalizedString("dialog-discard-photos-title", comment: "")
-        static let discardPhotoTitle = NSLocalizedString("dialog-discard-photo-title", comment: "")
-        static let discardPhotosMessage = NSLocalizedString("dialog-discard-photos-message", comment: "")
-        static let discardPhotoMessage = NSLocalizedString("dialog-discard-photo-message", comment: "")
+        static let discardCapturedAssetsTitle = NSLocalizedString("dialog-discard-captures-title", comment: "")
+        static let discardCapturedAssetsMessage = NSLocalizedString("dialog-discard-captures-message", comment: "")
     }
 
     struct EmptyLists {

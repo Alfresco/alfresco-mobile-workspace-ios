@@ -59,4 +59,6 @@ protocol PresentationTheme {
     
     var photoShutterColor: UIColor { get }
     var videoShutterColor: UIColor { get }
+    var badgeBackGroundColor: UIColor { get }
+
 }

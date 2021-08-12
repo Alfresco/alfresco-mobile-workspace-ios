@@ -41,10 +41,8 @@ class CameraKit {
                               in viewController: UIViewController,
                               handler: @escaping CameraKitDismissHandler) {
         
-        let title = (numberOfCapturedAssets == 1) ? LocalizationConstants.Dialog.discardPhotoTitle
-            : LocalizationConstants.Dialog.discardPhotosTitle
-        let message = (numberOfCapturedAssets == 1) ? LocalizationConstants.Dialog.discardPhotoMessage
-            : String(format: LocalizationConstants.Dialog.discardPhotosMessage, numberOfCapturedAssets)
+        let title = LocalizationConstants.Dialog.discardCapturedAssetsTitle
+        let message = String(format: LocalizationConstants.Dialog.discardCapturedAssetsMessage, numberOfCapturedAssets)
 
         let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
             handler(false)

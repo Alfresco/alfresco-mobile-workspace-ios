@@ -58,4 +58,5 @@ struct DarkTheme: PresentationTheme {
     
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#FFFFFF")
+    var badgeBackGroundColor = UIColor(hex: "#FFFFFF")
 }

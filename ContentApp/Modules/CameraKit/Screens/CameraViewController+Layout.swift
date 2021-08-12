@@ -50,7 +50,7 @@ extension CameraViewController {
         zoomLabel.backgroundColor = theme.surface60Color
         
         multiPhotosView.backgroundColor = .clear
-        multiPhotosNumberIndicatorView.backgroundColor = theme.primaryColor
+        multiPhotosNumberIndicatorView.backgroundColor = theme.badgeBackGroundColor
         multiPhotosNumberLabel.font = theme.overlineFont
         multiPhotosNumberLabel.textColor = theme.surfaceColor
         
