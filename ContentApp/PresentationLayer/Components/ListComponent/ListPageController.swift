@@ -93,7 +93,6 @@ class ListPageController: ListPageControllerProtocol {
             requestInProgress = true
             dataSource.fetchItems(with: nextPage) { [weak self] paginatedResponse in
                 guard let sSelf = self else { return }
-                print("Response ListPageController Line 97 \(paginatedResponse)")
                 sSelf.handlePaginatedResponse(response: paginatedResponse)
             }
         }
