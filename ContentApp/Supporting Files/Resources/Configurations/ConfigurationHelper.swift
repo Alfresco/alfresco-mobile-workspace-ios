@@ -19,5 +19,5 @@
 import Foundation
 
 struct ConfigurationKeys {
-    static let isEnterpriseUser = "isEnterpriseUser"
+    static let isPaidUser = "isPaidUser"
 }

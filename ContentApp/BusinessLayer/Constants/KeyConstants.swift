@@ -36,6 +36,7 @@ struct KeyConstants {
         static let allowSyncOverCellularData = "kSaveAllowSyncOverCellularData"
         static let allowOnceSyncOverCellularData = "kSaveAllowOnceSyncOverCellularData"
         static let toCameraRoll = "com.apple.UIKit.activity.SaveToCameraRoll"
+        static let edition = "kEdition"
     }
 
     struct Notification {

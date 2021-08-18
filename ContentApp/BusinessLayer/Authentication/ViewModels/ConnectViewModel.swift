@@ -29,9 +29,11 @@ class ConnectViewModel {
     weak var delegate: ConnectViewModelDelegate?
     var authenticationService: AuthenticationService?
     var aimsViewModel: AimsViewModel?
+    var accountService: AccountService?
 
     init(with loginService: AuthenticationService?) {
         authenticationService = loginService
+        accountService = ApplicationBootstrap.shared().repository.service(of: AccountService.identifier) as? AccountService
     }
 
     func availableAuthType(for url: String, in viewController: UIViewController) {
@@ -52,7 +54,9 @@ class ConnectViewModel {
                 sSelf.authenticationService?.isContentServicesAvailable(on: authParameters.fullHostnameURL,
                                                                         handler: { (result) in
                     switch result {
-                    case .success(let isVersionOverMinium):
+                    case .success(let response):
+                         let isVersionOverMinium = (response?.isVersionOverMinium()) ?? false
+                        sSelf.accountService?.serverEdition = response?.serverEdition()
                         sSelf.contentService(available: isVersionOverMinium,
                                              authType: authType,
                                              url: url,

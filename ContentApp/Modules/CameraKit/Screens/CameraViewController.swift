@@ -92,7 +92,7 @@ class CameraViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !ConfigurationManager.shared.isEnterpriseUser() {
+        if !ConfigurationManager.shared.isPaidUser() {
             cameraViewModel?.deletePreviousCapture()
         }
         if cameraSession != nil {
@@ -320,7 +320,7 @@ extension CameraViewController: CameraViewModelDelegate {
         shutterButton.isUserInteractionEnabled = true
         guard error == nil else { return }
         
-        if !ConfigurationManager.shared.isEnterpriseUser() {
+        if !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                                      sender: nil)
@@ -330,7 +330,7 @@ extension CameraViewController: CameraViewModelDelegate {
     }
     
     private func updateMultiPhotosViewUI() {
-        if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isEnterpriseUser() {
+        if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
         } else {
             let capturedAssetsCount = cameraViewModel?.capturedAssets.count ?? 0

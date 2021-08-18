@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 class ConfigurationManager: NSObject {
     public static let shared = ConfigurationManager()
@@ -30,9 +31,9 @@ class ConfigurationManager: NSObject {
         return nil
     }
     
-    func isEnterpriseUser() -> Bool {
-        if let configuartions = self.loadConfigurations() {
-            return configuartions[ConfigurationKeys.isEnterpriseUser] as? Bool ?? false
+    func isPaidUser() -> Bool {
+        if let accountService = ApplicationBootstrap.shared().repository.service(of: AccountService.identifier) as? AccountService, let serverEdition = accountService.serverEdition {
+            return serverEdition == PersonNetwork.SubscriptionLevel.enterprise.rawValue
         }
         return false
     }

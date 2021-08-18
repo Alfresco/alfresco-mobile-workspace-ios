@@ -29,7 +29,7 @@ struct ActionsMenuCreateFAB {
         var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
                                            type: .createMedia)
         
-        if !ConfigurationManager.shared.isEnterpriseUser() {
+        if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
                                            type: .uploadMedia)
             actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createSingleMedia,
