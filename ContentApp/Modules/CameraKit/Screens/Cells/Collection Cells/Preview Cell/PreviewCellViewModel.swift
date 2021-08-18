@@ -47,6 +47,15 @@ class PreviewCellViewModel: RowViewModel {
         }
     }
     
+    func imageContentMode() -> UIView.ContentMode {
+        if let image = assetThumbnailImage() {
+            if image.imageOrientation == .down || image.imageOrientation == .up {
+                return .scaleAspectFit
+            }
+        }
+        return .scaleAspectFill
+    }
+    
     func selectOptionTrash() {
         guard let capturedAsset = self.capturedAsset else {
             return

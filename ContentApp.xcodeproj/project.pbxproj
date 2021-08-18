@@ -184,7 +184,6 @@
 		E334C04724755D8E00F74880 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04524755D8E00F74880 /* Main.storyboard */; };
 		E334C04924755D9000F74880 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E334C04824755D9000F74880 /* Assets.xcassets */; };
 		E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04A24755D9000F74880 /* LaunchScreen.storyboard */; };
-		E334C05724755D9000F74880 /* ContentAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C05624755D9000F74880 /* ContentAppTests.swift */; };
 		E334C06224755D9000F74880 /* ContentAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C06124755D9000F74880 /* ContentAppUITests.swift */; };
 		E334C07424755E6B00F74880 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E334C07624755E6B00F74880 /* Localizable.strings */; };
 		E334C07924755ECA00F74880 /* LocalizationConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E334C07824755ECA00F74880 /* LocalizationConstants.swift */; };
@@ -545,7 +544,6 @@
 		E334C04B24755D9000F74880 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E334C04D24755D9000F74880 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E334C05224755D9000F74880 /* ContentAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContentAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E334C05624755D9000F74880 /* ContentAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentAppTests.swift; sourceTree = "<group>"; };
 		E334C05824755D9000F74880 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E334C05D24755D9000F74880 /* ContentAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ContentAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E334C06124755D9000F74880 /* ContentAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentAppUITests.swift; sourceTree = "<group>"; };
@@ -1398,7 +1396,6 @@
 		E334C05524755D9000F74880 /* ContentAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				E334C05624755D9000F74880 /* ContentAppTests.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -2673,7 +2670,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E334C05724755D9000F74880 /* ContentAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

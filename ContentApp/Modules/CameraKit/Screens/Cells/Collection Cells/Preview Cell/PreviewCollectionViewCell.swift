@@ -33,6 +33,7 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
         
         self.layoutIfNeeded()
         applyComponentsThemes()
+        applyBorderTheme()
         baseView.layer.cornerRadius = 8.0
         capturedAssetImageView.layer.cornerRadius = baseView.layer.cornerRadius
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
@@ -42,6 +43,12 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
         capturedAssetImageView.isUserInteractionEnabled = true
     }
     
+    private func applyBorderTheme() {
+        guard let theme = CameraKit.theme else { return }
+        capturedAssetImageView.layer.borderWidth = 1.0
+        capturedAssetImageView.layer.borderColor = theme.onSurface15Color.cgColor
+    }
+    
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? PreviewCellViewModel else {
             return
@@ -49,6 +56,7 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
         self.viewModel = viewModel
         if let image = viewModel.assetThumbnailImage() {
             capturedAssetImageView.image = image
+            capturedAssetImageView.contentMode = viewModel.imageContentMode()
         }
         self.playButton.isHidden = viewModel.isPlayButtonHidden()
     }
