@@ -123,7 +123,7 @@ class CameraViewController: UIViewController {
             modeSelector.isHidden = !modeSelector.isHidden
             switchCameraButton.isHidden = !switchCameraButton.isHidden
         }
-       // sessionPreview.capture()
+        sessionPreview.capture()
         apply(fade: true, to: flashMenuView)
     }
 
