@@ -67,5 +67,3 @@ extension CameraViewModel: CaptureSessionDelegate {
         }
     }
 }
-
-
