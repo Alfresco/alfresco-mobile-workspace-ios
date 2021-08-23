@@ -36,6 +36,7 @@ class SessionPreview: UIView {
     private var focusView: UIImageView?
     private var lastScale = minZoom
     private var focusTimer: Timer?
+    var isVideoRecording: Bool? = false
     
     private(set) var previewLayer: AVCaptureVideoPreviewLayer? {
         didSet {
