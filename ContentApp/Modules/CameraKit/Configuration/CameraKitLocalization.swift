@@ -32,4 +32,5 @@ struct CameraKitLocalization {
     var emptyGalleryTitle: String
     var emptyGalleryDescription: String
     var galleryTitle: String
+    var errorEmptyFileName: String
 }
