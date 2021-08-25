@@ -55,7 +55,6 @@ class CameraViewController: UIViewController {
     // --- multi photos view ---
     @IBOutlet weak var multiPhotosView: UIView!
     @IBOutlet weak var multiPhotosImageView: UIImageView!
-    @IBOutlet weak var multiPhotosNumberIndicatorView: UIView!
     @IBOutlet weak var multiPhotosNumberLabel: UILabel!
     @IBOutlet weak var multiPhotosButton: UIButton!
  
@@ -340,6 +339,7 @@ extension CameraViewController: CameraViewModelDelegate {
             multiPhotosNumberLabel.text = String(capturedAssetsCount)
             multiPhotosView.isHidden = false
             multiPhotosImageView.image = image
+            configureMultiPhotoLabelFrame()
         }
     }
 }

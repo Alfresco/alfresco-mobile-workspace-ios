@@ -136,7 +136,6 @@
 		C95D71CC26A148D500421929 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95D71C626A148D500421929 /* Observable.swift */; };
 		C95E7F2C26A3EA3B004CB0AA /* PreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95E7F2B26A3EA3B004CB0AA /* PreviewController.swift */; };
 		C95E7F3526A40B29004CB0AA /* CollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95E7F3326A40B29004CB0AA /* CollectionViewExtensions.swift */; };
-		C96B3EBD26A6A31A008EFCD9 /* Configurations.plist in Resources */ = {isa = PBXBuildFile; fileRef = C96B3EBC26A6A31A008EFCD9 /* Configurations.plist */; };
 		C96B3EC026A6A399008EFCD9 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96B3EBF26A6A399008EFCD9 /* ConfigurationManager.swift */; };
 		C96B3EC226A6A4E3008EFCD9 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96B3EC126A6A4E3008EFCD9 /* ConfigurationHelper.swift */; };
 		C9C0287E26D3735A000E0638 /* ServerEdition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0287D26D3735A000E0638 /* ServerEdition.swift */; };
@@ -488,7 +487,6 @@
 		C95D71C626A148D500421929 /* Observable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		C95E7F2B26A3EA3B004CB0AA /* PreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewController.swift; sourceTree = "<group>"; };
 		C95E7F3326A40B29004CB0AA /* CollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewExtensions.swift; sourceTree = "<group>"; };
-		C96B3EBC26A6A31A008EFCD9 /* Configurations.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Configurations.plist; sourceTree = "<group>"; };
 		C96B3EBF26A6A399008EFCD9 /* ConfigurationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		C96B3EC126A6A4E3008EFCD9 /* ConfigurationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationHelper.swift; sourceTree = "<group>"; };
 		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1430,7 +1428,6 @@
 				E334C07124755E0000F74880 /* Resources */,
 				B956050525026A6000D955BA /* GoogleService-Info.plist */,
 				E334C04D24755D9000F74880 /* Info.plist */,
-				C96B3EBC26A6A31A008EFCD9 /* Configurations.plist */,
 				B997306A255E7CC70026166A /* InfoPlist.strings */,
 			);
 			path = "Supporting Files";
@@ -2184,7 +2181,6 @@
 				E334C07424755E6B00F74880 /* Localizable.strings in Resources */,
 				C9EAE34226A1B7F400B27B0E /* PreviewCollectionViewCell.xib in Resources */,
 				B9F17141256C115700AD1E3A /* excel.xlsx in Resources */,
-				C96B3EBD26A6A31A008EFCD9 /* Configurations.plist in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
