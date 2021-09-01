@@ -44,7 +44,8 @@ class PreviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-     
+        
+        self.hideKeyboardWhenTappedAround()
         registerCells()
         applyLocalization()
         applyComponentsThemes()
