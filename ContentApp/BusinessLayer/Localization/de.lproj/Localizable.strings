@@ -28,6 +28,7 @@
 "delete" = "Löschen";
 "create" = "Erstellen";
 "save" = "Speichern";
+"discard" = "Verwerfen";
 
 // MARK: - Buttons
 "connect" = "Verbinden";
@@ -101,6 +102,7 @@
 "error-node-name-special-characters" = "Der Name darf diese Zeichen nicht enthalten: &@";
 "error-folder-name-end-period" = "Der Ordnername darf nicht mit einem Punkt enden %@";
 "error-folder-name-contain-only-spaces" = "Der Ordnername darf nicht nur Leerzeichen enthalten.";
+"error-file-name-empty" = "Der Dateiname darf nicht leer sein.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Konfigurationsänderungen wurden gespeichert.";
@@ -176,6 +178,9 @@
 "action-menu-remove-offline" = "Offline entfernen";
 "action-menu-create-media" = "Fotos oder Videos aufnehmen";
 "action-menu-upload-media" = "Fotos oder Videos hochladen";
+"action-menu-create-single-media" = "Foto oder Video aufnehmen";
+"action-menu-upload-single-media" = "Foto oder Video hochladen";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";
@@ -186,6 +191,8 @@
 "dialog-session-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
 "dialog-override-sync-cellular-data-title" = "Mobilfunkdaten verwenden?";
 "dialog-override-sync-cellular-data-message" = "Dadurch werden Ihre Einstellungen überschrieben und der Download erfolgt in diesem Fall über Mobilfunkdaten. Andernfalls beginnt der Download später nach dem Herstellen einer WLAN-Verbindung.";
+"dialog-discard-captures-title" = "Aufnahmen verwerfen?";
+"dialog-discard-captures-message" = "%d Mediendateien werden beim Beenden verworfen.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Keine aktuellen Dateien";
@@ -216,3 +223,6 @@
 "on-flash" = "An";
 "off-flash" = "Aus";
 
+// MARK: - Alert
+"alert-title" = "Warnung";
+"camera-unavailable" = "Gerät unterstützt keine Kamera";

@@ -28,6 +28,7 @@
 "delete" = "Verwijderen";
 "create" = "Maken";
 "save" = "Opslaan";
+"discard" = "Verwijderen";
 
 // MARK: - Buttons
 "connect" = "Verbinden";
@@ -101,6 +102,7 @@
 "error-node-name-special-characters" = "Naam mag deze tekens niet bevatten: %@";
 "error-folder-name-end-period" = "Mapnaam mag niet eindigen op een punt %@";
 "error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
+"error-file-name-empty" = "Bestandsnaam mag niet leeg zijn.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
@@ -174,8 +176,11 @@
 "action-menu-create-folder" = "Nieuwe map";
 "action-menu-mark-offline" = "Offline beschikbaar maken";
 "action-menu-remove-offline" = "Offline verwijderen";
-"action-menu-create-media" = "Een foto maken of een video opnemen";
+"action-menu-create-media" = "Foto's maken of video's opnemen";
 "action-menu-upload-media" = "Foto's of video's uploaden";
+"action-menu-create-single-media" = "Een foto maken of een video opnemen";
+"action-menu-upload-single-media" = "Een foto of een video uploaden";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
@@ -186,6 +191,8 @@
 "dialog-session-expired-message" = "U bent niet meer aangemeld. Meld u opnieuw aan om door te gaan.";
 "dialog-override-sync-cellular-data-title" = "Mobiele dataverbinding gebruiken?";
 "dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via een mobiele dataverbinding. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
+"dialog-discard-captures-title" = "Opnamen verwijderen?";
+"dialog-discard-captures-message" = "%d mediabestanden worden verwijderd als u afsluit.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
@@ -216,3 +223,6 @@
 "on-flash" = "Aan";
 "off-flash" = "Uit";
 
+// MARK: - Alert
+"alert-title" = "Melding";
+"camera-unavailable" = "Apparaat biedt geen ondersteuning voor camera";

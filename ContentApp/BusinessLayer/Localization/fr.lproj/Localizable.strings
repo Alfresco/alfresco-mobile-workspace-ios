@@ -28,6 +28,7 @@
 "delete" = "Supprimer";
 "create" = "Créer";
 "save" = "Enregistrer";
+"discard" = "Supprimer";
 
 // MARK: - Buttons
 "connect" = "Connexion";
@@ -101,6 +102,7 @@
 "error-node-name-special-characters" = "Le nom ne peut pas contenir les caractères suivants : %@";
 "error-folder-name-end-period" = "Le nom de dossier ne peut pas se terminer par un point %@";
 "error-folder-name-contain-only-spaces" = "Le nom de dossier ne peut pas contenir uniquement des espaces";
+"error-file-name-empty" = "Le nom de fichier ne peut pas être vide.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
@@ -174,8 +176,11 @@
 "action-menu-create-folder" = "Nouveau dossier";
 "action-menu-mark-offline" = "Rendre disponible hors ligne";
 "action-menu-remove-offline" = "Supprimer hors ligne";
-"action-menu-create-media" = "Prendre une photo ou une vidéo";
+"action-menu-create-media" = "Prendre des photos ou des vidéos";
 "action-menu-upload-media" = "Importer des photos ou des vidéos";
+"action-menu-create-single-media" = "Prendre une photo ou une vidéo";
+"action-menu-upload-single-media" = "Importer une photo ou une vidéo";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
@@ -186,6 +191,8 @@
 "dialog-session-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
 "dialog-override-sync-cellular-data-title" = "Utiliser des données cellulaires ?";
 "dialog-override-sync-cellular-data-message" = "Vos paramètres seront remplacés et des données cellulaires seront utilisées pour le téléchargement. Sinon, le téléchargement aura lieu plus tard lorsque la connexion Wi-Fi sera disponible.";
+"dialog-discard-captures-title" = "Supprimer les éléments capturés ?";
+"dialog-discard-captures-message" = "%d fichiers multimédia seront supprimés si vous quittez.";
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
@@ -216,3 +223,6 @@
 "on-flash" = "Activé";
 "off-flash" = "Désactivé";
 
+// MARK: - Alert
+"alert-title" = "Alerte";
+"camera-unavailable" = "Appareil photo non pris en charge par l'appareil";

@@ -28,6 +28,7 @@
 "delete" = "Eliminar";
 "create" = "Crear";
 "save" = "Guardar";
+"discard" = "Descartar";
 
 // MARK: - Buttons
 "connect" = "Conectar";
@@ -101,6 +102,7 @@
 "error-node-name-special-characters" = "El nombre no puede contener estos caracteres %@";
 "error-folder-name-end-period" = "El nombre de la carpeta no puede terminar en punto %@";
 "error-folder-name-contain-only-spaces" = "El nombre de la carpeta no puede contener solo espacios";
+"error-file-name-empty" = "El nombre del fichero no puede estar vacío.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Se han guardado los cambios de configuración.";
@@ -174,8 +176,11 @@
 "action-menu-create-folder" = "Nueva carpeta";
 "action-menu-mark-offline" = "Disponible sin conexión";
 "action-menu-remove-offline" = "Quitar sin conexión";
-"action-menu-create-media" = "Hacer una foto o un vídeo";
+"action-menu-create-media" = "Hacer fotos o vídeos";
 "action-menu-upload-media" = "Cargar fotos o vídeos";
+"action-menu-create-single-media" = "Hacer una foto o un vídeo";
+"action-menu-upload-single-media" = "Cargar una foto o un vídeo";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
@@ -186,6 +191,8 @@
 "dialog-session-expired-message" = "Su sesión ya no está activa. Vuelva a iniciar sesión para continuar.";
 "dialog-override-sync-cellular-data-title" = "¿Utilizar los datos móviles?";
 "dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
+"dialog-discard-captures-title" = "¿Desea descartar las fotos y vídeos?";
+"dialog-discard-captures-message" = "Si sale, se descartarán %d ficheros multimedia.";
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
@@ -216,3 +223,6 @@
 "on-flash" = "Encendido";
 "off-flash" = "Apagado";
 
+// MARK: - Alert
+"alert-title" = "Avisos";
+"camera-unavailable" = "El dispositivo no es compatible con la cámara";
