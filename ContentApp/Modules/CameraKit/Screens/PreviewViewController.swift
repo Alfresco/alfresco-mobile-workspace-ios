@@ -29,9 +29,9 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var trashButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var videoDurationView: UIView!
+    @IBOutlet weak var videoDurationLabel: UILabel!
     @IBOutlet weak var capturedAssetImageView: UIImageView!
-    
     @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
     @IBOutlet weak var fileNameTextField: MDCOutlinedTextField!
     @IBOutlet weak var saveButton: MDCButton!
@@ -59,7 +59,7 @@ class PreviewViewController: UIViewController {
         applyComponentsThemes()
         
         fileNameTextField.text = previewViewModel?.assetFilename()
-        
+        videoDurationLabel.text = previewViewModel?.videoDuration()
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
         descriptionField.minimumNumberOfVisibleRows = 1
@@ -76,9 +76,9 @@ class PreviewViewController: UIViewController {
         capturedAssetImageView.layer.cornerRadius = 8.0
         
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
-        playButton.layer.cornerRadius = playButton.bounds.height / 2.0
+        videoDurationView.layer.cornerRadius = videoDurationView.bounds.height / 2.0
         
-        playButton.isHidden = !(previewViewModel?.isAssetVideo() ?? false)
+        videoDurationView.isHidden = !(previewViewModel?.isAssetVideo() ?? false)
         
         enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
         
@@ -109,11 +109,6 @@ class PreviewViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
-                     sender: nil)
-    }
-    
     @IBAction func fullScreenTapGesture(_ sender: UITapGestureRecognizer) {
         if previewViewModel?.isAssetVideo() == true {
             performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
@@ -140,8 +135,8 @@ class PreviewViewController: UIViewController {
         trashButton.tintColor = theme.onSurface60Color
         trashButton.backgroundColor = theme.surface60Color
         
-        playButton.tintColor = theme.onSurface60Color
-        playButton.backgroundColor = theme.surface60Color
+        videoDurationView.tintColor = theme.onSurface60Color
+        videoDurationView.backgroundColor = theme.surface60Color
         
         saveButton.applyContainedTheme(withScheme: theme.buttonScheme)
         saveButton.setBackgroundColor(theme.onSurface5Color, for: .disabled)
@@ -150,7 +145,14 @@ class PreviewViewController: UIViewController {
         
         fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
         fileNameTextField.trailingViewMode = .unlessEditing
-        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
+        applyLabelTheme()
+
+    }
+    
+    private func applyLabelTheme() {
+        if let theme = ApplicationBootstrap.shared().currentTheme() {
+            videoDurationLabel.applyStyleSubtitle2OnSurface(theme: theme)
+        }
     }
     
     private func applyLocalization() {

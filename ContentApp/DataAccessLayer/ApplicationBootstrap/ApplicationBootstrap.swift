@@ -145,6 +145,12 @@ class ApplicationBootstrap {
         CameraKit.applyTheme(theme: theme)
     }
     
+    func currentTheme() -> PresentationTheme? {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        return themingService?.activeTheme
+    }
+    
     private func configureCameraKitLocalization() {
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
