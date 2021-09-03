@@ -350,6 +350,25 @@
                                                     <outletCollection property="gestureRecognizers" destination="Uyz-Ee-9IL" appends="YES" id="K3J-QK-sSZ"/>
                                                 </connections>
                                             </imageView>
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rl6-v3-YZN" userLabel="videoDurationView">
+                                                <rect key="frame" x="109" y="277" width="61" height="35"/>
+                                                <subviews>
+                                                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yks-Ud-hN0" userLabel="videoDurationLabel">
+                                                        <rect key="frame" x="15" y="0.0" width="31" height="35"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="bottom" secondItem="Yks-Ud-hN0" secondAttribute="bottom" id="CZp-7h-gxh"/>
+                                                    <constraint firstItem="Yks-Ud-hN0" firstAttribute="top" secondItem="Rl6-v3-YZN" secondAttribute="top" id="KGx-0j-z9S"/>
+                                                    <constraint firstItem="Yks-Ud-hN0" firstAttribute="leading" secondItem="Rl6-v3-YZN" secondAttribute="leading" constant="15" id="QJh-Sj-J44"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Yks-Ud-hN0" secondAttribute="trailing" constant="15" id="c0i-iv-0Vm"/>
+                                                    <constraint firstAttribute="height" constant="35" id="mJ8-3n-b17"/>
+                                                </constraints>
+                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KME-9f-KQ8">
                                                 <rect key="frame" x="279" y="272" width="40" height="40"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
@@ -404,34 +423,22 @@
                                                     <action selector="saveButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="Unf-WI-yxN"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pry-JY-ii6">
-                                                <rect key="frame" x="109" y="272" width="40" height="40"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="G42-mL-nZ1"/>
-                                                    <constraint firstAttribute="width" constant="40" id="i1K-ib-Wpo"/>
-                                                </constraints>
-                                                <state key="normal" image="ic-player-outline-play"/>
-                                                <connections>
-                                                    <action selector="playButtonTapped:" destination="aGd-Xu-cBR" eventType="touchUpInside" id="t1C-EI-g5e"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="Lqx-zE-Z9u" firstAttribute="centerX" secondItem="pAD-Um-d5b" secondAttribute="centerX" id="35o-js-8ZT"/>
+                                            <constraint firstItem="Rl6-v3-YZN" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="4Ro-1P-2An"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="trailing" secondItem="Lqx-zE-Z9u" secondAttribute="trailing" constant="-12" id="AW4-HO-8Tu"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="DaO-AO-6CM"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="top" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="36" id="GDW-RP-1KR"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" id="Il7-Be-aeh"/>
-                                            <constraint firstItem="Pry-JY-ii6" firstAttribute="leading" secondItem="Lqx-zE-Z9u" secondAttribute="leading" constant="12" id="MmG-lY-CVt"/>
                                             <constraint firstItem="stA-oV-pdw" firstAttribute="top" secondItem="rvJ-v8-anF" secondAttribute="bottom" constant="24" id="RoD-iB-NA0"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="top" secondItem="tlp-el-y3t" secondAttribute="bottom" constant="36" id="TQu-aK-HcY"/>
                                             <constraint firstItem="rvJ-v8-anF" firstAttribute="leading" secondItem="tlp-el-y3t" secondAttribute="leading" id="X0X-35-9ml"/>
-                                            <constraint firstItem="Pry-JY-ii6" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="YcM-tg-TES"/>
                                             <constraint firstItem="KME-9f-KQ8" firstAttribute="bottom" secondItem="Lqx-zE-Z9u" secondAttribute="bottom" constant="-12" id="ZMF-7v-Fiy"/>
                                             <constraint firstItem="tlp-el-y3t" firstAttribute="leading" secondItem="pAD-Um-d5b" secondAttribute="leading" constant="24" id="bpT-8G-Mda"/>
+                                            <constraint firstItem="Rl6-v3-YZN" firstAttribute="leading" secondItem="Lqx-zE-Z9u" secondAttribute="leading" constant="12" id="dy7-t2-Qra"/>
                                             <constraint firstItem="Lqx-zE-Z9u" firstAttribute="top" secondItem="pAD-Um-d5b" secondAttribute="top" constant="12" id="f6e-T5-eDE"/>
                                             <constraint firstAttribute="bottom" secondItem="stA-oV-pdw" secondAttribute="bottom" constant="24" id="kUT-Rn-cqH"/>
                                             <constraint firstAttribute="trailing" secondItem="tlp-el-y3t" secondAttribute="trailing" constant="24" id="msc-MG-94m"/>
@@ -470,12 +477,13 @@
                         <outlet property="contentView" destination="pAD-Um-d5b" id="ylJ-c6-fJG"/>
                         <outlet property="descriptionField" destination="rvJ-v8-anF" id="gmY-aS-Tyf"/>
                         <outlet property="fileNameTextField" destination="tlp-el-y3t" id="0bh-vZ-s9W"/>
-                        <outlet property="playButton" destination="Pry-JY-ii6" id="H5C-wk-aAJ"/>
                         <outlet property="saveButton" destination="stA-oV-pdw" id="Lwp-uE-F0G"/>
                         <outlet property="saveButtonBottomConstraint" destination="kUT-Rn-cqH" id="YhC-vD-8sb"/>
                         <outlet property="scrollView" destination="7XH-50-xwG" id="Zuj-nr-rIi"/>
                         <outlet property="scrollViewTopConstraint" destination="BtO-aq-tej" id="Ixo-6q-B2b"/>
                         <outlet property="trashButton" destination="KME-9f-KQ8" id="A18-M8-a1x"/>
+                        <outlet property="videoDurationLabel" destination="Yks-Ud-hN0" id="wXj-fU-JhP"/>
+                        <outlet property="videoDurationView" destination="Rl6-v3-YZN" id="Z5O-Kq-JrA"/>
                         <segue destination="Odl-F0-g3H" kind="presentation" identifier="showFullScreenPhoto" modalPresentationStyle="fullScreen" id="aAB-7e-PyM"/>
                         <segue destination="jNE-G7-pYk" kind="presentation" identifier="showFullScreenVideo" id="vzf-pO-5xg"/>
                     </connections>
@@ -602,7 +610,6 @@
         <image name="ic-close" width="24" height="24"/>
         <image name="ic-emptry-list-gallery" width="64" height="64"/>
         <image name="ic-gallery-is-video" width="24" height="24"/>
-        <image name="ic-player-outline-play" width="24" height="24"/>
         <image name="ic-trash" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

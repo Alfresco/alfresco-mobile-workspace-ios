@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import Photos
 
 class PreviewViewModel {
     private let capturedAsset: CapturedAsset
@@ -35,6 +36,22 @@ class PreviewViewModel {
     
     func videoUrl() -> URL {
         return URL(fileURLWithPath: capturedAsset.path)
+    }
+    
+    func videoDuration() -> String {
+        let path = videoUrl()
+        let asset = AVURLAsset(url: path)
+        let duration: CMTime = asset.duration
+        let totalSeconds = CMTimeGetSeconds(duration)
+        let hours = Int(totalSeconds / 3600)
+        let minutes = Int((totalSeconds.truncatingRemainder(dividingBy: 3600)) / 60)
+        let seconds = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
+
+        if hours > 0 {
+            return String(format: "%i:%02i:%02i", hours, minutes, seconds)
+        } else {
+            return String(format: "%02i:%02i", minutes, seconds)
+        }
     }
     
     func asset() -> CapturedAsset {
