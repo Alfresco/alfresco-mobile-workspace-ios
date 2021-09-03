@@ -101,6 +101,7 @@
 "error-node-name-special-characters" = "Naam mag deze tekens niet bevatten: %@";
 "error-folder-name-end-period" = "Mapnaam mag niet eindigen op een punt %@";
 "error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
+"error-file-name-empty" = "Bestandsnaam mag niet leeg zijn.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";

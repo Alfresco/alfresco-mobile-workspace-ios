@@ -254,6 +254,9 @@ extension PreviewViewController: UITextFieldDelegate {
             let message = String(format: localization.errorNodeNameSpecialCharacters,
                                  specialCharacters())
             applyErrorOnTextField(with: message)
+        } else if text.isEmpty {
+            let message = String(format: localization.errorEmptyFileName)
+            applyErrorOnTextField(with: message)
         } else if !text.isEmpty {
             disableErrorOnTextField()
         }
