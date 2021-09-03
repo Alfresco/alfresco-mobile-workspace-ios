@@ -34,7 +34,7 @@ class ShutterButton: UIButton {
     private var pathLayer: CAShapeLayer?
     private let animationDuration = 0.2
     private let innerSmallGuide: CGFloat = 9/7.0
-    private let innerBigProportion: CGFloat = 9/5.0
+    private let innerBigProportion: CGFloat = 9/4.0
     private var morph: CABasicAnimation?
 
     var buttonInput = ButtonInput.photo

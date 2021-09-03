@@ -22,7 +22,8 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var trashButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var videoDurationView: UIView!
+    @IBOutlet weak var videoDurationLabel: UILabel!
     @IBOutlet weak var capturedAssetImageView: UIImageView!
     @IBOutlet weak var baseViewHeightContraint: NSLayoutConstraint!
     @IBOutlet weak var baseViewWidthConstraint: NSLayoutConstraint!
@@ -34,10 +35,11 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
         self.layoutIfNeeded()
         applyComponentsThemes()
         applyBorderTheme()
+        applyLabelTheme()
         baseView.layer.cornerRadius = 8.0
         capturedAssetImageView.layer.cornerRadius = baseView.layer.cornerRadius
         trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
-        playButton.layer.cornerRadius = playButton.bounds.height / 2.0
+        videoDurationView.layer.cornerRadius = videoDurationView.bounds.height / 2.0
         baseView.layer.masksToBounds = true
         capturedAssetImageView.layer.masksToBounds = true
         capturedAssetImageView.isUserInteractionEnabled = true
@@ -58,15 +60,12 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
             capturedAssetImageView.image = image
             capturedAssetImageView.contentMode = viewModel.imageContentMode()
         }
-        self.playButton.isHidden = viewModel.isPlayButtonHidden()
+        self.videoDurationView.isHidden = !(viewModel.isAssetVideo())
+        self.videoDurationLabel.text = viewModel.videoDuration()
     }
 
     @IBAction func trashButtonTapped(_ sender: UIButton) {
         self.viewModel?.selectOptionTrash()
-    }
-    
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        self.viewModel?.selectOptionPlay()
     }
     
     private func applyComponentsThemes() {
@@ -75,7 +74,13 @@ class PreviewCollectionViewCell: UICollectionViewCell, CellConfigurable {
         trashButton.tintColor = theme.onSurface60Color
         trashButton.backgroundColor = theme.surface60Color
         
-        playButton.tintColor = theme.onSurface60Color
-        playButton.backgroundColor = theme.surface60Color
+        videoDurationView.tintColor = theme.onSurface60Color
+        videoDurationView.backgroundColor = theme.surface60Color
+    }
+    
+    private func applyLabelTheme() {
+        if let theme = ApplicationBootstrap.shared().currentTheme() {
+            videoDurationLabel.applyStyleSubtitle2OnSurface(theme: theme)
+        }
     }
 }

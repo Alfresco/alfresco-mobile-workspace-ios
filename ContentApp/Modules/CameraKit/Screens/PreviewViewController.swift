@@ -102,11 +102,6 @@ class PreviewViewController: UIViewController {
         self.controller.didTrashCapturedAsset = { (index, capturedAsset) in
             self.trashButtonTapped(at: index, and: capturedAsset)
         }
-        
-        /* observer play asset */
-        self.controller.didPlayCapturedAsset = { (index, capturedAsset) in
-            self.playButtonTapped(at: index, and: capturedAsset)
-        }
     }
     
     private func updateTextViewLocalization() {
@@ -162,12 +157,7 @@ class PreviewViewController: UIViewController {
             }
         }
     }
-        
-    private func playButtonTapped(at index: Int, and capturedAsset: CapturedAsset) {
-        performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
-                     sender: nil)
-    }
-    
+
     private func enableSaveButton(for index: Int, and message: String) {
         if index >= 0 && !message.isEmpty {
             self.saveButton.isEnabled = false

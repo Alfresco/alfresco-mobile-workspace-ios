@@ -49,11 +49,17 @@ extension CameraViewController {
         zoomLabel.textColor = theme.onSurfaceColor
         zoomLabel.backgroundColor = theme.surface60Color
         
-        multiPhotosView.backgroundColor = .clear
+        multiPhotosView.layer.cornerRadius = 8.0
+        multiPhotosView.layer.borderWidth = 4.0
+        multiPhotosView.layer.borderColor = theme.surface60Color.cgColor
+        
+        badgeCounterView.layer.borderWidth = 4.0
+        badgeCounterView.layer.borderColor = theme.surface60Color.cgColor
+
         multiPhotosNumberLabel.backgroundColor = theme.badgeBackGroundColor
         multiPhotosNumberLabel.font = theme.overlineFont
         multiPhotosNumberLabel.textColor = theme.surfaceColor
-        
+
         let image = UIImage(color: theme.surfaceColor,
                             size: navigationController?.navigationBar.bounds.size)
         navigationController?.navigationBar.setBackgroundImage(image, for: .default)
@@ -176,20 +182,22 @@ extension CameraViewController {
         multiPhotosView.frame.origin.x = cameraMargin
         multiPhotosView.center.y = shutterButton.center.y
         
-        multiPhotosImageView.frame.size = cameraFeature40Size
-        multiPhotosImageView.frame.origin = .zero
+        multiPhotosImageView.frame = CGRect(x: 4.0, y: 4.0, width: multiPhotosView.frame.size.width-8.0, height: multiPhotosView.frame.size.height-8.0)
         multiPhotosImageView.layer.cornerRadius = 8.0
         configureMultiPhotoLabelFrame()
         multiPhotosButton.frame = multiPhotosImageView.frame
     }
     
     func configureMultiPhotoLabelFrame() {
-        let height: CGFloat = 16.0
-        let xAxis =  multiPhotosView.frame.height - height * 0.70
-        let yAxis = -height * 0.30
-        let width = multiPhotosNumberLabel.intrinsicContentSize.width + 10
-        multiPhotosNumberLabel.frame = CGRect(x: xAxis, y: yAxis, width: width, height: height)
+        let height: CGFloat = 20.0
+        let width = multiPhotosNumberLabel.intrinsicContentSize.width + 14.0
+        let xAxis =  (multiPhotosView.frame.width + multiPhotosView.frame.origin.x) - 20.0
+        let yAxis =  multiPhotosView.frame.origin.y - (height/2.0)
+        
+        multiPhotosNumberLabel.frame = CGRect(x: 4, y: 4, width: width, height: height)
         multiPhotosNumberLabel.layer.cornerRadius = height / 2.0
+        badgeCounterView.frame = CGRect(x: xAxis, y: yAxis, width: width+8.0, height: height+8.0)
+        badgeCounterView.layer.cornerRadius = badgeCounterView.frame.size.height / 2.0        
     }
     
     private func configureModeView() {

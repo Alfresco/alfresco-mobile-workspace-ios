@@ -38,24 +38,31 @@
                                     <action selector="trashButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="DXc-lQ-VIb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DNn-ju-9UD" userLabel="Play Button">
-                                <rect key="frame" x="12" y="270" width="40" height="40"/>
-                                <accessibility key="accessibilityConfiguration" identifier="trashButton"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygC-RG-IDj" userLabel="videoDurationView">
+                                <rect key="frame" x="12" y="275" width="61" height="35"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooo-bj-RdE" userLabel="videoDurationLabel">
+                                        <rect key="frame" x="15" y="0.0" width="31" height="35"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="kTh-l9-btq"/>
-                                    <constraint firstAttribute="width" constant="40" id="xj2-qP-Jg7"/>
+                                    <constraint firstAttribute="bottom" secondItem="Ooo-bj-RdE" secondAttribute="bottom" id="V2r-Tg-jFm"/>
+                                    <constraint firstItem="Ooo-bj-RdE" firstAttribute="top" secondItem="ygC-RG-IDj" secondAttribute="top" id="WDS-r3-yya"/>
+                                    <constraint firstItem="Ooo-bj-RdE" firstAttribute="leading" secondItem="ygC-RG-IDj" secondAttribute="leading" constant="15" id="Xwy-dt-yc8"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ooo-bj-RdE" secondAttribute="trailing" constant="15" id="dfg-OB-Oak"/>
+                                    <constraint firstAttribute="height" constant="35" id="yV5-eQ-jgB"/>
                                 </constraints>
-                                <state key="normal" image="ic-player-outline-play"/>
-                                <connections>
-                                    <action selector="playButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cv5-mK-Izs"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="DNn-ju-9UD" firstAttribute="leading" secondItem="gz8-Bk-vVn" secondAttribute="leading" constant="12" id="2xZ-wl-VY2"/>
+                            <constraint firstAttribute="bottom" secondItem="ygC-RG-IDj" secondAttribute="bottom" constant="12" id="6gl-m1-LTR"/>
                             <constraint firstAttribute="height" constant="322" id="7c2-Ai-uPe"/>
-                            <constraint firstAttribute="bottom" secondItem="DNn-ju-9UD" secondAttribute="bottom" constant="12" id="ETZ-fc-ire"/>
+                            <constraint firstItem="ygC-RG-IDj" firstAttribute="leading" secondItem="gz8-Bk-vVn" secondAttribute="leading" constant="12" id="JVH-Jc-vwE"/>
                             <constraint firstAttribute="width" constant="244" id="OjD-DN-9U3"/>
                             <constraint firstAttribute="trailing" secondItem="etJ-fV-FCJ" secondAttribute="trailing" constant="5" id="Tew-z8-uW8"/>
                             <constraint firstItem="etJ-fV-FCJ" firstAttribute="top" secondItem="gz8-Bk-vVn" secondAttribute="top" constant="5" id="TvX-gU-jZO"/>
@@ -83,14 +90,14 @@
                 <outlet property="baseViewHeightContraint" destination="7c2-Ai-uPe" id="2mr-bt-8nH"/>
                 <outlet property="baseViewWidthConstraint" destination="OjD-DN-9U3" id="W5L-E6-ZdO"/>
                 <outlet property="capturedAssetImageView" destination="etJ-fV-FCJ" id="wul-RJ-jhP"/>
-                <outlet property="playButton" destination="DNn-ju-9UD" id="pOf-YJ-f7j"/>
                 <outlet property="trashButton" destination="whJ-Gc-4ZO" id="BaC-jp-YPK"/>
+                <outlet property="videoDurationLabel" destination="Ooo-bj-RdE" id="mvq-fw-ASJ"/>
+                <outlet property="videoDurationView" destination="ygC-RG-IDj" id="bcF-KY-WmQ"/>
             </connections>
             <point key="canvasLocation" x="215.94202898550725" y="66.294642857142861"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="ic-player-outline-play" width="24" height="24"/>
         <image name="ic-trash" width="24" height="24"/>
     </resources>
 </document>

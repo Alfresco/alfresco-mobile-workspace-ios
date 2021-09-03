@@ -22,7 +22,6 @@ class PreviewController: NSObject {
     var previewViewModel: PreviewViewModel?
     var capturedAssetsViewModel = [PreviewCellViewModel]()
     var didTrashCapturedAsset: ((Int, CapturedAsset) -> Void)?
-    var didPlayCapturedAsset: ((Int, CapturedAsset) -> Void)?
     var didDisplayErrorOnSaveButton: ((Int, String) -> Void)?
 
     // MARK: - Cell Identifiers
@@ -47,9 +46,6 @@ class PreviewController: NSObject {
 
             model.didSelectTrash = { (capturedAsset) in
                 self.didTrashCapturedAsset?(index, capturedAsset)
-            }
-            model.didSelectPlay = { (capturedAsset) in
-                self.didPlayCapturedAsset?(index, capturedAsset)
             }
         }
         

@@ -17,11 +17,11 @@
 //
 
 import UIKit
+import Photos
 
 class PreviewCellViewModel: RowViewModel {
     let capturedAsset: CapturedAsset?
     var didSelectTrash: ((CapturedAsset) -> Void)?
-    var didSelectPlay: ((CapturedAsset) -> Void)?
 
     init(capturedAssets: CapturedAsset?) {
         self.capturedAsset = capturedAssets
@@ -39,12 +39,26 @@ class PreviewCellViewModel: RowViewModel {
         return capturedAsset?.thumbnailImage()
     }
     
-    func isPlayButtonHidden() -> Bool {
-        if self.isAssetVideo() == true {
-            return false
-        } else {
-            return true
+    func videoUrl() -> URL? {
+        return URL(fileURLWithPath: capturedAsset?.path ?? "")
+    }
+    
+    func videoDuration() -> String {
+        if let path = videoUrl() {
+            let asset = AVURLAsset(url: path)
+            let duration: CMTime = asset.duration
+            let totalSeconds = CMTimeGetSeconds(duration)
+            let hours = Int(totalSeconds / 3600)
+            let minutes = Int((totalSeconds.truncatingRemainder(dividingBy: 3600)) / 60)
+            let seconds = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
+
+            if hours > 0 {
+                return String(format: "%i:%02i:%02i", hours, minutes, seconds)
+            } else {
+                return String(format: "%02i:%02i", minutes, seconds)
+            }
         }
+        return "00:00"
     }
     
     func imageContentMode() -> UIView.ContentMode {
@@ -61,12 +75,5 @@ class PreviewCellViewModel: RowViewModel {
             return
         }
         self.didSelectTrash?(capturedAsset)
-    }
-    
-    func selectOptionPlay() {
-        guard let capturedAsset = self.capturedAsset else {
-            return
-        }
-        self.didSelectPlay?(capturedAsset)
     }
 }

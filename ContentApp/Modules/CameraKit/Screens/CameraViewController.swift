@@ -57,7 +57,8 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var multiPhotosImageView: UIImageView!
     @IBOutlet weak var multiPhotosNumberLabel: UILabel!
     @IBOutlet weak var multiPhotosButton: UIButton!
- 
+    @IBOutlet weak var badgeCounterView: UIView!
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -323,6 +324,7 @@ extension CameraViewController: CameraViewModelDelegate {
         
         if !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
+            badgeCounterView.isHidden = multiPhotosView.isHidden
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                                      sender: nil)
         } else {
@@ -333,11 +335,13 @@ extension CameraViewController: CameraViewModelDelegate {
     private func updateMultiPhotosViewUI() {
         if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
+            badgeCounterView.isHidden = multiPhotosView.isHidden
         } else {
             let capturedAssetsCount = cameraViewModel?.capturedAssets.count ?? 0
             let image = cameraViewModel?.capturedAssets.last?.thumbnailImage()
             multiPhotosNumberLabel.text = String(capturedAssetsCount)
             multiPhotosView.isHidden = false
+            badgeCounterView.isHidden = multiPhotosView.isHidden
             multiPhotosImageView.image = image
             configureMultiPhotoLabelFrame()
         }
