@@ -101,6 +101,7 @@
 "error-node-name-special-characters" = "El nombre no puede contener estos caracteres %@";
 "error-folder-name-end-period" = "El nombre de la carpeta no puede terminar en punto %@";
 "error-folder-name-contain-only-spaces" = "El nombre de la carpeta no puede contener solo espacios";
+"error-file-name-empty" = "El nombre del fichero no puede estar vacío.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Se han guardado los cambios de configuración.";
