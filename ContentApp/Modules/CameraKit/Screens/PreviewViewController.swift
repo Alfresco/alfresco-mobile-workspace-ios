@@ -145,6 +145,7 @@ class PreviewViewController: UIViewController {
         
         fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
         fileNameTextField.trailingViewMode = .unlessEditing
+        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
         applyLabelTheme()
 
     }
