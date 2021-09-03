@@ -1119,7 +1119,7 @@
                                                         <constraint firstAttribute="height" constant="24" id="fDS-bQ-QWp"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FJ-aU-8v7">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FJ-aU-8v7">
                                                     <rect key="frame" x="78" y="21.333333333333336" width="308" height="20.333333333333336"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="actionTitleLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

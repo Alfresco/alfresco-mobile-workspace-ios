@@ -341,6 +341,19 @@ extension CameraViewController: CameraViewModelDelegate {
             multiPhotosImageView.image = image
             configureMultiPhotoLabelFrame()
         }
+        self.resetVideoCaptureModeForInteruptions()
+    }
+    
+    private func resetVideoCaptureModeForInteruptions() {
+        if sessionPreview.isVideoRecording == true {
+            timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
+            sessionPreview.isVideoRecording = timerViewConfig?.isStarted
+            timerView?.isHidden = !(timerView?.isHidden ?? true)
+            modeSelector.isHidden = !modeSelector.isHidden
+            switchCameraButton.isHidden = !switchCameraButton.isHidden
+            apply(fade: true, to: flashMenuView)
+            modeSelector.setNeedsLayout()
+        }
     }
 }
 

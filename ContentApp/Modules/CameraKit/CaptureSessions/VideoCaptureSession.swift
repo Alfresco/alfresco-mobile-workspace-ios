@@ -145,14 +145,11 @@ extension VideoCaptureSession: AVCaptureFileOutputRecordingDelegate {
                     from connections: [AVCaptureConnection],
                     error: Error?) {
         isRecording = false
-        if let error = error {
-            delegate?.captured(asset: nil, error: error)
-        } else {
-            let filename = videoFileName ?? defaultFileName(with: prefixVideoFileName)
-            delegate?.captured(asset: CapturedAsset(type: .video,
-                                                    fileName: filename,
-                                                    path: outputFileURL.path),
-                               error: nil)
-        }
+        let filename = videoFileName ?? defaultFileName(with: prefixVideoFileName)
+        delegate?.captured(asset: CapturedAsset(type: .video,
+                                                fileName: filename,
+                                                path: outputFileURL.path),
+                           error: nil)
+        movieOutput.stopRecording()
     }
 }
