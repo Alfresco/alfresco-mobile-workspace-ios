@@ -351,10 +351,10 @@
                                                 </connections>
                                             </imageView>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rl6-v3-YZN" userLabel="videoDurationView">
-                                                <rect key="frame" x="109" y="272" width="61" height="40"/>
+                                                <rect key="frame" x="109" y="277" width="61" height="35"/>
                                                 <subviews>
                                                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yks-Ud-hN0" userLabel="videoDurationLabel">
-                                                        <rect key="frame" x="15" y="0.0" width="31" height="40"/>
+                                                        <rect key="frame" x="15" y="0.0" width="31" height="35"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -366,7 +366,7 @@
                                                     <constraint firstItem="Yks-Ud-hN0" firstAttribute="top" secondItem="Rl6-v3-YZN" secondAttribute="top" id="KGx-0j-z9S"/>
                                                     <constraint firstItem="Yks-Ud-hN0" firstAttribute="leading" secondItem="Rl6-v3-YZN" secondAttribute="leading" constant="15" id="QJh-Sj-J44"/>
                                                     <constraint firstAttribute="trailing" secondItem="Yks-Ud-hN0" secondAttribute="trailing" constant="15" id="c0i-iv-0Vm"/>
-                                                    <constraint firstAttribute="height" constant="40" id="mJ8-3n-b17"/>
+                                                    <constraint firstAttribute="height" constant="35" id="mJ8-3n-b17"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KME-9f-KQ8">
