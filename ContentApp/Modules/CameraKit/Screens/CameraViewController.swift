@@ -325,6 +325,7 @@ extension CameraViewController: CameraViewModelDelegate {
         if !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
             badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                                      sender: nil)
         } else {
@@ -336,12 +337,14 @@ extension CameraViewController: CameraViewModelDelegate {
         if cameraViewModel?.capturedAssets.isEmpty == true || !ConfigurationManager.shared.isPaidUser() {
             multiPhotosView.isHidden = true
             badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
         } else {
             let capturedAssetsCount = cameraViewModel?.capturedAssets.count ?? 0
             let image = cameraViewModel?.capturedAssets.last?.thumbnailImage()
             multiPhotosNumberLabel.text = String(capturedAssetsCount)
             multiPhotosView.isHidden = false
             badgeCounterView.isHidden = multiPhotosView.isHidden
+            multiPhotosButton.isHidden = multiPhotosView.isHidden
             multiPhotosImageView.image = image
             configureMultiPhotoLabelFrame()
         }

@@ -185,7 +185,10 @@ extension CameraViewController {
         multiPhotosImageView.frame = CGRect(x: 4.0, y: 4.0, width: multiPhotosView.frame.size.width-8.0, height: multiPhotosView.frame.size.height-8.0)
         multiPhotosImageView.layer.cornerRadius = 8.0
         configureMultiPhotoLabelFrame()
-        multiPhotosButton.frame = multiPhotosImageView.frame
+        multiPhotosButton.frame = CGRect(x: 10.0,
+                                         y: 10.0,
+                                         width: multiPhotosView.frame.size.width+20.0,
+                                         height: multiPhotosView.frame.size.height+20.0)
     }
     
     func configureMultiPhotoLabelFrame() {
