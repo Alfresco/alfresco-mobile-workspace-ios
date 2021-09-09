@@ -114,7 +114,6 @@
 "approved-created" = "%@ wurde erstellt";
 "approved-mark-offline" = "%@ wird offline zur Verfügung gestellt.";
 "approved-remove-offline" = "%@ ist offline nicht mehr verfügbar.";
-"approved-upload-photo" = "Zum Hochladen vorgesehenes Foto.";
 "approved-upload-media" = "Zum Hochladen vorgesehene Medien.";
 
 // MARK: - Settings Screen

@@ -359,7 +359,6 @@ extension CameraViewController: CameraViewModelDelegate {
             modeSelector.isHidden = !modeSelector.isHidden
             switchCameraButton.isHidden = !switchCameraButton.isHidden
             apply(fade: true, to: flashMenuView)
-            modeSelector.setNeedsLayout()
         }
     }
 }

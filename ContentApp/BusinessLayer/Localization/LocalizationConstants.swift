@@ -125,7 +125,6 @@ struct LocalizationConstants {
         static let created = NSLocalizedString("approved-created", comment: "")
         static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
-        static let uploadPhoto = NSLocalizedString("approved-upload-photo", comment: "")
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
     }
 

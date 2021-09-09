@@ -114,7 +114,6 @@
 "approved-created" = "%@ se ha creado";
 "approved-mark-offline" = "%@ estará disponible sin conexión.";
 "approved-remove-offline" = "%@ ya no estará disponible sin conexión.";
-"approved-upload-photo" = "Foto programada para cargar.";
 "approved-upload-media" = "Ficheros multimedia programados para cargar.";
 
 // MARK: - Settings Screen

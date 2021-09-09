@@ -114,7 +114,6 @@
 "approved-created" = "%@ a été créé";
 "approved-mark-offline" = "%@ sera disponible hors ligne.";
 "approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
-"approved-upload-photo" = "Importation de la photo prévue.";
 "approved-upload-media" = "Importation du fichier multimédia prévue.";
 
 // MARK: - Settings Screen
