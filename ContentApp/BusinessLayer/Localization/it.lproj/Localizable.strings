@@ -113,7 +113,6 @@
 "approved-created" = "%@ è stato creato";
 "approved-mark-offline" = "%@ sarà reso disponibile offline.";
 "approved-remove-offline" = "%@ non sarà più disponibile offline.";
-"approved-upload-photo" = "Foto pianificata per il caricamento.";
 "approved-upload-media" = "Contenuti multimediali pianificati per il caricamento.";
 
 // MARK: - Settings Screen
