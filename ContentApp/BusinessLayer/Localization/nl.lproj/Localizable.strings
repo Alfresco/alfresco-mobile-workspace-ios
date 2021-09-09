@@ -113,7 +113,6 @@
 "approved-created" = "%@ is gemaakt";
 "approved-mark-offline" = "%@ wordt offline beschikbaar gemaakt.";
 "approved-remove-offline" = "%@ is niet langer offline beschikbaar.";
-"approved-upload-photo" = "Foto gepland om te uploaden.";
 "approved-upload-media" = "Media gepland om te uploaden.";
 
 // MARK: - Settings Screen
