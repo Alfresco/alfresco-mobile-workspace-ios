@@ -325,7 +325,7 @@ class MediaPreview: UIView, FilePreviewProtocol {
     
     func applyTheme(_ theme: CameraKitTheme?) {
         guard let theme = theme else { return }
-        
+
         currentTimeClockLabel.textColor = theme.onSurfaceColor
         currentTimeClockLabel.font = theme.body2Font
         
@@ -337,6 +337,17 @@ class MediaPreview: UIView, FilePreviewProtocol {
         currentTimeSecondsLabel.font = theme.body2Font
         currentTimeSecondsLabel.textAlignment = .left
         
+        totalTimeClockLabel.textColor = theme.onSurfaceColor
+        totalTimeClockLabel.font = theme.body2Font
+        
+        totalTimeMinutesLabel.textColor = theme.onSurfaceColor
+        totalTimeMinutesLabel.font = theme.body2Font
+        totalTimeMinutesLabel.textAlignment = .right
+        
+        totalTimeSecondsLabel.textColor = theme.onSurfaceColor
+        totalTimeSecondsLabel.font = theme.body2Font
+        totalTimeSecondsLabel.textAlignment = .left
+                
         videoSlider.tintColor = theme.primaryColor
         videoSlider.thumbTintColor = theme.primaryColor
         videoSlider.maximumTrackTintColor = theme.primaryColor.withAlphaComponent(0.3)
