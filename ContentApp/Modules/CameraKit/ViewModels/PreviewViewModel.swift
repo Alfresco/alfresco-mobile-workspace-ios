@@ -17,61 +17,100 @@
 //
 
 import UIKit
-import Photos
+import MaterialComponents.MaterialDialogs
+
+public typealias PreviewErrorDismissHandler = (_ index: Int, _ message: String?) -> Void
+public typealias DeleteCapturedAssetHandler = (_ index: Int) -> Void
 
 class PreviewViewModel {
-    private let capturedAsset: CapturedAsset
+    var assets: [CapturedAsset]
+    let capturedAssets = Observable<[CapturedAsset]>([])
+    let visibleCellIndex = Observable<Int>(0)
+    var callback: DeleteCapturedAssetHandler! = nil
     
     // MARK: - Init
-    
-    init(capturedAsset: CapturedAsset) {
-        self.capturedAsset = capturedAsset
+    init(assets: [CapturedAsset]) {
+        self.assets = assets
+        self.capturedAssets.value = assets
     }
     
     // MARK: - Public Methods
-    
-    func isAssetVideo() -> Bool {
+    func isAssetVideo(for capturedAsset: CapturedAsset) -> Bool {
         return capturedAsset.type == .video
     }
     
-    func videoUrl() -> URL {
+    func videoUrl(for capturedAsset: CapturedAsset) -> URL {
         return URL(fileURLWithPath: capturedAsset.path)
     }
     
-    func videoDuration() -> String {
-        let path = videoUrl()
-        let asset = AVURLAsset(url: path)
-        let duration: CMTime = asset.duration
-        let totalSeconds = CMTimeGetSeconds(duration)
-        let hours = Int(totalSeconds / 3600)
-        let minutes = Int((totalSeconds.truncatingRemainder(dividingBy: 3600)) / 60)
-        let seconds = Int(totalSeconds.truncatingRemainder(dividingBy: 60))
-
-        if hours > 0 {
-            return String(format: "%i:%02i:%02i", hours, minutes, seconds)
-        } else {
-            return String(format: "%02i:%02i", minutes, seconds)
-        }
-    }
-    
-    func asset() -> CapturedAsset {
-        return capturedAsset
-    }
-    
-    func assetFilename() -> String {
+    func assetFilename(for capturedAsset: CapturedAsset) -> String {
         return capturedAsset.fileName
     }
     
-    func assetDescription() -> String? {
-        return capturedAsset.description
+    func assetDescription(for capturedAsset: CapturedAsset) -> String {
+        return capturedAsset.description ?? ""
     }
     
-    func assetThumbnailImage() -> UIImage? {
+    func assetThumbnailImage(for capturedAsset: CapturedAsset) -> UIImage? {
         return capturedAsset.thumbnailImage()
     }
     
-    func updateMetadata(filename: String, description: String?) {
-        capturedAsset.fileName = filename
-        capturedAsset.description = description
+    // MARK: - Validate File Names
+    func validateFileNames(in viewController: UIViewController?,
+                           handler: @escaping PreviewErrorDismissHandler) {
+        guard let localization = CameraKit.localization else {
+            return
+        }
+        var errorMessage = ""
+        var errorIndex: Int = -1
+        for (index, capturedAsset) in self.capturedAssets.value.enumerated() {
+            let fileName = capturedAsset.fileName
+            if hasSpecialCharacters(fileName) == true {
+                let message = String(format: localization.errorNodeNameSpecialCharacters,
+                                     specialCharacters())
+                errorMessage = message
+                errorIndex = index
+                break
+            } else if fileName.isEmpty {
+                let message = String(format: localization.errorEmptyFileName,
+                                     specialCharacters())
+                errorMessage = message
+                errorIndex = index
+                break
+            }
+        }
+        
+        if errorIndex >= 0 && !errorMessage.isEmpty && viewController != nil {
+            self.showAlertForWrongFileName(in: viewController!, and: errorMessage)
+        }
+        handler(errorIndex, errorMessage)
+    }
+
+    func hasSpecialCharacters(_ string: String) -> Bool {
+        let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
+        if string.rangeOfCharacter(from: characterset) != nil {
+            return true
+        }
+        return false
+    }
+
+    func specialCharacters() -> String {
+        return "* \" < > \\ / ? : |"
+    }
+    
+    func showAlertForWrongFileName(in viewController: UIViewController,
+                                   and message: String) {
+        let title = LocalizationConstants.Alert.alertTitle
+        let confirmButtonTitle = LocalizationConstants.General.ok
+
+        let confirmAction = MDCAlertAction(title: confirmButtonTitle) {  _ in
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+    
+        if let viewController = viewController as? PreviewViewController {
+            _ = viewController.showDialog(title: title,
+                                          message: message,
+                                          actions: [confirmAction]) {}
+        }
     }
 }
