@@ -150,4 +150,38 @@ class DiskService {
         let md5Hex =  md5Data.map { String(format: "%02hhx", $0) }.joined()
         return md5Hex
     }
+    
+    // MARK: - Advance Search
+    static func advanceSearchConfigFilePath(for accountIdentifier: String) -> String {
+        let folderPath = documentsDirectoryPath(for: accountIdentifier)
+        let fileUrl = URL(fileURLWithPath: folderPath)
+        let filePath = fileUrl.appendingPathComponent(KeyConstants.AdvanceSearch.configFile).appendingPathExtension(KeyConstants.AdvanceSearch.configFileExtension).path
+        return filePath
+    }
+    
+    static func saveAdvanceSearchConfigurations(for accountIdentifier: String, and data: Data?) {
+        let path = advanceSearchConfigFilePath(for: accountIdentifier)
+        let fileManager = FileManager.default
+        if fileManager.createFile(atPath: path, contents: data, attributes: nil) {
+            AlfrescoLog.debug("File created successfully.")
+        } else {
+            AlfrescoLog.error("File not created.")
+        }
+    }
+    
+    static func getAdvanceSearchConfigurations(for accountIdentifier: String) -> Data? {
+        let path = advanceSearchConfigFilePath(for: accountIdentifier)
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: path) {
+            do {
+                let fileUrl = URL(fileURLWithPath: path)
+                let data = try Data(contentsOf: fileUrl, options: [])
+                return data
+            } catch let error {
+                AlfrescoLog.error(error.localizedDescription)
+                return nil
+            }
+        }
+        return nil
+    }
 }

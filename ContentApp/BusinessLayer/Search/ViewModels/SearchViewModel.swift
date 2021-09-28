@@ -20,6 +20,7 @@ import Foundation
 
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
+    let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
 
     init(model: SearchModelProtocol) {
         searchModel = model
@@ -38,3 +39,42 @@ class SearchViewModel: ListComponentViewModel {
         return true
     }
 }
+
+// MARK: - Advance Search
+extension SearchViewModel {
+    func loadAppConfigurationsForSearch() {
+        let repository = ApplicationBootstrap.shared().repository
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
+        if let data = DiskService.getAdvanceSearchConfigurations(for: accountIdentifier) {
+            // fetch configuration from local file stored in document directory
+            parseAppConfiguration(for: data)
+        } else {
+            // load data from bundle
+            loadConfigurationsFromAppBundle()
+        }
+    }
+    
+    private func loadConfigurationsFromAppBundle() {
+        if let fileUrl = Bundle.main.url(forResource: "advance-search-config", withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: fileUrl, options: [])
+                parseAppConfiguration(for: data)
+            } catch let error {
+                AlfrescoLog.error(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func parseAppConfiguration(for data: Data?) {
+        if let json = data {
+            do {
+                let decoded = try JSONDecoder().decode(SearchConfigModel.self, from: json)
+                self.searchConfigurations.value = decoded.search
+            } catch {
+                AlfrescoLog.error(error.localizedDescription)
+            }
+        }
+    }
+}
+
