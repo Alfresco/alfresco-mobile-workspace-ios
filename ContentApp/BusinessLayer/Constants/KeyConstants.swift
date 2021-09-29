@@ -48,6 +48,6 @@ struct KeyConstants {
         static let fetchConfigurationFromServer = "fetchConfigurationFromServer"
         static let configFile = "advance-search-configurations"
         static let configFileExtension = "json"
-
+        static let lastAPICallTime = "advance-search-api-call-time"
     }
 }

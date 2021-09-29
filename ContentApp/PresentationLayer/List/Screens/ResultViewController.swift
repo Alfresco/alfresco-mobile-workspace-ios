@@ -160,7 +160,6 @@ class ResultViewController: SystemThemableViewController {
     
     // MARK: - Setup Bindings
     private func setupBindings() {
-        
         /* observing advance search configuations */
         self.resultsViewModel?.searchConfigurations.addObserver {(configurations) in
             AlfrescoLog.info("Configuration is \(configurations)")

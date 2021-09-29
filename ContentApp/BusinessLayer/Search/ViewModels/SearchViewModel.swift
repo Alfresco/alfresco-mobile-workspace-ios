@@ -38,6 +38,40 @@ class SearchViewModel: ListComponentViewModel {
     func shouldDisplaySearchButton() -> Bool {
         return true
     }
+    
+    func isAdvanceSearchConfigAllowedFromServer() -> Bool {
+        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig() {
+            self.updateSearchConfigurationKeys()
+            return true
+        }
+        return false
+    }
+    
+    func isTimeExceedsForAdvanceSearchConfig() -> Bool {
+        let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
+        let hours = lastAPICallDifferenceInHours()
+        if hours >= apiInterval {
+            return true
+        }
+        return false
+    }
+    
+    func updateSearchConfigurationKeys() {
+        UserDefaults.standard.set(false, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)
+        UserDefaults.standard.set(Date().currentTimeMillis(), forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
+        UserDefaults.standard.synchronize()
+    }
+    
+    private func lastAPICallDifferenceInHours() -> Int {
+        let lastAPITime = UserDefaults.standard.value(forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
+        let currentTime = Date().currentTimeMillis()
+        let time1 = Date(timeIntervalSince1970: lastAPITime as? TimeInterval ?? 0)
+        let time2 = Date(timeIntervalSince1970: TimeInterval(currentTime))
+        let difference = Calendar.current.dateComponents([.second], from: time1, to: time2)
+        let duration = (difference.second ?? 0).msToSeconds
+        let hours = duration.secondsToHours
+        return hours
+    }
 }
 
 // MARK: - Advance Search
@@ -53,6 +87,7 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
+        self.loadConfigurationFromServer()
     }
     
     private func loadConfigurationsFromAppBundle() {
@@ -75,6 +110,23 @@ extension SearchViewModel {
                 AlfrescoLog.error(error.localizedDescription)
             }
         }
+    }
+    
+    // MARK: - Load configuration from server and store locally
+    func loadConfigurationFromServer() {
+        if self.isAdvanceSearchConfigAllowedFromServer() {
+            self.searchModel.getAdvanceSearchConfigurationFromServer { data in
+                self.saveConfiguartionLocally(for: data)
+                self.parseAppConfiguration(for: data)
+            }
+        }
+    }
+    
+    private func saveConfiguartionLocally(for data: Data?) {
+        let repository = ApplicationBootstrap.shared().repository
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
+        DiskService.saveAdvanceSearchConfigurations(for: accountIdentifier, and: data)
     }
 }
 

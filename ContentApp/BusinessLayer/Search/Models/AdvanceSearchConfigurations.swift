@@ -19,12 +19,12 @@
 import UIKit
 
 // MARK: Advance Search Model
-class SearchConfigModel: Codable {
+class SearchConfigModel: Decodable {
     var search = [AdvanceSearchConfigurations]()
 }
 
 // MARK: Advance Search Model
-class AdvanceSearchConfigurations: Codable {
+class AdvanceSearchConfigurations: Decodable {
     var filterWithContains: Bool?
     var resetButton: Bool?
     var name: String?
@@ -41,7 +41,7 @@ class AdvanceSearchConfigurations: Codable {
 }
 
 // MARK: Search Categories
-class SearchCategories: Codable {
+class SearchCategories: Decodable {
     var searchID: String?
     var name: String?
     var enabled: Bool?
@@ -58,13 +58,13 @@ class SearchCategories: Codable {
 }
 
 // MARK: Search Components
-class SearchComponents: Codable {
+class SearchComponents: Decodable {
     var selector: String?
     var settings: SearchComponentSettings?
 }
 
 // MARK: Search Component Settings
-class SearchComponentSettings: Codable {
+class SearchComponentSettings: Decodable {
     var pattern: String?
     var field: String?
     var placeholder: String?
@@ -77,7 +77,7 @@ class SearchComponentSettings: Codable {
     var format: String?
     var dateFormat: String?
     var maxDate: String?
-    var options: [SearchComponentOptions]?
+    var options = [SearchComponentOptions]()
     
     enum CodingKeys: String, CodingKey {
         case pattern
@@ -94,10 +94,32 @@ class SearchComponentSettings: Codable {
         case maxDate
         case options
     }
+    
+    required init(from decoder: Decoder) throws {
+        do {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            pattern = try? container.decode(String.self, forKey: .pattern)
+            field = try? container.decode(String.self, forKey: .field)
+            placeholder = try? container.decode(String.self, forKey: .placeholder)
+            pageSize = try? container.decode(Int.self, forKey: .pageSize)
+            searchOperator = try? container.decode(String.self, forKey: .searchOperator)
+            min = try? container.decode(Int.self, forKey: .min)
+            max = try? container.decode(Int.self, forKey: .max)
+            step = try? container.decode(Int.self, forKey: .step)
+            thumbLabel = try? container.decode(Bool.self, forKey: .thumbLabel)
+            format = try? container.decode(String.self, forKey: .format)
+            dateFormat = try? container.decode(String.self, forKey: .dateFormat)
+            maxDate = try? container.decode(String.self, forKey: .maxDate)
+            if let options = try? container.decode([SearchComponentOptions].self, forKey: .options) {
+                self.options = options
+            }
+        }
+    }
 }
 
 // MARK: Search Component Options
-class SearchComponentOptions: Codable {
+class SearchComponentOptions: Decodable {
     var name: String?
     var value: String?
     var isDefault: Bool? = false
