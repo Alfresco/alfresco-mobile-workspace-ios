@@ -130,7 +130,6 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
-		C95B22202703A8A800701D6A /* AdvanceSearchConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B221F2703A8A800701D6A /* AdvanceSearchConfigurations.swift */; };
 		C95B22262703A8CF00701D6A /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B22222703A8CF00701D6A /* ConfigurationManager.swift */; };
 		C95B22272703A8CF00701D6A /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B22232703A8CF00701D6A /* ConfigurationHelper.swift */; };
 		C95B22282703A8CF00701D6A /* advance-search-config.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B22252703A8CF00701D6A /* advance-search-config.json */; };
@@ -478,7 +477,6 @@
 		B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorFooterView.swift; sourceTree = "<group>"; };
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
-		C95B221F2703A8A800701D6A /* AdvanceSearchConfigurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdvanceSearchConfigurations.swift; sourceTree = "<group>"; };
 		C95B22222703A8CF00701D6A /* ConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		C95B22232703A8CF00701D6A /* ConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationHelper.swift; sourceTree = "<group>"; };
 		C95B22252703A8CF00701D6A /* advance-search-config.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "advance-search-config.json"; sourceTree = "<group>"; };
@@ -1527,7 +1525,6 @@
 		E35583F324BF40BB007011EF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C95B221F2703A8A800701D6A /* AdvanceSearchConfigurations.swift */,
 				B956715B24BDD86A009E1B23 /* SearchModelProtocol.swift */,
 				E30E341B24B87B7500836629 /* SearchChipItem.swift */,
 				B992CE7724BDE82200A97664 /* SearchRequestBuilder.swift */,
@@ -2463,7 +2460,6 @@
 				E30FCD8425A6F73500C4ABAF /* OfflineEvent.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
-				C95B22202703A8A800701D6A /* AdvanceSearchConfigurations.swift in Sources */,
 				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
 				B9A9F124263AEAB800F4428D /* CameraKitTheme.swift in Sources */,

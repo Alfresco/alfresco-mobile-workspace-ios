@@ -17,6 +17,8 @@
 //
 
 import Foundation
+import AlfrescoContent
+
 
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
@@ -104,7 +106,7 @@ extension SearchViewModel {
     private func parseAppConfiguration(for data: Data?) {
         if let json = data {
             do {
-                let decoded = try JSONDecoder().decode(SearchConfigModel.self, from: json)
+                let decoded = try JSONDecoder().decode(AlfrescoContent.SearchConfigModel.self, from: json)
                 self.searchConfigurations.value = decoded.search
             } catch {
                 AlfrescoLog.error(error.localizedDescription)
