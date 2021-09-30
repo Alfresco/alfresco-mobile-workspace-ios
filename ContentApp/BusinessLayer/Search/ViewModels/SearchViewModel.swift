@@ -40,15 +40,15 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     func isAdvanceSearchConfigAllowedFromServer() -> Bool {
-        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig() {
+        let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
+        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
             self.updateSearchConfigurationKeys()
             return true
         }
         return false
     }
     
-    func isTimeExceedsForAdvanceSearchConfig() -> Bool {
-        let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
+    func isTimeExceedsForAdvanceSearchConfig(apiInterval: Int) -> Bool {
         let hours = lastAPICallDifferenceInHours()
         if hours >= apiInterval {
             return true

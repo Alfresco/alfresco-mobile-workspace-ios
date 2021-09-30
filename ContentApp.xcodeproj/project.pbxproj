@@ -139,6 +139,7 @@
 		C95B222F2703A95E00701D6A /* RowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B222C2703A95E00701D6A /* RowViewModel.swift */; };
 		C95B22312703A98600701D6A /* Configurations.plist in Resources */ = {isa = PBXBuildFile; fileRef = C95B22302703A98600701D6A /* Configurations.plist */; };
 		C9945B7F27047F3700518B7A /* IntegerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9945B7E27047F3700518B7A /* IntegerExtension.swift */; };
+		C9E34A272705AA4600B34FFA /* TestSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E34A262705AA4600B34FFA /* TestSearchViewModel.swift */; };
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
 		E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E303CE2024C876DF00E0BF5F /* FavoritesViewModel.swift */; };
 		E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30661522487828E00750D5C /* UIScrollView+ScrollTo.swift */; };
@@ -487,6 +488,7 @@
 		C95B22302703A98600701D6A /* Configurations.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configurations.plist; sourceTree = "<group>"; };
 		C9945B7E27047F3700518B7A /* IntegerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntegerExtension.swift; sourceTree = "<group>"; };
 		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C9E34A262705AA4600B34FFA /* TestSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchViewModel.swift; sourceTree = "<group>"; };
 		D117A831C5CD4ED4D3A104D3 /* Pods-ContentApp-ContentAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.release.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D22A6BB90DFF5292D7C0473D /* Pods-ContentApp-ContentAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		E300204E24A0EC90004FB12D /* RecentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentViewModel.swift; sourceTree = "<group>"; };
@@ -1356,6 +1358,7 @@
 			isa = PBXGroup;
 			children = (
 				E334C05624755D9000F74880 /* ContentAppTests.swift */,
+				C9E34A262705AA4600B34FFA /* TestSearchViewModel.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -2625,6 +2628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9E34A272705AA4600B34FFA /* TestSearchViewModel.swift in Sources */,
 				E334C05724755D9000F74880 /* ContentAppTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
