@@ -117,9 +117,10 @@ extension SearchViewModel {
     // MARK: - Load configuration from server and store locally
     func loadConfigurationFromServer() {
         if self.isAdvanceSearchConfigAllowedFromServer() {
-            self.searchModel.getAdvanceSearchConfigurationFromServer { data in
+            self.searchModel.getAdvanceSearchConfigurationFromServer { (configuration, data)  in
+                guard let configuration = configuration else { return }
                 self.saveConfiguartionLocally(for: data)
-                self.parseAppConfiguration(for: data)
+                self.searchConfigurations.value = configuration.search
             }
         }
     }

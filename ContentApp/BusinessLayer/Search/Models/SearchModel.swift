@@ -177,11 +177,11 @@ class SearchModel: SearchModelProtocol {
     }
     
     // MARK: - Advance Search Configuration
-    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ data: Data?) -> Void)?) {
+    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?) {
         services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            QueriesAPI.loadAdvanceSearchConfigurations { (data, error) in
-                completion?(data)
+            QueriesAPI.loadAdvanceSearchConfigurations(for: nil) { (configuration, data, error) in
+                completion?(configuration, data)
             }
         })
     }

@@ -39,5 +39,5 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler)
     
-    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ data: Data?) -> Void)?)
+    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?)
 }
