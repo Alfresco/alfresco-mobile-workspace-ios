@@ -51,8 +51,12 @@ class SearchViewModel: ListComponentViewModel {
     
     /// selected configuration name
     func selectedConfigurationName(for index: Int) -> String {
-        let config = configurations[index]
-        return NSLocalizedString(config.name ?? "", comment: "")
+        if index >= 0 {
+            let config = configurations[index]
+            return NSLocalizedString(config.name ?? "", comment: "")
+        } else {
+            return LocalizationConstants.AdvanceSearch.title
+        }
     }
     
     /// default configuration name
@@ -60,7 +64,14 @@ class SearchViewModel: ListComponentViewModel {
         if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
               return index
         }
-        return 0
+        return -1
+    }
+    
+    func isShowAdvanceConfigurationView(array: [String]) -> Bool {
+        if array.isEmpty {
+            return false
+        }
+        return true
     }
     
     override func emptyList() -> EmptyListProtocol {

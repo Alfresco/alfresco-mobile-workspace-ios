@@ -153,6 +153,10 @@ struct LocalizationConstants {
         static let filterFoldersAndFiles = NSLocalizedString("file-and-folders", comment: "")
         static let searchIn = NSLocalizedString("search-in", comment: "")
     }
+    
+    struct AdvanceSearch {
+        static let title = NSLocalizedString("advance-search", comment: "")
+    }
 
     struct GroupListSection {
         static let today = NSLocalizedString("today", comment: "")

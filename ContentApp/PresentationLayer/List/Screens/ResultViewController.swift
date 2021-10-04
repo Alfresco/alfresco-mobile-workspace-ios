@@ -226,27 +226,32 @@ extension ResultViewController {
     }
     
     func buildDropDownDataSource() {
-        guard let configurations = resultsViewModel?.localizedConfigurationNames, !configurations.isEmpty  else {
+        let configurations = resultsViewModel?.localizedConfigurationNames ?? []
+        if resultsViewModel?.isShowAdvanceConfigurationView(array: configurations) == false {
             heightConfigurationViewConstraint.constant = 0
             self.view.updateConstraints()
-            return
-        }
-        heightConfigurationViewConstraint.constant = configurationViewHeight
-        self.view.updateConstraints()
-        dropDown.dataSource = configurations
-        dropDown.reloadAllComponents()
-        dropDown.selectionAction = { (index: Int, item: String) in
-            self.updateCategory(for: index)
+            self.configurationView.alpha = 0
+        } else {
+            heightConfigurationViewConstraint.constant = configurationViewHeight
+            self.view.updateConstraints()
+            self.configurationView.alpha = 1
+            dropDown.dataSource = configurations
+            dropDown.reloadAllComponents()
+            dropDown.selectionAction = { (index: Int, item: String) in
+                self.updateCategory(for: index)
+            }
         }
     }
     
     private func resetAllFilters() {
-        let defaultConfigIndex = resultsViewModel?.defaultConfigurationIndex() ?? 0
+        let defaultConfigIndex = resultsViewModel?.defaultConfigurationIndex() ?? -1
         updateCategory(for: defaultConfigIndex)
     }
     
     private func updateCategory(for index: Int) {
-        dropDown.selectRow(at: index)
+        if index >= 0 {
+            dropDown.selectRow(at: index)
+        }
         categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: index)
     }
 }

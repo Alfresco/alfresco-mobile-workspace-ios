@@ -38,4 +38,22 @@ class TestSearchViewModel: XCTestCase {
         let result = searchViewModel.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval)
         XCTAssertTrue(result)
     }
+    
+    func testSearchViewModel_WhenEmptyConfigArrayProvided_ShouldReturnFalse() {
+        let services = CoordinatorServices()
+        let searchModel = SearchModel(with: services)
+        let searchViewModel = SearchViewModel(model: searchModel)
+        let configurations = [String]()
+        let result = searchViewModel.isShowAdvanceConfigurationView(array: configurations)
+        XCTAssertFalse(result)
+    }
+    
+    func testSearchViewModel_WhenNonEmptyConfigArrayProvided_ShouldReturnTrue() {
+        let services = CoordinatorServices()
+        let searchModel = SearchModel(with: services)
+        let searchViewModel = SearchViewModel(model: searchModel)
+        let configurations = ["Default", "Folder"]
+        let result = searchViewModel.isShowAdvanceConfigurationView(array: configurations)
+        XCTAssertTrue(result)
+    }
 }

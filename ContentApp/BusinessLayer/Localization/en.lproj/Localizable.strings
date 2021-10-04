@@ -140,6 +140,7 @@
 
 // MARK: - Advance Search
 "DEFAULT_SEARCH" = "Default";
+"advance-search" = "Advance Search";
 
 
 // MARK: - Group List Section
