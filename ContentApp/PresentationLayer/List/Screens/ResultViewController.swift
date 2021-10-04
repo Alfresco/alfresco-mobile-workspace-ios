@@ -22,11 +22,13 @@ import MaterialComponents.MaterialChips_Theming
 import MaterialComponents.MDCChipView
 import MaterialComponents.MDCChipView_MaterialTheming
 import AlfrescoContent
+import DropDown
 
 protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
+    func resetSearchFilterTapped()
 }
 
 class ResultViewController: SystemThemableViewController {
@@ -35,9 +37,13 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var recentSearchesView: UIView!
     @IBOutlet weak var recentSearchesTitle: UILabel!
     @IBOutlet weak var progressView: MDCProgressView!
-
+    @IBOutlet weak var configurationView: UIView!
+    @IBOutlet weak var categoryNameView: UIView!
+    @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var heightConfigurationViewConstraint: NSLayoutConstraint!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+    lazy var dropDown = DropDown()
 
     var resultsListController: ListComponentViewController?
     var pageController: ListPageController?
@@ -48,6 +54,7 @@ class ResultViewController: SystemThemableViewController {
     private let recentSearchCellHeight: CGFloat = 44.0
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
+    private let configurationViewHeight: CGFloat = 50.0
 
     // MARK: - View Life Cycle
 
@@ -83,7 +90,8 @@ class ResultViewController: SystemThemableViewController {
 
         addLocalization()
         addChipsCollectionViewFlowLayout()
-        self.setupBindings()
+        setupBindings()
+        setupDropDownView()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -118,6 +126,16 @@ class ResultViewController: SystemThemableViewController {
         recentSearchCollectionView?.collectionViewLayout.invalidateLayout()
     }
 
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        self.buildDropDownDataSource()
+        self.resetAllFilters() // reset all filters to default
+        resultScreenDelegate?.resetSearchFilterTapped()
+    }
+    
+    @IBAction func chooseCategoryButtonAction(_ sender: Any) {
+        dropDown.show()
+    }
+    
     // MARK: - Public Helpers
 
     func startLoading() {
@@ -161,9 +179,10 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Setup Bindings
     private func setupBindings() {
         /* observing advance search configuations */
-        self.resultsViewModel?.searchConfigurations.addObserver {(configurations) in
-            AlfrescoLog.info("Configuration is \(configurations)")
-        }
+        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { (configurations) in
+            self.buildDropDownDataSource()
+            self.resetAllFilters() // reset all filters to default
+        })
     }
 
     // MARK: - Helpers
@@ -176,8 +195,11 @@ class ResultViewController: SystemThemableViewController {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
+        categoryNameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
+        dropDown.backgroundColor = currentTheme.surfaceColor
+        dropDown.selectionBackgroundColor = currentTheme.primary15T1Color
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
     }
 
@@ -191,6 +213,41 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.register(MDCChipCollectionViewCell.self,
                                      forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
         chipsCollectionView.allowsMultipleSelection = true
+    }
+}
+// MARK: - Drop Down
+
+extension ResultViewController {
+    func setupDropDownView() {
+        dropDown.anchorView = categoryNameView
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.cornerRadius = 5
+        dropDown.width = 200
+    }
+    
+    func buildDropDownDataSource() {
+        guard let configurations = resultsViewModel?.localizedConfigurationNames, !configurations.isEmpty  else {
+            heightConfigurationViewConstraint.constant = 0
+            self.view.updateConstraints()
+            return
+        }
+        heightConfigurationViewConstraint.constant = configurationViewHeight
+        self.view.updateConstraints()
+        dropDown.dataSource = configurations
+        dropDown.reloadAllComponents()
+        dropDown.selectionAction = { (index: Int, item: String) in
+            self.updateCategory(for: index)
+        }
+    }
+    
+    private func resetAllFilters() {
+        let defaultConfigIndex = resultsViewModel?.defaultConfigurationIndex() ?? 0
+        updateCategory(for: defaultConfigIndex)
+    }
+    
+    private func updateCategory(for index: Int) {
+        dropDown.selectRow(at: index)
+        categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: index)
     }
 }
 
