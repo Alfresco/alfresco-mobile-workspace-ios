@@ -203,8 +203,6 @@ class ResultViewController: SystemThemableViewController {
         dropDown.textColor = currentTheme.onSurfaceColor
         dropDown.selectedTextColor = currentTheme.onSurfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
-        
-
     }
 
     func addChipsCollectionViewFlowLayout() {
