@@ -83,6 +83,7 @@ class ResultViewController: SystemThemableViewController {
 
         addLocalization()
         addChipsCollectionViewFlowLayout()
+        self.setupBindings()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -139,6 +140,7 @@ class ResultViewController: SystemThemableViewController {
         recentSearchesViewModel.reloadRecentSearch()
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ?
             LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
+        self.resultsViewModel?.loadAppConfigurationsForSearch() // load app configurations
         recentSearchCollectionView.reloadData()
     }
 
@@ -154,6 +156,14 @@ class ResultViewController: SystemThemableViewController {
             items.append(IndexPath(row: indexChip, section: 0))
         }
         chipsCollectionView.reloadItems(at: items)
+    }
+    
+    // MARK: - Setup Bindings
+    private func setupBindings() {
+        /* observing advance search configuations */
+        self.resultsViewModel?.searchConfigurations.addObserver {(configurations) in
+            AlfrescoLog.info("Configuration is \(configurations)")
+        }
     }
 
     // MARK: - Helpers
