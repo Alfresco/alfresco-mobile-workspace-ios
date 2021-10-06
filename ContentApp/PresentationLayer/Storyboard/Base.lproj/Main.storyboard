@@ -955,9 +955,13 @@
                                                 <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-drop-down" translatesAutoresizingMaskIntoConstraints="NO" id="CPE-Ol-9RV" userLabel="dropDownImageView">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-drop-down" translatesAutoresizingMaskIntoConstraints="NO" id="CPE-Ol-9RV">
                                                 <rect key="frame" x="152" y="10" width="25" height="25"/>
-                                                <color key="tintColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="configurationImageView">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="CPE-Ol-9RV" secondAttribute="height" id="5Pj-dU-PYW"/>
                                                     <constraint firstAttribute="width" constant="25" id="CvV-uO-pSS"/>
@@ -1145,6 +1149,7 @@
                         <outlet property="categoryNameLabel" destination="ePb-tN-y2X" id="27f-xU-mQ9"/>
                         <outlet property="categoryNameView" destination="f4k-Bo-MFb" id="Mm1-sj-PZ7"/>
                         <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
+                        <outlet property="configurationImageView" destination="CPE-Ol-9RV" id="oan-4Z-HMA"/>
                         <outlet property="configurationView" destination="MXe-0K-ciV" id="vK3-GK-nxp"/>
                         <outlet property="heightConfigurationViewConstraint" destination="NK9-co-Kh0" id="hVZ-BY-hiI"/>
                         <outlet property="progressView" destination="LRM-w0-NAG" id="lP6-cX-7hY"/>
@@ -2367,7 +2372,7 @@
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
         <image name="ic-close" width="24" height="24"/>
-        <image name="ic-drop-down" width="24" height="24"/>
+        <image name="ic-drop-down" width="12" height="8"/>
         <image name="ic-image" width="24" height="24"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>
         <image name="ic-recent-searches" width="24" height="24"/>

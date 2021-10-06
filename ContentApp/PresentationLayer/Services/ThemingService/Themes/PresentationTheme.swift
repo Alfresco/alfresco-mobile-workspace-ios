@@ -34,7 +34,6 @@ protocol PresentationTheme {
     var overlineTextStyle: TextStyle { get }
     var headLineBoldTextStyle: TextStyle { get }
     
-
     // COLORS
 
     var surfaceColor: UIColor { get }

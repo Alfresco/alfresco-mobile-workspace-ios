@@ -41,6 +41,7 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var categoryNameView: UIView!
     @IBOutlet weak var categoryNameLabel: UILabel!
     @IBOutlet weak var heightConfigurationViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var configurationImageView: UIImageView!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
     lazy var dropDown = DropDown()
@@ -196,6 +197,8 @@ class ResultViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         categoryNameLabel.applyStyleHeadLineBoldOnSurface(theme: currentTheme)
+        configurationImageView.image = configurationImageView.image?.withRenderingMode(.alwaysTemplate)
+        configurationImageView.tintColor = currentTheme.onSurfaceColor
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
         dropDown.backgroundColor = currentTheme.surfaceColor
