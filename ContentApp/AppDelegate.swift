@@ -18,7 +18,6 @@
 
 import UIKit
 import Firebase
-import DropDown
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -44,8 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         applicationCoordinator.start()
 
         FirebaseApp.configure()
-        DropDown.startListeningToKeyboard()
-
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
         UserDefaults.standard.set(true, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)

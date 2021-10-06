@@ -31,6 +31,7 @@ struct DarkTheme: PresentationTheme {
     var body2TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 14.0), lineHeight: 1.43, letterSpacing: 0.25)
     var captionTextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 12.0), lineHeight: 1.33, letterSpacing: 0.5)
     var overlineTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 10.0), lineHeight: 1.60, letterSpacing: 0.2)
+    var headLineBoldTextStyle = TextStyle(font: UIFont.inter(style: .bold, size: 14.0), lineHeight: 1.42, letterSpacing: 0.0)
 
     // COLORS
 

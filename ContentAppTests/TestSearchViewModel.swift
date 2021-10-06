@@ -39,7 +39,7 @@ class TestSearchViewModel: XCTestCase {
         XCTAssertTrue(result)
     }
     
-    func testSearchViewModel_WhenEmptyConfigArrayProvided_ShouldReturnFalse() {
+    func testIsShowConfigurationView_WhenEmptyConfigArrayProvided_ShouldReturnFalse() {
         let services = CoordinatorServices()
         let searchModel = SearchModel(with: services)
         let searchViewModel = SearchViewModel(model: searchModel)
@@ -48,12 +48,25 @@ class TestSearchViewModel: XCTestCase {
         XCTAssertFalse(result)
     }
     
-    func testSearchViewModel_WhenNonEmptyConfigArrayProvided_ShouldReturnTrue() {
+    func testIsShowConfigurationView_WhenNonEmptyConfigArrayProvided_ShouldReturnTrue() {
         let services = CoordinatorServices()
         let searchModel = SearchModel(with: services)
         let searchViewModel = SearchViewModel(model: searchModel)
         let configurations = ["Default", "Folder"]
         let result = searchViewModel.isShowAdvanceConfigurationView(array: configurations)
+        XCTAssertTrue(result)
+    }
+    
+    func testDefaultConfigurationName_WhenDefaultValueProvided_ShouldReturnActualName() {
+        let services = CoordinatorServices()
+        let searchModel = SearchModel(with: services)
+        let searchViewModel = SearchViewModel(model: searchModel)
+        let index = searchViewModel.defaultConfigurationIndex()
+        let name = searchViewModel.selectedConfigurationName(for: index)
+        var result = false
+        if name == LocalizationConstants.AdvanceSearch.title {
+            result = true
+        }
         XCTAssertTrue(result)
     }
 }

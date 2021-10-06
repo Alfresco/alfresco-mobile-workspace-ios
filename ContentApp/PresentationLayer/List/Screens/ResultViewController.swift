@@ -127,8 +127,8 @@ class ResultViewController: SystemThemableViewController {
     }
 
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        self.buildDropDownDataSource()
-        self.resetAllFilters() // reset all filters to default
+        //self.buildDropDownDataSource()
+        //self.resetAllFilters() // reset all filters to default
         resultScreenDelegate?.resetSearchFilterTapped()
     }
     
@@ -195,7 +195,7 @@ class ResultViewController: SystemThemableViewController {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
-        categoryNameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
+        categoryNameLabel.applyStyleHeadLineBoldOnSurface(theme: currentTheme)
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
         dropDown.backgroundColor = currentTheme.surfaceColor
@@ -223,7 +223,7 @@ extension ResultViewController {
     func setupDropDownView() {
         dropDown.anchorView = categoryNameView
         dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
-        dropDown.cornerRadius = 5
+        dropDown.cornerRadius = 6
         dropDown.width = 200
     }
     

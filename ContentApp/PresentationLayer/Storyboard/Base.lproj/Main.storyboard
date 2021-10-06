@@ -955,7 +955,7 @@
                                                 <color key="textColor" red="0.12941176470588234" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-recent-searches" translatesAutoresizingMaskIntoConstraints="NO" id="CPE-Ol-9RV" userLabel="dropDownImageView">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-drop-down" translatesAutoresizingMaskIntoConstraints="NO" id="CPE-Ol-9RV" userLabel="dropDownImageView">
                                                 <rect key="frame" x="152" y="10" width="25" height="25"/>
                                                 <color key="tintColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
@@ -988,7 +988,7 @@
                                             <constraint firstItem="ybg-kd-jXn" firstAttribute="leading" secondItem="f4k-Bo-MFb" secondAttribute="leading" id="tm2-dD-F8Q"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2E-wZ-pKp" userLabel="resetFilterButton">
+                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2E-wZ-pKp" userLabel="resetFilterButton">
                                         <rect key="frame" x="354" y="0.6666666666666643" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="d2E-wZ-pKp" secondAttribute="height" id="vF8-7l-sdQ"/>
@@ -2367,6 +2367,7 @@
         <image name="ic-button-create" width="24" height="24"/>
         <image name="ic-chevron-left" width="10.666666984558105" height="16"/>
         <image name="ic-close" width="24" height="24"/>
+        <image name="ic-drop-down" width="24" height="24"/>
         <image name="ic-image" width="24" height="24"/>
         <image name="ic-radio-unchecked" width="20" height="20"/>
         <image name="ic-recent-searches" width="24" height="24"/>
