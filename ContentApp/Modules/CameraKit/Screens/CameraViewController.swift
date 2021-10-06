@@ -260,13 +260,12 @@ class CameraViewController: UIViewController {
     }
     
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
            let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(capturedAsset: asset)
-            pvc.previewViewModel = previewViewModel
+            let previewViewModel = PreviewViewModel(assets: [asset])
+            pvc.controller.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
         }
     }
