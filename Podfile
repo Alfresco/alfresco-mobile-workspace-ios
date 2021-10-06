@@ -14,6 +14,7 @@ target 'ContentApp' do
   pod 'SVGKit', '~> 2.0'
   pod 'ObjectBox', '~> 1.5.0-sync-rc5'
   pod 'FastCoding', '~> 3.0'
+  pod 'DropDown'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'

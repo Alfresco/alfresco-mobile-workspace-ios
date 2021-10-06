@@ -19,16 +19,61 @@
 import Foundation
 import AlfrescoContent
 
-
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
-    let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
-
     init(model: SearchModelProtocol) {
         searchModel = model
         super.init(model: model)
     }
-
+    
+    /// search configuration observable
+    let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
+    
+    /// configuration array
+    var configurations: [AdvanceSearchConfigurations] {
+        return searchConfigurations.value
+    }
+    /// all configuration names
+    var configurationNames: [String] {
+        let filtered = configurations.map {$0.name ?? ""}
+        return filtered
+    }
+    
+    /// localized configuration names
+    var localizedConfigurationNames: [String] {
+        var names = [String]()
+        for name in configurationNames {
+            let localizedName = NSLocalizedString(name, comment: "")
+            names.append(localizedName)
+        }
+        return names
+    }
+    
+    /// selected configuration name
+    func selectedConfigurationName(for index: Int) -> String {
+        if index >= 0 {
+            let config = configurations[index]
+            return NSLocalizedString(config.name ?? "", comment: "")
+        } else {
+            return LocalizationConstants.AdvanceSearch.title
+        }
+    }
+    
+    /// default configuration name
+    func defaultConfigurationIndex() -> Int {
+        if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
+              return index
+        }
+        return -1
+    }
+    
+    func isShowAdvanceConfigurationView(array: [String]) -> Bool {
+        if array.isEmpty {
+            return false
+        }
+        return true
+    }
+    
     override func emptyList() -> EmptyListProtocol {
         return EmptySearch()
     }
@@ -93,7 +138,7 @@ extension SearchViewModel {
     }
     
     private func loadConfigurationsFromAppBundle() {
-        if let fileUrl = Bundle.main.url(forResource: "advance-search-config", withExtension: "json") {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.AdvanceSearch.configFile, withExtension: KeyConstants.AdvanceSearch.configFileExtension) {
             do {
                 let data = try Data(contentsOf: fileUrl, options: [])
                 parseAppConfiguration(for: data)
