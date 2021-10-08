@@ -30,10 +30,10 @@ class GlobalSearchModel: SearchModel {
                             SearchChipItem(name: LocalizationConstants.Search.filterLibraries,
                                            type: .library,
                                            selected: false)]
+            return searchChips
         } else {
             return createChipsForAdvanceSearch(for: configurations, and: index)
         }
-        return searchChips
     }
     
     override func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int] {
