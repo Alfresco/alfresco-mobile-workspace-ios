@@ -22,7 +22,7 @@ import AlfrescoContent
 class ContextualSearchModel: SearchModel {
     var searchChipNode: SearchChipItem?
 
-    override func defaultSearchChips() -> [SearchChipItem] {
+    override func defaultSearchChips(configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
         searchChips = []
         if let searchChipNode = self.searchChipNode {
             searchChipNode.selected = true

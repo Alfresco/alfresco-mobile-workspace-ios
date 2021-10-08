@@ -128,8 +128,8 @@ class ResultViewController: SystemThemableViewController {
     }
 
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        //self.buildDropDownDataSource()
-        //self.resetAllFilters() // reset all filters to default
+        // self.buildDropDownDataSource()
+        // self.resetAllFilters() // reset all filters to default
         resultScreenDelegate?.resetSearchFilterTapped()
     }
     
@@ -180,7 +180,7 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Setup Bindings
     private func setupBindings() {
         /* observing advance search configuations */
-        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { (configurations) in
+        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
             self.resetAllFilters() // reset all filters to default
         })
@@ -258,6 +258,10 @@ extension ResultViewController {
             dropDown.selectRow(at: index)
         }
         categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: index)
+        if let configurations = resultsViewModel?.configurations {
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(configurations: configurations) else { return }
+            self.updateChips(chipItems)
+        }
     }
 }
 
@@ -323,6 +327,18 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.accessibilityIdentifier = "librariesChip"
             case .node:
                 cell?.accessibilityIdentifier = "nodeChip"
+            case .text:
+                cell?.accessibilityIdentifier = "textChip"
+            case .checkList:
+                cell?.accessibilityIdentifier = "checkListChip"
+            case .contentSize:
+                cell?.accessibilityIdentifier = "contentSizeChip"
+            case .contentSizeRange:
+                cell?.accessibilityIdentifier = "contentSizeRangeChip"
+            case .createdDateRange:
+                cell?.accessibilityIdentifier = "createdDateRangeChip"
+            case .radio:
+                cell?.accessibilityIdentifier = "radioChip"
             }
             return cell ?? UICollectionViewCell()
         default:

@@ -21,14 +21,22 @@ import AlfrescoContent
 
 class GlobalSearchModel: SearchModel {
     
-    override func defaultSearchChips() -> [SearchChipItem] {
-        searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
-                                       type: .file),
-                        SearchChipItem(name: LocalizationConstants.Search.filterFolders,
-                                       type: .folder),
-                        SearchChipItem(name: LocalizationConstants.Search.filterLibraries,
-                                       type: .library,
-                                       selected: false)]
+    override func defaultSearchChips(configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
+        if configurations.isEmpty {
+            searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
+                                           type: .file),
+                            SearchChipItem(name: LocalizationConstants.Search.filterFolders,
+                                           type: .folder),
+                            SearchChipItem(name: LocalizationConstants.Search.filterLibraries,
+                                           type: .library,
+                                           selected: false)]
+        } else {
+            if defaultConfigurationIndex(for: configurations) < 0 {
+                searchChips = []
+            } else {
+                return createChipsForAdvanceSearch(for: configurations)
+            }
+        }
         return searchChips
     }
     
@@ -67,6 +75,60 @@ class GlobalSearchModel: SearchModel {
             performFileFolderSearch(searchString: searchString,
                                     paginationRequest: paginationRequest,
                                     completionHandler: completionHandler)
+        }
+    }
+}
+
+// MARK: Advance Search
+extension GlobalSearchModel {
+    func defaultConfigurationIndex(for configurations: [AdvanceSearchConfigurations]) -> Int {
+        if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
+              return index
+        }
+        return -1
+    }
+    
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
+        let index = defaultConfigurationIndex(for: configurations)
+        let categories = getCategories(for: configurations, and: index)
+        var chipsArray = [SearchChipItem]()
+        for category in categories {
+            let name = category.name ?? ""
+            let searchID = category.searchID
+            let type = getCategoryCMType(for: searchID)
+            let chip = SearchChipItem(name: name,
+                                      type: type,
+                                      selected: false)
+            chipsArray.append(chip)
+        }
+        
+        return chipsArray
+    }
+    
+    func getCategories(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchCategories] {
+        if index >= 0 {
+            return configurations[index].categories
+        }
+        return []
+    }
+    
+    func getCategoryCMType(for categoryId: String?) -> CMType {
+        switch categoryId {
+        case "queryName":
+            return .text
+        case "checkList":
+            return .checkList
+        case "contentSize":
+            return .contentSize
+        case "contentSizeRange":
+            return .contentSizeRange
+        case "createdDateRange":
+            return .createdDateRange
+        case "queryType":
+            return .radio
+        default:
+            AlfrescoLog.debug("No Catgeory Found!")
+            return .file
         }
     }
 }

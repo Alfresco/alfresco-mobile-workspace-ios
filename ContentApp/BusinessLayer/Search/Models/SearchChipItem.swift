@@ -23,6 +23,13 @@ enum CMType: String {
     case folder = "'cm:folder'"
     case library = "'st:site'"
     case node = "'cm:node'"
+
+    case text = "queryName"
+    case checkList = "checkList"
+    case contentSize = "contentSize"
+    case contentSizeRange = "contentSizeRange"
+    case createdDateRange = "createdDateRange"
+    case radio = "queryType"
 }
 
 class SearchChipItem: Equatable {
@@ -30,12 +37,17 @@ class SearchChipItem: Equatable {
     var type: CMType
     var selected: Bool
     var searchInNodeID: String
-
-    init(name: String, type: CMType, selected: Bool = true, nodeID: String = "") {
+    var selectedName: String
+    
+    init(name: String, type: CMType, selected: Bool = true, nodeID: String = "", selectedName: String = "") {
         self.name = name
         self.type = type
         self.selected = selected
         self.searchInNodeID = nodeID
+        self.selectedName = selectedName
+        if self.selectedName.isEmpty {
+            self.selectedName = self.name
+        }
     }
 
     static func == (lhs: SearchChipItem, rhs: SearchChipItem) -> Bool {
