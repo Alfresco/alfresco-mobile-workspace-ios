@@ -43,10 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         applicationCoordinator.start()
 
         FirebaseApp.configure()
-
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
         ServerEdition.shared.checkVersion()
+        UserDefaults.standard.set(true, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)
+        UserDefaults.standard.synchronize()
         return true
     }
 

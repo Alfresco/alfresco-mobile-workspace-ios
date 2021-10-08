@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,20 +17,8 @@
 //
 
 import Foundation
-import UIKit
 
-enum InterFontStyleType: String {
-    case normal = "Inter-Regular"
-    case medium = "Inter-Medium"
-    case bold = "Inter-Bold"
-}
-
-extension UIFont {
-    class func inter(style: InterFontStyleType = .normal, size: CGFloat) -> UIFont {
-        if let font = UIFont(name: style.rawValue, size: size) {
-            return font
-        }
-        AlfrescoLog.error("Font \(style.rawValue) doesn't exists!")
-        return UIFont.systemFont(ofSize: size)
-    }
+extension Int {
+    var msToSeconds: Int { Int(self) / 1000 }
+    var secondsToHours: Int { Int(self) / 3600 }
 }

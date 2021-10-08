@@ -17,15 +17,60 @@
 //
 
 import Foundation
+import AlfrescoContent
 
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
-
     init(model: SearchModelProtocol) {
         searchModel = model
         super.init(model: model)
     }
-
+    
+    let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([]) /// search configuration observable
+    var configurations: [AdvanceSearchConfigurations] { /// configuration array
+        return searchConfigurations.value
+    }
+    /// all configuration names
+    var configurationNames: [String] {
+        let filtered = configurations.map {$0.name ?? ""}
+        return filtered
+    }
+    
+    /// localized configuration names
+    var localizedConfigurationNames: [String] {
+        var names = [String]()
+        for name in configurationNames {
+            let localizedName = NSLocalizedString(name, comment: "")
+            names.append(localizedName)
+        }
+        return names
+    }
+    
+    /// selected configuration name
+    func selectedConfigurationName(for index: Int) -> String {
+        if index >= 0 {
+            let config = configurations[index]
+            return NSLocalizedString(config.name ?? "", comment: "")
+        } else {
+            return LocalizationConstants.AdvanceSearch.title
+        }
+    }
+    
+    /// default configuration name
+    func defaultConfigurationIndex() -> Int {
+        if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
+              return index
+        }
+        return -1
+    }
+    
+    func isShowAdvanceConfigurationView(array: [String]) -> Bool {
+        if array.isEmpty {
+            return false
+        }
+        return true
+    }
+    
     override func emptyList() -> EmptyListProtocol {
         return EmptySearch()
     }
@@ -36,5 +81,96 @@ class SearchViewModel: ListComponentViewModel {
 
     func shouldDisplaySearchButton() -> Bool {
         return true
+    }
+    
+    func isAdvanceSearchConfigAllowedFromServer() -> Bool {
+        let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
+        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
+            self.updateSearchConfigurationKeys()
+            return true
+        }
+        return false
+    }
+    
+    func isTimeExceedsForAdvanceSearchConfig(apiInterval: Int) -> Bool {
+        let hours = lastAPICallDifferenceInHours()
+        if hours >= apiInterval {
+            return true
+        }
+        return false
+    }
+    
+    func updateSearchConfigurationKeys() {
+        UserDefaults.standard.set(false, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)
+        UserDefaults.standard.set(Date().currentTimeMillis(), forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
+        UserDefaults.standard.synchronize()
+    }
+    
+    private func lastAPICallDifferenceInHours() -> Int {
+        let lastAPITime = UserDefaults.standard.value(forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
+        let currentTime = Date().currentTimeMillis()
+        let time1 = Date(timeIntervalSince1970: lastAPITime as? TimeInterval ?? 0)
+        let time2 = Date(timeIntervalSince1970: TimeInterval(currentTime))
+        let difference = Calendar.current.dateComponents([.second], from: time1, to: time2)
+        let duration = (difference.second ?? 0).msToSeconds
+        let hours = duration.secondsToHours
+        return hours
+    }
+}
+
+// MARK: - Advance Search
+extension SearchViewModel {
+    func loadAppConfigurationsForSearch() {
+        let repository = ApplicationBootstrap.shared().repository
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
+        if let data = DiskService.getAdvanceSearchConfigurations(for: accountIdentifier) {
+            // fetch configuration from local file stored in document directory
+            parseAppConfiguration(for: data)
+        } else {
+            // load data from bundle
+            loadConfigurationsFromAppBundle()
+        }
+        self.loadConfigurationFromServer()
+    }
+    
+    private func loadConfigurationsFromAppBundle() {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.AdvanceSearch.configFile, withExtension: KeyConstants.AdvanceSearch.configFileExtension) {
+            do {
+                let data = try Data(contentsOf: fileUrl, options: [])
+                parseAppConfiguration(for: data)
+            } catch let error {
+                AlfrescoLog.error(error.localizedDescription)
+            }
+        }
+    }
+    
+    private func parseAppConfiguration(for data: Data?) {
+        if let json = data {
+            do {
+                let decoded = try JSONDecoder().decode(AlfrescoContent.SearchConfigModel.self, from: json)
+                self.searchConfigurations.value = decoded.search
+            } catch {
+                AlfrescoLog.error(error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - Load configuration from server and store locally
+    func loadConfigurationFromServer() {
+        if self.isAdvanceSearchConfigAllowedFromServer() {
+            self.searchModel.getAdvanceSearchConfigurationFromServer { (configuration, data)  in
+                guard let configuration = configuration else { return }
+                self.saveConfiguartionLocally(for: data)
+                self.searchConfigurations.value = configuration.search
+            }
+        }
+    }
+    
+    private func saveConfiguartionLocally(for data: Data?) {
+        let repository = ApplicationBootstrap.shared().repository
+        let accountService = repository.service(of: AccountService.identifier) as? AccountService
+        guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
+        DiskService.saveAdvanceSearchConfigurations(for: accountIdentifier, and: data)
     }
 }

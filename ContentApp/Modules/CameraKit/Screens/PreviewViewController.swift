@@ -29,8 +29,8 @@ class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
     @IBOutlet weak var fileNameTextField: MDCOutlinedTextField!
+    @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
     @IBOutlet weak var saveButton: MDCButton!
     @IBOutlet weak var saveButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
@@ -41,7 +41,6 @@ class PreviewViewController: UIViewController {
     }
     
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         

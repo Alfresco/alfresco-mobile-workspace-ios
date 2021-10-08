@@ -32,7 +32,8 @@ protocol PresentationTheme {
     var body2TextStyle: TextStyle { get }
     var captionTextStyle: TextStyle { get }
     var overlineTextStyle: TextStyle { get }
-
+    var headLineBoldTextStyle: TextStyle { get }
+    
     // COLORS
 
     var surfaceColor: UIColor { get }

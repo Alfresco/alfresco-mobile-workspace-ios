@@ -94,4 +94,10 @@ extension UILabel {
         self.font = theme.headline6TextStyle.font
         self.add(characterSpacing: theme.headline6TextStyle.letterSpacing, lineHeight: theme.headline6TextStyle.lineHeight)
     }
+    
+    func applyStyleHeadLineBoldOnSurface(theme: PresentationTheme) {
+        self.textColor = theme.onSurfaceColor
+        self.font = theme.headLineBoldTextStyle.font
+        self.add(characterSpacing: theme.headLineBoldTextStyle.letterSpacing, lineHeight: theme.headLineBoldTextStyle.lineHeight)
+    }
 }

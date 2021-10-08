@@ -38,4 +38,5 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     func performLiveSearch(for string: String,
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler)
+    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?)
 }

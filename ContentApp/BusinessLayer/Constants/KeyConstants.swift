@@ -24,7 +24,6 @@ struct KeyConstants {
         static let mediaFilesFolder = "MediaFiles"
         static let uploadsFolder = "Uploads"
     }
-
     struct Save {
         static let authSettingsParameters = "kSaveAuthSettingsParameters"
         static let themeMode = "kSaveThemeMode"
@@ -38,10 +37,15 @@ struct KeyConstants {
         static let toCameraRoll = "com.apple.UIKit.activity.SaveToCameraRoll"
         static let edition = "kEdition"
     }
-
     struct Notification {
         static let showLoginScreen = "kShowLoginScreenNotification"
         static let unauthorizedRequest = "kAPIUnauthorizedRequestNotification"
         static let reSignin = "kReSignInNotification"
+    }
+    struct AdvanceSearch {
+        static let fetchConfigurationFromServer = "fetchConfigurationFromServer"
+        static let configFile = "advance-search-configurations"
+        static let configFileExtension = "json"
+        static let lastAPICallTime = "advance-search-api-call-time"
     }
 }

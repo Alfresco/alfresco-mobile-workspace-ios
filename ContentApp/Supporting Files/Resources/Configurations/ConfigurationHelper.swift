@@ -20,4 +20,5 @@ import Foundation
 
 struct ConfigurationKeys {
     static let isPaidUser = "isPaidUser"
+    static let advanceSearchAPIIntervalInHours = "advanceSearchAPIIntervalInHours"
 }

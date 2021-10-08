@@ -138,6 +138,11 @@
 "file-and-folders" = "Files and folders";
 "search-in" = "in: ";
 
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Default";
+"advance-search" = "Advance Search";
+
+
 // MARK: - Group List Section
 "today" = "Today";
 "yesterday" = "Yesterday";

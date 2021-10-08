@@ -180,6 +180,9 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
     }
+    func resetSearchFilterTapped() {
+        AlfrescoLog.debug("resetSearchFilterTapped")
+    }
 }
 
 // MARK: - UISearchController Delegate

@@ -64,7 +64,6 @@ class PhotoCaptureSession: CaptureSession {
     override func updateSessionPreset(for deviceInput: AVCaptureDeviceInput) {
         do {
             try deviceInput.device.lockForConfiguration()
-            // TODO: An investigation start point for the aspect ratio video issue
             for preset in sessionPresets {
                 if deviceInput.device.supportsSessionPreset(preset) {
                     session.sessionPreset = preset

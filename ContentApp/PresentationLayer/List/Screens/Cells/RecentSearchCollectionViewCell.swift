@@ -39,5 +39,4 @@ class RecentSearchCollectionViewCell: UICollectionViewCell {
         leftImageView.tintColor = currentTheme.onSurface60Color
         rightImageView.tintColor = currentTheme.onSurface60Color
     }
-
 }

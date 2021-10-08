@@ -3,7 +3,7 @@ PODS:
   - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.2.0):
+  - AlfrescoContent (0.2.2):
     - Alamofire (~> 4.9.0)
   - AlfrescoCore (0.1.2)
   - AppAuth (1.4.0):
@@ -14,6 +14,7 @@ PODS:
   - CocoaLumberjack (3.7.2):
     - CocoaLumberjack/Core (= 3.7.2)
   - CocoaLumberjack/Core (3.7.2)
+  - DropDown (2.3.13)
   - FastCoding (3.3)
   - Firebase/Analytics (7.11.0):
     - Firebase/Core
@@ -102,7 +103,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.5.2):
     - GoogleUtilities/Logger
-  - JWTDecode (2.6.2)
+  - JWTDecode (2.6.3)
   - MaterialComponents/ActivityIndicator (124.2.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Application
@@ -370,11 +371,12 @@ PODS:
   - PromisesObjC (1.2.12)
   - SVGKit (2.1.1):
     - CocoaLumberjack (~> 3.0)
-  - SwiftLint (0.43.1)
+  - SwiftLint (0.44.0)
 
 DEPENDENCIES:
-  - AlfrescoAuth (~> 0)
-  - AlfrescoContent (~> 0)
+  - AlfrescoAuth
+  - AlfrescoContent
+  - DropDown
   - FastCoding (~> 3.0)
   - Firebase/Analytics (~> 7.0)
   - Firebase/Crashlytics (~> 7.0)
@@ -413,6 +415,7 @@ SPEC REPOS:
     - AlfrescoCore
     - AppAuth
     - CocoaLumberjack
+    - DropDown
     - FastCoding
     - Firebase
     - FirebaseAnalytics
@@ -440,10 +443,11 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
-  AlfrescoContent: 8ecb001367484f2c6babae27dc9788cdb338a531
+  AlfrescoContent: 52f1c39450e364c88aeb62baf843657f5940c381
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   FastCoding: 3b590f7143a229780fa744b35084d85d9461587e
   Firebase: c121feb35e4126c0b355e3313fa9b487d47319fd
   FirebaseAnalytics: cd3bd84d722a24a8923918af8af8e5236f615d77
@@ -455,7 +459,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: fd19169c3034975cb934e865e5667bfdce59df7f
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
   GoogleUtilities: 8de2a97a17e15b6b98e38e8770e2d129a57c0040
-  JWTDecode: 2cc56f950540c95fd11b14ff6388f7c6cb9760ab
+  JWTDecode: 33e5e26e5ddbd21b2065820894c08fef0cad9509
   MaterialComponents: 1a9b2d9d45b1601ae544de85089adc4c464306d4
   MDFInternationalization: d697c55307816222a55685c4ccb1044ffb030c12
   MDFTextAccessibility: f4bb4cc2194286651b59a215fdeaa0e05dc90ba5
@@ -466,8 +470,8 @@ SPEC CHECKSUMS:
   ObjectBox: 3c91dfac79ef926595ee08c5833bf0c3227c9ca8
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
-  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
+  SwiftLint: e96c0a8c770c7ebbc4d36c55baf9096bb65c4584
 
-PODFILE CHECKSUM: f5c098184a62becc17091542abb9cd10b3194429
+PODFILE CHECKSUM: f1131e93e9e8221b7953e745fc3a1335ade8be67
 
-COCOAPODS: 1.11.0
+COCOAPODS: 1.11.2
