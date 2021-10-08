@@ -259,7 +259,7 @@ extension ResultViewController {
         }
         categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: index)
         if let configurations = resultsViewModel?.configurations {
-            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(configurations: configurations) else { return }
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: configurations, and: index) else { return }
             self.updateChips(chipItems)
         }
     }

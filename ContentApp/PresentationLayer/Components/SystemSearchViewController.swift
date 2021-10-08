@@ -194,7 +194,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         
         searchViewModel.loadAppConfigurationsForSearch()
         let configurations = searchViewModel.configurations
-        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(configurations: configurations))
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: configurations, and: -1))        
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 

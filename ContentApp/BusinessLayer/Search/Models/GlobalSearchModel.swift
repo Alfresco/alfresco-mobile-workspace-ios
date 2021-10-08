@@ -21,7 +21,7 @@ import AlfrescoContent
 
 class GlobalSearchModel: SearchModel {
     
-    override func defaultSearchChips(configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
+    override func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
         if configurations.isEmpty {
             searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
                                            type: .file),
@@ -31,11 +31,7 @@ class GlobalSearchModel: SearchModel {
                                            type: .library,
                                            selected: false)]
         } else {
-            if defaultConfigurationIndex(for: configurations) < 0 {
-                searchChips = []
-            } else {
-                return createChipsForAdvanceSearch(for: configurations)
-            }
+            return createChipsForAdvanceSearch(for: configurations, and: index)
         }
         return searchChips
     }
@@ -81,28 +77,24 @@ class GlobalSearchModel: SearchModel {
 
 // MARK: Advance Search
 extension GlobalSearchModel {
-    func defaultConfigurationIndex(for configurations: [AdvanceSearchConfigurations]) -> Int {
-        if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
-              return index
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+        if index < 0 {
+            return []
+        } else {
+            let categories = getCategories(for: configurations, and: index)
+            var chipsArray = [SearchChipItem]()
+            for category in categories {
+                let name = category.name ?? ""
+                let searchID = category.searchID
+                let type = getCategoryCMType(for: searchID)
+                let chip = SearchChipItem(name: name,
+                                          type: type,
+                                          selected: false)
+                chipsArray.append(chip)
+            }
+            
+            return chipsArray
         }
-        return -1
-    }
-    
-    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
-        let index = defaultConfigurationIndex(for: configurations)
-        let categories = getCategories(for: configurations, and: index)
-        var chipsArray = [SearchChipItem]()
-        for category in categories {
-            let name = category.name ?? ""
-            let searchID = category.searchID
-            let type = getCategoryCMType(for: searchID)
-            let chip = SearchChipItem(name: name,
-                                      type: type,
-                                      selected: false)
-            chipsArray.append(chip)
-        }
-        
-        return chipsArray
     }
     
     func getCategories(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchCategories] {

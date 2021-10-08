@@ -42,7 +42,7 @@ class SearchModel: SearchModelProtocol {
         return true
     }
 
-    func defaultSearchChips(configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem] {
+    func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
         return []
     }
 

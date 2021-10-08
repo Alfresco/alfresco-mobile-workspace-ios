@@ -30,7 +30,7 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     var searchType: SearchType { get set }
 
     func isNodePathEnabled() -> Bool
-    func defaultSearchChips(configurations: [AdvanceSearchConfigurations]) -> [SearchChipItem]
+    func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem]
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
     func performSearch(for string: String,
                        paginationRequest: RequestPagination?,
