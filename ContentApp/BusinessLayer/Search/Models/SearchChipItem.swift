@@ -23,7 +23,6 @@ enum CMType: String {
     case folder = "'cm:folder'"
     case library = "'st:site'"
     case node = "'cm:node'"
-
     case text = "queryName"
     case checkList = "checkList"
     case contentSize = "contentSize"

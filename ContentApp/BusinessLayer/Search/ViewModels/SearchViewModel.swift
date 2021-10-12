@@ -26,6 +26,12 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
     
+    /// selected configuration index
+    var selectedConfigurationIndex: Int = -1
+    
+    /// selected configuration index
+    var selectedComponentIndex: Int = -1
+    
     /// search configuration observable
     let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
     
@@ -33,6 +39,7 @@ class SearchViewModel: ListComponentViewModel {
     var configurations: [AdvanceSearchConfigurations] {
         return searchConfigurations.value
     }
+        
     /// all configuration names
     var configurationNames: [String] {
         let filtered = configurations.map {$0.name ?? ""}
@@ -178,3 +185,23 @@ extension SearchViewModel {
     }
 }
 
+// MARK: - Advance Search Categories
+extension SearchViewModel {
+    func getAllComponentsForSelectedConfiguration() -> [SearchCategories] {
+        let configurations = self.configurations
+        if self.selectedConfigurationIndex < 0 {
+            return []
+        } else {
+            return configurations[self.selectedConfigurationIndex].categories
+        }
+    }
+    
+    func getSelectedComponent() -> SearchCategories? {
+        let categories = self.getAllComponentsForSelectedConfiguration()
+        if self.selectedComponentIndex < 0 {
+            return nil
+        } else {
+            return categories[self.selectedComponentIndex]
+        }
+    }
+}
