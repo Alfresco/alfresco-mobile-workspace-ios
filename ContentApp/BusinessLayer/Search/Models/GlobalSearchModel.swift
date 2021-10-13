@@ -85,11 +85,11 @@ extension GlobalSearchModel {
             var chipsArray = [SearchChipItem]()
             for category in categories {
                 let name = category.name ?? ""
-                let searchID = category.searchID
-                let type = getCategoryCMType(for: searchID)
+                let selector = category.component?.selector
+                let componentType = getComponentType(for: selector)
                 let chip = SearchChipItem(name: name,
-                                          type: type,
-                                          selected: false)
+                                          selected: false,
+                                          componentType: componentType)
                 chipsArray.append(chip)
             }
             
@@ -104,23 +104,23 @@ extension GlobalSearchModel {
         return []
     }
     
-    func getCategoryCMType(for categoryId: String?) -> CMType {
-        switch categoryId {
-        case "queryName":
+    func getComponentType(for selector: String?) -> ComponentType {
+        switch selector {
+        case "text":
             return .text
-        case "checkList":
+        case "check-list":
             return .checkList
-        case "contentSize":
+        case "slider":
             return .contentSize
-        case "contentSizeRange":
+        case "number-range":
             return .contentSizeRange
-        case "createdDateRange":
+        case "date-range":
             return .createdDateRange
-        case "queryType":
+        case "radio":
             return .radio
         default:
             AlfrescoLog.debug("No Catgeory Found!")
-            return .file
+            return .none
         }
     }
 }

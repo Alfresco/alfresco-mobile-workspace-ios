@@ -23,12 +23,18 @@ enum CMType: String {
     case folder = "'cm:folder'"
     case library = "'st:site'"
     case node = "'cm:node'"
-    case text = "queryName"
-    case checkList = "checkList"
-    case contentSize = "contentSize"
-    case contentSizeRange = "contentSizeRange"
-    case createdDateRange = "createdDateRange"
-    case radio = "queryType"
+    case none = "none"
+}
+
+// MARK: Component Types for Advance Search
+enum ComponentType: String {
+    case text = "text"
+    case checkList = "check-list"
+    case contentSize = "slider"
+    case contentSizeRange = "number-range"
+    case createdDateRange = "date-range"
+    case radio = "radio"
+    case none = "none"
 }
 
 class SearchChipItem: Equatable {
@@ -36,17 +42,19 @@ class SearchChipItem: Equatable {
     var type: CMType
     var selected: Bool
     var searchInNodeID: String
-    var selectedName: String
+    var selectedValue: String
+    var componentType: ComponentType?
     
-    init(name: String, type: CMType, selected: Bool = true, nodeID: String = "", selectedName: String = "") {
+    init(name: String, type: CMType = .none, selected: Bool = true, nodeID: String = "", selectedValue: String = "", componentType: ComponentType? = nil) {
         self.name = name
         self.type = type
         self.selected = selected
         self.searchInNodeID = nodeID
-        self.selectedName = selectedName
-        if self.selectedName.isEmpty {
-            self.selectedName = self.name
+        self.selectedValue = selectedValue
+        if self.selectedValue.isEmpty {
+            self.selectedValue = self.name
         }
+        self.componentType = componentType
     }
 
     static func == (lhs: SearchChipItem, rhs: SearchChipItem) -> Bool {

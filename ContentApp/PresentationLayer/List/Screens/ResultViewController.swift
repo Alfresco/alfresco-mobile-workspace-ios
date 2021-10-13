@@ -297,7 +297,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                           for: indexPath) as? MDCChipCollectionViewCell
             let chip = searchChipsViewModel.chips[indexPath.row]
-            cell?.chipView.titleLabel.text = chip.name
+            cell?.chipView.titleLabel.text = chip.selectedValue
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
@@ -329,18 +329,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.accessibilityIdentifier = "librariesChip"
             case .node:
                 cell?.accessibilityIdentifier = "nodeChip"
-            case .text:
-                cell?.accessibilityIdentifier = "textChip"
-            case .checkList:
-                cell?.accessibilityIdentifier = "checkListChip"
-            case .contentSize:
-                cell?.accessibilityIdentifier = "contentSizeChip"
-            case .contentSizeRange:
-                cell?.accessibilityIdentifier = "contentSizeRangeChip"
-            case .createdDateRange:
-                cell?.accessibilityIdentifier = "createdDateRangeChip"
-            case .radio:
-                cell?.accessibilityIdentifier = "radioChip"
+            case .none:
+                cell?.accessibilityIdentifier = "noneChip"
             }
             return cell ?? UICollectionViewCell()
         default:
@@ -355,9 +345,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
+            let componentType = chip.componentType
             chip.selected = true
-            self.resultsViewModel?.selectedComponentIndex = indexPath.row
-            self.showAlertController()
             if let themeService = coordinatorServices?.themingService {
                 let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
 
@@ -369,6 +358,10 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             }
             resultScreenDelegate?.chipTapped(chip: chip)
             resultsListController?.scrollToSection(0)
+            if componentType != nil {
+                self.resultsViewModel?.selectedComponentIndex = indexPath.row
+                self.showAlertController()
+            }
         default: break
         }
     }
@@ -385,7 +378,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
         let chip = searchChipsViewModel.chips[indexPath.row]
         chip.selected = false
-        self.resultsViewModel?.selectedComponentIndex = -1
+        self.resultsViewModel?.selectedComponentIndex = indexPath.row
+        self.updateSelectedChip(with: nil)
         if let themeService = coordinatorServices?.themingService {
             if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
@@ -447,13 +441,12 @@ extension ResultViewController {
         let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
         let configName = resultsViewModel?.configurations[selectedConfigIndex].name ?? ""
         let componentName = resultsViewModel?.getSelectedComponent()?.name
-
+        
         AlfrescoLog.debug("selectedConfigIndex: \(selectedConfigIndex)")
         AlfrescoLog.debug("selectedComponentIndex: \(selectedComponentIndex)")
         AlfrescoLog.debug("configName: \(configName)")
         AlfrescoLog.debug("componentName: \(componentName)")
 
-        
         let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: .alert)
         
         alertController.addTextField { (textField: UITextField!) -> Void in
@@ -461,7 +454,10 @@ extension ResultViewController {
         }
         let saveAction = UIAlertAction(title: "Save", style: .default, handler: { alert -> Void in
             let firstTextField = alertController.textFields![0] as UITextField
-            AlfrescoLog.debug("Name: \(firstTextField.text)")
+            let text = firstTextField.text ?? ""
+            if !text.isEmpty {
+                self.updateSelectedChip(with: text)
+            }
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { (action: UIAlertAction!) -> Void in
             self.resetSelectedChip()
@@ -476,7 +472,21 @@ extension ResultViewController {
         if selectedComponentIndex >= 0 {
             let indexPath = IndexPath(row: selectedComponentIndex, section: 0)
             self.deSelectChipCollectionCell(for: indexPath)
-            self.reloadChips([indexPath.row])
+        }
+    }
+    
+    func updateSelectedChip(with value: String?) {
+        let selectedConfigIndex = resultsViewModel?.selectedConfigurationIndex ?? -1
+        let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
+        if selectedConfigIndex >= 0 && selectedComponentIndex >= 0 {
+            let chip = searchChipsViewModel.chips[selectedComponentIndex]
+            if let value = value {
+                chip.selectedValue = String(format: "%@: %@", chip.name, value)
+            } else {
+                chip.selectedValue = String(format: "%@", chip.name)
+            }
+            searchChipsViewModel.chips[selectedComponentIndex] = chip
+            chipsCollectionView.reloadData()
         }
     }
 }
