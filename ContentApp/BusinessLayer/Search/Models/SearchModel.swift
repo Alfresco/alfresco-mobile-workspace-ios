@@ -187,6 +187,31 @@ class SearchModel: SearchModelProtocol {
     }
 }
 
+// MARK: - Search Model Extension
+extension SearchModel {
+    func getCategories(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchCategories] {
+        if index >= 0 {
+            return configurations[index].categories
+        }
+        return []
+    }
+    
+    func getChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+        let categories = getCategories(for: configurations, and: index)
+        var chipsArray = [SearchChipItem]()
+        for category in categories {
+            let name = category.name ?? ""
+            if let selector = category.component?.selector, let componentType = ComponentType(rawValue: selector) {
+                let chip = SearchChipItem(name: name,
+                                          selected: false,
+                                          componentType: componentType)
+                chipsArray.append(chip)
+            }
+        }
+        return chipsArray
+    }
+}
+
 // MARK: - ListModelProtocol
 
 extension SearchModel: ListComponentModelProtocol {

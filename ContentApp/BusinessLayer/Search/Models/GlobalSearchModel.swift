@@ -81,46 +81,7 @@ extension GlobalSearchModel {
         if index < 0 {
             return []
         } else {
-            let categories = getCategories(for: configurations, and: index)
-            var chipsArray = [SearchChipItem]()
-            for category in categories {
-                let name = category.name ?? ""
-                let selector = category.component?.selector
-                let componentType = getComponentType(for: selector)
-                let chip = SearchChipItem(name: name,
-                                          selected: false,
-                                          componentType: componentType)
-                chipsArray.append(chip)
-            }
-            
-            return chipsArray
-        }
-    }
-    
-    func getCategories(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchCategories] {
-        if index >= 0 {
-            return configurations[index].categories
-        }
-        return []
-    }
-    
-    func getComponentType(for selector: String?) -> ComponentType {
-        switch selector {
-        case "text":
-            return .text
-        case "check-list":
-            return .checkList
-        case "slider":
-            return .contentSize
-        case "number-range":
-            return .contentSizeRange
-        case "date-range":
-            return .createdDateRange
-        case "radio":
-            return .radio
-        default:
-            AlfrescoLog.debug("No Catgeory Found!")
-            return .none
+            return self.getChipsForAdvanceSearch(for: configurations, and: index)
         }
     }
 }
