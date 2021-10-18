@@ -344,24 +344,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
         case chipsCollectionView:
-            let chip = searchChipsViewModel.chips[indexPath.row]
-            let componentType = chip.componentType
-            chip.selected = true
-            if let themeService = coordinatorServices?.themingService {
-                let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
-
-                let scheme = themeService.containerScheming(for: .searchChipSelected)
-                let backgroundColor = themeService.activeTheme?.primary15T1Color
-
-                cell?.chipView.applyOutlinedTheme(withScheme: scheme)
-                cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
-            }
-            resultScreenDelegate?.chipTapped(chip: chip)
-            resultsListController?.scrollToSection(0)
-            if componentType != nil {
-                self.resultsViewModel?.selectedComponentIndex = indexPath.row
-                self.showAlertController()
-            }
+            self.selectChipCollectionCell(for: indexPath)
         default: break
         }
     }
@@ -370,8 +353,35 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                         didDeselectItemAt indexPath: IndexPath) {
         switch collectionView {
         case chipsCollectionView:
-            self.deSelectChipCollectionCell(for: indexPath)
+            let chip = searchChipsViewModel.chips[indexPath.row]
+            let componentType = chip.componentType
+            if componentType == nil {
+                self.deSelectChipCollectionCell(for: indexPath)
+            } else {
+                self.selectChipCollectionCell(for: indexPath)
+            }
         default: break
+        }
+    }
+    
+    private func selectChipCollectionCell(for indexPath: IndexPath) {
+        let chip = searchChipsViewModel.chips[indexPath.row]
+        let componentType = chip.componentType
+        chip.selected = true
+        if let themeService = coordinatorServices?.themingService {
+            let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+
+            let scheme = themeService.containerScheming(for: .searchChipSelected)
+            let backgroundColor = themeService.activeTheme?.primary15T1Color
+
+            cell?.chipView.applyOutlinedTheme(withScheme: scheme)
+            cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
+        }
+        resultScreenDelegate?.chipTapped(chip: chip)
+        resultsListController?.scrollToSection(0)
+        if componentType != nil {
+            self.resultsViewModel?.selectedComponentIndex = indexPath.row
+            self.showSelectedComponent()
         }
     }
     
@@ -436,7 +446,7 @@ extension ResultViewController: ListComponentActionDelegate {
 
 // MARK: - Dummy data for components
 extension ResultViewController {
-    func showAlertController() {
+    func showSelectedComponent() {
         let selectedConfigIndex = resultsViewModel?.selectedConfigurationIndex ?? -1
         let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
         let configName = resultsViewModel?.configurations[selectedConfigIndex].name ?? ""
