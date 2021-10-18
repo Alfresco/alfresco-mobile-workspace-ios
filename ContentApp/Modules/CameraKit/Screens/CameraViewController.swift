@@ -425,7 +425,7 @@ extension CameraViewController: ModeSelectorControlDelegate {
 
 extension CameraViewController: RangeSliderControlDelegate {
     func didChangeSlider(value: Float) {
-        sessionPreview.zoom = value 
+        sessionPreview.zoom = value
     }
 }
 

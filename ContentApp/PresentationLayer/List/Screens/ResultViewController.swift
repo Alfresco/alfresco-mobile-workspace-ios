@@ -128,8 +128,8 @@ class ResultViewController: SystemThemableViewController {
     }
 
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        //self.buildDropDownDataSource()
-        //self.resetAllFilters() // reset all filters to default
+        // self.buildDropDownDataSource()
+        // self.resetAllFilters() // reset all filters to default
         resultScreenDelegate?.resetSearchFilterTapped()
     }
     
@@ -180,7 +180,7 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Setup Bindings
     private func setupBindings() {
         /* observing advance search configuations */
-        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { (_) in
+        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
             self.resetAllFilters() // reset all filters to default
         })
@@ -225,7 +225,7 @@ class ResultViewController: SystemThemableViewController {
 extension ResultViewController {
     func setupDropDownView() {
         dropDown.anchorView = categoryNameView
-        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height) ?? 0.0)
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
         dropDown.cornerRadius = 6
         dropDown.width = 200
     }
@@ -243,21 +243,28 @@ extension ResultViewController {
             dropDown.dataSource = configurations
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
-                self.updateCategory(for: index)
+                self.resultsViewModel?.selectedConfigurationIndex = index
+                self.updateCategory()
             }
         }
     }
     
     private func resetAllFilters() {
         let defaultConfigIndex = resultsViewModel?.defaultConfigurationIndex() ?? -1
-        updateCategory(for: defaultConfigIndex)
+        self.resultsViewModel?.selectedConfigurationIndex = defaultConfigIndex
+        updateCategory()
     }
     
-    private func updateCategory(for index: Int) {
+    private func updateCategory() {
+        let index = self.resultsViewModel?.selectedConfigurationIndex ?? -1
         if index >= 0 {
             dropDown.selectRow(at: index)
         }
         categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: index)
+        if let configurations = resultsViewModel?.configurations {
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: configurations, and: index) else { return }
+            self.updateChips(chipItems)
+        }
     }
 }
 
@@ -291,7 +298,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
                                                           for: indexPath) as? MDCChipCollectionViewCell
             let chip = searchChipsViewModel.chips[indexPath.row]
-            cell?.chipView.titleLabel.text = chip.name
+            cell?.chipView.titleLabel.text = chip.selectedValue
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
@@ -323,6 +330,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.accessibilityIdentifier = "librariesChip"
             case .node:
                 cell?.accessibilityIdentifier = "nodeChip"
+            case .none:
+                cell?.accessibilityIdentifier = "noneChip"
             }
             return cell ?? UICollectionViewCell()
         default:
@@ -336,19 +345,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case recentSearchCollectionView:
             resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
         case chipsCollectionView:
-            let chip = searchChipsViewModel.chips[indexPath.row]
-            chip.selected = true
-            if let themeService = coordinatorServices?.themingService {
-                let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
-
-                let scheme = themeService.containerScheming(for: .searchChipSelected)
-                let backgroundColor = themeService.activeTheme?.primary15T1Color
-
-                cell?.chipView.applyOutlinedTheme(withScheme: scheme)
-                cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
-            }
-            resultScreenDelegate?.chipTapped(chip: chip)
-            resultsListController?.scrollToSection(0)
+            self.selectChipCollectionCell(for: indexPath)
         default: break
         }
     }
@@ -358,22 +355,55 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         switch collectionView {
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
-            chip.selected = false
-            if let themeService = coordinatorServices?.themingService {
-                let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+            let componentType = chip.componentType
+            if componentType == nil {
+                self.deSelectChipCollectionCell(for: indexPath)
+            } else {
+                self.selectChipCollectionCell(for: indexPath)
+            }
+        default: break
+        }
+    }
+    
+    private func selectChipCollectionCell(for indexPath: IndexPath) {
+        let chip = searchChipsViewModel.chips[indexPath.row]
+        let componentType = chip.componentType
+        chip.selected = true
+        if let themeService = coordinatorServices?.themingService {
+            let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
 
+            let scheme = themeService.containerScheming(for: .searchChipSelected)
+            let backgroundColor = themeService.activeTheme?.primary15T1Color
+
+            cell?.chipView.applyOutlinedTheme(withScheme: scheme)
+            cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
+        }
+        resultScreenDelegate?.chipTapped(chip: chip)
+        resultsListController?.scrollToSection(0)
+        if componentType != nil {
+            self.resultsViewModel?.selectedComponentIndex = indexPath.row
+            self.showSelectedComponent()
+        }
+    }
+    
+    private func deSelectChipCollectionCell(for indexPath: IndexPath) {
+        let chip = searchChipsViewModel.chips[indexPath.row]
+        chip.selected = false
+        self.resultsViewModel?.selectedComponentIndex = indexPath.row
+        self.updateSelectedChip(with: nil)
+        if let themeService = coordinatorServices?.themingService {
+            if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
                 let backgroundColor = themeService.activeTheme?.surfaceColor
                 let borderColor = themeService.activeTheme?.onSurface15Color
 
-                cell?.chipView.applyOutlinedTheme(withScheme: scheme)
-                cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
-                cell?.chipView.setBorderColor(borderColor, for: .normal)
+                cell.chipView.applyOutlinedTheme(withScheme: scheme)
+                cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
+                cell.chipView.setBorderColor(borderColor, for: .normal)
             }
-            resultScreenDelegate?.chipTapped(chip: chip)
-            resultsListController?.scrollToSection(0)
-        default: break
         }
+        resultScreenDelegate?.chipTapped(chip: chip)
+        resultsListController?.scrollToSection(0)
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -412,6 +442,63 @@ extension ResultViewController: ListComponentActionDelegate {
 
     func performListAction() {
         // Do nothing
+    }
+}
+
+// MARK: - Dummy data for components
+extension ResultViewController {
+    func showSelectedComponent() {
+        let selectedConfigIndex = resultsViewModel?.selectedConfigurationIndex ?? -1
+        let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
+        let configName = resultsViewModel?.configurations[selectedConfigIndex].name ?? ""
+        let componentName = resultsViewModel?.getSelectedComponent()?.name
+        
+        AlfrescoLog.debug("selectedConfigIndex: \(selectedConfigIndex)")
+        AlfrescoLog.debug("selectedComponentIndex: \(selectedComponentIndex)")
+        AlfrescoLog.debug("configName: \(configName)")
+        AlfrescoLog.debug("componentName: \(componentName)")
+
+        let alertController = UIAlertController(title: "Add New Name", message: "", preferredStyle: .alert)
+        
+        alertController.addTextField { (textField: UITextField!) -> Void in
+            textField.placeholder = "Enter Name"
+        }
+        let saveAction = UIAlertAction(title: "Save", style: .default, handler: { alert -> Void in
+            let firstTextField = alertController.textFields![0] as UITextField
+            let text = firstTextField.text ?? ""
+            if !text.isEmpty {
+                self.updateSelectedChip(with: text)
+            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: { (action: UIAlertAction!) -> Void in
+            self.resetSelectedChip()
+        })
+        alertController.addAction(saveAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func resetSelectedChip() {
+        let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
+        if selectedComponentIndex >= 0 {
+            let indexPath = IndexPath(row: selectedComponentIndex, section: 0)
+            self.deSelectChipCollectionCell(for: indexPath)
+        }
+    }
+    
+    func updateSelectedChip(with value: String?) {
+        let selectedConfigIndex = resultsViewModel?.selectedConfigurationIndex ?? -1
+        let selectedComponentIndex = resultsViewModel?.selectedComponentIndex ?? -1
+        if selectedConfigIndex >= 0 && selectedComponentIndex >= 0 {
+            let chip = searchChipsViewModel.chips[selectedComponentIndex]
+            if let value = value {
+                chip.selectedValue = String(format: "%@: %@", chip.name, value)
+            } else {
+                chip.selectedValue = String(format: "%@", chip.name)
+            }
+            searchChipsViewModel.chips[selectedComponentIndex] = chip
+            chipsCollectionView.reloadData()
+        }
     }
 }
 

@@ -28,7 +28,7 @@ class ConfigurationManager: NSObject {
         }
         return false
     }
-    
+
     private func loadConfigurations() -> NSDictionary? {
         if let configFile = Bundle.main.path(forResource: "Configurations", ofType: "plist") {
             return NSDictionary(contentsOfFile: configFile)!
