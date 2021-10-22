@@ -36,6 +36,9 @@ extension SearchComponentsStoryboardInstantiable where Self: UIViewController {
         let fileName = defaultFileName
         let storyboardName = defaultStoryboardName
         let viewController = UIStoryboard(name: storyboardName, bundle: bundle).instantiateViewController(withIdentifier: fileName)
+        
+        // swiftlint:disable force_cast
         return viewController as! Self
+        // swiftlint:enable force_cast
     }
 }
