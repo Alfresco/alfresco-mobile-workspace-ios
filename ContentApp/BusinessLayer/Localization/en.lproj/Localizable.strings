@@ -141,7 +141,11 @@
 // MARK: - Advance Search
 "DEFAULT_SEARCH" = "Default";
 "advance-search" = "Advance Search";
-
+"text-filter" = "Text filter";
+"enter-keyword" = "Enter keyword";
+"enter" = "Enter";
+"apply" = "Apply";
+"reset" = "Reset";
 
 // MARK: - Group List Section
 "today" = "Today";

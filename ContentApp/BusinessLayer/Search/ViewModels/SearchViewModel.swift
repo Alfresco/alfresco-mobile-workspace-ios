@@ -19,6 +19,7 @@
 import Foundation
 import AlfrescoContent
 
+typealias SearchComponentCallBack = (SearchCategories?) -> Void
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
@@ -26,11 +27,11 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
     
-    /// selected configuration index
-    var selectedConfigurationIndex: Int = -1
+    /// selected configuration
+    var selectedConfiguration: AdvanceSearchConfigurations?
     
-    /// selected configuration index
-    var selectedComponentIndex: Int = -1
+    /// selected category
+    var selectedCategory: SearchCategories?
     
     /// search configuration observable
     let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
@@ -57,21 +58,22 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     /// selected configuration name
-    func selectedConfigurationName(for index: Int) -> String {
-        if index >= 0 {
-            let config = configurations[index]
-            return NSLocalizedString(config.name ?? "", comment: "")
-        } else {
-            return LocalizationConstants.AdvanceSearch.title
+    func selectedConfigurationName(for config: AdvanceSearchConfigurations?) -> String {
+        if let config = config {
+            if let object = self.configurations.enumerated().first(where: {$0.element.name == config.name}) {
+                let element = object.element
+                return NSLocalizedString(element.name ?? "", comment: "")
+            }
         }
+        return LocalizationConstants.AdvanceSearch.title
     }
     
-    /// default configuration name
-    func defaultConfigurationIndex() -> Int {
+    /// default configuration
+    func defaultConfiguration() -> AdvanceSearchConfigurations? {
         if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
-              return index
+              return configurations[index]
         }
-        return -1
+        return nil
     }
     
     func isShowAdvanceConfigurationView(array: [String]) -> Bool {
@@ -187,21 +189,36 @@ extension SearchViewModel {
 
 // MARK: - Advance Search Categories
 extension SearchViewModel {
-    func getAllComponentsForSelectedConfiguration() -> [SearchCategories] {
+    func getAllCategoriesForSelectedConfiguration() -> [SearchCategories] {
         let configurations = self.configurations
-        if self.selectedConfigurationIndex < 0 {
-            return []
-        } else {
-            return configurations[self.selectedConfigurationIndex].categories
+        if let selectedConfiguration = self.selectedConfiguration {
+            if let object = configurations.enumerated().first(where: {$0.element.name == selectedConfiguration.name}) {
+                let index = object.offset
+                return configurations[index].categories
+            }
         }
+        return []
     }
     
-    func getSelectedComponent() -> SearchCategories? {
-        let categories = self.getAllComponentsForSelectedConfiguration()
-        if self.selectedComponentIndex < 0 {
-            return nil
-        } else {
-            return categories[self.selectedComponentIndex]
+    func getSelectedCategory() -> SearchCategories? {
+        let categories = self.getAllCategoriesForSelectedConfiguration()
+        if let selectedCategory = self.selectedCategory {
+            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
+                let index = object.offset
+                return categories[index]
+            }
         }
+        return nil
+    }
+    
+    func getSelectedCategory(for selector: ComponentType?) -> SearchCategories? {
+        let categories = self.getAllCategoriesForSelectedConfiguration()
+        if let selector = selector {
+            if let object = categories.enumerated().first(where: {$0.element.component?.selector == selector.rawValue}) {
+                let index = object.offset
+                return categories[index]
+            }
+        }
+        return nil
     }
 }
