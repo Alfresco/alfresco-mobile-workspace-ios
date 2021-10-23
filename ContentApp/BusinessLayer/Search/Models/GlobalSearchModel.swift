@@ -21,7 +21,7 @@ import AlfrescoContent
 
 class GlobalSearchModel: SearchModel {
     
-    override func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    override func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         if configurations.isEmpty {
             searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
                                            type: .file),
@@ -77,7 +77,7 @@ class GlobalSearchModel: SearchModel {
 
 // MARK: Advance Search
 extension GlobalSearchModel {
-    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         if index < 0 {
             return []
         } else {

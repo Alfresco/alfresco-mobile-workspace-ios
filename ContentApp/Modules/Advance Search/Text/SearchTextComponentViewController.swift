@@ -28,7 +28,6 @@ class SearchTextComponentViewController: SystemThemableViewController {
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var divider: UIView!
-    @IBOutlet weak var textFieldPlaceholderLabel: UILabel!
     @IBOutlet weak var keywordTextField: MDCOutlinedTextField!
     @IBOutlet weak var dividerTextField: UIView!
     @IBOutlet weak var applyButton: MDCButton!
@@ -77,7 +76,6 @@ class SearchTextComponentViewController: SystemThemableViewController {
         headerTitleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         dismissButton.tintColor = currentTheme.onSurfaceColor
         divider.backgroundColor = currentTheme.onSurface12Color
-        textFieldPlaceholderLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         dividerTextField.backgroundColor = currentTheme.onSurface12Color
         
         keywordTextField.applyTheme(withScheme: textFieldScheme)
@@ -102,7 +100,6 @@ class SearchTextComponentViewController: SystemThemableViewController {
         let placeholder = self.textViewModel.getPlaceholder()
         let value = self.textViewModel.getValue()
         headerTitleLabel.text = LocalizationConstants.AdvanceSearch.textFilter
-        textFieldPlaceholderLabel.text = LocalizationConstants.AdvanceSearch.enterKeyword
         keywordTextField.label.text = placeholder
         keywordTextField.text = value
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)

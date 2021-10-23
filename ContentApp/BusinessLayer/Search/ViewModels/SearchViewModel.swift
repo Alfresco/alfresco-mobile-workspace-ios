@@ -27,56 +27,53 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
     
-    /// selected configuration
-    var selectedConfiguration: AdvanceSearchConfigurations?
+    /// selected search filter
+    var selectedSearchFilter: AdvanceSearchFilters?
     
     /// selected category
     var selectedCategory: SearchCategories?
     
-    /// search configuration observable
-    let searchConfigurations = Observable<[AdvanceSearchConfigurations]>([])
+    /// search filter observable
+    let searchFilterObservable = Observable<[AdvanceSearchFilters]>([])
     
-    /// configuration array
-    var configurations: [AdvanceSearchConfigurations] {
-        return searchConfigurations.value
+    /// search filters array
+    var searchFilters: [AdvanceSearchFilters] {
+        return searchFilterObservable.value
     }
         
-    /// all configuration names
-    var configurationNames: [String] {
-        let filtered = configurations.map {$0.name ?? ""}
+    /// all filters names
+    var filterNames: [String] {
+        let filtered = searchFilters.map {$0.name ?? ""}
         return filtered
     }
     
-    /// localized configuration names
-    var localizedConfigurationNames: [String] {
+    /// localized filter names
+    var localizedFilterNames: [String] {
         var names = [String]()
-        for name in configurationNames {
+        for name in filterNames {
             let localizedName = NSLocalizedString(name, comment: "")
             names.append(localizedName)
         }
         return names
     }
     
-    /// selected configuration name
-    func selectedConfigurationName(for config: AdvanceSearchConfigurations?) -> String {
+    /// selected filter name
+    func selectedFilterName(for config: AdvanceSearchFilters?) -> String {
         if let config = config {
-            if let object = self.configurations.enumerated().first(where: {$0.element.name == config.name}) {
-                let element = object.element
-                return NSLocalizedString(element.name ?? "", comment: "")
-            }
+            return NSLocalizedString(config.name ?? "", comment: "")
         }
         return LocalizationConstants.AdvanceSearch.title
     }
     
-    /// default configuration
-    func defaultConfiguration() -> AdvanceSearchConfigurations? {
-        if let index = configurations.firstIndex(where: {$0.isDefault == true}) {
-              return configurations[index]
+    /// default search filter
+    func defaultSearchFilter() -> AdvanceSearchFilters? {
+        if let index = searchFilters.firstIndex(where: {$0.isDefault == true}) {
+              return searchFilters[index]
         }
         return nil
     }
     
-    func isShowAdvanceConfigurationView(array: [String]) -> Bool {
+    func isShowAdvanceFilterView(array: [String]) -> Bool {
         if array.isEmpty {
             return false
         }
@@ -95,9 +92,9 @@ class SearchViewModel: ListComponentViewModel {
         return true
     }
     
-    func isAdvanceSearchConfigAllowedFromServer() -> Bool {
+    func isAdvanceSearchFiltersAllowedFromServer() -> Bool {
         let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
-        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
+        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
             self.updateSearchConfigurationKeys()
             return true
         }
@@ -113,7 +110,7 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     func updateSearchConfigurationKeys() {
-        UserDefaults.standard.set(false, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)
+        UserDefaults.standard.set(false, forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         UserDefaults.standard.set(Date().currentTimeMillis(), forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
         UserDefaults.standard.synchronize()
     }
@@ -161,7 +158,7 @@ extension SearchViewModel {
         if let json = data {
             do {
                 let decoded = try JSONDecoder().decode(AlfrescoContent.SearchConfigModel.self, from: json)
-                self.searchConfigurations.value = decoded.search
+                self.searchFilterObservable.value = decoded.search
             } catch {
                 AlfrescoLog.error(error.localizedDescription)
             }
@@ -170,11 +167,11 @@ extension SearchViewModel {
     
     // MARK: - Load configuration from server and store locally
     func loadConfigurationFromServer() {
-        if self.isAdvanceSearchConfigAllowedFromServer() {
+        if self.isAdvanceSearchFiltersAllowedFromServer() {
             self.searchModel.getAdvanceSearchConfigurationFromServer { (configuration, data)  in
                 guard let configuration = configuration else { return }
                 self.saveConfiguartionLocally(for: data)
-                self.searchConfigurations.value = configuration.search
+                self.searchFilterObservable.value = configuration.search
             }
         }
     }
@@ -189,30 +186,28 @@ extension SearchViewModel {
 
 // MARK: - Advance Search Categories
 extension SearchViewModel {
-    func getAllCategoriesForSelectedConfiguration() -> [SearchCategories] {
-        let configurations = self.configurations
-        if let selectedConfiguration = self.selectedConfiguration {
-            if let object = configurations.enumerated().first(where: {$0.element.name == selectedConfiguration.name}) {
+    func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
                 let index = object.offset
-                return configurations[index].categories
+                return searchFilters[index].categories
             }
         }
         return []
     }
     
     func getSelectedCategory() -> SearchCategories? {
-        let categories = self.getAllCategoriesForSelectedConfiguration()
-        if let selectedCategory = self.selectedCategory {
-            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
-                let index = object.offset
-                return categories[index]
-            }
+        let categories = self.getAllCategoriesForSelectedFilter()
+        let index = self.getIndexOfSelectedCategory()
+        if index >= 0 {
+            return categories[index]
         }
         return nil
     }
     
     func getSelectedCategory(for selector: ComponentType?) -> SearchCategories? {
-        let categories = self.getAllCategoriesForSelectedConfiguration()
+        let categories = self.getAllCategoriesForSelectedFilter()
         if let selector = selector {
             if let object = categories.enumerated().first(where: {$0.element.component?.selector == selector.rawValue}) {
                 let index = object.offset
@@ -220,5 +215,15 @@ extension SearchViewModel {
             }
         }
         return nil
+    }
+    
+    func getIndexOfSelectedCategory() -> Int {
+        let categories = self.getAllCategoriesForSelectedFilter()
+        if let selectedCategory = self.getSelectedCategory() {
+            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
+                return object.offset
+            }
+        }
+        return -1
     }
 }

@@ -179,8 +179,8 @@ class ResultViewController: SystemThemableViewController {
     
     // MARK: - Setup Bindings
     private func setupBindings() {
-        /* observing advance search configuations */
-        self.resultsViewModel?.searchConfigurations.addObserver(fireNow: false, { ( _ ) in
+        /* observing advance search filter */
+        self.resultsViewModel?.searchFilterObservable.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
             self.resetAllFilters() // reset all filters to default
         })
@@ -231,8 +231,8 @@ extension ResultViewController {
     }
     
     func buildDropDownDataSource() {
-        let configurations = resultsViewModel?.localizedConfigurationNames ?? []
-        if resultsViewModel?.isShowAdvanceConfigurationView(array: configurations) == false {
+        let searchFilters = resultsViewModel?.localizedFilterNames ?? []
+        if resultsViewModel?.isShowAdvanceFilterView(array: searchFilters) == false {
             heightConfigurationViewConstraint.constant = 0
             self.view.updateConstraints()
             self.configurationView.alpha = 0
@@ -240,28 +240,28 @@ extension ResultViewController {
             heightConfigurationViewConstraint.constant = configurationViewHeight
             self.view.updateConstraints()
             self.configurationView.alpha = 1
-            dropDown.dataSource = configurations
+            dropDown.dataSource = searchFilters
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
-                self.resultsViewModel?.selectedConfiguration = self.resultsViewModel?.configurations[index]
+                self.resultsViewModel?.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
             }
         }
     }
     
     private func resetAllFilters() {
-        self.resultsViewModel?.selectedConfiguration = resultsViewModel?.defaultConfiguration()
+        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
         updateCategory()
     }
     
     private func updateCategory() {
-        if let selectedConfig = self.resultsViewModel?.selectedConfiguration, let configurations = resultsViewModel?.configurations {
-            if let index = self.resultsViewModel?.configurations.firstIndex(where: {$0.name == selectedConfig.name}) {
+        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
+            if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
                 
                 dropDown.selectRow(at: index)
-                categoryNameLabel.text = resultsViewModel?.selectedConfigurationName(for: selectedConfig)
+                categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 
-                guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: configurations, and: index) else { return }
+                guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
                 self.updateChips(chipItems)
             }
         }
@@ -475,20 +475,19 @@ extension ResultViewController {
     }
     
     func updateSelectedChip(with value: String?) {
-        if let selectedCategory = resultsViewModel?.getSelectedCategory(), let categories = resultsViewModel?.getAllCategoriesForSelectedConfiguration() {
-            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
-                let chip = searchChipsViewModel.chips[object.offset]
-                if let selectedValue = value {
-                    chip.selectedValue = selectedValue
-                    searchChipsViewModel.chips[object.offset] = chip
-                    chipsCollectionView.reloadData()
-                } else {
-                    let indexPath = IndexPath(row: object.offset, section: 0)
-                    chip.selectedValue = ""
-                    searchChipsViewModel.chips[object.offset] = chip
-                    chipsCollectionView.reloadData()
-                    self.deSelectChipCollectionCell(for: indexPath)
-                }
+        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        if index >= 0 {
+            let chip = searchChipsViewModel.chips[index]
+            if let selectedValue = value {
+                chip.selectedValue = selectedValue
+                searchChipsViewModel.chips[index] = chip
+                chipsCollectionView.reloadData()
+            } else {
+                let indexPath = IndexPath(row: index, section: 0)
+                chip.selectedValue = ""
+                searchChipsViewModel.chips[index] = chip
+                chipsCollectionView.reloadData()
+                self.deSelectChipCollectionCell(for: indexPath)
             }
         }
     }
@@ -496,15 +495,14 @@ extension ResultViewController {
 
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
-        if let selectedCategory = resultsViewModel?.getSelectedCategory(), let categories = resultsViewModel?.getAllCategoriesForSelectedConfiguration() {
-            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
-                let chip = searchChipsViewModel.chips[object.offset]
-                let selectedValue = chip.selectedValue
-                if selectedValue.isEmpty {
-                    let indexPath = IndexPath(row: object.offset, section: 0)
-                    self.deSelectChipCollectionCell(for: indexPath)
-                    chipsCollectionView.reloadData()
-                }
+        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        if index >= 0 {
+            let chip = searchChipsViewModel.chips[index]
+            let selectedValue = chip.selectedValue
+            if selectedValue.isEmpty {
+                let indexPath = IndexPath(row: index, section: 0)
+                self.deSelectChipCollectionCell(for: indexPath)
+                chipsCollectionView.reloadData()
             }
         }
     }

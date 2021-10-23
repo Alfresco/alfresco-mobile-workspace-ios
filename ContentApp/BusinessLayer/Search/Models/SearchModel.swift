@@ -42,7 +42,7 @@ class SearchModel: SearchModelProtocol {
         return true
     }
 
-    func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         return []
     }
 
@@ -189,14 +189,14 @@ class SearchModel: SearchModelProtocol {
 
 // MARK: - Search Model Extension
 extension SearchModel {
-    func getCategories(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchCategories] {
+    func getCategories(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchCategories] {
         if index >= 0 {
             return configurations[index].categories
         }
         return []
     }
     
-    func getChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    func getChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         let categories = getCategories(for: configurations, and: index)
         var chipsArray = [SearchChipItem]()
         for category in categories {
