@@ -219,7 +219,7 @@ extension SearchViewModel {
     
     func getIndexOfSelectedCategory() -> Int {
         let categories = self.getAllCategoriesForSelectedFilter()
-        if let selectedCategory = self.getSelectedCategory() {
+        if let selectedCategory = self.selectedCategory {
             if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
                 return object.offset
             }
