@@ -55,7 +55,6 @@
 		B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9ADF247FE9BE0035AE97 /* NeedHelpCoordinator.swift */; };
 		B96B9AE22480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */; };
 		B96B9AF72480FCFE0035AE97 /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */; };
-		B97391A62519205F00CB2ECA /* viewer-inlined.html in Resources */ = {isa = PBXBuildFile; fileRef = B97391A52519205F00CB2ECA /* viewer-inlined.html */; };
 		B9747A16254C65B700D63B71 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */; };
 		B97A124D258A2B4D00C052AA /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B97A124C258A2B4D00C052AA /* DatabaseService.swift */; };
 		B980B0A5264E4CEF00F139CE /* DeepDiff in Frameworks */ = {isa = PBXBuildFile; productRef = B980B0A4264E4CEF00F139CE /* DeepDiff */; };
@@ -413,7 +412,6 @@
 		B96B9ADF247FE9BE0035AE97 /* NeedHelpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedHelpCoordinator.swift; sourceTree = "<group>"; };
 		B96B9AE12480ECFC0035AE97 /* NSAttributedString+LocalizedHTML.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+LocalizedHTML.swift"; sourceTree = "<group>"; };
 		B96B9AF62480FCFE0035AE97 /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
-		B97391A52519205F00CB2ECA /* viewer-inlined.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = "viewer-inlined.html"; path = "pdfjs-library/viewer-inlined.html"; sourceTree = "<group>"; };
 		B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dialog.swift"; sourceTree = "<group>"; };
 		B97A124C258A2B4D00C052AA /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		B982949E25AF28E700EAA689 /* NodeOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeOperations.swift; sourceTree = "<group>"; };
@@ -849,7 +847,6 @@
 		B95604EF25011F3300D955BA /* PDFRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				B97391A52519205F00CB2ECA /* viewer-inlined.html */,
 				B95605012501208600D955BA /* PDFRenderer.swift */,
 				B9B908DE2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift */,
 			);
@@ -2236,7 +2233,6 @@
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
 				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
 				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
-				B97391A62519205F00CB2ECA /* viewer-inlined.html in Resources */,
 				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
 				F185B1A72617663000407451 /* Camera.storyboard in Resources */,
 				B9973068255E7CC70026166A /* InfoPlist.strings in Resources */,
@@ -2949,7 +2945,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
@@ -2958,7 +2954,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = "1.2.0-M1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App Development";
@@ -2974,7 +2970,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.0;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				INFOPLIST_FILE = "$(SRCROOT)/ContentApp/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -2982,7 +2978,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1;
+				MARKETING_VERSION = "1.2.0-M1";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.contentapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Content App Development";
