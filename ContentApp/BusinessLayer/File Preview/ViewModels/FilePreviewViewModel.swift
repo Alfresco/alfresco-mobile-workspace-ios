@@ -26,7 +26,6 @@ protocol FilePreviewViewModelDelegate: AnyObject {
     func didFinishLoadingPreview(error: Error?)
     func willPreparePreview()
     func enableFullscreenContentExperience()
-    func requestFileUnlock(retry: Bool)
     func update(listNode: ListNode)
     func didFinishNodeDetails(error: Error?)
     func reloadPreview()
@@ -148,10 +147,6 @@ class FilePreviewViewModel {
         }
     }
 
-    func unlockFile(with password: String) {
-        pdfRenderer?.unlockPDF(password: password)
-    }
-
     func cancelOngoingOperations() {
         filePreview?.cancel()
         filePreview?.removeFromSuperview()
@@ -260,7 +255,6 @@ class FilePreviewViewModel {
 
         // Set delegate for password requesting PDF renditions
         if let filePreview = preview as? PDFRenderer {
-            filePreview.passwordDelegate = self
             pdfRenderer = filePreview
         }
     }
@@ -302,7 +296,9 @@ class FilePreviewViewModel {
                     sSelf.viewModelDelegate?.didFinishLoadingPreview(error: error)
                 }
             } else {
-                sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+                if (type == .pdf || type == .rendition) == false {
+                    sSelf.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+                }
             }
         }
 
@@ -311,13 +307,22 @@ class FilePreviewViewModel {
 
         // Set delegate for password requesting PDF renditions
         if let filePreview = preview as? PDFRenderer {
-            filePreview.passwordDelegate = self
             pdfRenderer = filePreview
+            self.downloadPDF(pdfUrl: renditionURL)
         }
     }
 
     // MARK: - Content
 
+    private func downloadPDF(pdfUrl: URL) {
+        _ = nodeOperations.downloadContent(from: pdfUrl, to: nil) { downloadedFileUrl, error in
+            if let fileUrl = downloadedFileUrl {
+                self.pdfRenderer?.loadPDFUsingNativeRenderer(pdfTempUrl: fileUrl)
+            }
+            self.viewModelDelegate?.didFinishLoadingPreview(error: nil)
+        }
+    }
+    
     private func previewContentFileText(with size: CGSize) {
         guard let listNode = listNode else { return }
         nodeOperations.sessionForCurrentAccount { [weak self] _ in
@@ -361,14 +366,3 @@ extension FilePreviewViewModel: EventObservable {
     }
 }
 
-// MARK: - PDFRendererPasswordDelegate
-
-extension FilePreviewViewModel: PDFRendererPasswordDelegate {
-    func providePDFPassword(for pdf: URL) {
-        viewModelDelegate?.requestFileUnlock(retry: false)
-    }
-
-    func invalidPasswordProvided(for pdf: URL) {
-        viewModelDelegate?.requestFileUnlock(retry: true)
-    }
-}
