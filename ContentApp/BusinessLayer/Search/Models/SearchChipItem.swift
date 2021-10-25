@@ -51,9 +51,6 @@ class SearchChipItem: Equatable {
         self.selected = selected
         self.searchInNodeID = nodeID
         self.selectedValue = selectedValue
-        if self.selectedValue.isEmpty {
-            self.selectedValue = self.name
-        }
         self.componentType = componentType
     }
 

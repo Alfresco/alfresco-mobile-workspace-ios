@@ -104,6 +104,7 @@
 "error-folder-name-contain-only-spaces" = "Folder name can't contain only spaces";
 "error-file-name-empty" = "File name can't be empty";
 
+
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
 "approved-added-favorites" = "Added to favorites";
@@ -141,7 +142,10 @@
 // MARK: - Advance Search
 "DEFAULT_SEARCH" = "Default";
 "advance-search" = "Advance Search";
-
+"text-filter" = "Text filter";
+"enter" = "Enter";
+"apply" = "Apply";
+"reset" = "Reset";
 
 // MARK: - Group List Section
 "today" = "Today";

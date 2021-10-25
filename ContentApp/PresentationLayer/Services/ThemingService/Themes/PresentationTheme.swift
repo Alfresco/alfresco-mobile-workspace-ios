@@ -49,15 +49,14 @@ protocol PresentationTheme {
     var errorOnColor: UIColor { get }
     var onPrimaryColor: UIColor { get }
     var onPrimaryInvertedColor: UIColor { get }
+    var onSurface12Color: UIColor { get }
 
     var primaryVariantT1Color: UIColor { get }
     var primaryColorVariant: UIColor { get }
     var primaryT1Color: UIColor { get }
     var primary30T1Color: UIColor { get }
     var primary15T1Color: UIColor { get }
-
     var dividerColor: UIColor { get }
-    
     var photoShutterColor: UIColor { get }
     var videoShutterColor: UIColor { get }
     var badgeBackGroundColor: UIColor { get }

@@ -41,7 +41,9 @@ class CollectionFlowLayout: UICollectionViewFlowLayout {
     }
     
     public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes] {
+        // swiftlint:disable force_cast
         let rectAttributes = super.layoutAttributesForElements(in: rect)!.map { $0.copy() as! UICollectionViewLayoutAttributes }
+        // swiftlint:enable force_cast
         return rectAttributes
     }
     
@@ -71,7 +73,9 @@ class CollectionFlowLayout: UICollectionViewFlowLayout {
     }
     
     public override func invalidationContext(forBoundsChange newBounds: CGRect) -> UICollectionViewLayoutInvalidationContext {
+        // swiftlint:disable force_cast
         let context = super.invalidationContext(forBoundsChange: newBounds) as! UICollectionViewFlowLayoutInvalidationContext
+        // swiftlint:enable force_cast
         context.invalidateFlowLayoutDelegateMetrics = newBounds.size != collectionView?.bounds.size
         return context
     }

@@ -48,15 +48,14 @@ struct DarkTheme: PresentationTheme {
     var errorOnColor = UIColor(hex: "#000000")
     var onPrimaryColor = UIColor(hex: "#FFFFFF")
     var onPrimaryInvertedColor = UIColor(hex: "#212328")
+    var onSurface12Color = UIColor(hex: "#FFFFFF", alpha: 0.12)
 
     var primaryVariantT1Color = UIColor(hex: "#6EACFF")
     var primaryColorVariant = UIColor(hex: "#2E2E2E")
     var primaryT1Color = UIColor(hex: "#2A7DE1")
     var primary30T1Color = UIColor(hex: "#2A7DE1", alpha: 0.3)
     var primary15T1Color = UIColor(hex: "#2A7DE1", alpha: 0.15)
-
     var dividerColor = UIColor(hex: "#595959")
-    
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#FFFFFF")
     var badgeBackGroundColor = UIColor(hex: "#FFFFFF")
