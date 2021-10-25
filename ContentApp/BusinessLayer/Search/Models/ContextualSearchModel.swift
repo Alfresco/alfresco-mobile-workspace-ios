@@ -22,7 +22,7 @@ import AlfrescoContent
 class ContextualSearchModel: SearchModel {
     var searchChipNode: SearchChipItem?
 
-    override func defaultSearchChips(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    override func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         searchChips = []
         if configurations.isEmpty {
             if let searchChipNode = self.searchChipNode {
@@ -50,7 +50,7 @@ class ContextualSearchModel: SearchModel {
 
 // MARK: Advance Search
 extension ContextualSearchModel {
-    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchConfigurations], and index: Int) -> [SearchChipItem] {
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         if index < 0 {
             return []
         } else {

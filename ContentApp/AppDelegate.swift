@@ -45,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
-        UserDefaults.standard.set(true, forKey: KeyConstants.AdvanceSearch.fetchConfigurationFromServer)
+        UserDefaults.standard.set(true, forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         UserDefaults.standard.synchronize()
         return true
     }
