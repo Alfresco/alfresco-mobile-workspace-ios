@@ -44,7 +44,7 @@ class TestSearchViewModel: XCTestCase {
         let searchModel = SearchModel(with: services)
         let searchViewModel = SearchViewModel(model: searchModel)
         let configurations = [String]()
-        let result = searchViewModel.isShowAdvanceConfigurationView(array: configurations)
+        let result = searchViewModel.isShowAdvanceFilterView(array: configurations)
         XCTAssertFalse(result)
     }
     
@@ -53,16 +53,16 @@ class TestSearchViewModel: XCTestCase {
         let searchModel = SearchModel(with: services)
         let searchViewModel = SearchViewModel(model: searchModel)
         let configurations = ["Default", "Folder"]
-        let result = searchViewModel.isShowAdvanceConfigurationView(array: configurations)
+        let result = searchViewModel.isShowAdvanceFilterView(array: configurations)
         XCTAssertTrue(result)
     }
     
-    func testDefaultConfigurationName_WhenDefaultValueProvided_ShouldReturnActualName() {
+    func testDefaultFilterName_WhenDefaultValueProvided_ShouldReturnActualName() {
         let services = CoordinatorServices()
         let searchModel = SearchModel(with: services)
         let searchViewModel = SearchViewModel(model: searchModel)
-        let index = searchViewModel.defaultConfigurationIndex()
-        let name = searchViewModel.selectedConfigurationName(for: index)
+        let defaultSearchFilter = searchViewModel.defaultSearchFilter()
+        let name = searchViewModel.selectedFilterName(for: defaultSearchFilter)
         var result = false
         if name == LocalizationConstants.AdvanceSearch.title {
             result = true

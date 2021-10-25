@@ -157,6 +157,10 @@ struct LocalizationConstants {
     
     struct AdvanceSearch {
         static let title = NSLocalizedString("advance-search", comment: "")
+        static let textFilter = NSLocalizedString("text-filter", comment: "")
+        static let enter = NSLocalizedString("enter", comment: "")
+        static let apply = NSLocalizedString("apply", comment: "")
+        static let reset = NSLocalizedString("reset", comment: "")
     }
 
     struct GroupListSection {
