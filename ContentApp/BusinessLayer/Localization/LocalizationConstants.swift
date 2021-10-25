@@ -160,6 +160,7 @@ struct LocalizationConstants {
         static let enter = NSLocalizedString("enter", comment: "")
         static let apply = NSLocalizedString("apply", comment: "")
         static let reset = NSLocalizedString("reset", comment: "")
+        static let fileType = NSLocalizedString("file-type", comment: "")
     }
 
     struct GroupListSection {

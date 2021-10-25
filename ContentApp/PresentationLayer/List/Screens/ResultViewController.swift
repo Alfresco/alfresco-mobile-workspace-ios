@@ -455,6 +455,10 @@ extension ResultViewController {
     func showSelectedComponent(for chip: SearchChipItem) {
         if chip.componentType == .text {
             showTextSelectorComponent()
+        } else if chip.componentType == .checkList {
+            showListSelectorComponent(isRadio: false)
+        } else if chip.componentType == .radio {
+            showListSelectorComponent(isRadio: true)
         }
     }
     
@@ -466,6 +470,23 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// List or Radio Component
+    private func showListSelectorComponent(isRadio: Bool) {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchListComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.listViewModel.isRadioList = isRadio
+            viewController.listViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
