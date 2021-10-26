@@ -36,48 +36,83 @@ class SearchListComponentController: NSObject {
     }
     
     func buildViewModel() {
-        if self.listViewModel.isRadioList {
+        if listViewModel.isRadioList {
             buildViewModelForRadioList()
         } else {
             buildViewModelForCheckList()
         }
     }
     
+    func applyFilterAction() {
+        if listViewModel.isRadioList {
+            applyFilterForRadioList()
+        } else {
+            applyFilterForCheckList()
+        }
+    }
+    
+    func resetFilterAction() {
+        if listViewModel.isRadioList {
+            resetFilterForRadioList()
+        } else {
+            resetFilterForCheckList()
+        }
+    }
+    
     // MARK: - Check List
     private func buildViewModelForCheckList() {
         var optionsArray = [RowViewModel]()
-        if let options = self.listViewModel.selectedCategory?.component?.settings?.options {
+        if let options = listViewModel.selectedCategory?.component?.settings?.options {
             for (index, item) in options.enumerated() {
                 let name = item.name
                 let isSelected = item.isSelected ?? false
-                let rowVM = ListItemCellViewModel(title: name, isRadioList: self.listViewModel.isRadioList, isSelected: isSelected)
+                let rowVM = ListItemCellViewModel(title: name, isRadioList: listViewModel.isRadioList, isSelected: isSelected)
                 rowVM.didSelectListItem = {
                     self.updateSelectedValueForCheckList(for: index)
                 }
                 optionsArray.append(rowVM)
             }
         }
-        self.listViewModel.rowViewModels.value = optionsArray
+        listViewModel.rowViewModels.value = optionsArray
     }
     
     private func updateSelectedValueForCheckList(for index: Int) {
-        if let category = self.listViewModel.selectedCategory {
+        if let category = listViewModel.selectedCategory {
             category.component?.settings?.options?[index].isSelected = !(category.component?.settings?.options?[index].isSelected ?? false)
-            self.listViewModel.selectedCategory = category
-            self.buildViewModel()
+            listViewModel.selectedCategory = category
+            buildViewModelForCheckList()
         }
     }
     
-    func resetFilerForCheckList() {
-        if let options = self.listViewModel.selectedCategory?.component?.settings?.options {
+    func resetFilterForCheckList() {
+        if let options = listViewModel.selectedCategory?.component?.settings?.options {
             var updatedOptions = [SearchComponentOptions]()
             for item in options {
                 item.isSelected = false
                 updatedOptions.append(item)
             }
-            self.listViewModel.selectedCategory?.component?.settings?.options = options
-            self.buildViewModel()
+            listViewModel.selectedCategory?.component?.settings?.options = options
+            listViewModel.selectedCategory?.component?.settings?.selectedValue = ""
         }
+    }
+    
+    func applyFilterForCheckList() {
+        var selectedValue = ""
+        if let options = listViewModel.selectedCategory?.component?.settings?.options {
+            let filteredArray = options.filter({$0.isSelected == true})
+            for counter in 0 ..< filteredArray.count {
+                let item = filteredArray[counter]
+                let name = NSLocalizedString(item.name ?? "", comment: "")
+                let isSelected = item.isSelected ?? false
+                if counter != 0 {
+                    selectedValue.append(", ")
+                }
+                if isSelected {
+                    selectedValue.append(name)
+                }
+            }
+        }
+        listViewModel.selectedCategory?.component?.settings?.selectedValue = selectedValue
     }
     
     // MARK: - Radio List
@@ -113,5 +148,38 @@ class SearchListComponentController: NSObject {
             self.listViewModel.selectedCategory = category
             self.buildViewModel()
         }
+    }
+    
+    func resetFilterForRadioList() {
+        /*if let options = listViewModel.selectedCategory?.component?.settings?.options {
+            var updatedOptions = [SearchComponentOptions]()
+            for item in options {
+                item.isSelected = false
+                updatedOptions.append(item)
+            }
+            listViewModel.selectedCategory?.component?.settings?.options = options
+            listViewModel.selectedCategory?.component?.settings?.selectedValue = ""
+        }*/
+    }
+    
+    func applyFilterForRadioList() {
+       /*
+        var selectedValue = ""
+        if let options = listViewModel.selectedCategory?.component?.settings?.options {
+            let filteredArray = options.filter({$0.isSelected == true})
+            for counter in 0 ..< filteredArray.count {
+                let item = filteredArray[counter]
+                let name = NSLocalizedString(item.name ?? "", comment: "")
+                let isSelected = item.isSelected ?? false
+                if counter != 0 {
+                    selectedValue.append(", ")
+                }
+                if isSelected {
+                    selectedValue.append(name)
+                }
+            }
+        }
+        listViewModel.selectedCategory?.component?.settings?.selectedValue = selectedValue
+        */
     }
 }

@@ -130,10 +130,13 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
+        self.controller.applyFilterAction()
+        self.dismissButtonAction(Any.self)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        self.controller.resetFilerForCheckList()
+        self.controller.resetFilterAction()
+        self.dismissButtonAction(Any.self)
     }
 }
 

@@ -44,6 +44,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
+        keywordTextField.becomeFirstResponder()
     }
     
     override func viewWillAppear(_ animated: Bool) {

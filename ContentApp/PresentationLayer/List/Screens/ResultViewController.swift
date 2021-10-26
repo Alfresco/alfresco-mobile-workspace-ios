@@ -387,15 +387,17 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         resultsListController?.scrollToSection(0)
         if componentType != nil {
             self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+            self.resultsViewModel?.selectedChip = chip
             self.showSelectedComponent(for: chip)
         }
-        chipsCollectionView.reloadData()
+        self.chipsCollectionView.reloadDataWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
         let chip = searchChipsViewModel.chips[indexPath.row]
         chip.selected = false
         self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+        self.resultsViewModel?.selectedChip = chip
         if let themeService = coordinatorServices?.themingService {
             if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
@@ -450,7 +452,7 @@ extension ResultViewController: ListComponentActionDelegate {
     }
 }
 
-// MARK: - Dummy data for components
+// MARK: - Advance Search Components
 extension ResultViewController {
     func showSelectedComponent(for chip: SearchChipItem) {
         if chip.componentType == .text {
@@ -496,10 +498,10 @@ extension ResultViewController {
     }
     
     func updateSelectedChip(with value: String?) {
-        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
-            if let selectedValue = value {
+            if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
                 searchChipsViewModel.chips[index] = chip
                 chipsCollectionView.reloadData()
@@ -516,7 +518,7 @@ extension ResultViewController {
 
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
-        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
             let selectedValue = chip.selectedValue
@@ -525,7 +527,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
                 self.deSelectChipCollectionCell(for: indexPath)
                 chipsCollectionView.reloadData()
             }
-        }
+        } 
     }
 }
 

@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nso-2d-W04" userLabel="baseView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9WT-Dj-0fI" userLabel="headerView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="71"/>
@@ -186,6 +186,7 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="ynQ-3L-9pP" secondAttribute="bottom" id="5Q9-Mj-VsK"/>
                                     <constraint firstItem="9WT-Dj-0fI" firstAttribute="leading" secondItem="nso-2d-W04" secondAttribute="leading" id="Bo2-tl-VOM"/>
                                     <constraint firstItem="9WT-Dj-0fI" firstAttribute="top" secondItem="nso-2d-W04" secondAttribute="top" id="Fv5-lg-WfK"/>
                                     <constraint firstItem="ynQ-3L-9pP" firstAttribute="trailing" secondItem="MDk-FT-o1s" secondAttribute="trailing" id="G4m-Z5-Rps"/>
@@ -193,7 +194,6 @@
                                     <constraint firstItem="MDk-FT-o1s" firstAttribute="trailing" secondItem="9WT-Dj-0fI" secondAttribute="trailing" id="V18-T6-tVC"/>
                                     <constraint firstItem="MDk-FT-o1s" firstAttribute="leading" secondItem="9WT-Dj-0fI" secondAttribute="leading" id="Y6e-Bb-KzA"/>
                                     <constraint firstAttribute="trailing" secondItem="9WT-Dj-0fI" secondAttribute="trailing" id="bZ6-5o-sea"/>
-                                    <constraint firstAttribute="height" constant="300" id="fdX-DV-bhM"/>
                                     <constraint firstItem="ynQ-3L-9pP" firstAttribute="leading" secondItem="MDk-FT-o1s" secondAttribute="leading" id="r1p-eT-I2F"/>
                                     <constraint firstItem="ynQ-3L-9pP" firstAttribute="top" secondItem="MDk-FT-o1s" secondAttribute="bottom" id="tin-cz-MRK"/>
                                 </constraints>

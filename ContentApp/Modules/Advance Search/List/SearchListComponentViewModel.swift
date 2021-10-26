@@ -21,6 +21,7 @@ import AlfrescoContent
 
 class SearchListComponentViewModel {
     var selectedCategory: SearchCategories?
+    var selectedOptions: SearchComponentOptions?
     var isRadioList = false
     let rowViewModels = Observable<[RowViewModel]>([])
     var isRadioButtonUIShownFirstTime = true
