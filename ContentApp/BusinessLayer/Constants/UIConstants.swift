@@ -20,4 +20,6 @@ import UIKit
 
 struct UIConstants {
     static let cornerRadiusDialog: CGFloat = 8.0
+    static let ScreenHeight = UIScreen.main.bounds.height
+    static let ScreenWidth = UIScreen.main.bounds.width
 }

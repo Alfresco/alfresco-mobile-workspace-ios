@@ -18,13 +18,8 @@
 
 import UIKit
 
-struct CellConstants {
-    
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-    }
-    
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
+extension UITableViewCell {
+    static func cellIdentifier() -> String {
+        return String(describing: self)
     }
 }

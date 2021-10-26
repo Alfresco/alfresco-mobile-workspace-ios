@@ -33,6 +33,9 @@ class SearchViewModel: ListComponentViewModel {
     /// selected category
     var selectedCategory: SearchCategories?
     
+    /// selected chip
+    var selectedChip: SearchChipItem?
+    
     /// search filter observable
     let searchFilterObservable = Observable<[AdvanceSearchFilters]>([])
     
@@ -42,7 +45,7 @@ class SearchViewModel: ListComponentViewModel {
     }
         
     /// all filters names
-    var filterNames: [String] {
+    var filterNames: [String] { 
         let filtered = searchFilters.map {$0.name ?? ""}
         return filtered
     }
@@ -221,6 +224,15 @@ extension SearchViewModel {
         let categories = self.getAllCategoriesForSelectedFilter()
         if let selectedCategory = self.selectedCategory {
             if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
+                return object.offset
+            }
+        }
+        return -1
+    }
+    
+    func getIndexOfSelectedChip(for chips: [SearchChipItem]) -> Int {
+        if let selectedChip = self.selectedChip {
+            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType}) {
                 return object.offset
             }
         }

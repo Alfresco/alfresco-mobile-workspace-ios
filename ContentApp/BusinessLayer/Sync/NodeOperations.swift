@@ -104,17 +104,20 @@ class NodeOperations {
     }
 
     func downloadContent(from url: URL,
-                         to destinationURL: URL,
+                         to destinationURL: URL? = nil,
                          completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        let destination: DownloadRequest.DownloadFileDestination = { _, _ in
-            return (destinationURL, [.removePreviousFile])
+        var destination: DownloadRequest.DownloadFileDestination? = nil
+        if let destinationUrl = destinationURL {
+            destination = { _, _ in
+                return (destinationUrl, [.removePreviousFile])
+            }
         }
 
         return Alamofire.download(url,
                                   parameters: nil,
                                   headers: AlfrescoContentAPI.customHeaders,
                                   to: destination).response { response in
-                                    if let destinationUrl = response.destinationURL,
+            if let destinationUrl = response.destinationURL ?? response.temporaryURL,
                                        let httpURLResponse = response.response {
                                         if (200...299).contains(httpURLResponse.statusCode) {
                                             completionHandler(destinationUrl, nil)
@@ -135,7 +138,7 @@ class NodeOperations {
                                     }
                                   }
     }
-
+    
     func createNode(nodeId: String,
                     name: String,
                     description: String?,

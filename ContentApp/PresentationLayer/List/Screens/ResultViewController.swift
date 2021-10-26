@@ -388,15 +388,17 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         resultsListController?.scrollToSection(0)
         if componentType != nil {
             self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+            self.resultsViewModel?.selectedChip = chip
             self.showSelectedComponent(for: chip)
         }
-        chipsCollectionView.reloadData()
+        self.chipsCollectionView.reloadDataWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
         let chip = searchChipsViewModel.chips[indexPath.row]
         chip.selected = false
         self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+        self.resultsViewModel?.selectedChip = chip
         if let themeService = coordinatorServices?.themingService {
             if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
@@ -451,11 +453,15 @@ extension ResultViewController: ListComponentActionDelegate {
     }
 }
 
-// MARK: - Dummy data for components
+// MARK: - Advance Search Components
 extension ResultViewController {
     func showSelectedComponent(for chip: SearchChipItem) {
         if chip.componentType == .text {
             showTextSelectorComponent()
+        } else if chip.componentType == .checkList {
+            showListSelectorComponent(isRadio: false)
+        } else if chip.componentType == .radio {
+            showListSelectorComponent(isRadio: true)
         }
     }
     
@@ -475,11 +481,28 @@ extension ResultViewController {
         }
     }
     
+    /// List or Radio Component
+    private func showListSelectorComponent(isRadio: Bool) {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchListComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.listViewModel.isRadioList = isRadio
+            viewController.listViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
     func updateSelectedChip(with value: String?) {
-        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
-            if let selectedValue = value {
+            if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
                 searchChipsViewModel.chips[index] = chip
                 chipsCollectionView.reloadData()
@@ -496,7 +519,7 @@ extension ResultViewController {
 
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
-        let index = resultsViewModel?.getIndexOfSelectedCategory() ?? -1
+        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
             let selectedValue = chip.selectedValue
@@ -505,7 +528,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
                 self.deSelectChipCollectionCell(for: indexPath)
                 chipsCollectionView.reloadData()
             }
-        }
+        } 
     }
 }
 
