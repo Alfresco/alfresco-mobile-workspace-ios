@@ -16,15 +16,13 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
+import AlfrescoContent
 
-struct CellConstants {
-    
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-    }
-    
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
-    }
+class SearchListComponentViewModel {
+    var selectedCategory: SearchCategories?
+    var selectedOptions = [SearchComponentOptions]()
+    var isRadioList = false
+    let rowViewModels = Observable<[RowViewModel]>([])
+    let stringConcatenator = ", "
 }

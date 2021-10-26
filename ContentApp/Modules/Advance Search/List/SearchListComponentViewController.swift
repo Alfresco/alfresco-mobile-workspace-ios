@@ -18,21 +18,22 @@
 
 import UIKit
 import AlfrescoContent
-import MaterialComponents.MaterialTextControls_OutlinedTextFields
-import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 
-class SearchTextComponentViewController: SystemThemableViewController {
+class SearchListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var divider: UIView!
-    @IBOutlet weak var keywordTextField: MDCOutlinedTextField!
-    @IBOutlet weak var dividerTextField: UIView!
+    @IBOutlet weak var headerDivider: UIView!
+    @IBOutlet weak var listViewDivider: UIView!
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
-    lazy var textViewModel = SearchTextComponentViewModel()
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var heightTableView: NSLayoutConstraint!
+    var listViewModel: SearchListComponentViewModel { return controller.listViewModel }
+    lazy var controller: SearchListComponentController = { return SearchListComponentController() }()
+    let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
     var callback: SearchComponentCallBack?
 
     // MARK: - View Life Cycle
@@ -41,10 +42,13 @@ class SearchTextComponentViewController: SystemThemableViewController {
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
-        hideKeyboardWhenTappedAround()
+        tableView.estimatedRowHeight = 1000
+        controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
-        keywordTextField.becomeFirstResponder()
+        registerCells()
+        controller.buildViewModel()
+        setupBindings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,25 +68,30 @@ class SearchTextComponentViewController: SystemThemableViewController {
         preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
     }
     
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        calculatePreferredSize(size)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+    }
+    
     // MARK: - Apply Themes and Localization
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let textFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton),
               let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
         
         view.backgroundColor = currentTheme.surfaceColor
         headerTitleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         dismissButton.tintColor = currentTheme.onSurfaceColor
-        divider.backgroundColor = currentTheme.onSurface12Color
-        dividerTextField.backgroundColor = currentTheme.onSurface12Color
-        
-        keywordTextField.applyTheme(withScheme: textFieldScheme)
-        keywordTextField.trailingViewMode = .unlessEditing
-        keywordTextField.leadingAssistiveLabel.text = ""
-        keywordTextField.trailingView = nil
-        
+        headerDivider.backgroundColor = currentTheme.onSurface12Color
+        listViewDivider.backgroundColor = currentTheme.onSurface12Color
+                
         applyButton.applyContainedTheme(withScheme: buttonScheme)
         applyButton.isUppercaseTitle = false
         applyButton.setShadowColor(.clear, for: .normal)
@@ -97,47 +106,75 @@ class SearchTextComponentViewController: SystemThemableViewController {
     }
     
     private func applyLocalization() {
-        let placeholder = self.textViewModel.getPlaceholder()
-        let value = self.textViewModel.getValue()
-        headerTitleLabel.text = LocalizationConstants.AdvanceSearch.textFilter
-        keywordTextField.label.text = placeholder
-        keywordTextField.text = value
+        headerTitleLabel.text = LocalizationConstants.AdvanceSearch.fileType
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
     }
     
-    @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.textViewModel.selectedCategory)
+    func registerCells() {
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.listItem, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.listItem)
+    }
+    
+    // MARK: - Set up Bindings
+    private func setupBindings() {
+        /* observing rows */
+        self.listViewModel.rowViewModels.addObserver() { [weak self] (rows) in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
+    }
+    
+    @IBAction func dismissButtonAction(_ sender: Any) {
+        self.callback?(self.listViewModel.selectedCategory)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        let text = (self.keywordTextField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if text.isEmpty {
-            self.textViewModel.applyFilter(with: nil)
-        } else {
-            self.textViewModel.applyFilter(with: text)
-        }
-        self.dismissComponentButtonAction(Any.self)
+        self.controller.applyFilterAction()
+        self.dismissButtonAction(Any.self)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        self.textViewModel.applyFilter(with: nil)
-        self.dismissComponentButtonAction(Any.self)
+        self.controller.resetFilterAction()
+        self.dismissButtonAction(Any.self)
+    }
+}
+
+// MARK: - Table View Data Source and Delegates
+extension SearchListComponentViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.listViewModel.rowViewModels.value.count
     }
     
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        calculatePreferredSize(size)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let rowViewModel = listViewModel.rowViewModels.value[indexPath.row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
+        if let cell = cell as? CellConfigurable {
+            cell.setup(viewModel: rowViewModel)
+        }
+        if cell is ListItemTableViewCell {
+            if let theme = coordinatorServices?.themingService {
+                (cell as? ListItemTableViewCell)?.applyTheme(with: theme)
+            }
+        }
+        cell.layoutIfNeeded()
+        return cell
     }
-
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.view.layoutSubviews()
+        DispatchQueue.main.async {
+            self.heightTableView?.constant = ( self.tableView.contentSize.height < self.maxHeightTableView ) ? self.tableView.contentSize.height : self.maxHeightTableView
+        }
+        self.view.layoutIfNeeded()
     }
 }
 
 // MARK: - Storyboard Instantiable
-extension SearchTextComponentViewController: SearchComponentsStoryboardInstantiable { }
-
+extension SearchListComponentViewController: SearchComponentsStoryboardInstantiable { }

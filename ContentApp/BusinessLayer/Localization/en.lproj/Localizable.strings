@@ -145,6 +145,11 @@
 "enter" = "Enter";
 "apply" = "Apply";
 "reset" = "Reset";
+"file-type" = "File type";
+"APP.SEARCH.RADIO.NONE" = "None";
+"APP.SEARCH.RADIO.ALL" = "All";
+"APP.SEARCH.RADIO.FOLDER" = "Folder";
+"APP.SEARCH.RADIO.DOCUMENT" = "Document";
 
 // MARK: - Group List Section
 "today" = "Today";
