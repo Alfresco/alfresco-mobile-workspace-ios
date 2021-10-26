@@ -22,6 +22,7 @@ import UIKit
 enum InterFontStyleType: String {
     case normal = "Inter-Regular"
     case medium = "Inter-Medium"
+    case bold = "Inter-Bold"
 }
 
 extension UIFont {

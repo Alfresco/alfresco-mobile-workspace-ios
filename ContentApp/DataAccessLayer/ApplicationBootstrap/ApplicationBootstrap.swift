@@ -145,6 +145,12 @@ class ApplicationBootstrap {
         CameraKit.applyTheme(theme: theme)
     }
     
+    func currentTheme() -> PresentationTheme? {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        return themingService?.activeTheme
+    }
+    
     private func configureCameraKitLocalization() {
         let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
                                                  onFlashText: LocalizationConstants.Camera.onFlash,
@@ -164,7 +170,8 @@ class ApplicationBootstrap {
                                                     LocalizationConstants.EmptyLists.galleryTitle,
                                                  emptyGalleryDescription:
                                                     LocalizationConstants.EmptyLists.galleryDescription,
-                                                 galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload)
+                                                 galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload,
+                                                 errorEmptyFileName: LocalizationConstants.Errors.errorEmptyFileName)
         CameraKit.applyLocalization(localization: localization)
     }
 }

@@ -32,6 +32,7 @@ struct DefaultTheme: PresentationTheme {
     var body2TextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 14.0), lineHeight: 1.43, letterSpacing: 0.25)
     var captionTextStyle = TextStyle(font: UIFont.inter(style: .normal, size: 12.0), lineHeight: 1.33, letterSpacing: 0.5)
     var overlineTextStyle = TextStyle(font: UIFont.inter(style: .medium, size: 10.0), lineHeight: 1.60, letterSpacing: 0.2)
+    var headLineBoldTextStyle = TextStyle(font: UIFont.inter(style: .bold, size: 14.0), lineHeight: 1.42, letterSpacing: 0.0)
 
     // COLORS
 
@@ -48,15 +49,14 @@ struct DefaultTheme: PresentationTheme {
     var errorOnColor = UIColor(hex: "#FFFFFF")
     var onPrimaryColor = UIColor(hex: "#FFFFFF")
     var onPrimaryInvertedColor = UIColor(hex: "#212328")
+    var onSurface12Color = UIColor(hex: "#212121", alpha: 0.12)
 
     var primaryVariantT1Color = UIColor(hex: "#0052AE")
     var primaryColorVariant = UIColor(hex: "#FFFFFF")
     var primaryT1Color = UIColor(hex: "#2A7DE1")
     var primary30T1Color = UIColor(hex: "#2A7DE1", alpha: 0.3)
     var primary15T1Color = UIColor(hex: "#2A7DE1", alpha: 0.15)
-
     var dividerColor = UIColor(hex: "#DEDEDF")
-    
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#2A7DE1")
 }

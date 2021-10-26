@@ -101,6 +101,7 @@
 "error-node-name-special-characters" = "Der Name darf diese Zeichen nicht enthalten: &@";
 "error-folder-name-end-period" = "Der Ordnername darf nicht mit einem Punkt enden %@";
 "error-folder-name-contain-only-spaces" = "Der Ordnername darf nicht nur Leerzeichen enthalten.";
+"error-file-name-empty" = "Der Dateiname darf nicht leer sein.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Konfigurationsänderungen wurden gespeichert.";
@@ -112,7 +113,6 @@
 "approved-created" = "%@ wurde erstellt";
 "approved-mark-offline" = "%@ wird offline zur Verfügung gestellt.";
 "approved-remove-offline" = "%@ ist offline nicht mehr verfügbar.";
-"approved-upload-photo" = "Zum Hochladen vorgesehenes Foto.";
 "approved-upload-media" = "Zum Hochladen vorgesehene Medien.";
 
 // MARK: - Settings Screen

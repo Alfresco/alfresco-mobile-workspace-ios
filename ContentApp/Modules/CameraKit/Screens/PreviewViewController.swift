@@ -28,59 +28,34 @@ import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 class PreviewViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var contentView: UIView!
-    @IBOutlet weak var trashButton: UIButton!
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var capturedAssetImageView: UIImageView!
-    
-    @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var fileNameTextField: MDCOutlinedTextField!
+    @IBOutlet weak var descriptionField: MDCOutlinedTextArea!
     @IBOutlet weak var saveButton: MDCButton!
-    
-    @IBOutlet weak var capturedAssetHeightContraint: NSLayoutConstraint!
-    @IBOutlet weak var capturedAssetWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var saveButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollViewTopConstraint: NSLayoutConstraint!
-
-    var previewViewModel: PreviewViewModel?
     weak var cameraDelegate: CameraKitCaptureDelegate?
-    
-    var enableSaveButton = false {
-        didSet {
-            saveButton.isEnabled = enableSaveButton
-        }
+    lazy var controller = PreviewController()
+    var previewViewModel: PreviewViewModel? {
+        return controller.previewViewModel
     }
     
     // MARK: - View Life Cycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.hideKeyboardWhenTappedAround()
+        registerCells()
         applyLocalization()
         applyComponentsThemes()
-        
-        fileNameTextField.text = previewViewModel?.assetFilename()
+        setupBindings()
+        controller.enableSaveButtonAction()
         
         descriptionField.textView.delegate = self
         descriptionField.baseTextAreaDelegate = self
         descriptionField.minimumNumberOfVisibleRows = 1
         descriptionField.maximumNumberOfVisibleRows = 7
         descriptionField.textView.accessibilityIdentifier = "descriptionTextField"
-        
-        if let image = previewViewModel?.assetThumbnailImage() {
-            capturedAssetImageView.image = image
-            if image.imageOrientation == .down ||
-                image.imageOrientation == .up {
-                swapCapturedAssetRatioContraints()
-            }
-        }
-        capturedAssetImageView.layer.cornerRadius = 8.0
-        
-        trashButton.layer.cornerRadius = trashButton.bounds.height / 2.0
-        playButton.layer.cornerRadius = playButton.bounds.height / 2.0
-        
-        playButton.isHidden = !(previewViewModel?.isAssetVideo() ?? false)
-        
-        enableSaveButton = !(fileNameTextField.text?.isEmpty ?? false)
         
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
@@ -92,57 +67,136 @@ class PreviewViewController: UIViewController {
                                                object: nil)
     }
     
+    private func registerCells() {
+        collectionView.register(UINib(nibName: CellConstants.CollectionCells.preview, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.preview)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        setCollectionViewFlowLayout()
+    }
+    
+    // MARK: - Setup Bindings
+    private func setupBindings() {
+        
+        /* observe captured assets */
+        self.previewViewModel?.capturedAssets.addObserver { capturedAssets in
+            self.controller.buildViewModels()
+            self.collectionView.reloadData()
+        }
+        
+        /* observe visible cell index */
+        self.previewViewModel?.visibleCellIndex.addObserver({ (index) in
+            guard let capturdAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
+            self.updateTextViewLocalization()
+            self.fileNameTextField.text = self.previewViewModel?.assetFilename(for: capturdAsset)
+            self.descriptionField.textView.text = self.previewViewModel?.assetDescription(for: capturdAsset)
+            self.controller.enableSaveButtonAction()
+        })
+        
+        /* observer save button error message */
+        self.controller.didDisplayErrorOnSaveButton = {(index, message) in
+            self.enableSaveButton(for: index, and: message)
+        }
+        
+        /* observer delete asset */
+        self.controller.didTrashCapturedAsset = { (index, capturedAsset) in
+            self.trashButtonTapped(at: index, and: capturedAsset)
+        }
+    }
+    
+    private func updateTextViewLocalization() {
+        guard let localization = CameraKit.localization, let theme = CameraKit.theme else { return }
+        descriptionField.label.text = localization.descriptionTextField
+        descriptionField.applyTheme(withScheme: theme.textFieldScheme)
+    }
+
     // MARK: - IBActions
-    
     @IBAction func saveButtonTapped(_ sender: MDCButton) {
-        if let filename = fileNameTextField.text,
-           let capturedAsset = previewViewModel?.asset() {
-            previewViewModel?.updateMetadata(filename: filename,
-                                             description: descriptionField.textView.text)
-            cameraDelegate?.didEndReview(for: [capturedAsset])
-        }
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
-    @IBAction func trashButtonTapped(_ sender: UIButton) {
-        previewViewModel?.asset().deleteAsset()
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func playButtonTapped(_ sender: UIButton) {
-        performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
-                     sender: nil)
-    }
-    
-    @IBAction func fullScreenTapGesture(_ sender: UITapGestureRecognizer) {
-        if previewViewModel?.isAssetVideo() == true {
-            performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
-                         sender: nil)
-        } else {
-            performSegue(withIdentifier: SegueIdentifiers.showFullScreenPhoto.rawValue,
-                         sender: nil)
-        }
-    }
-
-    @IBAction func contentViewTapGesture(_ sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
+        self.previewViewModel?.validateFileNames(in: self, handler: { (index, error) in
+            self.scrollCollectionView(to: index)
+            if index < 0 {
+                self.uploadCapturedAssets()
+            }
+        })
+    }
+    
+    private func uploadCapturedAssets() {
+        if let capturedAssets = self.previewViewModel?.capturedAssets.value {
+            cameraDelegate?.didEndReview(for: capturedAssets)
+            navigationController?.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    private func scrollCollectionView(to index: Int) {
+        if index >= 0 {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.previewViewModel?.visibleCellIndex.value = index
+            self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
+
+    private func trashButtonTapped(at index: Int, and capturedAsset: CapturedAsset) {
+        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
+        capturedAsset.deleteAsset()
+        self.previewViewModel?.capturedAssets.value.remove(at: index)
+        self.updateVisibleCellIndex()
+        self.previewViewModel?.callback?(index)
+        if self.previewViewModel?.capturedAssets.value.isEmpty == true {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func updateVisibleCellIndex() {
+        guard let capturedAssets = self.previewViewModel?.capturedAssets.value, let visibleCellIndex = self.previewViewModel?.visibleCellIndex.value  else { return }
+        if !capturedAssets.isEmpty {
+            if visibleCellIndex >= capturedAssets.count {
+                self.previewViewModel?.visibleCellIndex.value = capturedAssets.count - 1
+            } else {
+                self.previewViewModel?.visibleCellIndex.value = visibleCellIndex
+            }
+        }
+    }
+
+    private func enableSaveButton(for index: Int, and message: String) {
+        if index >= 0 && !message.isEmpty {
+            self.saveButton.isEnabled = false
+        } else {
+            self.saveButton.isEnabled = true
+        }
+        self.displayErrorOnTextField(for: index, and: message)
+    }
+    
+    private func displayErrorOnTextField(for index: Int, and message: String) {
+        if index == self.previewViewModel?.visibleCellIndex.value {
+            applyErrorOnTextField(with: message)
+        } else {
+            disableErrorOnTextField()
+        }
+    }
+    
+    private func applyErrorOnTextField(with message: String) {
+        guard let theme = CameraKit.theme else { return }
+        fileNameTextField.applyErrorTheme(withScheme: theme.textFieldScheme)
+        fileNameTextField.leadingAssistiveLabel.text = message
+        fileNameTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
+    }
+
+    private func disableErrorOnTextField() {
+        guard let theme = CameraKit.theme else { return }
+        fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
+        fileNameTextField.leadingAssistiveLabel.text = ""
+        fileNameTextField.trailingView = nil
     }
     
     // MARK: - Private Methods
-    
     private func applyComponentsThemes() {
         guard let theme = CameraKit.theme else { return }
 
+        collectionView.backgroundColor = .clear
         scrollView.backgroundColor = .clear
         contentView.backgroundColor = .clear
         view.backgroundColor = theme.surfaceColor
-        
-        trashButton.tintColor = theme.onSurface60Color
-        trashButton.backgroundColor = theme.surface60Color
-        
-        playButton.tintColor = theme.onSurface60Color
-        playButton.backgroundColor = theme.surface60Color
-        
+                
         saveButton.applyContainedTheme(withScheme: theme.buttonScheme)
         saveButton.setBackgroundColor(theme.onSurface5Color, for: .disabled)
         saveButton.isUppercaseTitle = false
@@ -160,22 +214,23 @@ class PreviewViewController: UIViewController {
         fileNameTextField.label.text = localization.fileNameTextField
         descriptionField.label.text = localization.descriptionTextField
         saveButton.setTitle(localization.saveButton, for: .normal)
-    }
-    
-    private func swapCapturedAssetRatioContraints() {
-        swap(&capturedAssetWidthConstraint.constant, &capturedAssetHeightContraint.constant)
-        capturedAssetImageView.layoutIfNeeded()
+        
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
+        self.navigationController?.navigationBar.addGestureRecognizer(tap)
     }
     
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let index = self.previewViewModel?.visibleCellIndex.value ?? 0
+        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
+      
         if segue.identifier == SegueIdentifiers.showFullScreenPhoto.rawValue,
            let fspvc = segue.destination as? FullScreenPhotoViewController {
-            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage()
+            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage(for: capturedAsset)
         } else if segue.identifier == SegueIdentifiers.showFullScreenVideo.rawValue,
                   let fsvvc = segue.destination as? FullScreenVideoViewController {
-            fsvvc.videoURL = previewViewModel?.videoUrl()
+            fsvvc.videoURL = previewViewModel?.videoUrl(for: capturedAsset)
         }
     }
 }
@@ -223,14 +278,19 @@ extension PreviewViewController: UITextFieldDelegate {
         var updatedText = ""
         if let text = textField.text,
            let textRange = Range(range, in: text) {
-           updatedText = text.replacingCharacters(in: textRange, with: string)
+            updatedText = text.replacingCharacters(in: textRange, with: string)
+            let index = self.previewViewModel?.visibleCellIndex.value ?? 0
+            self.controller.previewViewModel?.capturedAssets.value[index].fileName = updatedText
         }
-        enableSaveButton(for: updatedText)
+        
+        self.controller.enableSaveButtonAction()
         return true
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        enableSaveButton(for: "")
+        let index = self.previewViewModel?.visibleCellIndex.value ?? 0
+        self.controller.previewViewModel?.capturedAssets.value[index].fileName = ""
+        self.controller.enableSaveButtonAction()
         return true
     }
     
@@ -241,54 +301,7 @@ extension PreviewViewController: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         scrollViewTopConstraint.constant = 0
-        enableSaveButton(for: textField.text)
-    }
-
-    func enableSaveButton(for text: String?) {
-        guard let text = text, let localization = CameraKit.localization else {
-            enableSaveButton = false
-            disableErrorOnTextField()
-            return
-        }
-        if hasSpecialCharacters(text) == true {
-            let message = String(format: localization.errorNodeNameSpecialCharacters,
-                                 specialCharacters())
-            applyErrorOnTextField(with: message)
-        } else if !text.isEmpty {
-            disableErrorOnTextField()
-        }
-        
-        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            enableSaveButton = false
-        }
-    }
-
-    func applyErrorOnTextField(with message: String) {
-        guard let theme = CameraKit.theme else { return }
-        enableSaveButton = false
-        fileNameTextField.applyErrorTheme(withScheme: theme.textFieldScheme)
-        fileNameTextField.leadingAssistiveLabel.text = message
-        fileNameTextField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
-    }
-
-    func disableErrorOnTextField() {
-        guard let theme = CameraKit.theme else { return }
-        enableSaveButton = true
-        fileNameTextField.applyTheme(withScheme: theme.textFieldScheme)
-        fileNameTextField.leadingAssistiveLabel.text = ""
-        fileNameTextField.trailingView = nil
-    }
-    
-    func hasSpecialCharacters(_ string: String) -> Bool {
-        let characterset = CharacterSet(charactersIn: "*\"<>\\/?:|")
-        if string.rangeOfCharacter(from: characterset) != nil {
-            return true
-        }
-        return false
-    }
-
-    func specialCharacters() -> String {
-        return "* \" < > \\ / ? : |"
+        self.controller.enableSaveButtonAction()
     }
 }
 
@@ -301,6 +314,11 @@ extension PreviewViewController: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
         scrollViewTopConstraint.constant = 0
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        let index = self.previewViewModel?.visibleCellIndex.value ?? 0
+        self.controller.previewViewModel?.capturedAssets.value[index].description = textView.text
     }
 }
 
@@ -321,6 +339,60 @@ extension PreviewViewController: MDCBaseTextAreaDelegate {
     }
 }
 
-// MARK: - Storyboard Instantiable
+// MARK: - Collection View Delegate and Datasource
 
+extension PreviewViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func setCollectionViewFlowLayout() {
+        let flowLayout = CollectionFlowLayout()
+        self.collectionView.collectionViewLayout = flowLayout
+        collectionView.contentInsetAdjustmentBehavior = .always
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.controller.capturedAssetsViewModel.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let rowViewModel = self.controller.capturedAssetsViewModel[indexPath.row]
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CellConstants.CollectionCells.preview, for: indexPath)
+        if let cell = cell as? CellConfigurable {
+            cell.setup(viewModel: rowViewModel)
+        }
+        cell.layoutIfNeeded()
+        cell.contentView.isUserInteractionEnabled = true
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view.endEditing(true)
+        let index = indexPath.row
+        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
+        self.scrollCollectionView(to: index)
+        
+        if previewViewModel?.isAssetVideo(for: capturedAsset) == true {
+            performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
+                         sender: nil)
+        } else {
+            performSegue(withIdentifier: SegueIdentifiers.showFullScreenPhoto.rawValue,
+                         sender: nil)
+        }
+    }
+}
+
+// MARK: - Scroll View Delegate
+extension PreviewViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == self.collectionView {
+            var currentCellOffset = self.collectionView.contentOffset
+            currentCellOffset.x += self.collectionView.frame.width / 2
+            if let indexPath = self.collectionView.indexPathForItem(at: currentCellOffset) {
+                self.previewViewModel?.visibleCellIndex.value = indexPath.row
+                self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            }
+        }
+    }
+}
+
+// MARK: - Storyboard Instantiable
 extension PreviewViewController: CameraStoryboardInstantiable { }

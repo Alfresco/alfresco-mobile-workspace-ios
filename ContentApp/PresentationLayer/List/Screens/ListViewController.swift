@@ -23,7 +23,6 @@ class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
-
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
     // MARK: - View Life Cycle

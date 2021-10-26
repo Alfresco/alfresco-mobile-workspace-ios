@@ -115,8 +115,10 @@ class CameraViewController: UIViewController {
     @IBAction func captureButtonTapped(_ sender: ShutterButton) {
         if modeSelector.currentSelection == photoSlider {
             shutterButton.isUserInteractionEnabled = false
+            sessionPreview.isVideoRecording = false
         } else if modeSelector.currentSelection == videoSlider {
             timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
+            sessionPreview.isVideoRecording = timerViewConfig?.isStarted
             timerView?.isHidden = !(timerView?.isHidden ?? true)
             modeSelector.isHidden = !modeSelector.isHidden
             switchCameraButton.isHidden = !switchCameraButton.isHidden
@@ -258,13 +260,12 @@ class CameraViewController: UIViewController {
     }
     
     // MARK: - Navigation
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
            let pvc = segue.destination as? PreviewViewController,
            let asset = cameraViewModel?.capturedAsset {
-            let previewViewModel = PreviewViewModel(capturedAsset: asset)
-            pvc.previewViewModel = previewViewModel
+            let previewViewModel = PreviewViewModel(assets: [asset])
+            pvc.controller.previewViewModel = previewViewModel
             pvc.cameraDelegate = cameraDelegate
         }
     }
@@ -278,6 +279,18 @@ extension CameraViewController: CameraViewModelDelegate {
         if capturedAsset != nil {
             performSegue(withIdentifier: SegueIdentifiers.showPreviewVCfromCameraVC.rawValue,
                          sender: nil)
+        }
+        self.resetVideoCaptureModeForInteruptions()
+    }
+    
+    private func resetVideoCaptureModeForInteruptions() {
+        if sessionPreview.isVideoRecording == true {
+            timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
+            sessionPreview.isVideoRecording = timerViewConfig?.isStarted
+            timerView?.isHidden = !(timerView?.isHidden ?? true)
+            modeSelector.isHidden = !modeSelector.isHidden
+            switchCameraButton.isHidden = !switchCameraButton.isHidden
+            apply(fade: true, to: flashMenuView)
         }
     }
 }
@@ -332,6 +345,7 @@ extension CameraViewController: CaptureSessionUIDelegate {
 
 extension CameraViewController: ModeSelectorControlDelegate {
     func didChangeSelection(to currentSelection: Int) {
+        if sessionPreview.isVideoRecording == true { return }
         sessionPreview.reset(settings: [.flash, .focus, .position, .zoom])
         flashMenuView.flashMode = .auto
         flashModeButton.setImage(FlashMode.auto.icon, for: .normal)

@@ -180,6 +180,10 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
     }
+    
+    func resetSearchFilterTapped() {
+        AlfrescoLog.debug("resetSearchFilterTapped")
+    }
 }
 
 // MARK: - UISearchController Delegate
@@ -187,7 +191,10 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
 extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
         guard let searchViewModel = self.searchViewModel else { return }
-        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips())
+        
+        searchViewModel.loadAppConfigurationsForSearch()
+        let searchFilters = searchViewModel.searchFilters
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))        
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 

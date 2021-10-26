@@ -101,6 +101,8 @@
 "error-node-name-special-characters" = "Name can't contain these characters %@";
 "error-folder-name-end-period" = "Folder name can't end with a period %@";
 "error-folder-name-contain-only-spaces" = "Folder name can't contain only spaces";
+"error-file-name-empty" = "File name can't be empty";
+
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Changes to the configuration have been saved.";
@@ -112,7 +114,6 @@
 "approved-created" = "%@ was created";
 "approved-mark-offline" = "%@ will be made available offline.";
 "approved-remove-offline" = "%@ will no longer be available offline.";
-"approved-upload-photo" = "Photo scheduled for upload.";
 "approved-upload-media" = "Media scheduled for upload.";
 
 // MARK: - Settings Screen
@@ -136,6 +137,19 @@
 "libraries" = "Libraries";
 "file-and-folders" = "Files and folders";
 "search-in" = "in: ";
+
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Default";
+"advance-search" = "Advance Search";
+"text-filter" = "Text filter";
+"enter" = "Enter";
+"apply" = "Apply";
+"reset" = "Reset";
+"file-type" = "File type";
+"APP.SEARCH.RADIO.NONE" = "None";
+"APP.SEARCH.RADIO.ALL" = "All";
+"APP.SEARCH.RADIO.FOLDER" = "Folder";
+"APP.SEARCH.RADIO.DOCUMENT" = "Document";
 
 // MARK: - Group List Section
 "today" = "Today";

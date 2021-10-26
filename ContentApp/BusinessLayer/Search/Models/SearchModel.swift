@@ -42,7 +42,7 @@ class SearchModel: SearchModelProtocol {
         return true
     }
 
-    func defaultSearchChips() -> [SearchChipItem] {
+    func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         return []
     }
 
@@ -174,6 +174,41 @@ class SearchModel: SearchModelProtocol {
             return false
         }
         return true
+    }
+    
+    // MARK: - Advance Search Configuration
+    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?) {
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            QueriesAPI.loadAdvanceSearchConfigurations(for: nil) { (configuration, data, error) in
+                completion?(configuration, data)
+            }
+        })
+    }
+}
+
+// MARK: - Search Model Extension
+extension SearchModel {
+    func getCategories(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchCategories] {
+        if index >= 0 {
+            return configurations[index].categories
+        }
+        return []
+    }
+    
+    func getChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
+        let categories = getCategories(for: configurations, and: index)
+        var chipsArray = [SearchChipItem]()
+        for category in categories {
+            let name = category.name ?? ""
+            if let selector = category.component?.selector, let componentType = ComponentType(rawValue: selector) {
+                let chip = SearchChipItem(name: name,
+                                          selected: false,
+                                          componentType: componentType)
+                chipsArray.append(chip)
+            }
+        }
+        return chipsArray
     }
 }
 

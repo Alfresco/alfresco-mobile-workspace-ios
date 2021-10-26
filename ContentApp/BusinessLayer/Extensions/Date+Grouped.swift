@@ -58,3 +58,9 @@ extension Date {
         return selfYear == todayYear && selfMonth == todayMonth
     }
 }
+
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
+}

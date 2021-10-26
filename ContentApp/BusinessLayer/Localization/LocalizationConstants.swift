@@ -111,6 +111,7 @@ struct LocalizationConstants {
         static let errorNodeNameSpecialCharacters = NSLocalizedString("error-node-name-special-characters", comment: "")
         static let errorFolderNameEndPeriod = NSLocalizedString("error-folder-name-end-period", comment: "")
         static let errorFolderNameContainOnlySpaces = NSLocalizedString("error-folder-name-contain-only-spaces", comment: "")
+        static let errorEmptyFileName = NSLocalizedString("error-file-name-empty", comment: "")
     }
 
     struct Approved {
@@ -123,7 +124,6 @@ struct LocalizationConstants {
         static let created = NSLocalizedString("approved-created", comment: "")
         static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
-        static let uploadPhoto = NSLocalizedString("approved-upload-photo", comment: "")
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
     }
 
@@ -152,6 +152,15 @@ struct LocalizationConstants {
         static let filterLibraries = NSLocalizedString("libraries", comment: "")
         static let filterFoldersAndFiles = NSLocalizedString("file-and-folders", comment: "")
         static let searchIn = NSLocalizedString("search-in", comment: "")
+    }
+    
+    struct AdvanceSearch {
+        static let title = NSLocalizedString("advance-search", comment: "")
+        static let textFilter = NSLocalizedString("text-filter", comment: "")
+        static let enter = NSLocalizedString("enter", comment: "")
+        static let apply = NSLocalizedString("apply", comment: "")
+        static let reset = NSLocalizedString("reset", comment: "")
+        static let fileType = NSLocalizedString("file-type", comment: "")
     }
 
     struct GroupListSection {
@@ -240,5 +249,10 @@ struct LocalizationConstants {
         static let autoFlash = NSLocalizedString("auto-flash", comment: "")
         static let onFlash = NSLocalizedString("on-flash", comment: "")
         static let offFlash = NSLocalizedString("off-flash", comment: "")
+    }
+    
+    struct Alert {
+        static let alertTitle = NSLocalizedString("alert-title", comment: "")
+        static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
     }
 }

@@ -14,10 +14,12 @@ target 'ContentApp' do
   pod 'SVGKit', '~> 2.0'
   pod 'ObjectBox', '~> 1.5.0-sync-rc5'
   pod 'FastCoding', '~> 3.0'
+  pod 'DropDown'
 
   # Alfresco iOS Swift API
-  pod 'AlfrescoAuth', '~> 0'
-  pod 'AlfrescoContent', '~> 0'
+  pod 'AlfrescoAuth'
+  pod 'AlfrescoContent'
+
 
   # Material Components
   pod 'MaterialComponents/Buttons', '~> 124.0'

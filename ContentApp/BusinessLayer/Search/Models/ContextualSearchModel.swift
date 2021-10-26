@@ -22,18 +22,21 @@ import AlfrescoContent
 class ContextualSearchModel: SearchModel {
     var searchChipNode: SearchChipItem?
 
-    override func defaultSearchChips() -> [SearchChipItem] {
+    override func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         searchChips = []
-        if let searchChipNode = self.searchChipNode {
-            searchChipNode.selected = true
-            searchChips.append(searchChipNode)
+        if configurations.isEmpty {
+            if let searchChipNode = self.searchChipNode {
+                searchChipNode.selected = true
+                searchChips.append(searchChipNode)
+            }
+            searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFiles,
+                                              type: .file))
+            searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFolders,
+                                              type: .folder))
+            return searchChips
+        } else {
+            return createChipsForAdvanceSearch(for: configurations, and: index)
         }
-        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFiles,
-                                          type: .file))
-        searchChips.append(SearchChipItem(name: LocalizationConstants.Search.filterFolders,
-                                          type: .folder))
-
-        return searchChips
     }
 
     override func handleSearch(for searchString: String,
@@ -42,5 +45,24 @@ class ContextualSearchModel: SearchModel {
         performFileFolderSearch(searchString: searchString,
                                 paginationRequest: paginationRequest,
                                 completionHandler: completionHandler)
+    }
+}
+
+// MARK: Advance Search
+extension ContextualSearchModel {
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
+        if index < 0 {
+            return []
+        } else {
+            var chipsArray = [SearchChipItem]()
+            if let searchChipNode = self.searchChipNode {
+                searchChipNode.selected = true
+                chipsArray.append(searchChipNode)
+            }
+            
+            let advanceSearchChips = self.getChipsForAdvanceSearch(for: configurations, and: index)
+            chipsArray.append(contentsOf: advanceSearchChips)
+            return chipsArray
+        }
     }
 }

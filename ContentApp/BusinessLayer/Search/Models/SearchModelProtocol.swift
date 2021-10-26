@@ -30,7 +30,7 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     var searchType: SearchType { get set }
 
     func isNodePathEnabled() -> Bool
-    func defaultSearchChips() -> [SearchChipItem]
+    func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem]
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
     func performSearch(for string: String,
                        paginationRequest: RequestPagination?,
@@ -38,4 +38,6 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     func performLiveSearch(for string: String,
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler)
+    
+    func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?)
 }

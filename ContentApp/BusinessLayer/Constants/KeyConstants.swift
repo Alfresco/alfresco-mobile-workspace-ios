@@ -43,4 +43,11 @@ struct KeyConstants {
         static let unauthorizedRequest = "kAPIUnauthorizedRequestNotification"
         static let reSignin = "kReSignInNotification"
     }
+    
+    struct AdvanceSearch {
+        static let fetchAdvanceSearchFromServer = "fetchAdvanceSearchFromServer"
+        static let configFile = "advance-search-config"
+        static let configFileExtension = "json"
+        static let lastAPICallTime = "advance-search-api-call-time"
+    }
 }

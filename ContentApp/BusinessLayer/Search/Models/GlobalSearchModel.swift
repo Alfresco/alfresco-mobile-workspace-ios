@@ -21,15 +21,19 @@ import AlfrescoContent
 
 class GlobalSearchModel: SearchModel {
     
-    override func defaultSearchChips() -> [SearchChipItem] {
-        searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
-                                       type: .file),
-                        SearchChipItem(name: LocalizationConstants.Search.filterFolders,
-                                       type: .folder),
-                        SearchChipItem(name: LocalizationConstants.Search.filterLibraries,
-                                       type: .library,
-                                       selected: false)]
-        return searchChips
+    override func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
+        if configurations.isEmpty {
+            searchChips = [ SearchChipItem(name: LocalizationConstants.Search.filterFiles,
+                                           type: .file),
+                            SearchChipItem(name: LocalizationConstants.Search.filterFolders,
+                                           type: .folder),
+                            SearchChipItem(name: LocalizationConstants.Search.filterLibraries,
+                                           type: .library,
+                                           selected: false)]
+            return searchChips
+        } else {
+            return createChipsForAdvanceSearch(for: configurations, and: index)
+        }
     }
     
     override func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int] {
@@ -67,6 +71,17 @@ class GlobalSearchModel: SearchModel {
             performFileFolderSearch(searchString: searchString,
                                     paginationRequest: paginationRequest,
                                     completionHandler: completionHandler)
+        }
+    }
+}
+
+// MARK: Advance Search
+extension GlobalSearchModel {
+    func createChipsForAdvanceSearch(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
+        if index < 0 {
+            return []
+        } else {
+            return self.getChipsForAdvanceSearch(for: configurations, and: index)
         }
     }
 }
