@@ -220,49 +220,6 @@ extension FilePreviewViewController: FilePreviewViewModelDelegate {
         ])
     }
 
-    func requestFileUnlock(retry: Bool) {
-        let passwordField = MDCOutlinedTextField()
-        passwordField.labelBehavior = MDCTextControlLabelBehavior.floats
-        passwordField.clearButtonMode = UITextField.ViewMode.whileEditing
-        passwordField.isSecureTextEntry = false
-        passwordField.label.text = LocalizationConstants.TextFieldPlaceholders.password
-        applyTheme(for: passwordField)
-        passwordField.isSecureTextEntry = true
-        filePreviewPasswordField = passwordField
-
-        let title = retry ? LocalizationConstants.FilePreview.passwordPromptFailTitle :
-            LocalizationConstants.FilePreview.passwordPromptTitle
-        let message = retry ? LocalizationConstants.FilePreview.passwordPromptFailMessage :
-            LocalizationConstants.FilePreview.passwordPromptMessage
-
-        var alertController: MDCAlertController?
-
-        let submitAction =
-            MDCAlertAction(title: LocalizationConstants.FilePreview.passwordPromptSubmit) { [weak self] _ in
-                guard let sSelf = self else { return }
-                sSelf.filePreviewViewModel?.unlockFile(with: passwordField.text ?? "")
-            }
-        submitAction.accessibilityIdentifier = "submitActionButton"
-        let cancelAction =
-            MDCAlertAction(title: LocalizationConstants.General.cancel) { [weak self] _ in
-                guard let sSelf = self else { return }
-
-                alertController?.dismiss(animated: true, completion: nil)
-                sSelf.filePreviewCoordinatorDelegate?.navigateBack()
-            }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        alertController = showDialog(title: title,
-                                     message: message,
-                                     actions: [submitAction, cancelAction],
-                                     accesoryView: passwordField,
-                                     completionHandler: {
-                                        passwordField.becomeFirstResponder()
-                                     })
-
-        filePreviewPasswordDialog = alertController
-    }
-
     func enableFullscreenContentExperience() {
         needsContraintsForFullScreen = true
         DispatchQueue.main.async { [weak self] in
