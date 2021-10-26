@@ -37,11 +37,28 @@ class SearchListComponentController: NSObject {
     
     // MARK: - Build View Models
     func buildViewModel() {
-        if listViewModel.isRadioList {
-            buildViewModelForRadioList()
-        } else {
-            buildViewModelForCheckList()
+        var optionsArray = [RowViewModel]()
+        if let options = listViewModel.selectedCategory?.component?.settings?.options {
+            for (index, item) in options.enumerated() {
+                let name = item.name
+                let value = item.value
+                var isSelected = false
+                if listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) != nil {
+                    isSelected = true
+                }
+                
+                let rowVM = ListItemCellViewModel(title: name, isRadioList: listViewModel.isRadioList, isSelected: isSelected)
+                rowVM.didSelectListItem = {
+                    if self.listViewModel.isRadioList {
+                        self.updateSelectedValueForRadioList(for: index)
+                    } else {
+                        self.updateSelectedValueForCheckList(for: index)
+                    }
+                }
+                optionsArray.append(rowVM)
+            }
         }
+        listViewModel.rowViewModels.value = optionsArray
     }
     
     func applyFilterAction() {
@@ -92,68 +109,26 @@ class SearchListComponentController: NSObject {
     }
     
     // MARK: - Check List
-    private func buildViewModelForCheckList() {
-        var optionsArray = [RowViewModel]()
-        if let options = listViewModel.selectedCategory?.component?.settings?.options {
-            for (index, item) in options.enumerated() {
-                let name = item.name
-                let value = item.value
-                var isSelected = false
-                if listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) != nil {
-                    isSelected = true
-                }
-                
-                let rowVM = ListItemCellViewModel(title: name, isRadioList: listViewModel.isRadioList, isSelected: isSelected)
-                rowVM.didSelectListItem = {
-                    self.updateSelectedValueForCheckList(for: index)
-                }
-                optionsArray.append(rowVM)
-            }
-        }
-        listViewModel.rowViewModels.value = optionsArray
-    }
-    
     private func updateSelectedValueForCheckList(for index: Int) {
-        if let category = listViewModel.selectedCategory, let options = category.component?.settings?.options {
-            
+        if let category = listViewModel.selectedCategory,
+            let options = category.component?.settings?.options {
             let value = options[index].value ?? ""
             if let object = listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) {
                 listViewModel.selectedOptions.remove(at: object.offset)
             } else {
                 listViewModel.selectedOptions.append(options[index])
             }
-            buildViewModelForCheckList()
+            buildViewModel()
         }
     }
         
     // MARK: - Radio List
-    private func buildViewModelForRadioList() {
-        var optionsArray = [RowViewModel]()
-        if let options = self.listViewModel.selectedCategory?.component?.settings?.options {
-            for (index, item) in options.enumerated() {
-                let name = item.name
-                let value = item.value
-                var isSelected = false
-                if listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) != nil {
-                    isSelected = true
-                }
-  
-                let rowVM = ListItemCellViewModel(title: name, isRadioList: self.listViewModel.isRadioList, isSelected: isSelected)
-                rowVM.didSelectListItem = {
-                    self.updateSelectedValueForRadioList(for: index)
-                }
-                optionsArray.append(rowVM)
-            }
-        }
-        self.listViewModel.rowViewModels.value = optionsArray
-    }
-    
     private func updateSelectedValueForRadioList(for index: Int) {
         if let category = self.listViewModel.selectedCategory {
             let options = category.component?.settings?.options ?? []
             listViewModel.selectedOptions.removeAll()
             listViewModel.selectedOptions.append(options[index])
-            self.buildViewModelForRadioList()
+            buildViewModel()
         }
     }
 }

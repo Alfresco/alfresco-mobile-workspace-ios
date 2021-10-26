@@ -140,7 +140,8 @@ class PDFRenderer: UIView {
             object: nil)
     }
 }
-//MARK: Page numbers handling
+
+// MARK: - Page numbers handling
 extension PDFRenderer {
     @objc private func handlePageChange(notification: Notification) {
         if let currentPage = pdfView?.currentPage?.pageRef?.pageNumber,

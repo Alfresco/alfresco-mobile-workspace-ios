@@ -139,7 +139,6 @@ class NodeOperations {
                                   }
     }
     
-
     func createNode(nodeId: String,
                     name: String,
                     description: String?,
