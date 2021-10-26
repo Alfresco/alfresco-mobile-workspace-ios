@@ -43,6 +43,7 @@ class SearchListComponentViewController: SystemThemableViewController {
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
         tableView.estimatedRowHeight = 1000
+        controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
         registerCells()
