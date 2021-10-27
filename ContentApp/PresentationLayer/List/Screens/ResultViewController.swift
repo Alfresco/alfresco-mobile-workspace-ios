@@ -461,6 +461,8 @@ extension ResultViewController {
             showListSelectorComponent(isRadio: false)
         } else if chip.componentType == .radio {
             showListSelectorComponent(isRadio: true)
+        } else if chip.componentType == .contentSizeRange {
+            showNumberRangeSelectorComponent()
         }
     }
     
@@ -489,6 +491,22 @@ extension ResultViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
             viewController.listViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// Number Range Component
+    private func showNumberRangeSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchNumberRangeComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.numberRangeViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)

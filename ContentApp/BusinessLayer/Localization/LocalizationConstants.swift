@@ -161,6 +161,10 @@ struct LocalizationConstants {
         static let apply = NSLocalizedString("apply", comment: "")
         static let reset = NSLocalizedString("reset", comment: "")
         static let fileType = NSLocalizedString("file-type", comment: "")
+        static let numberRangeFilter = NSLocalizedString("number-range", comment: "")
+        static let fromKeyword = NSLocalizedString("from-keyword", comment: "")
+        static let toKeyword = NSLocalizedString("to-keyword", comment: "")
+        static let invalidFormat = NSLocalizedString("invalid-format", comment: "")
     }
 
     struct GroupListSection {

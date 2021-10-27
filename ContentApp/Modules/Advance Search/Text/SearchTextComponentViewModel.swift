@@ -22,7 +22,7 @@ import AlfrescoContent
 class SearchTextComponentViewModel {
     var selectedCategory: SearchCategories?
 
-    /// To get placeholder for selector
+    // MARK: - To get placeholder for selector
     func getPlaceholder() -> String {
         if let selectedCategory = self.selectedCategory {
             return selectedCategory.component?.settings?.placeholder ?? ""
@@ -30,7 +30,7 @@ class SearchTextComponentViewModel {
         return ""
     }
     
-    /// To get already added value for selector
+    // MARK: - To get already added value for selector
     func getValue() -> String {
         if let selectedCategory = self.selectedCategory {
             return selectedCategory.component?.settings?.selectedValue ?? ""
@@ -38,7 +38,7 @@ class SearchTextComponentViewModel {
         return ""
     }
     
-    /// To reset filter, pass nil else pass value
+    // MARK: - To reset filter, pass nil else pass value
     func applyFilter(with value: String?) {
         if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
