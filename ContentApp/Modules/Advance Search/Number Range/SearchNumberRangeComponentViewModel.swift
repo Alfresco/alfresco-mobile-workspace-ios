@@ -22,6 +22,7 @@ import AlfrescoContent
 class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
+    let errorTopConstraint = 24.0
     
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (minValue: String?, maxValue: String?) {
@@ -39,6 +40,18 @@ class SearchNumberRangeComponentViewModel: NSObject {
     }
 
     // MARK: - Apply Filter
+    func isValidationPassed(minValue: String?, maxValue: String?) -> Bool {
+        let minimumValue = (minValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let maximumValue = (maxValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if minimumValue.isEmpty || maximumValue.isEmpty {
+            return true
+        } else if Int(maximumValue) ?? 0 <= Int(minimumValue) ?? 0 {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     func applyFilter(minValue: String?, maxValue: String?) {
         let minimumValue = (minValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let maximumValue = (maxValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)

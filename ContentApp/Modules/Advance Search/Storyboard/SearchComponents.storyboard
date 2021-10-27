@@ -453,7 +453,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gTN-Do-Ouc" userLabel="baseView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="269"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="293"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eij-mf-kNs" userLabel="headerView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="71"/>
@@ -507,10 +507,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fWT-LB-sTz" userLabel="textFieldView">
-                                        <rect key="frame" x="0.0" y="71" width="414" height="105"/>
+                                        <rect key="frame" x="0.0" y="71" width="414" height="129"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZEq-SH-owW" userLabel="horizontalDivider">
-                                                <rect key="frame" x="200" y="51.5" width="14" height="2"/>
+                                                <rect key="frame" x="200" y="63.5" width="14" height="2"/>
                                                 <color key="backgroundColor" red="0.12941176470588234" green="0.13725490196078433" blue="0.15686274509803921" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="14" id="446-Ky-sMM"/>
@@ -545,8 +545,17 @@
                                                     <outlet property="delegate" destination="mls-kh-4nm" id="hA0-ye-lRY"/>
                                                 </connections>
                                             </textField>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t4w-rL-2o4" userLabel="errorLabel">
+                                                <rect key="frame" x="20" y="104" width="374" height="0.0"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="titleScreen">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gJG-xN-gan" userLabel="divider">
-                                                <rect key="frame" x="0.0" y="104" width="414" height="1"/>
+                                                <rect key="frame" x="0.0" y="128" width="414" height="1"/>
                                                 <color key="backgroundColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="cqL-vK-CgJ"/>
@@ -558,20 +567,23 @@
                                             <constraint firstItem="T2J-Xb-NEh" firstAttribute="leading" secondItem="fWT-LB-sTz" secondAttribute="leading" constant="20" id="07L-OY-hXF"/>
                                             <constraint firstItem="ZEq-SH-owW" firstAttribute="leading" secondItem="T2J-Xb-NEh" secondAttribute="trailing" constant="10" id="66B-u6-m44"/>
                                             <constraint firstItem="ZEq-SH-owW" firstAttribute="centerX" secondItem="fWT-LB-sTz" secondAttribute="centerX" id="8Vv-KY-qAj"/>
-                                            <constraint firstItem="gJG-xN-gan" firstAttribute="top" secondItem="T2J-Xb-NEh" secondAttribute="bottom" constant="24" id="Bqv-Vw-7Sw"/>
                                             <constraint firstItem="6jD-28-VtD" firstAttribute="top" secondItem="T2J-Xb-NEh" secondAttribute="top" id="HIa-Y7-iwB"/>
+                                            <constraint firstItem="gJG-xN-gan" firstAttribute="top" secondItem="t4w-rL-2o4" secondAttribute="bottom" constant="24" id="Irx-7X-UIS"/>
                                             <constraint firstAttribute="trailing" secondItem="gJG-xN-gan" secondAttribute="trailing" id="OQ1-mW-H4I"/>
+                                            <constraint firstItem="t4w-rL-2o4" firstAttribute="top" secondItem="6jD-28-VtD" secondAttribute="bottom" constant="24" id="U3P-IR-y3I"/>
                                             <constraint firstItem="6jD-28-VtD" firstAttribute="bottom" secondItem="T2J-Xb-NEh" secondAttribute="bottom" id="WvD-2y-Fm4"/>
                                             <constraint firstItem="6jD-28-VtD" firstAttribute="leading" secondItem="ZEq-SH-owW" secondAttribute="trailing" constant="10" id="b3w-PZ-7Me"/>
                                             <constraint firstItem="ZEq-SH-owW" firstAttribute="centerY" secondItem="fWT-LB-sTz" secondAttribute="centerY" id="dna-e1-9qs"/>
                                             <constraint firstItem="gJG-xN-gan" firstAttribute="leading" secondItem="fWT-LB-sTz" secondAttribute="leading" id="iM0-z2-FOt"/>
                                             <constraint firstAttribute="bottom" secondItem="gJG-xN-gan" secondAttribute="bottom" id="jOM-1B-Oat"/>
+                                            <constraint firstItem="t4w-rL-2o4" firstAttribute="leading" secondItem="T2J-Xb-NEh" secondAttribute="leading" id="jlH-oD-mnA"/>
                                             <constraint firstItem="T2J-Xb-NEh" firstAttribute="top" secondItem="fWT-LB-sTz" secondAttribute="top" constant="24" id="m3w-S2-gUK"/>
+                                            <constraint firstItem="t4w-rL-2o4" firstAttribute="trailing" secondItem="6jD-28-VtD" secondAttribute="trailing" id="rW8-G8-010"/>
                                             <constraint firstAttribute="trailing" secondItem="6jD-28-VtD" secondAttribute="trailing" constant="20" id="wdt-9o-5yr"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovs-wF-Mgw" userLabel="buttonsView">
-                                        <rect key="frame" x="0.0" y="176" width="414" height="93"/>
+                                        <rect key="frame" x="0.0" y="200" width="414" height="93"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pn4-BV-wEz" userLabel="applyView">
                                                 <rect key="frame" x="0.0" y="10" width="207" height="83"/>
@@ -680,11 +692,13 @@
                         <outlet property="dismissButton" destination="kqr-Ct-fcM" id="aMY-EB-lpZ"/>
                         <outlet property="divider" destination="fyA-EH-Ev4" id="0tX-rX-ofT"/>
                         <outlet property="dividerTextField" destination="gJG-xN-gan" id="Y5h-AG-nnA"/>
+                        <outlet property="errorLabel" destination="t4w-rL-2o4" id="htR-pD-Vd5"/>
                         <outlet property="headerTitleLabel" destination="n3B-oV-1XD" id="1hV-ke-nJG"/>
                         <outlet property="horizontalDivider" destination="ZEq-SH-owW" id="ggp-fI-ZTc"/>
                         <outlet property="maxRangeTextField" destination="6jD-28-VtD" id="d0I-6Y-upp"/>
                         <outlet property="minRangeTextField" destination="T2J-Xb-NEh" id="t8N-Pf-59d"/>
                         <outlet property="resetButton" destination="ZfR-Ox-IVS" id="tmY-NI-WHB"/>
+                        <outlet property="topConstraintErrorLabel" destination="U3P-IR-y3I" id="PEG-aK-nWg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1y1-jZ-FZp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

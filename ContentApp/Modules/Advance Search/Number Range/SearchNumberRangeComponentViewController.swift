@@ -34,6 +34,8 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     @IBOutlet weak var dividerTextField: UIView!
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var topConstraintErrorLabel: NSLayoutConstraint!
     lazy var numberRangeViewModel = SearchNumberRangeComponentViewModel()
     var callback: SearchComponentCallBack?
     
@@ -79,6 +81,8 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
         divider.backgroundColor = currentTheme.onSurface12Color
         horizontalDivider.backgroundColor = currentTheme.onSurface12Color
         dividerTextField.backgroundColor = currentTheme.onSurface12Color
+        errorLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        errorLabel.textColor = currentTheme.errorColor
         
         minRangeTextField.applyTheme(withScheme: textFieldScheme)
         minRangeTextField.trailingViewMode = .unlessEditing
@@ -111,6 +115,7 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
         maxRangeTextField.label.text = LocalizationConstants.AdvanceSearch.toKeyword
         minRangeTextField.text = minValue
         maxRangeTextField.text = maxValue
+        checkForError(for: minValue, and: maxValue)
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
     }
@@ -121,13 +126,30 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        self.numberRangeViewModel.applyFilter(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text)
-        self.dismissComponentButtonAction(Any.self)
+        if numberRangeViewModel.isValidationPassed(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text) {
+            numberRangeViewModel.applyFilter(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text)
+            topConstraintErrorLabel.constant = 0
+            errorLabel.text = nil
+            self.dismissComponentButtonAction(Any.self)
+        } else {
+            topConstraintErrorLabel.constant = numberRangeViewModel.errorTopConstraint
+            errorLabel.text = LocalizationConstants.AdvanceSearch.invalidFormat
+        }
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.numberRangeViewModel.resetFilter()
         self.dismissComponentButtonAction(Any.self)
+    }
+    
+    func checkForError(for minValue: String?, and maxValue: String?) {
+        if numberRangeViewModel.isValidationPassed(minValue: minValue, maxValue: maxValue) {
+            topConstraintErrorLabel.constant = 0
+            errorLabel.text = nil
+        } else {
+            topConstraintErrorLabel.constant = numberRangeViewModel.errorTopConstraint
+            errorLabel.text = LocalizationConstants.AdvanceSearch.invalidFormat
+        }
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -145,9 +167,18 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
 // MARK: - Text Field Delegate
 extension SearchNumberRangeComponentViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let allowedCharacters = CharacterSet.decimalDigits
-        let characterSet = CharacterSet(charactersIn: string)
-        return allowedCharacters.isSuperset(of: characterSet)
+        guard CharacterSet(charactersIn: "0123456789").isSuperset(of: CharacterSet(charactersIn: string)) else {
+            return false
+        }
+        
+        if textField == minRangeTextField {
+            let text = textField.updatedText(for: range, replacementString: string)
+            checkForError(for: text, and: maxRangeTextField.text)
+        } else {
+            let text = textField.updatedText(for: range, replacementString: string)
+            checkForError(for: minRangeTextField.text, and: text)
+        }
+        return true
     }
 }
 
