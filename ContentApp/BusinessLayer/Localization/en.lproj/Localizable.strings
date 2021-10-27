@@ -151,6 +151,10 @@
 "APP.SEARCH.RADIO.ALL" = "All";
 "APP.SEARCH.RADIO.FOLDER" = "Folder";
 "APP.SEARCH.RADIO.DOCUMENT" = "Document";
+"number-range" = "Number range";
+"from-keyword" = "From";
+"to-keyword" = "To";
+"invalid-format" = "From value should be less than To value";
 
 // MARK: - Group List Section
 "today" = "Today";
