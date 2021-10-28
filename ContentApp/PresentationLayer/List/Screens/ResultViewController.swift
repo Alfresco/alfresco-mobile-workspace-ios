@@ -464,6 +464,8 @@ extension ResultViewController {
             showListSelectorComponent(isRadio: true)
         } else if chip.componentType == .contentSizeRange {
             showNumberRangeSelectorComponent()
+        } else if chip.componentType == .contentSize {
+            showSliderSelectorComponent()
         }
     }
     
@@ -508,6 +510,22 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// Slider Component
+    private func showSliderSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchSliderRangeComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.sliderViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
