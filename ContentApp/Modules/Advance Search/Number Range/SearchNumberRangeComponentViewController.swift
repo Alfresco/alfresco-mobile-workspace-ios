@@ -110,7 +110,7 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     private func applyLocalization() {
         let minValue = numberRangeViewModel.getPrefilledValues().minValue
         let maxValue = numberRangeViewModel.getPrefilledValues().maxValue
-        headerTitleLabel.text = LocalizationConstants.AdvanceSearch.numberRangeFilter
+        headerTitleLabel.text = numberRangeViewModel.title
         minRangeTextField.label.text = LocalizationConstants.AdvanceSearch.fromKeyword
         maxRangeTextField.label.text = LocalizationConstants.AdvanceSearch.toKeyword
         minRangeTextField.text = minValue
