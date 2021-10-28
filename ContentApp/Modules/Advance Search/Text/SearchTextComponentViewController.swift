@@ -99,7 +99,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
     private func applyLocalization() {
         let placeholder = self.textViewModel.getPlaceholder()
         let value = self.textViewModel.getValue()
-        headerTitleLabel.text = LocalizationConstants.AdvanceSearch.textFilter
+        headerTitleLabel.text = textViewModel.title
         keywordTextField.label.text = placeholder
         keywordTextField.text = value
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
