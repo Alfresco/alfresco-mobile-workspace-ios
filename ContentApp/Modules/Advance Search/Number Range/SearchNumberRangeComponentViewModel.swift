@@ -24,6 +24,10 @@ class SearchNumberRangeComponentViewModel: NSObject {
     let stringConcatenator = "-"
     let errorTopConstraint = 24.0
     
+    var title: String {
+        return selectedCategory?.name ?? ""
+    }
+    
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (minValue: String?, maxValue: String?) {
         if let selectedCategory = self.selectedCategory {

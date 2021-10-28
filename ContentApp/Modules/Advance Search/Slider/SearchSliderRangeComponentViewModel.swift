@@ -16,38 +16,49 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 import AlfrescoContent
 
-class SearchTextComponentViewModel {
+class SearchSliderRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
 
     var title: String {
         return selectedCategory?.name ?? ""
     }
     
-    // MARK: - To get placeholder for selector
-    func getPlaceholder() -> String {
-        if let selectedCategory = self.selectedCategory {
-            return selectedCategory.component?.settings?.placeholder ?? ""
-        }
-        return ""
+    var step: CGFloat {
+        return CGFloat(selectedCategory?.component?.settings?.step ?? 1)
     }
     
-    // MARK: - To get already added value for selector
-    func getValue() -> String {
-        if let selectedCategory = self.selectedCategory {
-            return selectedCategory.component?.settings?.selectedValue ?? ""
-        }
-        return ""
+    var min: CGFloat {
+        return CGFloat(selectedCategory?.component?.settings?.min ?? 0)
     }
     
-    // MARK: - To reset filter, pass nil else pass value
-    func applyFilter(with value: String?) {
+    var max: CGFloat {
+        return CGFloat(selectedCategory?.component?.settings?.max ?? 0)
+    }
+    
+    var numberOfDiscreteValues: UInt {
+       return UInt(max - min) + 1
+    }
+    
+    var value: CGFloat {
+        if let selectedValue = self.selectedCategory?.component?.settings?.selectedValue {
+            return selectedValue.CGFloatValue() ?? min
+        }
+        return min
+    }
+    
+    ///  To reset filter, pass 0 else pass value
+    func applyFilter(with value: CGFloat) {
         if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
             let settings = component?.settings
-            settings?.selectedValue = value
+            if value == 0 {
+                settings?.selectedValue = ""
+            } else {
+                settings?.selectedValue = "\(Int(value))"
+            }
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory

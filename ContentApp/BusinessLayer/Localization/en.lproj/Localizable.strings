@@ -141,16 +141,13 @@
 // MARK: - Advance Search
 "DEFAULT_SEARCH" = "Default";
 "advance-search" = "Advance Search";
-"text-filter" = "Text filter";
 "enter" = "Enter";
 "apply" = "Apply";
 "reset" = "Reset";
-"file-type" = "File type";
 "APP.SEARCH.RADIO.NONE" = "None";
 "APP.SEARCH.RADIO.ALL" = "All";
 "APP.SEARCH.RADIO.FOLDER" = "Folder";
 "APP.SEARCH.RADIO.DOCUMENT" = "Document";
-"number-range" = "Number range";
 "from-keyword" = "From";
 "to-keyword" = "To";
 "invalid-format" = "From value should be less than To value";
