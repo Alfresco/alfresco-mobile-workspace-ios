@@ -22,7 +22,7 @@ import AlfrescoContent
 class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
-    let errorTopConstraint = 24.0
+    let errorTopConstraint: CGFloat = 24.0
     
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (minValue: String?, maxValue: String?) {
