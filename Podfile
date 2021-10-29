@@ -42,7 +42,8 @@ target 'ContentApp' do
   pod 'MaterialComponents/ProgressView', '~> 124.0'
   pod 'MaterialComponents/Tabs+TabBarView', '~> 124.0'
   pod 'MaterialComponents/Tabs+TabBarViewTheming', '~> 124.0'
-
+  pod 'MaterialComponents/Slider'
+  
   target 'ContentAppTests' do
     inherit! :search_paths
   end

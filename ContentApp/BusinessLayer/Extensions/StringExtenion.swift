@@ -17,16 +17,13 @@
 //
 
 import Foundation
-import AlfrescoContent
+import UIKit
 
-class SearchListComponentViewModel {
-    var selectedCategory: SearchCategories?
-    var selectedOptions = [SearchComponentOptions]()
-    var isRadioList = false
-    let rowViewModels = Observable<[RowViewModel]>([])
-    let stringConcatenator = ", "
-    
-    var title: String {
-        return selectedCategory?.name ?? ""
+extension String {
+    func CGFloatValue() -> CGFloat? {
+        guard let doubleValue = Double(self) else {
+            return nil
+        }
+        return CGFloat(doubleValue)
     }
 }

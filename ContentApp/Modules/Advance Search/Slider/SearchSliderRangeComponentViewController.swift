@@ -20,35 +20,40 @@ import UIKit
 import AlfrescoContent
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
+import MaterialComponents.MaterialSlider
 
-class SearchListComponentViewController: SystemThemableViewController {
+class SearchSliderRangeComponentViewController: SystemThemableViewController {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var dismissButton: UIButton!
-    @IBOutlet weak var headerDivider: UIView!
-    @IBOutlet weak var listViewDivider: UIView!
+    @IBOutlet weak var divider: UIView!
+    @IBOutlet weak var slider: MDCSlider!
+    @IBOutlet weak var dividerSlider: UIView!
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var heightTableView: NSLayoutConstraint!
-    var listViewModel: SearchListComponentViewModel { return controller.listViewModel }
-    lazy var controller: SearchListComponentController = { return SearchListComponentController() }()
-    let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
+    lazy var sliderViewModel = SearchSliderRangeComponentViewModel()
     var callback: SearchComponentCallBack?
-
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
-        tableView.estimatedRowHeight = 1000
-        controller.updatedSelectedValues()
+        hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
-        registerCells()
-        controller.buildViewModel()
-        setupBindings()
+        setupSlider()
+    }
+    
+    func setupSlider() {
+        slider.minimumValue = sliderViewModel.min
+        slider.maximumValue = sliderViewModel.max
+        slider.trackHeight = 4.0
+        slider.thumbRadius = 16.0
+        slider.isDiscrete = true
+        slider.value = sliderViewModel.value
+        slider.numberOfDiscreteValues = sliderViewModel.numberOfDiscreteValues
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,9 +94,9 @@ class SearchListComponentViewController: SystemThemableViewController {
         view.backgroundColor = currentTheme.surfaceColor
         headerTitleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         dismissButton.tintColor = currentTheme.onSurfaceColor
-        headerDivider.backgroundColor = currentTheme.onSurface12Color
-        listViewDivider.backgroundColor = currentTheme.onSurface12Color
-                
+        divider.backgroundColor = currentTheme.onSurface12Color
+        dividerSlider.backgroundColor = currentTheme.onSurface12Color
+        
         applyButton.applyContainedTheme(withScheme: buttonScheme)
         applyButton.isUppercaseTitle = false
         applyButton.setShadowColor(.clear, for: .normal)
@@ -103,78 +108,36 @@ class SearchListComponentViewController: SystemThemableViewController {
         resetButton.setShadowColor(.clear, for: .normal)
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+         
+        slider.trackBackgroundColor = currentTheme.onSurface5Color
+        slider.setTrackFillColor(currentTheme.onPrimaryColor, for: .normal)
+        slider.setThumbColor(currentTheme.onPrimaryColor, for: .normal)
+        slider.valueLabelBackgroundColor = currentTheme.onSurface5Color
+        slider.valueLabelTextColor = currentTheme.onSurfaceColor
     }
     
     private func applyLocalization() {
-        headerTitleLabel.text = listViewModel.title
+        headerTitleLabel.text = sliderViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
     }
     
-    func registerCells() {
-        self.tableView.register(UINib(nibName: CellConstants.TableCells.listItem, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.listItem)
-    }
-    
-    // MARK: - Set up Bindings
-    private func setupBindings() {
-        /* observing rows */
-        self.listViewModel.rowViewModels.addObserver() { [weak self] (rows) in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-        }
-    }
-    
-    @IBAction func dismissButtonAction(_ sender: Any) {
-        self.callback?(self.listViewModel.selectedCategory)
+    @IBAction func dismissComponentButtonAction(_ sender: Any) {
+        self.callback?(self.sliderViewModel.selectedCategory)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        self.controller.applyFilterAction()
-        self.dismissButtonAction(Any.self)
+        sliderViewModel.applyFilter(with: slider.value)
+        self.dismissComponentButtonAction(Any.self)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        self.controller.resetFilterAction()
-        self.dismissButtonAction(Any.self)
-    }
-}
-
-// MARK: - Table View Data Source and Delegates
-extension SearchListComponentViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.listViewModel.rowViewModels.value.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rowViewModel = listViewModel.rowViewModels.value[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
-        if let cell = cell as? CellConfigurable {
-            cell.setup(viewModel: rowViewModel)
-        }
-        if cell is ListItemTableViewCell {
-            if let theme = coordinatorServices?.themingService {
-                (cell as? ListItemTableViewCell)?.applyTheme(with: theme)
-            }
-        }
-        cell.layoutIfNeeded()
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        self.view.layoutSubviews()
-        DispatchQueue.main.async {
-            self.heightTableView?.constant = ( self.tableView.contentSize.height < self.maxHeightTableView ) ? self.tableView.contentSize.height : self.maxHeightTableView
-        }
-        self.view.layoutIfNeeded()
+        sliderViewModel.applyFilter(with: 0)
+        self.dismissComponentButtonAction(Any.self)
     }
 }
 
 // MARK: - Storyboard Instantiable
-extension SearchListComponentViewController: SearchComponentsStoryboardInstantiable { }
+extension SearchSliderRangeComponentViewController: SearchComponentsStoryboardInstantiable { }
+
