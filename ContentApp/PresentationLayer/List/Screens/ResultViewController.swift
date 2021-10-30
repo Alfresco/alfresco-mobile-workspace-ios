@@ -465,6 +465,8 @@ extension ResultViewController {
             showNumberRangeSelectorComponent()
         } else if chip.componentType == .contentSize {
             showSliderSelectorComponent()
+        } else if chip.componentType == .createdDateRange {
+            showCalendarSelectorComponent()
         }
     }
     
@@ -525,6 +527,22 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.sliderViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// Calendar Component
+    private func showCalendarSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchCalendarComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.calendarViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)

@@ -17,7 +17,18 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class SearchCalendarComponentViewModel: NSObject {
+    var selectedCategory: SearchCategories?
 
+    var title: String {
+        return selectedCategory?.name ?? ""
+    }
+    
+    func selectedDateString(for date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MMM-YY"
+        return dateFormatter.string(from: date)
+    }
 }
