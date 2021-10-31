@@ -993,7 +993,7 @@
                                             <constraint firstItem="ybg-kd-jXn" firstAttribute="leading" secondItem="f4k-Bo-MFb" secondAttribute="leading" id="tm2-dD-F8Q"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2E-wZ-pKp" userLabel="resetFilterButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2E-wZ-pKp" userLabel="resetFilterButton">
                                         <rect key="frame" x="354" y="0.6666666666666643" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="d2E-wZ-pKp" secondAttribute="height" id="vF8-7l-sdQ"/>
@@ -1157,6 +1157,7 @@
                         <outlet property="recentSearchCollectionView" destination="R2V-xg-rmY" id="GL9-vH-gM0"/>
                         <outlet property="recentSearchesTitle" destination="G6H-m0-aVG" id="yDH-bn-Rcb"/>
                         <outlet property="recentSearchesView" destination="aW3-Eu-ZXR" id="eMM-yM-ZJu"/>
+                        <outlet property="resetFilterButton" destination="d2E-wZ-pKp" id="fgP-SU-MQ9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAh-kL-b3U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

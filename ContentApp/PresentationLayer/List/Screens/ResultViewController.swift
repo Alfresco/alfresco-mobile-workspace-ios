@@ -40,13 +40,13 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var configurationView: UIView!
     @IBOutlet weak var categoryNameView: UIView!
     @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var resetFilterButton: UIButton!
     @IBOutlet weak var heightConfigurationViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var configurationImageView: UIImageView!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
     lazy var dropDown = DropDown()
     private var presenter: UINavigationController?
-
     var resultsListController: ListComponentViewController?
     var pageController: ListPageController?
     var resultsViewModel: SearchViewModel?
@@ -127,12 +127,6 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.collectionView.collectionViewLayout.invalidateLayout()
         recentSearchCollectionView?.collectionViewLayout.invalidateLayout()
     }
-
-    @IBAction func resetFilterButtonAction(_ sender: Any) {
-        // self.buildDropDownDataSource()
-        // self.resetAllFilters() // reset all filters to default
-        resultScreenDelegate?.resetSearchFilterTapped()
-    }
     
     @IBAction func chooseCategoryButtonAction(_ sender: Any) {
         dropDown.show()
@@ -182,7 +176,7 @@ class ResultViewController: SystemThemableViewController {
         /* observing advance search filter */
         self.resultsViewModel?.searchFilterObservable.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
-            self.resetAllFilters() // reset all filters to default
+            self.resetSelectedSearchFilter() // reset selected search filter
         })
     }
 
@@ -197,7 +191,6 @@ class ResultViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         categoryNameLabel.applyStyleHeadLineBoldOnSurface(theme: currentTheme)
-        configurationImageView.image = configurationImageView.image?.withRenderingMode(.alwaysTemplate)
         configurationImageView.tintColor = currentTheme.onSurfaceColor
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
@@ -206,6 +199,7 @@ class ResultViewController: SystemThemableViewController {
         dropDown.textColor = currentTheme.onSurfaceColor
         dropDown.selectedTextColor = currentTheme.onSurfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
+        resetFilterButton.tintColor = currentTheme.onSurfaceColor
     }
 
     func addChipsCollectionViewFlowLayout() {
@@ -220,8 +214,8 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.allowsMultipleSelection = true
     }
 }
-// MARK: - Drop Down
 
+// MARK: - Drop Down
 extension ResultViewController {
     func setupDropDownView() {
         dropDown.anchorView = categoryNameView
@@ -249,20 +243,13 @@ extension ResultViewController {
         }
     }
     
-    private func resetAllFilters() {
-        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
-        updateCategory()
-    }
-    
     private func updateCategory() {
-        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
+        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter {
             if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
-                
                 dropDown.selectRow(at: index)
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
-                
-                guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
-                self.updateChips(chipItems)
+                resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
+                resetChipCollectionView()
             }
         }
     }
@@ -549,6 +536,27 @@ extension ResultViewController {
                 self.deSelectChipCollectionCell(for: indexPath)
             }
         }
+    }
+}
+
+// MARK: - Reset Search
+extension ResultViewController {
+    private func resetSelectedSearchFilter() {
+        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        updateCategory()
+    }
+    
+    private func resetChipCollectionView() {
+        let index = resultsViewModel?.getSelectedFilterIndex() ?? -1
+        if index >= 0, let searchFilters = resultsViewModel?.searchFilters {
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
+            self.updateChips(chipItems)
+        }
+    }
+        
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        self.updateCategory()
+        resultScreenDelegate?.resetSearchFilterTapped()
     }
 }
 
