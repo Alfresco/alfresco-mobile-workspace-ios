@@ -138,7 +138,6 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         toTextField.label.text = LocalizationConstants.AdvanceSearch.toKeyword
         fromTextField.text = fromDate
         toTextField.text = toDate
-
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
@@ -199,24 +198,26 @@ extension SearchCalendarComponentViewController {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
         datePicker.backgroundColor = currentTheme.surfaceColor
-        setMaximumAndMinimumDate()
+        setDatesForDatePicker()
         calendarViewModel.selectedTextField.inputView = datePicker
     }
     
-    private func setMaximumAndMinimumDate() {
+    private func setDatesForDatePicker() {
         var minimumDate: Date?
         var maximumDate: Date?
+        var date = Date()
         if calendarViewModel.selectedTextField == fromTextField {
             minimumDate = calendarViewModel.getMinimumAndMaximumDateForFromTextField().minimumDate
             maximumDate = calendarViewModel.getMinimumAndMaximumDateForFromTextField().maximumDate
-            datePicker.date = calendarViewModel.getSelectedFromDate()
+            date = calendarViewModel.getSelectedFromDate()
         } else if calendarViewModel.selectedTextField == toTextField {
             minimumDate = calendarViewModel.getMinimumAndMaximumDateForToTextField().minimumDate
             maximumDate = calendarViewModel.getMinimumAndMaximumDateForToTextField().maximumDate
-            datePicker.date = calendarViewModel.getSelectedToDate()
+            date = calendarViewModel.getSelectedToDate()
         }
         datePicker.minimumDate = minimumDate
         datePicker.maximumDate = maximumDate
+        datePicker.date = date
     }
     
     @objc func handleDatePicker() {
