@@ -58,6 +58,20 @@ class SearchCalendarComponentViewModel: NSObject {
         return (nil, Date())
     }
     
+    func getSelectedFromDate() -> Date {
+        if let date = selectedFromDate {
+            return date
+        }
+        return Date()
+    }
+    
+    func getSelectedToDate() -> Date {
+        if let date = selectedToDate {
+            return date
+        }
+        return Date()
+    }
+    
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (fromDate: String?, toDate: String?) {
         if let selectedCategory = self.selectedCategory {
