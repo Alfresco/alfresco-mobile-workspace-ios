@@ -28,7 +28,6 @@
 "delete" = "Delete";
 "create" = "Create";
 "save" = "Save";
-"done" = "Done";
 
 // MARK: - Buttons
 "connect" = "Connect";
