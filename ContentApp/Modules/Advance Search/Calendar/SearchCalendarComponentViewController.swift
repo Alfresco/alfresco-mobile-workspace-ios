@@ -199,13 +199,27 @@ extension SearchCalendarComponentViewController {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
         datePicker.backgroundColor = currentTheme.surfaceColor
-        datePicker.maximumDate = Date()
+        setMaximumAndMinimumDate()
         calendarViewModel.selectedTextField.inputView = datePicker
         if calendarViewModel.selectedTextField == fromTextField, let date = calendarViewModel.selectedFromDate {
             datePicker.date = date
         } else if calendarViewModel.selectedTextField == toTextField, let date = calendarViewModel.selectedToDate {
             datePicker.date = date
         }
+    }
+    
+    private func setMaximumAndMinimumDate() {
+        var minimumDate: Date?
+        var maximumDate: Date?
+        if calendarViewModel.selectedTextField == fromTextField {
+            minimumDate = calendarViewModel.getMinimumAndMaximumDateForFromTextField().minimumDate
+            maximumDate = calendarViewModel.getMinimumAndMaximumDateForFromTextField().maximumDate
+        } else if calendarViewModel.selectedTextField == toTextField {
+            minimumDate = calendarViewModel.getMinimumAndMaximumDateForToTextField().minimumDate
+            maximumDate = calendarViewModel.getMinimumAndMaximumDateForToTextField().maximumDate
+        }
+        datePicker.minimumDate = minimumDate
+        datePicker.maximumDate = maximumDate
     }
     
     @objc func handleDatePicker() {

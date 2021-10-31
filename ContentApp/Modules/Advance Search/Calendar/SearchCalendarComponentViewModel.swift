@@ -44,6 +44,20 @@ class SearchCalendarComponentViewModel: NSObject {
         return dateFormatter.date(from: dateString)
     }
     
+    func getMinimumAndMaximumDateForFromTextField() -> (minimumDate: Date?, maximumDate: Date?) {
+        if let toDate = selectedToDate {
+            return (nil, toDate)
+        }
+        return (nil, Date())
+    }
+    
+    func getMinimumAndMaximumDateForToTextField() -> (minimumDate: Date?, maximumDate: Date?) {
+        if let fromDate = selectedFromDate {
+            return (fromDate, Date())
+        }
+        return (nil, Date())
+    }
+    
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (fromDate: String?, toDate: String?) {
         if let selectedCategory = self.selectedCategory {
