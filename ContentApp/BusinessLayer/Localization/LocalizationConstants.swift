@@ -163,6 +163,7 @@ struct LocalizationConstants {
         static let fromKeyword = NSLocalizedString("from-keyword", comment: "")
         static let toKeyword = NSLocalizedString("to-keyword", comment: "")
         static let invalidFormat = NSLocalizedString("invalid-format", comment: "")
+        static let errorRequiredValue = NSLocalizedString("required-value", comment: "")
     }
 
     struct GroupListSection {

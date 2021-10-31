@@ -33,7 +33,6 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var fromTextField: MDCOutlinedTextField!
     @IBOutlet weak var toTextField: MDCOutlinedTextField!
-    var selectedTextField: MDCOutlinedTextField!
     let datePicker = UIDatePicker()
     lazy var calendarViewModel = SearchCalendarComponentViewModel()
     var callback: SearchComponentCallBack?
@@ -47,6 +46,7 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
+        datePicker.addTarget(self, action: #selector(self.handleDatePicker), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,7 +81,6 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let textFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton),
               let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
         
@@ -103,29 +102,43 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
         
+        // text field scheme
+        applyTextFieldTheme()
+    }
+    
+    func applyTextFieldTheme() {
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+              let textFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField) else { return }
         fromTextField.applyTheme(withScheme: textFieldScheme)
         fromTextField.trailingViewMode = .unlessEditing
         fromTextField.trailingViewMode = .always
         fromTextField.trailingView = UIImageView(image: UIImage(named: "calendar-icon"))
         fromTextField.trailingView?.tintColor = currentTheme.onSurfaceColor
-        
+        fromTextField.leadingAssistiveLabel.text = nil
+
         toTextField.applyTheme(withScheme: textFieldScheme)
         toTextField.trailingViewMode = .unlessEditing
         toTextField.trailingViewMode = .always
         toTextField.trailingView = UIImageView(image: UIImage(named: "calendar-icon"))
         toTextField.trailingView?.tintColor = currentTheme.onSurfaceColor
-        
+        toTextField.leadingAssistiveLabel.text = nil
+
         // to disable cursor
         fromTextField.tintColor = .clear
         toTextField.tintColor = .clear
     }
     
     private func applyLocalization() {
+        let fromDate = calendarViewModel.getPrefilledValues().fromDate
+        let toDate = calendarViewModel.getPrefilledValues().toDate
         headerTitleLabel.text = calendarViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
         fromTextField.label.text = LocalizationConstants.AdvanceSearch.fromKeyword
         toTextField.label.text = LocalizationConstants.AdvanceSearch.toKeyword
+        fromTextField.text = fromDate
+        toTextField.text = toDate
+
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
@@ -134,11 +147,35 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        self.dismissComponentButtonAction(Any.self)
+        if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+            if fromDate > toDate {
+                swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+            }
+            calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
+            self.dismissComponentButtonAction(Any.self)
+        } else {
+            if calendarViewModel.selectedFromDate == nil {
+                applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            } else if calendarViewModel.selectedToDate == nil {
+                applyError(on: toTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            }
+        }
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
+        calendarViewModel.resetFilter()
         self.dismissComponentButtonAction(Any.self)
+    }
+    
+    private func applyError(on textField: MDCOutlinedTextField, with message: String) {
+        guard let textFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField) else { return }
+        textField.applyErrorTheme(withScheme: textFieldScheme)
+        textField.leadingAssistiveLabel.text = message
+        textField.trailingView = UIImageView(image: UIImage(named: "ic-error-textfield"))
+    }
+    
+    func swap<T>(parameterOne: inout T, parameterTwo: inout T) {
+        (parameterOne, parameterTwo) = (parameterTwo, parameterOne)
     }
 }
 
@@ -146,18 +183,12 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
 extension SearchCalendarComponentViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == fromTextField {
-            selectedTextField = fromTextField
+            calendarViewModel.selectedTextField = fromTextField
         } else if textField == toTextField {
-            selectedTextField = toTextField
+            calendarViewModel.selectedTextField = toTextField
         }
+        applyTextFieldTheme()
         showDatePicker()
-    }
-    
-    open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        if action == #selector(UIResponderStandardEditActions.paste(_:)) {
-            return false
-        }
-        return super.canPerformAction(action, withSender: sender)
     }
 }
 
@@ -168,29 +199,27 @@ extension SearchCalendarComponentViewController {
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
         datePicker.backgroundColor = currentTheme.surfaceColor
-        selectedTextField.inputView = datePicker
-        selectedTextField.inputAccessoryView = getToolBar()
-    }
-    
-    func getToolBar() -> UIToolbar {
-        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: 44.0))
-        let cancelButton = UIBarButtonItem(title: LocalizationConstants.General.cancel, style: .plain, target: self, action: #selector(self.dismissToolBar))
-        let doneButton = UIBarButtonItem(title: LocalizationConstants.General.done, style: .done, target: self, action: #selector(self.doneBtnClick))
-        let flexibleButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([cancelButton, flexibleButton, doneButton], animated: false)
-        return toolBar
-    }
-    
-    @objc func dismissToolBar() {
-        self.view.endEditing(true)
-    }
-    
-    @objc func doneBtnClick() {
-        if let datePicker = selectedTextField.inputView as? UIDatePicker {
-            let date = calendarViewModel.selectedDateString(for: datePicker.date)
-            selectedTextField.text = date
+        datePicker.maximumDate = Date()
+        calendarViewModel.selectedTextField.inputView = datePicker
+        if calendarViewModel.selectedTextField == fromTextField, let date = calendarViewModel.selectedFromDate {
+            datePicker.date = date
+        } else if calendarViewModel.selectedTextField == toTextField, let date = calendarViewModel.selectedToDate {
+            datePicker.date = date
         }
-        dismissToolBar()
+    }
+    
+    @objc func handleDatePicker() {
+        if let datePicker = calendarViewModel.selectedTextField.inputView as? UIDatePicker {
+            if calendarViewModel.selectedTextField == fromTextField {
+                calendarViewModel.selectedFromDate = datePicker.date
+            } else if calendarViewModel.selectedTextField == toTextField {
+                calendarViewModel.selectedToDate = datePicker.date
+            }
+            let date = calendarViewModel.selectedDateString(for: datePicker.date)
+            calendarViewModel.selectedTextField.text = date
+        }
+        applyTextFieldTheme()
+        self.view.endEditing(true)
     }
 }
 

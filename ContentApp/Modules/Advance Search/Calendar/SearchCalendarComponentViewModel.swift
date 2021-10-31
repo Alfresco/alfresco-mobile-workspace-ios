@@ -18,9 +18,14 @@
 
 import UIKit
 import AlfrescoContent
+import MaterialComponents.MaterialTextControls_OutlinedTextFields
 
 class SearchCalendarComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
+    var selectedTextField: MDCOutlinedTextField!
+    let stringConcatenator = " - "
+    var selectedFromDate: Date?
+    var selectedToDate: Date?
 
     var title: String {
         return selectedCategory?.name ?? ""
@@ -30,5 +35,58 @@ class SearchCalendarComponentViewModel: NSObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MMM-YY"
         return dateFormatter.string(from: date)
+    }
+    
+    func date(from dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.dateFormat = "dd-MMM-yy"
+        return dateFormatter.date(from: dateString)
+    }
+    
+    // MARK: - Update Selected Values
+    func getPrefilledValues() -> (fromDate: String?, toDate: String?) {
+        if let selectedCategory = self.selectedCategory {
+            let component = selectedCategory.component
+            let selectedValue = component?.settings?.selectedValue ?? ""
+            let valuesArray = selectedValue.components(separatedBy: stringConcatenator)
+            if valuesArray.count > 1 {
+                let fromDate = valuesArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+                let toDate = valuesArray[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                selectedFromDate = self.date(from: fromDate)
+                selectedToDate = self.date(from: toDate)
+                return (fromDate, toDate)
+            }
+        }
+        return (nil, nil)
+    }
+    
+    // MARK: - Apply Filter
+    func applyFilter(fromValue: String?, toValue: String?) {
+        let minimumValue = (fromValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let maximumValue = (toValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if !minimumValue.isEmpty && !maximumValue.isEmpty {
+            let value = String(format: "%@ %@ %@", minimumValue, stringConcatenator, maximumValue)
+            if let selectedCategory = self.selectedCategory {
+                let component = selectedCategory.component
+                let settings = component?.settings
+                settings?.selectedValue = value
+                component?.settings = settings
+                selectedCategory.component = component
+                self.selectedCategory = selectedCategory
+            }
+        }
+    }
+    
+    // MARK: - Reset Filter
+    func resetFilter() {
+        if let selectedCategory = self.selectedCategory {
+            let component = selectedCategory.component
+            let settings = component?.settings
+            settings?.selectedValue = nil
+            component?.settings = settings
+            selectedCategory.component = component
+            self.selectedCategory = selectedCategory
+        }
     }
 }
