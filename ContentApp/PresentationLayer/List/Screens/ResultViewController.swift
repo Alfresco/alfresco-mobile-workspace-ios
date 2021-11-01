@@ -558,12 +558,13 @@ extension ResultViewController {
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                self.chipsCollectionView.reloadDataWithoutScroll()
+
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                self.chipsCollectionView.reloadDataWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
             }
         }
@@ -579,7 +580,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
             if selectedValue.isEmpty {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.deSelectChipCollectionCell(for: indexPath)
-                chipsCollectionView.reloadData()
+                chipsCollectionView.reloadDataWithoutScroll()
             }
         } 
     }

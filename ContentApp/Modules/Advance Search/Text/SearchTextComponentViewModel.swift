@@ -21,6 +21,7 @@ import AlfrescoContent
 
 class SearchTextComponentViewModel {
     var selectedCategory: SearchCategories?
+    let maxLength = 15
 
     var title: String {
         return selectedCategory?.name ?? ""
