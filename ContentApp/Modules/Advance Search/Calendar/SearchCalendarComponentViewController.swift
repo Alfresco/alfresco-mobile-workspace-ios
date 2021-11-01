@@ -46,7 +46,6 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
-        datePicker.addTarget(self, action: #selector(self.handleDatePicker), for: .valueChanged)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -200,6 +199,7 @@ extension SearchCalendarComponentViewController {
         datePicker.backgroundColor = currentTheme.surfaceColor
         setDatesForDatePicker()
         calendarViewModel.selectedTextField.inputView = datePicker
+        calendarViewModel.selectedTextField.inputAccessoryView = getToolBar()
     }
     
     private func setDatesForDatePicker() {
@@ -218,6 +218,19 @@ extension SearchCalendarComponentViewController {
         datePicker.minimumDate = minimumDate
         datePicker.maximumDate = maximumDate
         datePicker.date = date
+    }
+    
+    func getToolBar() -> UIToolbar {
+        let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: 44.0))
+        let cancelButton = UIBarButtonItem(title: LocalizationConstants.General.cancel, style: .plain, target: self, action: #selector(self.dismissToolBar))
+        let doneButton = UIBarButtonItem(title: LocalizationConstants.General.done, style: .done, target: self, action: #selector(self.handleDatePicker))
+        let flexibleButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([cancelButton, flexibleButton, doneButton], animated: false)
+        return toolBar
+    }
+    
+    @objc func dismissToolBar() {
+        self.view.endEditing(true)
     }
     
     @objc func handleDatePicker() {
