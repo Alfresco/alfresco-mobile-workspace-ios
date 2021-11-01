@@ -390,7 +390,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             self.resultsViewModel?.selectedChip = chip
             self.showSelectedComponent(for: chip)
         }
-        self.chipsCollectionView.reloadDataWithoutScroll()
+        reloadChipCollectionWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
@@ -558,15 +558,20 @@ extension ResultViewController {
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
                 searchChipsViewModel.chips[index] = chip
-                self.chipsCollectionView.reloadDataWithoutScroll()
-
+                reloadChipCollectionWithoutScroll()
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
                 searchChipsViewModel.chips[index] = chip
-                self.chipsCollectionView.reloadDataWithoutScroll()
+                reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
             }
+        }
+    }
+    
+    func reloadChipCollectionWithoutScroll() {
+        DispatchQueue.main.async {
+            self.chipsCollectionView.reloadDataWithoutScroll()
         }
     }
 }
@@ -580,7 +585,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
             if selectedValue.isEmpty {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.deSelectChipCollectionCell(for: indexPath)
-                chipsCollectionView.reloadDataWithoutScroll()
+                reloadChipCollectionWithoutScroll()
             }
         } 
     }
