@@ -31,16 +31,25 @@ class SearchCalendarComponentViewModel: NSObject {
         return selectedCategory?.name ?? ""
     }
     
+    var dateFormat: String {
+        if let dateFormat = self.selectedCategory?.component?.settings?.dateFormat {
+            var format = dateFormat.replacingOccurrences(of: "D", with: "d")
+            format = format.replacingOccurrences(of: "Y", with: "y")
+            return format
+        }
+        return "dd-MMM-yy"
+    }
+    
     func selectedDateString(for date: Date) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd-MMM-YY"
+        dateFormatter.dateFormat = dateFormat
         return dateFormatter.string(from: date)
     }
     
     func date(from dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.dateFormat = "dd-MMM-yy"
+        dateFormatter.dateFormat = dateFormat
         return dateFormatter.date(from: dateString)
     }
     
