@@ -59,7 +59,7 @@ class SearchTextComponentViewModel {
     // MARK: - Query Builder
     func buildQuery(with value: String?) -> String? {
         if let field = self.selectedCategory?.component?.settings?.field, let value = value {
-            let query = String(format: "%@:'%@'", field, value)
+            let query = "\(field):\(value)"
             return query
         }
         return nil

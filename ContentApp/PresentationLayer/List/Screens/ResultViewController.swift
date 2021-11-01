@@ -480,7 +480,7 @@ extension ResultViewController {
             viewController.textViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -497,7 +497,7 @@ extension ResultViewController {
             viewController.listViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -513,7 +513,7 @@ extension ResultViewController {
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -529,7 +529,7 @@ extension ResultViewController {
             viewController.sliderViewModel.selectedCategory = selectedCategory
             viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -543,15 +543,16 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.calendarViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
     }
     
-    func updateSelectedChip(with value: String?) {
+    func updateSelectedChip(with value: String?, and query: String?) {
+        AlfrescoLog.debug("Query builder: \(query)")
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]

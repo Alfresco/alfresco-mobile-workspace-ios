@@ -76,11 +76,13 @@ class SearchListComponentController: NSObject {
             }
         }
         listViewModel.selectedCategory?.component?.settings?.selectedValue = selectedValue
+        listViewModel.queryBuilder = listViewModel.buildQuery()
     }
     
     func resetFilterAction() {
         listViewModel.selectedOptions = []
         listViewModel.selectedCategory?.component?.settings?.selectedValue = ""
+        listViewModel.queryBuilder = listViewModel.buildQuery()
     }
     
     // MARK: - Update Selected Values

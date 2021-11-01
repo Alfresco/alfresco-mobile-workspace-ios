@@ -26,6 +26,7 @@ class SearchCalendarComponentViewModel: NSObject {
     let stringConcatenator = " - "
     var selectedFromDate: Date?
     var selectedToDate: Date?
+    var queryBuilder: String?
 
     var title: String {
         return selectedCategory?.name ?? ""
@@ -111,6 +112,7 @@ class SearchCalendarComponentViewModel: NSObject {
                 component?.settings = settings
                 selectedCategory.component = component
                 self.selectedCategory = selectedCategory
+                queryBuilder = buildQuery(with: value)
             }
         }
     }
@@ -124,6 +126,16 @@ class SearchCalendarComponentViewModel: NSObject {
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
+            queryBuilder = buildQuery(with: nil)
         }
+    }
+    
+    // MARK: - Query Builder
+    func buildQuery(with selectedValue: String?) -> String? {
+        if let field = self.selectedCategory?.component?.settings?.field, let _ = selectedValue {
+            let query = String(format: "%@: [%@ TO %@]", field, getSelectedFromDate() as CVarArg, getSelectedToDate() as CVarArg)
+            return query
+        }
+        return nil
     }
 }

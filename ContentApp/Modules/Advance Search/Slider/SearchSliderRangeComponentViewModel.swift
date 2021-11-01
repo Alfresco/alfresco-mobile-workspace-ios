@@ -55,7 +55,7 @@ class SearchSliderRangeComponentViewModel: NSObject {
         if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
             let settings = component?.settings
-            if value == 0 {
+            if value == min {
                 settings?.selectedValue = ""
             } else {
                 settings?.selectedValue = "\(Int(value))"
@@ -63,6 +63,16 @@ class SearchSliderRangeComponentViewModel: NSObject {
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
+            self.queryBuilder = buildQuery(with: value)
         }
+    }
+    
+    // MARK: - Query Builder
+    func buildQuery(with value: CGFloat) -> String? {
+        if let field = self.selectedCategory?.component?.settings?.field, value > min {
+            let query = String(format: "%@: [%d TO %d]", field, Int(min), Int(value))
+            return query
+        }
+        return nil
     }
 }
