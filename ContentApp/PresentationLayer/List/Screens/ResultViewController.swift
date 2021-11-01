@@ -476,7 +476,7 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
             }
@@ -493,7 +493,7 @@ extension ResultViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
             viewController.listViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
             }
@@ -509,7 +509,7 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
             }
@@ -525,7 +525,7 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.sliderViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
                 self.updateSelectedChip(with: selectedValue)
             }

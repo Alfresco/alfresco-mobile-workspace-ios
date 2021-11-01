@@ -22,7 +22,8 @@ import AlfrescoContent
 class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
-    
+    var queryBuilder: String?
+
     var title: String {
         return selectedCategory?.name ?? ""
     }

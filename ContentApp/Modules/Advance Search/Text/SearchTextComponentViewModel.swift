@@ -21,7 +21,6 @@ import AlfrescoContent
 
 class SearchTextComponentViewModel {
     var selectedCategory: SearchCategories?
-    var pattern = "(.*?)"
     var queryBuilder: String?
 
     var title: String {
@@ -53,21 +52,15 @@ class SearchTextComponentViewModel {
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
-            buildQuery(with: value)
+            self.queryBuilder = buildQuery(with: value)
         }
     }
     
     // MARK: - Query Builder
     func buildQuery(with value: String?) -> String? {
-        if let selectedCategory = self.selectedCategory {
-            if let pattern = selectedCategory.component?.settings?.pattern {
-                let patternArray = pattern.components(separatedBy: "'")
-                if patternArray.count > 1 {
-                    let query = String(format: "%@'%@'", patternArray[0], patternArray[1])
-                    AlfrescoLog.debug("Quey builder: \(query)")
-                    return query
-                }
-            }
+        if let field = self.selectedCategory?.component?.settings?.field, let value = value {
+            let query = String(format: "%@:'%@'", field, value)
+            return query
         }
         return nil
     }

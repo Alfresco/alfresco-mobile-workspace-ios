@@ -25,7 +25,8 @@ class SearchListComponentViewModel {
     var isRadioList = false
     let rowViewModels = Observable<[RowViewModel]>([])
     let stringConcatenator = ", "
-    
+    var queryBuilder: String?
+
     var title: String {
         return selectedCategory?.name ?? ""
     }

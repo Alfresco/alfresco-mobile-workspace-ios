@@ -21,6 +21,7 @@ import AlfrescoContent
 
 class SearchSliderRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
+    var queryBuilder: String?
 
     var title: String {
         return selectedCategory?.name ?? ""

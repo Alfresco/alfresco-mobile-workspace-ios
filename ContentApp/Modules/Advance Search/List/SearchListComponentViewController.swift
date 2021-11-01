@@ -126,7 +126,7 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.callback?(self.listViewModel.selectedCategory)
+        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder)
         self.dismiss(animated: true, completion: nil)
     }
     
