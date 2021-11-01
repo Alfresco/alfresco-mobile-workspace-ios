@@ -44,14 +44,16 @@ class SearchChipItem: Equatable {
     var searchInNodeID: String
     var selectedValue: String
     var componentType: ComponentType?
+    var query: String?
     
-    init(name: String, type: CMType = .none, selected: Bool = true, nodeID: String = "", selectedValue: String = "", componentType: ComponentType? = nil) {
+    init(name: String, type: CMType = .none, selected: Bool = true, nodeID: String = "", selectedValue: String = "", componentType: ComponentType? = nil, query: String? = nil) {
         self.name = name
         self.type = type
         self.selected = selected
         self.searchInNodeID = nodeID
         self.selectedValue = selectedValue
         self.componentType = componentType
+        self.query = query
     }
 
     static func == (lhs: SearchChipItem, rhs: SearchChipItem) -> Bool {
