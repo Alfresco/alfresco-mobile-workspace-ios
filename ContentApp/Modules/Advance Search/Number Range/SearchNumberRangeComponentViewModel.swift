@@ -22,7 +22,6 @@ import AlfrescoContent
 class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
-    let errorTopConstraint: CGFloat = 24.0
     
     var title: String {
         return selectedCategory?.name ?? ""

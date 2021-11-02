@@ -391,7 +391,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             self.resultsViewModel?.selectedChip = chip
             self.showSelectedComponent(for: chip)
         }
-        self.chipsCollectionView.reloadDataWithoutScroll()
+        reloadChipCollectionWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
@@ -466,6 +466,8 @@ extension ResultViewController {
             showNumberRangeSelectorComponent()
         } else if chip.componentType == .contentSize {
             showSliderSelectorComponent()
+        } else if chip.componentType == .createdDateRange {
+            showCalendarSelectorComponent()
         }
     }
     
@@ -534,6 +536,22 @@ extension ResultViewController {
         }
     }
     
+    /// Calendar Component
+    private func showCalendarSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchCalendarComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.calendarViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category) in
+                let selectedValue = category?.component?.settings?.selectedValue
+                self.updateSelectedChip(with: selectedValue)
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
     func updateSelectedChip(with value: String?) {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
@@ -541,14 +559,20 @@ extension ResultViewController {
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
             }
+        }
+    }
+    
+    func reloadChipCollectionWithoutScroll() {
+        DispatchQueue.main.async {
+            self.chipsCollectionView.reloadDataWithoutScroll()
         }
     }
 }
@@ -562,7 +586,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
             if selectedValue.isEmpty {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.deSelectChipCollectionCell(for: indexPath)
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
             }
         } 
     }
