@@ -57,6 +57,7 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
+    private let textChipMaxCharacters = 20
 
     // MARK: - View Life Cycle
 
@@ -304,6 +305,13 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             } else {
                 cell?.chipView.titleLabel.text = chip.selectedValue
             }
+            
+            let text = cell?.chipView.titleLabel.text ?? ""
+            if text.count >= textChipMaxCharacters && chip.componentType == .text {
+                let shortString = String(text.prefix(textChipMaxCharacters))
+                cell?.chipView.titleLabel.text = String(format: "%@...", shortString)
+            }
+            
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
@@ -552,17 +560,18 @@ extension ResultViewController {
     }
     
     func updateSelectedChip(with value: String?, and query: String?) {
-        AlfrescoLog.debug("Query builder: \(query)")
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
+                chip.query = query
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
+                chip.query = nil
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
