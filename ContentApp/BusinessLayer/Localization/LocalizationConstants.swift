@@ -32,6 +32,7 @@ struct LocalizationConstants {
         static let create = NSLocalizedString("create", comment: "")
         static let save = NSLocalizedString("save", comment: "")
         static let discard = NSLocalizedString("discard", comment: "")
+        static let done = NSLocalizedString("done", comment: "")
     }
 
     struct Buttons {
@@ -163,6 +164,7 @@ struct LocalizationConstants {
         static let fromKeyword = NSLocalizedString("from-keyword", comment: "")
         static let toKeyword = NSLocalizedString("to-keyword", comment: "")
         static let invalidFormat = NSLocalizedString("invalid-format", comment: "")
+        static let errorRequiredValue = NSLocalizedString("required-value", comment: "")
     }
 
     struct GroupListSection {

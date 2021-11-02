@@ -35,7 +35,6 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var topConstraintErrorLabel: NSLayoutConstraint!
     lazy var numberRangeViewModel = SearchNumberRangeComponentViewModel()
     var callback: SearchComponentCallBack?
     
@@ -128,12 +127,10 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     @IBAction func applyButtonAction(_ sender: Any) {
         if numberRangeViewModel.isValidationPassed(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text) {
             numberRangeViewModel.applyFilter(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text)
-            topConstraintErrorLabel.constant = 0
-            errorLabel.text = nil
+            updateErrorLabel(isShow: false)
             self.dismissComponentButtonAction(Any.self)
         } else {
-            topConstraintErrorLabel.constant = numberRangeViewModel.errorTopConstraint
-            errorLabel.text = LocalizationConstants.AdvanceSearch.invalidFormat
+            updateErrorLabel(isShow: true)
         }
     }
     
@@ -144,11 +141,17 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     
     func checkForError(for minValue: String?, and maxValue: String?) {
         if numberRangeViewModel.isValidationPassed(minValue: minValue, maxValue: maxValue) {
-            topConstraintErrorLabel.constant = 0
-            errorLabel.text = nil
+            updateErrorLabel(isShow: false)
         } else {
-            topConstraintErrorLabel.constant = numberRangeViewModel.errorTopConstraint
+            updateErrorLabel(isShow: true)
+        }
+    }
+    
+    func updateErrorLabel(isShow: Bool) {
+        if isShow {
             errorLabel.text = LocalizationConstants.AdvanceSearch.invalidFormat
+        } else {
+            errorLabel.text = nil
         }
     }
     
