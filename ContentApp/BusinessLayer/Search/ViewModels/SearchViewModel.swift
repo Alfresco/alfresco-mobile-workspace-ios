@@ -46,6 +46,13 @@ class SearchViewModel: ListComponentViewModel {
         }
     }
     
+    var isShowResetFilter: Bool {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            return selectedSearchFilter.resetButton ?? false
+        }
+        return false
+    }
+    
     /// all filters names
     var filterNames: [String] { 
         let filtered = searchFilters.map {$0.name ?? ""}

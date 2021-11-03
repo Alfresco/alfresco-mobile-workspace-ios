@@ -252,7 +252,17 @@ extension ResultViewController {
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
                 pageController?.refreshList() // refresh list by calling search api
+                showResetFilterButton()
             }
+        }
+    }
+    
+    private func showResetFilterButton() {
+        let isShowResetFilter = resultsViewModel?.isShowResetFilter ?? false
+        if isShowResetFilter {
+            resetFilterButton.alpha = 1
+        } else {
+            resetFilterButton.alpha = 0
         }
     }
 }
