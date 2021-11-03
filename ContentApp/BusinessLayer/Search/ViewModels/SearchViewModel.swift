@@ -27,9 +27,6 @@ class SearchViewModel: ListComponentViewModel {
         super.init(model: model)
     }
     
-    /// selected search filter
-    var selectedSearchFilter: AdvanceSearchFilters?
-    
     /// selected category
     var selectedCategory: SearchCategories?
     
@@ -191,7 +188,7 @@ extension SearchViewModel {
 extension SearchViewModel {
     func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
         let searchFilters = self.searchFilters
-        if let selectedSearchFilter = self.selectedSearchFilter {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
             if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
                 let index = object.offset
                 return searchFilters[index].categories

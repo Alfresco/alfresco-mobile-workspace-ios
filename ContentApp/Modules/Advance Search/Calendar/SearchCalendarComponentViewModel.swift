@@ -133,9 +133,19 @@ class SearchCalendarComponentViewModel: NSObject {
     // MARK: - Query Builder
     func buildQuery(with selectedValue: String?) -> String? {
         if let field = self.selectedCategory?.component?.settings?.field, let _ = selectedValue {
-            let query = String(format: "%@: [%@ TO %@]", field, getSelectedFromDate() as CVarArg, getSelectedToDate() as CVarArg)
+            let fromDate = self.getDateString(from: getSelectedFromDate())
+            let toDate = self.getDateString(from: getSelectedToDate())
+            let query = String(format: "%@:['%@' TO '%@']", field, fromDate, toDate)
             return query
         }
         return nil
     }
+    
+    func getDateString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        return dateFormatter.string(from: date)
+    }
 }
+

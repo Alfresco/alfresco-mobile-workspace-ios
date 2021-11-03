@@ -244,19 +244,19 @@ extension ResultViewController {
             dropDown.dataSource = searchFilters
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
-                self.resultsViewModel?.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
+                self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
             }
         }
     }
     
     private func resetAllFilters() {
-        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
         updateCategory()
     }
     
     private func updateCategory() {
-        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
+        if let selectedConfig = self.resultsViewModel?.searchModel.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
             if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
                 
                 dropDown.selectRow(at: index)
@@ -391,8 +391,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             cell?.chipView.applyOutlinedTheme(withScheme: scheme)
             cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
         if componentType != nil {
             self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
             self.resultsViewModel?.selectedChip = chip
@@ -417,8 +416,15 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell.chipView.setBorderColor(borderColor, for: .normal)
             }
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
+    }
+    
+    private func chipTapped(for chip: SearchChipItem) {
+        let searchFilters = resultsViewModel?.searchFilters ?? []
+        if searchFilters.isEmpty {
+            resultScreenDelegate?.chipTapped(chip: chip)
+            resultsListController?.scrollToSection(0)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -568,6 +574,9 @@ extension ResultViewController {
                 chip.query = query
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
+
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
@@ -575,6 +584,8 @@ extension ResultViewController {
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
             }
         }
     }

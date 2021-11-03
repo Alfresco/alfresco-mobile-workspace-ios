@@ -90,7 +90,7 @@ class ListComponentDataSource: DataSource {
         let identifierSection = String(describing: ListSectionCollectionViewCell.self)
 
         let node = configuration.viewModel.model.listNode(for: indexPath)
-        if node.guid == listNodeSectionIdentifier {
+        if node?.guid == listNodeSectionIdentifier {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierSection,
                                          for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
@@ -107,7 +107,7 @@ class ListComponentDataSource: DataSource {
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
-            if node.nodeType == .fileLink || node.nodeType == .folderLink {
+            if node?.nodeType == .fileLink || node?.nodeType == .folderLink {
                 cell.moreButton.isHidden = true
             }
             if configuration.viewModel.shouldDisplaySubtitle(for: indexPath) == false {

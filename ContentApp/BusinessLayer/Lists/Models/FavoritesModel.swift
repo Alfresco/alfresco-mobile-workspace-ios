@@ -44,8 +44,11 @@ class FavoritesModel: ListComponentModelProtocol {
         return rawListNodes
     }
     
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return rawListNodes[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty {
+            return rawListNodes[indexPath.row]
+        }
+        return nil
     }
     
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
