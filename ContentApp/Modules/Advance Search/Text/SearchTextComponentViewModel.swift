@@ -21,7 +21,7 @@ import AlfrescoContent
 
 class SearchTextComponentViewModel {
     var selectedCategory: SearchCategories?
-    let maxLength = 15
+    var queryBuilder: String?
 
     var title: String {
         return selectedCategory?.name ?? ""
@@ -52,6 +52,16 @@ class SearchTextComponentViewModel {
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
+            self.queryBuilder = buildQuery(with: value)
         }
+    }
+    
+    // MARK: - Query Builder
+    func buildQuery(with value: String?) -> String? {
+        if let field = self.selectedCategory?.component?.settings?.field, let value = value {
+            let query = "\(field):\(value)"
+            return query
+        }
+        return nil
     }
 }

@@ -25,12 +25,14 @@ struct SearchRequestBuilder {
 
     static func searchRequest(_ string: String,
                               chipFilters: [SearchChipItem],
-                              pagination: RequestPagination?) -> SimpleSearchRequest {
+                              pagination: RequestPagination?,
+                              selectedSearchFilter: AdvanceSearchFilters?) -> SimpleSearchRequest {
         return SimpleSearchRequest(querry: string,
                                    parentId: self.searchInNode(chipFilters),
                                    skipCount: pagination?.skipCount ?? 0,
                                    maxItems: pagination?.maxItems ?? APIConstants.pageSize,
-                                   searchInclude: self.chipIncluded(chipFilters))
+                                   searchInclude: self.chipIncluded(chipFilters),
+                                   filterQueries: self.queriesIncluded(chipFilters, selectedSearchFilter: selectedSearchFilter))
     }
 
     static func recentFilesRequest(pagination: RequestPagination?) -> RecentFilesRequest {
@@ -60,5 +62,25 @@ struct SearchRequestBuilder {
             return chip.searchInNodeID
         }
         return nil
+    }
+    
+    private static func queriesIncluded(_ chipFilters: [SearchChipItem],
+                                        selectedSearchFilter: AdvanceSearchFilters?) -> [String] {
+        var queries = [String]()
+        for chip in chipFilters where !chip.selectedValue.isEmpty && chip.componentType != nil {
+            let chipQuery = chip.query ?? ""
+            if !chipQuery.isEmpty {
+                queries.append(chipQuery)
+            }
+        }
+        
+        if let selectedSearchFilter = selectedSearchFilter {
+            let filterQueries = selectedSearchFilter.filterQueries
+            for item in filterQueries {
+                let query = item.query ?? ""
+                queries.append(query)
+            }
+        }
+        return queries
     }
 }

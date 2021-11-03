@@ -19,16 +19,13 @@
 import Foundation
 import AlfrescoContent
 
-typealias SearchComponentCallBack = (SearchCategories?) -> Void
+typealias SearchComponentCallBack = (SearchCategories?, String?) -> Void
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
         searchModel = model
         super.init(model: model)
     }
-    
-    /// selected search filter
-    var selectedSearchFilter: AdvanceSearchFilters?
     
     /// selected category
     var selectedCategory: SearchCategories?
@@ -47,6 +44,13 @@ class SearchViewModel: ListComponentViewModel {
         set (newValue) {
             searchFilterObservable.value = newValue
         }
+    }
+    
+    var isShowResetFilter: Bool {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            return selectedSearchFilter.resetButton ?? false
+        }
+        return false
     }
     
     /// all filters names
@@ -196,7 +200,7 @@ extension SearchViewModel {
 extension SearchViewModel {
     func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
         let searchFilters = self.searchFilters
-        if let selectedSearchFilter = self.selectedSearchFilter {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
             if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
                 let index = object.offset
                 return searchFilters[index].categories
@@ -249,7 +253,7 @@ extension SearchViewModel {
 extension SearchViewModel {
     func getSelectedFilterIndex() -> Int {
         let searchFilters = self.searchFilters
-        if let selectedSearchFilter = self.selectedSearchFilter {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
             if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
                 let index = object.offset
                 return index

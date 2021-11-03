@@ -120,7 +120,7 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.numberRangeViewModel.selectedCategory)
+        self.callback?(self.numberRangeViewModel.selectedCategory, self.numberRangeViewModel.queryBuilder)
         self.dismiss(animated: true, completion: nil)
     }
     

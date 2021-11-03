@@ -32,7 +32,8 @@ class GlobalSearchModel: SearchModel {
                                            selected: false)]
             return searchChips
         } else {
-            return createChipsForAdvanceSearch(for: configurations, and: index)
+            searchChips = createChipsForAdvanceSearch(for: configurations, and: index)
+            return searchChips
         }
     }
     
@@ -63,11 +64,19 @@ class GlobalSearchModel: SearchModel {
     override func handleSearch(for searchString: String,
                                paginationRequest: RequestPagination?,
                                completionHandler: SearchCompletionHandler) {
-        if isSearchForLibraries() {
-            performLibrariesSearch(searchString: searchString,
-                                   paginationRequest: paginationRequest,
-                                   completionHandler: completionHandler)
+        
+        if !isSearchForAdvanceFilters() { // conventional search of file, folder and libraries
+            if isSearchForLibraries() {
+                performLibrariesSearch(searchString: searchString,
+                                       paginationRequest: paginationRequest,
+                                       completionHandler: completionHandler)
+            } else {
+                performFileFolderSearch(searchString: searchString,
+                                        paginationRequest: paginationRequest,
+                                        completionHandler: completionHandler)
+            }
         } else {
+            // search with advance filters
             performFileFolderSearch(searchString: searchString,
                                     paginationRequest: paginationRequest,
                                     completionHandler: completionHandler)

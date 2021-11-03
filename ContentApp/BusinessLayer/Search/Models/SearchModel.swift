@@ -31,6 +31,7 @@ class SearchModel: SearchModelProtocol {
     var searchChips: [SearchChipItem] = []
     var searchString: String?
     var searchType: SearchType = .simple
+    var selectedSearchFilter: AdvanceSearchFilters?
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -68,9 +69,8 @@ class SearchModel: SearchModelProtocol {
         }
 
         handleSearch(for: sString,
-                     paginationRequest: paginationRequest,
-                     completionHandler: completionHandler)
-
+                        paginationRequest: paginationRequest,
+                        completionHandler: completionHandler)
     }
     
     func performLiveSearch(for string: String,
@@ -125,12 +125,22 @@ class SearchModel: SearchModelProtocol {
     func performFileFolderSearch(searchString: String,
                                  paginationRequest: RequestPagination?,
                                  completionHandler: SearchCompletionHandler) {
+        if !isSearchForAdvanceFilters() {
+            performConventionalSearch(searchString: searchString, paginationRequest: paginationRequest, completionHandler: completionHandler)
+        } else {
+            performAdvanceSearch(searchString: searchString, paginationRequest: paginationRequest, completionHandler: completionHandler)
+        }
+    }
+    
+    // MARK: - Conventioanl Search
+    func performConventionalSearch(searchString: String, paginationRequest: RequestPagination?, completionHandler: SearchCompletionHandler) {
         services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
                                                                          chipFilters: sSelf.searchChips,
-                                                                         pagination: paginationRequest)
+                                                                         pagination: paginationRequest,
+                                                                         selectedSearchFilter: nil)
             SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
@@ -148,6 +158,35 @@ class SearchModel: SearchModelProtocol {
             }
         })
     }
+    
+    // MARK: - Advance search
+    func performAdvanceSearch(searchString: String, paginationRequest: RequestPagination?, completionHandler: SearchCompletionHandler) {
+        
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
+                                                                         chipFilters: sSelf.searchChips,
+                                                                         pagination: paginationRequest,
+                                                                         selectedSearchFilter: self?.selectedSearchFilter)
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { [weak self] (result, error) in
+                guard let sSelf = self else { return }
+
+                if completionHandler == sSelf.lastSearchCompletionOperation {
+                    var listNodes: [ListNode] = []
+                    if let entries = result?.list?.entries {
+                        listNodes = ResultsNodeMapper.map(entries)
+                    }
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list?.pagination)
+                    completionHandler.handler(paginatedResponse)
+                }
+            }
+        })
+
+    }
 
     func isSearchForLibraries() -> Bool {
         for chip in searchChips where chip.type == .library {
@@ -155,25 +194,12 @@ class SearchModel: SearchModelProtocol {
         }
         return false
     }
-
-    // MARK: - Private interface
-
-    private func searchChipsState() -> String {
-        var state = ""
-        for chip in searchChips where chip.selected == true {
-            state += chip.type.rawValue
+    
+    func isSearchForAdvanceFilters() -> Bool {
+        if let accountIdentifier = services.accountService?.activeAccount?.identifier, let _ = DiskService.getAdvanceSearchConfigurations(for: accountIdentifier) {
+            return true
         }
-        return state
-    }
-
-    private func changedSearchChipsState(with oldState: String) -> Bool {
-        // Mixed items displayed in search results list when server takes longer to respond
-        // and user changes the filter
-        let state = self.searchChipsState()
-        if oldState == state {
-            return false
-        }
-        return true
+        return false
     }
     
     // MARK: - Advance Search Configuration
@@ -227,8 +253,11 @@ extension SearchModel: ListComponentModelProtocol {
         return rawListNodes
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return rawListNodes[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty {
+            return rawListNodes[indexPath.row]
+        }
+        return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
@@ -237,7 +266,7 @@ extension SearchModel: ListComponentModelProtocol {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
-        guard let string = searchString else {
+        guard let string = searchString, !string.isEmpty else {
             rawListNodes = []
             delegate?.needsDisplayStateRefresh()
             return
