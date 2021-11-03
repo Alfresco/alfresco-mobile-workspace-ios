@@ -200,6 +200,7 @@ extension SearchCalendarComponentViewController {
         setDatesForDatePicker()
         calendarViewModel.selectedTextField.inputView = datePicker
         calendarViewModel.selectedTextField.inputAccessoryView = getToolBar()
+        datePicker.frame = CGRect(x: 0, y: 0, width: UIConstants.ScreenWidth, height: 425.0)
     }
     
     private func setDatesForDatePicker() {
