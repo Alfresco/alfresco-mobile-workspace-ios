@@ -41,9 +41,14 @@ class SearchViewModel: ListComponentViewModel {
     
     /// search filters array
     var searchFilters: [AdvanceSearchFilters] {
-        return searchFilterObservable.value
+        get {
+            return searchFilterObservable.value
+        }
+        set (newValue) {
+            searchFilterObservable.value = newValue
+        }
     }
-        
+    
     /// all filters names
     var filterNames: [String] { 
         let filtered = searchFilters.map {$0.name ?? ""}
@@ -237,5 +242,38 @@ extension SearchViewModel {
             }
         }
         return -1
+    }
+}
+
+// MARK: - Reset Advance Search
+extension SearchViewModel {
+    func getSelectedFilterIndex() -> Int {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
+                let index = object.offset
+                return index
+            }
+        }
+        return -1
+    }
+    
+    func resetAdvanceSearch() {
+        var categories = self.getAllCategoriesForSelectedFilter()
+        for counter in 0 ..< categories.count {
+            let category = categories[counter]
+            category.component?.settings?.selectedValue = nil
+            categories[counter] = category
+        }
+        
+        /// update category array
+        let index = self.getSelectedFilterIndex()
+        if index >= 0 {
+            searchFilters[index].categories = categories
+        }
+        
+        /// reset selected components
+        selectedCategory = nil
+        selectedChip = nil
     }
 }
