@@ -44,8 +44,11 @@ class OfflineFolderDrillModel: ListComponentModelProtocol {
         return rawListNodes
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return rawListNodes[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty {
+            return rawListNodes[indexPath.row]
+        }
+        return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
@@ -70,27 +73,27 @@ class OfflineFolderDrillModel: ListComponentModelProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let node = listNode(for: indexPath)
-        if node.isAFileType() {
-            let nodeSyncStatus = node.hasSyncStatus()
-            var entryListStatus: ListEntrySyncStatus
+        if let node = listNode(for: indexPath) {
+            if node.isAFileType() {
+                let nodeSyncStatus = node.hasSyncStatus()
+                var entryListStatus: ListEntrySyncStatus
 
-            switch nodeSyncStatus {
-            case .pending:
-                entryListStatus = .pending
-            case .error:
-                entryListStatus = .error
-            case .inProgress:
-                entryListStatus = .inProgress
-            case .synced:
-                entryListStatus = .downloaded
-            default:
-                entryListStatus = .undefined
+                switch nodeSyncStatus {
+                case .pending:
+                    entryListStatus = .pending
+                case .error:
+                    entryListStatus = .error
+                case .inProgress:
+                    entryListStatus = .inProgress
+                case .synced:
+                    entryListStatus = .downloaded
+                default:
+                    entryListStatus = .undefined
+                }
+
+                return entryListStatus
             }
-
-            return entryListStatus
         }
-
         return .undefined
     }
 }

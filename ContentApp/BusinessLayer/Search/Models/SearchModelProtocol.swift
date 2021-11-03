@@ -28,7 +28,8 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     var searchChips: [SearchChipItem] { get set }
     var searchString: String? { get set }
     var searchType: SearchType { get set }
-
+    var selectedSearchFilter: AdvanceSearchFilters? { get set } // selected search filter
+    
     func isNodePathEnabled() -> Bool
     func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem]
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]

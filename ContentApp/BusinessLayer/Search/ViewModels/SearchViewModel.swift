@@ -19,16 +19,13 @@
 import Foundation
 import AlfrescoContent
 
-typealias SearchComponentCallBack = (SearchCategories?) -> Void
+typealias SearchComponentCallBack = (SearchCategories?, String?) -> Void
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
         searchModel = model
         super.init(model: model)
     }
-    
-    /// selected search filter
-    var selectedSearchFilter: AdvanceSearchFilters?
     
     /// selected category
     var selectedCategory: SearchCategories?
@@ -41,9 +38,21 @@ class SearchViewModel: ListComponentViewModel {
     
     /// search filters array
     var searchFilters: [AdvanceSearchFilters] {
-        return searchFilterObservable.value
+        get {
+            return searchFilterObservable.value
+        }
+        set (newValue) {
+            searchFilterObservable.value = newValue
+        }
     }
-        
+    
+    var isShowResetFilter: Bool {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            return selectedSearchFilter.resetButton ?? false
+        }
+        return false
+    }
+    
     /// all filters names
     var filterNames: [String] { 
         let filtered = searchFilters.map {$0.name ?? ""}
@@ -191,7 +200,7 @@ extension SearchViewModel {
 extension SearchViewModel {
     func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
         let searchFilters = self.searchFilters
-        if let selectedSearchFilter = self.selectedSearchFilter {
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
             if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
                 let index = object.offset
                 return searchFilters[index].categories
@@ -237,5 +246,38 @@ extension SearchViewModel {
             }
         }
         return -1
+    }
+}
+
+// MARK: - Reset Advance Search
+extension SearchViewModel {
+    func getSelectedFilterIndex() -> Int {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
+                let index = object.offset
+                return index
+            }
+        }
+        return -1
+    }
+    
+    func resetAdvanceSearch() {
+        var categories = self.getAllCategoriesForSelectedFilter()
+        for counter in 0 ..< categories.count {
+            let category = categories[counter]
+            category.component?.settings?.selectedValue = nil
+            categories[counter] = category
+        }
+        
+        /// update category array
+        let index = self.getSelectedFilterIndex()
+        if index >= 0 {
+            searchFilters[index].categories = categories
+        }
+        
+        /// reset selected components
+        selectedCategory = nil
+        selectedChip = nil
     }
 }

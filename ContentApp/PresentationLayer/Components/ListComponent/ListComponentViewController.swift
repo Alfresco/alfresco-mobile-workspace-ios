@@ -228,17 +228,17 @@ class ListComponentViewController: SystemThemableViewController {
                                       height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
                     }.onSelect { [weak self] context in
                         guard let sSelf = self else { return }
-                        let node = model.listNode(for: context.indexPath)
-
-                        if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
-                        if node.trashed == false {
-                            sSelf.listItemActionDelegate?.showPreview(for: node,
-                                                                      from: model)
-                            sSelf.listActionDelegate?.elementTapped(node: node)
-                        } else {
-                            sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
-                                                                                     from: model,
-                                                                                     delegate: sSelf)
+                        if let node = model.listNode(for: context.indexPath) {
+                            if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
+                            if node.trashed == false {
+                                sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                          from: model)
+                                sSelf.listActionDelegate?.elementTapped(node: node)
+                            } else {
+                                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                                                         from: model,
+                                                                                         delegate: sSelf)
+                            }
                         }
                     }
             }

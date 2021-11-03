@@ -140,7 +140,7 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.calendarViewModel.selectedCategory)
+        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder)
         self.dismiss(animated: true, completion: nil)
     }
     
