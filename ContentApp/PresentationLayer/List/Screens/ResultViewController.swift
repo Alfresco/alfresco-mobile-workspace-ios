@@ -419,7 +419,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
     
     private func chipTapped(for chip: SearchChipItem) {
         let searchFilters = resultsViewModel?.searchFilters ?? []
-        if searchFilters.isEmpty {
+        if searchFilters.isEmpty || chip.componentType == nil {
             resultScreenDelegate?.chipTapped(chip: chip)
             resultsListController?.scrollToSection(0)
         }
