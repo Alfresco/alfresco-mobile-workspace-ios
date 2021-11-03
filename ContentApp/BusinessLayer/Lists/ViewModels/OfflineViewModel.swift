@@ -33,14 +33,14 @@ class OfflineViewModel: ListComponentViewModel {
     }
 
     override func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        let node = model.listNode(for: indexPath)
-        let listNodeDataAccessor = ListNodeDataAccessor()
-
-        if node.isAFolderType() {
-            return true
-        }
-        if listNodeDataAccessor.isContentDownloaded(for: node) {
-            return true
+        if let node = model.listNode(for: indexPath) {
+            let listNodeDataAccessor = ListNodeDataAccessor()
+            if node.isAFolderType() {
+                return true
+            }
+            if listNodeDataAccessor.isContentDownloaded(for: node) {
+                return true
+            }
         }
         return false
     }

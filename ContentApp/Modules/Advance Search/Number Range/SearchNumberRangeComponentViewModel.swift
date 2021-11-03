@@ -22,7 +22,8 @@ import AlfrescoContent
 class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
-    
+    var queryBuilder: String?
+
     var title: String {
         return selectedCategory?.name ?? ""
     }
@@ -67,6 +68,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
                 component?.settings = settings
                 selectedCategory.component = component
                 self.selectedCategory = selectedCategory
+                queryBuilder = buildQuery(minValue: minimumValue, maxValue: maximumValue)
             }
         }
     }
@@ -80,6 +82,16 @@ class SearchNumberRangeComponentViewModel: NSObject {
             component?.settings = settings
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
+            queryBuilder = buildQuery(minValue: nil, maxValue: nil)
         }
+    }
+    
+    // MARK: - Query Builder
+    func buildQuery(minValue: String?, maxValue: String?) -> String? {
+        if let field = self.selectedCategory?.component?.settings?.field, let minValue = minValue, let maxValue = maxValue {
+            let query = String(format: "%@: [%@ TO %@]", field, minValue, maxValue)
+            return query
+        }
+        return nil
     }
 }

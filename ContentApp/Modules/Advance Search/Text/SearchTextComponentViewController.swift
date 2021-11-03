@@ -107,7 +107,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.textViewModel.selectedCategory)
+        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder)
         self.dismiss(animated: true, completion: nil)
     }
     

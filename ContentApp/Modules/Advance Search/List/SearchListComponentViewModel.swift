@@ -25,8 +25,25 @@ class SearchListComponentViewModel {
     var isRadioList = false
     let rowViewModels = Observable<[RowViewModel]>([])
     let stringConcatenator = ", "
-    
+    var queryBuilder: String?
+
     var title: String {
         return selectedCategory?.name ?? ""
+    }
+    
+    // MARK: - Query Builder
+    func buildQuery() -> String? {
+        var queryString = ""
+        let searchOperator = self.selectedCategory?.component?.settings?.searchOperator ?? ""
+        for counter in 0 ..< selectedOptions.count {
+            let value = selectedOptions[counter].value ?? ""
+            if !value.isEmpty {
+                if counter != 0 {
+                    queryString.append(" " + searchOperator + " ")
+                }
+                queryString.append(value)
+            }
+        }
+        return queryString
     }
 }

@@ -40,13 +40,13 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var configurationView: UIView!
     @IBOutlet weak var categoryNameView: UIView!
     @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var resetFilterButton: UIButton!
     @IBOutlet weak var heightConfigurationViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var configurationImageView: UIImageView!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
     lazy var dropDown = DropDown()
     private var presenter: UINavigationController?
-
     var resultsListController: ListComponentViewController?
     var pageController: ListPageController?
     var resultsViewModel: SearchViewModel?
@@ -57,6 +57,7 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
+    private let textChipMaxCharacters = 20
 
     // MARK: - View Life Cycle
 
@@ -127,12 +128,6 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.collectionView.collectionViewLayout.invalidateLayout()
         recentSearchCollectionView?.collectionViewLayout.invalidateLayout()
     }
-
-    @IBAction func resetFilterButtonAction(_ sender: Any) {
-        // self.buildDropDownDataSource()
-        // self.resetAllFilters() // reset all filters to default
-        resultScreenDelegate?.resetSearchFilterTapped()
-    }
     
     @IBAction func chooseCategoryButtonAction(_ sender: Any) {
         dropDown.show()
@@ -183,7 +178,7 @@ class ResultViewController: SystemThemableViewController {
         /* observing advance search filter */
         self.resultsViewModel?.searchFilterObservable.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
-            self.resetAllFilters() // reset all filters to default
+            self.resetSelectedSearchFilter() // reset selected search filter
         })
     }
 
@@ -198,7 +193,6 @@ class ResultViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         categoryNameLabel.applyStyleHeadLineBoldOnSurface(theme: currentTheme)
-        configurationImageView.image = configurationImageView.image?.withRenderingMode(.alwaysTemplate)
         configurationImageView.tintColor = currentTheme.onSurfaceColor
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
@@ -207,6 +201,7 @@ class ResultViewController: SystemThemableViewController {
         dropDown.textColor = currentTheme.onSurfaceColor
         dropDown.selectedTextColor = currentTheme.onSurfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
+        resetFilterButton.tintColor = currentTheme.onSurfaceColor
     }
 
     func addChipsCollectionViewFlowLayout() {
@@ -221,8 +216,8 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.allowsMultipleSelection = true
     }
 }
-// MARK: - Drop Down
 
+// MARK: - Drop Down
 extension ResultViewController {
     func setupDropDownView() {
         dropDown.anchorView = categoryNameView
@@ -244,27 +239,31 @@ extension ResultViewController {
             dropDown.dataSource = searchFilters
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
-                self.resultsViewModel?.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
+                self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
             }
         }
     }
     
-    private func resetAllFilters() {
-        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
-        updateCategory()
-    }
-    
     private func updateCategory() {
-        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
-            if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
-                
+        if let selectedConfig = self.resultsViewModel?.searchModel.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
                 dropDown.selectRow(at: index)
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
-                
-                guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
-                self.updateChips(chipItems)
+                resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
+                resetChipCollectionView()
+                pageController?.refreshList() // refresh list by calling search api
+                showResetFilterButton()
             }
+        }
+    }
+    
+    private func showResetFilterButton() {
+        let isShowResetFilter = resultsViewModel?.isShowResetFilter ?? false
+        if isShowResetFilter {
+            resetFilterButton.alpha = 1
+        } else {
+            resetFilterButton.alpha = 0
         }
     }
 }
@@ -305,6 +304,13 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             } else {
                 cell?.chipView.titleLabel.text = chip.selectedValue
             }
+            
+            let text = cell?.chipView.titleLabel.text ?? ""
+            if text.count >= textChipMaxCharacters && chip.componentType == .text {
+                let shortString = String(text.prefix(textChipMaxCharacters))
+                cell?.chipView.titleLabel.text = String(format: "%@...", shortString)
+            }
+            
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
@@ -384,8 +390,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             cell?.chipView.applyOutlinedTheme(withScheme: scheme)
             cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
         if componentType != nil {
             self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
             self.resultsViewModel?.selectedChip = chip
@@ -410,8 +415,15 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell.chipView.setBorderColor(borderColor, for: .normal)
             }
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
+    }
+    
+    private func chipTapped(for chip: SearchChipItem) {
+        let searchFilters = resultsViewModel?.searchFilters ?? []
+        if searchFilters.isEmpty || chip.componentType == nil {
+            resultScreenDelegate?.chipTapped(chip: chip)
+            resultsListController?.scrollToSection(0)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -479,9 +491,9 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -496,9 +508,9 @@ extension ResultViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
             viewController.listViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -512,9 +524,9 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -528,9 +540,9 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.sliderViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -544,28 +556,35 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.calendarViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
+            viewController.callback = { (category, query) in
                 let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+                self.updateSelectedChip(with: selectedValue, and: query)
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
     }
     
-    func updateSelectedChip(with value: String?) {
+    func updateSelectedChip(with value: String?, and query: String?) {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
+                chip.query = query
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
+
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
+                chip.query = nil
                 searchChipsViewModel.chips[index] = chip
                 reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
             }
         }
     }
@@ -574,6 +593,27 @@ extension ResultViewController {
         DispatchQueue.main.async {
             self.chipsCollectionView.reloadDataWithoutScroll()
         }
+    }
+}
+
+// MARK: - Reset Search
+extension ResultViewController {
+    private func resetSelectedSearchFilter() {
+        self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        updateCategory()
+    }
+    
+    private func resetChipCollectionView() {
+        let index = resultsViewModel?.getSelectedFilterIndex() ?? -1
+        if index >= 0, let searchFilters = resultsViewModel?.searchFilters {
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
+            self.updateChips(chipItems)
+        }
+    }
+        
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        self.updateCategory()
+        resultScreenDelegate?.resetSearchFilterTapped()
     }
 }
 

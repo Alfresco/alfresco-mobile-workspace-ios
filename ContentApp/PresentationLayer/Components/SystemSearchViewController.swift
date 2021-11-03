@@ -156,8 +156,10 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
         guard let searchViewModel = self.searchViewModel else { return }
 
         resultsViewController?.startLoading()
-        resultsViewController?.reloadChips(searchViewModel.searchModel.searchChipIndexes(for: chip))
-
+        if searchViewModel.searchFilters.isEmpty {
+            // old search for file, folder and library
+            resultsViewController?.reloadChips(searchViewModel.searchModel.searchChipIndexes(for: chip))
+        }
         searchViewModel.searchModel.searchString = navigationItem.searchController?.searchBar.text
         searchViewModel.searchModel.searchType = .simple
         resultsViewController?.pageController?.refreshList()
