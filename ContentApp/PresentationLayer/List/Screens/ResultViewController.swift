@@ -244,18 +244,14 @@ extension ResultViewController {
         }
     }
     
-    private func resetAllFilters() {
-        self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
-        updateCategory()
-    }
-    
     private func updateCategory() {
         if let selectedConfig = self.resultsViewModel?.searchModel.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
-            if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
                 dropDown.selectRow(at: index)
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
+                pageController?.refreshList() // refresh list by calling search api
             }
         }
     }
@@ -592,7 +588,7 @@ extension ResultViewController {
 // MARK: - Reset Search
 extension ResultViewController {
     private func resetSelectedSearchFilter() {
-        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
         updateCategory()
     }
     
