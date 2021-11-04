@@ -45,7 +45,7 @@ class OfflineFolderDrillModel: ListComponentModelProtocol {
     }
 
     func listNode(for indexPath: IndexPath) -> ListNode? {
-        if !rawListNodes.isEmpty {
+        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
             return rawListNodes[indexPath.row]
         }
         return nil
