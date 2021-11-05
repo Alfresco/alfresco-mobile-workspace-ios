@@ -346,7 +346,6 @@ class AllowableOperationsConverter {
         _ = string.split(separator: ",").map {
             operations.append(AllowableOperationsType(rawValue: String($0)) ?? .unknown)
         }
-
         return operations
     }
 }
