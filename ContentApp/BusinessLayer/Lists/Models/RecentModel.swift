@@ -48,8 +48,8 @@ class RecentModel: ListComponentModelProtocol {
     }
 
     func listNode(for indexPath: IndexPath) -> ListNode? {
-        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
-            return rawListNodes[indexPath.row]
+        if !groupedLists.isEmpty && groupedLists.count > indexPath.row {
+            return groupedLists[indexPath.row]
         }
         return nil
     }
