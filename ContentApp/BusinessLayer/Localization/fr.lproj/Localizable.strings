@@ -139,6 +139,22 @@
 "file-and-folders" = "Fichiers et dossiers";
 "search-in" = "dans : ";
 
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Par défaut";
+"advance-search" = "Recherche avancée";
+"enter" = "Entrer";
+"apply" = "Appliquer";
+"reset" = "Réinitialiser";
+"APP.SEARCH.RADIO.NONE" = "Aucun(e)";
+"APP.SEARCH.RADIO.ALL" = "Tout";
+"APP.SEARCH.RADIO.FOLDER" = "Dossier";
+"APP.SEARCH.RADIO.DOCUMENT" = "Document";
+"from-keyword" = "De";
+"to-keyword" = "A";
+"invalid-format" = "La valeur 'De' doit être inférieure à la valeur 'A'";
+"required-value" = "Valeur requise";
+"done" = "Terminé";
+
 // MARK: - Group List Section
 "today" = "Aujourd'hui";
 "yesterday" = "Hier";

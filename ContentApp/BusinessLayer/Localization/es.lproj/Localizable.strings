@@ -102,7 +102,8 @@
 "error-node-name-special-characters" = "El nombre no puede contener estos caracteres %@";
 "error-folder-name-end-period" = "El nombre de la carpeta no puede terminar en punto %@";
 "error-folder-name-contain-only-spaces" = "El nombre de la carpeta no puede contener solo espacios";
-"error-file-name-empty" = "El nombre del fichero no puede estar vacío.";
+"error-file-name-empty" = "El nombre del fichero no puede estar vacío";
+
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Se han guardado los cambios de configuración.";
@@ -137,6 +138,22 @@
 "libraries" = "Bibliotecas";
 "file-and-folders" = "Ficheros y carpetas";
 "search-in" = "en: ";
+
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Predeterminado";
+"advance-search" = "Búsqueda avanzada";
+"enter" = "Introducir";
+"apply" = "Aplicar";
+"reset" = "Re&stablecer";
+"APP.SEARCH.RADIO.NONE" = "Ninguno";
+"APP.SEARCH.RADIO.ALL" = "Todos";
+"APP.SEARCH.RADIO.FOLDER" = "Carpeta";
+"APP.SEARCH.RADIO.DOCUMENT" = "Documento";
+"from-keyword" = "De";
+"to-keyword" = "A";
+"invalid-format" = "El valor De debe ser menor que el valor A";
+"required-value" = "Valor requerido";
+"done" = "Hecho";
 
 // MARK: - Group List Section
 "today" = "Hoy";

@@ -104,6 +104,7 @@
 "error-folder-name-contain-only-spaces" = "Der Ordnername darf nicht nur Leerzeichen enthalten.";
 "error-file-name-empty" = "Der Dateiname darf nicht leer sein.";
 
+
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Konfigurationsänderungen wurden gespeichert.";
 "approved-added-favorites" = "Zu Favoriten hinzugefügt";
@@ -137,6 +138,22 @@
 "libraries" = "Bibliotheken";
 "file-and-folders" = "Dateien und Ordner";
 "search-in" = "in: ";
+
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Standard";
+"advance-search" = "Erweiterte Suche";
+"enter" = "Eingeben";
+"apply" = "Anwenden";
+"reset" = "Zurücksetzen";
+"APP.SEARCH.RADIO.NONE" = "Keine";
+"APP.SEARCH.RADIO.ALL" = "Alle";
+"APP.SEARCH.RADIO.FOLDER" = "Ordner";
+"APP.SEARCH.RADIO.DOCUMENT" = "Dokument";
+"from-keyword" = "Von";
+"to-keyword" = "Bis";
+"invalid-format" = "Der „Von“ Wert muss kleiner als der „Bis“ Wert sein";
+"required-value" = "Erforderlicher Wert";
+"done" = "Fertig";
 
 // MARK: - Group List Section
 "today" = "Heute";
