@@ -105,14 +105,18 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     func isAdvanceSearchFiltersAllowedFromServer() -> Bool {
-        let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
-        if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
-            self.updateSearchConfigurationKeys()
-            return true
+        if  self.isChipSelected() == true {
+            return false
+        } else {
+            let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
+            if UserDefaults.standard.bool(forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
+                self.updateSearchConfigurationKeys()
+                return true
+            }
+            return false
         }
-        return false
     }
-    
+
     func isTimeExceedsForAdvanceSearchConfig(apiInterval: Int) -> Bool {
         let hours = lastAPICallDifferenceInHours()
         if hours >= apiInterval {
@@ -193,6 +197,17 @@ extension SearchViewModel {
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
         DiskService.saveAdvanceSearchConfigurations(for: accountIdentifier, and: data)
+    }
+    
+    private func isChipSelected() -> Bool {
+        let categories = self.getAllCategoriesForSelectedFilter()
+        for counter in 0 ..< categories.count {
+            let selectedValue = categories[counter].component?.settings?.selectedValue ?? ""
+            if !selectedValue.isEmpty {
+                return true
+            }
+        }
+        return false
     }
 }
 
