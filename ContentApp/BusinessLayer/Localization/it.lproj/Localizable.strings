@@ -104,6 +104,7 @@
 "error-folder-name-contain-only-spaces" = "Il nome della cartella non può contenere solo spazi";
 "error-file-name-empty" = "Il nome file non può essere vuoto.";
 
+
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
 "approved-added-favorites" = "Aggiunto ai preferiti";
@@ -137,6 +138,22 @@
 "libraries" = "Librerie";
 "file-and-folders" = "File e cartelle";
 "search-in" = "in: ";
+
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Predefinito";
+"advance-search" = "Ricerca avanzata";
+"enter" = "Immettere";
+"apply" = "Applica";
+"reset" = "Reimposta";
+"APP.SEARCH.RADIO.NONE" = "Nessuno";
+"APP.SEARCH.RADIO.ALL" = "Tutti";
+"APP.SEARCH.RADIO.FOLDER" = "Cartella";
+"APP.SEARCH.RADIO.DOCUMENT" = "Documento";
+"from-keyword" = "Da";
+"to-keyword" = "A";
+"invalid-format" = "Il valore Da deve essere inferiore al valore A";
+"required-value" = "Valore obbligatorio";
+"done" = "Completato";
 
 // MARK: - Group List Section
 "today" = "Oggi";
