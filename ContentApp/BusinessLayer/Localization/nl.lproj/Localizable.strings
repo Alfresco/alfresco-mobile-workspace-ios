@@ -103,6 +103,7 @@
 "error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
 "error-file-name-empty" = "Bestandsnaam mag niet leeg zijn.";
 
+
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
 "approved-added-favorites" = "Toegevoegd aan Favorieten";
@@ -136,6 +137,22 @@
 "libraries" = "Bibliotheken";
 "file-and-folders" = "Bestanden en mappen";
 "search-in" = "in: ";
+
+// MARK: - Advance Search
+"DEFAULT_SEARCH" = "Standaard";
+"advance-search" = "Geavanceerd zoeken";
+"enter" = "Invoeren";
+"apply" = "Toepassen";
+"reset" = "Opnieuw instellen";
+"APP.SEARCH.RADIO.NONE" = "Geen";
+"APP.SEARCH.RADIO.ALL" = "Alle";
+"APP.SEARCH.RADIO.FOLDER" = "Map";
+"APP.SEARCH.RADIO.DOCUMENT" = "Document";
+"from-keyword" = "Van";
+"to-keyword" = "Tot";
+"invalid-format" = "Van-waarde moet kleiner zijn dan Tot-waarde";
+"required-value" = "Vereiste waarde";
+"done" = "Gereed";
 
 // MARK: - Group List Section
 "today" = "Vandaag";
