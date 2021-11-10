@@ -155,7 +155,6 @@ class ResultViewController: SystemThemableViewController {
         recentSearchesViewModel.reloadRecentSearch()
         recentSearchesTitle.text = (recentSearchesViewModel.searches.isEmpty) ?
             LocalizationConstants.Search.noRecentSearch : LocalizationConstants.Search.recentSearch
-        self.resultsViewModel?.loadAppConfigurationsForSearch() // load app configurations
         recentSearchCollectionView.reloadData()
     }
 
