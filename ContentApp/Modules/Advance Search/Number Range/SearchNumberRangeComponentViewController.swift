@@ -120,7 +120,7 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.numberRangeViewModel.selectedCategory, self.numberRangeViewModel.queryBuilder)
+        self.callback?(self.numberRangeViewModel.selectedCategory, self.numberRangeViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -128,7 +128,8 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
         if numberRangeViewModel.isValidationPassed(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text) {
             numberRangeViewModel.applyFilter(minValue: minRangeTextField.text, maxValue: maxRangeTextField.text)
             updateErrorLabel(isShow: false)
-            self.dismissComponentButtonAction(Any.self)
+            self.callback?(self.numberRangeViewModel.selectedCategory, self.numberRangeViewModel.queryBuilder, false)
+            self.dismiss(animated: true, completion: nil)
         } else {
             updateErrorLabel(isShow: true)
         }
@@ -136,7 +137,8 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.numberRangeViewModel.resetFilter()
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.numberRangeViewModel.selectedCategory, self.numberRangeViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     func checkForError(for minValue: String?, and maxValue: String?) {

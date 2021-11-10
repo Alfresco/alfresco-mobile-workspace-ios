@@ -126,18 +126,20 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder)
+        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
         self.controller.applyFilterAction()
-        self.dismissButtonAction(Any.self)
+        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.controller.resetFilterAction()
-        self.dismissButtonAction(Any.self)
+        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 

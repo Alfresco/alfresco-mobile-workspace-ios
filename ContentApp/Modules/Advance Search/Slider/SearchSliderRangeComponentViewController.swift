@@ -123,18 +123,20 @@ class SearchSliderRangeComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
         sliderViewModel.applyFilter(with: slider.value)
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         sliderViewModel.applyFilter(with: 0)
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
