@@ -140,7 +140,7 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder)
+        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -150,7 +150,8 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
                 swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
             }
             calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
-            self.dismissComponentButtonAction(Any.self)
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+            self.dismiss(animated: true, completion: nil)
         } else {
             if calendarViewModel.selectedFromDate == nil {
                 applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
@@ -162,7 +163,8 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     
     @IBAction func resetButtonAction(_ sender: Any) {
         calendarViewModel.resetFilter()
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func applyError(on textField: MDCOutlinedTextField, with message: String) {
