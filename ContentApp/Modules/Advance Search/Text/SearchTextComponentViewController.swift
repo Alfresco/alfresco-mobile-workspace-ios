@@ -107,7 +107,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder)
+        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -118,12 +118,14 @@ class SearchTextComponentViewController: SystemThemableViewController {
         } else {
             self.textViewModel.applyFilter(with: text)
         }
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.textViewModel.applyFilter(with: nil)
-        self.dismissComponentButtonAction(Any.self)
+        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewWillTransition(to size: CGSize,

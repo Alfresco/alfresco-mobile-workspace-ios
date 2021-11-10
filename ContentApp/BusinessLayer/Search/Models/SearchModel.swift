@@ -266,7 +266,7 @@ extension SearchModel: ListComponentModelProtocol {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
-        guard let string = searchString, !string.isEmpty else {
+        guard let string = searchString else {
             rawListNodes = []
             delegate?.needsDisplayStateRefresh()
             return
