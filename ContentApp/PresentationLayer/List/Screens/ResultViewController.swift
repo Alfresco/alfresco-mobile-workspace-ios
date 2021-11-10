@@ -241,6 +241,7 @@ extension ResultViewController {
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
+                self.pageController?.refreshList() // refresh list by calling search api
             }
         }
     }
@@ -252,7 +253,6 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
-                pageController?.refreshList() // refresh list by calling search api
                 showResetFilterButton()
             }
         }
@@ -491,9 +491,13 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category, query) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue, and: query)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -508,9 +512,13 @@ extension ResultViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
             viewController.listViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category, query) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue, and: query)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -524,9 +532,13 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category, query) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue, and: query)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -540,9 +552,13 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.sliderViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category, query) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue, and: query)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -556,9 +572,13 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.calendarViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category, query) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue, and: query)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -619,6 +639,10 @@ extension ResultViewController {
 
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
+        self.resetChip()
+    }
+    
+    func resetChip() {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
@@ -628,7 +652,7 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
                 self.deSelectChipCollectionCell(for: indexPath)
                 reloadChipCollectionWithoutScroll()
             }
-        } 
+        }
     }
 }
 

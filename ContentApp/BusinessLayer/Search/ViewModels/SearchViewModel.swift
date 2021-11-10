@@ -19,7 +19,7 @@
 import Foundation
 import AlfrescoContent
 
-typealias SearchComponentCallBack = (SearchCategories?, String?) -> Void
+typealias SearchComponentCallBack = (SearchCategories?, String?, Bool) -> Void
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
