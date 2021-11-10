@@ -240,6 +240,7 @@ extension ResultViewController {
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
+                self.pageController?.refreshList() // refresh list by calling search api
             }
         }
     }
@@ -251,7 +252,6 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
-                pageController?.refreshList() // refresh list by calling search api
                 showResetFilterButton()
             }
         }
