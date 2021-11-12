@@ -23,6 +23,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
     var selectedCategory: SearchCategories?
     let stringConcatenator = "-"
     var queryBuilder: String?
+    let maxCharacters = 9
 
     var title: String {
         return selectedCategory?.name ?? ""
