@@ -240,7 +240,6 @@ extension ResultViewController {
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
-                self.pageController?.refreshList() // refresh list by calling search api
             }
         }
     }
@@ -252,6 +251,7 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
+                pageController?.refreshList() // refresh list by calling search api
                 showResetFilterButton()
             }
         }
@@ -487,6 +487,7 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchTextComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
@@ -507,6 +508,7 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchListComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
@@ -528,6 +530,7 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchNumberRangeComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.numberRangeViewModel.selectedCategory = selectedCategory
@@ -548,6 +551,7 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchSliderRangeComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.sliderViewModel.selectedCategory = selectedCategory
@@ -568,6 +572,7 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchCalendarComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.calendarViewModel.selectedCategory = selectedCategory
