@@ -175,12 +175,14 @@ extension SearchNumberRangeComponentViewController: UITextFieldDelegate {
         guard CharacterSet(charactersIn: "0123456789").isSuperset(of: CharacterSet(charactersIn: string)) else {
             return false
         }
-        
+        let text = textField.updatedText(for: range, replacementString: string) ?? ""
+        if text.count > numberRangeViewModel.maxCharacters {
+            return false
+        }
+
         if textField == minRangeTextField {
-            let text = textField.updatedText(for: range, replacementString: string)
             checkForError(for: text, and: maxRangeTextField.text)
         } else {
-            let text = textField.updatedText(for: range, replacementString: string)
             checkForError(for: minRangeTextField.text, and: text)
         }
         return true
