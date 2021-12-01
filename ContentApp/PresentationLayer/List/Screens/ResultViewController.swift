@@ -58,6 +58,7 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
     private let textChipMaxCharacters = 20
+    private var animationIndex = 0
 
     // MARK: - View Life Cycle
 
@@ -95,6 +96,27 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
         setupBindings()
         setupDropDownView()
+        self.perform(#selector(self.scrollCollectionViewWithAnimation), with: nil, afterDelay: 1.0)
+    }
+
+    @objc func scrollCollectionViewWithAnimation() {
+        if animationIndex == 0 {
+            if !searchChipsViewModel.chips.isEmpty {
+                UIView.animate(withDuration: 0.7) {
+                    self.chipsCollectionView.scrollToItem(at: IndexPath(item: self.searchChipsViewModel.chips.count-1, section: 0), at: .centeredHorizontally, animated: false)
+                    self.chipsCollectionView.layoutIfNeeded()
+                } completion: { isDone in
+                    self.animationIndex = 1
+                    self.perform(#selector(self.scrollCollectionViewWithAnimation), with: nil, afterDelay: 1.0)
+                }
+            }
+        } else if animationIndex == 1 {
+            UIView.animate(withDuration: 0.7) {
+                self.chipsCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
+                self.chipsCollectionView.layoutIfNeeded()
+            } completion: { isDone in
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

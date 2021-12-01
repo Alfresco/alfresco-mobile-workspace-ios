@@ -129,6 +129,8 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
+		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
+		C92A67D1274CFF3400AAA4A1 /* FacetFilterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67D0274CFF3400AAA4A1 /* FacetFilterNode.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
 		C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */; };
@@ -501,6 +503,8 @@
 		B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorFooterView.swift; sourceTree = "<group>"; };
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
+		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
+		C92A67D0274CFF3400AAA4A1 /* FacetFilterNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterNode.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
 		C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -1503,6 +1507,7 @@
 			children = (
 				E3E9ED3C24CB056300F1A2C2 /* SitesNodeMapper.swift */,
 				E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */,
+				C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */,
 				E3E9ED3A24CB03E400F1A2C2 /* FavoritesNodeMapper.swift */,
 				E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */,
 				E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */,
@@ -1714,6 +1719,7 @@
 				E3E9ED4624CB263400F1A2C2 /* BrowseNode.swift */,
 				E3B1EAE824C194DA00E72712 /* GroupedList.swift */,
 				E32B642624B326EB00085472 /* ListNode.swift */,
+				C92A67D0274CFF3400AAA4A1 /* FacetFilterNode.swift */,
 				B9A90E6E265B96B000B89766 /* ListComponentModel.swift */,
 				B9A90E70265D189700B89766 /* FolderDrillModel.swift */,
 				B9A90E72265E656400B89766 /* MyLibrariesModel.swift */,
@@ -2575,6 +2581,7 @@
 				C973EC6C2726BD9300912015 /* ListItemCellViewModel.swift in Sources */,
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
+				C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */,
 				F185B19E2617591200407451 /* ListComponent+Delegates.swift in Sources */,
 				E32B642E24B35C2100085472 /* GlobalSearchViewModel.swift in Sources */,
 				E3724FD825CBD2D10005AA1C /* KeyConstants.swift in Sources */,
@@ -2805,6 +2812,7 @@
 				E3A2A906247EC1A70046582C /* AimsScreenCoordinator.swift in Sources */,
 				B9ECED28254308280097DB3F /* EventObservable.swift in Sources */,
 				B9AE0BBB24C17D880001289C /* PageFetchableCollectionView.swift in Sources */,
+				C92A67D1274CFF3400AAA4A1 /* FacetFilterNode.swift in Sources */,
 				B96B09B624BD8FDB0063D3C6 /* SystemThemableViewController.swift in Sources */,
 				B9A90E6B2657DB2100B89766 /* ListPageController.swift in Sources */,
 				4D67A3B6262D66C900E72EE0 /* RangeSlider.swift in Sources */,
