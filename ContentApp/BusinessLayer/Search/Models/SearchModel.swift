@@ -212,15 +212,25 @@ class SearchModel: SearchModelProtocol {
 
                 if completionHandler == sSelf.lastSearchCompletionOperation {
                     var listNodes: [ListNode] = []
-                    var facetNodes: [SearchFacets] = []
                     if let entries = result?.list?.entries {
                         listNodes = ResultsNodeMapper.map(entries)
                     }
                     
+                    var facetFields: [SearchFacetFields] = []
                     if let facets = result?.list?.context?.facets {
-                        facetNodes = FacetFilterMapper.map(facets)
+                        facetFields = FacetFilterMapper.map(facets)
                     }
                     
+                    var facetQueries: [SearchFacetQueries] = []
+                    if let queries = result?.list?.context?.facetQueries {
+                        facetQueries = FacetQueriesMapper.map(queries)
+                    }
+                    
+                    var facetIntervals: [SearchFacetIntervals] = []
+                    if let intervals = result?.list?.context?.facetsFields {
+                        facetIntervals = FacetIntervalMapper.map(intervals)
+                    }
+                   
                     let paginatedResponse = PaginatedResponse(results: listNodes,
                                                               error: error,
                                                               requestPagination: paginationRequest,
@@ -229,7 +239,6 @@ class SearchModel: SearchModelProtocol {
                 }
             }
         })
-
     }
 
     func isSearchForLibraries() -> Bool {
