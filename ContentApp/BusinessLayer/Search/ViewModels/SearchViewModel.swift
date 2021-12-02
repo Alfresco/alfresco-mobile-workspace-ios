@@ -297,7 +297,6 @@ extension SearchViewModel {
     }
 }
 
-
 // MARK: - Facet Filters
 extension SearchViewModel {
     func getFacetFields() -> FacetFields? {
