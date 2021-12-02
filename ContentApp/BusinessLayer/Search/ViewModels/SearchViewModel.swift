@@ -296,3 +296,40 @@ extension SearchViewModel {
         selectedChip = nil
     }
 }
+
+// MARK: - Facet Filters
+extension SearchViewModel {
+    func getFacetFields() -> FacetFields? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
+                let index = object.offset
+                return searchFilters[index].facetFields
+            }
+        }
+        return nil
+    }
+    
+    func getFacetQueries() -> FacetQueries? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
+                let index = object.offset
+                return searchFilters[index].facetQueries
+            }
+        }
+        return nil
+    }
+    
+    func getFacetIntervals() -> FacetIntervals? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
+                let index = object.offset
+                return searchFilters[index].facetIntervals
+            }
+        }
+        return nil
+    }
+}
+
