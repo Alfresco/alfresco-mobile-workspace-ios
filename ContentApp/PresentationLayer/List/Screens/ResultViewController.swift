@@ -96,27 +96,7 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
         setupBindings()
         setupDropDownView()
-        self.perform(#selector(self.scrollCollectionViewWithAnimation), with: nil, afterDelay: 1.0)
-    }
-
-    @objc func scrollCollectionViewWithAnimation() {
-        if animationIndex == 0 {
-            if !searchChipsViewModel.chips.isEmpty {
-                UIView.animate(withDuration: 0.7) {
-                    self.chipsCollectionView.scrollToItem(at: IndexPath(item: self.searchChipsViewModel.chips.count-1, section: 0), at: .centeredHorizontally, animated: false)
-                    self.chipsCollectionView.layoutIfNeeded()
-                } completion: { isDone in
-                    self.animationIndex = 1
-                    self.perform(#selector(self.scrollCollectionViewWithAnimation), with: nil, afterDelay: 1.0)
-                }
-            }
-        } else if animationIndex == 1 {
-            UIView.animate(withDuration: 0.7) {
-                self.chipsCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
-                self.chipsCollectionView.layoutIfNeeded()
-            } completion: { isDone in
-            }
-        }
+        self.pageController?.resultPageDelegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -226,15 +206,15 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func addChipsCollectionViewFlowLayout() {
-        let layout = MDCChipCollectionViewFlowLayout()
-        layout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
-                                          height: chipSearchCellMinimHeight)
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
-        chipsCollectionView.collectionViewLayout = layout
         chipsCollectionView.register(MDCChipCollectionViewCell.self,
                                      forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
         chipsCollectionView.allowsMultipleSelection = true
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        collectionViewFlowLayout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
+                                                            height: chipSearchCellMinimHeight)
+        collectionViewFlowLayout.scrollDirection = .horizontal
+        chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
 }
 
@@ -678,6 +658,24 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
                 self.deSelectChipCollectionCell(for: indexPath)
                 reloadChipCollectionWithoutScroll()
             }
+        }
+    }
+}
+
+// MARK: - Result Controller Delegate
+extension ResultViewController: ResultPageControllerDelegate {
+    func didUpdateChips(error: Error?,
+                        facetFields: [SearchFacetFields],
+                        facetQueries: [SearchFacetQueries],
+                        facetIntervals: [SearchFacetIntervals]) {
+        
+        guard let model = pageController?.dataSource else { return }
+        if !model.isEmpty() {
+            guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) else { return }
+            self.updateChips(chipItems)
+        } else {
+            guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: [], facetQueries: [], facetIntervals: []) else { return }
+            self.updateChips(chipItems)
         }
     }
 }
