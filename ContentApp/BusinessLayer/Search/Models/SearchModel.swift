@@ -48,7 +48,7 @@ class SearchModel: SearchModelProtocol {
     func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         return []
     }
-
+    
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int] {
         return []
     }
@@ -234,7 +234,10 @@ class SearchModel: SearchModelProtocol {
                     let paginatedResponse = PaginatedResponse(results: listNodes,
                                                               error: error,
                                                               requestPagination: paginationRequest,
-                                                              responsePagination: result?.list?.pagination)
+                                                              responsePagination: result?.list?.pagination,
+                                                              facetFields: facetFields,
+                                                              facetQueries: facetQueries,
+                                                              facetIntervals: facetIntervals)
                     completionHandler.handler(paginatedResponse)
                 }
             }
@@ -410,5 +413,94 @@ class SearchCompletionHandler: Equatable {
 
     init(completionHandler: @escaping PagedResponseCompletionHandler) {
         handler = completionHandler
+    }
+}
+
+// MARK: - Facet Search
+extension SearchModel {
+   
+    func facetSearchChips(for facetFields: [SearchFacetFields], facetQueries: [SearchFacetQueries], facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
+        
+        let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
+        let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
+        let facetIntervalChips = self.getChipsForFacetIntervals(for: facetIntervals)
+        
+        searchChips.append(contentsOf: facetFieldChips)
+        searchChips.append(contentsOf: facetQueryChips)
+        searchChips.append(contentsOf: facetIntervalChips)
+        return searchChips
+    }
+    
+    func getChipsForFacetFields(for facetFields: [SearchFacetFields]) -> [SearchChipItem] {
+       
+        var chipsArray = [SearchChipItem]()
+        let componentType = ComponentType.facetField
+        if facetFields.isEmpty {
+            removeElementsFromSearchChipsArray(for: componentType)
+        } else {
+            for facetField in facetFields {
+                let name = NSLocalizedString(facetField.label ?? "", comment: "")
+                if let chip = createChip(for: name, and: componentType) {
+                    chipsArray.append(chip)
+                }
+            }
+        }
+        return chipsArray
+    }
+    
+    func getChipsForFacetQueries(for facetQueries: [SearchFacetQueries]) -> [SearchChipItem] {
+        
+        let componentType = ComponentType.facetQuery
+        if facetQueries.isEmpty {
+            removeElementsFromSearchChipsArray(for: componentType)
+        } else {
+            let name = NSLocalizedString("size-facet-queries", comment: "")
+            if let chip = createChip(for: name, and: componentType) {
+                return [chip]
+            }
+        }
+        
+        return []
+    }
+    
+    func getChipsForFacetIntervals(for facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
+        var chipsArray = [SearchChipItem]()
+        let componentType = ComponentType.facetInterval
+       
+        if facetIntervals.isEmpty {
+            removeElementsFromSearchChipsArray(for: componentType)
+        } else {
+            for facetInterval in facetIntervals {
+                let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
+                if let chip = createChip(for: name, and: componentType) {
+                    chipsArray.append(chip)
+                }
+            }
+        }
+        return chipsArray
+    }
+    
+    // MARK: Create Chip
+    private func createChip(for name: String, and componentType: ComponentType) -> SearchChipItem? {
+        if searchChips.enumerated().first(where: {$0.element.name == name}) == nil {
+            let chip = SearchChipItem(name: name,
+                                      selected: false,
+                                      componentType: componentType)
+            return chip
+        }
+        return nil
+    }
+    
+    // MARK: Remove Element from Chip Array
+    private func removeElementsFromSearchChipsArray(for componentType: ComponentType?) {
+        guard let componentType = componentType else { return }
+        var duplicateSearchChipsArray = searchChips
+        let array = duplicateSearchChipsArray.enumerated().filter { $1.componentType == componentType }.map { $0.offset }
+        
+        duplicateSearchChipsArray = duplicateSearchChipsArray
+            .enumerated()
+            .filter { !array.contains($0.offset) }
+            .map { $0.element }
+        searchChips = duplicateSearchChipsArray
     }
 }
