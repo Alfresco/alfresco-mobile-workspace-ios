@@ -481,6 +481,8 @@ extension ResultViewController {
             showSliderSelectorComponent()
         } else if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent()
+        } else if chip.componentType == .facetField || chip.componentType == .facetQuery || chip.componentType == .facetInterval {
+            showFacetSelectorComponent(componentType: chip.componentType, name: chip.selectedValue)
         }
     }
     
@@ -590,6 +592,29 @@ extension ResultViewController {
         }
     }
     
+    // Facet Component
+    private func showFacetSelectorComponent(componentType: ComponentType?, name: String) {
+        if let componentType = componentType {
+            if componentType == .facetQuery, let facetQueries = resultsViewModel?.facetQueries {
+                let viewController = SearchFacetListComponentViewController.instantiateViewController()
+                let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+                bottomSheet.dismissOnDraggingDownSheet = false
+                bottomSheet.delegate = self
+                viewController.coordinatorServices = coordinatorServices
+                viewController.facetViewModel.facetQueryOptions = facetQueries
+                viewController.facetViewModel.selectedFacetQueryString = name
+                viewController.callback = { (value, query, isBackButtonTapped) in
+                    if isBackButtonTapped {
+                        self.resetChip()
+                    } else {
+                        self.updateSelectedChip(with: value, and: query)
+                    }
+                }
+                self.present(bottomSheet, animated: true, completion: nil)
+            }
+        }
+    }
+    
     func updateSelectedChip(with value: String?, and query: String?) {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
@@ -668,6 +693,10 @@ extension ResultViewController: ResultPageControllerDelegate {
                         facetFields: [SearchFacetFields],
                         facetQueries: [SearchFacetQueries],
                         facetIntervals: [SearchFacetIntervals]) {
+        
+        resultsViewModel?.facetFields = facetFields
+        resultsViewModel?.facetQueries = facetQueries
+        resultsViewModel?.facetIntervals = facetIntervals
         
         guard let model = pageController?.dataSource else { return }
         if !model.isEmpty() {

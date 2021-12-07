@@ -20,6 +20,8 @@ import Foundation
 import AlfrescoContent
 
 typealias SearchComponentCallBack = (SearchCategories?, String?, Bool) -> Void
+typealias FacetComponentsCallBack = (_ value: String?, _ query: String?, _ isBackPressed: Bool) -> Void
+
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
@@ -68,6 +70,11 @@ class SearchViewModel: ListComponentViewModel {
         }
         return names
     }
+    
+    // Facet Filters
+    var facetFields = [SearchFacetFields]()
+    var facetQueries = [SearchFacetQueries]()
+    var facetIntervals = [SearchFacetIntervals]()
     
     /// selected filter name
     func selectedFilterName(for config: AdvanceSearchFilters?) -> String {
