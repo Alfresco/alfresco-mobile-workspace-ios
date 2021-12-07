@@ -435,12 +435,12 @@ extension SearchModel {
         var chipsArray = [SearchChipItem]()
         
         if facetFields.isEmpty {
-            let componentType = ComponentType(rawValue: "search-facet-field")
+            let componentType = ComponentType.facetField
             removeElementsFromSearchChipsArray(for: componentType)
         } else {
             for facetField in facetFields {
                 let name = NSLocalizedString(facetField.label ?? "", comment: "")
-                let componentType = ComponentType(rawValue: "search-facet-field")
+                let componentType = ComponentType.facetField
                 if searchChips.enumerated().first(where: {$0.element.name == name}) == nil {
                     let chip = SearchChipItem(name: name,
                                               selected: false,
@@ -454,12 +454,12 @@ extension SearchModel {
     
     func getChipsForFacetQueries(for facetQueries: [SearchFacetQueries]) -> [SearchChipItem] {
         if facetQueries.isEmpty {
-            let componentType = ComponentType(rawValue: "search-facet-query")
+            let componentType = ComponentType.facetQuery
             removeElementsFromSearchChipsArray(for: componentType)
         } else {
             let name = NSLocalizedString("size-facet-queries", comment: "")
-            let componentType = ComponentType(rawValue: "search-facet-query")
-            
+            let componentType = ComponentType.facetQuery
+
             if searchChips.enumerated().first(where: {$0.element.name == name && $0.element.componentType == componentType}) == nil {
                 let chip = SearchChipItem(name: name,
                                           selected: false,
@@ -474,13 +474,13 @@ extension SearchModel {
     func getChipsForFacetIntervals(for facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
         var chipsArray = [SearchChipItem]()
         if facetIntervals.isEmpty {
-            let componentType = ComponentType(rawValue: "search-facet-interval")
+            let componentType = ComponentType.facetInterval
             removeElementsFromSearchChipsArray(for: componentType)
        } else {
             for facetInterval in facetIntervals {
                 let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
-                let componentType = ComponentType(rawValue: "search-facet-interval")
-                
+                let componentType = ComponentType.facetInterval
+
                 if searchChips.enumerated().first(where: {$0.element.name == name}) == nil {
                     let chip = SearchChipItem(name: name,
                                               selected: false,
