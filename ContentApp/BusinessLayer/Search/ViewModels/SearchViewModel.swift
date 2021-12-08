@@ -338,5 +338,25 @@ extension SearchViewModel {
         }
         return nil
     }
+    
+    func isFacetsFieldsEmpty() -> Bool {
+        if facetFields.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    func isFacetsQueriesEmpty() -> Bool {
+        if facetQueries.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    func isFacetsIntervalsEmpty() -> Bool {
+        if facetIntervals.isEmpty {
+            return true
+        }
+        return false
+    }
 }
-

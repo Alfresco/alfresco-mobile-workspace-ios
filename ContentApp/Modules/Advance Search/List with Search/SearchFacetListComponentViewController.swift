@@ -30,10 +30,12 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var heightTableView: NSLayoutConstraint!
+    @IBOutlet weak var searchBar: UISearchBar!
     var facetViewModel: SearchFacetListComponentViewModel { return controller.facetViewModel }
     lazy var controller: SearchFacetListComponentController = { return SearchFacetListComponentController() }()
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
     var callback: FacetComponentsCallBack?
+    var isKeyboardOpen = false
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -41,7 +43,9 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
+        hideKeyboardWhenTappedAround()
         tableView.estimatedRowHeight = 1000
+        facetViewModel.saveTemporaryDataForSearchResults()
         controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
@@ -54,6 +58,20 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         view.isHidden = false
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillAppear() {
+        isKeyboardOpen = true
+    }
+
+    @objc func keyboardWillDisappear() {
+        isKeyboardOpen = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,9 +80,11 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
     }
     
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
+        if isKeyboardOpen == false {
+            let targetSize = CGSize(width: size.width,
+                                    height: UIView.layoutFittingCompressedSize.height)
+            preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
+        }
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -90,18 +110,21 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         dismissButton.tintColor = currentTheme.onSurfaceColor
         headerDivider.backgroundColor = currentTheme.onSurface12Color
         listViewDivider.backgroundColor = currentTheme.onSurface12Color
-                
+        
         applyButton.applyContainedTheme(withScheme: buttonScheme)
         applyButton.isUppercaseTitle = false
         applyButton.setShadowColor(.clear, for: .normal)
         applyButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
-
+        
         resetButton.applyContainedTheme(withScheme: bigButtonScheme)
         resetButton.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
         resetButton.isUppercaseTitle = false
         resetButton.setShadowColor(.clear, for: .normal)
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+                
+        // searchBarView.backgroundColor = currentTheme.onSurface5Color
+            // searchImageView.tintColor = currentTheme.onSurface30Color
     }
     
     private func applyLocalization() {
@@ -185,6 +208,26 @@ extension SearchFacetListComponentViewController: UITableViewDelegate, UITableVi
             self.heightTableView?.constant = ( self.tableView.contentSize.height < self.maxHeightTableView ) ? self.tableView.contentSize.height : self.maxHeightTableView
         }
         self.view.layoutIfNeeded()
+    }
+}
+
+// MARK: - UISearchBar Delegate
+extension SearchFacetListComponentViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        AlfrescoLog.debug("Search: \(searchText)")
+        if searchText.isEmpty {
+            facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
+            tableView.reloadData()
+             controller.buildViewModel()
+        } else {
+            facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+            tableView.reloadData()
+            controller.buildViewModel()
+        }
     }
 }
 

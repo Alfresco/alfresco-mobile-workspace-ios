@@ -20,9 +20,12 @@ import Foundation
 
 class SearchFacetListComponentViewModel {
     var facetQueryOptions = [SearchFacetQueries]()
+    var tempFacetQueryOptions = [SearchFacetQueries]()
     var selectedFacetQuery = [SearchFacetQueries]()
     var selectedFacetQueryString: String?
 
+    
+    
     var facetFieldOptions: SearchFacetFields?
     var selectedFacetField = [SearchFacetFields]()
 
@@ -47,6 +50,16 @@ class SearchFacetListComponentViewModel {
             return NSLocalizedString(name, comment: "")
         }
         return ""
+    }
+    
+    func saveTemporaryDataForSearchResults() {
+        if componentType == .facetQuery {
+            tempFacetQueryOptions = facetQueryOptions
+        } else if componentType == .facetField {
+            
+        } else if componentType == .facetInterval {
+            
+        }
     }
 }
 

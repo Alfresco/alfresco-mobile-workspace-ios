@@ -164,6 +164,7 @@
 "SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
 "SEARCH.FACET_QUERIES.LARGE" = "Large";
 "SEARCH.FACET_QUERIES.SMALL" = "Small";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra Small";
 
 // MARK: - Group List Section
 "today" = "Today";

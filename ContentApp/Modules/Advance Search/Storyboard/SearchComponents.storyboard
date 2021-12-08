@@ -1200,7 +1200,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fnx-04-mRq" userLabel="baseView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="390"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="445"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dio-jP-UuY" userLabel="headerView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="71"/>
@@ -1253,8 +1253,28 @@
                                             <constraint firstItem="aa1-mH-98W" firstAttribute="top" secondItem="COI-T1-o9M" secondAttribute="bottom" constant="10" id="yMm-hE-hrN"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PHe-0x-3rU" userLabel="searchView">
+                                        <rect key="frame" x="0.0" y="71" width="414" height="55"/>
+                                        <subviews>
+                                            <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="i17-TG-5iZ">
+                                                <rect key="frame" x="10" y="5" width="394" height="50"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="MnP-en-5Km" id="pQX-19-cpK"/>
+                                                </connections>
+                                            </searchBar>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="i17-TG-5iZ" secondAttribute="bottom" id="PXH-NV-Nfq"/>
+                                            <constraint firstAttribute="height" constant="55" id="TMd-lq-lXv"/>
+                                            <constraint firstItem="i17-TG-5iZ" firstAttribute="top" secondItem="PHe-0x-3rU" secondAttribute="top" constant="5" id="Wqi-YU-9ob"/>
+                                            <constraint firstAttribute="trailing" secondItem="i17-TG-5iZ" secondAttribute="trailing" constant="10" id="Xx5-2h-hRe"/>
+                                            <constraint firstItem="i17-TG-5iZ" firstAttribute="leading" secondItem="PHe-0x-3rU" secondAttribute="leading" constant="10" id="qRY-3l-DWq"/>
+                                        </constraints>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rfQ-xP-1dV" userLabel="listView">
-                                        <rect key="frame" x="0.0" y="71" width="414" height="226"/>
+                                        <rect key="frame" x="0.0" y="126" width="414" height="226"/>
                                         <subviews>
                                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Dn8-co-pdq" userLabel="tableView">
                                                 <rect key="frame" x="0.0" y="13" width="414" height="200"/>
@@ -1287,7 +1307,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zFS-su-nfy" userLabel="buttonsView">
-                                        <rect key="frame" x="0.0" y="297" width="414" height="93"/>
+                                        <rect key="frame" x="0.0" y="352" width="414" height="93"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hvO-oz-4ik" userLabel="applyView">
                                                 <rect key="frame" x="0.0" y="10" width="207" height="83"/>
@@ -1369,11 +1389,14 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="rfQ-xP-1dV" firstAttribute="trailing" secondItem="Dio-jP-UuY" secondAttribute="trailing" id="1cN-7c-AbB"/>
+                                    <constraint firstItem="PHe-0x-3rU" firstAttribute="leading" secondItem="Dio-jP-UuY" secondAttribute="leading" id="89X-ah-oxQ"/>
                                     <constraint firstAttribute="trailing" secondItem="Dio-jP-UuY" secondAttribute="trailing" id="8HY-Bc-rdZ"/>
                                     <constraint firstItem="rfQ-xP-1dV" firstAttribute="leading" secondItem="Dio-jP-UuY" secondAttribute="leading" id="L4R-gr-O72"/>
+                                    <constraint firstItem="rfQ-xP-1dV" firstAttribute="top" secondItem="PHe-0x-3rU" secondAttribute="bottom" id="LyD-0U-9iG"/>
                                     <constraint firstItem="zFS-su-nfy" firstAttribute="leading" secondItem="rfQ-xP-1dV" secondAttribute="leading" id="Qau-mE-4GJ"/>
                                     <constraint firstItem="zFS-su-nfy" firstAttribute="trailing" secondItem="rfQ-xP-1dV" secondAttribute="trailing" id="TYb-ww-oTV"/>
-                                    <constraint firstItem="rfQ-xP-1dV" firstAttribute="top" secondItem="Dio-jP-UuY" secondAttribute="bottom" id="XhM-XM-Buc"/>
+                                    <constraint firstItem="PHe-0x-3rU" firstAttribute="trailing" secondItem="Dio-jP-UuY" secondAttribute="trailing" id="Tgx-bs-Z7o"/>
+                                    <constraint firstItem="PHe-0x-3rU" firstAttribute="top" secondItem="Dio-jP-UuY" secondAttribute="bottom" id="bOG-ex-Fru"/>
                                     <constraint firstItem="zFS-su-nfy" firstAttribute="top" secondItem="rfQ-xP-1dV" secondAttribute="bottom" id="fgt-o5-K25"/>
                                     <constraint firstItem="Dio-jP-UuY" firstAttribute="top" secondItem="Fnx-04-mRq" secondAttribute="top" id="nrp-g6-IVK"/>
                                     <constraint firstItem="Dio-jP-UuY" firstAttribute="leading" secondItem="Fnx-04-mRq" secondAttribute="leading" id="ovJ-3j-Uwc"/>
@@ -1399,6 +1422,7 @@
                         <outlet property="heightTableView" destination="Y1J-fH-av1" id="HUq-xm-vse"/>
                         <outlet property="listViewDivider" destination="Vgc-km-pi4" id="L5i-gv-ikO"/>
                         <outlet property="resetButton" destination="bhz-Ab-ac8" id="KxJ-d7-RUJ"/>
+                        <outlet property="searchBar" destination="i17-TG-5iZ" id="oOb-1R-vF5"/>
                         <outlet property="tableView" destination="Dn8-co-pdq" id="28I-hl-lXf"/>
                     </connections>
                 </viewController>
