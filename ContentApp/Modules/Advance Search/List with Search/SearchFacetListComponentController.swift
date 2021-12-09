@@ -68,11 +68,47 @@ class SearchFacetListComponentController: NSObject {
     }
     
     func buildViewModelForFacetFields() {
+        var optionsArray = [RowViewModel]()
+        let facetFieldOptions = facetViewModel.facetFieldOptions
+        for (index, item) in facetFieldOptions.enumerated() {
+            let label = item.label ?? ""
+            let name = NSLocalizedString(label, comment: "")
+            let count = item.count ?? "0"
+            let title = String(format: "%@ (%@)", name, count)
+            var isSelected = false
+            if facetViewModel.selectedFacetField.enumerated().first(where: {$0.element.label == label}) != nil {
+                isSelected = true
+            }
+            let rowVM = ListItemCellViewModel(title: title, isRadioList: false, isSelected: isSelected)
+            rowVM.didSelectListItem = {
+                self.updateSelectedValueForFacetFields(for: index)
+            }
+            optionsArray.append(rowVM)
+        }
         
+        facetViewModel.rowViewModels.value = optionsArray
     }
     
     func buildViewModelForFacetIntervals() {
+        var optionsArray = [RowViewModel]()
+        let facetIntervalOptions = facetViewModel.facetIntervalOptions
+        for (index, item) in facetIntervalOptions.enumerated() {
+            let label = item.label ?? ""
+            let name = NSLocalizedString(label, comment: "")
+            let count = item.count ?? "0"
+            let title = String(format: "%@ (%@)", name, count)
+            var isSelected = false
+            if facetViewModel.selectedFacetInterval.enumerated().first(where: {$0.element.label == label}) != nil {
+                isSelected = true
+            }
+            let rowVM = ListItemCellViewModel(title: title, isRadioList: false, isSelected: isSelected)
+            rowVM.didSelectListItem = {
+                self.updateSelectedValueForFacetIntervals(for: index)
+            }
+            optionsArray.append(rowVM)
+        }
         
+        facetViewModel.rowViewModels.value = optionsArray
     }
     
     // MARK: - Update Selected Values
@@ -103,10 +139,32 @@ class SearchFacetListComponentController: NSObject {
     
     func updatedSelectedValuesForFacetFields() {
         
+        let facetFieldOptions = facetViewModel.facetFieldOptions
+        if let selectedFacetFieldString = facetViewModel.selectedFacetFieldString, !selectedFacetFieldString.isEmpty {
+            let valuesArray = selectedFacetFieldString.components(separatedBy: facetViewModel.stringConcatenator)
+
+            for value in valuesArray {
+                let localizedValue = NSLocalizedString(value, comment: "")
+                if let object = facetFieldOptions.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == localizedValue}) {
+                    self.facetViewModel.selectedFacetField.append(object.element)
+                }
+            }
+        }
     }
     
     func updatedSelectedValuesForFacetIntervals() {
         
+        let facetIntervalOptions = facetViewModel.facetIntervalOptions
+        if let selectedFacetIntervalString = facetViewModel.selectedFacetIntervalString, !selectedFacetIntervalString.isEmpty {
+            let valuesArray = selectedFacetIntervalString.components(separatedBy: facetViewModel.stringConcatenator)
+
+            for value in valuesArray {
+                let localizedValue = NSLocalizedString(value, comment: "")
+                if let object = facetIntervalOptions.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == localizedValue}) {
+                    self.facetViewModel.selectedFacetInterval.append(object.element)
+                }
+            }
+        }
     }
 }
 
@@ -144,5 +202,79 @@ extension SearchFacetListComponentController {
         facetViewModel.selectedFacetQuery = []
         facetViewModel.selectedFacetQueryString = ""
         facetViewModel.queryBuilder = facetViewModel.buildQueryForFacetQueries()
+    }
+}
+
+// MARK: Facet Fields
+extension SearchFacetListComponentController {
+   
+    private func updateSelectedValueForFacetFields(for index: Int) {
+        let value = facetViewModel.facetFieldOptions[index].label ?? ""
+        if let object = facetViewModel.selectedFacetField.enumerated().first(where: {$0.element.label == value}) {
+            facetViewModel.selectedFacetField.remove(at: object.offset)
+        } else {
+            facetViewModel.selectedFacetField.append(facetViewModel.facetFieldOptions[index])
+        }
+        buildViewModelForFacetFields()
+    }
+    
+    func applyFilterForFacetFields() {
+        var selectedValue = ""
+        let selectedFacetField = facetViewModel.selectedFacetField
+        for counter in 0 ..< selectedFacetField.count {
+            let item = selectedFacetField[counter]
+            let label = item.label ?? ""
+            let name = NSLocalizedString(label, comment: "")
+            
+            if counter != 0 {
+                selectedValue.append(facetViewModel.stringConcatenator)
+            }
+            selectedValue.append(name)
+        }
+        facetViewModel.selectedFacetFieldString = selectedValue
+        facetViewModel.queryBuilder = facetViewModel.buildQueryForFacetFields()
+    }
+    
+    func resetFilterForFacetFields() {
+        facetViewModel.selectedFacetField = []
+        facetViewModel.selectedFacetFieldString = ""
+        facetViewModel.queryBuilder = facetViewModel.buildQueryForFacetFields()
+    }
+}
+
+// MARK: Facet Intervals
+extension SearchFacetListComponentController {
+   
+    private func updateSelectedValueForFacetIntervals(for index: Int) {
+        let value = facetViewModel.facetIntervalOptions[index].label ?? ""
+        if let object = facetViewModel.selectedFacetInterval.enumerated().first(where: {$0.element.label == value}) {
+            facetViewModel.selectedFacetInterval.remove(at: object.offset)
+        } else {
+            facetViewModel.selectedFacetInterval.append(facetViewModel.facetIntervalOptions[index])
+        }
+        buildViewModelForFacetIntervals()
+    }
+    
+    func applyFilterForFacetIntervals() {
+        var selectedValue = ""
+        let selectedFacetInterval = facetViewModel.selectedFacetInterval
+        for counter in 0 ..< selectedFacetInterval.count {
+            let item = selectedFacetInterval[counter]
+            let label = item.label ?? ""
+            let name = NSLocalizedString(label, comment: "")
+            
+            if counter != 0 {
+                selectedValue.append(facetViewModel.stringConcatenator)
+            }
+            selectedValue.append(name)
+        }
+        facetViewModel.selectedFacetIntervalString = selectedValue
+        facetViewModel.queryBuilder = facetViewModel.buildQueryForFacetIntervals()
+    }
+    
+    func resetFilterForFacetIntervals() {
+        facetViewModel.selectedFacetInterval = []
+        facetViewModel.selectedFacetIntervalString = ""
+        facetViewModel.queryBuilder = facetViewModel.buildQueryForFacetIntervals()
     }
 }

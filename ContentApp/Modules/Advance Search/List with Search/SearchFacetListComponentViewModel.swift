@@ -19,22 +19,29 @@
 import Foundation
 
 class SearchFacetListComponentViewModel {
+   
+    // Facet Query
     var facetQueryOptions = [SearchFacetQueries]()
     var tempFacetQueryOptions = [SearchFacetQueries]()
     var selectedFacetQuery = [SearchFacetQueries]()
     var selectedFacetQueryString: String?
 
-    
-    
-    var facetFieldOptions: SearchFacetFields?
-    var selectedFacetField = [SearchFacetFields]()
+    // Facet Field
+    var facetFields: SearchFacetFields?
+    var facetFieldOptions = [Buckets]()
+    var tempFacetFieldOptions = [Buckets]()
+    var selectedFacetField = [Buckets]()
+    var selectedFacetFieldString: String?
 
-    var facetIntervalsOptions: SearchFacetIntervals?
-    var selectedFacetInterval = [SearchFacetIntervals]()
+    // Facet Interval
+    var facetInterval: SearchFacetIntervals?
+    var facetIntervalOptions = [Buckets]()
+    var tempFacetIntervalOptions = [Buckets]()
+    var selectedFacetInterval = [Buckets]()
+    var selectedFacetIntervalString: String?
 
     let rowViewModels = Observable<[RowViewModel]>([])
     var componentType: ComponentType = .facetQuery
-
     let stringConcatenator = ", "
     let searchOperator = "OR"
     var queryBuilder: String?
@@ -43,10 +50,10 @@ class SearchFacetListComponentViewModel {
         if componentType == .facetQuery {
             return NSLocalizedString("size-facet-queries", comment: "")
         } else if componentType == .facetField {
-            let name = facetFieldOptions?.label ?? ""
+            let name = facetFields?.label ?? ""
             return NSLocalizedString(name, comment: "")
         } else if componentType == .facetInterval {
-            let name = facetIntervalsOptions?.label ?? ""
+            let name = facetInterval?.label ?? ""
             return NSLocalizedString(name, comment: "")
         }
         return ""
@@ -56,9 +63,11 @@ class SearchFacetListComponentViewModel {
         if componentType == .facetQuery {
             tempFacetQueryOptions = facetQueryOptions
         } else if componentType == .facetField {
-            
+            facetFieldOptions = facetFields?.buckets ?? []
+            tempFacetFieldOptions = facetFieldOptions
         } else if componentType == .facetInterval {
-            
+            facetIntervalOptions = facetInterval?.buckets ?? []
+            tempFacetIntervalOptions = facetIntervalOptions
         }
     }
 }
@@ -80,3 +89,40 @@ extension SearchFacetListComponentViewModel {
         return queryString
     }
 }
+
+// MARK: Facet Field
+extension SearchFacetListComponentViewModel {
+    
+    func buildQueryForFacetFields() -> String? {
+        var queryString = ""
+        for counter in 0 ..< selectedFacetField.count {
+            let value = selectedFacetField[counter].filterQuery ?? ""
+            if !value.isEmpty {
+                if counter != 0 {
+                    queryString.append(" " + searchOperator + " ")
+                }
+                queryString.append(value)
+            }
+        }
+        return queryString
+    }
+}
+
+// MARK: Facet Interval
+extension SearchFacetListComponentViewModel {
+    
+    func buildQueryForFacetIntervals() -> String? {
+        var queryString = ""
+        for counter in 0 ..< selectedFacetInterval.count {
+            let value = selectedFacetInterval[counter].filterQuery ?? ""
+            if !value.isEmpty {
+                if counter != 0 {
+                    queryString.append(" " + searchOperator + " ")
+                }
+                queryString.append(value)
+            }
+        }
+        return queryString
+    }
+}
+

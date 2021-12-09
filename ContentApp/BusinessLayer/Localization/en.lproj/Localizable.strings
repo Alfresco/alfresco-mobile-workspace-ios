@@ -165,6 +165,9 @@
 "SEARCH.FACET_QUERIES.LARGE" = "Large";
 "SEARCH.FACET_QUERIES.SMALL" = "Small";
 "SEARCH.FACET_QUERIES.XTRASMALL" = "Extra Small";
+"earlier" = "Earlier";
+"lastYear" = "Last Year";
+"currentYear" = "Current Year";
 
 // MARK: - Group List Section
 "today" = "Today";

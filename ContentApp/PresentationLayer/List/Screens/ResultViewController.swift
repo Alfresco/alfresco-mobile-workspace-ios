@@ -482,7 +482,7 @@ extension ResultViewController {
         } else if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent()
         } else if chip.componentType == .facetField || chip.componentType == .facetQuery || chip.componentType == .facetInterval {
-            showFacetSelectorComponent(componentType: chip.componentType, name: chip.selectedValue)
+            showFacetSelectorComponent(componentType: chip.componentType, name: chip.name, selectedValue: chip.selectedValue)
         }
     }
     
@@ -593,25 +593,35 @@ extension ResultViewController {
     }
     
     // Facet Component
-    private func showFacetSelectorComponent(componentType: ComponentType?, name: String) {
+    private func showFacetSelectorComponent(componentType: ComponentType?, name: String, selectedValue: String) {
         if let componentType = componentType {
+            
+            let viewController = SearchFacetListComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.facetViewModel.componentType = componentType
+
             if componentType == .facetQuery, let facetQueries = resultsViewModel?.facetQueries {
-                let viewController = SearchFacetListComponentViewController.instantiateViewController()
-                let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-                bottomSheet.dismissOnDraggingDownSheet = false
-                bottomSheet.delegate = self
-                viewController.coordinatorServices = coordinatorServices
                 viewController.facetViewModel.facetQueryOptions = facetQueries
-                viewController.facetViewModel.selectedFacetQueryString = name
-                viewController.callback = { (value, query, isBackButtonTapped) in
-                    if isBackButtonTapped {
-                        self.resetChip()
-                    } else {
-                        self.updateSelectedChip(with: value, and: query)
-                    }
-                }
-                self.present(bottomSheet, animated: true, completion: nil)
+                viewController.facetViewModel.selectedFacetQueryString = selectedValue
+            } else if componentType == .facetField, let selectedFacetField = resultsViewModel?.getSelectedFacetField(for: name) {
+                viewController.facetViewModel.facetFields = selectedFacetField
+                viewController.facetViewModel.selectedFacetFieldString = selectedValue
+            } else if componentType == .facetInterval, let selectedFacetInterval = resultsViewModel?.getSelectedFacetInterval(for: name) {
+                viewController.facetViewModel.facetInterval = selectedFacetInterval
+                viewController.facetViewModel.selectedFacetIntervalString = selectedValue
             }
+            
+            viewController.callback = { (value, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    self.updateSelectedChip(with: value, and: query)
+                }
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
         }
     }
     
@@ -693,7 +703,7 @@ extension ResultViewController: ResultPageControllerDelegate {
                         facetFields: [SearchFacetFields],
                         facetQueries: [SearchFacetQueries],
                         facetIntervals: [SearchFacetIntervals]) {
-        
+    
         resultsViewModel?.facetFields = facetFields
         resultsViewModel?.facetQueries = facetQueries
         resultsViewModel?.facetIntervals = facetIntervals

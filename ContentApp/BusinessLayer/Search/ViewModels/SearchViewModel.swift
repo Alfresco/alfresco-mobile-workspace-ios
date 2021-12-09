@@ -263,7 +263,7 @@ extension SearchViewModel {
     
     func getIndexOfSelectedChip(for chips: [SearchChipItem]) -> Int {
         if let selectedChip = self.selectedChip {
-            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType}) {
+            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType && $0.element.name == selectedChip.name}) {
                 return object.offset
             }
         }
@@ -359,4 +359,23 @@ extension SearchViewModel {
         }
         return false
     }
+    
+    // MARK: - Selected Facet Field
+    func getSelectedFacetField(for name: String) -> SearchFacetFields? {
+        if let object = self.facetFields.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
+            let index = object.offset
+            return facetFields[index]
+        }
+        return nil
+    }
+    
+    // MARK: - Selected Facet Interval
+    func getSelectedFacetInterval(for name: String) -> SearchFacetIntervals? {
+        if let object = self.facetIntervals.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
+            let index = object.offset
+            return facetIntervals[index]
+        }
+        return nil
+    }
 }
+
