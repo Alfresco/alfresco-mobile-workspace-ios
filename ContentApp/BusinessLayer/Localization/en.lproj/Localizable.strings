@@ -161,6 +161,13 @@
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
 "SEARCH.FACET_FIELDS.CREATED" = "Created";
 "size-facet-queries" = "Size Facet Queries";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
+"SEARCH.FACET_QUERIES.LARGE" = "Large";
+"SEARCH.FACET_QUERIES.SMALL" = "Small";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra Small";
+"earlier" = "Earlier";
+"lastYear" = "Last Year";
+"currentYear" = "Current Year";
 
 // MARK: - Group List Section
 "today" = "Today";

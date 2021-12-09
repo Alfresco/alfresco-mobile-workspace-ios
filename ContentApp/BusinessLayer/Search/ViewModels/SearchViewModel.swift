@@ -20,6 +20,8 @@ import Foundation
 import AlfrescoContent
 
 typealias SearchComponentCallBack = (SearchCategories?, String?, Bool) -> Void
+typealias FacetComponentsCallBack = (_ value: String?, _ query: String?, _ isBackPressed: Bool) -> Void
+
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
@@ -68,6 +70,11 @@ class SearchViewModel: ListComponentViewModel {
         }
         return names
     }
+    
+    // Facet Filters
+    var facetFields = [SearchFacetFields]()
+    var facetQueries = [SearchFacetQueries]()
+    var facetIntervals = [SearchFacetIntervals]()
     
     /// selected filter name
     func selectedFilterName(for config: AdvanceSearchFilters?) -> String {
@@ -256,7 +263,7 @@ extension SearchViewModel {
     
     func getIndexOfSelectedChip(for chips: [SearchChipItem]) -> Int {
         if let selectedChip = self.selectedChip {
-            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType}) {
+            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType && $0.element.name == selectedChip.name}) {
                 return object.offset
             }
         }
@@ -328,6 +335,45 @@ extension SearchViewModel {
                 let index = object.offset
                 return searchFilters[index].facetIntervals
             }
+        }
+        return nil
+    }
+    
+    func isFacetsFieldsEmpty() -> Bool {
+        if facetFields.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    func isFacetsQueriesEmpty() -> Bool {
+        if facetQueries.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    func isFacetsIntervalsEmpty() -> Bool {
+        if facetIntervals.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: - Selected Facet Field
+    func getSelectedFacetField(for name: String) -> SearchFacetFields? {
+        if let object = self.facetFields.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
+            let index = object.offset
+            return facetFields[index]
+        }
+        return nil
+    }
+    
+    // MARK: - Selected Facet Interval
+    func getSelectedFacetInterval(for name: String) -> SearchFacetIntervals? {
+        if let object = self.facetIntervals.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
+            let index = object.offset
+            return facetIntervals[index]
         }
         return nil
     }
