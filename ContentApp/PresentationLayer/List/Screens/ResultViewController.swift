@@ -28,7 +28,6 @@ protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
-    func resetSearchFilterTapped()
 }
 
 class ResultViewController: SystemThemableViewController {
@@ -674,7 +673,6 @@ extension ResultViewController {
         
     @IBAction func resetFilterButtonAction(_ sender: Any) {
         self.updateCategory()
-        resultScreenDelegate?.resetSearchFilterTapped()
     }
 }
 
