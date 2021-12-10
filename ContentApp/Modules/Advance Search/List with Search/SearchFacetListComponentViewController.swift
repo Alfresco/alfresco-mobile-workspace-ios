@@ -31,6 +31,9 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var heightTableView: NSLayoutConstraint!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var heightSearchView: NSLayoutConstraint!
+    @IBOutlet weak var searchView: UIView!
+    
     var facetViewModel: SearchFacetListComponentViewModel { return controller.facetViewModel }
     lazy var controller: SearchFacetListComponentController = { return SearchFacetListComponentController() }()
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
@@ -52,6 +55,8 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         registerCells()
         controller.buildViewModel()
         setupBindings()
+        heightSearchView.constant = facetViewModel.heightAndAlphaOfSearchView().height
+        searchView.alpha = facetViewModel.heightAndAlphaOfSearchView().alpha
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -61,7 +66,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -244,30 +249,26 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         if facetViewModel.componentType == .facetQuery {
             if searchText.isEmpty {
                 facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
             } else {
-                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         } else if facetViewModel.componentType == .facetField {
             if searchText.isEmpty {
                 facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions
             } else {
-                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         } else if facetViewModel.componentType == .facetInterval {
             if searchText.isEmpty {
                 facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions
             } else {
-                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         }
-        
-        tableView.reloadData()
         controller.buildViewModel()
-
     }
 }
 

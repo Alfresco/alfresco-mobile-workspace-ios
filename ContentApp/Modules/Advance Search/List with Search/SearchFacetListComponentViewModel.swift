@@ -17,6 +17,7 @@
 //
 
 import Foundation
+import UIKit
 
 class SearchFacetListComponentViewModel {
    
@@ -45,6 +46,7 @@ class SearchFacetListComponentViewModel {
     let stringConcatenator = ", "
     let searchOperator = "OR"
     var queryBuilder: String?
+    let minimumItemsInListToShowSearchBar = 10
 
     var title: String {
         if componentType == .facetQuery {
@@ -68,6 +70,28 @@ class SearchFacetListComponentViewModel {
         } else if componentType == .facetInterval {
             facetIntervalOptions = facetInterval?.buckets ?? []
             tempFacetIntervalOptions = facetIntervalOptions
+        }
+    }
+    
+    // MARK: Search Bar
+    func isShowSearchBar() -> Bool {
+        var showSearchBar = false
+        if componentType == .facetQuery {
+            showSearchBar = (facetQueryOptions.count > minimumItemsInListToShowSearchBar) ? true : false
+        } else if componentType == .facetField {
+            showSearchBar = (facetFieldOptions.count > minimumItemsInListToShowSearchBar) ? true : false
+        } else if componentType == .facetInterval {
+            showSearchBar = (facetIntervalOptions.count > minimumItemsInListToShowSearchBar) ? true : false
+        }
+        
+        return showSearchBar
+    }
+    
+    func heightAndAlphaOfSearchView() -> (height: CGFloat, alpha: CGFloat) {
+        if isShowSearchBar() {
+            return (55.0, 1.0)
+        } else {
+            return (0.0, 0.0)
         }
     }
 }

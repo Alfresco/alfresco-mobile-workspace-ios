@@ -306,7 +306,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             }
             
             let text = cell?.chipView.titleLabel.text ?? ""
-            if text.count >= textChipMaxCharacters && chip.componentType == .text {
+            if text.count > textChipMaxCharacters {
                 let shortString = String(text.prefix(textChipMaxCharacters))
                 cell?.chipView.titleLabel.text = String(format: "%@...", shortString)
             }
@@ -601,7 +601,8 @@ extension ResultViewController {
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.facetViewModel.componentType = componentType
-
+            bottomSheet.ignoreKeyboardHeight = true
+            
             if componentType == .facetQuery, let facetQueries = resultsViewModel?.facetQueries {
                 viewController.facetViewModel.facetQueryOptions = facetQueries
                 viewController.facetViewModel.selectedFacetQueryString = selectedValue

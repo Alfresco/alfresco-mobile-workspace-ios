@@ -948,7 +948,7 @@
                                 <rect key="frame" x="15" y="61" width="398" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f4k-Bo-MFb" userLabel="categoryNameView">
-                                        <rect key="frame" x="10" y="0.0" width="177" height="45"/>
+                                        <rect key="frame" x="10" y="0.0" width="167" height="45"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Advanced search" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ePb-tN-y2X" userLabel="categoryLabel">
                                                 <rect key="frame" x="0.0" y="0.0" width="132" height="45"/>
@@ -957,7 +957,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-drop-down" translatesAutoresizingMaskIntoConstraints="NO" id="CPE-Ol-9RV">
-                                                <rect key="frame" x="152" y="10" width="25" height="25"/>
+                                                <rect key="frame" x="142" y="10" width="25" height="25"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="tintColor" systemColor="labelColor"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="configurationImageView">
@@ -969,7 +969,7 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ybg-kd-jXn" userLabel="categoryNameButtonAction">
-                                                <rect key="frame" x="0.0" y="0.0" width="177" height="45"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="167" height="45"/>
                                                 <state key="normal">
                                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
@@ -985,7 +985,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ePb-tN-y2X" secondAttribute="bottom" id="Hg3-bX-BI4"/>
                                             <constraint firstItem="ePb-tN-y2X" firstAttribute="top" secondItem="f4k-Bo-MFb" secondAttribute="top" id="JcX-9f-LQi"/>
                                             <constraint firstItem="CPE-Ol-9RV" firstAttribute="centerY" secondItem="ePb-tN-y2X" secondAttribute="centerY" id="P3z-Rj-Cme"/>
-                                            <constraint firstItem="CPE-Ol-9RV" firstAttribute="leading" secondItem="ePb-tN-y2X" secondAttribute="trailing" constant="20" id="PEb-4q-TTj"/>
+                                            <constraint firstItem="CPE-Ol-9RV" firstAttribute="leading" secondItem="ePb-tN-y2X" secondAttribute="trailing" constant="10" id="PEb-4q-TTj"/>
                                             <constraint firstAttribute="height" constant="45" id="dQy-46-4pn"/>
                                             <constraint firstItem="ybg-kd-jXn" firstAttribute="top" secondItem="f4k-Bo-MFb" secondAttribute="top" id="ddi-T8-GOX"/>
                                             <constraint firstAttribute="bottom" secondItem="ybg-kd-jXn" secondAttribute="bottom" id="hxg-Im-8Hv"/>
