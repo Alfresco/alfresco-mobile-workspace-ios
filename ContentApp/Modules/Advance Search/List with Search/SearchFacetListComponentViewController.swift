@@ -66,12 +66,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
     }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.view.endEditing(true)
-    }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
