@@ -253,19 +253,19 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
             if searchText.isEmpty {
                 facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
             } else {
-                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         } else if facetViewModel.componentType == .facetField {
             if searchText.isEmpty {
                 facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions
             } else {
-                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         } else if facetViewModel.componentType == .facetInterval {
             if searchText.isEmpty {
                 facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions
             } else {
-                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
+                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
             }
         }
         controller.buildViewModel()
