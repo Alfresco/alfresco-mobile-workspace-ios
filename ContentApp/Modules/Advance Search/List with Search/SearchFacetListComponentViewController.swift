@@ -31,6 +31,9 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var heightTableView: NSLayoutConstraint!
     @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var heightSearchView: NSLayoutConstraint!
+    @IBOutlet weak var searchView: UIView!
+    
     var facetViewModel: SearchFacetListComponentViewModel { return controller.facetViewModel }
     lazy var controller: SearchFacetListComponentController = { return SearchFacetListComponentController() }()
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
@@ -52,6 +55,8 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         registerCells()
         controller.buildViewModel()
         setupBindings()
+        heightSearchView.constant = facetViewModel.heightAndAlphaOfSearchView().height
+        searchView.alpha = facetViewModel.heightAndAlphaOfSearchView().alpha
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -60,6 +65,11 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         view.isHidden = false
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
     }
     
     deinit {
@@ -139,7 +149,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         /* observing rows */
         self.facetViewModel.rowViewModels.addObserver() { [weak self] (rows) in
             DispatchQueue.main.async {
-                self?.tableView.reloadData()
+                self?.reloadTableData()
             }
         }
     }
@@ -244,7 +254,6 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
         if facetViewModel.componentType == .facetQuery {
             if searchText.isEmpty {
                 facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
@@ -264,10 +273,13 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
                 facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").contains(searchText) })
             }
         }
-        
-        tableView.reloadData()
         controller.buildViewModel()
-
+    }
+    
+    func reloadTableData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 

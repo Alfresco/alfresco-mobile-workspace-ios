@@ -168,6 +168,13 @@
 "earlier" = "Earlier";
 "lastYear" = "Last Year";
 "currentYear" = "Current Year";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "This Year";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "MIME Type";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Extra Large";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra Extra Large";
+"The Created" = "The Created";
+"TheModified" = "The Modified";
+
 
 // MARK: - Group List Section
 "today" = "Today";

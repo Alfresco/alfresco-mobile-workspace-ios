@@ -1419,10 +1419,12 @@
                         <outlet property="dismissButton" destination="COI-T1-o9M" id="7A3-sE-hK9"/>
                         <outlet property="headerDivider" destination="aa1-mH-98W" id="z61-Bb-ah1"/>
                         <outlet property="headerTitleLabel" destination="QGn-VU-cJx" id="9jR-oR-lIa"/>
+                        <outlet property="heightSearchView" destination="TMd-lq-lXv" id="zEW-V2-Bh8"/>
                         <outlet property="heightTableView" destination="Y1J-fH-av1" id="HUq-xm-vse"/>
                         <outlet property="listViewDivider" destination="Vgc-km-pi4" id="L5i-gv-ikO"/>
                         <outlet property="resetButton" destination="bhz-Ab-ac8" id="KxJ-d7-RUJ"/>
                         <outlet property="searchBar" destination="i17-TG-5iZ" id="oOb-1R-vF5"/>
+                        <outlet property="searchView" destination="PHe-0x-3rU" id="IaG-Tr-KTD"/>
                         <outlet property="tableView" destination="Dn8-co-pdq" id="28I-hl-lXf"/>
                     </connections>
                 </viewController>
