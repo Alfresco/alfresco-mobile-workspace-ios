@@ -481,17 +481,4 @@ extension SearchModel {
         }
         return nil
     }
-    
-    // MARK: Remove Element from Chip Array
-    private func removeElementsFromSearchChipsArray(for componentType: ComponentType?) {
-        guard let componentType = componentType else { return }
-        var duplicateSearchChipsArray = searchChips
-        let array = duplicateSearchChipsArray.enumerated().filter { $1.componentType == componentType }.map { $0.offset }
-        
-        duplicateSearchChipsArray = duplicateSearchChipsArray
-            .enumerated()
-            .filter { !array.contains($0.offset) }
-            .map { $0.element }
-        searchChips = duplicateSearchChipsArray
-    }
 }
