@@ -435,16 +435,14 @@ extension SearchModel {
        
         var chipsArray = [SearchChipItem]()
         let componentType = ComponentType.facetField
-        if facetFields.isEmpty {
-            removeElementsFromSearchChipsArray(for: componentType)
-        } else {
-            for facetField in facetFields {
-                let name = NSLocalizedString(facetField.label ?? "", comment: "")
-                if let chip = createChip(for: name, and: componentType) {
-                    chipsArray.append(chip)
-                }
+        
+        for facetField in facetFields {
+            let name = NSLocalizedString(facetField.label ?? "", comment: "")
+            if let chip = createChip(for: name, and: componentType) {
+                chipsArray.append(chip)
             }
         }
+
         return chipsArray
     }
     
@@ -452,14 +450,10 @@ extension SearchModel {
         var chipsArray = [SearchChipItem]()
         let componentType = ComponentType.facetInterval
        
-        if facetIntervals.isEmpty {
-            removeElementsFromSearchChipsArray(for: componentType)
-        } else {
-            for facetInterval in facetIntervals {
-                let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
-                if let chip = createChip(for: name, and: componentType) {
-                    chipsArray.append(chip)
-                }
+        for facetInterval in facetIntervals {
+            let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
+            if let chip = createChip(for: name, and: componentType) {
+                chipsArray.append(chip)
             }
         }
         return chipsArray
@@ -468,13 +462,10 @@ extension SearchModel {
     func getChipsForFacetQueries(for facetQueries: [SearchFacetQueries]) -> [SearchChipItem] {
         
         let componentType = ComponentType.facetQuery
-        if facetQueries.isEmpty {
-            removeElementsFromSearchChipsArray(for: componentType)
-        } else {
-            let name = NSLocalizedString("size-facet-queries", comment: "")
-            if let chip = createChip(for: name, and: componentType) {
-                return [chip]
-            }
+        
+        let name = NSLocalizedString("size-facet-queries", comment: "")
+        if let chip = createChip(for: name, and: componentType) {
+            return [chip]
         }
         
         return []
