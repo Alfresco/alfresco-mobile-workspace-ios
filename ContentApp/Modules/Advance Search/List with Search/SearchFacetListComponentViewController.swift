@@ -144,7 +144,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         /* observing rows */
         self.facetViewModel.rowViewModels.addObserver() { [weak self] (rows) in
             DispatchQueue.main.async {
-                self?.reloadTableData()
+                self?.tableView.reloadData()
             }
         }
     }
@@ -269,12 +269,6 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
             }
         }
         controller.buildViewModel()
-    }
-    
-    func reloadTableData() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
 }
 
