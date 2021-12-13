@@ -702,19 +702,23 @@ extension ResultViewController: ResultPageControllerDelegate {
                         facetFields: [SearchFacetFields],
                         facetQueries: [SearchFacetQueries],
                         facetIntervals: [SearchFacetIntervals]) {
-    
-        resultsViewModel?.facetFields = facetFields
-        resultsViewModel?.facetQueries = facetQueries
-        resultsViewModel?.facetIntervals = facetIntervals
         
-        guard let model = pageController?.dataSource else { return }
-        if !model.isEmpty() {
-            guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) else { return }
-            self.updateChips(chipItems)
+        let isFacetsFieldsEmpty = resultsViewModel?.isFacetsFieldsEmpty() ?? false
+        let isFacetQueryEmpty = resultsViewModel?.isFacetsQueriesEmpty() ?? false
+        let isFacetIntervalsEmpty = resultsViewModel?.isFacetsIntervalsEmpty() ?? false
+        if isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty {
+            resultsViewModel?.facetFields = facetFields
+            resultsViewModel?.facetQueries = facetQueries
+            resultsViewModel?.facetIntervals = facetIntervals
         } else {
-            guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: [], facetQueries: [], facetIntervals: []) else { return }
-            self.updateChips(chipItems)
+            // update
+            resultsViewModel?.facetFields = resultsViewModel?.getUpdatedFacetFields(for: facetFields) ?? []
+            resultsViewModel?.facetIntervals = resultsViewModel?.getUpdatedFacetIntervals(for: facetIntervals) ?? []
+            resultsViewModel?.facetQueries = resultsViewModel?.getUpdatedFacetQueries(for: facetQueries) ?? []
         }
+            
+        guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) else { return }
+        self.updateChips(chipItems)
     }
 }
 

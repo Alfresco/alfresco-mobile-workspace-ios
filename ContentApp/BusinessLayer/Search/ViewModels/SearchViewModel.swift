@@ -377,5 +377,58 @@ extension SearchViewModel {
         }
         return nil
     }
+    
+    // MARK: Updated Facet Field Options
+    func getUpdatedFacetFields(for newFacetFields: [SearchFacetFields]) -> [SearchFacetFields] {
+        var oldFacetFields = self.facetFields
+        for index in 0 ..< newFacetFields.count {
+            let label = newFacetFields[index].label ?? ""
+            let buckets = newFacetFields[index].buckets
+            
+            if let object = oldFacetFields.enumerated().first(where: {$0.element.label == label}) {
+                let index = object.offset
+                oldFacetFields[index].buckets = buckets
+            } else {
+                oldFacetFields.append(newFacetFields[index])
+            }
+        }
+        return oldFacetFields
+    }
+    
+    // MARK: Updated Facet Interval Options
+    func getUpdatedFacetIntervals(for newFacetIntervals: [SearchFacetIntervals]) -> [SearchFacetIntervals] {
+        var oldFacetIntervals = self.facetIntervals
+        for index in 0 ..< newFacetIntervals.count {
+            let label = newFacetIntervals[index].label ?? ""
+            let buckets = newFacetIntervals[index].buckets
+           
+            if let object = oldFacetIntervals.enumerated().first(where: {$0.element.label == label}) {
+                let index = object.offset
+                oldFacetIntervals[index].buckets = buckets
+            } else {
+                oldFacetIntervals.append(newFacetIntervals[index])
+            }
+        }
+        return oldFacetIntervals
+    }
+    
+    // MARK: Updated Facet Queries
+    func getUpdatedFacetQueries(for newFacetQueries: [SearchFacetQueries]) -> [SearchFacetQueries] {
+        var oldFacetQueries = self.facetQueries
+        for index in 0 ..< newFacetQueries.count {
+            let label = newFacetQueries[index].label ?? ""
+            let count = newFacetQueries[index].count
+            let filterQuery = newFacetQueries[index].filterQuery
+            
+            if let object = oldFacetQueries.enumerated().first(where: {$0.element.label == label}) {
+                let index = object.offset
+                oldFacetQueries[index].count = count
+                oldFacetQueries[index].filterQuery = filterQuery
+            } else {
+                oldFacetQueries.append(newFacetQueries[index])
+            }
+        }
+        return oldFacetQueries
+    }
 }
 
