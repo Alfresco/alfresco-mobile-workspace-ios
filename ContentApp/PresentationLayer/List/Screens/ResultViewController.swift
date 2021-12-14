@@ -283,6 +283,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
 
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
@@ -300,22 +301,10 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                                                           for: indexPath) as? MDCChipCollectionViewCell
             let chip = searchChipsViewModel.chips[indexPath.row]
             let selectedValue = chip.selectedValue
-            if !selectedValue.isEmpty {
-                let selectedValueArray = selectedValue.components(separatedBy: ",")
-                if selectedValueArray.count > 1 {
-                    let firstValue = selectedValueArray[0]
-                    let count = selectedValueArray.count - 1
-                    if firstValue.count > textChipMaxCharacters {
-                        let prefixString = String(firstValue.prefix(textChipMaxPrefix))
-                        let suffixString = String(firstValue.suffix(textChipMaxSufffix))
-                        let shortString = String(format: "%@ ... %@", prefixString, suffixString)
-                        cell?.chipView.titleLabel.text = String(format: "%@ + %d", shortString, count)
-                    } else {
-                        cell?.chipView.titleLabel.text = String(format: "%@ + %d", firstValue, count)
-                    }
-                }
-            } else {
+            if selectedValue.isEmpty {
                 cell?.chipView.titleLabel.text = chip.name
+            } else {
+                cell?.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
             }
             
             cell?.chipView.isSelected = chip.selected
@@ -357,7 +346,25 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return UICollectionViewCell()
         }
     }
-
+    
+    func getChipSelectedValue(for value: String) -> String {
+        let selectedValueArray = value.components(separatedBy: ",")
+        if selectedValueArray.count > 1 {
+            let firstValue = selectedValueArray[0]
+            let count = selectedValueArray.count - 1
+            if firstValue.count > textChipMaxCharacters {
+                let prefixString = String(firstValue.prefix(textChipMaxPrefix))
+                let suffixString = String(firstValue.suffix(textChipMaxSufffix))
+                let shortString = String(format: "%@ ... %@", prefixString, suffixString)
+                return String(format: "%@ + %d", shortString, count)
+            } else {
+                return String(format: "%@ + %d", firstValue, count)
+            }
+        } else {
+            return value
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
