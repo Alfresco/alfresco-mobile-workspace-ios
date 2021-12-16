@@ -283,7 +283,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
 
-    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
@@ -360,6 +359,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             } else {
                 return String(format: "%@ + %d", firstValue, count)
             }
+        } else if value.count > textChipMaxCharacters {
+            let prefixString = String(value.prefix(textChipMaxCharacters))
+            return String(format: "%@...", prefixString)
         } else {
             return value
         }
