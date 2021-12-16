@@ -163,13 +163,14 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        self.loadConfigurationFromServer()
+        // self.loadConfigurationFromServer()
     }
     
     private func loadConfigurationsFromAppBundle() {
         if let fileUrl = Bundle.main.url(forResource: KeyConstants.AdvanceSearch.configFile, withExtension: KeyConstants.AdvanceSearch.configFileExtension) {
             do {
                 let data = try Data(contentsOf: fileUrl, options: [])
+                self.saveConfiguartionLocally(for: data)
                 parseAppConfiguration(for: data)
             } catch let error {
                 AlfrescoLog.error(error.localizedDescription)
@@ -379,6 +380,14 @@ extension SearchViewModel {
     }
     
     // MARK: Updated Facet Field Options
+    func isFacetChipsHasSelectedValue() -> Bool {
+        
+        if self.searchModel.searchChips.enumerated().first(where: {!($0.element.selectedValue).isEmpty && ($0.element.componentType == .facetField || $0.element.componentType == .facetQuery || $0.element.componentType == .facetInterval)}) != nil {
+            return true
+        }
+        return false
+    }
+    
     func getUpdatedFacetFields(for newFacetFields: [SearchFacetFields]) -> [SearchFacetFields] {
         var oldFacetIFields = self.facetFields
         let difference = newFacetFields
@@ -400,8 +409,12 @@ extension SearchViewModel {
             // Step 2: Get index of object from old fields which matches object from new fields
             if let object = oldFacetIFields.enumerated().first(where: {$0.element.label == newLabel}) {
                 let indexOfChip = object.offset
-                var oldBuckets = oldFacetIFields[indexOfChip].buckets
                 
+                var oldBuckets = [Buckets]()
+                if self.isFacetChipsHasSelectedValue() == true {
+                    oldBuckets = oldFacetIFields[indexOfChip].buckets
+                }
+
                 // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
                 for bucket in newBuckets {
                     let newBucketLabel = bucket.label
@@ -412,8 +425,11 @@ extension SearchViewModel {
                 }
                 
                 // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
-                let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
-                oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                
+                if self.isFacetChipsHasSelectedValue() == false {
+                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
+                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                }
             
                 // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
                 let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
@@ -455,8 +471,11 @@ extension SearchViewModel {
             // Step 2: Get index of object from old intervals which matches object from new interval
             if let object = oldFacetIntervals.enumerated().first(where: {$0.element.label == newLabel}) {
                 let indexOfChip = object.offset
-                var oldBuckets = oldFacetIntervals[indexOfChip].buckets
-                
+                var oldBuckets = [Buckets]()
+                if self.isFacetChipsHasSelectedValue() == true {
+                    oldBuckets = oldFacetIntervals[indexOfChip].buckets
+                }
+                                
                 // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
                 for bucket in newBuckets {
                     let newBucketLabel = bucket.label
@@ -467,8 +486,10 @@ extension SearchViewModel {
                 }
                 
                 // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
-                let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
-                oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                if self.isFacetChipsHasSelectedValue() == false {
+                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
+                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                }
             
                 // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
                 let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
