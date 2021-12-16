@@ -57,7 +57,8 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
     private let textChipMaxCharacters = 20
-    private var animationIndex = 0
+    private let textChipMaxPrefix = 5
+    private let textChipMaxSufffix = 5
 
     // MARK: - View Life Cycle
 
@@ -282,6 +283,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
 
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
@@ -302,13 +304,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if selectedValue.isEmpty {
                 cell?.chipView.titleLabel.text = chip.name
             } else {
-                cell?.chipView.titleLabel.text = chip.selectedValue
-            }
-            
-            let text = cell?.chipView.titleLabel.text ?? ""
-            if text.count > textChipMaxCharacters {
-                let shortString = String(text.prefix(textChipMaxCharacters))
-                cell?.chipView.titleLabel.text = String(format: "%@...", shortString)
+                cell?.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
             }
             
             cell?.chipView.isSelected = chip.selected
@@ -320,14 +316,14 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 if chip.selected {
                     let scheme = themeService.containerScheming(for: .searchChipSelected)
                     let backgroundColor = themeService.activeTheme?.primary15T1Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
                 } else {
                     let scheme = themeService.containerScheming(for: .searchChipUnselected)
                     let backgroundColor = themeService.activeTheme?.surfaceColor
                     let borderColor = themeService.activeTheme?.onSurface15Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
                     cell?.chipView.setBorderColor(borderColor, for: .normal)
@@ -350,7 +346,25 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return UICollectionViewCell()
         }
     }
-
+    
+    func getChipSelectedValue(for value: String) -> String {
+        let selectedValueArray = value.components(separatedBy: ",")
+        if selectedValueArray.count > 1 {
+            let firstValue = selectedValueArray[0]
+            let count = selectedValueArray.count - 1
+            if firstValue.count > textChipMaxCharacters {
+                let prefixString = String(firstValue.prefix(textChipMaxPrefix))
+                let suffixString = String(firstValue.suffix(textChipMaxSufffix))
+                let shortString = String(format: "%@ ... %@", prefixString, suffixString)
+                return String(format: "%@ + %d", shortString, count)
+            } else {
+                return String(format: "%@ + %d", firstValue, count)
+            }
+        } else {
+            return value
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
@@ -703,9 +717,15 @@ extension ResultViewController: ResultPageControllerDelegate {
                         facetQueries: [SearchFacetQueries],
                         facetIntervals: [SearchFacetIntervals]) {
         
+        guard let model = pageController?.dataSource else { return }
         let isFacetsFieldsEmpty = resultsViewModel?.isFacetsFieldsEmpty() ?? false
         let isFacetQueryEmpty = resultsViewModel?.isFacetsQueriesEmpty() ?? false
         let isFacetIntervalsEmpty = resultsViewModel?.isFacetsIntervalsEmpty() ?? false
+        let isListEmpty = model.isEmpty()
+        if isListEmpty && (isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty) {
+            return
+        }
+
         if isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty {
             resultsViewModel?.facetFields = facetFields
             resultsViewModel?.facetQueries = facetQueries
