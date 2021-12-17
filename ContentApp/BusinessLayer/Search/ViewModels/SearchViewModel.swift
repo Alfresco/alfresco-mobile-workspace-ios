@@ -300,6 +300,13 @@ extension SearchViewModel {
         selectedCategory = nil
         selectedChip = nil
     }
+    
+    func isSearchChipsHasSelectedValue() -> Bool {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty}) != nil {
+            return true
+        }
+        return false
+    }
 }
 
 // MARK: - Facet Filters
@@ -373,7 +380,6 @@ extension SearchViewModel {
     
     // MARK: Updated Facet Field Options
     func isFacetChipsHasSelectedValue() -> Bool {
-        
         if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facetField || $0.componentType == .facetQuery || $0.componentType == .facetInterval)}) != nil {
             return true
         }
