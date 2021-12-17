@@ -728,7 +728,7 @@ extension ResultViewController: ResultPageControllerDelegate {
             return
         }
 
-        if isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty {
+        if isFacetsFieldsEmpty && isFacetQueryEmpty && isFacetIntervalsEmpty {
             resultsViewModel?.facetFields = facetFields
             resultsViewModel?.facetQueries = facetQueries
             resultsViewModel?.facetIntervals = facetIntervals
