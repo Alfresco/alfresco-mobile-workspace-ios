@@ -174,13 +174,11 @@
 "SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra Extra Large";
 "The.Created.mobileapps" = "The Created";
 "The.Modified.mobileapps" = "The Modified";
-"Folder.Size.mobileapps" = "Size";
-"Folder.created.mobileapps" = "Created";
-"Folder.Modifier.mobileapps" = "Modifier";
-"Folder.Created.mobileapps" = "Created";
+"Folder.Size.mobileapps" = "Folder Size";
+"Folder.created.mobileapps" = "Folder Created";
+"Folder.Modifier.mobileapps" = "Folder Modifier";
+"Folder.Created.mobileapps" = "Folder Created";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "My Facet Queries";
-
-
 
 
 // MARK: - Group List Section
