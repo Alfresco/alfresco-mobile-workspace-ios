@@ -423,11 +423,11 @@ extension SearchModel {
         
         let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
         let facetIntervalChips = self.getChipsForFacetIntervals(for: facetIntervals)
-        let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
+       // let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
 
         searchChips.append(contentsOf: facetFieldChips)
         searchChips.append(contentsOf: facetIntervalChips)
-        searchChips.append(contentsOf: facetQueryChips)
+      //  searchChips.append(contentsOf: facetQueryChips)
         return searchChips
     }
     
