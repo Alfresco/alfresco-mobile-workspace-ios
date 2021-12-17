@@ -399,7 +399,6 @@ extension SearchViewModel {
             var tempNewBuckets = [Buckets]()
 
             // Step 2: Get index of object from old fields which matches object from new fields
-           
             if let indexOfChip = oldFacetIFields.firstIndex(where: {$0.label == newLabel}) {
                 var oldBuckets = [Buckets]()
                 if self.isFacetChipsHasSelectedValue() == true {
