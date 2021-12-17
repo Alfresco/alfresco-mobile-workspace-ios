@@ -189,7 +189,7 @@
       "expanded": true,
       "intervals": [
         {
-          "label": "The Created",
+          "label": "The.Created.mobileapps",
           "field": "cm:created",
           "sets": [
             {
@@ -212,7 +212,7 @@
           ]
         },
         {
-          "label": "TheModified",
+          "label": "The.Modified.mobileapps",
           "field": "cm:modified",
           "sets": [
             {
@@ -449,7 +449,7 @@
         {
           "field": "content.size",
           "mincount": 1,
-          "label": "Folder Size",
+          "label": "Folder.Size.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true,
@@ -459,7 +459,7 @@
         {
           "field": "creator",
           "mincount": 1,
-          "label": "Folder created",
+          "label": "Folder.created.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
@@ -468,7 +468,7 @@
         {
           "field": "modifier",
           "mincount": 1,
-          "label": "Folder Modifier",
+          "label": "Folder.Modifier.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
@@ -477,7 +477,7 @@
         {
           "field": "created",
           "mincount": 1,
-          "label": "Folder Created",
+          "label": "Folder.Created.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
@@ -540,7 +540,7 @@
       "expanded": true,
       "intervals": [
         {
-          "label": "The Created",
+          "label": "The.Created.mobileapps",
           "field": "cm:created",
           "sets": [
             {
@@ -567,7 +567,7 @@
           }
         },
         {
-          "label": "The Modified",
+          "label": "The.Modified.mobileapps",
           "field": "cm:modified",
           "sets": [
             {

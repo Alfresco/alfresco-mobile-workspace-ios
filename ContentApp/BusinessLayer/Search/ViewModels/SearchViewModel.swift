@@ -163,13 +163,14 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        self.loadConfigurationFromServer()
+        // self.loadConfigurationFromServer() // commented because we do not have any API for now.
     }
     
     private func loadConfigurationsFromAppBundle() {
         if let fileUrl = Bundle.main.url(forResource: KeyConstants.AdvanceSearch.configFile, withExtension: KeyConstants.AdvanceSearch.configFileExtension) {
             do {
                 let data = try Data(contentsOf: fileUrl, options: [])
+                self.saveConfiguartionLocally(for: data)
                 parseAppConfiguration(for: data)
             } catch let error {
                 AlfrescoLog.error(error.localizedDescription)
@@ -223,8 +224,7 @@ extension SearchViewModel {
     func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return searchFilters[index].categories
             }
         }
@@ -243,8 +243,7 @@ extension SearchViewModel {
     func getSelectedCategory(for selector: ComponentType?) -> SearchCategories? {
         let categories = self.getAllCategoriesForSelectedFilter()
         if let selector = selector {
-            if let object = categories.enumerated().first(where: {$0.element.component?.selector == selector.rawValue}) {
-                let index = object.offset
+            if let index = categories.firstIndex(where: {$0.component?.selector == selector.rawValue}) {
                 return categories[index]
             }
         }
@@ -254,8 +253,8 @@ extension SearchViewModel {
     func getIndexOfSelectedCategory() -> Int {
         let categories = self.getAllCategoriesForSelectedFilter()
         if let selectedCategory = self.selectedCategory {
-            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
-                return object.offset
+            if let index = categories.firstIndex(where: {$0.searchID == selectedCategory.searchID}) {
+                return index
             }
         }
         return -1
@@ -263,8 +262,8 @@ extension SearchViewModel {
     
     func getIndexOfSelectedChip(for chips: [SearchChipItem]) -> Int {
         if let selectedChip = self.selectedChip {
-            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType && $0.element.name == selectedChip.name}) {
-                return object.offset
+            if let index = chips.firstIndex(where: {$0.componentType == selectedChip.componentType && $0.name == selectedChip.name}) {
+                return index
             }
         }
         return -1
@@ -276,8 +275,7 @@ extension SearchViewModel {
     func getSelectedFilterIndex() -> Int {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return index
             }
         }
@@ -302,6 +300,13 @@ extension SearchViewModel {
         selectedCategory = nil
         selectedChip = nil
     }
+    
+    func isSearchChipsHasSelectedValue() -> Bool {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty}) != nil {
+            return true
+        }
+        return false
+    }
 }
 
 // MARK: - Facet Filters
@@ -309,8 +314,7 @@ extension SearchViewModel {
     func getFacetFields() -> FacetFields? {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return searchFilters[index].facetFields
             }
         }
@@ -320,8 +324,7 @@ extension SearchViewModel {
     func getFacetQueries() -> FacetQueries? {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return searchFilters[index].facetQueries
             }
         }
@@ -331,8 +334,7 @@ extension SearchViewModel {
     func getFacetIntervals() -> FacetIntervals? {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return searchFilters[index].facetIntervals
             }
         }
@@ -362,8 +364,7 @@ extension SearchViewModel {
 
     // MARK: - Selected Facet Field
     func getSelectedFacetField(for name: String) -> SearchFacetFields? {
-        if let object = self.facetFields.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
-            let index = object.offset
+        if let index = self.facetFields.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
             return facetFields[index]
         }
         return nil
@@ -371,14 +372,20 @@ extension SearchViewModel {
     
     // MARK: - Selected Facet Interval
     func getSelectedFacetInterval(for name: String) -> SearchFacetIntervals? {
-        if let object = self.facetIntervals.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == name}) {
-            let index = object.offset
+        if let index = self.facetIntervals.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
             return facetIntervals[index]
         }
         return nil
     }
     
     // MARK: Updated Facet Field Options
+    func isFacetChipsHasSelectedValue() -> Bool {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facetField || $0.componentType == .facetQuery || $0.componentType == .facetInterval)}) != nil {
+            return true
+        }
+        return false
+    }
+    
     func getUpdatedFacetFields(for newFacetFields: [SearchFacetFields]) -> [SearchFacetFields] {
         var oldFacetIFields = self.facetFields
         let difference = newFacetFields
@@ -398,29 +405,34 @@ extension SearchViewModel {
             var tempNewBuckets = [Buckets]()
 
             // Step 2: Get index of object from old fields which matches object from new fields
-            if let object = oldFacetIFields.enumerated().first(where: {$0.element.label == newLabel}) {
-                let indexOfChip = object.offset
-                var oldBuckets = oldFacetIFields[indexOfChip].buckets
-                
+            if let indexOfChip = oldFacetIFields.firstIndex(where: {$0.label == newLabel}) {
+                var oldBuckets = [Buckets]()
+                if self.isFacetChipsHasSelectedValue() == true {
+                    oldBuckets = oldFacetIFields[indexOfChip].buckets
+                }
+
                 // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
                 for bucket in newBuckets {
                     let newBucketLabel = bucket.label
-                    if let bucketObject = oldBuckets.enumerated().first(where: {$0.element.label == newBucketLabel}) {
-                        oldBuckets[bucketObject.offset] = bucket
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == newBucketLabel}) {
+                        oldBuckets[bucketIndex] = bucket
                         tempNewBuckets.append(bucket)
                     }
                 }
                 
                 // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
-                let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
-                oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                
+                if self.isFacetChipsHasSelectedValue() == false {
+                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
+                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                }
             
                 // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
                 let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
                 for bucket in arrayVoidBuckets {
                     let voidBucketLabel = bucket.label
-                    if let bucketObject = oldBuckets.enumerated().first(where: {$0.element.label == voidBucketLabel}) {
-                        oldBuckets[bucketObject.offset].count = "0"
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == voidBucketLabel}) {
+                        oldBuckets[bucketIndex].count = "0"
                     }
                 }
                 
@@ -453,29 +465,33 @@ extension SearchViewModel {
             var tempNewBuckets = [Buckets]()
 
             // Step 2: Get index of object from old intervals which matches object from new interval
-            if let object = oldFacetIntervals.enumerated().first(where: {$0.element.label == newLabel}) {
-                let indexOfChip = object.offset
-                var oldBuckets = oldFacetIntervals[indexOfChip].buckets
-                
+            if let indexOfChip = oldFacetIntervals.firstIndex(where: {$0.label == newLabel}) {
+                var oldBuckets = [Buckets]()
+                if self.isFacetChipsHasSelectedValue() == true {
+                    oldBuckets = oldFacetIntervals[indexOfChip].buckets
+                }
+                                
                 // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
                 for bucket in newBuckets {
                     let newBucketLabel = bucket.label
-                    if let bucketObject = oldBuckets.enumerated().first(where: {$0.element.label == newBucketLabel}) {
-                        oldBuckets[bucketObject.offset] = bucket
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == newBucketLabel}) {
+                        oldBuckets[bucketIndex] = bucket
                         tempNewBuckets.append(bucket)
                     }
                 }
                 
                 // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
-                let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
-                oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                if self.isFacetChipsHasSelectedValue() == false {
+                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
+                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                }
             
                 // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
                 let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
                 for bucket in arrayVoidBuckets {
                     let voidBucketLabel = bucket.label
-                    if let bucketObject = oldBuckets.enumerated().first(where: {$0.element.label == voidBucketLabel}) {
-                        oldBuckets[bucketObject.offset].count = "0"
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == voidBucketLabel}) {
+                        oldBuckets[bucketIndex].count = "0"
                     }
                 }
                 
@@ -505,8 +521,8 @@ extension SearchViewModel {
         
         for query in newFacetQueries {
             let newQueryLabel = query.label
-            if let object = oldFacetQueries.enumerated().first(where: {$0.element.label == newQueryLabel}) {
-                oldFacetQueries[object.offset] = query
+            if let indexOfChip = oldFacetQueries.firstIndex(where: {$0.label == newQueryLabel}) {
+                oldFacetQueries[indexOfChip] = query
                 tempNewFacetQueries.append(query)
             }
         }
@@ -517,8 +533,8 @@ extension SearchViewModel {
         let arrayVoidQueries = oldFacetQueries.filter { !newFacetQueries.contains($0) }
         for query in arrayVoidQueries {
             let voidQueryLabel = query.label
-            if let bucketObject = oldFacetQueries.enumerated().first(where: {$0.element.label == voidQueryLabel}) {
-                oldFacetQueries[bucketObject.offset].count = 0
+            if let bucketIndex = oldFacetQueries.firstIndex(where: {$0.label == voidQueryLabel}) {
+                oldFacetQueries[bucketIndex].count = 0
             }
         }
         

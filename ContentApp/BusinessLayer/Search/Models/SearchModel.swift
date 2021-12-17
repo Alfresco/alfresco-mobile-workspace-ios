@@ -421,13 +421,13 @@ extension SearchModel {
    
     func facetSearchChips(for facetFields: [SearchFacetFields], facetQueries: [SearchFacetQueries], facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
         
-        let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
         let facetIntervalChips = self.getChipsForFacetIntervals(for: facetIntervals)
-        let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
+        let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
+       // let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
 
-        searchChips.append(contentsOf: facetFieldChips)
         searchChips.append(contentsOf: facetIntervalChips)
-        searchChips.append(contentsOf: facetQueryChips)
+        searchChips.append(contentsOf: facetFieldChips)
+      //  searchChips.append(contentsOf: facetQueryChips)
         return searchChips
     }
     

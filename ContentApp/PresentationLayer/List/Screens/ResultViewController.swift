@@ -283,7 +283,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
 
-    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
@@ -360,6 +359,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             } else {
                 return String(format: "%@ + %d", firstValue, count)
             }
+        } else if value.count > textChipMaxCharacters {
+            let prefixString = String(value.prefix(textChipMaxCharacters))
+            return String(format: "%@...", prefixString)
         } else {
             return value
         }
@@ -687,7 +689,16 @@ extension ResultViewController {
     }
         
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        self.updateCategory()
+        let isSearchFilterApplied = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
+        if isSearchFilterApplied {
+            self.updateCategory()
+        }
+    }
+    
+    func resetFacetsArray() {
+        resultsViewModel?.facetFields.removeAll()
+        resultsViewModel?.facetQueries.removeAll()
+        resultsViewModel?.facetIntervals.removeAll()
     }
 }
 
@@ -726,7 +737,7 @@ extension ResultViewController: ResultPageControllerDelegate {
             return
         }
 
-        if isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty {
+        if isFacetsFieldsEmpty && isFacetQueryEmpty && isFacetIntervalsEmpty {
             resultsViewModel?.facetFields = facetFields
             resultsViewModel?.facetQueries = facetQueries
             resultsViewModel?.facetIntervals = facetIntervals
