@@ -163,7 +163,7 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        // self.loadConfigurationFromServer()
+        // self.loadConfigurationFromServer() // commented because we do not have any API for now.
     }
     
     private func loadConfigurationsFromAppBundle() {
@@ -382,7 +382,7 @@ extension SearchViewModel {
     // MARK: Updated Facet Field Options
     func isFacetChipsHasSelectedValue() -> Bool {
         
-        if self.searchModel.searchChips.enumerated().first(where: {!($0.element.selectedValue).isEmpty && ($0.element.componentType == .facetField || $0.element.componentType == .facetQuery || $0.element.componentType == .facetInterval)}) != nil {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facetField || $0.componentType == .facetQuery || $0.componentType == .facetInterval)}) != nil {
             return true
         }
         return false
