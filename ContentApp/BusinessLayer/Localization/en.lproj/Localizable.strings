@@ -141,15 +141,40 @@
 // MARK: - Advance Search
 "DEFAULT_SEARCH" = "Default";
 "advance-search" = "Advance Search";
-"text-filter" = "Text filter";
 "enter" = "Enter";
 "apply" = "Apply";
 "reset" = "Reset";
-"file-type" = "File type";
 "APP.SEARCH.RADIO.NONE" = "None";
 "APP.SEARCH.RADIO.ALL" = "All";
 "APP.SEARCH.RADIO.FOLDER" = "Folder";
 "APP.SEARCH.RADIO.DOCUMENT" = "Document";
+"from-keyword" = "From";
+"to-keyword" = "To";
+"invalid-format" = "From value should be less than To value";
+"required-value" = "Required value";
+"done" = "Done";
+
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Type";
+"SEARCH.FACET_FIELDS.SIZE" = "Size";
+"SEARCH.FACET_FIELDS.CREATOR" = "Creator";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
+"SEARCH.FACET_FIELDS.CREATED" = "Created";
+"size-facet-queries" = "Size Facet Queries";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
+"SEARCH.FACET_QUERIES.LARGE" = "Large";
+"SEARCH.FACET_QUERIES.SMALL" = "Small";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra Small";
+"earlier" = "Earlier";
+"lastYear" = "Last Year";
+"currentYear" = "Current Year";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "This Year";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "MIME Type";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Extra Large";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra Extra Large";
+"The Created" = "The Created";
+"TheModified" = "The Modified";
+
 
 // MARK: - Group List Section
 "today" = "Today";

@@ -44,7 +44,7 @@ protocol ListComponentModelProtocol: AnyObject {
     func numberOfItems(in section: Int) -> Int
 
     func listNodes() -> [ListNode]
-    func listNode(for indexPath: IndexPath) -> ListNode
+    func listNode(for indexPath: IndexPath) -> ListNode?
     func titleForSectionHeader(at indexPath: IndexPath) -> String
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus
 
@@ -58,6 +58,9 @@ extension ListComponentModelProtocol {
     }
 
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        return listNode(for: indexPath).isMarkedOffline() ? .markedForOffline : .undefined
+        if let node = listNode(for: indexPath) {
+            return node.isMarkedOffline() ? .markedForOffline : .undefined
+        }
+        return .undefined
     }
 }

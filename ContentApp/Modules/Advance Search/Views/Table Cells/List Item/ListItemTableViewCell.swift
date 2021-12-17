@@ -40,7 +40,6 @@ class ListItemTableViewCell: UITableViewCell, CellConfigurable {
         guard let currentTheme = service?.activeTheme else { return }
         baseView.backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
-        checkBoxImageView.tintColor = currentTheme.onSurface60Color
     }
     
     @IBAction func selectTableCellButtonAction(_ sender: Any) {

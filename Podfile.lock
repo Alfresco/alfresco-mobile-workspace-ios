@@ -252,6 +252,16 @@ PODS:
     - MaterialComponents/Availability
     - MaterialComponents/private/Math
     - "MaterialComponents/private/TextControlsPrivate+Shared"
+  - MaterialComponents/private/ThumbTrack (124.2.0):
+    - MaterialComponents/Availability
+    - MaterialComponents/Ink
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/ShapeLibrary
+    - MaterialComponents/Typography
+    - MDFInternationalization
   - MaterialComponents/ProgressView (124.2.0):
     - MaterialComponents/Palettes
     - MaterialComponents/private/Math
@@ -289,6 +299,12 @@ PODS:
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
+  - MaterialComponents/Slider (124.2.0):
+    - MaterialComponents/Elevation
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/private/ThumbTrack
+    - MaterialComponents/ShadowElevations
   - MaterialComponents/Snackbar (124.2.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Availability
@@ -393,6 +409,7 @@ DEPENDENCIES:
   - MaterialComponents/Dialogs (~> 124.0)
   - "MaterialComponents/Dialogs+Theming (~> 124.0)"
   - MaterialComponents/ProgressView (~> 124.0)
+  - MaterialComponents/Slider
   - MaterialComponents/Snackbar (~> 124.0)
   - "MaterialComponents/Tabs+TabBarView (~> 124.0)"
   - "MaterialComponents/Tabs+TabBarViewTheming (~> 124.0)"
@@ -472,6 +489,6 @@ SPEC CHECKSUMS:
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
 
-PODFILE CHECKSUM: f1131e93e9e8221b7953e745fc3a1335ade8be67
+PODFILE CHECKSUM: 7116711ad46b083c144b9ac0eaa9bec2b47b227a
 
 COCOAPODS: 1.11.2

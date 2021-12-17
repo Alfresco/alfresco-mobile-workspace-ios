@@ -31,6 +31,7 @@ struct LocalizationConstants {
         static let delete = NSLocalizedString("delete", comment: "")
         static let create = NSLocalizedString("create", comment: "")
         static let save = NSLocalizedString("save", comment: "")
+        static let done = NSLocalizedString("done", comment: "")
     }
 
     struct Buttons {
@@ -156,11 +157,13 @@ struct LocalizationConstants {
     
     struct AdvanceSearch {
         static let title = NSLocalizedString("advance-search", comment: "")
-        static let textFilter = NSLocalizedString("text-filter", comment: "")
         static let enter = NSLocalizedString("enter", comment: "")
         static let apply = NSLocalizedString("apply", comment: "")
         static let reset = NSLocalizedString("reset", comment: "")
-        static let fileType = NSLocalizedString("file-type", comment: "")
+        static let fromKeyword = NSLocalizedString("from-keyword", comment: "")
+        static let toKeyword = NSLocalizedString("to-keyword", comment: "")
+        static let invalidFormat = NSLocalizedString("invalid-format", comment: "")
+        static let errorRequiredValue = NSLocalizedString("required-value", comment: "")
     }
 
     struct GroupListSection {

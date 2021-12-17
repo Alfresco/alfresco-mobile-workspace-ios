@@ -18,23 +18,22 @@
 
 import UIKit
 import AlfrescoContent
-import MaterialComponents.MaterialTextControls_OutlinedTextFields
-import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
+import MaterialComponents.MaterialSlider
 
-class SearchTextComponentViewController: SystemThemableViewController {
+class SearchSliderRangeComponentViewController: SystemThemableViewController {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var divider: UIView!
-    @IBOutlet weak var keywordTextField: MDCOutlinedTextField!
-    @IBOutlet weak var dividerTextField: UIView!
+    @IBOutlet weak var slider: MDCSlider!
+    @IBOutlet weak var dividerSlider: UIView!
     @IBOutlet weak var applyButton: MDCButton!
     @IBOutlet weak var resetButton: MDCButton!
-    lazy var textViewModel = SearchTextComponentViewModel()
+    lazy var sliderViewModel = SearchSliderRangeComponentViewModel()
     var callback: SearchComponentCallBack?
-
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +43,17 @@ class SearchTextComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
-        keywordTextField.becomeFirstResponder()
+        setupSlider()
+    }
+    
+    func setupSlider() {
+        slider.minimumValue = sliderViewModel.min
+        slider.maximumValue = sliderViewModel.max
+        slider.trackHeight = 4.0
+        slider.thumbRadius = 16.0
+        slider.isDiscrete = true
+        slider.value = sliderViewModel.value
+        slider.numberOfDiscreteValues = sliderViewModel.numberOfDiscreteValues
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,11 +73,21 @@ class SearchTextComponentViewController: SystemThemableViewController {
         preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
     }
     
+    override func viewWillTransition(to size: CGSize,
+                                     with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        calculatePreferredSize(size)
+    }
+
+    override func willTransition(to newCollection: UITraitCollection,
+                                 with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+    }
+    
     // MARK: - Apply Themes and Localization
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-              let textFieldScheme = coordinatorServices?.themingService?.containerScheming(for: .loginTextField),
               let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton),
               let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
         
@@ -76,12 +95,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
         headerTitleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
         dismissButton.tintColor = currentTheme.onSurfaceColor
         divider.backgroundColor = currentTheme.onSurface12Color
-        dividerTextField.backgroundColor = currentTheme.onSurface12Color
-        
-        keywordTextField.applyTheme(withScheme: textFieldScheme)
-        keywordTextField.trailingViewMode = .unlessEditing
-        keywordTextField.leadingAssistiveLabel.text = ""
-        keywordTextField.trailingView = nil
+        dividerSlider.backgroundColor = currentTheme.onSurface12Color
         
         applyButton.applyContainedTheme(withScheme: buttonScheme)
         applyButton.isUppercaseTitle = false
@@ -94,52 +108,38 @@ class SearchTextComponentViewController: SystemThemableViewController {
         resetButton.setShadowColor(.clear, for: .normal)
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+         
+        slider.trackBackgroundColor = currentTheme.onSurface5Color
+        slider.setTrackFillColor(currentTheme.onPrimaryColor, for: .normal)
+        slider.setThumbColor(currentTheme.onPrimaryColor, for: .normal)
+        slider.valueLabelBackgroundColor = currentTheme.onSurface5Color
+        slider.valueLabelTextColor = currentTheme.onSurfaceColor
     }
     
     private func applyLocalization() {
-        let placeholder = self.textViewModel.getPlaceholder()
-        let value = self.textViewModel.getValue()
-        headerTitleLabel.text = textViewModel.title
-        keywordTextField.label.text = placeholder
-        keywordTextField.text = value
+        headerTitleLabel.text = sliderViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, true)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, true)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        let text = (self.keywordTextField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if text.isEmpty {
-            self.textViewModel.applyFilter(with: nil)
-        } else {
-            self.textViewModel.applyFilter(with: text)
-        }
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        sliderViewModel.applyFilter(with: slider.value)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, false)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        self.textViewModel.applyFilter(with: nil)
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        sliderViewModel.applyFilter(with: 0)
+        self.callback?(self.sliderViewModel.selectedCategory, self.sliderViewModel.queryBuilder, false)
         self.dismiss(animated: true, completion: nil)
-    }
-    
-    override func viewWillTransition(to size: CGSize,
-                                     with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        calculatePreferredSize(size)
-    }
-
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
     }
 }
 
 // MARK: - Storyboard Instantiable
-extension SearchTextComponentViewController: SearchComponentsStoryboardInstantiable { }
+extension SearchSliderRangeComponentViewController: SearchComponentsStoryboardInstantiable { }
 

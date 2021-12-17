@@ -35,14 +35,21 @@ class ContextualSearchModel: SearchModel {
                                               type: .folder))
             return searchChips
         } else {
-            return createChipsForAdvanceSearch(for: configurations, and: index)
+            searchChips = createChipsForAdvanceSearch(for: configurations, and: index)
+            return searchChips
         }
     }
 
     override func handleSearch(for searchString: String,
+                               with facetFields: FacetFields?,
+                               facetQueries: FacetQueries?,
+                               facetIntervals: FacetIntervals?,
                                paginationRequest: RequestPagination?,
                                completionHandler: SearchCompletionHandler) {
         performFileFolderSearch(searchString: searchString,
+                                with: facetFields,
+                                facetQueries: facetQueries,
+                                facetIntervals: facetIntervals,
                                 paginationRequest: paginationRequest,
                                 completionHandler: completionHandler)
     }

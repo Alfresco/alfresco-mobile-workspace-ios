@@ -28,7 +28,6 @@ protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
-    func resetSearchFilterTapped()
 }
 
 class ResultViewController: SystemThemableViewController {
@@ -40,13 +39,13 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var configurationView: UIView!
     @IBOutlet weak var categoryNameView: UIView!
     @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var resetFilterButton: UIButton!
     @IBOutlet weak var heightConfigurationViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var configurationImageView: UIImageView!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
     lazy var dropDown = DropDown()
     private var presenter: UINavigationController?
-
     var resultsListController: ListComponentViewController?
     var pageController: ListPageController?
     var resultsViewModel: SearchViewModel?
@@ -57,6 +56,9 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
+    private let textChipMaxCharacters = 20
+    private let textChipMaxPrefix = 5
+    private let textChipMaxSufffix = 5
 
     // MARK: - View Life Cycle
 
@@ -94,6 +96,7 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
         setupBindings()
         setupDropDownView()
+        self.pageController?.resultPageDelegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -126,12 +129,6 @@ class ResultViewController: SystemThemableViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         resultsListController?.collectionView.collectionViewLayout.invalidateLayout()
         recentSearchCollectionView?.collectionViewLayout.invalidateLayout()
-    }
-
-    @IBAction func resetFilterButtonAction(_ sender: Any) {
-        // self.buildDropDownDataSource()
-        // self.resetAllFilters() // reset all filters to default
-        resultScreenDelegate?.resetSearchFilterTapped()
     }
     
     @IBAction func chooseCategoryButtonAction(_ sender: Any) {
@@ -182,7 +179,7 @@ class ResultViewController: SystemThemableViewController {
         /* observing advance search filter */
         self.resultsViewModel?.searchFilterObservable.addObserver(fireNow: false, { ( _ ) in
             self.buildDropDownDataSource()
-            self.resetAllFilters() // reset all filters to default
+            self.resetSelectedSearchFilter() // reset selected search filter
         })
     }
 
@@ -197,7 +194,6 @@ class ResultViewController: SystemThemableViewController {
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
 
         categoryNameLabel.applyStyleHeadLineBoldOnSurface(theme: currentTheme)
-        configurationImageView.image = configurationImageView.image?.withRenderingMode(.alwaysTemplate)
         configurationImageView.tintColor = currentTheme.onSurfaceColor
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
@@ -206,22 +202,23 @@ class ResultViewController: SystemThemableViewController {
         dropDown.textColor = currentTheme.onSurfaceColor
         dropDown.selectedTextColor = currentTheme.onSurfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
+        resetFilterButton.tintColor = currentTheme.onSurfaceColor
     }
 
     func addChipsCollectionViewFlowLayout() {
-        let layout = MDCChipCollectionViewFlowLayout()
-        layout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
-                                          height: chipSearchCellMinimHeight)
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
-        chipsCollectionView.collectionViewLayout = layout
         chipsCollectionView.register(MDCChipCollectionViewCell.self,
                                      forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
         chipsCollectionView.allowsMultipleSelection = true
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        collectionViewFlowLayout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
+                                                            height: chipSearchCellMinimHeight)
+        collectionViewFlowLayout.scrollDirection = .horizontal
+        chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
 }
-// MARK: - Drop Down
 
+// MARK: - Drop Down
 extension ResultViewController {
     func setupDropDownView() {
         dropDown.anchorView = categoryNameView
@@ -243,27 +240,31 @@ extension ResultViewController {
             dropDown.dataSource = searchFilters
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
-                self.resultsViewModel?.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
+                self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
                 self.updateCategory()
             }
         }
     }
     
-    private func resetAllFilters() {
-        self.resultsViewModel?.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
-        updateCategory()
-    }
-    
     private func updateCategory() {
-        if let selectedConfig = self.resultsViewModel?.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
-            if let index = self.resultsViewModel?.searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
-                
+        if let selectedConfig = self.resultsViewModel?.searchModel.selectedSearchFilter, let searchFilters = resultsViewModel?.searchFilters {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedConfig.name}) {
                 dropDown.selectRow(at: index)
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
-                
-                guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
-                self.updateChips(chipItems)
+                resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
+                resetChipCollectionView()
+                pageController?.refreshList() // refresh list by calling search api
+                showResetFilterButton()
             }
+        }
+    }
+    
+    private func showResetFilterButton() {
+        let isShowResetFilter = resultsViewModel?.isShowResetFilter ?? false
+        if isShowResetFilter {
+            resetFilterButton.alpha = 1
+        } else {
+            resetFilterButton.alpha = 0
         }
     }
 }
@@ -282,6 +283,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         }
     }
 
+    
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch collectionView {
@@ -302,8 +304,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if selectedValue.isEmpty {
                 cell?.chipView.titleLabel.text = chip.name
             } else {
-                cell?.chipView.titleLabel.text = chip.selectedValue
+                cell?.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
             }
+            
             cell?.chipView.isSelected = chip.selected
             if chip.selected {
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
@@ -313,14 +316,14 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 if chip.selected {
                     let scheme = themeService.containerScheming(for: .searchChipSelected)
                     let backgroundColor = themeService.activeTheme?.primary15T1Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
                 } else {
                     let scheme = themeService.containerScheming(for: .searchChipUnselected)
                     let backgroundColor = themeService.activeTheme?.surfaceColor
                     let borderColor = themeService.activeTheme?.onSurface15Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
                     cell?.chipView.setBorderColor(borderColor, for: .normal)
@@ -343,7 +346,25 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return UICollectionViewCell()
         }
     }
-
+    
+    func getChipSelectedValue(for value: String) -> String {
+        let selectedValueArray = value.components(separatedBy: ",")
+        if selectedValueArray.count > 1 {
+            let firstValue = selectedValueArray[0]
+            let count = selectedValueArray.count - 1
+            if firstValue.count > textChipMaxCharacters {
+                let prefixString = String(firstValue.prefix(textChipMaxPrefix))
+                let suffixString = String(firstValue.suffix(textChipMaxSufffix))
+                let shortString = String(format: "%@ ... %@", prefixString, suffixString)
+                return String(format: "%@ + %d", shortString, count)
+            } else {
+                return String(format: "%@ + %d", firstValue, count)
+            }
+        } else {
+            return value
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
@@ -383,14 +404,13 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             cell?.chipView.applyOutlinedTheme(withScheme: scheme)
             cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
         if componentType != nil {
             self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
             self.resultsViewModel?.selectedChip = chip
             self.showSelectedComponent(for: chip)
         }
-        self.chipsCollectionView.reloadDataWithoutScroll()
+        reloadChipCollectionWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
@@ -409,8 +429,15 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell.chipView.setBorderColor(borderColor, for: .normal)
             }
         }
-        resultScreenDelegate?.chipTapped(chip: chip)
-        resultsListController?.scrollToSection(0)
+        self.chipTapped(for: chip)
+    }
+    
+    private func chipTapped(for chip: SearchChipItem) {
+        let searchFilters = resultsViewModel?.searchFilters ?? []
+        if searchFilters.isEmpty || chip.componentType == nil {
+            resultScreenDelegate?.chipTapped(chip: chip)
+            resultsListController?.scrollToSection(0)
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView,
@@ -461,6 +488,14 @@ extension ResultViewController {
             showListSelectorComponent(isRadio: false)
         } else if chip.componentType == .radio {
             showListSelectorComponent(isRadio: true)
+        } else if chip.componentType == .contentSizeRange {
+            showNumberRangeSelectorComponent()
+        } else if chip.componentType == .contentSize {
+            showSliderSelectorComponent()
+        } else if chip.componentType == .createdDateRange {
+            showCalendarSelectorComponent()
+        } else if chip.componentType == .facetField || chip.componentType == .facetQuery || chip.componentType == .facetInterval {
+            showFacetSelectorComponent(componentType: chip.componentType, name: chip.name, selectedValue: chip.selectedValue)
         }
     }
     
@@ -469,12 +504,17 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchTextComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.textViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
@@ -485,39 +525,178 @@ extension ResultViewController {
         if let selectedCategory = resultsViewModel?.getSelectedCategory() {
             let viewController = SearchListComponentViewController.instantiateViewController()
             let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
             bottomSheet.delegate = self
             viewController.coordinatorServices = coordinatorServices
             viewController.listViewModel.isRadioList = isRadio
             viewController.listViewModel.selectedCategory = selectedCategory
-            viewController.callback = { (category) in
-                let selectedValue = category?.component?.settings?.selectedValue
-                self.updateSelectedChip(with: selectedValue)
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
             }
             self.present(bottomSheet, animated: true, completion: nil)
         }
     }
     
-    func updateSelectedChip(with value: String?) {
+    /// Number Range Component
+    private func showNumberRangeSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchNumberRangeComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.numberRangeViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// Slider Component
+    private func showSliderSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchSliderRangeComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.sliderViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    /// Calendar Component
+    private func showCalendarSelectorComponent() {
+        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+            let viewController = SearchCalendarComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.calendarViewModel.selectedCategory = selectedCategory
+            viewController.callback = { (category, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    let selectedValue = category?.component?.settings?.selectedValue
+                    self.updateSelectedChip(with: selectedValue, and: query)
+                }
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    // Facet Component
+    private func showFacetSelectorComponent(componentType: ComponentType?, name: String, selectedValue: String) {
+        if let componentType = componentType {
+            
+            let viewController = SearchFacetListComponentViewController.instantiateViewController()
+            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+            bottomSheet.dismissOnDraggingDownSheet = false
+            bottomSheet.delegate = self
+            viewController.coordinatorServices = coordinatorServices
+            viewController.facetViewModel.componentType = componentType
+            bottomSheet.ignoreKeyboardHeight = true
+            
+            if componentType == .facetQuery, let facetQueries = resultsViewModel?.facetQueries {
+                viewController.facetViewModel.facetQueryOptions = facetQueries
+                viewController.facetViewModel.selectedFacetQueryString = selectedValue
+            } else if componentType == .facetField, let selectedFacetField = resultsViewModel?.getSelectedFacetField(for: name) {
+                viewController.facetViewModel.facetFields = selectedFacetField
+                viewController.facetViewModel.selectedFacetFieldString = selectedValue
+            } else if componentType == .facetInterval, let selectedFacetInterval = resultsViewModel?.getSelectedFacetInterval(for: name) {
+                viewController.facetViewModel.facetInterval = selectedFacetInterval
+                viewController.facetViewModel.selectedFacetIntervalString = selectedValue
+            }
+            
+            viewController.callback = { (value, query, isBackButtonTapped) in
+                if isBackButtonTapped {
+                    self.resetChip()
+                } else {
+                    self.updateSelectedChip(with: value, and: query)
+                }
+            }
+            self.present(bottomSheet, animated: true, completion: nil)
+        }
+    }
+    
+    func updateSelectedChip(with value: String?, and query: String?) {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
             if let selectedValue = value, !selectedValue.isEmpty {
                 chip.selectedValue = selectedValue
+                chip.query = query
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
+
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 chip.selectedValue = ""
+                chip.query = nil
                 searchChipsViewModel.chips[index] = chip
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
                 self.deSelectChipCollectionCell(for: indexPath)
+                resultScreenDelegate?.chipTapped(chip: chip)
+                resultsListController?.scrollToSection(0)
             }
         }
+    }
+    
+    func reloadChipCollectionWithoutScroll() {
+        DispatchQueue.main.async {
+            self.chipsCollectionView.reloadDataWithoutScroll()
+        }
+    }
+}
+
+// MARK: - Reset Search
+extension ResultViewController {
+    private func resetSelectedSearchFilter() {
+        self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        updateCategory()
+    }
+    
+    private func resetChipCollectionView() {
+        let index = resultsViewModel?.getSelectedFilterIndex() ?? -1
+        if index >= 0, let searchFilters = resultsViewModel?.searchFilters {
+            guard let chipItems = resultsViewModel?.searchModel.defaultSearchChips(for: searchFilters, and: index) else { return }
+            self.updateChips(chipItems)
+        }
+    }
+        
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        self.updateCategory()
     }
 }
 
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
+        self.resetChip()
+    }
+    
+    func resetChip() {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
             let chip = searchChipsViewModel.chips[index]
@@ -525,9 +704,41 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
             if selectedValue.isEmpty {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.deSelectChipCollectionCell(for: indexPath)
-                chipsCollectionView.reloadData()
+                reloadChipCollectionWithoutScroll()
             }
-        } 
+        }
+    }
+}
+
+// MARK: - Result Controller Delegate
+extension ResultViewController: ResultPageControllerDelegate {
+    func didUpdateChips(error: Error?,
+                        facetFields: [SearchFacetFields],
+                        facetQueries: [SearchFacetQueries],
+                        facetIntervals: [SearchFacetIntervals]) {
+        
+        guard let model = pageController?.dataSource else { return }
+        let isFacetsFieldsEmpty = resultsViewModel?.isFacetsFieldsEmpty() ?? false
+        let isFacetQueryEmpty = resultsViewModel?.isFacetsQueriesEmpty() ?? false
+        let isFacetIntervalsEmpty = resultsViewModel?.isFacetsIntervalsEmpty() ?? false
+        let isListEmpty = model.isEmpty()
+        if isListEmpty && (isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty) {
+            return
+        }
+
+        if isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty {
+            resultsViewModel?.facetFields = facetFields
+            resultsViewModel?.facetQueries = facetQueries
+            resultsViewModel?.facetIntervals = facetIntervals
+        } else {
+            // update
+            resultsViewModel?.facetFields = resultsViewModel?.getUpdatedFacetFields(for: facetFields) ?? []
+            resultsViewModel?.facetIntervals = resultsViewModel?.getUpdatedFacetIntervals(for: facetIntervals) ?? []
+            resultsViewModel?.facetQueries = resultsViewModel?.getUpdatedFacetQueries(for: facetQueries) ?? []
+        }
+            
+        guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) else { return }
+        self.updateChips(chipItems)
     }
 }
 

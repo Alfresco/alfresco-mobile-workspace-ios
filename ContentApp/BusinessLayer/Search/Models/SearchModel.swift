@@ -25,12 +25,15 @@ class SearchModel: SearchModelProtocol {
     private var liveSearchTimer: Timer?
     private let searchTimerBuffer = 0.7
     private var lastSearchCompletionOperation: SearchCompletionHandler?
-
     var delegate: ListComponentModelDelegate?
     var rawListNodes: [ListNode] = []
     var searchChips: [SearchChipItem] = []
     var searchString: String?
+    var facetFields: FacetFields?
+    var facetQueries: FacetQueries?
+    var facetIntervals: FacetIntervals?
     var searchType: SearchType = .simple
+    var selectedSearchFilter: AdvanceSearchFilters?
 
     init(with services: CoordinatorServices) {
         self.services = services
@@ -45,15 +48,21 @@ class SearchModel: SearchModelProtocol {
     func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem] {
         return []
     }
-
+    
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int] {
         return []
     }
 
     func performSearch(for string: String,
+                       with facetFields: FacetFields?,
+                       facetQueries: FacetQueries?,
+                       facetIntervals: FacetIntervals?,
                        paginationRequest: RequestPagination?,
                        completionHandler: SearchCompletionHandler) {
         searchString = string
+        self.facetFields = facetFields
+        self.facetQueries = facetQueries
+        self.facetIntervals = facetIntervals
         if paginationRequest == nil {
             rawListNodes = []
         }
@@ -66,14 +75,19 @@ class SearchModel: SearchModelProtocol {
             delegate?.needsDisplayStateRefresh()
             return
         }
-
+        
         handleSearch(for: sString,
-                     paginationRequest: paginationRequest,
-                     completionHandler: completionHandler)
-
+                        with: facetFields,
+                        facetQueries: facetQueries,
+                        facetIntervals: facetIntervals,
+                        paginationRequest: paginationRequest,
+                        completionHandler: completionHandler)
     }
-    
+        
     func performLiveSearch(for string: String,
+                           with facetFields: FacetFields?,
+                           facetQueries: FacetQueries?,
+                           facetIntervals: FacetIntervals?,
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler) {
         liveSearchTimer?.invalidate()
@@ -83,12 +97,18 @@ class SearchModel: SearchModelProtocol {
                                                 timer.invalidate()
                                                 guard let sSelf = self else { return }
                                                 sSelf.performSearch(for: string,
-                                                                    paginationRequest: paginationRequest,
-                                                                    completionHandler: completionHandler)
+                                                                       with: facetFields,
+                                                                       facetQueries: facetQueries,
+                                                                       facetIntervals: facetIntervals,
+                                                                       paginationRequest: paginationRequest,
+                                                                       completionHandler: completionHandler)
                                                })
     }
 
     func handleSearch(for searchString: String,
+                      with facetFields: FacetFields?,
+                      facetQueries: FacetQueries?,
+                      facetIntervals: FacetIntervals?,
                       paginationRequest: RequestPagination?,
                       completionHandler: SearchCompletionHandler) {
         // Override in children class
@@ -123,15 +143,37 @@ class SearchModel: SearchModelProtocol {
     }
 
     func performFileFolderSearch(searchString: String,
+                                 with facetFields: FacetFields?,
+                                 facetQueries: FacetQueries?,
+                                 facetIntervals: FacetIntervals?,
                                  paginationRequest: RequestPagination?,
                                  completionHandler: SearchCompletionHandler) {
+        if !isSearchForAdvanceFilters() {
+            performConventionalSearch(searchString: searchString,
+                                      paginationRequest: paginationRequest,
+                                      completionHandler: completionHandler)
+        } else {
+            performAdvanceSearch(searchString: searchString,
+                                 with: facetFields,
+                                 facetQueries: facetQueries,
+                                 facetIntervals: facetIntervals,
+                                 paginationRequest: paginationRequest,
+                                 completionHandler: completionHandler)
+        }
+    }
+    
+    // MARK: - Conventioanl Search
+    func performConventionalSearch(searchString: String,
+                                   paginationRequest: RequestPagination?,
+                                   completionHandler: SearchCompletionHandler) {
         services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
             guard let sSelf = self else { return }
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
             let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
                                                                          chipFilters: sSelf.searchChips,
-                                                                         pagination: paginationRequest)
-            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest) { [weak self] (result, error) in
+                                                                         pagination: paginationRequest,
+                                                                         selectedSearchFilter: nil)
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest, facetFields: nil, facetQueries: nil, facetIntervals: nil) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
                 if completionHandler == sSelf.lastSearchCompletionOperation {
@@ -148,6 +190,59 @@ class SearchModel: SearchModelProtocol {
             }
         })
     }
+    
+    // MARK: - Advance search
+    func performAdvanceSearch(searchString: String,
+                              with facetFields: FacetFields?,
+                              facetQueries: FacetQueries?,
+                              facetIntervals: FacetIntervals?,
+                              paginationRequest: RequestPagination?,
+                              completionHandler: SearchCompletionHandler) {
+
+        services.accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] authenticationProvider in
+            guard let sSelf = self else { return }
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            let simpleSearchRequest = SearchRequestBuilder.searchRequest(searchString,
+                                                                         chipFilters: sSelf.searchChips,
+                                                                         pagination: paginationRequest,
+                                                                         selectedSearchFilter: self?.selectedSearchFilter)
+            
+            SearchAPI.simpleSearch(searchRequest: simpleSearchRequest, facetFields: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) { [weak self] (result, error) in
+                guard let sSelf = self else { return }
+
+                if completionHandler == sSelf.lastSearchCompletionOperation {
+                    var listNodes: [ListNode] = []
+                    if let entries = result?.list?.entries {
+                        listNodes = ResultsNodeMapper.map(entries)
+                    }
+                    
+                    var facetFields: [SearchFacetFields] = []
+                    if let facets = result?.list?.context?.facets {
+                        facetFields = FacetFilterMapper.map(facets)
+                    }
+                    
+                    var facetQueries: [SearchFacetQueries] = []
+                    if let queries = result?.list?.context?.facetQueries {
+                        facetQueries = FacetQueriesMapper.map(queries)
+                    }
+                    
+                    var facetIntervals: [SearchFacetIntervals] = []
+                    if let intervals = result?.list?.context?.facetsFields {
+                        facetIntervals = FacetIntervalMapper.map(intervals)
+                    }
+                   
+                    let paginatedResponse = PaginatedResponse(results: listNodes,
+                                                              error: error,
+                                                              requestPagination: paginationRequest,
+                                                              responsePagination: result?.list?.pagination,
+                                                              facetFields: facetFields,
+                                                              facetQueries: facetQueries,
+                                                              facetIntervals: facetIntervals)
+                    completionHandler.handler(paginatedResponse)
+                }
+            }
+        })
+    }
 
     func isSearchForLibraries() -> Bool {
         for chip in searchChips where chip.type == .library {
@@ -155,25 +250,12 @@ class SearchModel: SearchModelProtocol {
         }
         return false
     }
-
-    // MARK: - Private interface
-
-    private func searchChipsState() -> String {
-        var state = ""
-        for chip in searchChips where chip.selected == true {
-            state += chip.type.rawValue
+    
+    func isSearchForAdvanceFilters() -> Bool {
+        if let accountIdentifier = services.accountService?.activeAccount?.identifier, let _ = DiskService.getAdvanceSearchConfigurations(for: accountIdentifier) {
+            return true
         }
-        return state
-    }
-
-    private func changedSearchChipsState(with oldState: String) -> Bool {
-        // Mixed items displayed in search results list when server takes longer to respond
-        // and user changes the filter
-        let state = self.searchChipsState()
-        if oldState == state {
-            return false
-        }
-        return true
+        return false
     }
     
     // MARK: - Advance Search Configuration
@@ -227,8 +309,11 @@ extension SearchModel: ListComponentModelProtocol {
         return rawListNodes
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return rawListNodes[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
+            return rawListNodes[indexPath.row]
+        }
+        return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
@@ -249,12 +334,18 @@ extension SearchModel: ListComponentModelProtocol {
         switch searchType {
         case .simple:
             self.performSearch(for: string,
-                               paginationRequest: requestPagination,
-                               completionHandler: completionHandler)
+                                  with: self.facetFields,
+                                  facetQueries: self.facetQueries,
+                                  facetIntervals: self.facetIntervals,
+                                  paginationRequest: requestPagination,
+                                  completionHandler: completionHandler)
         case .live :
             self.performLiveSearch(for: string,
-                                   paginationRequest: requestPagination,
-                                   completionHandler: completionHandler)
+                                      with: self.facetFields,
+                                      facetQueries: self.facetQueries,
+                                      facetIntervals: self.facetIntervals,
+                                      paginationRequest: requestPagination,
+                                      completionHandler: completionHandler)
         }
     }
 }
@@ -322,5 +413,72 @@ class SearchCompletionHandler: Equatable {
 
     init(completionHandler: @escaping PagedResponseCompletionHandler) {
         handler = completionHandler
+    }
+}
+
+// MARK: - Facet Search
+extension SearchModel {
+   
+    func facetSearchChips(for facetFields: [SearchFacetFields], facetQueries: [SearchFacetQueries], facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
+        
+        let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
+        let facetIntervalChips = self.getChipsForFacetIntervals(for: facetIntervals)
+        let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
+
+        searchChips.append(contentsOf: facetFieldChips)
+        searchChips.append(contentsOf: facetIntervalChips)
+        searchChips.append(contentsOf: facetQueryChips)
+        return searchChips
+    }
+    
+    func getChipsForFacetFields(for facetFields: [SearchFacetFields]) -> [SearchChipItem] {
+       
+        var chipsArray = [SearchChipItem]()
+        let componentType = ComponentType.facetField
+        
+        for facetField in facetFields {
+            let name = NSLocalizedString(facetField.label ?? "", comment: "")
+            if let chip = createChip(for: name, and: componentType) {
+                chipsArray.append(chip)
+            }
+        }
+
+        return chipsArray
+    }
+    
+    func getChipsForFacetIntervals(for facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
+        var chipsArray = [SearchChipItem]()
+        let componentType = ComponentType.facetInterval
+       
+        for facetInterval in facetIntervals {
+            let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
+            if let chip = createChip(for: name, and: componentType) {
+                chipsArray.append(chip)
+            }
+        }
+        return chipsArray
+    }
+    
+    func getChipsForFacetQueries(for facetQueries: [SearchFacetQueries]) -> [SearchChipItem] {
+        
+        let componentType = ComponentType.facetQuery
+        
+        let name = NSLocalizedString("size-facet-queries", comment: "")
+        if let chip = createChip(for: name, and: componentType) {
+            return [chip]
+        }
+        
+        return []
+    }
+        
+    // MARK: Create Chip
+    private func createChip(for name: String, and componentType: ComponentType) -> SearchChipItem? {
+        if searchChips.enumerated().first(where: {$0.element.name == name && $0.element.componentType == componentType}) == nil {
+            let chip = SearchChipItem(name: name,
+                                      selected: false,
+                                      componentType: componentType)
+            return chip
+        }
+        return nil
     }
 }

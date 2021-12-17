@@ -48,8 +48,12 @@ class FolderDrillModel: ListComponentModelProtocol {
         return rawListNodes
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return rawListNodes[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
+            return rawListNodes[indexPath.row]
+        } else {
+            return nil
+        }
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
@@ -177,28 +181,30 @@ class FolderDrillModel: ListComponentModelProtocol {
     }
     
     func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        let node = listNode(for: indexPath)
-        if node.isAFileType() && node.markedFor == .upload {
-            let nodeSyncStatus = node.syncStatus
-            var entryListStatus: ListEntrySyncStatus
+        if let node = listNode(for: indexPath) {
+            if node.isAFileType() && node.markedFor == .upload {
+                let nodeSyncStatus = node.syncStatus
+                var entryListStatus: ListEntrySyncStatus
 
-            switch nodeSyncStatus {
-            case .pending:
-                entryListStatus = .pending
-            case .error:
-                entryListStatus = .error
-            case .inProgress:
-                entryListStatus = .inProgress
-            case .synced:
-                entryListStatus = .uploaded
-            default:
-                entryListStatus = .undefined
+                switch nodeSyncStatus {
+                case .pending:
+                    entryListStatus = .pending
+                case .error:
+                    entryListStatus = .error
+                case .inProgress:
+                    entryListStatus = .inProgress
+                case .synced:
+                    entryListStatus = .uploaded
+                default:
+                    entryListStatus = .undefined
+                }
+
+                return entryListStatus
             }
 
-            return entryListStatus
+            return node.isMarkedOffline() ? .markedForOffline : .undefined
         }
-
-        return node.isMarkedOffline() ? .markedForOffline : .undefined
+        return .undefined
     }
 
     // MARK: - Private interface

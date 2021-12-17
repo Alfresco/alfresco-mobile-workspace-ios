@@ -47,14 +47,18 @@ class RecentModel: ListComponentModelProtocol {
         return groupedLists
     }
 
-    func listNode(for indexPath: IndexPath) -> ListNode {
-        return groupedLists[indexPath.row]
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !groupedLists.isEmpty && groupedLists.count > indexPath.row {
+            return groupedLists[indexPath.row]
+        }
+        return nil
     }
 
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        let listNode = self.listNode(for: indexPath)
-        if listNode.guid == listNodeSectionIdentifier {
-            return listNode.title
+        if let listNode = self.listNode(for: indexPath) {
+            if listNode.guid == listNodeSectionIdentifier {
+                return listNode.title
+            }
         }
         return ""
     }

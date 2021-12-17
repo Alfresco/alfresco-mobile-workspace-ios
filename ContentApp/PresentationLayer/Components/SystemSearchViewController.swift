@@ -156,8 +156,10 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
         guard let searchViewModel = self.searchViewModel else { return }
 
         resultsViewController?.startLoading()
-        resultsViewController?.reloadChips(searchViewModel.searchModel.searchChipIndexes(for: chip))
-
+        if searchViewModel.searchFilters.isEmpty {
+            // old search for file, folder and library
+            resultsViewController?.reloadChips(searchViewModel.searchModel.searchChipIndexes(for: chip))
+        }
         searchViewModel.searchModel.searchString = navigationItem.searchController?.searchBar.text
         searchViewModel.searchModel.searchType = .simple
         resultsViewController?.pageController?.refreshList()
@@ -179,10 +181,6 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
     func elementListTapped(elementList: ListNode) {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
-    }
-    
-    func resetSearchFilterTapped() {
-        AlfrescoLog.debug("resetSearchFilterTapped")
     }
 }
 
@@ -243,7 +241,9 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
             searchViewModel.searchModel.searchString = searchText
             searchViewModel.searchModel.searchType = .live
-
+            searchViewModel.searchModel.facetFields = searchViewModel.getFacetFields()
+            searchViewModel.searchModel.facetQueries = searchViewModel.getFacetQueries()
+            searchViewModel.searchModel.facetIntervals = searchViewModel.getFacetIntervals()
             resultsViewController?.pageController?.refreshList()
             resultsViewController?.updateRecentSearches()
         } else {

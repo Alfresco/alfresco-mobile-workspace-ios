@@ -17,11 +17,10 @@
 //
 
 import UIKit
-import AlfrescoContent
 import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 
-class SearchListComponentViewController: SystemThemableViewController {
+class SearchFacetListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var headerTitleLabel: UILabel!
     @IBOutlet weak var dismissButton: UIButton!
@@ -31,30 +30,53 @@ class SearchListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var resetButton: MDCButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var heightTableView: NSLayoutConstraint!
-    var listViewModel: SearchListComponentViewModel { return controller.listViewModel }
-    lazy var controller: SearchListComponentController = { return SearchListComponentController() }()
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var heightSearchView: NSLayoutConstraint!
+    @IBOutlet weak var searchView: UIView!
+    
+    var facetViewModel: SearchFacetListComponentViewModel { return controller.facetViewModel }
+    lazy var controller: SearchFacetListComponentController = { return SearchFacetListComponentController() }()
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
-    var callback: SearchComponentCallBack?
-
+    var callback: FacetComponentsCallBack?
+    var isKeyboardOpen = false
+    
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         baseView.layer.cornerRadius = UIConstants.cornerRadiusDialog
         view.isHidden = true
+        hideKeyboardWhenTappedAround()
         tableView.estimatedRowHeight = 1000
+        facetViewModel.saveTemporaryDataForSearchResults()
         controller.updatedSelectedValues()
         applyLocalization()
         applyComponentsThemes()
         registerCells()
         controller.buildViewModel()
         setupBindings()
+        heightSearchView.constant = facetViewModel.heightAndAlphaOfSearchView().height
+        searchView.alpha = facetViewModel.heightAndAlphaOfSearchView().alpha
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.isNavigationBarHidden = true
         view.isHidden = false
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillAppear() {
+        isKeyboardOpen = true
+    }
+
+    @objc func keyboardWillDisappear() {
+        isKeyboardOpen = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,9 +85,11 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     private func calculatePreferredSize(_ size: CGSize) {
-        let targetSize = CGSize(width: size.width,
-                                height: UIView.layoutFittingCompressedSize.height)
-        preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
+        if isKeyboardOpen == false {
+            let targetSize = CGSize(width: size.width,
+                                    height: UIView.layoutFittingCompressedSize.height)
+            preferredContentSize = view.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: .defaultHigh, verticalFittingPriority: .defaultLow)
+        }
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -91,12 +115,12 @@ class SearchListComponentViewController: SystemThemableViewController {
         dismissButton.tintColor = currentTheme.onSurfaceColor
         headerDivider.backgroundColor = currentTheme.onSurface12Color
         listViewDivider.backgroundColor = currentTheme.onSurface12Color
-                
+        
         applyButton.applyContainedTheme(withScheme: buttonScheme)
         applyButton.isUppercaseTitle = false
         applyButton.setShadowColor(.clear, for: .normal)
         applyButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
-
+        
         resetButton.applyContainedTheme(withScheme: bigButtonScheme)
         resetButton.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
         resetButton.isUppercaseTitle = false
@@ -106,7 +130,7 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     private func applyLocalization() {
-        headerTitleLabel.text = listViewModel.title
+        headerTitleLabel.text = facetViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
     }
@@ -118,7 +142,7 @@ class SearchListComponentViewController: SystemThemableViewController {
     // MARK: - Set up Bindings
     private func setupBindings() {
         /* observing rows */
-        self.listViewModel.rowViewModels.addObserver() { [weak self] (rows) in
+        self.facetViewModel.rowViewModels.addObserver() { [weak self] (rows) in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
@@ -126,32 +150,72 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, true)
+        var value: String?
+        let isBackButtonTapped = true
+        
+        if facetViewModel.componentType == .facetQuery {
+            value = facetViewModel.selectedFacetQueryString
+        } else if facetViewModel.componentType == .facetField {
+            value = facetViewModel.selectedFacetFieldString
+        } else if facetViewModel.componentType == .facetInterval {
+            value = facetViewModel.selectedFacetIntervalString
+        }
+        
+        let query = facetViewModel.queryBuilder
+        self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
     }
-    
+        
     @IBAction func applyButtonAction(_ sender: Any) {
-        self.controller.applyFilterAction()
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        var value: String?
+        let isBackButtonTapped = false
+       
+        if facetViewModel.componentType == .facetQuery {
+            self.controller.applyFilterForFacetQuery()
+            value = facetViewModel.selectedFacetQueryString
+        } else if facetViewModel.componentType == .facetField {
+            self.controller.applyFilterForFacetFields()
+            value = facetViewModel.selectedFacetFieldString
+        } else if facetViewModel.componentType == .facetInterval {
+            self.controller.applyFilterForFacetIntervals()
+            value = facetViewModel.selectedFacetIntervalString
+        }
+          
+        let query = facetViewModel.queryBuilder
+        self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        self.controller.resetFilterAction()
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        var value: String?
+        let isBackButtonTapped = false
+        
+        if facetViewModel.componentType == .facetQuery {
+            self.controller.resetFilterForFacetQuery()
+            value = facetViewModel.selectedFacetQueryString
+        } else if facetViewModel.componentType == .facetField {
+            self.controller.resetFilterForFacetFields()
+            value = facetViewModel.selectedFacetFieldString
+        } else if facetViewModel.componentType == .facetInterval {
+            self.controller.resetFilterForFacetIntervals()
+            value = facetViewModel.selectedFacetIntervalString
+        }
+        
+        let query = facetViewModel.queryBuilder
+        self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
     }
 }
 
 // MARK: - Table View Data Source and Delegates
-extension SearchListComponentViewController: UITableViewDelegate, UITableViewDataSource {
+extension SearchFacetListComponentViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.listViewModel.rowViewModels.value.count
+        return self.facetViewModel.rowViewModels.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rowViewModel = listViewModel.rowViewModels.value[indexPath.row]
+        let rowViewModel = facetViewModel.rowViewModels.value[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: controller.cellIdentifier(for: rowViewModel), for: indexPath)
         if let cell = cell as? CellConfigurable {
             cell.setup(viewModel: rowViewModel)
@@ -178,5 +242,35 @@ extension SearchListComponentViewController: UITableViewDelegate, UITableViewDat
     }
 }
 
+// MARK: - UISearchBar Delegate
+extension SearchFacetListComponentViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if facetViewModel.componentType == .facetQuery {
+            if searchText.isEmpty {
+                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
+            } else {
+                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
+            }
+        } else if facetViewModel.componentType == .facetField {
+            if searchText.isEmpty {
+                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions
+            } else {
+                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
+            }
+        } else if facetViewModel.componentType == .facetInterval {
+            if searchText.isEmpty {
+                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions
+            } else {
+                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
+            }
+        }
+        controller.buildViewModel()
+    }
+}
+
 // MARK: - Storyboard Instantiable
-extension SearchListComponentViewController: SearchComponentsStoryboardInstantiable { }
+extension SearchFacetListComponentViewController: SearchComponentsStoryboardInstantiable { }
