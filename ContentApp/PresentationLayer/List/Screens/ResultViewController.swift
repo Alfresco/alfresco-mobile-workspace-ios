@@ -463,7 +463,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
 }
 
 // MARK: - ListComponentActionDelegate
-
 extension ResultViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
         resultScreenDelegate?.elementListTapped(elementList: node)
