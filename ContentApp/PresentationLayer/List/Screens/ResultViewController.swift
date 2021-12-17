@@ -495,8 +495,8 @@ extension ResultViewController {
             showSliderSelectorComponent()
         } else if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent()
-        } else if chip.componentType == .facetField || chip.componentType == .facetQuery || chip.componentType == .facetInterval {
-            showFacetSelectorComponent(componentType: chip.componentType, name: chip.name, selectedValue: chip.selectedValue)
+        } else if chip.componentType == .facet {
+            showFacetSelectorComponent(name: chip.name, selectedValue: chip.selectedValue)
         }
     }
     
@@ -607,37 +607,26 @@ extension ResultViewController {
     }
     
     // Facet Component
-    private func showFacetSelectorComponent(componentType: ComponentType?, name: String, selectedValue: String) {
-        if let componentType = componentType {
-            
-            let viewController = SearchFacetListComponentViewController.instantiateViewController()
-            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-            bottomSheet.dismissOnDraggingDownSheet = false
-            bottomSheet.delegate = self
-            viewController.coordinatorServices = coordinatorServices
-            viewController.facetViewModel.componentType = componentType
-            bottomSheet.ignoreKeyboardHeight = true
-            
-            if componentType == .facetQuery, let facetQueries = resultsViewModel?.facetQueries {
-                viewController.facetViewModel.facetQueryOptions = facetQueries
-                viewController.facetViewModel.selectedFacetQueryString = selectedValue
-            } else if componentType == .facetField, let selectedFacetField = resultsViewModel?.getSelectedFacetField(for: name) {
-                viewController.facetViewModel.facetFields = selectedFacetField
-                viewController.facetViewModel.selectedFacetFieldString = selectedValue
-            } else if componentType == .facetInterval, let selectedFacetInterval = resultsViewModel?.getSelectedFacetInterval(for: name) {
-                viewController.facetViewModel.facetInterval = selectedFacetInterval
-                viewController.facetViewModel.selectedFacetIntervalString = selectedValue
-            }
-            
-            viewController.callback = { (value, query, isBackButtonTapped) in
-                if isBackButtonTapped {
-                    self.resetChip()
-                } else {
-                    self.updateSelectedChip(with: value, and: query)
-                }
-            }
-            self.present(bottomSheet, animated: true, completion: nil)
+    private func showFacetSelectorComponent(name: String, selectedValue: String) {
+        
+        let viewController = SearchFacetListComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        bottomSheet.delegate = self
+        viewController.coordinatorServices = coordinatorServices
+        bottomSheet.ignoreKeyboardHeight = true
+        if let selectedSearchFacet = resultsViewModel?.getSelectedSearchFacets(for: name) {
+            viewController.facetViewModel.searchFacets = selectedSearchFacet
+            viewController.facetViewModel.selectedSearchFacetString = selectedValue
         }
+        viewController.callback = { (value, query, isBackButtonTapped) in
+            if isBackButtonTapped {
+                self.resetChip()
+            } else {
+                self.updateSelectedChip(with: value, and: query)
+            }
+        }
+        self.present(bottomSheet, animated: true, completion: nil)
     }
     
     func updateSelectedChip(with value: String?, and query: String?) {
@@ -695,9 +684,7 @@ extension ResultViewController {
     }
     
     func resetFacetsArray() {
-        resultsViewModel?.facetFields.removeAll()
-        resultsViewModel?.facetQueries.removeAll()
-        resultsViewModel?.facetIntervals.removeAll()
+        resultsViewModel?.searchFacets.removeAll()
     }
 }
 
@@ -722,32 +709,23 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
 
 // MARK: - Result Controller Delegate
 extension ResultViewController: ResultPageControllerDelegate {
-    func didUpdateChips(error: Error?,
-                        facetFields: [SearchFacetFields],
-                        facetQueries: [SearchFacetQueries],
-                        facetIntervals: [SearchFacetIntervals]) {
+    func didUpdateChips(error: Error?, searchFacets: [SearchFacets]) {
         
         guard let model = pageController?.dataSource else { return }
-        let isFacetsFieldsEmpty = resultsViewModel?.isFacetsFieldsEmpty() ?? false
-        let isFacetQueryEmpty = resultsViewModel?.isFacetsQueriesEmpty() ?? false
-        let isFacetIntervalsEmpty = resultsViewModel?.isFacetsIntervalsEmpty() ?? false
+        let isSearchFacetsEmpty = resultsViewModel?.isSearchFacetsEmpty() ?? false
         let isListEmpty = model.isEmpty()
-        if isListEmpty && (isFacetsFieldsEmpty || isFacetQueryEmpty || isFacetIntervalsEmpty) {
+        
+        if isListEmpty && isSearchFacetsEmpty {
             return
         }
 
-        if isFacetsFieldsEmpty && isFacetQueryEmpty && isFacetIntervalsEmpty {
-            resultsViewModel?.facetFields = facetFields
-            resultsViewModel?.facetQueries = facetQueries
-            resultsViewModel?.facetIntervals = facetIntervals
-        } else {
-            // update
-            resultsViewModel?.facetFields = resultsViewModel?.getUpdatedFacetFields(for: facetFields) ?? []
-            resultsViewModel?.facetIntervals = resultsViewModel?.getUpdatedFacetIntervals(for: facetIntervals) ?? []
-            resultsViewModel?.facetQueries = resultsViewModel?.getUpdatedFacetQueries(for: facetQueries) ?? []
+        if isSearchFacetsEmpty {
+            resultsViewModel?.searchFacets = searchFacets
+        } else { // update
+            resultsViewModel?.searchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
         }
             
-        guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: facetFields, facetQueries: facetQueries, facetIntervals: facetIntervals) else { return }
+        guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: searchFacets) else { return }
         self.updateChips(chipItems)
     }
 }

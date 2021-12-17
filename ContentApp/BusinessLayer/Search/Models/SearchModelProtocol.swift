@@ -35,9 +35,7 @@ protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     
     func isNodePathEnabled() -> Bool
     func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem]
-    func facetSearchChips(for facetFields: [SearchFacetFields],
-                          facetQueries: [SearchFacetQueries],
-                          facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem]
+    func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem]
 
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
     func performSearch(for string: String,

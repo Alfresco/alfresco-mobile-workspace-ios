@@ -20,71 +20,34 @@ import Foundation
 import UIKit
 
 class SearchFacetListComponentViewModel {
-   
-    // Facet Query
-    var facetQueryOptions = [SearchFacetQueries]()
-    var tempFacetQueryOptions = [SearchFacetQueries]()
-    var selectedFacetQuery = [SearchFacetQueries]()
-    var selectedFacetQueryString: String?
 
-    // Facet Field
-    var facetFields: SearchFacetFields?
-    var facetFieldOptions = [Buckets]()
-    var tempFacetFieldOptions = [Buckets]()
-    var selectedFacetField = [Buckets]()
-    var selectedFacetFieldString: String?
 
-    // Facet Interval
-    var facetInterval: SearchFacetIntervals?
-    var facetIntervalOptions = [Buckets]()
-    var tempFacetIntervalOptions = [Buckets]()
-    var selectedFacetInterval = [Buckets]()
-    var selectedFacetIntervalString: String?
+    // Search Facet
+    var searchFacets: SearchFacets?
+    var searchFacetOptions = [Buckets]()
+    var tempSearchFacetOptions = [Buckets]()
+    var selectedSearchFacet = [Buckets]()
+    var selectedSearchFacetString: String?
 
     let rowViewModels = Observable<[RowViewModel]>([])
-    var componentType: ComponentType = .facetQuery
     let stringConcatenator = ", "
     let searchOperator = "OR"
     var queryBuilder: String?
     let minimumItemsInListToShowSearchBar = 10
 
     var title: String {
-        if componentType == .facetQuery {
-            return NSLocalizedString("size-facet-queries", comment: "")
-        } else if componentType == .facetField {
-            let name = facetFields?.label ?? ""
-            return NSLocalizedString(name, comment: "")
-        } else if componentType == .facetInterval {
-            let name = facetInterval?.label ?? ""
-            return NSLocalizedString(name, comment: "")
-        }
-        return ""
+        let name = searchFacets?.label ?? ""
+        return NSLocalizedString(name, comment: "")
     }
     
     func saveTemporaryDataForSearchResults() {
-        if componentType == .facetQuery {
-            tempFacetQueryOptions = facetQueryOptions
-        } else if componentType == .facetField {
-            facetFieldOptions = facetFields?.buckets ?? []
-            tempFacetFieldOptions = facetFieldOptions
-        } else if componentType == .facetInterval {
-            facetIntervalOptions = facetInterval?.buckets ?? []
-            tempFacetIntervalOptions = facetIntervalOptions
-        }
+        searchFacetOptions = searchFacets?.buckets ?? []
+        tempSearchFacetOptions = searchFacetOptions
     }
     
     // MARK: Search Bar
     func isShowSearchBar() -> Bool {
-        var showSearchBar = false
-        if componentType == .facetQuery {
-            showSearchBar = (facetQueryOptions.count > minimumItemsInListToShowSearchBar) ? true : false
-        } else if componentType == .facetField {
-            showSearchBar = (facetFieldOptions.count > minimumItemsInListToShowSearchBar) ? true : false
-        } else if componentType == .facetInterval {
-            showSearchBar = (facetIntervalOptions.count > minimumItemsInListToShowSearchBar) ? true : false
-        }
-        
-        return showSearchBar
+        return (searchFacetOptions.count > minimumItemsInListToShowSearchBar) ? true : false
     }
     
     func heightAndAlphaOfSearchView() -> (height: CGFloat, alpha: CGFloat) {
@@ -96,31 +59,14 @@ class SearchFacetListComponentViewModel {
     }
 }
 
-// MARK: Facet Query
-extension SearchFacetListComponentViewModel {
-    
-    func buildQueryForFacetQueries() -> String? {
-        var queryString = ""
-        for counter in 0 ..< selectedFacetQuery.count {
-            let value = selectedFacetQuery[counter].filterQuery ?? ""
-            if !value.isEmpty {
-                if counter != 0 {
-                    queryString.append(" " + searchOperator + " ")
-                }
-                queryString.append(value)
-            }
-        }
-        return queryString
-    }
-}
 
 // MARK: Facet Field
 extension SearchFacetListComponentViewModel {
     
-    func buildQueryForFacetFields() -> String? {
+    func buildQueryForSearchFacets() -> String? {
         var queryString = ""
-        for counter in 0 ..< selectedFacetField.count {
-            let value = selectedFacetField[counter].filterQuery ?? ""
+        for counter in 0 ..< selectedSearchFacet.count {
+            let value = selectedSearchFacet[counter].filterQuery ?? ""
             if !value.isEmpty {
                 if counter != 0 {
                     queryString.append(" " + searchOperator + " ")
@@ -131,22 +77,3 @@ extension SearchFacetListComponentViewModel {
         return queryString
     }
 }
-
-// MARK: Facet Interval
-extension SearchFacetListComponentViewModel {
-    
-    func buildQueryForFacetIntervals() -> String? {
-        var queryString = ""
-        for counter in 0 ..< selectedFacetInterval.count {
-            let value = selectedFacetInterval[counter].filterQuery ?? ""
-            if !value.isEmpty {
-                if counter != 0 {
-                    queryString.append(" " + searchOperator + " ")
-                }
-                queryString.append(value)
-            }
-        }
-        return queryString
-    }
-}
-

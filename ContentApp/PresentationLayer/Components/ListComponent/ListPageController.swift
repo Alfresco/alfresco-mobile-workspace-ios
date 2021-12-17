@@ -26,9 +26,7 @@ struct PaginatedResponse {
     var error: Error?
     var requestPagination: RequestPagination?
     var responsePagination: Pagination?
-    var facetFields = [SearchFacetFields]()
-    var facetQueries = [SearchFacetQueries]()
-    var facetIntervals = [SearchFacetIntervals]()
+    var searchFacets = [SearchFacets]()
 }
 
 protocol ListPageControllerProtocol: AnyObject {
@@ -49,10 +47,7 @@ protocol ListPageControllerDelegate: AnyObject {
 }
 
 protocol ResultPageControllerDelegate: AnyObject {
-    func didUpdateChips(error: Error?,
-                        facetFields: [SearchFacetFields],
-                        facetQueries: [SearchFacetQueries],
-                        facetIntervals: [SearchFacetIntervals])
+    func didUpdateChips(error: Error?, searchFacets: [SearchFacets])
 }
 
 class ListPageController: ListPageControllerProtocol {
@@ -145,10 +140,7 @@ class ListPageController: ListPageControllerProtocol {
                    pagination: response.responsePagination,
                    error: nil)
             
-            resultPageDelegate?.didUpdateChips(error: nil,
-                                               facetFields: response.facetFields,
-                                               facetQueries: response.facetQueries,
-                                               facetIntervals: response.facetIntervals)
+            resultPageDelegate?.didUpdateChips(error: nil, searchFacets: response.searchFacets)
         }
     }
 

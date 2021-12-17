@@ -46,6 +46,7 @@ class SystemSearchViewController: SystemThemableViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         resultsViewController?.viewWillTransition(to: size, with: coordinator)
+        resultsViewController?.stopLoading()
     }
 
     // MARK: - Public Methods

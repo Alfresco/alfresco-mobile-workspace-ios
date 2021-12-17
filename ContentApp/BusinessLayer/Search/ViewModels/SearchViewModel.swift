@@ -72,9 +72,7 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     // Facet Filters
-    var facetFields = [SearchFacetFields]()
-    var facetQueries = [SearchFacetQueries]()
-    var facetIntervals = [SearchFacetIntervals]()
+    var searchFacets = [SearchFacets]()
     
     /// selected filter name
     func selectedFilterName(for config: AdvanceSearchFilters?) -> String {
@@ -341,74 +339,51 @@ extension SearchViewModel {
         return nil
     }
     
-    func isFacetsFieldsEmpty() -> Bool {
-        if facetFields.isEmpty {
+    func isSearchFacetsEmpty() -> Bool {
+        if searchFacets.isEmpty {
             return true
         }
         return false
     }
     
-    func isFacetsQueriesEmpty() -> Bool {
-        if facetQueries.isEmpty {
-            return true
-        }
-        return false
-    }
-    
-    func isFacetsIntervalsEmpty() -> Bool {
-        if facetIntervals.isEmpty {
-            return true
-        }
-        return false
-    }
-
-    // MARK: - Selected Facet Field
-    func getSelectedFacetField(for name: String) -> SearchFacetFields? {
-        if let index = self.facetFields.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
-            return facetFields[index]
+    // MARK: - Selected Search Facets
+    func getSelectedSearchFacets(for name: String) -> SearchFacets? {
+        if let index = self.searchFacets.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
+            return searchFacets[index]
         }
         return nil
     }
     
-    // MARK: - Selected Facet Interval
-    func getSelectedFacetInterval(for name: String) -> SearchFacetIntervals? {
-        if let index = self.facetIntervals.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
-            return facetIntervals[index]
-        }
-        return nil
-    }
-    
-    // MARK: Updated Facet Field Options
     func isFacetChipsHasSelectedValue() -> Bool {
-        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facetField || $0.componentType == .facetQuery || $0.componentType == .facetInterval)}) != nil {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facet)}) != nil {
             return true
         }
         return false
     }
     
-    func getUpdatedFacetFields(for newFacetFields: [SearchFacetFields]) -> [SearchFacetFields] {
-        var oldFacetIFields = self.facetFields
-        let difference = newFacetFields
+    func getUpdatedSearchFacets(for newSearchFacets: [SearchFacets]) -> [SearchFacets] {
+        var oldSearchFacets = self.searchFacets
+        let difference = newSearchFacets
             .filter({ currentObject in
-                !(oldFacetIFields
+                !(oldSearchFacets
                     .contains(where: { $0.label == currentObject.label }))
             })
 
         // Step1: Check if there are some new chips, which needs to be added
         if !difference.isEmpty {
-            oldFacetIFields.append(contentsOf: difference)
+            oldSearchFacets.append(contentsOf: difference)
         }
         
-        for field in newFacetFields {
+        for field in newSearchFacets {
             let newLabel = field.label
             let newBuckets = field.buckets
             var tempNewBuckets = [Buckets]()
 
             // Step 2: Get index of object from old fields which matches object from new fields
-            if let indexOfChip = oldFacetIFields.firstIndex(where: {$0.label == newLabel}) {
+            if let indexOfChip = oldSearchFacets.firstIndex(where: {$0.label == newLabel}) {
                 var oldBuckets = [Buckets]()
                 if self.isFacetChipsHasSelectedValue() == true {
-                    oldBuckets = oldFacetIFields[indexOfChip].buckets
+                    oldBuckets = oldSearchFacets[indexOfChip].buckets
                 }
 
                 // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
@@ -437,107 +412,11 @@ extension SearchViewModel {
                 }
                 
                 // Step 6: Update the bucket in the main fields array
-                oldFacetIFields[indexOfChip].buckets = oldBuckets
+                oldSearchFacets[indexOfChip].buckets = oldBuckets
             }
         }
         
         // Step 7: Return the final result
-        return oldFacetIFields
-    }
-    
-    // MARK: Updated Facet Interval Options
-    func getUpdatedFacetIntervals(for newFacetIntervals: [SearchFacetIntervals]) -> [SearchFacetIntervals] {
-        var oldFacetIntervals = self.facetIntervals
-        let difference = newFacetIntervals
-            .filter({ currentObject in
-                !(oldFacetIntervals
-                    .contains(where: { $0.label == currentObject.label }))
-            })
-
-        // Step1: Check if there are some new chips, which needs to be added
-        if !difference.isEmpty {
-            oldFacetIntervals.append(contentsOf: difference)
-        }
-        
-        for interval in newFacetIntervals {
-            let newLabel = interval.label
-            let newBuckets = interval.buckets
-            var tempNewBuckets = [Buckets]()
-
-            // Step 2: Get index of object from old intervals which matches object from new interval
-            if let indexOfChip = oldFacetIntervals.firstIndex(where: {$0.label == newLabel}) {
-                var oldBuckets = [Buckets]()
-                if self.isFacetChipsHasSelectedValue() == true {
-                    oldBuckets = oldFacetIntervals[indexOfChip].buckets
-                }
-                                
-                // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
-                for bucket in newBuckets {
-                    let newBucketLabel = bucket.label
-                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == newBucketLabel}) {
-                        oldBuckets[bucketIndex] = bucket
-                        tempNewBuckets.append(bucket)
-                    }
-                }
-                
-                // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
-                if self.isFacetChipsHasSelectedValue() == false {
-                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
-                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
-                }
-            
-                // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
-                let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
-                for bucket in arrayVoidBuckets {
-                    let voidBucketLabel = bucket.label
-                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == voidBucketLabel}) {
-                        oldBuckets[bucketIndex].count = "0"
-                    }
-                }
-                
-                // Step 6: Update the bucket in the main interval array
-                oldFacetIntervals[indexOfChip].buckets = oldBuckets
-            }
-        }
-        
-        // Step 7: Return the final result
-        return oldFacetIntervals
-    }
-    
-    // MARK: Updated Facet Queries
-    func getUpdatedFacetQueries(for newFacetQueries: [SearchFacetQueries]) -> [SearchFacetQueries] {
-        var oldFacetQueries = self.facetQueries
-        var tempNewFacetQueries = [SearchFacetQueries]()
-        let difference = newFacetQueries
-            .filter({ currentObject in
-                !(oldFacetQueries
-                    .contains(where: { $0.label == currentObject.label }))
-            })
-
-        // Step1: Check if there are some new chips, which needs to be added
-        if !difference.isEmpty {
-            oldFacetQueries.append(contentsOf: difference)
-        }
-        
-        for query in newFacetQueries {
-            let newQueryLabel = query.label
-            if let indexOfChip = oldFacetQueries.firstIndex(where: {$0.label == newQueryLabel}) {
-                oldFacetQueries[indexOfChip] = query
-                tempNewFacetQueries.append(query)
-            }
-        }
-        
-        let arrayRemainingQuereies = newFacetQueries.filter { !tempNewFacetQueries.contains($0) }
-        oldFacetQueries.append(contentsOf: arrayRemainingQuereies)
-        
-        let arrayVoidQueries = oldFacetQueries.filter { !newFacetQueries.contains($0) }
-        for query in arrayVoidQueries {
-            let voidQueryLabel = query.label
-            if let bucketIndex = oldFacetQueries.firstIndex(where: {$0.label == voidQueryLabel}) {
-                oldFacetQueries[bucketIndex].count = 0
-            }
-        }
-        
-        return oldFacetQueries
+        return oldSearchFacets
     }
 }
