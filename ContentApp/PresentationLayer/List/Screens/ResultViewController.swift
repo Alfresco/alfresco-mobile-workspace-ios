@@ -689,7 +689,16 @@ extension ResultViewController {
     }
         
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        self.updateCategory()
+        let isSearchFilterApplied = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
+        if isSearchFilterApplied {
+            self.updateCategory()
+        }
+    }
+    
+    func resetFacetsArray() {
+        resultsViewModel?.facetFields.removeAll()
+        resultsViewModel?.facetQueries.removeAll()
+        resultsViewModel?.facetIntervals.removeAll()
     }
 }
 
