@@ -44,9 +44,10 @@ class SearchFacetListComponentController: NSObject {
             let count = item.count ?? "0"
             let title = String(format: "%@ (%@)", name, count)
             var isSelected = false
-            if facetViewModel.selectedSearchFacet.enumerated().first(where: {$0.element.label == label}) != nil {
+            if facetViewModel.selectedSearchFacet.firstIndex(where: {$0.label == label}) != nil {
                 isSelected = true
             }
+            
             let rowVM = ListItemCellViewModel(title: title, isRadioList: false, isSelected: isSelected)
             rowVM.didSelectListItem = {
                 self.updateSelectedValue(for: index)
@@ -65,22 +66,21 @@ class SearchFacetListComponentController: NSObject {
 
             for value in valuesArray {
                 let localizedValue = NSLocalizedString(value, comment: "")
-                if let object = searchFacetOptions.enumerated().first(where: {NSLocalizedString($0.element.label ?? "", comment: "") == localizedValue}) {
-                    self.facetViewModel.selectedSearchFacet.append(object.element)
+                if let index = searchFacetOptions.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == localizedValue}) {
+                    self.facetViewModel.selectedSearchFacet.append(searchFacetOptions[index])
                 }
             }
         }
     }
 }
 
-
 // MARK: Facet Fields
 extension SearchFacetListComponentController {
-   
+
     private func updateSelectedValue(for index: Int) {
         let value = facetViewModel.searchFacetOptions[index].label ?? ""
-        if let object = facetViewModel.selectedSearchFacet.enumerated().first(where: {$0.element.label == value}) {
-            facetViewModel.selectedSearchFacet.remove(at: object.offset)
+        if let facetIndex = facetViewModel.selectedSearchFacet.firstIndex(where: {$0.label == value}) {
+            facetViewModel.selectedSearchFacet.remove(at: facetIndex)
         } else {
             facetViewModel.selectedSearchFacet.append(facetViewModel.searchFacetOptions[index])
         }
