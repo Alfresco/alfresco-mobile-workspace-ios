@@ -194,7 +194,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         searchViewModel.loadAppConfigurationsForSearch()
         let searchFilters = searchViewModel.searchFilters
         resultsViewController?.resetFacetsArray()
-        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))        
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 
@@ -243,7 +243,6 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
             searchViewModel.searchModel.searchString = searchText
             searchViewModel.searchModel.searchType = .live
-            resultsViewController?.updateSearchFacetOptions()
             resultsViewController?.pageController?.refreshList()
             resultsViewController?.updateRecentSearches()
         } else {

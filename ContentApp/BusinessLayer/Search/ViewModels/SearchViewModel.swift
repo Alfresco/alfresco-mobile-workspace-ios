@@ -361,6 +361,18 @@ extension SearchViewModel {
         return false
     }
     
+    func getNonZeroBucketForSearchFacets(for searchFacets: [SearchFacets]) -> [SearchFacets] {
+        var tempFactes = [SearchFacets]()
+        for facet in searchFacets {
+            let buckets = facet.buckets
+            let nonZeroBucketList = buckets.filter { $0.count != "0"}
+            facet.buckets = nonZeroBucketList
+            tempFactes.append(facet)
+        }
+        
+        return tempFactes
+    }
+    
     func getUpdatedSearchFacets(for newSearchFacets: [SearchFacets]) -> [SearchFacets] {
         var oldSearchFacets = self.searchFacets
         let difference = newSearchFacets

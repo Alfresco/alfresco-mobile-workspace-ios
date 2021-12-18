@@ -241,6 +241,8 @@ extension ResultViewController {
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
+                self.resetFacetsArray()
+                self.updateSearchFacetOptions()
                 self.updateCategory()
             }
         }
@@ -253,7 +255,6 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
-                updateSearchFacetOptions()
                 let searchString = (resultsViewModel?.searchModel.searchString ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
                 if !searchString.isEmpty {
                     pageController?.refreshList() // refresh list by calling search api if search text has some value
@@ -667,7 +668,8 @@ extension ResultViewController {
     
     func reloadChipCollectionWithoutScroll() {
         DispatchQueue.main.async {
-            self.chipsCollectionView.reloadDataWithoutScroll()
+            self.chipsCollectionView.reloadData()
+            //self.chipsCollectionView.reloadDataWithoutScroll()
         }
     }
 }
@@ -676,6 +678,7 @@ extension ResultViewController {
 extension ResultViewController {
     private func resetSelectedSearchFilter() {
         self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        self.updateSearchFacetOptions()
         updateCategory()
     }
     
@@ -731,7 +734,7 @@ extension ResultViewController: ResultPageControllerDelegate {
         }
 
         if isSearchFacetsEmpty {
-            resultsViewModel?.searchFacets = searchFacets
+            resultsViewModel?.searchFacets = resultsViewModel?.getNonZeroBucketForSearchFacets(for: searchFacets) ?? []
         } else { // update
             resultsViewModel?.searchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
         }
