@@ -253,10 +253,21 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
-                pageController?.refreshList() // refresh list by calling search api
+                updateSearchFacetOptions()
+                let searchString = (resultsViewModel?.searchModel.searchString ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                if !searchString.isEmpty {
+                    pageController?.refreshList() // refresh list by calling search api if search text has some value
+                }
                 showResetFilterButton()
             }
         }
+    }
+    
+    func updateSearchFacetOptions() {
+        guard let resultsViewModel = self.resultsViewModel else { return }
+        resultsViewModel.searchModel.facetFields = resultsViewModel.getFacetFields()
+        resultsViewModel.searchModel.facetQueries = resultsViewModel.getFacetQueries()
+        resultsViewModel.searchModel.facetIntervals = resultsViewModel.getFacetIntervals()
     }
     
     private func showResetFilterButton() {

@@ -243,12 +243,11 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
             searchViewModel.searchModel.searchString = searchText
             searchViewModel.searchModel.searchType = .live
-            searchViewModel.searchModel.facetFields = searchViewModel.getFacetFields()
-            searchViewModel.searchModel.facetQueries = searchViewModel.getFacetQueries()
-            searchViewModel.searchModel.facetIntervals = searchViewModel.getFacetIntervals()
+            resultsViewController?.updateSearchFacetOptions()
             resultsViewController?.pageController?.refreshList()
             resultsViewController?.updateRecentSearches()
         } else {
+            searchViewModel.searchModel.searchString = searchText
             resultsViewController?.stopLoading()
             resultsViewController?.clearDataSource()
         }
