@@ -668,8 +668,7 @@ extension ResultViewController {
     
     func reloadChipCollectionWithoutScroll() {
         DispatchQueue.main.async {
-            self.chipsCollectionView.reloadData()
-            //self.chipsCollectionView.reloadDataWithoutScroll()
+            self.chipsCollectionView.reloadDataWithoutScroll()
         }
     }
 }
