@@ -62,6 +62,9 @@ class GlobalSearchModel: SearchModel {
     }
 
     override func handleSearch(for searchString: String,
+                               with facetFields: FacetFields?,
+                               facetQueries: FacetQueries?,
+                               facetIntervals: FacetIntervals?,
                                paginationRequest: RequestPagination?,
                                completionHandler: SearchCompletionHandler) {
         
@@ -72,12 +75,18 @@ class GlobalSearchModel: SearchModel {
                                        completionHandler: completionHandler)
             } else {
                 performFileFolderSearch(searchString: searchString,
+                                        with: facetFields,
+                                        facetQueries: facetQueries,
+                                        facetIntervals: facetIntervals,
                                         paginationRequest: paginationRequest,
                                         completionHandler: completionHandler)
             }
         } else {
             // search with advance filters
             performFileFolderSearch(searchString: searchString,
+                                    with: facetFields,
+                                    facetQueries: facetQueries,
+                                    facetIntervals: facetIntervals,
                                     paginationRequest: paginationRequest,
                                     completionHandler: completionHandler)
         }

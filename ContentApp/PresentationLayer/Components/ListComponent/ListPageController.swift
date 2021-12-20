@@ -26,11 +26,13 @@ struct PaginatedResponse {
     var error: Error?
     var requestPagination: RequestPagination?
     var responsePagination: Pagination?
+    var searchFacets = [SearchFacets]()
 }
 
 protocol ListPageControllerProtocol: AnyObject {
     var dataSource: ListComponentModelProtocol { get }
     var delegate: ListPageControllerDelegate? { get set }
+    var resultPageDelegate: ResultPageControllerDelegate? { get set }
 
     func isPaginationEnabled() -> Bool
     func fetchNextPage()
@@ -44,10 +46,15 @@ protocol ListPageControllerDelegate: AnyObject {
     func forceDisplayRefresh(for indexPath: IndexPath)
 }
 
+protocol ResultPageControllerDelegate: AnyObject {
+    func didUpdateChips(error: Error?, searchFacets: [SearchFacets])
+}
+
 class ListPageController: ListPageControllerProtocol {
     let services: CoordinatorServices
     var dataSource: ListComponentModelProtocol
     weak var delegate: ListPageControllerDelegate?
+    var resultPageDelegate: ResultPageControllerDelegate?
     var paginationEnabled: Bool
     var currentPage = 1
     var pageSkipCount = 0
@@ -132,6 +139,8 @@ class ListPageController: ListPageControllerProtocol {
             update(with: results,
                    pagination: response.responsePagination,
                    error: nil)
+            
+            resultPageDelegate?.didUpdateChips(error: nil, searchFacets: response.searchFacets)
         }
     }
 

@@ -41,9 +41,15 @@ class ContextualSearchModel: SearchModel {
     }
 
     override func handleSearch(for searchString: String,
+                               with facetFields: FacetFields?,
+                               facetQueries: FacetQueries?,
+                               facetIntervals: FacetIntervals?,
                                paginationRequest: RequestPagination?,
                                completionHandler: SearchCompletionHandler) {
         performFileFolderSearch(searchString: searchString,
+                                with: facetFields,
+                                facetQueries: facetQueries,
+                                facetIntervals: facetIntervals,
                                 paginationRequest: paginationRequest,
                                 completionHandler: completionHandler)
     }

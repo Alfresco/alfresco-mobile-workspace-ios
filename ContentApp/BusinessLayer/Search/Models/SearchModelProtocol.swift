@@ -27,16 +27,27 @@ enum SearchType {
 protocol SearchModelProtocol: ListComponentModelProtocol, EventObservable {
     var searchChips: [SearchChipItem] { get set }
     var searchString: String? { get set }
+    var facetFields: FacetFields? { get set }
+    var facetQueries: FacetQueries? { get set }
+    var facetIntervals: FacetIntervals? { get set }
     var searchType: SearchType { get set }
     var selectedSearchFilter: AdvanceSearchFilters? { get set } // selected search filter
     
     func isNodePathEnabled() -> Bool
     func defaultSearchChips(for configurations: [AdvanceSearchFilters], and index: Int) -> [SearchChipItem]
+    func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem]
+
     func searchChipIndexes(for tappedChip: SearchChipItem) -> [Int]
     func performSearch(for string: String,
+                       with facetFields: FacetFields?,
+                       facetQueries: FacetQueries?,
+                       facetIntervals: FacetIntervals?,
                        paginationRequest: RequestPagination?,
                        completionHandler: SearchCompletionHandler)
     func performLiveSearch(for string: String,
+                           with facetFields: FacetFields?,
+                           facetQueries: FacetQueries?,
+                           facetIntervals: FacetIntervals?,
                            paginationRequest: RequestPagination?,
                            completionHandler: SearchCompletionHandler)
     func getAdvanceSearchConfigurationFromServer(callback completion: ((_ configuration: SearchConfigModel?, _ data: Data?) -> Void)?)

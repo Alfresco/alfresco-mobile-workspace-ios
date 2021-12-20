@@ -155,6 +155,34 @@
 "required-value" = "Required value";
 "done" = "Done";
 
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Type";
+"SEARCH.FACET_FIELDS.SIZE" = "Size";
+"SEARCH.FACET_FIELDS.CREATOR" = "Creator";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
+"SEARCH.FACET_FIELDS.CREATED" = "Created";
+"size-facet-queries" = "Size Facet Queries";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
+"SEARCH.FACET_QUERIES.LARGE" = "Large";
+"SEARCH.FACET_QUERIES.SMALL" = "Small";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra Small";
+"earlier" = "Earlier";
+"lastYear" = "Last Year";
+"currentYear" = "Current Year";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "This Year";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "MIME Type";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Extra Large";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra Extra Large";
+"The.Created.mobileapps" = "The Created";
+"The.Modified.mobileapps" = "The Modified";
+"Folder.Size.mobileapps" = "Folder Size";
+"Folder.created.mobileapps" = "Folder Created";
+"Folder.Modifier.mobileapps" = "Folder Modifier";
+"Folder.Created.mobileapps" = "Folder Created";
+"SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "My Facet Queries";
+"TheModified" = "The Modified";
+
+
 // MARK: - Group List Section
 "today" = "Today";
 "yesterday" = "Yesterday";
