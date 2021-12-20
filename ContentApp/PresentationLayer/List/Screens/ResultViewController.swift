@@ -477,7 +477,6 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             let size = (text as NSString).size(withAttributes: fontAttributes)
             let textWidth = size.width + 35.0
             let width = textWidth < chipSearchCellMinimWidth ? chipSearchCellMinimWidth : textWidth
-            print("width: \(width)")
             return width
         }
         return chipSearchCellMinimWidth
