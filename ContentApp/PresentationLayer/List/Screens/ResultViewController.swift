@@ -211,8 +211,6 @@ class ResultViewController: SystemThemableViewController {
         chipsCollectionView.allowsMultipleSelection = true
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
         collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
-        collectionViewFlowLayout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
-                                                            height: chipSearchCellMinimHeight)
         collectionViewFlowLayout.scrollDirection = .horizontal
         chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
@@ -462,15 +460,27 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: self.view.bounds.width,
                           height: recentSearchCellHeight)
         case chipsCollectionView:
-            if let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
-                return CGSize(width: cell.chipView.frame.size.width,
-                              height: chipSearchCellMinimHeight)
-            }
-            return CGSize(width: chipSearchCellMinimWidth,
+            let chip = searchChipsViewModel.chips[indexPath.row]
+            let text = chip.selectedValue.isEmpty ? chip.name : chip.selectedValue
+            let width = getTextWidth(for: text)
+            return CGSize(width: width,
                           height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)
         }
+    }
+    
+    private func getTextWidth(for text: String) -> CGFloat {
+        if let activeTheme = coordinatorServices?.themingService?.activeTheme {
+            let font = activeTheme.captionTextStyle.font
+            let fontAttributes = [NSAttributedString.Key.font: font]
+            let size = (text as NSString).size(withAttributes: fontAttributes)
+            let textWidth = size.width + 35.0
+            let width = textWidth < chipSearchCellMinimWidth ? chipSearchCellMinimWidth : textWidth
+            print("width: \(width)")
+            return width
+        }
+        return chipSearchCellMinimWidth
     }
 }
 
