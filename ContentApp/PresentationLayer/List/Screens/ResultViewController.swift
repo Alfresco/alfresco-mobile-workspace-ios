@@ -703,8 +703,8 @@ extension ResultViewController {
         let isSearchFilterApplied = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
         if isSearchFilterApplied {
             self.updateCategory()
-            self.chipsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: false)
         }
+        self.chipsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: false)
     }
     
     func resetFacetsArray() {
@@ -737,18 +737,22 @@ extension ResultViewController: ResultPageControllerDelegate {
         
         guard let model = pageController?.dataSource else { return }
         let isSearchFacetsEmpty = resultsViewModel?.isSearchFacetsEmpty() ?? false
+        let isSearchChipsHasSelectedValue = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
         let isListEmpty = model.isEmpty()
         
         if isListEmpty && isSearchFacetsEmpty {
             return
         }
 
-        if isSearchFacetsEmpty {
+        if isSearchFacetsEmpty || isSearchChipsHasSelectedValue == false {
             resultsViewModel?.searchFacets = resultsViewModel?.getNonZeroBucketForSearchFacets(for: searchFacets) ?? []
         } else { // update
             resultsViewModel?.searchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
         }
-            
+        self.updateChips(for: searchFacets)
+    }
+    
+    func updateChips(for searchFacets: [SearchFacets]) {
         guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: searchFacets) else { return }
         self.updateChips(chipItems)
     }
