@@ -462,7 +462,8 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
         case chipsCollectionView:
             let chip = searchChipsViewModel.chips[indexPath.row]
             let text = chip.selectedValue.isEmpty ? chip.name : chip.selectedValue
-            let width = getTextWidth(for: text)
+            let value = getChipSelectedValue(for: text)
+            let width = getTextWidth(for: value)
             return CGSize(width: width,
                           height: chipSearchCellMinimHeight)
         default:
@@ -702,6 +703,7 @@ extension ResultViewController {
         let isSearchFilterApplied = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
         if isSearchFilterApplied {
             self.updateCategory()
+            self.chipsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: false)
         }
     }
     
