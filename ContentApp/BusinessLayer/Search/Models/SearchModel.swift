@@ -216,28 +216,16 @@ class SearchModel: SearchModelProtocol {
                         listNodes = ResultsNodeMapper.map(entries)
                     }
                     
-                    var facetFields: [SearchFacetFields] = []
+                    var searchFacets: [SearchFacets] = []
                     if let facets = result?.list?.context?.facets {
-                        facetFields = FacetFilterMapper.map(facets)
-                    }
-                    
-                    var facetQueries: [SearchFacetQueries] = []
-                    if let queries = result?.list?.context?.facetQueries {
-                        facetQueries = FacetQueriesMapper.map(queries)
-                    }
-                    
-                    var facetIntervals: [SearchFacetIntervals] = []
-                    if let intervals = result?.list?.context?.facetsFields {
-                        facetIntervals = FacetIntervalMapper.map(intervals)
+                        searchFacets = FacetFilterMapper.map(facets)
                     }
                    
                     let paginatedResponse = PaginatedResponse(results: listNodes,
                                                               error: error,
                                                               requestPagination: paginationRequest,
                                                               responsePagination: result?.list?.pagination,
-                                                              facetFields: facetFields,
-                                                              facetQueries: facetQueries,
-                                                              facetIntervals: facetIntervals)
+                                                              searchFacets: searchFacets)
                     completionHandler.handler(paginatedResponse)
                 }
             }
@@ -419,64 +407,29 @@ class SearchCompletionHandler: Equatable {
 // MARK: - Facet Search
 extension SearchModel {
    
-    func facetSearchChips(for facetFields: [SearchFacetFields], facetQueries: [SearchFacetQueries], facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
-        
-        let facetIntervalChips = self.getChipsForFacetIntervals(for: facetIntervals)
-        let facetFieldChips = self.getChipsForFacetFields(for: facetFields)
-       // let facetQueryChips = self.getChipsForFacetQueries(for: facetQueries)
-
-        searchChips.append(contentsOf: facetIntervalChips)
-        searchChips.append(contentsOf: facetFieldChips)
-      //  searchChips.append(contentsOf: facetQueryChips)
+    func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem] {
+        let facetChips = self.getChipsForSearchFacets(for: searchFacets)
+        searchChips.append(contentsOf: facetChips)
         return searchChips
     }
     
-    func getChipsForFacetFields(for facetFields: [SearchFacetFields]) -> [SearchChipItem] {
-       
+    func getChipsForSearchFacets(for searchFacets: [SearchFacets]) -> [SearchChipItem] {
         var chipsArray = [SearchChipItem]()
-        let componentType = ComponentType.facetField
-        
-        for facetField in facetFields {
+        for facetField in searchFacets {
             let name = NSLocalizedString(facetField.label ?? "", comment: "")
-            if let chip = createChip(for: name, and: componentType) {
-                chipsArray.append(chip)
-            }
-        }
-
-        return chipsArray
-    }
-    
-    func getChipsForFacetIntervals(for facetIntervals: [SearchFacetIntervals]) -> [SearchChipItem] {
-        var chipsArray = [SearchChipItem]()
-        let componentType = ComponentType.facetInterval
-       
-        for facetInterval in facetIntervals {
-            let name = NSLocalizedString(facetInterval.label ?? "", comment: "")
-            if let chip = createChip(for: name, and: componentType) {
+            if let chip = createChip(for: name) {
                 chipsArray.append(chip)
             }
         }
         return chipsArray
-    }
-    
-    func getChipsForFacetQueries(for facetQueries: [SearchFacetQueries]) -> [SearchChipItem] {
-        
-        let componentType = ComponentType.facetQuery
-        
-        let name = NSLocalizedString("size-facet-queries", comment: "")
-        if let chip = createChip(for: name, and: componentType) {
-            return [chip]
-        }
-        
-        return []
     }
         
     // MARK: Create Chip
-    private func createChip(for name: String, and componentType: ComponentType) -> SearchChipItem? {
-        if searchChips.enumerated().first(where: {$0.element.name == name && $0.element.componentType == componentType}) == nil {
+    private func createChip(for name: String) -> SearchChipItem? {
+        if searchChips.first(where: {$0.name == name && $0.componentType == .facet}) == nil {
             let chip = SearchChipItem(name: name,
                                       selected: false,
-                                      componentType: componentType)
+                                      componentType: .facet)
             return chip
         }
         return nil

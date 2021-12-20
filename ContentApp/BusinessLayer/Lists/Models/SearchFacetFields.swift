@@ -19,8 +19,8 @@
 import Foundation
 import AlfrescoContent
 
-// MARK: - Facet Fields
-class SearchFacetFields: NSObject {
+// MARK: - Search Facets
+class SearchFacets: NSObject {
     var type: String?
     var label: String?
     var buckets = [Buckets]()
@@ -33,7 +33,7 @@ class SearchFacetFields: NSObject {
        
         var bucket: [Buckets] = []
         for entry in buckets {
-            bucket.append(SearchFacetFields.create(from: entry))
+            bucket.append(SearchFacets.create(from: entry))
         }
         self.buckets = bucket
     }
@@ -41,16 +41,20 @@ class SearchFacetFields: NSObject {
     private static func create(from bucket: GenericBucket) -> Buckets {
         var count = bucket.count
         if let value = bucket.metrics?.first?.value {
-            count = SearchFacetFields.getCount(value: value)
+            let bucketCount = SearchFacets.getCount(value: value)
+            count = String(format: "%d", bucketCount)
         } 
         return Buckets(label: bucket.label,
                        filterQuery: bucket.filterQuery,
                        count: count)
     }
     
-    private static func getCount(value: JSONValue) -> String {
-        guard case .object(let JSON) = value else { return "0"}
-        guard case .string(let count) = JSON["count"] else { return "0"}
+    private static func getCount(value: JSONValue) -> Int {
+        guard case .object(let JSON) = value else { return 0}
+        guard case .int(let count) = JSON["count"] else {
+            guard case .string(let stringCount) = JSON["count"] else { return 0 }
+            return Int(stringCount) ?? 0
+        }
         return count
     }
 }

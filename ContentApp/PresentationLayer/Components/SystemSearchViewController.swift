@@ -46,6 +46,7 @@ class SystemSearchViewController: SystemThemableViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         resultsViewController?.viewWillTransition(to: size, with: coordinator)
+        resultsViewController?.stopLoading()
     }
 
     // MARK: - Public Methods
@@ -193,7 +194,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         searchViewModel.loadAppConfigurationsForSearch()
         let searchFilters = searchViewModel.searchFilters
         resultsViewController?.resetFacetsArray()
-        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))        
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 
@@ -242,12 +243,10 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
             searchViewModel.searchModel.searchString = searchText
             searchViewModel.searchModel.searchType = .live
-            searchViewModel.searchModel.facetFields = searchViewModel.getFacetFields()
-            searchViewModel.searchModel.facetQueries = searchViewModel.getFacetQueries()
-            searchViewModel.searchModel.facetIntervals = searchViewModel.getFacetIntervals()
             resultsViewController?.pageController?.refreshList()
             resultsViewController?.updateRecentSearches()
         } else {
+            searchViewModel.searchModel.searchString = searchText
             resultsViewController?.stopLoading()
             resultsViewController?.clearDataSource()
         }

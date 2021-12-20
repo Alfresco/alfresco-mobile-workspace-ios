@@ -150,57 +150,26 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        var value: String?
         let isBackButtonTapped = true
-        
-        if facetViewModel.componentType == .facetQuery {
-            value = facetViewModel.selectedFacetQueryString
-        } else if facetViewModel.componentType == .facetField {
-            value = facetViewModel.selectedFacetFieldString
-        } else if facetViewModel.componentType == .facetInterval {
-            value = facetViewModel.selectedFacetIntervalString
-        }
-        
+        let value = facetViewModel.selectedSearchFacetString
         let query = facetViewModel.queryBuilder
         self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
     }
         
     @IBAction func applyButtonAction(_ sender: Any) {
-        var value: String?
         let isBackButtonTapped = false
-       
-        if facetViewModel.componentType == .facetQuery {
-            self.controller.applyFilterForFacetQuery()
-            value = facetViewModel.selectedFacetQueryString
-        } else if facetViewModel.componentType == .facetField {
-            self.controller.applyFilterForFacetFields()
-            value = facetViewModel.selectedFacetFieldString
-        } else if facetViewModel.componentType == .facetInterval {
-            self.controller.applyFilterForFacetIntervals()
-            value = facetViewModel.selectedFacetIntervalString
-        }
-          
+        self.controller.applyFilter()
+        let value = facetViewModel.selectedSearchFacetString
         let query = facetViewModel.queryBuilder
         self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
-        var value: String?
         let isBackButtonTapped = false
-        
-        if facetViewModel.componentType == .facetQuery {
-            self.controller.resetFilterForFacetQuery()
-            value = facetViewModel.selectedFacetQueryString
-        } else if facetViewModel.componentType == .facetField {
-            self.controller.resetFilterForFacetFields()
-            value = facetViewModel.selectedFacetFieldString
-        } else if facetViewModel.componentType == .facetInterval {
-            self.controller.resetFilterForFacetIntervals()
-            value = facetViewModel.selectedFacetIntervalString
-        }
-        
+        self.controller.resetFilter()
+        let value = facetViewModel.selectedSearchFacetString
         let query = facetViewModel.queryBuilder
         self.callback?(value, query, isBackButtonTapped)
         self.dismiss(animated: true, completion: nil)
@@ -249,24 +218,10 @@ extension SearchFacetListComponentViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if facetViewModel.componentType == .facetQuery {
-            if searchText.isEmpty {
-                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions
-            } else {
-                facetViewModel.facetQueryOptions = facetViewModel.tempFacetQueryOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
-            }
-        } else if facetViewModel.componentType == .facetField {
-            if searchText.isEmpty {
-                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions
-            } else {
-                facetViewModel.facetFieldOptions = facetViewModel.tempFacetFieldOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
-            }
-        } else if facetViewModel.componentType == .facetInterval {
-            if searchText.isEmpty {
-                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions
-            } else {
-                facetViewModel.facetIntervalOptions = facetViewModel.tempFacetIntervalOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
-            }
+        if searchText.isEmpty {
+            facetViewModel.searchFacetOptions = facetViewModel.tempSearchFacetOptions
+        } else {
+            facetViewModel.searchFacetOptions = facetViewModel.tempSearchFacetOptions.filter({ NSLocalizedString($0.label ?? "", comment: "").lowercased().contains(searchText.lowercased()) })
         }
         controller.buildViewModel()
     }

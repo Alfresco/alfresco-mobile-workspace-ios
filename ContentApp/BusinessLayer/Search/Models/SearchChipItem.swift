@@ -34,9 +34,7 @@ enum ComponentType: String {
     case contentSizeRange = "number-range"
     case createdDateRange = "date-range"
     case radio = "radio"
-    case facetField = "search-facet-field"
-    case facetQuery = "search-facet-query"
-    case facetInterval = "search-facet-interval"
+    case facet = "search-facet"
     case none = "none"
 }
 
