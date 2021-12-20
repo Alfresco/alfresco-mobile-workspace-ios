@@ -28,7 +28,6 @@ protocol ResultViewControllerDelegate: AnyObject {
     func recentSearchTapped(string: String)
     func elementListTapped(elementList: ListNode)
     func chipTapped(chip: SearchChipItem)
-    func resetSearchFilterTapped()
 }
 
 class ResultViewController: SystemThemableViewController {
@@ -58,6 +57,8 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
     private let textChipMaxCharacters = 20
+    private let textChipMaxPrefix = 5
+    private let textChipMaxSufffix = 5
 
     // MARK: - View Life Cycle
 
@@ -95,6 +96,7 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
         setupBindings()
         setupDropDownView()
+        self.pageController?.resultPageDelegate = self
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -204,15 +206,13 @@ class ResultViewController: SystemThemableViewController {
     }
 
     func addChipsCollectionViewFlowLayout() {
-        let layout = MDCChipCollectionViewFlowLayout()
-        layout.estimatedItemSize = CGSize(width: chipSearchCellMinimWidth,
-                                          height: chipSearchCellMinimHeight)
-        layout.scrollDirection = .horizontal
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
-        chipsCollectionView.collectionViewLayout = layout
         chipsCollectionView.register(MDCChipCollectionViewCell.self,
                                      forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
         chipsCollectionView.allowsMultipleSelection = true
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 24, bottom: 0, right: 0)
+        collectionViewFlowLayout.scrollDirection = .horizontal
+        chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
 }
 
@@ -239,6 +239,8 @@ extension ResultViewController {
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
+                self.resetFacetsArray()
+                self.updateSearchFacetOptions()
                 self.updateCategory()
             }
         }
@@ -251,10 +253,20 @@ extension ResultViewController {
                 categoryNameLabel.text = resultsViewModel?.selectedFilterName(for: selectedConfig)
                 resultsViewModel?.resetAdvanceSearch() // reset categories for selected value
                 resetChipCollectionView()
-                pageController?.refreshList() // refresh list by calling search api
+                let searchString = (resultsViewModel?.searchModel.searchString ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+                if !searchString.isEmpty {
+                    pageController?.refreshList() // refresh list by calling search api if search text has some value
+                }
                 showResetFilterButton()
             }
         }
+    }
+    
+    func updateSearchFacetOptions() {
+        guard let resultsViewModel = self.resultsViewModel else { return }
+        resultsViewModel.searchModel.facetFields = resultsViewModel.getFacetFields()
+        resultsViewModel.searchModel.facetQueries = resultsViewModel.getFacetQueries()
+        resultsViewModel.searchModel.facetIntervals = resultsViewModel.getFacetIntervals()
     }
     
     private func showResetFilterButton() {
@@ -301,13 +313,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             if selectedValue.isEmpty {
                 cell?.chipView.titleLabel.text = chip.name
             } else {
-                cell?.chipView.titleLabel.text = chip.selectedValue
-            }
-            
-            let text = cell?.chipView.titleLabel.text ?? ""
-            if text.count >= textChipMaxCharacters && chip.componentType == .text {
-                let shortString = String(text.prefix(textChipMaxCharacters))
-                cell?.chipView.titleLabel.text = String(format: "%@...", shortString)
+                cell?.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
             }
             
             cell?.chipView.isSelected = chip.selected
@@ -319,14 +325,14 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 if chip.selected {
                     let scheme = themeService.containerScheming(for: .searchChipSelected)
                     let backgroundColor = themeService.activeTheme?.primary15T1Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
                 } else {
                     let scheme = themeService.containerScheming(for: .searchChipUnselected)
                     let backgroundColor = themeService.activeTheme?.surfaceColor
                     let borderColor = themeService.activeTheme?.onSurface15Color
-
+                    
                     cell?.chipView.applyOutlinedTheme(withScheme: scheme)
                     cell?.chipView.setBackgroundColor(backgroundColor, for: .normal)
                     cell?.chipView.setBorderColor(borderColor, for: .normal)
@@ -349,7 +355,28 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return UICollectionViewCell()
         }
     }
-
+    
+    func getChipSelectedValue(for value: String) -> String {
+        let selectedValueArray = value.components(separatedBy: ",")
+        if selectedValueArray.count > 1 {
+            let firstValue = selectedValueArray[0]
+            let count = selectedValueArray.count - 1
+            if firstValue.count > textChipMaxCharacters {
+                let prefixString = String(firstValue.prefix(textChipMaxPrefix))
+                let suffixString = String(firstValue.suffix(textChipMaxSufffix))
+                let shortString = String(format: "%@ ... %@", prefixString, suffixString)
+                return String(format: "%@ + %d", shortString, count)
+            } else {
+                return String(format: "%@ + %d", firstValue, count)
+            }
+        } else if value.count > textChipMaxCharacters {
+            let prefixString = String(value.prefix(textChipMaxCharacters))
+            return String(format: "%@...", prefixString)
+        } else {
+            return value
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         didSelectItemAt indexPath: IndexPath) {
         switch collectionView {
@@ -433,20 +460,31 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
             return CGSize(width: self.view.bounds.width,
                           height: recentSearchCellHeight)
         case chipsCollectionView:
-            if let cell = collectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
-                return CGSize(width: cell.chipView.frame.size.width,
-                              height: chipSearchCellMinimHeight)
-            }
-            return CGSize(width: chipSearchCellMinimWidth,
+            let chip = searchChipsViewModel.chips[indexPath.row]
+            let text = chip.selectedValue.isEmpty ? chip.name : chip.selectedValue
+            let value = getChipSelectedValue(for: text)
+            let width = getTextWidth(for: value)
+            return CGSize(width: width,
                           height: chipSearchCellMinimHeight)
         default:
             return CGSize(width: 0, height: 0)
         }
     }
+    
+    private func getTextWidth(for text: String) -> CGFloat {
+        if let activeTheme = coordinatorServices?.themingService?.activeTheme {
+            let font = activeTheme.captionTextStyle.font
+            let fontAttributes = [NSAttributedString.Key.font: font]
+            let size = (text as NSString).size(withAttributes: fontAttributes)
+            let textWidth = size.width + 35.0
+            let width = textWidth < chipSearchCellMinimWidth ? chipSearchCellMinimWidth : textWidth
+            return width
+        }
+        return chipSearchCellMinimWidth
+    }
 }
 
 // MARK: - ListComponentActionDelegate
-
 extension ResultViewController: ListComponentActionDelegate {
     func elementTapped(node: ListNode) {
         resultScreenDelegate?.elementListTapped(elementList: node)
@@ -479,6 +517,8 @@ extension ResultViewController {
             showSliderSelectorComponent()
         } else if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent()
+        } else if chip.componentType == .facet {
+            showFacetSelectorComponent(name: chip.name, selectedValue: chip.selectedValue)
         }
     }
     
@@ -588,6 +628,29 @@ extension ResultViewController {
         }
     }
     
+    // Facet Component
+    private func showFacetSelectorComponent(name: String, selectedValue: String) {
+        
+        let viewController = SearchFacetListComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        bottomSheet.delegate = self
+        viewController.coordinatorServices = coordinatorServices
+        bottomSheet.ignoreKeyboardHeight = true
+        if let selectedSearchFacet = resultsViewModel?.getSelectedSearchFacets(for: name) {
+            viewController.facetViewModel.searchFacets = selectedSearchFacet
+            viewController.facetViewModel.selectedSearchFacetString = selectedValue
+        }
+        viewController.callback = { (value, query, isBackButtonTapped) in
+            if isBackButtonTapped {
+                self.resetChip()
+            } else {
+                self.updateSelectedChip(with: value, and: query)
+            }
+        }
+        self.present(bottomSheet, animated: true, completion: nil)
+    }
+    
     func updateSelectedChip(with value: String?, and query: String?) {
         let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
         if index >= 0 {
@@ -624,6 +687,7 @@ extension ResultViewController {
 extension ResultViewController {
     private func resetSelectedSearchFilter() {
         self.resultsViewModel?.searchModel.selectedSearchFilter = resultsViewModel?.defaultSearchFilter()
+        self.updateSearchFacetOptions()
         updateCategory()
     }
     
@@ -636,8 +700,15 @@ extension ResultViewController {
     }
         
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        self.updateCategory()
-        resultScreenDelegate?.resetSearchFilterTapped()
+        let isSearchFilterApplied = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
+        if isSearchFilterApplied {
+            self.updateCategory()
+        }
+        self.chipsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .centeredHorizontally, animated: false)
+    }
+    
+    func resetFacetsArray() {
+        resultsViewModel?.searchFacets.removeAll()
     }
 }
 
@@ -657,6 +728,33 @@ extension ResultViewController: MDCBottomSheetControllerDelegate {
                 reloadChipCollectionWithoutScroll()
             }
         }
+    }
+}
+
+// MARK: - Result Controller Delegate
+extension ResultViewController: ResultPageControllerDelegate {
+    func didUpdateChips(error: Error?, searchFacets: [SearchFacets]) {
+        
+        guard let model = pageController?.dataSource else { return }
+        let isSearchFacetsEmpty = resultsViewModel?.isSearchFacetsEmpty() ?? false
+        let isSearchChipsHasSelectedValue = resultsViewModel?.isSearchChipsHasSelectedValue() ?? false
+        let isListEmpty = model.isEmpty()
+        
+        if isListEmpty && isSearchFacetsEmpty {
+            return
+        }
+
+        if isSearchFacetsEmpty || isSearchChipsHasSelectedValue == false {
+            resultsViewModel?.searchFacets = resultsViewModel?.getNonZeroBucketForSearchFacets(for: searchFacets) ?? []
+        } else { // update
+            resultsViewModel?.searchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
+        }
+        self.updateChips(for: searchFacets)
+    }
+    
+    func updateChips(for searchFacets: [SearchFacets]) {
+        guard let chipItems = resultsViewModel?.searchModel.facetSearchChips(for: searchFacets) else { return }
+        self.updateChips(chipItems)
     }
 }
 

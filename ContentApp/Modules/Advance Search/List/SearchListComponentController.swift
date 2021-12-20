@@ -43,7 +43,7 @@ class SearchListComponentController: NSObject {
                 let name = item.name
                 let value = item.value
                 var isSelected = false
-                if listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) != nil {
+                if listViewModel.selectedOptions.firstIndex(where: {$0.value == value}) != nil {
                     isSelected = true
                 }
                 
@@ -94,8 +94,9 @@ class SearchListComponentController: NSObject {
             let valuesArray = selectedValue.components(separatedBy: listViewModel.stringConcatenator)
             for value in valuesArray {
                 let localizedValue = NSLocalizedString(value, comment: "")
-                if let object = options.enumerated().first(where: {NSLocalizedString($0.element.name ?? "", comment: "") == localizedValue}) {
-                    self.listViewModel.selectedOptions.append(object.element)
+                if let index = options.firstIndex(where: {NSLocalizedString($0.name ?? "", comment: "") == localizedValue}) {
+                    let object = options[index]
+                    self.listViewModel.selectedOptions.append(object)
                 }
             }
         }
@@ -103,8 +104,9 @@ class SearchListComponentController: NSObject {
         if listViewModel.isRadioList && listViewModel.selectedOptions.isEmpty {
             if let category = listViewModel.selectedCategory,
                 let options = category.component?.settings?.options {
-                if let object = options.enumerated().first(where: {$0.element.isDefault == true}) {
-                    self.listViewModel.selectedOptions.append(object.element)
+                if let index = options.firstIndex(where: {$0.isDefault == true}) {
+                    let object = options[index]
+                    self.listViewModel.selectedOptions.append(object)
                 }
             }
         }
@@ -115,8 +117,9 @@ class SearchListComponentController: NSObject {
         if let category = listViewModel.selectedCategory,
             let options = category.component?.settings?.options {
             let value = options[index].value ?? ""
-            if let object = listViewModel.selectedOptions.enumerated().first(where: {$0.element.value == value}) {
-                listViewModel.selectedOptions.remove(at: object.offset)
+            
+            if let index = listViewModel.selectedOptions.firstIndex(where: {$0.value == value}) {
+                listViewModel.selectedOptions.remove(at: index)
             } else {
                 listViewModel.selectedOptions.append(options[index])
             }

@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoContent
+public var context: ResultSetContext?
 
 struct ResultsNodeMapper {
     static func map(_ entries: [ResultSetRowEntry]) -> [ListNode] {

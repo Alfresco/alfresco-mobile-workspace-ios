@@ -46,6 +46,7 @@ class SystemSearchViewController: SystemThemableViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         resultsViewController?.viewWillTransition(to: size, with: coordinator)
+        resultsViewController?.stopLoading()
     }
 
     // MARK: - Public Methods
@@ -182,10 +183,6 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
         guard let searchBar = navigationItem.searchController?.searchBar else { return }
         resultsViewController?.recentSearchesViewModel.save(recentSearch: searchBar.text)
     }
-
-    func resetSearchFilterTapped() {
-        AlfrescoLog.debug("resetSearchFilterTapped")
-    }
 }
 
 // MARK: - UISearchController Delegate
@@ -196,7 +193,8 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         
         searchViewModel.loadAppConfigurationsForSearch()
         let searchFilters = searchViewModel.searchFilters
-        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))        
+        resultsViewController?.resetFacetsArray()
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 
@@ -245,10 +243,10 @@ extension SystemSearchViewController: UISearchBarDelegate {
 
             searchViewModel.searchModel.searchString = searchText
             searchViewModel.searchModel.searchType = .live
-
             resultsViewController?.pageController?.refreshList()
             resultsViewController?.updateRecentSearches()
         } else {
+            searchViewModel.searchModel.searchString = searchText
             resultsViewController?.stopLoading()
             resultsViewController?.clearDataSource()
         }

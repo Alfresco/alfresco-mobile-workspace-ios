@@ -20,6 +20,8 @@ import Foundation
 import AlfrescoContent
 
 typealias SearchComponentCallBack = (SearchCategories?, String?, Bool) -> Void
+typealias FacetComponentsCallBack = (_ value: String?, _ query: String?, _ isBackPressed: Bool) -> Void
+
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {
@@ -68,6 +70,9 @@ class SearchViewModel: ListComponentViewModel {
         }
         return names
     }
+    
+    // Facet Filters
+    var searchFacets = [SearchFacets]()
     
     /// selected filter name
     func selectedFilterName(for config: AdvanceSearchFilters?) -> String {
@@ -156,13 +161,14 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        self.loadConfigurationFromServer()
+        // self.loadConfigurationFromServer() // commented because we do not have any API for now.
     }
     
     private func loadConfigurationsFromAppBundle() {
         if let fileUrl = Bundle.main.url(forResource: KeyConstants.AdvanceSearch.configFile, withExtension: KeyConstants.AdvanceSearch.configFileExtension) {
             do {
                 let data = try Data(contentsOf: fileUrl, options: [])
+                self.saveConfiguartionLocally(for: data)
                 parseAppConfiguration(for: data)
             } catch let error {
                 AlfrescoLog.error(error.localizedDescription)
@@ -216,8 +222,7 @@ extension SearchViewModel {
     func getAllCategoriesForSelectedFilter() -> [SearchCategories] {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return searchFilters[index].categories
             }
         }
@@ -236,8 +241,7 @@ extension SearchViewModel {
     func getSelectedCategory(for selector: ComponentType?) -> SearchCategories? {
         let categories = self.getAllCategoriesForSelectedFilter()
         if let selector = selector {
-            if let object = categories.enumerated().first(where: {$0.element.component?.selector == selector.rawValue}) {
-                let index = object.offset
+            if let index = categories.firstIndex(where: {$0.component?.selector == selector.rawValue}) {
                 return categories[index]
             }
         }
@@ -247,8 +251,8 @@ extension SearchViewModel {
     func getIndexOfSelectedCategory() -> Int {
         let categories = self.getAllCategoriesForSelectedFilter()
         if let selectedCategory = self.selectedCategory {
-            if let object = categories.enumerated().first(where: {$0.element.searchID == selectedCategory.searchID}) {
-                return object.offset
+            if let index = categories.firstIndex(where: {$0.searchID == selectedCategory.searchID}) {
+                return index
             }
         }
         return -1
@@ -256,8 +260,8 @@ extension SearchViewModel {
     
     func getIndexOfSelectedChip(for chips: [SearchChipItem]) -> Int {
         if let selectedChip = self.selectedChip {
-            if let object = chips.enumerated().first(where: {$0.element.componentType == selectedChip.componentType}) {
-                return object.offset
+            if let index = chips.firstIndex(where: {$0.componentType == selectedChip.componentType && $0.name == selectedChip.name}) {
+                return index
             }
         }
         return -1
@@ -269,8 +273,7 @@ extension SearchViewModel {
     func getSelectedFilterIndex() -> Int {
         let searchFilters = self.searchFilters
         if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
-            if let object = searchFilters.enumerated().first(where: {$0.element.name == selectedSearchFilter.name}) {
-                let index = object.offset
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
                 return index
             }
         }
@@ -294,5 +297,138 @@ extension SearchViewModel {
         /// reset selected components
         selectedCategory = nil
         selectedChip = nil
+    }
+    
+    func isSearchChipsHasSelectedValue() -> Bool {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty}) != nil {
+            return true
+        }
+        return false
+    }
+}
+
+// MARK: - Facet Filters
+extension SearchViewModel {
+    func getFacetFields() -> FacetFields? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
+                return searchFilters[index].facetFields
+            }
+        }
+        return nil
+    }
+    
+    func getFacetQueries() -> FacetQueries? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
+                return searchFilters[index].facetQueries
+            }
+        }
+        return nil
+    }
+    
+    func getFacetIntervals() -> FacetIntervals? {
+        let searchFilters = self.searchFilters
+        if let selectedSearchFilter = self.searchModel.selectedSearchFilter {
+            if let index = searchFilters.firstIndex(where: {$0.name == selectedSearchFilter.name}) {
+                return searchFilters[index].facetIntervals
+            }
+        }
+        return nil
+    }
+    
+    func isSearchFacetsEmpty() -> Bool {
+        if searchFacets.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    // MARK: - Selected Search Facets
+    func getSelectedSearchFacets(for name: String) -> SearchFacets? {
+        if let index = self.searchFacets.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == name}) {
+            return searchFacets[index]
+        }
+        return nil
+    }
+    
+    func isFacetChipsHasSelectedValue() -> Bool {
+        if self.searchModel.searchChips.first(where: {!($0.selectedValue).isEmpty && ($0.componentType == .facet)}) != nil {
+            return true
+        }
+        return false
+    }
+    
+    func getNonZeroBucketForSearchFacets(for searchFacets: [SearchFacets]) -> [SearchFacets] {
+        var tempFactes = [SearchFacets]()
+        for facet in searchFacets {
+            let buckets = facet.buckets
+            let nonZeroBucketList = buckets.filter { $0.count != "0"}
+            facet.buckets = nonZeroBucketList
+            tempFactes.append(facet)
+        }
+        
+        return tempFactes
+    }
+    
+    func getUpdatedSearchFacets(for newSearchFacets: [SearchFacets]) -> [SearchFacets] {
+        var oldSearchFacets = self.searchFacets
+        let difference = newSearchFacets
+            .filter({ currentObject in
+                !(oldSearchFacets
+                    .contains(where: { $0.label == currentObject.label }))
+            })
+
+        // Step1: Check if there are some new chips, which needs to be added
+        if !difference.isEmpty {
+            oldSearchFacets.append(contentsOf: difference)
+        }
+        
+        for field in newSearchFacets {
+            let newLabel = field.label
+            let newBuckets = field.buckets
+            var tempNewBuckets = [Buckets]()
+
+            // Step 2: Get index of object from old fields which matches object from new fields
+            if let indexOfChip = oldSearchFacets.firstIndex(where: {$0.label == newLabel}) {
+                var oldBuckets = [Buckets]()
+                if self.isFacetChipsHasSelectedValue() == true {
+                    oldBuckets = oldSearchFacets[indexOfChip].buckets
+                }
+
+                // Step 3: If old buckets has value which are in new buckts array, just replace the old values from the new one
+                for bucket in newBuckets {
+                    let newBucketLabel = bucket.label
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == newBucketLabel}) {
+                        oldBuckets[bucketIndex] = bucket
+                        tempNewBuckets.append(bucket)
+                    }
+                }
+                
+                // Step 4: Check for some values in bucket array which are totally new and not available in old bucket array. If there are values, append them also in the old buckets. Now old bucket array has all the values i.e. old bucket = prev. old bucket + new bucket
+                
+                if self.isFacetChipsHasSelectedValue() == false {
+                    let arrayRemainingBuckets = newBuckets.filter { !tempNewBuckets.contains($0) }
+                    oldBuckets.append(contentsOf: arrayRemainingBuckets)
+                }
+            
+                // Step 5: Check for non matching values in old bucket array with the new bucket. If we have values for that, make the old bucket count to zero i.e. there is no result associated with that bucket option
+                let arrayVoidBuckets = oldBuckets.filter { !newBuckets.contains($0) }
+                for bucket in arrayVoidBuckets {
+                    let voidBucketLabel = bucket.label
+                    if let bucketIndex = oldBuckets.firstIndex(where: {$0.label == voidBucketLabel}) {
+                        oldBuckets[bucketIndex].count = "0"
+                    }
+                }
+                
+                // Step 6: Update the bucket in the main fields array
+                oldSearchFacets[indexOfChip].buckets = oldBuckets
+            }
+        }
+        
+        // Step 7: Return the final result
+        return oldSearchFacets
     }
 }
