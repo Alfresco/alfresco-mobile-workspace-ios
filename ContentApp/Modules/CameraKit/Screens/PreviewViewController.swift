@@ -218,21 +218,6 @@ class PreviewViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         self.navigationController?.navigationBar.addGestureRecognizer(tap)
     }
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let index = self.previewViewModel?.visibleCellIndex.value ?? 0
-        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
-      
-        if segue.identifier == SegueIdentifiers.showFullScreenPhoto.rawValue,
-           let fspvc = segue.destination as? FullScreenPhotoViewController {
-            fspvc.imageCapturedAsset = previewViewModel?.assetThumbnailImage(for: capturedAsset)
-        } else if segue.identifier == SegueIdentifiers.showFullScreenVideo.rawValue,
-                  let fsvvc = segue.destination as? FullScreenVideoViewController {
-            fsvvc.videoURL = previewViewModel?.videoUrl(for: capturedAsset)
-        }
-    }
 }
 
 // MARK: - Keyboard Notificafion
@@ -367,16 +352,46 @@ extension PreviewViewController: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.view.endEditing(true)
         let index = indexPath.row
-        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return }
         self.scrollCollectionView(to: index)
         
-        if previewViewModel?.isAssetVideo(for: capturedAsset) == true {
-            performSegue(withIdentifier: SegueIdentifiers.showFullScreenVideo.rawValue,
-                         sender: nil)
-        } else {
-            performSegue(withIdentifier: SegueIdentifiers.showFullScreenPhoto.rawValue,
-                         sender: nil)
+        if let node = self.listNodeForPreview(), let navigationViewController = self.navigationController {
+            let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                           listNode: node,
+                                                           excludedActions: [.moveTrash,
+                                                                             .addFavorite,
+                                                                             .removeFavorite,
+                                                                             .download,
+                                                                             .restore,
+                                                                             .permanentlyDelete,
+                                                                             .markOffline,
+                                                                             .removeOffline],
+                                                           shouldPreviewLatestContent: false,
+                                                           isLocalFilePreview: true)
+            coordinator.start()
         }
+    }
+    
+    func listNodeForPreview() -> ListNode? {
+        let index = self.previewViewModel?.visibleCellIndex.value ?? 0
+        guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return nil }
+        return ListNode(guid: "0",
+                        siteID: "",
+                        parentGuid: ("-my-"),
+                        mimeType: capturedAsset.type.mimetype,
+                        title: capturedAsset.fileName,
+                        path: "",
+                        modifiedAt: nil,
+                        nodeType: .file,
+                        favorite: nil,
+                        syncStatus: .pending,
+                        markedOfflineStatus: .upload,
+                        allowableOperations: [],
+                        siteRole: nil,
+                        trashed: false,
+                        destination: nil,
+                        isFile: false,
+                        isFolder: false,
+                        uploadLocalPath: capturedAsset.filePath())
     }
 }
 
