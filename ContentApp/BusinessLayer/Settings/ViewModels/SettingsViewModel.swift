@@ -76,6 +76,7 @@ class SettingsViewModel {
 
         let confirmAction = MDCAlertAction(title: confirmButtonTitle) { [weak self] _ in
             guard let sSelf = self else { return }
+            appDelegate()?.logoutActionFlow = true
             sSelf.logOutForCurrentAccount(in: viewController)
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
@@ -157,6 +158,7 @@ class SettingsViewModel {
             else { return }
 
             if error?.responseCode != ErrorCodes.AimsWebview.cancel {
+                appDelegate()?.logoutActionFlow = false
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)
