@@ -52,6 +52,7 @@ extension CameraViewController {
         multiPhotosView.layer.cornerRadius = 8.0
         multiPhotosView.layer.borderWidth = 4.0
         multiPhotosView.layer.borderColor = theme.surface60Color.cgColor
+        multiPhotosView.backgroundColor = theme.surface60Color
         
         badgeCounterView.layer.borderWidth = 4.0
         badgeCounterView.layer.borderColor = theme.surface60Color.cgColor
