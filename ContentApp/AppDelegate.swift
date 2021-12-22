@@ -108,9 +108,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 }
 
-//--------------------------------------------//
 // MARK: - APPDELEGATE SINGLETON
-//--------------------------------------------//
-func appDelegate() -> AppDelegate{
+func appDelegate() -> AppDelegate {
     return  UIApplication.shared.delegate as! AppDelegate
 }
