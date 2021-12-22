@@ -187,6 +187,13 @@ class ModeSelectorControl: UIControl {
         }
     }
 
+    @objc public func scrollTo(index: Int) {
+        if index != currentSelection {
+            currentSelection = index
+            scrollToCurrentSelection(animated: true)
+        }
+    }
+
     private func scrollToCurrentSelection(animated: Bool) {
         if let currentSelectionParentView = sliderLabelEntries[currentSelection].superview {
             let currentSelectionPoint = CGPoint(x: currentSelectionParentView.center.x - self.frame.width / 2,

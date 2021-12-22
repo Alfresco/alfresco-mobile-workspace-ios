@@ -42,7 +42,6 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var modeSelector: ModeSelectorControl!
     @IBOutlet weak var sessionPreview: SessionPreview!
     var timerView: UIView?
-    var currentCameraMode: Int = 0 // 0 camera, 1 video
     
     var cameraViewModel: CameraViewModel?
     weak var cameraDelegate: CameraKitCaptureDelegate?
@@ -58,6 +57,7 @@ class CameraViewController: UIViewController {
     @IBOutlet weak var multiPhotosNumberLabel: UILabel!
     @IBOutlet weak var multiPhotosButton: UIButton!
     @IBOutlet weak var badgeCounterView: UIView!
+    var isSessionInterupted = false
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -75,6 +75,7 @@ class CameraViewController: UIViewController {
         setUpZoomSlider()
         setUpModeSelector()
         setUpTimerView()
+        addCameraNotifications()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -138,6 +139,11 @@ class CameraViewController: UIViewController {
             shutterButton.isUserInteractionEnabled = false
             sessionPreview.isVideoRecording = false
         } else if modeSelector.currentSelection == videoSlider {
+            let isSessionRunning = cameraSession?.session.isRunning ?? false
+            if isSessionInterupted && isSessionRunning == false { // video recording
+                self.modeSelector.scrollTo(index: 0)
+                return
+            }
             timerViewConfig?.isStarted = !(timerViewConfig?.isStarted ?? true)
             sessionPreview.isVideoRecording = timerViewConfig?.isStarted
             timerView?.isHidden = !(timerView?.isHidden ?? true)
@@ -358,6 +364,7 @@ extension CameraViewController: CameraViewModelDelegate {
             modeSelector.isHidden = !modeSelector.isHidden
             switchCameraButton.isHidden = !switchCameraButton.isHidden
             apply(fade: true, to: flashMenuView)
+            setUpShutterButton()
         }
     }
 }
@@ -436,6 +443,30 @@ extension CameraViewController: FlashMenuDelegate {
         sessionPreview.update(flashMode: flashMode)
         apply(fade: true, to: flashMenuView)
         flashModeButton.setImage(flashMode.icon, for: .normal)
+    }
+}
+
+// MARK: - Camera Interuption Notification
+extension CameraViewController {
+    func addCameraNotifications() {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionWasInterrupted),
+                                               name: .AVCaptureSessionWasInterrupted,
+                                               object: cameraSession?.session)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(sessionInterruptionEnded),
+                                               name: .AVCaptureSessionInterruptionEnded,
+                                               object: cameraSession?.session)
+    }
+    
+    @objc
+    func sessionWasInterrupted(notification: NSNotification) {
+        isSessionInterupted = true
+    }
+    
+    @objc
+    func sessionInterruptionEnded(notification: NSNotification) {
+        isSessionInterupted = false
     }
 }
 
