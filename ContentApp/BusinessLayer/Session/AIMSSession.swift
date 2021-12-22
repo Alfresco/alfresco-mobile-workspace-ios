@@ -217,8 +217,8 @@ extension AIMSSession: AlfrescoAuthDelegate {
             }
         case .failure(let error):
             
-            if appDelegate().logoutActionFlow == true {
-                appDelegate().logoutActionFlow = false
+            if appDelegate()?.logoutActionFlow == true {
+                appDelegate()?.logoutActionFlow = false
                 self.didLogOut(result: .success(StatusCodes.code200OK.code), session: nil)
                 return
             }
