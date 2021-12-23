@@ -61,6 +61,7 @@ class FilePreviewViewModel {
 
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol?
+    var isLocalFilePreview = false
 
     // MARK: - Public interface
 
@@ -68,7 +69,8 @@ class FilePreviewViewModel {
          delegate: FilePreviewViewModelDelegate?,
          coordinatorServices: CoordinatorServices,
          excludedActions: [ActionMenuType] = [],
-         shouldPreviewLatestContent: Bool) {
+         shouldPreviewLatestContent: Bool,
+         isLocalFilePreview: Bool) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
@@ -76,6 +78,7 @@ class FilePreviewViewModel {
         self.nodeOperations = NodeOperations(accountService: coordinatorServices.accountService)
         self.excludedActionsTypes = excludedActions
         self.shouldPreviewLatestContent = shouldPreviewLatestContent
+        self.isLocalFilePreview = isLocalFilePreview
     }
 
     func requestUpdateNodeDetails() {
@@ -101,6 +104,22 @@ class FilePreviewViewModel {
                                          coordinatorServices: sSelf.coordinatorServices)
                 sSelf.viewModelDelegate?.didFinishNodeDetails(error: nil)
             }
+        }
+    }
+    
+    // MARK: Node details for local Path Asset
+    func setNodeDetailsForLocalFile() {
+        if let listNode = self.listNode {
+            self.actionMenuViewModel =
+                ActionMenuViewModel(node: listNode,
+                                    toolbarDisplayed: false,
+                                    coordinatorServices: self.coordinatorServices,
+                                    excludedActionTypes: self.excludedActionsTypes)
+            self.nodeActionsViewModel =
+                NodeActionsViewModel(node: listNode,
+                                     delegate: nil,
+                                     coordinatorServices: self.coordinatorServices)
+            self.viewModelDelegate?.didFinishNodeDetails(error: nil)
         }
     }
 
@@ -195,7 +214,6 @@ class FilePreviewViewModel {
     
     private func isListNodeLocal() -> Bool {
         guard let listNode = self.listNode else { return false }
-
         if listNodeDataAccessor.isUploadContentLocal(for: listNode) ||
             listNodeDataAccessor.isContentDownloaded(for: listNode) {
             return true
@@ -217,10 +235,16 @@ class FilePreviewViewModel {
         var isImageRendition = false
 
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
-        var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)
+        var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)        
         
-        if listNodeDataAccessor.isUploadContentLocal(for: listNode) {
-            previewURL = listNodeDataAccessor.uploadLocalPath(for: listNode)
+        if isLocalFilePreview {
+            if listNodeDataAccessor.isMediaContentLocal(for: listNode) {
+                previewURL = listNodeDataAccessor.mediaLocalPath(for: listNode)
+            }
+        } else {
+            if listNodeDataAccessor.isUploadContentLocal(for: listNode) {
+                previewURL = listNodeDataAccessor.uploadLocalPath(for: listNode)
+            }
         }
 
         switch filePreviewType {

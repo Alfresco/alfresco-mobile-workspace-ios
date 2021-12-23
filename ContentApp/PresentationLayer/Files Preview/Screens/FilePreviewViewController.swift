@@ -45,10 +45,14 @@ class FilePreviewViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+       
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        
-        startPreviewingNode()
+        let isLocalFilePreview = filePreviewViewModel?.isLocalFilePreview ?? false
+        if isLocalFilePreview {
+            startPreviewingLocalFiles()
+        } else {
+            startPreviewingNode()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -102,8 +106,14 @@ class FilePreviewViewController: SystemThemableViewController {
                                                            finished: {})
     }
 
+    // MARK: - Preview For Local Files
+    private func startPreviewingLocalFiles() {
+        title = filePreviewViewModel?.listNode?.title
+        filePreviewViewModel?.setNodeDetailsForLocalFile()
+    }
+
     // MARK: - Private Helpers
-    
+
     private func startPreviewingNode() {
         progressView.progress = 0
         progressView.mode = .indeterminate
