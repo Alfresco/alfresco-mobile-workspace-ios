@@ -145,6 +145,11 @@ class CapturedAsset {
         }
     }
     
+    func filePath() -> String {
+        let url = URL(fileURLWithPath: self.path)
+        return url.lastPathComponent
+    }
+    
     // MARK: - Private Helpers
     
     private func cacheToDisk(data: Data, at folderPath: String) -> String {
