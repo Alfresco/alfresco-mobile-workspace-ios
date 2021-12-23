@@ -375,22 +375,13 @@ extension PreviewViewController: UICollectionViewDataSource, UICollectionViewDel
         let index = self.previewViewModel?.visibleCellIndex.value ?? 0
         guard let capturedAsset = self.previewViewModel?.capturedAssets.value[index] else { return nil }
         return ListNode(guid: "0",
-                        siteID: "",
-                        parentGuid: ("-my-"),
                         mimeType: capturedAsset.type.mimetype,
                         title: capturedAsset.fileName,
                         path: "",
-                        modifiedAt: nil,
                         nodeType: .file,
-                        favorite: nil,
                         syncStatus: .pending,
                         markedOfflineStatus: .upload,
                         allowableOperations: [],
-                        siteRole: nil,
-                        trashed: false,
-                        destination: nil,
-                        isFile: false,
-                        isFolder: false,
                         uploadLocalPath: capturedAsset.filePath())
     }
 }
