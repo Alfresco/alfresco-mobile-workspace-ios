@@ -151,6 +151,8 @@ class SearchViewModel: ListComponentViewModel {
 // MARK: - Advance Search
 extension SearchViewModel {
     func loadAppConfigurationsForSearch() {
+        // commented below code because we do not have any API for now. so we are directly fetching data from app bundle.
+        /*
         let repository = ApplicationBootstrap.shared().repository
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
@@ -161,7 +163,9 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        // self.loadConfigurationFromServer() // commented because we do not have any API for now.
+         self.loadConfigurationFromServer()
+        */
+        loadConfigurationsFromAppBundle()
     }
     
     private func loadConfigurationsFromAppBundle() {
