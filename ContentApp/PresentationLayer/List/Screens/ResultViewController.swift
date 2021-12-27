@@ -747,9 +747,24 @@ extension ResultViewController: ResultPageControllerDelegate {
         if isSearchFacetsEmpty || isSearchChipsHasSelectedValue == false {
             resultsViewModel?.searchFacets = resultsViewModel?.getNonZeroBucketForSearchFacets(for: searchFacets) ?? []
         } else { // update
-            resultsViewModel?.searchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
+            
+            var oldSearchFacets = resultsViewModel?.getUpdatedSearchFacets(for: searchFacets) ?? []
+            let extraFacets = getExtraFacets(from: oldSearchFacets, and: searchFacets)
+            if !extraFacets.isEmpty {
+                oldSearchFacets = resultsViewModel?.updateBucketListForEmptyFacets(for: extraFacets) ?? []
+            }
+            resultsViewModel?.searchFacets = oldSearchFacets
         }
         self.updateChips(for: searchFacets)
+    }
+    
+    func getExtraFacets(from oldSearchFacets: [SearchFacets], and newSearchFacets: [SearchFacets]) -> [SearchFacets] {
+        let extraFacets = oldSearchFacets
+            .filter({ currentObject in
+                !(newSearchFacets
+                    .contains(where: { $0.label == currentObject.label }))
+            })
+        return extraFacets
     }
     
     func updateChips(for searchFacets: [SearchFacets]) {
