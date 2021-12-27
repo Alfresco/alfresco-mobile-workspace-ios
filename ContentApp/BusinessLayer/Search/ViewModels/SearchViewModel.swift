@@ -431,8 +431,30 @@ extension SearchViewModel {
                 oldSearchFacets[indexOfChip].buckets = oldBuckets
             }
         }
-        
+    
         // Step 7: Return the final result
+        return oldSearchFacets
+    }
+    
+    func updateBucketListForEmptyFacets(for newSearchFacets: [SearchFacets]) -> [SearchFacets] {
+        let oldSearchFacets = self.searchFacets
+        for field in newSearchFacets {
+            let newLabel = field.label
+            // Step 1: Get index of object from old fields which matches object from new fields
+            if let indexOfChip = oldSearchFacets.firstIndex(where: {$0.label == newLabel}) {
+                let oldBuckets = oldSearchFacets[indexOfChip].buckets
+                
+                // Step 2: make the old bucket count to zero i.e. there is no result associated with that bucket option
+                for counter in 0 ..< oldBuckets.count {
+                    oldBuckets[counter].count = "0"
+                }
+                
+                // Step 3: Update the bucket in the main fields array
+                oldSearchFacets[indexOfChip].buckets = oldBuckets
+            }
+        }
+    
+        // Step 4: Return the final result
         return oldSearchFacets
     }
 }
