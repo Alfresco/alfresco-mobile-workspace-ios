@@ -130,6 +130,10 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
+    
+    func showFiles() {
+        AlfrescoLog.debug("showFiles: FolderChildrenScreenCoordinator")
+    }
 }
 
 extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {

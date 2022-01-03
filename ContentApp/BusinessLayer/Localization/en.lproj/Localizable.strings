@@ -221,6 +221,8 @@
 "action-menu-remove-offline" = "Remove offline";
 "action-menu-create-media" = "Take a photo or video";
 "action-menu-upload-media" = "Upload photos or videos";
+"action-menu-upload-files" = "Upload files";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";

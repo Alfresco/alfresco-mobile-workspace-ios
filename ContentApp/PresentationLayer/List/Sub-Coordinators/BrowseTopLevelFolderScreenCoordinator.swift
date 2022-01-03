@@ -132,4 +132,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
+    
+    func showFiles() {
+        AlfrescoLog.debug("showFiles: BrowseTopLevelFolderScreenCoordinator")
+    }
 }
