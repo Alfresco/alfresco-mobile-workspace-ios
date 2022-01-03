@@ -30,6 +30,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var model: FolderDrillModel?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -132,7 +133,10 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func showFiles() {
-        AlfrescoLog.debug("showFiles: FolderChildrenScreenCoordinator")
+        let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                        parentListNode: listNode)
+        coordinator.start()
+        fileManagerCoordinator = coordinator
     }
 }
 

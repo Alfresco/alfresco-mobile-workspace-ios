@@ -25,7 +25,8 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
-    
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
+
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
         self.browseNode = browseNode
@@ -134,6 +135,9 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func showFiles() {
-        AlfrescoLog.debug("showFiles: BrowseTopLevelFolderScreenCoordinator")
+        let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                        parentListNode: personalFilesNode())
+        coordinator.start()
+        fileManagerCoordinator = coordinator
     }
 }
