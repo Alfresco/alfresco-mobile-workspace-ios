@@ -58,7 +58,6 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
                                  finish: nil)
             })
         }
-       
         
         var uploadTransfers: [UploadTransfer] = []
         for fileAsset in selectedAssets {
