@@ -39,7 +39,7 @@ class FileManagerScreenCoordinator: Coordinator {
         let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
         self.fileManagerDataSource = FileManagerDataSource(folderToSavePath: uploadFilePath)
         viewController.fileManagerDataSource = self.fileManagerDataSource
-        self.presenter.present(viewController, animated: false)
+        self.presenter.present(viewController, animated: true)
     }
 }
 

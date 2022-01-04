@@ -27,8 +27,9 @@ class FileManagerViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        ApplicationBootstrap.shared().configureCameraKitTheme()
         applyComponentsThemes()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
             self.showDocumentPicker()
         })
     }
@@ -47,8 +48,8 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
         let pickerViewController = UIDocumentPickerViewController(forOpeningContentTypes: supportedTypes, asCopy: true)
         pickerViewController.allowsMultipleSelection = true
         pickerViewController.delegate = self
-        pickerViewController.modalPresentationStyle = .formSheet
-        self.present(pickerViewController, animated: true)
+        pickerViewController.modalPresentationStyle = .fullScreen
+        self.present(pickerViewController, animated: false)
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
