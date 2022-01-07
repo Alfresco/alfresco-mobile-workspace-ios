@@ -423,7 +423,7 @@
         {
           "field": "creator",
           "mincount": 1,
-          "label": "Folder.created.mobileapps",
+          "label": "Folder.Creator.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
