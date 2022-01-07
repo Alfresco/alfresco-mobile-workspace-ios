@@ -155,11 +155,11 @@
 "done" = "Done";
 
 // MARK: - Facets
-"SEARCH.FACET_FIELDS.TYPE" = "Type";
-"SEARCH.FACET_FIELDS.SIZE" = "Size";
+"SEARCH.FACET_FIELDS.TYPE" = "File Type";
+"SEARCH.FACET_FIELDS.SIZE" = "File Size";
 "SEARCH.FACET_FIELDS.CREATOR" = "Creator";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
-"SEARCH.FACET_FIELDS.CREATED" = "Created";
+"SEARCH.FACET_FIELDS.CREATED" = "Created Date";
 "size-facet-queries" = "Size Facet Queries";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
 "SEARCH.FACET_QUERIES.LARGE" = "Large";
@@ -172,12 +172,12 @@
 "SEARCH.FACET_QUERIES.MIMETYPE" = "MIME Type";
 "SEARCH.FACET_QUERIES.XTRALARGE" = "Extra Large";
 "SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra Extra Large";
-"The.Created.mobileapps" = "The Created";
-"The.Modified.mobileapps" = "The Modified";
+"The.Created.mobileapps" = "Created Year";
+"The.Modified.mobileapps" = "Modified Year";
 "Folder.Size.mobileapps" = "Folder Size";
-"Folder.created.mobileapps" = "Folder Created";
-"Folder.Modifier.mobileapps" = "Folder Modifier";
-"Folder.Created.mobileapps" = "Folder Created";
+"Folder.creator.mobileapps" = "Creator";
+"Folder.Modifier.mobileapps" = "Modifier";
+"Folder.Created.mobileapps" = "Created Date";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "My Facet Queries";
 "TheModified" = "The Modified";
 
