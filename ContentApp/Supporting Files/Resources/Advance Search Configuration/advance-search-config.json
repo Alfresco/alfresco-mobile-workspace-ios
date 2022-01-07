@@ -246,7 +246,7 @@
     "categories": [
       {
         "id": "queryName",
-        "name": "Name",
+        "name": "File Name",
         "enabled": true,
         "expanded": true,
         "component": {
@@ -259,45 +259,8 @@
         }
       },
       {
-        "id": "checkList",
-        "name": "Check List",
-        "enabled": true,
-        "component": {
-          "selector": "check-list",
-          "settings": {
-            "pageSize": 5,
-            "operator": "OR",
-            "options": [
-              {
-                "name": "Folder",
-                "value": "TYPE:'cm:folder'"
-              },
-              {
-                "name": "Document",
-                "value": "TYPE:'cm:content'"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "id": "contentSize",
-        "name": "Content Size",
-        "enabled": true,
-        "component": {
-          "selector": "slider",
-          "settings": {
-            "field": "cm:content.size",
-            "min": 0,
-            "max": 18,
-            "step": 1,
-            "thumbLabel": true
-          }
-        }
-      },
-      {
         "id": "contentSizeRange",
-        "name": "Content Size (range)",
+        "name": "Content Size",
         "enabled": true,
         "component": {
           "selector": "number-range",
@@ -460,7 +423,7 @@
         {
           "field": "creator",
           "mincount": 1,
-          "label": "Folder.created.mobileapps",
+          "label": "Folder.Creator.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
@@ -605,20 +568,14 @@
     },
     "categories": [
       {
-        "id": "contentSize",
+        "id": "contentSizeRange",
         "name": "Content Size",
         "enabled": true,
         "component": {
-          "selector": "slider",
+          "selector": "number-range",
           "settings": {
-            "allowUpdateOnChange": false,
-            "hideDefaultAction": true,
-            "unit": "Byte",
             "field": "cm:content.size",
-            "min": 0,
-            "max": 18,
-            "step": 1,
-            "thumbLabel": true
+            "format": "[{FROM} TO {TO}]"
           }
         }
       }
@@ -1467,3 +1424,4 @@
     ]
   }
 }
+
