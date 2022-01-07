@@ -156,6 +156,17 @@ class ListNodeDataAccessor: DataAccessor {
         }
         return nil
     }
+    
+    func mediaLocalPath(for node: ListNode) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let uploadFilePath = DiskService.mediaFolderPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: uploadFilePath)
+        if let path = node.uploadLocalPath, !path.isEmpty {
+            localURL.appendPathComponent(path)
+            return localURL
+        }
+        return nil
+    }
 
     func fileLocalPath(for node: ListNode) -> URL? {
         guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
@@ -198,6 +209,14 @@ class ListNodeDataAccessor: DataAccessor {
     
     func isUploadContentLocal(for node: ListNode) -> Bool {
         if let uploadURLPath = uploadLocalPath(for: node)?.path {
+            let fileManager = FileManager.default
+            return fileManager.fileExists(atPath: uploadURLPath)
+        }
+        return false
+    }
+    
+    func isMediaContentLocal(for node: ListNode) -> Bool {
+        if let uploadURLPath = mediaLocalPath(for: node)?.path {
             let fileManager = FileManager.default
             return fileManager.fileExists(atPath: uploadURLPath)
         }

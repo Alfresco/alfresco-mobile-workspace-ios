@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var orientationLock = UIInterfaceOrientationMask.all
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
+    var logoutActionFlow = false
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { // swiftlint:disable:this discouraged_optional_collection
@@ -105,4 +106,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+}
+
+// MARK: - APPDELEGATE SINGLETON
+func appDelegate() -> AppDelegate? {
+    return  UIApplication.shared.delegate as? AppDelegate
 }

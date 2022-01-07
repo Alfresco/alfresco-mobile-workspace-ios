@@ -151,6 +151,8 @@ class SearchViewModel: ListComponentViewModel {
 // MARK: - Advance Search
 extension SearchViewModel {
     func loadAppConfigurationsForSearch() {
+        // commented below code because we do not have any API for now. so we are directly fetching data from app bundle.
+        /*
         let repository = ApplicationBootstrap.shared().repository
         let accountService = repository.service(of: AccountService.identifier) as? AccountService
         guard let accountIdentifier = accountService?.activeAccount?.identifier else { return }
@@ -161,7 +163,9 @@ extension SearchViewModel {
             // load data from bundle
             loadConfigurationsFromAppBundle()
         }
-        // self.loadConfigurationFromServer() // commented because we do not have any API for now.
+         self.loadConfigurationFromServer()
+        */
+        loadConfigurationsFromAppBundle()
     }
     
     private func loadConfigurationsFromAppBundle() {
@@ -427,8 +431,30 @@ extension SearchViewModel {
                 oldSearchFacets[indexOfChip].buckets = oldBuckets
             }
         }
-        
+    
         // Step 7: Return the final result
+        return oldSearchFacets
+    }
+    
+    func updateBucketListForEmptyFacets(for newSearchFacets: [SearchFacets]) -> [SearchFacets] {
+        let oldSearchFacets = self.searchFacets
+        for field in newSearchFacets {
+            let newLabel = field.label
+            // Step 1: Get index of object from old fields which matches object from new fields
+            if let indexOfChip = oldSearchFacets.firstIndex(where: {$0.label == newLabel}) {
+                let oldBuckets = oldSearchFacets[indexOfChip].buckets
+                
+                // Step 2: make the old bucket count to zero i.e. there is no result associated with that bucket option
+                for counter in 0 ..< oldBuckets.count {
+                    oldBuckets[counter].count = "0"
+                }
+                
+                // Step 3: Update the bucket in the main fields array
+                oldSearchFacets[indexOfChip].buckets = oldBuckets
+            }
+        }
+    
+        // Step 4: Return the final result
         return oldSearchFacets
     }
 }
