@@ -437,6 +437,7 @@ extension SearchModel {
     }
     
     func removeChipsWithZeroCountInOptions(for searchFacets: [SearchFacets]) {
+        
         for chip in searchChips where chip.selectedValue.isEmpty {
             if let index = searchFacets.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "")  == chip.name}) {
                 let nonZeroBucketList = searchFacets[index].buckets.filter { $0.count != "0"}
