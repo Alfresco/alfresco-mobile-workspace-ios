@@ -406,10 +406,11 @@ class SearchCompletionHandler: Equatable {
 
 // MARK: - Facet Search
 extension SearchModel {
-   
+    
     func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem] {
         let facetChips = self.getChipsForSearchFacets(for: searchFacets)
         searchChips.append(contentsOf: facetChips)
+        removeChipsWithZeroCountInOptions(for: searchFacets) // remove chips with zero count
         return searchChips
     }
     
@@ -423,7 +424,7 @@ extension SearchModel {
         }
         return chipsArray
     }
-        
+    
     // MARK: Create Chip
     private func createChip(for name: String) -> SearchChipItem? {
         if searchChips.first(where: {$0.name == name && $0.componentType == .facet}) == nil {
@@ -433,5 +434,25 @@ extension SearchModel {
             return chip
         }
         return nil
+    }
+    
+    func removeChipsWithZeroCountInOptions(for searchFacets: [SearchFacets]) {
+        for chip in searchChips where chip.selectedValue.isEmpty {
+            if let index = searchFacets.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "")  == chip.name}) {
+                let nonZeroBucketList = searchFacets[index].buckets.filter { $0.count != "0"}
+                if nonZeroBucketList.isEmpty {
+                    removeChip(with: chip.name)
+                }
+            } else if chip.componentType == .facet {
+                // if searchFacets array does not have the chip, then remove chip from chips array
+                removeChip(with: chip.name)
+            }
+        }
+    }
+    
+    func removeChip(with name: String) {
+        if let index = searchChips.firstIndex(where: {$0.name == name}) {
+            searchChips.remove(at: index)
+        }
     }
 }
