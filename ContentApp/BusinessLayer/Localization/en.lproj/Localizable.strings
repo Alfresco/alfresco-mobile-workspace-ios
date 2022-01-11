@@ -152,6 +152,13 @@
 "invalid-format" = "From value should be less than To value";
 "required-value" = "Required value";
 "done" = "Done";
+"File Name" = "File Name";
+"Content Size" = "Content Size";
+"Created Date (range)" = "Created Date (range)";
+"Type" = "Type";
+"Content Size" = "Content Size";
+"Enter the name" = "Enter the name";
+
 
 // MARK: - Facets
 "SEARCH.FACET_FIELDS.TYPE" = "File Type";
