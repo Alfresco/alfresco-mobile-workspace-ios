@@ -26,7 +26,8 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
-    
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
+
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
         self.browseNode = browseNode
@@ -139,6 +140,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         photoLibraryCoordinator = coordinator
     }
+
     private func showAlert(with title: String,
                            and message: String) {
         let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) {  _ in
@@ -148,5 +150,12 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                   message: message,
                                   actions: [confirmAction],
                                   completionHandler: {})
+    }
+    
+    func showFiles() {
+        let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                        parentListNode: personalFilesNode())
+        coordinator.start()
+        fileManagerCoordinator = coordinator
     }
 }

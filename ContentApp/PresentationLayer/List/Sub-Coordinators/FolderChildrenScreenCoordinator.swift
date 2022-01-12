@@ -31,6 +31,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var model: FolderDrillModel?
+    private var fileManagerCoordinator: FileManagerScreenCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -147,6 +148,13 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                   message: message,
                                   actions: [confirmAction],
                                   completionHandler: {})
+    }
+    
+    func showFiles() {
+        let coordinator = FileManagerScreenCoordinator(with: presenter,
+                                                        parentListNode: listNode)
+        coordinator.start()
+        fileManagerCoordinator = coordinator
     }
 }
 

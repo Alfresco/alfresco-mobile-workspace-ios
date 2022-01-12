@@ -24,13 +24,14 @@ class SearchTextComponentViewModel {
     var queryBuilder: String?
 
     var title: String {
-        return selectedCategory?.name ?? ""
+        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
     }
     
     // MARK: - To get placeholder for selector
     func getPlaceholder() -> String {
         if let selectedCategory = self.selectedCategory {
-            return selectedCategory.component?.settings?.placeholder ?? ""
+            let placeholder = selectedCategory.component?.settings?.placeholder ?? ""
+            return NSLocalizedString(placeholder, comment: "")
         }
         return ""
     }

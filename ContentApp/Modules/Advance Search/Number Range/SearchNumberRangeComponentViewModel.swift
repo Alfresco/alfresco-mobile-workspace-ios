@@ -26,7 +26,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
     let maxCharacters = 9
 
     var title: String {
-        return selectedCategory?.name ?? ""
+        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
     }
     
     // MARK: - Update Selected Values

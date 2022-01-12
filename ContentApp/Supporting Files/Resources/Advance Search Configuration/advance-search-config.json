@@ -195,8 +195,8 @@
           "sets": [
             {
               "label": "lastYear",
-              "start": "2018",
-              "end": "2019",
+              "start": "2020",
+              "end": "2021",
               "endInclusive": false
             },
             {
@@ -207,7 +207,7 @@
             {
               "label": "earlier",
               "start": "*",
-              "end": "2018",
+              "end": "2021",
               "endInclusive": false
             }
           ]
@@ -234,9 +234,9 @@
               "end": "NOW/YEAR+1YEAR"
             },
             {
-              "label": "earlierThan2017",
+              "label": "earlier",
               "start": "*",
-              "end": "2017",
+              "end": "2021",
               "endInclusive": false
             }
           ]
@@ -246,7 +246,7 @@
     "categories": [
       {
         "id": "queryName",
-        "name": "Name",
+        "name": "APP.SEARCH.FILE.NAME",
         "enabled": true,
         "expanded": true,
         "component": {
@@ -254,50 +254,13 @@
           "settings": {
             "pattern": "cm:name:'(.*?)'",
             "field": "cm:name",
-            "placeholder": "Enter the name"
-          }
-        }
-      },
-      {
-        "id": "checkList",
-        "name": "Check List",
-        "enabled": true,
-        "component": {
-          "selector": "check-list",
-          "settings": {
-            "pageSize": 5,
-            "operator": "OR",
-            "options": [
-              {
-                "name": "Folder",
-                "value": "TYPE:'cm:folder'"
-              },
-              {
-                "name": "Document",
-                "value": "TYPE:'cm:content'"
-              }
-            ]
-          }
-        }
-      },
-      {
-        "id": "contentSize",
-        "name": "Content Size",
-        "enabled": true,
-        "component": {
-          "selector": "slider",
-          "settings": {
-            "field": "cm:content.size",
-            "min": 0,
-            "max": 18,
-            "step": 1,
-            "thumbLabel": true
+            "placeholder": "APP.SEARCH.TEXT.PLACEHOLDER"
           }
         }
       },
       {
         "id": "contentSizeRange",
-        "name": "Content Size (range)",
+        "name": "APP.SEARCH.CONTENT.SIZE",
         "enabled": true,
         "component": {
           "selector": "number-range",
@@ -309,7 +272,7 @@
       },
       {
         "id": "createdDateRange",
-        "name": "Created Date (range)",
+        "name": "APP.SEARCH.CONTENT.DATE.RANGE",
         "enabled": true,
         "component": {
           "selector": "date-range",
@@ -322,7 +285,7 @@
       },
       {
         "id": "queryType",
-        "name": "Type",
+        "name": "APP.SEARCH.RADIO.TYPE",
         "enabled": true,
         "component": {
           "selector": "radio",
@@ -460,7 +423,7 @@
         {
           "field": "creator",
           "mincount": 1,
-          "label": "Folder.created.mobileapps",
+          "label": "Folder.Creator.mobileapps",
           "settings": {
             "allowUpdateOnChange": false,
             "hideDefaultAction": true
@@ -547,8 +510,8 @@
           "sets": [
             {
               "label": "lastYear",
-              "start": "2018",
-              "end": "2019",
+              "start": "2020",
+              "end": "2021",
               "endInclusive": false
             },
             {
@@ -559,7 +522,7 @@
             {
               "label": "earlier",
               "start": "*",
-              "end": "2018",
+              "end": "2021",
               "endInclusive": false
             }
           ],
@@ -590,9 +553,9 @@
               "end": "NOW/YEAR+1YEAR"
             },
             {
-              "label": "earlierThan2017",
+              "label": "earlier",
               "start": "*",
-              "end": "2017",
+              "end": "2021",
               "endInclusive": false
             }
           ],
@@ -605,20 +568,14 @@
     },
     "categories": [
       {
-        "id": "contentSize",
-        "name": "Content Size",
+        "id": "contentSizeRange",
+        "name": "APP.SEARCH.CONTENT.SIZE",
         "enabled": true,
         "component": {
-          "selector": "slider",
+          "selector": "number-range",
           "settings": {
-            "allowUpdateOnChange": false,
-            "hideDefaultAction": true,
-            "unit": "Byte",
             "field": "cm:content.size",
-            "min": 0,
-            "max": 18,
-            "step": 1,
-            "thumbLabel": true
+            "format": "[{FROM} TO {TO}]"
           }
         }
       }
@@ -1467,3 +1424,4 @@
     ]
   }
 }
+
