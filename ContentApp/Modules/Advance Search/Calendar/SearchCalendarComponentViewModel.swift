@@ -29,7 +29,7 @@ class SearchCalendarComponentViewModel: NSObject {
     var queryBuilder: String?
 
     var title: String {
-        return selectedCategory?.name ?? ""
+        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
     }
     
     var dateFormat: String {

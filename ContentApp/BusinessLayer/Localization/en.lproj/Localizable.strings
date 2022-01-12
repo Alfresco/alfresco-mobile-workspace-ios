@@ -152,6 +152,11 @@
 "invalid-format" = "From value should be less than To value";
 "required-value" = "Required value";
 "done" = "Done";
+"APP.SEARCH.FILE.NAME" = "File Name";
+"APP.SEARCH.CONTENT.DATE.RANGE" = "Created Date (range)";
+"APP.SEARCH.RADIO.TYPE" = "Type";
+"APP.SEARCH.CONTENT.SIZE" = "Content Size";
+"APP.SEARCH.TEXT.PLACEHOLDER" = "Enter the name";
 
 // MARK: - Facets
 "SEARCH.FACET_FIELDS.TYPE" = "File Type";

@@ -195,8 +195,8 @@
           "sets": [
             {
               "label": "lastYear",
-              "start": "2018",
-              "end": "2019",
+              "start": "2020",
+              "end": "2021",
               "endInclusive": false
             },
             {
@@ -207,7 +207,7 @@
             {
               "label": "earlier",
               "start": "*",
-              "end": "2018",
+              "end": "2021",
               "endInclusive": false
             }
           ]
@@ -234,9 +234,9 @@
               "end": "NOW/YEAR+1YEAR"
             },
             {
-              "label": "earlierThan2017",
+              "label": "earlier",
               "start": "*",
-              "end": "2017",
+              "end": "2021",
               "endInclusive": false
             }
           ]
@@ -246,7 +246,7 @@
     "categories": [
       {
         "id": "queryName",
-        "name": "File Name",
+        "name": "APP.SEARCH.FILE.NAME",
         "enabled": true,
         "expanded": true,
         "component": {
@@ -254,13 +254,13 @@
           "settings": {
             "pattern": "cm:name:'(.*?)'",
             "field": "cm:name",
-            "placeholder": "Enter the name"
+            "placeholder": "APP.SEARCH.TEXT.PLACEHOLDER"
           }
         }
       },
       {
         "id": "contentSizeRange",
-        "name": "Content Size",
+        "name": "APP.SEARCH.CONTENT.SIZE",
         "enabled": true,
         "component": {
           "selector": "number-range",
@@ -272,7 +272,7 @@
       },
       {
         "id": "createdDateRange",
-        "name": "Created Date (range)",
+        "name": "APP.SEARCH.CONTENT.DATE.RANGE",
         "enabled": true,
         "component": {
           "selector": "date-range",
@@ -285,7 +285,7 @@
       },
       {
         "id": "queryType",
-        "name": "Type",
+        "name": "APP.SEARCH.RADIO.TYPE",
         "enabled": true,
         "component": {
           "selector": "radio",
@@ -510,8 +510,8 @@
           "sets": [
             {
               "label": "lastYear",
-              "start": "2018",
-              "end": "2019",
+              "start": "2020",
+              "end": "2021",
               "endInclusive": false
             },
             {
@@ -522,7 +522,7 @@
             {
               "label": "earlier",
               "start": "*",
-              "end": "2018",
+              "end": "2021",
               "endInclusive": false
             }
           ],
@@ -553,9 +553,9 @@
               "end": "NOW/YEAR+1YEAR"
             },
             {
-              "label": "earlierThan2017",
+              "label": "earlier",
               "start": "*",
-              "end": "2017",
+              "end": "2021",
               "endInclusive": false
             }
           ],
@@ -569,7 +569,7 @@
     "categories": [
       {
         "id": "contentSizeRange",
-        "name": "Content Size",
+        "name": "APP.SEARCH.CONTENT.SIZE",
         "enabled": true,
         "component": {
           "selector": "number-range",

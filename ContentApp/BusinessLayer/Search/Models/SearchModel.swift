@@ -270,7 +270,7 @@ extension SearchModel {
         let categories = getCategories(for: configurations, and: index)
         var chipsArray = [SearchChipItem]()
         for category in categories {
-            let name = category.name ?? ""
+            let name = NSLocalizedString(category.name ?? "", comment: "")
             if let selector = category.component?.selector, let componentType = ComponentType(rawValue: selector) {
                 let chip = SearchChipItem(name: name,
                                           selected: false,
