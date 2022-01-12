@@ -28,7 +28,7 @@ class SearchListComponentViewModel {
     var queryBuilder: String?
 
     var title: String {
-        return selectedCategory?.name ?? ""
+        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
     }
     
     // MARK: - Query Builder

@@ -211,7 +211,7 @@ struct LocalizationConstants {
         static let uploadMedia = NSLocalizedString("action-menu-upload-media", comment: "")
         static let createSingleMedia = NSLocalizedString("action-menu-create-single-media", comment: "")
         static let uploadSingleMedia = NSLocalizedString("action-menu-upload-single-media", comment: "")
-
+        static let uploadFiles = NSLocalizedString("action-menu-upload-files", comment: "")
     }
 
     struct Dialog {

@@ -28,6 +28,8 @@ struct ActionsMenuCreateFAB {
                                            type: .uploadMedia)
         var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
                                            type: .createMedia)
+        let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
+                                            type: .uploadFiles)
         
         if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
@@ -38,15 +40,10 @@ struct ActionsMenuCreateFAB {
         
         let actions1 = [actionCreateFolder,
                         actionUploadMedia,
-                        actionCreateMedia] /*,
-         ActionMenu(title: LocalizationConstants.ActionMenu.createMSword,
-         type: .createMSWord),
-         ActionMenu(title: LocalizationConstants.ActionMenu.createMSpowerpoint,
-         type: .createMSPowerPoint),
-         ActionMenu(title: LocalizationConstants.ActionMenu.createMSexcel,
-         type: .createMSExcel)] */
-        actions.append(actions1)
+                        actionCreateMedia,
+                        actionUploadFiles]
         
+        actions.append(actions1)
         return actions
     }
 }

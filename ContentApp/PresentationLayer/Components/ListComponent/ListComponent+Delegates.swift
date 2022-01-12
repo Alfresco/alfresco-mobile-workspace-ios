@@ -30,6 +30,7 @@ protocol ListItemActionDelegate: AnyObject {
                                 delegate: CreateNodeViewModelDelegate?)
     func showCamera()
     func showPhotoLibrary()
+    func showFiles()
 }
 
 protocol ListComponentActionDelegate: AnyObject {
@@ -56,6 +57,10 @@ extension ListItemActionDelegate {
     }
     
     func showPhotoLibrary() {
+        // Do nothing
+    }
+    
+    func showFiles() {
         // Do nothing
     }
 }
