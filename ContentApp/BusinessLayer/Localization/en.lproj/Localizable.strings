@@ -152,7 +152,7 @@
 "invalid-format" = "From value should be less than To value";
 "required-value" = "Required value";
 "done" = "Done";
-"File Name" = "File Name";
+"APP.SEARCH.FILE.NAME" = "File Name";
 "Content Size" = "Content Size";
 "Created Date (range)" = "Created Date (range)";
 "Type" = "Type";

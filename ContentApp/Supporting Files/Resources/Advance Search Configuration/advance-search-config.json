@@ -246,7 +246,7 @@
     "categories": [
       {
         "id": "queryName",
-        "name": "File Name",
+        "name": "APP.SEARCH.FILE.NAME",
         "enabled": true,
         "expanded": true,
         "component": {
