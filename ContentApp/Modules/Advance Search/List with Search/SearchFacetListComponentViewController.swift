@@ -133,6 +133,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         headerTitleLabel.text = facetViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
+        searchBar.placeholder = LocalizationConstants.AdvanceSearch.searchPlaceholder
     }
     
     func registerCells() {
