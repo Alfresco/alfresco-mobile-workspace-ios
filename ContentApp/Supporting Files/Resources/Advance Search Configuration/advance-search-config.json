@@ -152,37 +152,37 @@
         {
           "query": "content.mimetype:text/html",
           "label": "SEARCH.FACET_QUERIES.MIMETYPE",
-          "group": "Type facet queries"
+          "group": "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES"
         },
         {
           "query": "content.size:[0 TO 10240]",
           "label": "SEARCH.FACET_QUERIES.XTRASMALL",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[10240 TO 102400]",
           "label": "SEARCH.FACET_QUERIES.SMALL",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[102400 TO 1048576]",
           "label": "SEARCH.FACET_QUERIES.MEDIUM",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[1048576 TO 16777216]",
           "label": "SEARCH.FACET_QUERIES.LARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[16777216 TO 134217728]",
           "label": "SEARCH.FACET_QUERIES.XTRALARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[134217728 TO MAX]",
           "label": "SEARCH.FACET_QUERIES.XXTRALARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         }
       ]
     },
@@ -463,37 +463,37 @@
         {
           "query": "content.mimetype:text/html",
           "label": "SEARCH.FACET_QUERIES.MIMETYPE",
-          "group": "Type facet queries"
+          "group": "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES"
         },
         {
           "query": "content.size:[0 TO 10240]",
           "label": "SEARCH.FACET_QUERIES.XTRASMALL",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[10240 TO 102400]",
           "label": "SEARCH.FACET_QUERIES.SMALL",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[102400 TO 1048576]",
           "label": "SEARCH.FACET_QUERIES.MEDIUM",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[1048576 TO 16777216]",
           "label": "SEARCH.FACET_QUERIES.LARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[16777216 TO 134217728]",
           "label": "SEARCH.FACET_QUERIES.XTRALARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         },
         {
           "query": "content.size:[134217728 TO MAX]",
           "label": "SEARCH.FACET_QUERIES.XXTRALARGE",
-          "group": "Size facet queries"
+          "group": "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES"
         }
       ],
       "settings": {
@@ -595,7 +595,7 @@
         }
       ]
     },
-    "name": "Folder"
+    "name": "APP.SEARCH.TEXT.FOLDER"
   }],
   "search-headers": {
     "filterWithContains": true,
