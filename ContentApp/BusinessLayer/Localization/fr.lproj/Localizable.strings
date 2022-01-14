@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -155,7 +155,7 @@
 "APP.SEARCH.FILE.NAME" = "Nom de fichier";
 "APP.SEARCH.CONTENT.DATE.RANGE" = "Date de création (plage)";
 "APP.SEARCH.RADIO.TYPE" = "Type";
-"APP.SEARCH.CONTENT.SIZE" = "Type de contenu";
+"APP.SEARCH.CONTENT.SIZE" = "Taille du contenu";
 "APP.SEARCH.TEXT.PLACEHOLDER" = "Saisir le nom";
 
 // MARK: - Facets
@@ -164,9 +164,8 @@
 "SEARCH.FACET_FIELDS.CREATOR" = "Créateur";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modificateur";
 "SEARCH.FACET_FIELDS.CREATED" = "Date de création";
-"size-facet-queries" = "Mes recherches avec filtre";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Moyenne";
-"SEARCH.FACET_QUERIES.LARGE" = "Grande";
+"SEARCH.FACET_QUERIES.LARGE" = "Gros";
 "SEARCH.FACET_QUERIES.SMALL" = "Petite";
 "SEARCH.FACET_QUERIES.XTRASMALL" = "Très petit";
 "earlier" = "Plus tôt";
@@ -174,10 +173,10 @@
 "currentYear" = "L'année en cours";
 "SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Cette année";
 "SEARCH.FACET_QUERIES.MIMETYPE" = "Type MIME";
-"SEARCH.FACET_QUERIES.XTRALARGE" = "Très large";
-"SEARCH.FACET_QUERIES.XXTRALARGE" = "Très très large";
-"The.Created.mobileapps" = "Créé le";
-"The.Modified.mobileapps" = "Modifié le";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Très gros";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Énorme";
+"The.Created.mobileapps" = "Année créée";
+"The.Modified.mobileapps" = "Année modifiée";
 "Folder.Size.mobileapps" = "Taille du dossier";
 "Folder.Creator.mobileapps" = "Créateur";
 "Folder.Modifier.mobileapps" = "Modificateur";
@@ -227,7 +226,7 @@
 "action-menu-remove-offline" = "Supprimer hors ligne";
 "action-menu-create-media" = "Prendre une photo ou une vidéo";
 "action-menu-upload-media" = "Importer des photos ou des vidéos";
-"action-menu-upload-files" = "Importer le fichier";
+"action-menu-upload-files" = "Importer des fichiers";
 
 
 // MARK: - Dialog

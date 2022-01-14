@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -164,7 +164,6 @@
 "SEARCH.FACET_FIELDS.CREATOR" = "Ersteller";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Bearbeiter";
 "SEARCH.FACET_FIELDS.CREATED" = "Datum der Erstellung";
-"size-facet-queries" = "Facet-Abfragen nach Größe";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Mittel";
 "SEARCH.FACET_QUERIES.LARGE" = "Groß";
 "SEARCH.FACET_QUERIES.SMALL" = "Klein";
