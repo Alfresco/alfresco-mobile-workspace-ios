@@ -273,6 +273,7 @@ extension SearchModel {
             let name = NSLocalizedString(category.name ?? "", comment: "")
             if let selector = category.component?.selector, let componentType = ComponentType(rawValue: selector) {
                 let chip = SearchChipItem(name: name,
+                                          type: .advance,
                                           selected: false,
                                           componentType: componentType)
                 chipsArray.append(chip)
@@ -429,6 +430,7 @@ extension SearchModel {
     private func createChip(for name: String) -> SearchChipItem? {
         if searchChips.first(where: {$0.name == name && $0.componentType == .facet}) == nil {
             let chip = SearchChipItem(name: name,
+                                      type: .facet,
                                       selected: false,
                                       componentType: .facet)
             return chip

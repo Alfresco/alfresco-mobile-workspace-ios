@@ -45,6 +45,8 @@ class SearchTextComponentViewController: SystemThemableViewController {
         applyLocalization()
         applyComponentsThemes()
         keywordTextField.becomeFirstResponder()
+        applyButton.accessibilityIdentifier = "applyActionButton-textComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-textComponent"
     }
     
     override func viewWillAppear(_ animated: Bool) {

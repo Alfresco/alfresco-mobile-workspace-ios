@@ -49,6 +49,8 @@ class SearchListComponentViewController: SystemThemableViewController {
         registerCells()
         controller.buildViewModel()
         setupBindings()
+        applyButton.accessibilityIdentifier = "applyActionButton-listComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-listComponent"
     }
     
     override func viewWillAppear(_ animated: Bool) {
