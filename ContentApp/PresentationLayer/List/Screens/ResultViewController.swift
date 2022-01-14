@@ -203,6 +203,7 @@ class ResultViewController: SystemThemableViewController {
         dropDown.selectedTextColor = currentTheme.onSurfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
         resetFilterButton.tintColor = currentTheme.onSurfaceColor
+        resetFilterButton.accessibilityIdentifier = "searchResetButton"
     }
 
     func addChipsCollectionViewFlowLayout() {
@@ -235,7 +236,7 @@ extension ResultViewController {
             heightConfigurationViewConstraint.constant = configurationViewHeight
             self.view.updateConstraints()
             self.configurationView.alpha = 1
-            dropDown.dataSource = searchFilters
+            dropDown.localizationKeysDataSource = searchFilters
             dropDown.reloadAllComponents()
             dropDown.selectionAction = { (index: Int, item: String) in
                 self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[index]
@@ -310,8 +311,9 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                                                           for: indexPath) as? MDCChipCollectionViewCell
             let chip = searchChipsViewModel.chips[indexPath.row]
             let selectedValue = chip.selectedValue
+            let name = chip.name
             if selectedValue.isEmpty {
-                cell?.chipView.titleLabel.text = chip.name
+                cell?.chipView.titleLabel.text = name
             } else {
                 cell?.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
             }
@@ -347,8 +349,10 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                 cell?.accessibilityIdentifier = "librariesChip"
             case .node:
                 cell?.accessibilityIdentifier = "nodeChip"
-            case .none:
-                cell?.accessibilityIdentifier = "noneChip"
+            case .advance:
+                cell?.accessibilityIdentifier = "advanceChip-\(name)"
+            case .facet:
+                cell?.accessibilityIdentifier = "facetChip-\(name)"
             }
             return cell ?? UICollectionViewCell()
         default:

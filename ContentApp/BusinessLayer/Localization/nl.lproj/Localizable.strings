@@ -183,7 +183,10 @@
 "Folder.Modifier.mobileapps" = "Gewijzigd door";
 "Folder.Created.mobileapps" = "Datum gemaakt";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mijn facetquery's";
-
+"APP.SEARCH.TEXT.FOLDER" = "Map";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facetquery’s op basis van type";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facetquery’s op basis van grootte";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Zoeken";
 
 // MARK: - Group List Section
 "today" = "Vandaag";

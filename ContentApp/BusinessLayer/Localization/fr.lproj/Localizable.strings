@@ -183,7 +183,10 @@
 "Folder.Modifier.mobileapps" = "Modificateur";
 "Folder.Created.mobileapps" = "Date de création";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mes recherches avec filtre";
-
+"APP.SEARCH.TEXT.FOLDER" = "Dossier";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Recherches avec filtre par type";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Recherches avec filtre par taille";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Rechercher";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";

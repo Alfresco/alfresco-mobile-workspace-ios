@@ -183,7 +183,10 @@
 "Folder.Modifier.mobileapps" = "Bearbeiter";
 "Folder.Created.mobileapps" = "Datum der Erstellung";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Meine Facet-Abfragen";
-
+"APP.SEARCH.TEXT.FOLDER" = "Ordner";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facet-Abfragen nach Typ";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facet-Abfragen nach Größe";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Suchen";
 
 // MARK: - Group List Section
 "today" = "Heute";

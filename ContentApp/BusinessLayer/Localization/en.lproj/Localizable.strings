@@ -164,7 +164,6 @@
 "SEARCH.FACET_FIELDS.CREATOR" = "Creator";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
 "SEARCH.FACET_FIELDS.CREATED" = "Created Date";
-"size-facet-queries" = "Size Facet Queries";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
 "SEARCH.FACET_QUERIES.LARGE" = "Large";
 "SEARCH.FACET_QUERIES.SMALL" = "Small";

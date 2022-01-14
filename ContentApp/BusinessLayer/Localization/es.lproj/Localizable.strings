@@ -183,7 +183,10 @@
 "Folder.Modifier.mobileapps" = "Modificador";
 "Folder.Created.mobileapps" = "Fecha de creación";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mis consultas por filtros";
-
+"APP.SEARCH.TEXT.FOLDER" = "Carpeta";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Consultas con filtros por tipo";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = " Consultas con filtros por tamaño";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Buscar";
 
 // MARK: - Group List Section
 "today" = "Hoy";

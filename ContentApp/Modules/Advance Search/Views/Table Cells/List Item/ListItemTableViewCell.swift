@@ -33,6 +33,8 @@ class ListItemTableViewCell: UITableViewCell, CellConfigurable {
         self.viewModel = viewModel
         self.titleLabel.text = NSLocalizedString(viewModel.title ?? "", comment: "")
         self.checkBoxImageView.image = viewModel.image
+        titleLabel.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
+        checkBoxImageView.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
     }
     
     // MARK: - Apply Themes and Localization
