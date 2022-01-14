@@ -103,7 +103,6 @@
 "error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
 "error-file-name-empty" = "Bestandsnaam mag niet leeg zijn.";
 
-
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
 "approved-added-favorites" = "Toegevoegd aan Favorieten";
@@ -153,6 +152,41 @@
 "invalid-format" = "Van-waarde moet kleiner zijn dan Tot-waarde";
 "required-value" = "Vereiste waarde";
 "done" = "Gereed";
+"APP.SEARCH.FILE.NAME" = "Bestandsnaam";
+"APP.SEARCH.CONTENT.DATE.RANGE" = "Datum gemaakt (bereik)";
+"APP.SEARCH.RADIO.TYPE" = "Type";
+"APP.SEARCH.CONTENT.SIZE" = "Contentgrootte";
+"APP.SEARCH.TEXT.PLACEHOLDER" = "Voer de naam in";
+
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Bestandstype";
+"SEARCH.FACET_FIELDS.SIZE" = "Bestandsgrootte";
+"SEARCH.FACET_FIELDS.CREATOR" = "Maker";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Gewijzigd door";
+"SEARCH.FACET_FIELDS.CREATED" = "Datum gemaakt";
+"size-facet-queries" = "Facetquery's op basis van grootte";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Gemiddeld";
+"SEARCH.FACET_QUERIES.LARGE" = "Groot";
+"SEARCH.FACET_QUERIES.SMALL" = "Klein";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra klein";
+"earlier" = "Eerder";
+"lastYear" = "Vorig jaar";
+"currentYear" = "Huidig jaar";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Dit jaar";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "MIME-type";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Extra groot";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Extra extra groot";
+"The.Created.mobileapps" = "Jaar gemaakt";
+"The.Modified.mobileapps" = "Jaar aangepast";
+"Folder.Size.mobileapps" = "Mapgrootte";
+"Folder.Creator.mobileapps" = "Maker";
+"Folder.Modifier.mobileapps" = "Gewijzigd door";
+"Folder.Created.mobileapps" = "Datum gemaakt";
+"SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mijn facetquery's";
+"APP.SEARCH.TEXT.FOLDER" = "Map";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facetquery’s op basis van type";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facetquery’s op basis van grootte";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Zoeken";
 
 // MARK: - Group List Section
 "today" = "Vandaag";
@@ -193,6 +227,8 @@
 "action-menu-remove-offline" = "Offline verwijderen";
 "action-menu-create-media" = "Een foto maken of een video opnemen";
 "action-menu-upload-media" = "Foto's of video's uploaden";
+"action-menu-upload-files" = "Bestanden uploaden";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";

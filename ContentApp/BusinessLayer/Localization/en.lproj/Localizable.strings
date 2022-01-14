@@ -182,9 +182,10 @@
 "Folder.Modifier.mobileapps" = "Modifier";
 "Folder.Created.mobileapps" = "Created Date";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "My Facet Queries";
-"TheModified" = "The Modified";
-"size-facet-queries" = "Size Facet Queries";
-
+"APP.SEARCH.TEXT.FOLDER" = "Folder";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Type facet queries";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Size facet queries";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Search";
 
 // MARK: - Group List Section
 "today" = "Today";

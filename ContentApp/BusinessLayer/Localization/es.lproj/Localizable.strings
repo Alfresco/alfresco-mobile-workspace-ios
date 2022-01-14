@@ -103,7 +103,6 @@
 "error-folder-name-contain-only-spaces" = "El nombre de la carpeta no puede contener solo espacios";
 "error-file-name-empty" = "El nombre del fichero no puede estar vacío";
 
-
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Se han guardado los cambios de configuración.";
 "approved-added-favorites" = "Añadido a favoritos";
@@ -143,7 +142,7 @@
 "advance-search" = "Búsqueda avanzada";
 "enter" = "Introducir";
 "apply" = "Aplicar";
-"reset" = "Re&stablecer";
+"reset" = "Restablecer";
 "APP.SEARCH.RADIO.NONE" = "Ninguno";
 "APP.SEARCH.RADIO.ALL" = "Todos";
 "APP.SEARCH.RADIO.FOLDER" = "Carpeta";
@@ -153,6 +152,41 @@
 "invalid-format" = "El valor De debe ser menor que el valor A";
 "required-value" = "Valor requerido";
 "done" = "Hecho";
+"APP.SEARCH.FILE.NAME" = "Nombre del fichero";
+"APP.SEARCH.CONTENT.DATE.RANGE" = "Fecha de creación (rango)";
+"APP.SEARCH.RADIO.TYPE" = "Tipo";
+"APP.SEARCH.CONTENT.SIZE" = "Tamaño de contenido";
+"APP.SEARCH.TEXT.PLACEHOLDER" = "Introduzca el nombre";
+
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Tipo de fichero";
+"SEARCH.FACET_FIELDS.SIZE" = "Tamaño de fichero";
+"SEARCH.FACET_FIELDS.CREATOR" = "Creador";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Modificador";
+"SEARCH.FACET_FIELDS.CREATED" = "Fecha de creación";
+"size-facet-queries" = "Consultas con filtros por tamaño";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Mediano";
+"SEARCH.FACET_QUERIES.LARGE" = "Grande";
+"SEARCH.FACET_QUERIES.SMALL" = "Pequeño";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Extra pequeño";
+"earlier" = "Anterior";
+"lastYear" = "Último año";
+"currentYear" = "Año en curso";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Este año";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "Tipo MIME";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Extra grande";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Supergrande";
+"The.Created.mobileapps" = "Año de creación";
+"The.Modified.mobileapps" = "Año de modificación";
+"Folder.Size.mobileapps" = "Tamaño de carpeta";
+"Folder.Creator.mobileapps" = "Creador";
+"Folder.Modifier.mobileapps" = "Modificador";
+"Folder.Created.mobileapps" = "Fecha de creación";
+"SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mis consultas por filtros";
+"APP.SEARCH.TEXT.FOLDER" = "Carpeta";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Consultas con filtros por tipo";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = " Consultas con filtros por tamaño";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Buscar";
 
 // MARK: - Group List Section
 "today" = "Hoy";
@@ -191,8 +225,10 @@
 "action-menu-create-folder" = "Nueva carpeta";
 "action-menu-mark-offline" = "Disponible sin conexión";
 "action-menu-remove-offline" = "Quitar sin conexión";
-"action-menu-create-media" = "Hacer una foto o un vídeo";
+"action-menu-create-media" = "Tomar una foto o un vídeo";
 "action-menu-upload-media" = "Cargar fotos o vídeos";
+"action-menu-upload-files" = "Cargar ficheros";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
@@ -223,7 +259,7 @@
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
 "privacy-photos-description" = "Para guardar imágenes o vídeos en su dispositivo, Mobile Workspace necesita acceso a sus fotos.";
 "privacy-camera-title" = "Mobile Workspace necesita acceso a las fotos";
-"privacy-camera-description" = "Para tomar y cargar fotos y vídeos, Mobile Workspace necesita acceder a sus fotos.";
+"privacy-camera-description" = "Para hacer y cargar fotos y vídeos, Mobile Workspace necesita acceder a sus fotos.";
 "privacy-button" = "Revisar ajustes de privacidad";
 
 // MARK: - Camera

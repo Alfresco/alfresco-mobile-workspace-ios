@@ -103,7 +103,6 @@
 "error-folder-name-contain-only-spaces" = "Il nome della cartella non può contenere solo spazi";
 "error-file-name-empty" = "Il nome file non può essere vuoto.";
 
-
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Le modifiche alla configurazione sono state salvate.";
 "approved-added-favorites" = "Aggiunto ai preferiti";
@@ -153,6 +152,41 @@
 "invalid-format" = "Il valore Da deve essere inferiore al valore A";
 "required-value" = "Valore obbligatorio";
 "done" = "Completato";
+"APP.SEARCH.FILE.NAME" = "Nome file";
+"APP.SEARCH.CONTENT.DATE.RANGE" = "Data di creazione (intervallo)";
+"APP.SEARCH.RADIO.TYPE" = "Tipo";
+"APP.SEARCH.CONTENT.SIZE" = "Dimensioni contenuto";
+"APP.SEARCH.TEXT.PLACEHOLDER" = "Immettere il nome";
+
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Tipo di file";
+"SEARCH.FACET_FIELDS.SIZE" = "Dimensioni file";
+"SEARCH.FACET_FIELDS.CREATOR" = "Creatore";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Modificatore";
+"SEARCH.FACET_FIELDS.CREATED" = "Data di creazione";
+"size-facet-queries" = "Query filtro dimensioni";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Media";
+"SEARCH.FACET_QUERIES.LARGE" = "Grande";
+"SEARCH.FACET_QUERIES.SMALL" = "Piccola";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Molto piccola";
+"earlier" = "Data precedente";
+"lastYear" = "Anno scorso";
+"currentYear" = "Anno corrente";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Anno in corso";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "Tipo MIME";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Molto grande";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Grandissima";
+"The.Created.mobileapps" = "Anno di creazione";
+"The.Modified.mobileapps" = "Anno di modifica";
+"Folder.Size.mobileapps" = "Dimensione cartella";
+"Folder.Creator.mobileapps" = "Creatore";
+"Folder.Modifier.mobileapps" = "Modificatore";
+"Folder.Created.mobileapps" = "Data di creazione";
+"SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Query filtro personali";
+"APP.SEARCH.TEXT.FOLDER" = "Cartella";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Query con filtro per tipo";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "  Query con filtro per dimensioni";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Ricerca";
 
 // MARK: - Group List Section
 "today" = "Oggi";
@@ -193,6 +227,8 @@
 "action-menu-remove-offline" = "Rimuovi offline";
 "action-menu-create-media" = "Acquisisci una foto o un video";
 "action-menu-upload-media" = "Carica foto o video";
+"action-menu-upload-files" = "Carica file";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";
