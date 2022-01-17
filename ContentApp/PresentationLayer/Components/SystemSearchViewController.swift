@@ -34,7 +34,6 @@ class SystemSearchViewController: SystemThemableViewController {
         super.viewDidLoad()
         configureNavigationBar()
         searchController = createSearchController()
-
         if searchViewModel?.shouldDisplaySearchBar() ?? false {
             navigationItem.searchController = searchController
         }
@@ -42,7 +41,7 @@ class SystemSearchViewController: SystemThemableViewController {
             addSearchButton()
         }
     }
-
+    
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         resultsViewController?.viewWillTransition(to: size, with: coordinator)
@@ -145,7 +144,6 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.smartQuotesType = .no
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
-
         return searchController
     }
 }

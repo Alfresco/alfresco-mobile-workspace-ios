@@ -44,6 +44,8 @@ class SearchSliderRangeComponentViewController: SystemThemableViewController {
         applyLocalization()
         applyComponentsThemes()
         setupSlider()
+        applyButton.accessibilityIdentifier = "applyActionButton-sliderComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-sliderComponent"
     }
     
     func setupSlider() {

@@ -23,7 +23,8 @@ enum CMType: String {
     case folder = "'cm:folder'"
     case library = "'st:site'"
     case node = "'cm:node'"
-    case none = "none"
+    case advance = "advance"
+    case facet = "facet"
 }
 
 // MARK: Component Types for Advance Search
@@ -47,7 +48,7 @@ class SearchChipItem: Equatable {
     var componentType: ComponentType?
     var query: String?
     
-    init(name: String, type: CMType = .none, selected: Bool = true, nodeID: String = "", selectedValue: String = "", componentType: ComponentType? = nil, query: String? = nil) {
+    init(name: String, type: CMType, selected: Bool = true, nodeID: String = "", selectedValue: String = "", componentType: ComponentType? = nil, query: String? = nil) {
         self.name = name
         self.type = type
         self.selected = selected
