@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -164,13 +164,12 @@
 "SEARCH.FACET_FIELDS.CREATOR" = "Creador";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modificador";
 "SEARCH.FACET_FIELDS.CREATED" = "Fecha de creación";
-"size-facet-queries" = "Consultas con filtros por tamaño";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Mediano";
 "SEARCH.FACET_QUERIES.LARGE" = "Grande";
 "SEARCH.FACET_QUERIES.SMALL" = "Pequeño";
 "SEARCH.FACET_QUERIES.XTRASMALL" = "Extra pequeño";
 "earlier" = "Anterior";
-"lastYear" = "Último año";
+"lastYear" = "Año anterior";
 "currentYear" = "Año en curso";
 "SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Este año";
 "SEARCH.FACET_QUERIES.MIMETYPE" = "Tipo MIME";
@@ -185,7 +184,7 @@
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mis consultas por filtros";
 "APP.SEARCH.TEXT.FOLDER" = "Carpeta";
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Consultas con filtros por tipo";
-"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = " Consultas con filtros por tamaño";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Consultas con filtros por tamaño";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Buscar";
 
 // MARK: - Group List Section
