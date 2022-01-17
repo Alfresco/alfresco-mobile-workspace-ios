@@ -57,6 +57,8 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         setupBindings()
         heightSearchView.constant = facetViewModel.heightAndAlphaOfSearchView().height
         searchView.alpha = facetViewModel.heightAndAlphaOfSearchView().alpha
+        applyButton.accessibilityIdentifier = "applyActionButton-facetComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-facetComponent"
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -133,6 +135,7 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         headerTitleLabel.text = facetViewModel.title
         applyButton.setTitle(LocalizationConstants.AdvanceSearch.apply, for: .normal)
         resetButton.setTitle(LocalizationConstants.AdvanceSearch.reset, for: .normal)
+        searchBar.placeholder = LocalizationConstants.AdvanceSearch.searchPlaceholder
     }
     
     func registerCells() {

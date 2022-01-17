@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -104,7 +104,6 @@
 "error-folder-name-contain-only-spaces" = "Le nom de dossier ne peut pas contenir uniquement des espaces";
 "error-file-name-empty" = "Le nom de fichier ne peut pas être vide.";
 
-
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
 "approved-added-favorites" = "Ajouté aux favoris";
@@ -154,6 +153,40 @@
 "invalid-format" = "La valeur 'De' doit être inférieure à la valeur 'A'";
 "required-value" = "Valeur requise";
 "done" = "Terminé";
+"APP.SEARCH.FILE.NAME" = "Nom de fichier";
+"APP.SEARCH.CONTENT.DATE.RANGE" = "Date de création (plage)";
+"APP.SEARCH.RADIO.TYPE" = "Type";
+"APP.SEARCH.CONTENT.SIZE" = "Taille du contenu";
+"APP.SEARCH.TEXT.PLACEHOLDER" = "Saisir le nom";
+
+// MARK: - Facets
+"SEARCH.FACET_FIELDS.TYPE" = "Type du fichier";
+"SEARCH.FACET_FIELDS.SIZE" = "Taille du fichier";
+"SEARCH.FACET_FIELDS.CREATOR" = "Créateur";
+"SEARCH.FACET_FIELDS.MODIFIER" = "Modificateur";
+"SEARCH.FACET_FIELDS.CREATED" = "Date de création";
+"SEARCH.FACET_QUERIES.MEDIUM" = "Moyenne";
+"SEARCH.FACET_QUERIES.LARGE" = "Gros";
+"SEARCH.FACET_QUERIES.SMALL" = "Petite";
+"SEARCH.FACET_QUERIES.XTRASMALL" = "Très petit";
+"earlier" = "Plus tôt";
+"lastYear" = "Dernière année";
+"currentYear" = "L'année en cours";
+"SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Cette année";
+"SEARCH.FACET_QUERIES.MIMETYPE" = "Type MIME";
+"SEARCH.FACET_QUERIES.XTRALARGE" = "Très gros";
+"SEARCH.FACET_QUERIES.XXTRALARGE" = "Énorme";
+"The.Created.mobileapps" = "Année créée";
+"The.Modified.mobileapps" = "Année modifiée";
+"Folder.Size.mobileapps" = "Taille du dossier";
+"Folder.Creator.mobileapps" = "Créateur";
+"Folder.Modifier.mobileapps" = "Modificateur";
+"Folder.Created.mobileapps" = "Date de création";
+"SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "Mes recherches avec filtre";
+"APP.SEARCH.TEXT.FOLDER" = "Dossier";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Recherches avec filtre par type";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Recherches avec filtre par taille";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Rechercher";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";
@@ -196,6 +229,7 @@
 "action-menu-upload-media" = "Importer des photos ou des vidéos";
 "action-menu-create-single-media" = "Prendre une photo ou une vidéo";
 "action-menu-upload-single-media" = "Importer une photo ou une vidéo";
+"action-menu-upload-files" = "Importer des fichiers";
 
 
 // MARK: - Dialog

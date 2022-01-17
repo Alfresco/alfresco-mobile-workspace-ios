@@ -47,6 +47,8 @@ class SearchNumberRangeComponentViewController: SystemThemableViewController {
         applyLocalization()
         applyComponentsThemes()
         minRangeTextField.becomeFirstResponder()
+        applyButton.accessibilityIdentifier = "applyActionButton-numberRangeComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-numberRangeComponent"
     }
     
     override func viewWillAppear(_ animated: Bool) {

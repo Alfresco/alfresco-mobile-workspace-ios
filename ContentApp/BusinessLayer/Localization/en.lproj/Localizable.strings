@@ -165,7 +165,6 @@
 "SEARCH.FACET_FIELDS.CREATOR" = "Creator";
 "SEARCH.FACET_FIELDS.MODIFIER" = "Modifier";
 "SEARCH.FACET_FIELDS.CREATED" = "Created Date";
-"size-facet-queries" = "Size Facet Queries";
 "SEARCH.FACET_QUERIES.MEDIUM" = "Medium";
 "SEARCH.FACET_QUERIES.LARGE" = "Large";
 "SEARCH.FACET_QUERIES.SMALL" = "Small";
@@ -184,8 +183,10 @@
 "Folder.Modifier.mobileapps" = "Modifier";
 "Folder.Created.mobileapps" = "Created Date";
 "SEARCH.FACET_QUERIES.MY_FACET_QUERIES" = "My Facet Queries";
-"TheModified" = "The Modified";
-
+"APP.SEARCH.TEXT.FOLDER" = "Folder";
+"SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Type facet queries";
+"SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Size facet queries";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Search";
 
 // MARK: - Group List Section
 "today" = "Today";
