@@ -170,7 +170,7 @@
 "SEARCH.FACET_QUERIES.XTRASMALL" = "Extra pequeño";
 "earlier" = "Anterior";
 "lastYear" = "Año anterior";
-"currentYear" = "Año en curso";
+"currentYear" = "Año actual";
 "SEARCH.FACET_QUERIES.CREATED_THIS_YEAR" = "Este año";
 "SEARCH.FACET_QUERIES.MIMETYPE" = "Tipo MIME";
 "SEARCH.FACET_QUERIES.XTRALARGE" = "Extra grande";
