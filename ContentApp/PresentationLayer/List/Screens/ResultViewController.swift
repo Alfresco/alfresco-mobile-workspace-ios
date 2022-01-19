@@ -56,7 +56,7 @@ class ResultViewController: SystemThemableViewController {
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let configurationViewHeight: CGFloat = 50.0
-    private let textChipMaxCharacters = 20
+    private let textChipMaxCharacters = 30
     private let textChipMaxPrefix = 5
     private let textChipMaxSufffix = 5
 
