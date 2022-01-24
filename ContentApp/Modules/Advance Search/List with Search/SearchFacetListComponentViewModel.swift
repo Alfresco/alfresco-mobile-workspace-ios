@@ -20,9 +20,6 @@ import Foundation
 import UIKit
 
 class SearchFacetListComponentViewModel {
-
-
-    // Search Facet
     var searchFacets: SearchFacets?
     var searchFacetOptions = [Buckets]()
     var tempSearchFacetOptions = [Buckets]()
@@ -36,8 +33,20 @@ class SearchFacetListComponentViewModel {
     let minimumItemsInListToShowSearchBar = 10
 
     var title: String {
-        let name = searchFacets?.label ?? ""
-        return NSLocalizedString(name, comment: "")
+        let name = NSLocalizedString(searchFacets?.label ?? "", comment: "")
+        if isFileSizeFacet {
+            return String(format: "%@ (KB)", name)
+        }
+        return name
+    }
+    
+    var isFileSizeFacet: Bool {
+        let fileSizeLocalizedString = NSLocalizedString("SEARCH.FACET_FIELDS.SIZE", comment: "")
+        let title = NSLocalizedString(searchFacets?.label ?? "", comment: "")
+        if fileSizeLocalizedString == title {
+            return true
+        }
+        return false
     }
     
     func saveTemporaryDataForSearchResults() {
@@ -58,7 +67,6 @@ class SearchFacetListComponentViewModel {
         }
     }
 }
-
 
 // MARK: Facet Field
 extension SearchFacetListComponentViewModel {
