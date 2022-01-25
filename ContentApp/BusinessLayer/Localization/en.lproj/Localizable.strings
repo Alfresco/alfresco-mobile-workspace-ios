@@ -186,6 +186,7 @@
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Type facet queries";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Size facet queries";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Search";
+"file-size-unit" = "KB";
 
 // MARK: - Group List Section
 "today" = "Today";

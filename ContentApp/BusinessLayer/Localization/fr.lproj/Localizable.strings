@@ -186,6 +186,7 @@
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Recherches avec filtre par type";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Recherches avec filtre par taille";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Rechercher";
+"file-size-unit" = "Ko";
 
 // MARK: - Group List Section
 "today" = "Aujourd'hui";

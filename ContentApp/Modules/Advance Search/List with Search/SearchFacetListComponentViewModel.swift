@@ -34,6 +34,9 @@ class SearchFacetListComponentViewModel {
 
     var title: String {
         let name = NSLocalizedString(searchFacets?.label ?? "", comment: "")
+        if isFileSizeFacet(for: name) {
+            return String(format: "%@ (\(LocalizationConstants.AdvanceSearch.fileSizeUnit))", name)
+        }
         return name
     }
         
@@ -53,6 +56,15 @@ class SearchFacetListComponentViewModel {
         } else {
             return (0.0, 0.0)
         }
+    }
+    
+    func isFileSizeFacet(for label: String?) -> Bool {
+        let fileSizeLocalizedString = NSLocalizedString("SEARCH.FACET_FIELDS.SIZE", comment: "")
+        let title = NSLocalizedString(label ?? "", comment: "")
+        if fileSizeLocalizedString == title {
+            return true
+        }
+        return false
     }
 }
 

@@ -27,7 +27,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
 
     var title: String {
         let name = NSLocalizedString(selectedCategory?.name ?? "", comment: "")
-        return String(format: "%@ (KB)", name)
+        return String(format: "%@ (\(LocalizationConstants.AdvanceSearch.fileSizeUnit))", name)
     }
     
     // MARK: - Update Selected Values
