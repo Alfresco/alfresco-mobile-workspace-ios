@@ -33,18 +33,25 @@ class SearchFacets: NSObject {
        
         var bucket: [Buckets] = []
         for entry in buckets {
-            bucket.append(SearchFacets.create(from: entry))
+            bucket.append(SearchFacets.create(from: entry, and: label))
         }
         self.buckets = bucket
     }
     
-    private static func create(from bucket: GenericBucket) -> Buckets {
+    private static func create(from bucket: GenericBucket, and label: String?) -> Buckets {
         var count = bucket.count
         if let value = bucket.metrics?.first?.value {
             let bucketCount = SearchFacets.getCount(value: value)
             count = String(format: "%d", bucketCount)
-        } 
-        return Buckets(label: bucket.label,
+        }
+        
+        var bucketLabel = bucket.label
+        if SearchFacets.isFileSizeFacet(for: label) {
+            let size = (Float(bucketLabel ?? "0.0") ?? 0.0)/1000.0
+            bucketLabel = String(format: "%.2f", size)
+        }
+        
+        return Buckets(label: bucketLabel,
                        filterQuery: bucket.filterQuery,
                        count: count)
     }
@@ -56,6 +63,15 @@ class SearchFacets: NSObject {
             return Int(stringCount) ?? 0
         }
         return count
+    }
+    
+    private static func isFileSizeFacet(for label: String?) -> Bool {
+        let fileSizeLocalizedString = NSLocalizedString("SEARCH.FACET_FIELDS.SIZE", comment: "")
+        let title = NSLocalizedString(label ?? "", comment: "")
+        if fileSizeLocalizedString == title {
+            return true
+        }
+        return false
     }
 }
 

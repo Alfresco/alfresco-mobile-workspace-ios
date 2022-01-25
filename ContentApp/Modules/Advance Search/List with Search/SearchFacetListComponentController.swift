@@ -42,17 +42,11 @@ class SearchFacetListComponentController: NSObject {
             let label = item.label ?? ""
             let name = NSLocalizedString(label, comment: "")
             let count = item.count ?? "0"
-            var title = String(format: "%@ (%@)", name, count)
+            let title = String(format: "%@ (%@)", name, count)
             var isSelected = false
             if facetViewModel.selectedSearchFacet.firstIndex(where: {$0.label == label}) != nil {
                 isSelected = true
             }
-            
-            if facetViewModel.isFileSizeFacet {
-                let size = (Float(name) ?? 0.0)/1000.0
-                title = String(format: "%.2f (%@)", size, count)
-            }
-            
             let rowVM = ListItemCellViewModel(title: title, isRadioList: false, isSelected: isSelected)
             rowVM.didSelectListItem = {
                 self.updateSelectedValue(for: index)
@@ -71,14 +65,8 @@ class SearchFacetListComponentController: NSObject {
 
             for value in valuesArray {
                 let localizedValue = NSLocalizedString(value, comment: "")
-                if facetViewModel.isFileSizeFacet {
-                    if let index = searchFacetOptions.firstIndex(where: {String(format: "%.2f", (Float($0.label ?? "0") ?? 0.0)/1000.0) == localizedValue}) {
-                        self.facetViewModel.selectedSearchFacet.append(searchFacetOptions[index])
-                    }
-                } else {
-                    if let index = searchFacetOptions.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == localizedValue}) {
-                        self.facetViewModel.selectedSearchFacet.append(searchFacetOptions[index])
-                    }
+                if let index = searchFacetOptions.firstIndex(where: {NSLocalizedString($0.label ?? "", comment: "") == localizedValue}) {
+                    self.facetViewModel.selectedSearchFacet.append(searchFacetOptions[index])
                 }
             }
         }
@@ -104,18 +92,10 @@ extension SearchFacetListComponentController {
         for counter in 0 ..< selectedSearchFacet.count {
             let item = selectedSearchFacet[counter]
             let name = NSLocalizedString(item.label ?? "", comment: "")
-            if facetViewModel.isFileSizeFacet {
-                let sizeValue = (Float(name) ?? 0.0)/1000.0
-                if counter != 0 {
-                    selectedValue.append(facetViewModel.stringConcatenator)
-                }
-                selectedValue.append(String(format: "%.2f", sizeValue))
-            } else {
-                if counter != 0 {
-                    selectedValue.append(facetViewModel.stringConcatenator)
-                }
-                selectedValue.append(name)
+            if counter != 0 {
+                selectedValue.append(facetViewModel.stringConcatenator)
             }
+            selectedValue.append(name)
         }
         facetViewModel.selectedSearchFacetString = selectedValue
         facetViewModel.queryBuilder = facetViewModel.buildQueryForSearchFacets()

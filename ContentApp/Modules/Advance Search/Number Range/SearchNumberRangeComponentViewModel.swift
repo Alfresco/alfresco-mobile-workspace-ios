@@ -73,7 +73,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
                 component?.settings = settings
                 selectedCategory.component = component
                 self.selectedCategory = selectedCategory
-                queryBuilder = buildQuery(minValue: String(intMaximumValue*1000), maxValue: String(intMinimumValue*1000))
+                queryBuilder = buildQuery(minValue: String(intMinimumValue*1000), maxValue: String(intMaximumValue*1000))
             }
         }
     }
