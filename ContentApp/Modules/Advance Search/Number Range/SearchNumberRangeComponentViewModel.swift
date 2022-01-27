@@ -26,7 +26,8 @@ class SearchNumberRangeComponentViewModel: NSObject {
     let maxCharacters = 9
 
     var title: String {
-        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        let name = NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        return String(format: "%@ (\(LocalizationConstants.AdvanceSearch.fileSizeUnit))", name)
     }
     
     // MARK: - Update Selected Values
@@ -60,7 +61,10 @@ class SearchNumberRangeComponentViewModel: NSObject {
     func applyFilter(minValue: String?, maxValue: String?) {
         let minimumValue = (minValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let maximumValue = (maxValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if !minimumValue.isEmpty && !maximumValue.isEmpty && Int(maximumValue) ?? 0 > Int(minimumValue) ?? 0 {
+        let intMaximumValue = Int(maximumValue) ?? 0
+        let intMinimumValue = Int(minimumValue) ?? 0
+        
+        if !minimumValue.isEmpty && !maximumValue.isEmpty && intMaximumValue > intMinimumValue {
             let value = String(format: "%@ %@ %@", minimumValue, stringConcatenator, maximumValue)
             if let selectedCategory = self.selectedCategory {
                 let component = selectedCategory.component
@@ -69,7 +73,7 @@ class SearchNumberRangeComponentViewModel: NSObject {
                 component?.settings = settings
                 selectedCategory.component = component
                 self.selectedCategory = selectedCategory
-                queryBuilder = buildQuery(minValue: minimumValue, maxValue: maximumValue)
+                queryBuilder = buildQuery(minValue: String(intMinimumValue*1000), maxValue: String(intMaximumValue*1000))
             }
         }
     }

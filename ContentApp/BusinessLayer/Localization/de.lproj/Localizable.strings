@@ -157,6 +157,7 @@
 "APP.SEARCH.RADIO.TYPE" = "Typ";
 "APP.SEARCH.CONTENT.SIZE" = "Content-Typ";
 "APP.SEARCH.TEXT.PLACEHOLDER" = "Namen eingeben";
+"file-size-unit" = "KB";
 
 // MARK: - Facets
 "SEARCH.FACET_FIELDS.TYPE" = "Dateityp";
