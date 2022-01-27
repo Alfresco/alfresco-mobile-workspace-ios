@@ -66,9 +66,7 @@ class SearchFacets: NSObject {
     }
     
     private static func isFileSizeFacet(for label: String?) -> Bool {
-        let fileSizeLocalizedString = NSLocalizedString("SEARCH.FACET_FIELDS.SIZE", comment: "")
-        let title = NSLocalizedString(label ?? "", comment: "")
-        if fileSizeLocalizedString == title {
+        if "SEARCH.FACET_FIELDS.SIZE" == label {
             return true
         }
         return false

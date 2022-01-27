@@ -33,11 +33,11 @@ class SearchFacetListComponentViewModel {
     let minimumItemsInListToShowSearchBar = 10
 
     var title: String {
-        let name = NSLocalizedString(searchFacets?.label ?? "", comment: "")
-        if isFileSizeFacet(for: name) {
+        if isFileSizeFacet(for: searchFacets?.label ?? "") {
+            let name = NSLocalizedString(searchFacets?.label ?? "", comment: "")
             return String(format: "%@ (\(LocalizationConstants.AdvanceSearch.fileSizeUnit))", name)
         }
-        return name
+        return NSLocalizedString(searchFacets?.label ?? "", comment: "")
     }
         
     func saveTemporaryDataForSearchResults() {
@@ -59,9 +59,7 @@ class SearchFacetListComponentViewModel {
     }
     
     func isFileSizeFacet(for label: String?) -> Bool {
-        let fileSizeLocalizedString = NSLocalizedString("SEARCH.FACET_FIELDS.SIZE", comment: "")
-        let title = NSLocalizedString(label ?? "", comment: "")
-        if fileSizeLocalizedString == title {
+        if "SEARCH.FACET_FIELDS.SIZE" == label {
             return true
         }
         return false
