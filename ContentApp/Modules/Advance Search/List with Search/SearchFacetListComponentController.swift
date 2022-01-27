@@ -47,7 +47,6 @@ class SearchFacetListComponentController: NSObject {
             if facetViewModel.selectedSearchFacet.firstIndex(where: {$0.label == label}) != nil {
                 isSelected = true
             }
-            
             let rowVM = ListItemCellViewModel(title: title, isRadioList: false, isSelected: isSelected)
             rowVM.didSelectListItem = {
                 self.updateSelectedValue(for: index)
@@ -92,9 +91,7 @@ extension SearchFacetListComponentController {
         let selectedSearchFacet = facetViewModel.selectedSearchFacet
         for counter in 0 ..< selectedSearchFacet.count {
             let item = selectedSearchFacet[counter]
-            let label = item.label ?? ""
-            let name = NSLocalizedString(label, comment: "")
-            
+            let name = NSLocalizedString(item.label ?? "", comment: "")
             if counter != 0 {
                 selectedValue.append(facetViewModel.stringConcatenator)
             }

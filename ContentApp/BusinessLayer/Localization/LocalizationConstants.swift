@@ -166,6 +166,7 @@ struct LocalizationConstants {
         static let invalidFormat = NSLocalizedString("invalid-format", comment: "")
         static let errorRequiredValue = NSLocalizedString("required-value", comment: "")
         static let searchPlaceholder = NSLocalizedString("APP.SEARCH.FIELD.PLACEHOLDER", comment: "")
+        static let fileSizeUnit = NSLocalizedString("file-size-unit", comment: "")
     }
 
     struct GroupListSection {

@@ -187,6 +187,7 @@
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facetquery's op basis van type";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facetquery's op basis van grootte";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Zoeken";
+"file-size-unit" = "KB";
 
 // MARK: - Group List Section
 "today" = "Vandaag";
