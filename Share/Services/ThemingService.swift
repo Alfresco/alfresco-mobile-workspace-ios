@@ -93,7 +93,6 @@ class ThemingService: ThemingServiceProtocol {
             }
             userInterfaceStyle = UIScreen.main.traitCollection.userInterfaceStyle
         }
-        overrideUserInterfaceStyle(userInterfaceStyle)
     }
 
     func activateAutoTheme(for userInterfaceStyle: UIUserInterfaceStyle) {
@@ -104,7 +103,6 @@ class ThemingService: ThemingServiceProtocol {
             } else {
                 activate(theme: DefaultTheme.self)
             }
-            overrideUserInterfaceStyle(userInterfaceStyle)
         default: break
         }
     }
@@ -113,16 +111,10 @@ class ThemingService: ThemingServiceProtocol {
         switch self.getThemeMode() {
         case .dark:
             activate(theme: DarkTheme.self)
-            overrideUserInterfaceStyle(.dark)
         case .light:
             activate(theme: DefaultTheme.self)
-            overrideUserInterfaceStyle(.light)
         default: break
         }
-    }
-
-    func overrideUserInterfaceStyle(_ userInterfaceStyle: UIUserInterfaceStyle) {
-        UIApplication.shared.windows[0].overrideUserInterfaceStyle = userInterfaceStyle
     }
 
     func getThemeMode() -> ThemeModeType {

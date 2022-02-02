@@ -89,8 +89,10 @@ class Keychain {
 
     private static func accessDictionary(for identifier: String) -> NSMutableDictionary {
         let searchDictionary = NSMutableDictionary()
+       // searchDictionary.setObject("W8N95J537P.com.alfresco.contentapp", forKey: String(kSecAttrAccessGroup) as NSCopying)
         searchDictionary.setObject(kSecClassGenericPassword, forKey: String(kSecClass) as NSCopying)
         searchDictionary.setObject(Bundle.main.infoDictionary?["CFBundleIdentifier"] ?? "", forKey: String(kSecAttrService) as NSCopying)
+
         if let encodedIdentifier = identifier.data(using: String.Encoding.utf8) {
             searchDictionary.setObject(encodedIdentifier, forKey: String(kSecAttrGeneric) as NSCopying)
             searchDictionary.setObject(encodedIdentifier, forKey: String(kSecAttrAccount) as NSCopying)

@@ -66,14 +66,14 @@ class AccountService: AccountServiceProtocol, Service {
 
     var activeAccount: AccountProtocol? {
         didSet {
-            let defaults = UserDefaults.standard
+            let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
             if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
+                defaults?.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
             } else {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                defaults?.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
 
-            defaults.synchronize()
+            defaults?.synchronize()
         }
     }
 
@@ -136,9 +136,9 @@ class AccountService: AccountServiceProtocol, Service {
 
     func unregister(account: AccountProtocol) {
         if let index = accounts.firstIndex(where: { account === $0 }) {
-            let defaults = UserDefaults.standard
+            let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                defaults?.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
             accounts.remove(at: index)
@@ -147,9 +147,9 @@ class AccountService: AccountServiceProtocol, Service {
 
     func delete(account: AccountProtocol) {
         if let index = accounts.firstIndex(where: { account === $0 }) {
-            let defaults = UserDefaults.standard
+            let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                defaults?.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
 

@@ -40,11 +40,13 @@ struct RecentSearchesViewModel {
         if recents.count == maxElemetsInRecentSearchesArray + 1 {
             recents.removeLast()
         }
-        UserDefaults.standard.set(recents, forKey: KeyConstants.Save.recentSearches)
-        UserDefaults.standard.synchronize()
+        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        userDefaults?.set(recents, forKey: KeyConstants.Save.recentSearches)
+        userDefaults?.synchronize()
     }
 
     private func recentSearch() -> [String] {
-        return UserDefaults.standard.array(forKey: KeyConstants.Save.recentSearches) as? [String] ?? []
+        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        return userDefaults?.array(forKey: KeyConstants.Save.recentSearches) as? [String] ?? []
     }
 }

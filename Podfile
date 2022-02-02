@@ -50,6 +50,10 @@ target 'ContentApp' do
 
   target 'ContentAppUITests' do
   end
+  
+  target 'Share' do
+    inherit! :search_paths
+  end
 
 end
 

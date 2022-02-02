@@ -30,6 +30,7 @@ class AuthenticationParameters: Codable {
     var contentURL: String = ""
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
+        //var fullFormatURL = "https://mobileapps.envalfresco.com"
         if !port.isEmpty {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }
@@ -49,8 +50,8 @@ class AuthenticationParameters: Codable {
     }
 
     static func parameters(for accountIdentifier: String) -> AuthenticationParameters {
-        let defaults = UserDefaults.standard
-        if let data = defaults.value(forKey: accountIdentifier) as? Data {
+        let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        if let data = defaults?.value(forKey: accountIdentifier) as? Data {
             if let params = try? PropertyListDecoder().decode(AuthenticationParameters.self, from: data) {
                 return params
             }
@@ -63,17 +64,17 @@ class AuthenticationParameters: Codable {
     }
 
     func save(for accountIdentifier: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(try? PropertyListEncoder().encode(self),
+        let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        defaults?.set(try? PropertyListEncoder().encode(self),
                                   forKey: accountIdentifier)
-        defaults.synchronize()
+        defaults?.synchronize()
         AlfrescoLog.debug("Authentication parameters saved in UserDefaults:\n\(Mirror.description(for: self))")
     }
 
     func remove(for accountIdentifier: String) {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: accountIdentifier)
-        defaults.synchronize()
+        let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        defaults?.removeObject(forKey: accountIdentifier)
+        defaults?.synchronize()
         AlfrescoLog.debug("Authentication parameters removed for account: \(accountIdentifier)")
     }
 

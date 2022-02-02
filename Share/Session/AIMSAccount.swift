@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,6 +16,7 @@
 //  limitations under the License.
 //
 
+import UIKit
 import Foundation
 import AlfrescoAuth
 import AlfrescoContent
@@ -145,9 +146,6 @@ extension AIMSAccount: AIMSAccountDelegate {
             let path = DiskService.documentsDirectoryPath(for: oldAccountIdentifier)
             _ = DiskService.delete(itemAtPath: path)
 
-            let listNodeDataAccessor = ListNodeDataAccessor()
-            listNodeDataAccessor.removeAllNodes()
-
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoCredential.self))")
             Keychain.delete(forKey: "\(oldAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))")
 
@@ -156,13 +154,13 @@ extension AIMSAccount: AIMSAccountDelegate {
             session.parameters.remove(for: oldAccountIdentifier)
         }
 
-        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
-        NotificationCenter.default.post(name: notification,
-                                        object: nil,
-                                        userInfo: nil)
-
-        let repository = ApplicationBootstrap.shared().repository
-        let syncTriggerService = repository.service(of: SyncTriggersService.identifier) as? SyncTriggersService
-        syncTriggerService?.triggerSync(for: .userReAuthenticated)
+//        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
+//        NotificationCenter.default.post(name: notification,
+//                                        object: nil,
+//                                        userInfo: nil)
+//
+//        let repository = ApplicationBootstrap.shared().repository
+//        let syncTriggerService = repository.service(of: SyncTriggersService.identifier) as? SyncTriggersService
+//        syncTriggerService?.triggerSync(for: .userReAuthenticated)
     }
 }
