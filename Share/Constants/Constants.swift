@@ -17,7 +17,19 @@
 //
 
 import UIKit
+import AlfrescoAuth
+import AlfrescoCore
+import AlfrescoContent
 
 enum RenditionType: String {
     case pdf = "pdf", imagePreview = "imgpreview"
+}
+
+typealias PagedResponseCompletionHandler = ((PaginatedResponse) -> Void)
+struct PaginatedResponse {
+    var results: [ListNode]
+    var error: Error?
+    var requestPagination: RequestPagination?
+    var responsePagination: Pagination?
+    var searchFacets = [SearchFacets]()
 }

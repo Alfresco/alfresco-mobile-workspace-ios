@@ -17,14 +17,71 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
+import AlfrescoAuth
+import AlfrescoCore
+import AlfrescoContent
 
 class BrowseViewController: UIViewController {
+    lazy var viewModel = BrowseViewModel()
+    var paginationEnabled = true
+    var currentPage = 1
+    var pageSkipCount = 0
+    var totalItems: Int64 = 0
+    var hasMoreItems = true
+    var shouldDisplayNextPageLoadingIndicator = false
+    private var shouldRefreshList = true
+    private var requestInProgress = false
 
-    
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        refreshList()
+    }
+    
+    func refreshList() {
+        currentPage = 1
+        hasMoreItems = true
+        shouldRefreshList = true
+        fetchNextPage()
+    }
+    
+    func fetchNextPage() {
+        let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            showAlertInternetUnavailable()
+            return
+        }
 
-        
+        if hasMoreItems && !requestInProgress {
+            if shouldRefreshList {
+                pageSkipCount = 0
+                shouldRefreshList = false
+            } else {
+                pageSkipCount = viewModel.rawListNodes.isEmpty ? 0 : viewModel.rawListNodes.count
+            }
+            let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
+                                             skipCount: pageSkipCount)
+            requestInProgress = true
+            viewModel.fetchItems(with: nextPage) { [weak self] paginatedResponse in
+                guard let sSelf = self else { return }
+                print("Paginated response: \(paginatedResponse)")
+                //sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        }
+    }
+    
+    private func showAlertInternetUnavailable() {
+        let title = LocalizationConstants.Dialog.internetUnavailableTitle
+        let message = LocalizationConstants.Dialog.internetUnavailableMessage
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction],
+                                       completionHandler: {})
     }
 }

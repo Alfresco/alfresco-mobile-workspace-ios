@@ -147,17 +147,18 @@ class ShareViewController: UIViewController {
     
     func getFilesAndFolder() {
         print("Get Files and Folders")
+//        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
+//        if let controller = storyboard.instantiateViewController(withIdentifier: "BrowseViewController") as? BrowseViewController {
+//            self.navigationController?.pushViewController(controller, animated: true)
+//        }
     }
-    
     
     @IBAction func loginButtonAction(_ sender: Any) {
         print("loginButtonAction")
-        // pushToNextController()
-        //self.openMainApp()
-        
-       // reSignIn()
-        
-        let browseNode = BrowseNode(type: .personalFiles)
+        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
+        if let controller = storyboard.instantiateViewController(withIdentifier: "BrowseViewController") as? BrowseViewController {
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
     func reSignIn() {
