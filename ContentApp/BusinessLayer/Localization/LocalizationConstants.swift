@@ -223,7 +223,10 @@ struct LocalizationConstants {
         static let overrideSyncCellularDataTitle =  NSLocalizedString("dialog-override-sync-cellular-data-title", comment: "")
 
         static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
+        static let sessionUnavailableTitle =  NSLocalizedString("dialog-session-unavailable-title", comment: "")
+        static let sessionUnavailableMessage =  NSLocalizedString("dialog-session-unavailable-message", comment: "")
     }
+
 
     struct EmptyLists {
         static let recentsTitle = NSLocalizedString("empty-recent-title", comment: "")

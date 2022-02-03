@@ -311,6 +311,11 @@
 		C9A911B327A7BBEF002EBC7F /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB6A26EB363100E05375 /* Observable.swift */; };
 		C9A911B427A7BBF2002EBC7F /* CellConfigurable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB6826EB363100E05375 /* CellConfigurable.swift */; };
 		C9A911B527A7BBF5002EBC7F /* RowViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB6926EB363100E05375 /* RowViewModel.swift */; };
+		C9A9FB3427AB8EFE0091B7E8 /* UIViewController+Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9747A15254C65B700D63B71 /* UIViewController+Dialog.swift */; };
+		C9A9FB3D27ABB30F0091B7E8 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */; };
+		C9A9FB3E27ABB30F0091B7E8 /* ShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A9FB3C27ABB30F0091B7E8 /* ShareViewModel.swift */; };
+		C9A9FB4027ABB3760091B7E8 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A9FB3F27ABB3760091B7E8 /* BrowseViewController.swift */; };
+		C9A9FB4227ABB3B10091B7E8 /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A9FB4127ABB3B10091B7E8 /* BrowseViewModel.swift */; };
 		C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */; };
 		C9AEE048270D9D9E00880235 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
 		C9AEE049270D9D9E00880235 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
@@ -336,10 +341,8 @@
 		C9E1801327A96FE50006747E /* NodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECECF9254302420097DB3F /* NodeEvent.swift */; };
 		C9E1BF262729213300900C42 /* SearchNumberRangeComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */; };
 		C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */; };
-		C9E79E7727A3E653002BC5A0 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E79E7627A3E653002BC5A0 /* ShareViewController.swift */; };
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
 		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		C9E79E8427A420CF002BC5A0 /* ShareViewControllerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E79E8327A420CE002BC5A0 /* ShareViewControllerList.swift */; };
 		C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */; };
 		C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */; };
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
@@ -741,6 +744,10 @@
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
 		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		C9A9FB3C27ABB30F0091B7E8 /* ShareViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
+		C9A9FB3F27ABB3760091B7E8 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
+		C9A9FB4127ABB3B10091B7E8 /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
 		C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSearchViewModel.swift; sourceTree = "<group>"; };
 		C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationManager.swift; sourceTree = "<group>"; };
 		C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationHelper.swift; sourceTree = "<group>"; };
@@ -759,10 +766,8 @@
 		C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewController.swift; sourceTree = "<group>"; };
 		C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewModel.swift; sourceTree = "<group>"; };
 		C9E79E7427A3E653002BC5A0 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		C9E79E7627A3E653002BC5A0 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C9E79E7927A3E653002BC5A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C9E79E7B27A3E653002BC5A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C9E79E8327A420CE002BC5A0 /* ShareViewControllerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewControllerList.swift; sourceTree = "<group>"; };
 		C9E79E8527A42298002BC5A0 /* ContentApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentApp.entitlements; sourceTree = "<group>"; };
 		C9E79E8627A4255D002BC5A0 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewController.swift; sourceTree = "<group>"; };
@@ -1708,6 +1713,33 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		C9A9FB3827ABB30F0091B7E8 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C9A9FB3A27ABB30F0091B7E8 /* Share */,
+				C9A9FB3927ABB30F0091B7E8 /* Browse */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C9A9FB3927ABB30F0091B7E8 /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				C9A9FB3F27ABB3760091B7E8 /* BrowseViewController.swift */,
+				C9A9FB4127ABB3B10091B7E8 /* BrowseViewModel.swift */,
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		C9A9FB3A27ABB30F0091B7E8 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */,
+				C9A9FB3C27ABB30F0091B7E8 /* ShareViewModel.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
 		C9AEE043270D9D9E00880235 /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
@@ -1768,9 +1800,8 @@
 				C918811427AA414C00F850DF /* Session */,
 				C918812327AA421400F850DF /* Sync */,
 				C918812127AA421400F850DF /* DataAccessors */,
+				C9A9FB3827ABB30F0091B7E8 /* Controllers */,
 				C9E79E8627A4255D002BC5A0 /* Share.entitlements */,
-				C9E79E7627A3E653002BC5A0 /* ShareViewController.swift */,
-				C9E79E8327A420CE002BC5A0 /* ShareViewControllerList.swift */,
 				C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */,
 				C9E79E7B27A3E653002BC5A0 /* Info.plist */,
 			);
@@ -2960,6 +2991,7 @@
 				C9A9108127A7B45B002EBC7F /* LocationService.swift in Sources */,
 				C9A910EA27A7B746002EBC7F /* PageFetchableCollectionView.swift in Sources */,
 				C9A9119C27A7BA86002EBC7F /* CameraStoryboardInstantiable.swift in Sources */,
+				C9A9FB3E27ABB30F0091B7E8 /* ShareViewModel.swift in Sources */,
 				C9A9117327A7B9DE002EBC7F /* AsyncClosureOperation.swift in Sources */,
 				C9A910EF27A7B760002EBC7F /* UITextField+Replacement.swift in Sources */,
 				C9A911AC27A7BB92002EBC7F /* DefaultTheme.swift in Sources */,
@@ -3002,7 +3034,6 @@
 				C9A910CD27A7B6DA002EBC7F /* PlainTextPreview.swift in Sources */,
 				C9A9117027A7B9CA002EBC7F /* LocalizationConstants.swift in Sources */,
 				C9A9111F27A7B812002EBC7F /* BasicAuthCredential.swift in Sources */,
-				C9E79E8427A420CF002BC5A0 /* ShareViewControllerList.swift in Sources */,
 				C9A910E327A7B734002EBC7F /* ActivityIndicatorFooterView.swift in Sources */,
 				C9E17FF627A934AA0006747E /* ListNode.swift in Sources */,
 				C918814927AA89EB00F850DF /* ApplicationBootstrap.swift in Sources */,
@@ -3036,6 +3067,7 @@
 				C9A9117C27A7BA16002EBC7F /* CameraKitLocalization.swift in Sources */,
 				C9A9117227A7B9DC002EBC7F /* AsyncOperation.swift in Sources */,
 				C9A910C727A7B6C5002EBC7F /* FilePreviewProtocol.swift in Sources */,
+				C9A9FB3D27ABB30F0091B7E8 /* ShareViewController.swift in Sources */,
 				C9A9110327A7B79A002EBC7F /* UImage+Color.swift in Sources */,
 				C918811B27AA417200F850DF /* Constants.swift in Sources */,
 				C9A9115027A7B918002EBC7F /* MultipleChoiceItem.swift in Sources */,
@@ -3046,18 +3078,20 @@
 				C9A9116927A7B9A7002EBC7F /* UIConstants.swift in Sources */,
 				C9A9119F27A7BA8D002EBC7F /* Collection+SafeRange.swift in Sources */,
 				C9A911B527A7BBF5002EBC7F /* RowViewModel.swift in Sources */,
+				C9A9FB3427AB8EFE0091B7E8 /* UIViewController+Dialog.swift in Sources */,
 				C9A9119627A7BA74002EBC7F /* FileAsset.swift in Sources */,
 				C918812527AA421400F850DF /* ListNodeDataAccessor.swift in Sources */,
 				C9E17FF927A94C090006747E /* DatabaseService.swift in Sources */,
 				C9A9111827A7B7FB002EBC7F /* GetContentServicesProfile.swift in Sources */,
-				C9E79E7727A3E653002BC5A0 /* ShareViewController.swift in Sources */,
 				C9A9111627A7B7F4002EBC7F /* BasicAuthenticationProvider.swift in Sources */,
 				C9A910E127A7B730002EBC7F /* ZoomImageView.swift in Sources */,
 				C9A9113F27A7B879002EBC7F /* SearchFacetFields.swift in Sources */,
+				C9A9FB4027ABB3760091B7E8 /* BrowseViewController.swift in Sources */,
 				C9A910F127A7B764002EBC7F /* UITextField+MaxLength.swift in Sources */,
 				C9A910F027A7B762002EBC7F /* UITextField+IsEmpty.swift in Sources */,
 				C9A9111227A7B7E0002EBC7F /* BasicAuthAccount.swift in Sources */,
 				C9A9115E27A7B984002EBC7F /* Mirror+Description.swift in Sources */,
+				C9A9FB4227ABB3B10091B7E8 /* BrowseViewModel.swift in Sources */,
 				C9A9116427A7B995002EBC7F /* Error+StatusCode.swift in Sources */,
 				C9A9112627A7B829002EBC7F /* SettingsItem.swift in Sources */,
 				C9A9113A27A7B866002EBC7F /* EmptyFavoritesFilesFolders.swift in Sources */,

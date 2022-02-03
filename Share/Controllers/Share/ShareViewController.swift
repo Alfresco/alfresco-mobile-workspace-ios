@@ -25,64 +25,130 @@ import AlfrescoCore
 import AlfrescoContent
 import JWTDecode
 import FastCoding
+import MaterialComponents.MaterialDialogs
+
 
 @objc(ShareExtensionViewController)
 class ShareViewController: UIViewController {
-    private var appURLString = "ShareExtension://home?data="
-    private (set) var parameters = AuthenticationParameters.parameters()
-    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
-        let authConfig = parameters.authenticationConfiguration()
-        return AlfrescoAuth(configuration: authConfig)
-    }()
-
-    private (set) var session: AlfrescoAuthSession?
-    var apiClient: APIClientProtocol?
-    private (set) var credential: AlfrescoCredential?
+//    private (set) var parameters = AuthenticationParameters.parameters()
+//    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
+//        let authConfig = parameters.authenticationConfiguration()
+//        return AlfrescoAuth(configuration: authConfig)
+//    }()
+//
+//    private (set) var session: AlfrescoAuthSession?
+//    var apiClient: APIClientProtocol?
+//    private (set) var credential: AlfrescoCredential?
+//    private var refreshGroup = DispatchGroup()
+//    private var refreshGroupRequestCount = 0
+//    private var refreshInProgress = false
+//    private var refreshTimer: Timer?
+//    private let refreshTimeBuffer = 20.0
+//    private var logoutHandler: LogoutHandler?
+//
+//
+    lazy var viewModel = ShareViewModel()
     
-    private var refreshGroup = DispatchGroup()
-    private var refreshGroupRequestCount = 0
-    private var refreshInProgress = false
-    private var refreshTimer: Timer?
-    private let refreshTimeBuffer = 20.0
-    private var logoutHandler: LogoutHandler?
-
-    
-    var repository: ServiceRepository {
-        return ApplicationBootstrap.shared().repository
-    }
-
-    var accountService: AccountService? {
-        let identifier = AccountService.identifier
-        return repository.service(of: identifier) as? AccountService
-    }
-
-    var themingService: MaterialDesignThemingService? {
-        let identifier = MaterialDesignThemingService.identifier
-        return repository.service(of: identifier) as? MaterialDesignThemingService
-    }
-    
-    
-    var activeAccount: AccountProtocol? {
-        didSet {
-            let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults?.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
-            } else {
-                defaults?.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
-            }
-
-            defaults?.synchronize()
-        }
-    }
-    
-
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         print("Jai Shri Ram. JHMPPWPBJASHJH")
        // handleSharedFile()
-        checkForUserSession()
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+            self.checkForUserSession()
+        }
     }
+    
+    // MARK: - Check for user session
+    func checkForUserSession() {
+        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        if let activeAccountIdentifier = userDefaults?.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
+            let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
+
+            // Check account type whether it's Basic or AIMS
+            if let activeAccountPassword = Keychain.string(forKey: activeAccountIdentifier) {
+                let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
+                let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
+                registerAndPresent(account: account)
+                
+            } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
+                let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
+                do {
+                    let decoder = JSONDecoder()
+
+                    if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
+                        let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+
+                        let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
+                        let account = AIMSAccount(with: accountSession)
+                        registerAndPresent(account: account)
+                    }
+                } catch {
+                    AlfrescoLog.error("Unable to deserialize session information")
+                }
+            } else {
+                showAlertToRegisterInTheApp()
+            }
+        } else {
+            showAlertToRegisterInTheApp()
+        }
+    }
+    
+    private func showAlertToRegisterInTheApp() {
+        let title = LocalizationConstants.Dialog.sessionUnavailableTitle
+        let message = LocalizationConstants.Dialog.sessionUnavailableMessage
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.openMainApp()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction],
+                                       completionHandler: {})
+    }
+    
+    private func openMainApp() {
+        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: { _ in
+            guard let url = URL(string: KeyConstants.AppGroup.appURLString) else { return }
+            _ = self.openURL(url)
+        })
+    }
+    
+    @objc private func handleUnauthorizedAPIAccess() {
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            //if let viewController = viewController {
+            //    sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
+            //}
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    private func registerAndPresent(account: AccountProtocol) {
+        AlfrescoContentAPI.basePath = account.apiBasePath
+        self.viewModel.accountService?.register(account: account)
+        self.viewModel.accountService?.activeAccount = account
+        getFilesAndFolder()
+    }
+    
+    func getFilesAndFolder() {
+        print("Get Files and Folders")
+    }
+    
     
     @IBAction func loginButtonAction(_ sender: Any) {
         print("loginButtonAction")
@@ -90,19 +156,15 @@ class ShareViewController: UIViewController {
         //self.openMainApp()
         
        // reSignIn()
+        
+        let browseNode = BrowseNode(type: .personalFiles)
     }
     
     func reSignIn() {
         //alfrescoAuth.update(configuration: (parameters.authenticationConfiguration()))
        // alfrescoAuth.pkceAuth(onViewController: self, delegate: self)
     }
-    
-    func aimsAuthentication(on viewController: UIViewController, delegate: AlfrescoAuthDelegate) {
-        let authConfig = parameters.authenticationConfiguration()
-        alfrescoAuth.update(configuration: authConfig)
-        alfrescoAuth.pkceAuth(onViewController: viewController, delegate: delegate)
-    }
-    
+        
     private func handleSharedFile() {
         // extracting the path to the URL that is being shared
         let attachments = (self.extensionContext?.inputItems.first as? NSExtensionItem)?.attachments ?? []
@@ -117,8 +179,8 @@ class ShareViewController: UIViewController {
                     
                     if let url = data as? URL,
                        let imageData = try? Data(contentsOf: url) {
-                        self.save(imageData, key: "imageData", value: imageData)
-                        self.appURLString += "imageData"
+                        //self.save(imageData, key: "imageData", value: imageData)
+                      //  self.viewModel.appURLString += "imageData"
                     } else {
                         // Handle this situation as you prefer
                         fatalError("Impossible to save image")
@@ -139,10 +201,10 @@ class ShareViewController: UIViewController {
     }
     
     func pushToNextController() {
-        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: "ShareViewControllerList") as? ShareViewControllerList {
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
+//        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
+//        if let controller = storyboard.instantiateViewController(withIdentifier: "ShareViewControllerList") as? ShareViewControllerList {
+//            self.navigationController?.pushViewController(controller, animated: true)
+//        }
     }
     
     @objc func openURL(_ url: URL) -> Bool {
@@ -156,58 +218,15 @@ class ShareViewController: UIViewController {
         return false
     }
     
-    private func openMainApp() {
-        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: { _ in
-            guard let url = URL(string: self.appURLString) else { return }
-            _ = self.openURL(url)
-        })
-    }
     
     
     
     
     
-    func checkForUserSession() {
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        if let activeAccountIdentifier = userDefaults?.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
-            let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
+    
 
-            // Check account type whether it's Basic or AIMS
-            if let activeAccountPassword = Keychain.string(forKey: activeAccountIdentifier) {
-                let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
-                let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
-                registerAndPresent(account: account)
-                
-            } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
-                let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
-
-                do {
-                    let decoder = JSONDecoder()
-
-                    if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
-                        let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
-
-                        let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
-                        let account = AIMSAccount(with: accountSession)
-                        registerAndPresent(account: account)
-                    }
-                } catch {
-                    AlfrescoLog.error("Unable to deserialize session information")
-                }
-            } else {
-                print("User session is not available")
-            }
-        } else {
-            print("No domain is available. ask user to login by opening app")
-        }
-    }
     
-    private func registerAndPresent(account: AccountProtocol) {
-        AlfrescoContentAPI.basePath = account.apiBasePath
-
-        accountService?.register(account: account)
-        accountService?.activeAccount = account
-    }
+    
 }
 
 // MARK: - AlfrescoAuth Delegate

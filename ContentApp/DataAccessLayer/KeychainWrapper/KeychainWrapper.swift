@@ -89,8 +89,8 @@ class Keychain {
 
     private static func accessDictionary(for identifier: String) -> NSMutableDictionary {
         let searchDictionary = NSMutableDictionary()
-        let keychainAccessGroup = "W8N95J537P.com.alfresco.sharedItems"
-        let keychainServiceAtt = "alfrescoAppFamilyService"
+        let keychainAccessGroup = KeyConstants.AppGroup.accessGroup
+        let keychainServiceAtt = KeyConstants.AppGroup.service
         searchDictionary.setObject(keychainAccessGroup, forKey: String(kSecAttrAccessGroup) as NSCopying)
         searchDictionary.setObject(kSecClassGenericPassword, forKey: String(kSecClass) as NSCopying)
         searchDictionary.setObject(keychainServiceAtt, forKey: String(kSecAttrService) as NSCopying)

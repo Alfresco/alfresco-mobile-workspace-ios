@@ -18,18 +18,6 @@
 
 import UIKit
 
-class ShareViewControllerList: UIViewController {
+class BrowseViewModel: NSObject {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        if let value = userDefaults?.data(forKey: "imageData") {
-            print("value: \(value)")
-        }
-    }
-    
-    @IBAction func backButtonAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
 }

@@ -30,7 +30,6 @@ class AuthenticationParameters: Codable {
     var contentURL: String = ""
     var fullHostnameURL: String {
         var fullFormatURL = String(format: "%@://%@", https ? "https" : "http", hostname)
-        //var fullFormatURL = "https://mobileapps.envalfresco.com"
         if !port.isEmpty {
             fullFormatURL.append(contentsOf: String(format: ":%@", port))
         }
