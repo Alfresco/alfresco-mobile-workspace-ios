@@ -214,7 +214,7 @@ extension AIMSSession: AlfrescoAuthDelegate {
 
             // Check if the new credentials are part of a resign-in action
             if refreshGroupRequestCount == 0 {
-                // delegate?.didReSignIn(check: self.oldIdentifier())
+                 delegate?.didReSignIn(check: self.oldIdentifier())
             }
         case .failure(let error):
 

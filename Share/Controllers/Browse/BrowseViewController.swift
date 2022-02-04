@@ -36,6 +36,10 @@ class BrowseViewController: UIViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
+                                               object: nil)
         refreshList()
     }
     
@@ -82,6 +86,27 @@ class BrowseViewController: UIViewController {
         _ = self.showDialog(title: title,
                                        message: message,
                                        actions: [confirmAction],
+                                       completionHandler: {})
+    }
+    
+    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.viewModel.accountService?.activeAccount?.reSignIn(onViewController: self)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
                                        completionHandler: {})
     }
 }
