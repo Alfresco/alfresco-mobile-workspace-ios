@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,49 +16,26 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
+import AlfrescoAuth
+import AlfrescoCore
 import AlfrescoContent
 
-class FolderDrillModel: ListComponentModelProtocol {
-    private var services: CoordinatorServices
-    private let nodeOperations: NodeOperations
-    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
-    internal var supportedNodeTypes: [NodeType] = []
-
+class BrowseViewModel: NSObject {
+    var repository: ServiceRepository {
+        return ApplicationBootstrap.shared().repository
+    }
+    var accountService: AccountService? {
+        let identifier = AccountService.identifier
+        return repository.service(of: identifier) as? AccountService
+    }
+    
     var listNode: ListNode?
+    var nodeOperations: NodeOperations {
+        return NodeOperations(accountService: accountService)
+    }
+    private let uploadTransferDataAccessor = UploadTransferDataAccessor()
     var rawListNodes: [ListNode] = []
-    weak var delegate: ListComponentModelDelegate?
-    var folderChildrenDelegate: FolderChildrenScreenCoordinatorDelegate?
-
-    init(listNode: ListNode?, services: CoordinatorServices) {
-        self.services = services
-        self.listNode = listNode
-        self.nodeOperations = NodeOperations(accountService: services.accountService)
-    }
-
-    func isEmpty() -> Bool {
-        rawListNodes.isEmpty
-    }
-
-    func numberOfItems(in section: Int) -> Int {
-        return rawListNodes.count
-    }
-
-    func listNodes() -> [ListNode] {
-        return rawListNodes
-    }
-
-    func listNode(for indexPath: IndexPath) -> ListNode? {
-        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
-            return rawListNodes[indexPath.row]
-        } else {
-            return nil
-        }
-    }
-
-    func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        return ""
-    }
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -106,7 +83,7 @@ class FolderDrillModel: ListComponentModelProtocol {
                         sSelf.insert(uploadTransfers: uploadTransfers,
                                      to: &sSelf.rawListNodes,
                                      totalItems: responsePagination?.totalItems ?? 0)
-                        sSelf.delegate?.needsDisplayStateRefresh()
+                       // sSelf.delegate?.needsDisplayStateRefresh()
                     }
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &listNodes,
@@ -130,7 +107,8 @@ class FolderDrillModel: ListComponentModelProtocol {
                 completionHandler(nil)
             } else if let entry = result?.entry {
                 let node = NodeChildMapper.create(from: entry)
-                self.folderChildrenDelegate?.updateListNode(with: node)
+                print("update list")
+                //self.folderChildrenDelegate?.updateListNode(with: node)
                 completionHandler(node)
             }
         }
@@ -166,7 +144,7 @@ class FolderDrillModel: ListComponentModelProtocol {
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &sSelf.rawListNodes,
                                  totalItems: responsePagination?.totalItems ?? 0)
-                    sSelf.delegate?.needsDisplayStateRefresh()
+                    //sSelf.delegate?.needsDisplayStateRefresh()
                 }
                 sSelf.insert(uploadTransfers: uploadTransfers,
                              to: &listNodes,
@@ -180,33 +158,6 @@ class FolderDrillModel: ListComponentModelProtocol {
         }
     }
     
-    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
-        if let node = listNode(for: indexPath) {
-            if node.isAFileType() && node.markedFor == .upload {
-                let nodeSyncStatus = node.syncStatus
-                var entryListStatus: ListEntrySyncStatus
-
-                switch nodeSyncStatus {
-                case .pending:
-                    entryListStatus = .pending
-                case .error:
-                    entryListStatus = .error
-                case .inProgress:
-                    entryListStatus = .inProgress
-                case .synced:
-                    entryListStatus = .uploaded
-                default:
-                    entryListStatus = .undefined
-                }
-
-                return entryListStatus
-            }
-
-            return node.isMarkedOffline() ? .markedForOffline : .undefined
-        }
-        return .undefined
-    }
-
     // MARK: - Private interface
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {
@@ -279,76 +230,3 @@ class FolderDrillModel: ListComponentModelProtocol {
         }
     }
 }
-
-// MARK: Event observable
-
-extension FolderDrillModel: EventObservable {
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-            if let publishedEvent = event as? FavouriteEvent {
-                handleFavorite(event: publishedEvent)
-            } else if let publishedEvent = event as? MoveEvent {
-                handleMove(event: publishedEvent)
-            } else if let publishedEvent = event as? OfflineEvent {
-                handleOffline(event: publishedEvent)
-            } else if let publishedEvent = event as? SyncStatusEvent {
-                handleSyncStatus(event: publishedEvent)
-            }
-        }
-
-        func handleFavorite(event: FavouriteEvent) {
-            let node = event.node
-            for listNode in rawListNodes where listNode.guid == node.guid {
-                listNode.favorite = node.favorite
-            }
-        }
-
-        func handleMove(event: MoveEvent) {
-            let node = event.node
-            switch event.eventType {
-            case .moveToTrash:
-                if node.nodeType == .file {
-                    if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
-                        listNode.guid == node.guid
-                    }) {
-                        rawListNodes.remove(at: indexOfMovedNode)
-                        delegate?.needsDisplayStateRefresh()
-                    }
-                } else {
-                    delegate?.needsDataSourceReload()
-                }
-            case .restore:
-                delegate?.needsDataSourceReload()
-            case .created:
-                if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
-                    delegate?.needsDataSourceReload()
-                }
-            default: break
-            }
-        }
-
-        func handleOffline(event: OfflineEvent) {
-            let node = event.node
-
-            if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
-                listNode.guid == node.guid
-            }) {
-                rawListNodes[indexOfOfflineNode] = node
-
-                let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
-                delegate?.forceDisplayRefresh(for: indexPath)
-            }
-        }
-
-        func handleSyncStatus(event: SyncStatusEvent) {
-            let eventNode = event.node
-            guard eventNode.markedFor == .upload else { return }
-            for (index, listNode) in rawListNodes.enumerated() where listNode.id == eventNode.id {
-                rawListNodes[index] = eventNode
-                delegate?.needsDisplayStateRefresh()
-                return
-            }
-        }
-    }
-}
-

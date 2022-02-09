@@ -239,6 +239,11 @@
 "dialog-session-expired-message" = "You are no longer signed in. Please sign in again to continue.";
 "dialog-override-sync-cellular-data-title" = "Use cellular data?";
 "dialog-override-sync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to Wi-Fi.";
+"dialog-session-unavailable-title" = "Session unavailable";
+"dialog-session-unavailable-message" = "Please launch Alfresco Mobile Workspace before continuing.";
+"dialog-internet-unavailable-title" = "Internet unavailable";
+"dialog-internet-unavailable-message" = "Please check your internet connection and Try again";
+
 
 // MARK: - Empty List
 "empty-recent-title" = "No recent files";
