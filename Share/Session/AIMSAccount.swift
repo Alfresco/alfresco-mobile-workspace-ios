@@ -154,13 +154,9 @@ extension AIMSAccount: AIMSAccountDelegate {
             session.parameters.remove(for: oldAccountIdentifier)
         }
 
-//        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
-//        NotificationCenter.default.post(name: notification,
-//                                        object: nil,
-//                                        userInfo: nil)
-//
-//        let repository = ApplicationBootstrap.shared().repository
-//        let syncTriggerService = repository.service(of: SyncTriggersService.identifier) as? SyncTriggersService
-//        syncTriggerService?.triggerSync(for: .userReAuthenticated)
+        let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
+        NotificationCenter.default.post(name: notification,
+                                        object: nil,
+                                        userInfo: nil)
     }
 }

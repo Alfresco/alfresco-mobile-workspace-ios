@@ -26,23 +26,85 @@ import AlfrescoContent
 import JWTDecode
 import FastCoding
 import MaterialComponents.MaterialDialogs
+import MaterialComponents.MaterialProgressView
 
 @objc(ShareExtensionViewController)
 class ShareViewController: UIViewController {
     lazy var viewModel = ShareViewModel()
-    
+    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var progressView: MDCProgressView!
+        
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Jai Shri Ram. JHMPPWPBJASHJH")
-       // handleSharedFile()
+        setupProgressView()
+        applyComponentsThemes()
+        applyLocalization()
         DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
             self.checkForUserSession()
         }
     }
     
+    private func registerNotifications() {
+        // unauthorized Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
+                                               object: nil)
+        
+        // ReSignIn Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
+                                               object: nil)
+    }
+        
+    private func setupProgressView() {
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+        view.bringSubviewToFront(progressView)
+        progressView.alpha = 0
+    }
+    
+    private func startLoading() {
+        progressView.alpha = 1
+        progressView.startAnimating()
+        progressView.setHidden(false, animated: false)
+    }
+
+    private func stopLoading() {
+        progressView.stopAnimating()
+        progressView.setHidden(true, animated: false)
+    }
+
+    private func applyComponentsThemes() {
+        guard let currentTheme = self.viewModel.themingService?.activeTheme else { return }
+        view.backgroundColor = currentTheme.surfaceColor
+        headerView.backgroundColor = currentTheme.surfaceColor
+        backButton.tintColor = currentTheme.onSurfaceColor
+        titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        titleLabel.textAlignment = .center
+    }
+    
+    private func applyLocalization() {
+        if viewModel.browseType == .personalFiles {
+            titleLabel.text = LocalizationConstants.BrowseStaticList.personalFiles
+        }
+    }
+    
+    @IBAction func backButtonAction(_ sender: Any) {
+        if viewModel.browseType == .personalFiles {
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
     // MARK: - Check for user session
     func checkForUserSession() {
+        startLoading()
         let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
         if let activeAccountIdentifier = userDefaults?.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
@@ -52,15 +114,12 @@ class ShareViewController: UIViewController {
                 let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
                 let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
                 registerAndPresent(account: account)
-                
             } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
                 let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
                 do {
                     let decoder = JSONDecoder()
-
                     if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
                         let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
-
                         let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
                         let account = AIMSAccount(with: accountSession)
                         registerAndPresent(account: account)
@@ -77,6 +136,7 @@ class ShareViewController: UIViewController {
     }
     
     private func showAlertToRegisterInTheApp() {
+        stopLoading()
         let title = LocalizationConstants.Dialog.sessionUnavailableTitle
         let message = LocalizationConstants.Dialog.sessionUnavailableMessage
         let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
@@ -97,19 +157,30 @@ class ShareViewController: UIViewController {
         })
     }
     
+    @objc func openURL(_ url: URL) -> Bool {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                return application.perform(#selector(openURL(_:)), with: url) != nil
+            }
+            responder = responder?.next
+        }
+        return false
+    }
+    
     private func registerAndPresent(account: AccountProtocol) {
+        stopLoading()
         AlfrescoContentAPI.basePath = account.apiBasePath
         self.viewModel.accountService?.register(account: account)
         self.viewModel.accountService?.activeAccount = account
-        getFilesAndFolder()
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
+            self.getFilesAndFolder()
+        }
     }
     
     func getFilesAndFolder() {
         print("Get Files and Folders")
-//        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
-//        if let controller = storyboard.instantiateViewController(withIdentifier: "BrowseViewController") as? BrowseViewController {
-//            self.navigationController?.pushViewController(controller, animated: true)
-//        }
+
     }
     
     @IBAction func loginButtonAction(_ sender: Any) {
@@ -143,15 +214,32 @@ class ShareViewController: UIViewController {
                 }}
         }
     }
+}
 
-    @objc func openURL(_ url: URL) -> Bool {
-        var responder: UIResponder? = self
-        while responder != nil {
-            if let application = responder as? UIApplication {
-                return application.perform(#selector(openURL(_:)), with: url) != nil
-            }
-            responder = responder?.next
+// MARK: - Notifications
+extension ShareViewController {
+    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.viewModel.accountService?.activeAccount?.reSignIn(onViewController: self)
         }
-        return false
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    @objc private func handleReSignIn(notification: Notification) {
+        self.getFilesAndFolder()
     }
 }

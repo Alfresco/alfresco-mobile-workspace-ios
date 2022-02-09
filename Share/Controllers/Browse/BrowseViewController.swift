@@ -36,9 +36,17 @@ class BrowseViewController: UIViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // unauthorized Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
+                                               object: nil)
+        
+        // ReSignIn Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
         refreshList()
     }
@@ -48,6 +56,10 @@ class BrowseViewController: UIViewController {
         hasMoreItems = true
         shouldRefreshList = true
         fetchNextPage()
+    }
+    
+    @objc private func handleReSignIn(notification: Notification) {
+        refreshList()
     }
     
     func fetchNextPage() {

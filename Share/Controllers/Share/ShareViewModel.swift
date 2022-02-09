@@ -19,6 +19,7 @@
 import UIKit
 
 class ShareViewModel: NSObject {
+    var browseType: BrowseType = .personalFiles
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
     }
@@ -30,6 +31,8 @@ class ShareViewModel: NSObject {
         let identifier = MaterialDesignThemingService.identifier
         return repository.service(of: identifier) as? MaterialDesignThemingService
     }
+    var activeTheme: PresentationTheme?
+
     var activeAccount: AccountProtocol? {
         didSet {
             let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
