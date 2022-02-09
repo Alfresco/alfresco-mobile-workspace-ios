@@ -284,7 +284,71 @@ class FolderDrillModel: ListComponentModelProtocol {
 
 extension FolderDrillModel: EventObservable {
     func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        
+        func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+            if let publishedEvent = event as? FavouriteEvent {
+                handleFavorite(event: publishedEvent)
+            } else if let publishedEvent = event as? MoveEvent {
+                handleMove(event: publishedEvent)
+            } else if let publishedEvent = event as? OfflineEvent {
+                handleOffline(event: publishedEvent)
+            } else if let publishedEvent = event as? SyncStatusEvent {
+                handleSyncStatus(event: publishedEvent)
+            }
+        }
+
+        func handleFavorite(event: FavouriteEvent) {
+            let node = event.node
+            for listNode in rawListNodes where listNode.guid == node.guid {
+                listNode.favorite = node.favorite
+            }
+        }
+
+        func handleMove(event: MoveEvent) {
+            let node = event.node
+            switch event.eventType {
+            case .moveToTrash:
+                if node.nodeType == .file {
+                    if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                        listNode.guid == node.guid
+                    }) {
+                        rawListNodes.remove(at: indexOfMovedNode)
+                        delegate?.needsDisplayStateRefresh()
+                    }
+                } else {
+                    delegate?.needsDataSourceReload()
+                }
+            case .restore:
+                delegate?.needsDataSourceReload()
+            case .created:
+                if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
+                    delegate?.needsDataSourceReload()
+                }
+            default: break
+            }
+        }
+
+        func handleOffline(event: OfflineEvent) {
+            let node = event.node
+
+            if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
+                listNode.guid == node.guid
+            }) {
+                rawListNodes[indexOfOfflineNode] = node
+
+                let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
+                delegate?.forceDisplayRefresh(for: indexPath)
+            }
+        }
+
+        func handleSyncStatus(event: SyncStatusEvent) {
+            let eventNode = event.node
+            guard eventNode.markedFor == .upload else { return }
+            for (index, listNode) in rawListNodes.enumerated() where listNode.id == eventNode.id {
+                rawListNodes[index] = eventNode
+                delegate?.needsDisplayStateRefresh()
+                return
+            }
+        }
     }
 }
 

@@ -114,8 +114,8 @@ class SearchViewModel: ListComponentViewModel {
             return false
         } else {
             let apiInterval = ConfigurationManager.shared.getAdvanceSearchAPIInterval()
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            if userDefaults?.bool(forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer) == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
+            let value = UserDefaultsModel.value(for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer) as? Bool ?? false
+            if value == true || self.isTimeExceedsForAdvanceSearchConfig(apiInterval: apiInterval) {
                 self.updateSearchConfigurationKeys()
                 return true
             }
@@ -132,15 +132,12 @@ class SearchViewModel: ListComponentViewModel {
     }
     
     func updateSearchConfigurationKeys() {
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        userDefaults?.set(false, forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
-        userDefaults?.set(Date().currentTimeMillis(), forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
-        userDefaults?.synchronize()
+        UserDefaultsModel.set(value: false, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
+        UserDefaultsModel.set(value: Date().currentTimeMillis(), for: KeyConstants.AdvanceSearch.lastAPICallTime)
     }
     
     private func lastAPICallDifferenceInHours() -> Int {
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        let lastAPITime = userDefaults?.value(forKey: KeyConstants.AdvanceSearch.lastAPICallTime)
+        let lastAPITime = UserDefaultsModel.value(for: KeyConstants.AdvanceSearch.lastAPICallTime)
         let currentTime = Date().currentTimeMillis()
         let time1 = Date(timeIntervalSince1970: lastAPITime as? TimeInterval ?? 0)
         let time2 = Date(timeIntervalSince1970: TimeInterval(currentTime))

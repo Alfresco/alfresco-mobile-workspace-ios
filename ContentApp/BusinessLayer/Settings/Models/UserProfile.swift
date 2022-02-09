@@ -27,15 +27,12 @@ class UserProfile {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.displayProfileName)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            return userDefaults?.object(forKey: key) as? String ?? ""
+            return UserDefaultsModel.value(for: key) as? String ?? ""
         }
         set {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.displayProfileName)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(newValue, forKey: key)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: newValue, for: key)
         }
     }
 
@@ -43,15 +40,12 @@ class UserProfile {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.emailProfile)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            return userDefaults?.object(forKey: key) as? String ?? ""
+            return UserDefaultsModel.value(for: key) as? String ?? ""
         }
         set {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.emailProfile)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(newValue, forKey: key)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: newValue, for: key)
         }
     }
 
@@ -59,15 +53,12 @@ class UserProfile {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.personalFilesID)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            return userDefaults?.object(forKey: key) as? String ?? ""
+            return UserDefaultsModel.value(for: key) as? String ?? ""
         }
         set {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.personalFilesID)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(newValue, forKey: key)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: newValue ?? "", for: key)
         }
     }
 
@@ -75,15 +66,12 @@ class UserProfile {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.allowSyncOverCellularData)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            return userDefaults?.object(forKey: key) as? Bool ?? false
+            return UserDefaultsModel.value(for: key) as? Bool ?? false
         }
         set {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.allowSyncOverCellularData)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(newValue, forKey: key)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: newValue, for: key)
         }
     }
 
@@ -91,15 +79,12 @@ class UserProfile {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.allowOnceSyncOverCellularData)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            return userDefaults?.object(forKey: key) as? Bool ?? false
+            return UserDefaultsModel.value(for: key) as? Bool ?? false
         }
         set {
             let identifier = accountService?.activeAccount?.identifier ?? ""
             let key = "\(identifier)-\(KeyConstants.Save.allowOnceSyncOverCellularData)"
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(newValue, forKey: key)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: newValue, for: key)
         }
     }
 
@@ -120,12 +105,10 @@ class UserProfile {
     // MARK: - Remove Data
 
     static func removeUserProfile(forAccountIdentifier identifier: String) {
-        let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        defaults?.removeObject(forKey: "\(identifier)-\(KeyConstants.Save.displayProfileName)")
-        defaults?.removeObject(forKey: "\(identifier)-\(KeyConstants.Save.emailProfile)")
-        defaults?.removeObject(forKey: "\(identifier)-\(KeyConstants.Save.personalFilesID)")
-        defaults?.removeObject(forKey: "\(identifier)-\(KeyConstants.Save.allowSyncOverCellularData)")
-        defaults?.removeObject(forKey: "\(identifier)-\(KeyConstants.Save.allowOnceSyncOverCellularData)")
-        defaults?.synchronize()
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.displayProfileName)")
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.emailProfile)")
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.personalFilesID)")
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.allowSyncOverCellularData)")
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.allowOnceSyncOverCellularData)")
     }
 }

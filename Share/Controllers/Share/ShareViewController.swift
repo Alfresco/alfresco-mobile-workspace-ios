@@ -39,12 +39,19 @@ class ShareViewController: UIViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        activateTheme()
         setupProgressView()
         applyComponentsThemes()
         applyLocalization()
+        registerNotifications()
         DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
             self.checkForUserSession()
         }
+    }
+    
+    private func activateTheme() {
+        let themingService = viewModel.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
+        themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
     }
     
     private func registerNotifications() {
@@ -105,8 +112,7 @@ class ShareViewController: UIViewController {
     // MARK: - Check for user session
     func checkForUserSession() {
         startLoading()
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        if let activeAccountIdentifier = userDefaults?.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
+        if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
 
             // Check account type whether it's Basic or AIMS

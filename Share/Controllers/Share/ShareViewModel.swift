@@ -35,14 +35,11 @@ class ShareViewModel: NSObject {
 
     var activeAccount: AccountProtocol? {
         didSet {
-            let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
             if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults?.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.set(value: activeAccountIdentifier, for: KeyConstants.Save.activeAccountIdentifier)
             } else {
-                defaults?.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.remove(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
-
-            defaults?.synchronize()
         }
     }
 }

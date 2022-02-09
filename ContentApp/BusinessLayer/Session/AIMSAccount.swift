@@ -137,9 +137,7 @@ extension AIMSAccount: AIMSAccountDelegate {
         ProfileService.featchPersonalFilesID()
 
         if oldAccountIdentifier != identifier && !oldAccountIdentifier.isEmpty {
-            let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-            userDefaults?.set(identifier, forKey: KeyConstants.Save.activeAccountIdentifier)
-            userDefaults?.synchronize()
+            UserDefaultsModel.set(value: identifier, for: KeyConstants.Save.activeAccountIdentifier)
             session.parameters.save(for: identifier)
 
             let path = DiskService.documentsDirectoryPath(for: oldAccountIdentifier)
