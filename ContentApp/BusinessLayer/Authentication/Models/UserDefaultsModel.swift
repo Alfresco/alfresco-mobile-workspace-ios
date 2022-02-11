@@ -28,12 +28,21 @@ class UserDefaultsModel: NSObject {
     
     static func value(for key: String) -> Any? {
         let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
-        return userDefaults?.value(forKey: key)
+        let value = userDefaults?.value(forKey: key)
+        if let value = value {
+            return value
+        } else if let value = UserDefaults.standard.value(forKey: key) {
+            UserDefaultsModel.set(value: value, for: key)
+            return value
+        }
+        return nil
     }
     
     static func remove(forKey: String) {
         let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
         defaults?.removeObject(forKey: forKey)
         defaults?.synchronize()
+        UserDefaults.standard.removeObject(forKey: forKey)
+        UserDefaults.standard.synchronize()
     }
 }
