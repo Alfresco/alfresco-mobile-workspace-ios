@@ -24,49 +24,6 @@ class ProfileService {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
-    /*static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
-        let defaultImage = UIImage(named: "ic-account-circle")
-        guard let accountIdentifier = accountService?.activeAccount?.identifier
-        else { return defaultImage }
-
-        if let avatar = DiskService.getAvatar(for: accountIdentifier) {
-            return avatar
-        } else {
-            featchAvatar(completionHandler: completionHandler)
-        }
-
-        return defaultImage
-    }
-
-    static func featchAvatar(completionHandler: @escaping ((UIImage?) -> Void)) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            guard let accountIdentifier = self.accountService?.activeAccount?.identifier else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getAvatarImage(personId: accountIdentifier) { (data, error) in
-                if let error = error {
-                    AlfrescoLog.error(error)
-                } else if let data = data {
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            completionHandler(image)
-                            DiskService.saveAvatar(image, for: accountIdentifier)
-                        }
-                    }
-                }
-            }
-        })
-    }
-
-    static func fetchProfileInformation(completion: @escaping ((PersonEntry?, Error?) -> Void)) {
-        accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            guard let identifier = self.accountService?.activeAccount?.identifier else { return }
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            PeopleAPI.getPerson(personId: identifier) { (personEntry, error) in
-                completion(personEntry, error)
-            }
-        })
-    }*/
-
     static func featchPersonalFilesID() {
         let nodeOperations = NodeOperations(accountService: accountService)
         nodeOperations.fetchNodeDetails(for: APIConstants.my) { (result, error) in
