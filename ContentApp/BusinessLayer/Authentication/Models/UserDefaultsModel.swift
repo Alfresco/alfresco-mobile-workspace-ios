@@ -29,11 +29,11 @@ class UserDefaultsModel: NSObject {
     static func value(for key: String) -> Any? {
         let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
         let value = userDefaults?.value(forKey: key)
-        if let value = value {
-            return value
-        } else if let value = UserDefaults.standard.value(forKey: key) {
-            UserDefaultsModel.set(value: value, for: key)
-            return value
+        if let returnValue = value {
+            return returnValue
+        } else if let oldValue = UserDefaults.standard.value(forKey: key) {
+            UserDefaultsModel.set(value: oldValue, for: key)
+            return oldValue
         }
         return nil
     }
