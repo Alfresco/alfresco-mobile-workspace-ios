@@ -249,3 +249,31 @@ extension ShareViewController {
         self.getFilesAndFolder()
     }
 }
+
+// MARK: - APIs for Files and Folder
+extension ShareViewController {
+    private func showAlertInternetUnavailable() {
+        let title = LocalizationConstants.Dialog.internetUnavailableTitle
+        let message = LocalizationConstants.Dialog.internetUnavailableMessage
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction],
+                                       completionHandler: {})
+    }
+    
+    func refreshList() {
+        viewModel.currentPage = 1
+        viewModel.hasMoreItems = true
+        viewModel.shouldRefreshList = true
+        //fetchNextPage()
+    }
+    
+   
+    
+    
+}
