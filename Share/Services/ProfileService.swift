@@ -24,7 +24,7 @@ class ProfileService {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
-    static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
+    /*static func getAvatar(completionHandler: @escaping ((UIImage?) -> Void)) -> UIImage? {
         let defaultImage = UIImage(named: "ic-account-circle")
         guard let accountIdentifier = accountService?.activeAccount?.identifier
         else { return defaultImage }
@@ -65,7 +65,7 @@ class ProfileService {
                 completion(personEntry, error)
             }
         })
-    }
+    }*/
 
     static func featchPersonalFilesID() {
         let nodeOperations = NodeOperations(accountService: accountService)
