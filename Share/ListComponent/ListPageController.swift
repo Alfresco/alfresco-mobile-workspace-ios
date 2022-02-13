@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -51,8 +51,7 @@ protocol ResultPageControllerDelegate: AnyObject {
 }
 
 class ListPageController: ListPageControllerProtocol {
-    let connectivityServices: ConnectivityService
-    let themingService: MaterialDesignThemingService
+    let services: CoordinatorServices
     var dataSource: ListComponentModelProtocol
     weak var delegate: ListPageControllerDelegate?
     var resultPageDelegate: ResultPageControllerDelegate?
@@ -66,17 +65,16 @@ class ListPageController: ListPageControllerProtocol {
     private var shouldRefreshList = true
     private var requestInProgress = false
 
-    init(dataSource: ListComponentModelProtocol, connectivityServices: ConnectivityService, themingService: MaterialDesignThemingService) {
+    init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
         paginationEnabled = true
-        self.connectivityServices = connectivityServices
-        self.themingService = themingService
+        self.services = services
         self.dataSource.delegate = self
     }
 
     func isPaginationEnabled() -> Bool {
         return paginationEnabled &&
-        connectivityServices.hasInternetConnection() == true
+            services.connectivityService?.hasInternetConnection() == true
     }
 
     func fetchNextPage() {

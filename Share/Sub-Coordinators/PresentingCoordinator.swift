@@ -17,18 +17,19 @@
 //
 
 import UIKit
-import AlfrescoContent
 
-protocol ListItemActionDelegate: AnyObject {
-    func showPreview(for node: ListNode,
-                     from model: ListComponentModelProtocol)
-}
+class PresentingCoordinator: Coordinator {
+    internal var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
 
-protocol ListComponentActionDelegate: AnyObject {
-    func elementTapped(node: ListNode)
-    func didUpdateList(in listComponentViewController: ListComponentViewController,
-                       error: Error?,
-                       pagination: Pagination?)
+    func start() {
+        // To be overriden in child classes
+    }
 
-    func performListAction()
+    func startFolderCoordinator(for node: ListNode,
+                                presenter: UINavigationController) {
+        let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: presenter,
+                                                                         listNode: node)
+        folderDrillDownCoordinator.start()
+        self.folderDrillDownCoordinator = folderDrillDownCoordinator
+    }
 }

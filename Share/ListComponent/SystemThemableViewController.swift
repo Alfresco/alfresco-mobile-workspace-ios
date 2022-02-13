@@ -33,6 +33,7 @@ struct ControllerRotation {
 }
 
 class SystemThemableViewController: UIViewController {
+    var coordinatorServices: CoordinatorServices?
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
     }

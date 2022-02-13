@@ -36,6 +36,8 @@ class ListComponentViewController: SystemThemableViewController {
     var dataSource: ListComponentDataSource?
     
     weak var listActionDelegate: ListComponentActionDelegate?
+    weak var listItemActionDelegate: ListItemActionDelegate?
+    
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
     

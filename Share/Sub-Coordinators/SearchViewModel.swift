@@ -16,19 +16,26 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 import AlfrescoContent
 
-protocol ListItemActionDelegate: AnyObject {
-    func showPreview(for node: ListNode,
-                     from model: ListComponentModelProtocol)
+class SearchViewModel: ListComponentViewModel {
+    var searchModel: SearchModelProtocol
+    init(model: SearchModelProtocol) {
+        searchModel = model
+        super.init(model: model)
+    }
+    
+    override func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
+    }
+
+    func shouldDisplaySearchBar() -> Bool {
+        return true
+    }
+
+    func shouldDisplaySearchButton() -> Bool {
+        return true
+    }
 }
 
-protocol ListComponentActionDelegate: AnyObject {
-    func elementTapped(node: ListNode)
-    func didUpdateList(in listComponentViewController: ListComponentViewController,
-                       error: Error?,
-                       pagination: Pagination?)
-
-    func performListAction()
-}
