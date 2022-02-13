@@ -17,10 +17,13 @@
 //
 
 import UIKit
-import AlfrescoAuth
-import AlfrescoCore
 import AlfrescoContent
 
-enum RenditionType: String {
-    case pdf = "pdf", imagePreview = "imgpreview"
+protocol ListComponentActionDelegate: AnyObject {
+    func elementTapped(node: ListNode)
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?)
+
+    func performListAction()
 }

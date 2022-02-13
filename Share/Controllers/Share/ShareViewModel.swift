@@ -255,4 +255,28 @@ class ShareViewModel: NSObject {
             }
         }
     }
+    
+    func isEmpty() -> Bool {
+        rawListNodes.isEmpty
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return rawListNodes.count
+    }
+
+    func listNodes() -> [ListNode] {
+        return rawListNodes
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
+            return rawListNodes[indexPath.row]
+        } else {
+            return nil
+        }
+    }
+    
+    func emptyList() -> EmptyListProtocol {
+        return EmptyFolder()
+    }
 }

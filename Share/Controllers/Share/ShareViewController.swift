@@ -27,9 +27,16 @@ import JWTDecode
 import FastCoding
 import MaterialComponents.MaterialDialogs
 import MaterialComponents.MaterialProgressView
+import Micro
 
 @objc(ShareExtensionViewController)
 class ShareViewController: UIViewController {
+    @IBOutlet weak var collectionView: PageFetchableCollectionView!
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
+    @IBOutlet weak var emptyListImageView: UIImageView!
+
     lazy var viewModel = ShareViewModel()
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var backButton: UIButton!
@@ -180,13 +187,8 @@ class ShareViewController: UIViewController {
         self.viewModel.accountService?.register(account: account)
         self.viewModel.accountService?.activeAccount = account
         DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
-            self.getFilesAndFolder()
+            self.refreshList()
         }
-    }
-    
-    func getFilesAndFolder() {
-        print("Get Files and Folders")
-
     }
     
     @IBAction func loginButtonAction(_ sender: Any) {
@@ -246,7 +248,7 @@ extension ShareViewController {
     }
     
     @objc private func handleReSignIn(notification: Notification) {
-        self.getFilesAndFolder()
+        self.refreshList()
     }
 }
 
@@ -270,10 +272,214 @@ extension ShareViewController {
         viewModel.currentPage = 1
         viewModel.hasMoreItems = true
         viewModel.shouldRefreshList = true
-        //fetchNextPage()
+        fetchNextPage()
     }
     
+    func fetchNextPage() {
+        let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
+        if connectivityService?.hasInternetConnection() == false {
+            showAlertInternetUnavailable()
+            return
+        }
+
+        if viewModel.hasMoreItems && !viewModel.requestInProgress {
+            if viewModel.shouldRefreshList {
+                viewModel.pageSkipCount = 0
+                viewModel.shouldRefreshList = false
+            } else {
+                viewModel.pageSkipCount = viewModel.rawListNodes.isEmpty ? 0 : viewModel.rawListNodes.count
+            }
+            let nextPage = RequestPagination(maxItems: APIConstants.pageSize,
+                                             skipCount: viewModel.pageSkipCount)
+            viewModel.requestInProgress = true
+            viewModel.fetchItems(with: nextPage) { [weak self] paginatedResponse in
+                guard let sSelf = self else { return }
+                print("Paginated response: \(paginatedResponse)")
+                sSelf.handlePaginatedResponse(response: paginatedResponse)
+            }
+        }
+    }
    
+    // MARK: - Private interface
+    private func handlePaginatedResponse(response: PaginatedResponse) {
+        viewModel.requestInProgress = false
+        if let error = response.error {
+            update(with: [],
+                   pagination: nil,
+                   error: error)
+        } else if let skipCount = response.responsePagination?.skipCount {
+            let results = response.results
+            viewModel.hasMoreItems =
+                (Int64(results.count) + skipCount) == response.responsePagination?.totalItems ? false : true
+
+            if response.requestPagination != nil && viewModel.hasMoreItems {
+                incrementPage(for: response.requestPagination)
+            }
+
+            viewModel.totalItems = response.responsePagination?.maxItems ?? 0
+            update(with: results,
+                   pagination: response.responsePagination,
+                   error: nil)
+        }
+    }
     
+    private func update(with results: [ListNode],
+                        pagination: Pagination?,
+                        error: Error?) {
+        if !results.isEmpty {
+            if pagination?.skipCount != 0 {
+                addNewResults(results: results, pagination: pagination)
+            } else {
+                addResults(results: results, pagination: pagination)
+            }
+        } else if pagination?.skipCount == 0 || error == nil {
+            self.viewModel.rawListNodes = []
+            if let totalItems = pagination?.totalItems {
+                viewModel.shouldDisplayNextPageLoadingIndicator =
+                (Int64(self.viewModel.rawListNodes.count) >= totalItems) ? false : true
+            }
+        }
+        self.didUpdateList(error: error,
+                                pagination: pagination)
+    }
+
+    private final func incrementPage(for paginationRequest: RequestPagination?) {
+        if let pageSkipCount = paginationRequest?.skipCount {
+            viewModel.currentPage = pageSkipCount / APIConstants.pageSize + 1
+        }
+    }
     
+    private func addNewResults(results: [ListNode],
+                               pagination: Pagination?) {
+        if !results.isEmpty {
+            let olderElementsSet = Set(self.viewModel.rawListNodes)
+            let newElementsSet = Set(results)
+
+            if !newElementsSet.isSubset(of: olderElementsSet) {
+                self.viewModel.rawListNodes.append(contentsOf: results)
+            }
+
+            if let totalItems = pagination?.totalItems {
+                // Because the list node collection could mutate in certain situations: upload,
+                // consider counts past the raw collection size
+                viewModel.shouldDisplayNextPageLoadingIndicator =
+                (Int64(self.viewModel.rawListNodes.count) >= totalItems) ? false : true
+            }
+        }
+    }
+
+    private func addResults(results: [ListNode],
+                            pagination: Pagination?) {
+        if !results.isEmpty {
+            self.viewModel.rawListNodes = results
+
+            if let totalItems = pagination?.totalItems {
+                // Because the list node collection could mutate in certain situations: upload,
+                // consider counts past the raw collection size
+                viewModel.shouldDisplayNextPageLoadingIndicator =
+                    (Int64(results.count) >= totalItems) ? false : true
+            }
+        }
+    }
+}
+
+extension ShareViewController {
+    func didUpdateList(error: Error?,
+                       pagination: Pagination?) {
+        // When no error or pagination information is present just perform a data source reload
+        // as this might be a filter action
+        if error == nil && pagination == nil {
+            reloadDataSource()
+            return
+        }
+        
+        let isListEmpty = viewModel.isEmpty()
+        emptyListView.isHidden = !isListEmpty
+        if isListEmpty {
+            let emptyList = viewModel.emptyList()
+            emptyListImageView.image = emptyList.icon
+            emptyListTitle.text = emptyList.title
+            emptyListSubtitle.text = emptyList.description
+        }
+        
+        // If loading the first page or missing pagination scroll to top
+        let scrollToTop = pagination?.skipCount == 0 || pagination == nil
+        let stopLoadingAndScrollToTop = { [weak self] in
+            guard let sSelf = self else { return }
+            
+            sSelf.stopLoading()
+            if scrollToTop {
+                sSelf.scrollToSection(0)
+            }
+        }
+        
+        if error == nil {
+            reloadDataSource()
+            stopLoadingAndScrollToTop()
+            self.stopLoading()
+        } else {
+            stopLoadingAndScrollToTop()
+        }
+    }
+
+    func forceDisplayRefresh(for indexPath: IndexPath) {
+        if viewModel.listNodes().indices.contains(indexPath.row) {
+            collectionView.reloadItems(at: [indexPath])
+        }
+    }
+    
+    func scrollToSection(_ section: Int) {
+        let indexPath = IndexPath(item: 0, section: section)
+        var pointToScroll = CGPoint.zero
+        if collectionView.cellForItem(at: indexPath) != nil {
+            if let attributes =
+                collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                       at: indexPath) {
+                pointToScroll =
+                    CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+            }
+        }
+        collectionView.setContentOffset(pointToScroll, animated: true)
+    }
+    
+    private func reloadDataSource() {
+        /*
+        var indexPaths: [IndexPath] = []
+        dataSource.state = forEach(viewModel.listNodes()) { listNode in
+            if listNode.guid == listNodeSectionIdentifier {
+                return Cell<ListSectionCollectionViewCell>()
+                .onSize { [weak self] context in
+                    guard let sSelf = self else { return .zero}
+                    indexPaths.append(context.indexPath)
+                    return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
+                                  height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
+                }
+            } else {
+                return Cell<ListElementCollectionViewCell>()
+                    .onSize { [weak self] context in
+                        guard let sSelf = self else { return .zero}
+
+                        return CGSize(width: sSelf.view.safeAreaLayoutGuide.layoutFrame.width,
+                                      height: (viewModel.shouldDisplaySubtitle(for: context.indexPath)) ? regularCellHeight : compactCellHeight)
+                    }.onSelect { [weak self] context in
+                        guard let sSelf = self else { return }
+                        if let node = model.listNode(for: context.indexPath) {
+                            if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
+                            if node.trashed == false {
+                                sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                          from: model)
+                                sSelf.listActionDelegate?.elementTapped(node: node)
+                            } else {
+                                sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
+                                                                                         from: model,
+                                                                                         delegate: sSelf)
+                            }
+                        }
+                    }
+            }
+        }
+        
+        self.forceRefresh(with: indexPaths)
+        */
+    }
 }
