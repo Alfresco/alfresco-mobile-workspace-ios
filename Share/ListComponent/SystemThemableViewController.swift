@@ -33,32 +33,7 @@ struct ControllerRotation {
 }
 
 class SystemThemableViewController: UIViewController {
-    var coordinatorServices: CoordinatorServices?
-    var repository: ServiceRepository {
-        return ApplicationBootstrap.shared().repository
-    }
-    var accountService: AccountService? {
-        let identifier = AccountService.identifier
-        return repository.service(of: identifier) as? AccountService
-    }
-    var themingService: MaterialDesignThemingService? {
-        let identifier = MaterialDesignThemingService.identifier
-        return repository.service(of: identifier) as? MaterialDesignThemingService
-    }
-    var activeAccount: AccountProtocol? {
-        didSet {
-            if let activeAccountIdentifier = activeAccount?.identifier {
-                UserDefaultsModel.set(value: activeAccountIdentifier, for: KeyConstants.Save.activeAccountIdentifier)
-            } else {
-                UserDefaultsModel.remove(forKey: KeyConstants.Save.activeAccountIdentifier)
-            }
-        }
-    }
-    var nodeOperations: NodeOperations {
-        return NodeOperations(accountService: accountService)
-    }
-    let connectivityService = ApplicationBootstrap.shared().repository.service(of: ConnectivityService.identifier) as? ConnectivityService
-
+    var coordinatorServices = CoordinatorServices()
     private var offlineModeView: UIView?
     private var offlineModeIcon: UIImageView?
 
@@ -86,13 +61,13 @@ class SystemThemableViewController: UIViewController {
 
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        themingService?.activateUserSelectedTheme()
+        coordinatorServices.themingService?.activateUserSelectedTheme()
         applyComponentsThemes()
     }
 
     func applyComponentsThemes() {
         // Override in subclass
-        let activeTheme = themingService?.activeTheme
+        let activeTheme = coordinatorServices.themingService?.activeTheme
         offlineModeView?.backgroundColor = activeTheme?.onSurface5Color
         offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
     }

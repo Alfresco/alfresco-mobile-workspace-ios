@@ -32,8 +32,7 @@ struct ListComponentDataSourceConfiguration {
     let collectionView: UICollectionView
     let viewModel: ListComponentViewModel
     weak var cellDelegate: ListElementCollectionViewCellDelegate?
-    let connectivityServices: ConnectivityService
-    var themingService: MaterialDesignThemingService
+    let services: CoordinatorServices
 }
 
 class ListComponentDataSource: DataSource {
@@ -58,7 +57,7 @@ class ListComponentDataSource: DataSource {
         let shouldDisplayListLoadingIndicator = delegate?.shouldDisplayListLoadingIndicator() ?? false
 
         if shouldDisplayListLoadingIndicator &&
-            configuration.connectivityServices.hasInternetConnection() == true {
+            configuration.services.connectivityService?.hasInternetConnection() == true {
             return CGSize(width: collectionView.bounds.width,
                           height: regularCellHeight)
         }
@@ -96,7 +95,7 @@ class ListComponentDataSource: DataSource {
                     .dequeueReusableCell(withReuseIdentifier: identifierSection,
                                          for: indexPath) as? ListSectionCollectionViewCell else { return UICollectionViewCell() }
             cell.titleLabel.text = configuration.viewModel.model.titleForSectionHeader(at: indexPath)
-            cell.applyTheme(configuration.themingService.activeTheme)
+            cell.applyTheme(configuration.services.themingService?.activeTheme)
             return cell
         } else {
             guard let cell = collectionView
@@ -104,7 +103,7 @@ class ListComponentDataSource: DataSource {
                                          for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
             cell.node = node
             cell.delegate = configuration.cellDelegate
-            cell.applyTheme(configuration.themingService.activeTheme)
+            cell.applyTheme(configuration.services.themingService?.activeTheme)
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
@@ -118,7 +117,7 @@ class ListComponentDataSource: DataSource {
             let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
             if isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&
-                configuration.connectivityServices.hasInternetConnection() == true {
+                configuration.services.connectivityService?.hasInternetConnection() == true {
                 if let collectionView = collectionView as? PageFetchableCollectionView {
                     collectionView.pageDelegate?.fetchNextContentPage(for: collectionView,
                                                                       itemAtIndexPath: indexPath)

@@ -17,57 +17,10 @@
                     <view key="view" opaque="NO" contentMode="scaleToFill" id="wbc-yd-nQP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbz-ak-eif" userLabel="headerView">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="54"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YVh-W4-nEx" userLabel="backButton">
-                                        <rect key="frame" x="10" y="5" width="44" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="YVh-W4-nEx" secondAttribute="height" id="aIC-sj-Whi"/>
-                                            <constraint firstAttribute="width" constant="44" id="q9p-li-udQ"/>
-                                        </constraints>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="ic-back">
-                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="backButtonAction:" destination="j1y-V4-xli" eventType="touchUpInside" id="qDq-Ap-iQA"/>
-                                        </connections>
-                                    </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bMN-mT-pmY" userLabel="titleLabel">
-                                        <rect key="frame" x="64" y="16.5" width="286" height="21"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="bMN-mT-pmY" firstAttribute="leading" secondItem="YVh-W4-nEx" secondAttribute="trailing" constant="10" id="J4h-qt-bWf"/>
-                                    <constraint firstItem="YVh-W4-nEx" firstAttribute="leading" secondItem="nbz-ak-eif" secondAttribute="leading" constant="10" id="V9W-KF-6MA"/>
-                                    <constraint firstAttribute="height" constant="54" id="cJc-gX-Eie"/>
-                                    <constraint firstItem="YVh-W4-nEx" firstAttribute="centerY" secondItem="nbz-ak-eif" secondAttribute="centerY" id="sZm-65-CvT"/>
-                                    <constraint firstAttribute="trailing" secondItem="bMN-mT-pmY" secondAttribute="trailing" constant="64" id="vkB-ax-Dr6"/>
-                                    <constraint firstItem="bMN-mT-pmY" firstAttribute="centerY" secondItem="YVh-W4-nEx" secondAttribute="centerY" id="wu0-Is-UF9"/>
-                                </constraints>
-                            </view>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="1Xd-am-t49"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="nbz-ak-eif" firstAttribute="leading" secondItem="1Xd-am-t49" secondAttribute="leading" id="YxQ-gi-TF6"/>
-                            <constraint firstItem="1Xd-am-t49" firstAttribute="trailing" secondItem="nbz-ak-eif" secondAttribute="trailing" id="Z0D-Uu-MkX"/>
-                            <constraint firstItem="nbz-ak-eif" firstAttribute="top" secondItem="wbc-yd-nQP" secondAttribute="top" id="sZD-lL-1pD"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="5aU-qH-s9g"/>
-                    <connections>
-                        <outlet property="backButton" destination="YVh-W4-nEx" id="Sjz-0u-qqf"/>
-                        <outlet property="headerView" destination="nbz-ak-eif" id="2K7-eC-7LA"/>
-                        <outlet property="titleLabel" destination="bMN-mT-pmY" id="nkD-Hk-Cbe"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CEy-Cv-SGf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -91,9 +44,10 @@
         <!--Navigation Controller-->
         <scene sceneID="v9C-UE-aFL">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cIn-lq-r9F" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cIn-lq-r9F" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="NbV-dr-GH2">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -373,7 +327,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="ic-back" width="24" height="24"/>
         <image name="ic-recent-searches" width="24" height="24"/>
         <image name="ic-restore" width="24" height="24"/>
         <systemColor name="labelColor">

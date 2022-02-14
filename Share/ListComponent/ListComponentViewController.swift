@@ -47,15 +47,13 @@ class ListComponentViewController: SystemThemableViewController {
         super.viewDidLoad()
         
         // Configure collection view data source and delegate
-        guard let viewModel = self.viewModel,
-              let connectivityServices = connectivityService,
-              let themingService = themingService else { return }
-        
+        guard let viewModel = self.viewModel else { return }
+        let services = coordinatorServices
         let dataSourceConfiguration =
             ListComponentDataSourceConfiguration(collectionView: collectionView,
                                                  viewModel: viewModel,
                                                  cellDelegate: self,
-                                                 connectivityServices: connectivityServices, themingService: themingService)
+                                                 services: services)
         let dataSource = ListComponentDataSource(with: dataSourceConfiguration,
                                                  delegate: self)
         self.dataSource = dataSource
@@ -97,7 +95,6 @@ class ListComponentViewController: SystemThemableViewController {
                                                selector: #selector(self.handleReSignIn(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
-        
         observeConnectivity()
     }
     
@@ -107,7 +104,7 @@ class ListComponentViewController: SystemThemableViewController {
         handleConnectivity()
         collectionView.reloadData()
         
-        let activeTheme = themingService?.activeTheme
+        let activeTheme = coordinatorServices.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
@@ -116,8 +113,9 @@ class ListComponentViewController: SystemThemableViewController {
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         collectionView.reloadData()
-        progressView.progressTintColor = themingService?.activeTheme?.primaryT1Color
-        progressView.trackTintColor = themingService?.activeTheme?.primary30T1Color
+        progressView.progressTintColor = coordinatorServices.themingService?.activeTheme?.primaryT1Color
+        progressView.trackTintColor =
+        coordinatorServices.themingService?.activeTheme?.primary30T1Color
     }
     
     // MARK: - Actions
@@ -130,7 +128,7 @@ class ListComponentViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         
-        guard let currentTheme = themingService?.activeTheme
+        guard let currentTheme = coordinatorServices.themingService?.activeTheme
         else { return }
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListTitle.textAlignment = .center
@@ -224,7 +222,7 @@ class ListComponentViewController: SystemThemableViewController {
     // MARK: Connectivity Helpers
     
     private func observeConnectivity() {
-        let connectivityService = connectivityService
+        let connectivityService = coordinatorServices.connectivityService
         kvoConnectivity = connectivityService?.observe(\.status,
                                                        options: [.new],
                                                        changeHandler: { [weak self] (_, _) in
@@ -235,7 +233,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     private func handleConnectivity() {
-        let connectivityService = connectivityService
+        let connectivityService = coordinatorServices.connectivityService
         if connectivityService?.hasInternetConnection() == false {
             didUpdateList(error: NSError(), pagination: nil)
             

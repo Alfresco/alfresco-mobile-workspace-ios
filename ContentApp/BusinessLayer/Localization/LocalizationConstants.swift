@@ -265,4 +265,8 @@ struct LocalizationConstants {
         static let alertTitle = NSLocalizedString("alert-title", comment: "")
         static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
     }
+    
+    struct AppExtension {
+        static let saveToAlfresco = NSLocalizedString("save-to-alfresco", comment: "")
+    }
 }

@@ -32,64 +32,26 @@ import Micro
 @objc(ShareExtensionViewController)
 class ShareViewController: SystemThemableViewController {
     lazy var viewModel = ShareViewModel()
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
-
+    
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         activateTheme()
-        applyComponentsThemes()
-        applyLocalization()
-        registerNotifications()
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.0) {
             self.checkForUserSession()
         }
     }
     
     private func activateTheme() {
-        let themingService = viewModel.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        viewModel.themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
-    private func registerNotifications() {
-        // unauthorized Notification
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
-                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
-                                               object: nil)
-        
-        // ReSignIn Notification
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleReSignIn(notification:)),
-                                               name: Notification.Name(KeyConstants.Notification.reSignin),
-                                               object: nil)
-    }
-
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = self.viewModel.themingService?.activeTheme else { return }
+        guard let currentTheme = viewModel.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.surfaceColor
-        headerView.backgroundColor = currentTheme.surfaceColor
-        backButton.tintColor = currentTheme.onSurfaceColor
-        titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
-        titleLabel.textAlignment = .center
-    }
-    
-    private func applyLocalization() {
-        if viewModel.browseType == .personalFiles {
-            titleLabel.text = LocalizationConstants.BrowseStaticList.personalFiles
-        }
-    }
-    
-    @IBAction func backButtonAction(_ sender: Any) {
-        if viewModel.browseType == .personalFiles {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        } else {
-            self.navigationController?.popViewController(animated: true)
-        }
     }
     
     // MARK: - Check for user session
@@ -157,21 +119,13 @@ class ShareViewController: SystemThemableViewController {
     
     private func registerAndPresent(account: AccountProtocol) {
         AlfrescoContentAPI.basePath = account.apiBasePath
-        self.viewModel.accountService?.register(account: account)
-        self.viewModel.accountService?.activeAccount = account
+        viewModel.accountService?.register(account: account)
+        viewModel.accountService?.activeAccount = account
         DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
             self.showPersonalFiles()
         }
     }
     
-    @IBAction func loginButtonAction(_ sender: Any) {
-        print("loginButtonAction")
-        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: "BrowseViewController") as? BrowseViewController {
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-            
     private func handleSharedFile() {
         // extracting the path to the URL that is being shared
         let attachments = (self.extensionContext?.inputItems.first as? NSExtensionItem)?.attachments ?? []
@@ -197,50 +151,8 @@ class ShareViewController: SystemThemableViewController {
     }
 }
 
-// MARK: - Notifications
+// MARK: - Show Personal Files
 extension ShareViewController {
-    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
-        let title = LocalizationConstants.Dialog.sessionExpiredTitle
-        let message = LocalizationConstants.Dialog.sessionExpiredMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.viewModel.accountService?.activeAccount?.reSignIn(onViewController: self)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction, cancelAction],
-                                       completionHandler: {})
-    }
-    
-    @objc private func handleReSignIn(notification: Notification) {
-        self.showPersonalFiles()
-    }
-}
-
-// MARK: - APIs for Files and Folder
-extension ShareViewController {
-    private func showAlertInternetUnavailable() {
-        let title = LocalizationConstants.Dialog.internetUnavailableTitle
-        let message = LocalizationConstants.Dialog.internetUnavailableMessage
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction],
-                                       completionHandler: {})
-    }
-        
     func showPersonalFiles() {
         if let navigationViewController = self.navigationController {
             let browseNode = BrowseNode(type: .personalFiles)

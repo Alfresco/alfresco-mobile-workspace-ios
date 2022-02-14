@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
 
 class SystemSearchViewController: SystemThemableViewController {
     private var resultsViewController: ResultViewController?
@@ -40,6 +41,12 @@ class SystemSearchViewController: SystemThemableViewController {
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
             addSearchButton()
         }
+        
+        // unauthorized Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
+                                               object: nil)
     }
     
     override func viewWillTransition(to size: CGSize,
@@ -72,20 +79,13 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func searchButtonTapped() {
-        navigationItem.searchController = searchController
-        searchController?.searchBar.alpha = 0.0
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.searchController?.isActive = true
-            sSelf.searchController?.searchBar.becomeFirstResponder()
-        }
     }
 
     // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices.themingService?.activeTheme else { return }
             
         view.backgroundColor = currentTheme.surfaceColor
         let image = UIImage(color: currentTheme.surfaceColor,
@@ -238,5 +238,30 @@ extension SystemSearchViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let rvc = searchController.searchResultsController as? ResultViewController else { return }
         rvc.view.isHidden = false
+    }
+}
+
+// MARK: - Notifications
+
+extension SystemSearchViewController {
+    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
+        let title = LocalizationConstants.Dialog.sessionExpiredTitle
+        let message = LocalizationConstants.Dialog.sessionExpiredMessage
+        
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.coordinatorServices.accountService?.activeAccount?.reSignIn(onViewController: sSelf)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
     }
 }

@@ -50,7 +50,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
 
-        presenter.pushViewController(viewController, animated: true)
+        presenter.pushViewController(viewController, animated: false)
     }
     
     // MARK: - Private interface

@@ -85,7 +85,7 @@ class ResultViewController: SystemThemableViewController {
         super.viewWillAppear(animated)
         resultsListController?.viewWillAppear(animated)
 
-        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        let activeTheme = coordinatorServices.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
@@ -96,7 +96,7 @@ class ResultViewController: SystemThemableViewController {
         recentSearchCollectionView.reloadData()
         resultsListController?.willTransition(to: newCollection, with: coordinator)
 
-        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        let activeTheme = coordinatorServices.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
@@ -140,7 +140,7 @@ class ResultViewController: SystemThemableViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        guard let currentTheme = coordinatorServices.themingService?.activeTheme else { return }
         recentSearchesTitle.applyStyleSubtitle2OnSurface(theme: currentTheme)
         view.backgroundColor = currentTheme.surfaceColor
         recentSearchesView.backgroundColor = currentTheme.surfaceColor
@@ -168,7 +168,7 @@ extension ResultViewController: UICollectionViewDelegateFlowLayout, UICollection
                                                           for: indexPath) as? RecentSearchCollectionViewCell
             cell?.search = recentSearchesViewModel.searches[indexPath.row]
             cell?.accessibilityIdentifier = "recentSearchItem\(indexPath.row)"
-            cell?.applyTheme(coordinatorServices?.themingService?.activeTheme)
+            cell?.applyTheme(coordinatorServices.themingService?.activeTheme)
             return cell ?? UICollectionViewCell()
         default:
             return UICollectionViewCell()

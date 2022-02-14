@@ -18,6 +18,7 @@
 
 import UIKit
 import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
 class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
