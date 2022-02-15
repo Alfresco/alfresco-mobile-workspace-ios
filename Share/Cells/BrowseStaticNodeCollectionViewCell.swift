@@ -27,14 +27,8 @@ class BrowseStaticNodeCollectionViewCell: ListSelectableCell {
                 iconImageView.image = UIImage(named: node.icon)
                 titleLabel.text = node.title
                 switch node.type {
-                case .myLibraries:
-                    self.accessibilityIdentifier = "myLibrariesCell"
                 case .personalFiles:
                     self.accessibilityIdentifier = "personalFilesCell"
-                case .shared:
-                    self.accessibilityIdentifier = "sharedCell"
-                case .trash:
-                    self.accessibilityIdentifier = "trashCell"
                 }
             }
         }

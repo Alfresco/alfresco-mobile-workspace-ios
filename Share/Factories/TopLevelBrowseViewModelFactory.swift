@@ -39,12 +39,6 @@ class TopLevelBrowseViewModelFactory {
         switch type {
         case .personalFiles:
             return personalFilesViewModel()
-        case .myLibraries:
-            return myLibrariesViewModel()
-        case .shared:
-            return sharedViewModel()
-        case .trash:
-            return trashViewModel()
         default:
             return defaultViewModel()
         }
@@ -84,25 +78,6 @@ class TopLevelBrowseViewModelFactory {
         let model = FolderDrillModel(listNode: nil,
                                      services: services)
         let viewModel = FolderDrillViewModel(model: model)
-        return viewModel
-    }
-
-    private func myLibrariesViewModel() -> ListComponentViewModel {
-
-        let model = MyLibrariesModel(services: services)
-        let viewModel = ListComponentViewModel(model: model)
-        return viewModel
-    }
-
-    private func sharedViewModel() -> ListComponentViewModel {
-        let model = SharedModel(services: services)
-        let viewModel = ListComponentViewModel(model: model)
-        return viewModel
-    }
-
-    private func trashViewModel() -> ListComponentViewModel {
-        let model = TrashModel(services: services)
-        let viewModel = TrashViewModel(model: model)
         return viewModel
     }
 

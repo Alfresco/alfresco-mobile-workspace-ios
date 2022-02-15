@@ -20,9 +20,6 @@ import Foundation
 
 enum BrowseType: String {
     case personalFiles = "PersonalFiles"
-    case myLibraries = "MyLibraries"
-    case shared = "Shared"
-    case trash = "Trash"
 }
 
 struct BrowseNode {
@@ -36,15 +33,6 @@ struct BrowseNode {
         case .personalFiles:
             self.title = LocalizationConstants.AppExtension.saveToAlfresco
             self.icon = "ic-personal_files"
-        case .myLibraries:
-            self.title = LocalizationConstants.BrowseStaticList.myLibraries
-            self.icon = "ic-my_libraries"
-        case .shared:
-            self.title = LocalizationConstants.BrowseStaticList.shared
-            self.icon = "ic-shared"
-        case .trash:
-            self.title = LocalizationConstants.BrowseStaticList.trash
-            self.icon = "ic-trash"
         }
     }
 }
