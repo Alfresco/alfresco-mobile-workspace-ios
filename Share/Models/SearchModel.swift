@@ -351,7 +351,6 @@ class SearchCompletionHandler: Equatable {
     }
 }
 
-
 // MARK: - Facet Search
 extension SearchModel {
     func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem] {
