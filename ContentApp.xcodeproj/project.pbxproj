@@ -330,7 +330,6 @@
 		C9AFDF7127B8CA44007233A5 /* BrowseSectionCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF6A27B8CA44007233A5 /* BrowseSectionCollectionReusableView.swift */; };
 		C9AFDF7227B8CA44007233A5 /* ListSelectableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF6B27B8CA44007233A5 /* ListSelectableCell.swift */; };
 		C9AFDF7327B8CA72007233A5 /* FileIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E324779E24AB4F0B006D4B6F /* FileIcon.swift */; };
-		C9AFDF7427B8CAE3007233A5 /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E6C2657F9A900B89766 /* ListComponentViewModel.swift */; };
 		C9AFDF7627B8CDA4007233A5 /* Micro in Frameworks */ = {isa = PBXBuildFile; productRef = C9AFDF7527B8CDA4007233A5 /* Micro */; };
 		C9AFDF7827B8D171007233A5 /* SystemThemableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF7727B8D171007233A5 /* SystemThemableViewController.swift */; };
 		C9AFDF7B27B8EE32007233A5 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AFDF7A27B8EE32007233A5 /* BrowseTopLevelFolderScreenCoordinator.swift */; };
@@ -362,6 +361,7 @@
 		C9C7F22D27BB82940039A6AE /* BrowseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22927BB82940039A6AE /* BrowseNode.swift */; };
 		C9C7F23027BB82D30039A6AE /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */; };
 		C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22F27BB82D30039A6AE /* Coordinator.swift */; };
+		C9C7F23327BBA1DD0039A6AE /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */; };
 		C9D4FAAD278305730008C4AA /* FileManagerScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */; };
 		C9D4FAAF278305D10008C4AA /* FileManagerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */; };
 		C9D4FAB127830B480008C4AA /* FileManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */; };
@@ -822,6 +822,7 @@
 		C9C7F22927BB82940039A6AE /* BrowseNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseNode.swift; sourceTree = "<group>"; };
 		C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		C9C7F22F27BB82D30039A6AE /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListComponentViewModel.swift; sourceTree = "<group>"; };
 		C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerScreenCoordinator.swift; sourceTree = "<group>"; };
 		C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerDataSource.swift; sourceTree = "<group>"; };
 		C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerViewController.swift; sourceTree = "<group>"; };
@@ -1830,6 +1831,7 @@
 				C9AFDF6027B8C877007233A5 /* ListComponentViewController.swift */,
 				C9AFDF6227B8C9BF007233A5 /* ListComponent+DataSource.swift */,
 				C9AFDFA427B8FE38007233A5 /* ListComponent+Delegates.swift */,
+				C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */,
 				C9AFDF5B27B8C679007233A5 /* ListPageController.swift */,
 				C9AFDF9B27B8F757007233A5 /* ListViewController.swift */,
 				C9AFDF9F27B8F7AF007233A5 /* ResultViewController.swift */,
@@ -3123,7 +3125,6 @@
 				C9AFDFA627B9003E007233A5 /* DeleteNodeMapper.swift in Sources */,
 				C9A9110127A7B795002EBC7F /* UICollectionView+ItemIndex.swift in Sources */,
 				C918812027AA41B900F850DF /* ThemingService.swift in Sources */,
-				C9AFDF7427B8CAE3007233A5 /* ListComponentViewModel.swift in Sources */,
 				C9A9112027A7B814002EBC7F /* NeedHelpModelProtocol.swift in Sources */,
 				C9A9117427A7B9E4002EBC7F /* KeychainWrapper.swift in Sources */,
 				C9A9108127A7B45B002EBC7F /* LocationService.swift in Sources */,
@@ -3221,6 +3222,7 @@
 				C9AFDF6327B8C9BF007233A5 /* ListComponent+DataSource.swift in Sources */,
 				C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */,
 				C918814C27AA8A4C00F850DF /* DataAccessor.swift in Sources */,
+				C9C7F23327BBA1DD0039A6AE /* ListComponentViewModel.swift in Sources */,
 				C9A9116327A7B992002EBC7F /* Double+TimeFormat.swift in Sources */,
 				C9A910EB27A7B748002EBC7F /* ScrollViewPageController.swift in Sources */,
 				C9A9115427A7B969002EBC7F /* ActionMenu.swift in Sources */,

@@ -37,5 +37,9 @@ class SearchViewModel: ListComponentViewModel {
     func shouldDisplaySearchButton() -> Bool {
         return true
     }
+    
+    override func shouldDisplayListActionButton() -> Bool {
+        return false
+    }
 }
 

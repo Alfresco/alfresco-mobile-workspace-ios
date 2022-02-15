@@ -29,6 +29,7 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var uploadButton: MDCButton!
     var refreshControl: UIRefreshControl?
     
     var pageController: ListPageController?
@@ -62,6 +63,11 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.delegate = dataSource
         collectionView.pageDelegate = self
         emptyListView.isHidden = true
+        uploadButton.isHidden = !viewModel.shouldDisplayListActionButton()
+        uploadButton.isUppercaseTitle = false
+        uploadButton.setTitle(LocalizationConstants.AppExtension.upload, for: .normal)
+        uploadButton.layer.cornerRadius = 8.0
+        
         if viewModel.shouldDisplayCreateButton() ||
             viewModel.shouldDisplayListActionButton() {
             collectionView.contentInset = UIEdgeInsets(top: 0,
@@ -135,6 +141,10 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        
+        uploadButton.backgroundColor = currentTheme.primaryT1Color
+        uploadButton.tintColor = currentTheme.onPrimaryColor
+        uploadButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
     }
     
     func startLoading() {
@@ -245,6 +255,7 @@ class ListComponentViewController: SystemThemableViewController {
                 collectionView.addSubview(refreshControl)
             }
         }
+        uploadButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
     }
     
     internal func isPaginationEnabled() -> Bool {
@@ -281,7 +292,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
             reloadDataSource()
             return
         }
-        
+        uploadButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {
@@ -323,7 +334,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
 
 extension ListComponentViewController: ListComponentViewModelDelegate {
     func didUpdateListActionState(enable: Bool) {
-        
+        uploadButton.isEnabled = enable
     }
 }
 

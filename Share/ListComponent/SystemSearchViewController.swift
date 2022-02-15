@@ -81,6 +81,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     @objc func searchButtonTapped() {
         AlfrescoLog.debug("search button action")
+
     }
 
     // MARK: - Private Helpers

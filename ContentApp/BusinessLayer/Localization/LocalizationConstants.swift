@@ -268,5 +268,7 @@ struct LocalizationConstants {
     
     struct AppExtension {
         static let saveToAlfresco = NSLocalizedString("save-to-alfresco", comment: "")
+        static let upload = NSLocalizedString("upload", comment: "")
     }
 }
+

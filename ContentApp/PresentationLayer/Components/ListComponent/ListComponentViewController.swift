@@ -68,7 +68,7 @@ class ListComponentViewController: SystemThemableViewController {
         createButton.isHidden = !viewModel.shouldDisplayCreateButton()
         listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
         listActionButton.isUppercaseTitle = false
-        listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
+        listActionButton.setTitle(LocalizationConstants.Buttons.syncAll, for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
         
         if viewModel.shouldDisplayCreateButton() ||
