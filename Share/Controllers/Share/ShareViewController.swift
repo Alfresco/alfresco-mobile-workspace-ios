@@ -17,17 +17,12 @@
 //
 
 import UIKit
-import Social
 import MobileCoreServices
-import UniformTypeIdentifiers
 import AlfrescoAuth
 import AlfrescoCore
 import AlfrescoContent
-import JWTDecode
 import FastCoding
 import MaterialComponents.MaterialDialogs
-import MaterialComponents.MaterialProgressView
-import Micro
 
 @objc(ShareExtensionViewController)
 class ShareViewController: SystemThemableViewController {
