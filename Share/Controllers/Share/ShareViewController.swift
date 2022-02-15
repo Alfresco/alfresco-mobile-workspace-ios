@@ -17,101 +17,41 @@
 //
 
 import UIKit
-import Social
 import MobileCoreServices
-import UniformTypeIdentifiers
 import AlfrescoAuth
 import AlfrescoCore
 import AlfrescoContent
-import JWTDecode
 import FastCoding
 import MaterialComponents.MaterialDialogs
-import MaterialComponents.MaterialProgressView
 
 @objc(ShareExtensionViewController)
-class ShareViewController: UIViewController {
+class ShareViewController: SystemThemableViewController {
     lazy var viewModel = ShareViewModel()
-    @IBOutlet weak var headerView: UIView!
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var progressView: MDCProgressView!
-        
+    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
+    
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         activateTheme()
-        setupProgressView()
-        applyComponentsThemes()
-        applyLocalization()
-        registerNotifications()
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.1) {
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.0) {
             self.checkForUserSession()
         }
     }
     
     private func activateTheme() {
-        let themingService = viewModel.repository.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
-        themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        viewModel.themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.hidesBackButton = true
     }
     
-    private func registerNotifications() {
-        // unauthorized Notification
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
-                                               name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
-                                               object: nil)
-        
-        // ReSignIn Notification
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.handleReSignIn(notification:)),
-                                               name: Notification.Name(KeyConstants.Notification.reSignin),
-                                               object: nil)
-    }
-        
-    private func setupProgressView() {
-        progressView.progress = 0
-        progressView.mode = .indeterminate
-        view.bringSubviewToFront(progressView)
-        progressView.alpha = 0
-    }
-    
-    private func startLoading() {
-        progressView.alpha = 1
-        progressView.startAnimating()
-        progressView.setHidden(false, animated: false)
-    }
-
-    private func stopLoading() {
-        progressView.stopAnimating()
-        progressView.setHidden(true, animated: false)
-    }
-
-    private func applyComponentsThemes() {
-        guard let currentTheme = self.viewModel.themingService?.activeTheme else { return }
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        guard let currentTheme = viewModel.themingService?.activeTheme else { return }
         view.backgroundColor = currentTheme.surfaceColor
-        headerView.backgroundColor = currentTheme.surfaceColor
-        backButton.tintColor = currentTheme.onSurfaceColor
-        titleLabel.applyeStyleHeadline6OnSurface(theme: currentTheme)
-        titleLabel.textAlignment = .center
-    }
-    
-    private func applyLocalization() {
-        if viewModel.browseType == .personalFiles {
-            titleLabel.text = LocalizationConstants.BrowseStaticList.personalFiles
-        }
-    }
-    
-    @IBAction func backButtonAction(_ sender: Any) {
-        if viewModel.browseType == .personalFiles {
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        } else {
-            self.navigationController?.popViewController(animated: true)
-        }
     }
     
     // MARK: - Check for user session
     func checkForUserSession() {
-        startLoading()
         if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
 
@@ -142,7 +82,6 @@ class ShareViewController: UIViewController {
     }
     
     private func showAlertToRegisterInTheApp() {
-        stopLoading()
         let title = LocalizationConstants.Dialog.sessionUnavailableTitle
         let message = LocalizationConstants.Dialog.sessionUnavailableMessage
         let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
@@ -175,28 +114,14 @@ class ShareViewController: UIViewController {
     }
     
     private func registerAndPresent(account: AccountProtocol) {
-        stopLoading()
         AlfrescoContentAPI.basePath = account.apiBasePath
-        self.viewModel.accountService?.register(account: account)
-        self.viewModel.accountService?.activeAccount = account
+        viewModel.accountService?.register(account: account)
+        viewModel.accountService?.activeAccount = account
         DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {
-            self.getFilesAndFolder()
+            self.showPersonalFiles()
         }
     }
     
-    func getFilesAndFolder() {
-        print("Get Files and Folders")
-
-    }
-    
-    @IBAction func loginButtonAction(_ sender: Any) {
-        print("loginButtonAction")
-        let storyboard = UIStoryboard(name: "MainInterface", bundle: nil)
-        if let controller = storyboard.instantiateViewController(withIdentifier: "BrowseViewController") as? BrowseViewController {
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-            
     private func handleSharedFile() {
         // extracting the path to the URL that is being shared
         let attachments = (self.extensionContext?.inputItems.first as? NSExtensionItem)?.attachments ?? []
@@ -222,58 +147,16 @@ class ShareViewController: UIViewController {
     }
 }
 
-// MARK: - Notifications
+// MARK: - Show Personal Files
 extension ShareViewController {
-    @objc private func handleUnauthorizedAPIAccess(notification: Notification) {
-        let title = LocalizationConstants.Dialog.sessionExpiredTitle
-        let message = LocalizationConstants.Dialog.sessionExpiredMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.viewModel.accountService?.activeAccount?.reSignIn(onViewController: self)
+    func showPersonalFiles() {
+        if let navigationViewController = self.navigationController {
+            let browseNode = BrowseNode(type: .personalFiles)
+            let staticFolderScreenCoordinator =
+                BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
+                                                      browseNode: browseNode)
+            staticFolderScreenCoordinator.start()
+            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction, cancelAction],
-                                       completionHandler: {})
     }
-    
-    @objc private func handleReSignIn(notification: Notification) {
-        self.getFilesAndFolder()
-    }
-}
-
-// MARK: - APIs for Files and Folder
-extension ShareViewController {
-    private func showAlertInternetUnavailable() {
-        let title = LocalizationConstants.Dialog.internetUnavailableTitle
-        let message = LocalizationConstants.Dialog.internetUnavailableMessage
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
-            guard let sSelf = self else { return }
-            sSelf.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-        _ = self.showDialog(title: title,
-                                       message: message,
-                                       actions: [confirmAction],
-                                       completionHandler: {})
-    }
-    
-    func refreshList() {
-        viewModel.currentPage = 1
-        viewModel.hasMoreItems = true
-        viewModel.shouldRefreshList = true
-        //fetchNextPage()
-    }
-    
-   
-    
-    
 }

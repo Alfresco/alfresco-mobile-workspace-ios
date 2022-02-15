@@ -273,3 +273,7 @@
 "auto-flash" = "Auto";
 "on-flash" = "On";
 "off-flash" = "Off";
+
+// MARK: - Extension
+"save-to-alfresco" = "Save to Alfresco";
+"upload" = "Upload";

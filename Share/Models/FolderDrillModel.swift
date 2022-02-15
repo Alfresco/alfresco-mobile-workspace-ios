@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,26 +16,49 @@
 //  limitations under the License.
 //
 
-import UIKit
-import AlfrescoAuth
-import AlfrescoCore
+import Foundation
 import AlfrescoContent
 
-class BrowseViewModel: NSObject {
-    var repository: ServiceRepository {
-        return ApplicationBootstrap.shared().repository
-    }
-    var accountService: AccountService? {
-        let identifier = AccountService.identifier
-        return repository.service(of: identifier) as? AccountService
-    }
-    
-    var listNode: ListNode?
-    var nodeOperations: NodeOperations {
-        return NodeOperations(accountService: accountService)
-    }
+class FolderDrillModel: ListComponentModelProtocol {
+    private var services: CoordinatorServices
+    private let nodeOperations: NodeOperations
     private let uploadTransferDataAccessor = UploadTransferDataAccessor()
+    internal var supportedNodeTypes: [NodeType] = []
+
+    var listNode: ListNode?
     var rawListNodes: [ListNode] = []
+    weak var delegate: ListComponentModelDelegate?
+    var folderChildrenDelegate: FolderChildrenScreenCoordinatorDelegate?
+
+    init(listNode: ListNode?, services: CoordinatorServices) {
+        self.services = services
+        self.listNode = listNode
+        self.nodeOperations = NodeOperations(accountService: services.accountService)
+    }
+
+    func isEmpty() -> Bool {
+        rawListNodes.isEmpty
+    }
+
+    func numberOfItems(in section: Int) -> Int {
+        return rawListNodes.count
+    }
+
+    func listNodes() -> [ListNode] {
+        return rawListNodes
+    }
+
+    func listNode(for indexPath: IndexPath) -> ListNode? {
+        if !rawListNodes.isEmpty && rawListNodes.count > indexPath.row {
+            return rawListNodes[indexPath.row]
+        } else {
+            return nil
+        }
+    }
+
+    func titleForSectionHeader(at indexPath: IndexPath) -> String {
+        return ""
+    }
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler) {
@@ -83,7 +106,7 @@ class BrowseViewModel: NSObject {
                         sSelf.insert(uploadTransfers: uploadTransfers,
                                      to: &sSelf.rawListNodes,
                                      totalItems: responsePagination?.totalItems ?? 0)
-                       // sSelf.delegate?.needsDisplayStateRefresh()
+                        sSelf.delegate?.needsDisplayStateRefresh()
                     }
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &listNodes,
@@ -107,8 +130,7 @@ class BrowseViewModel: NSObject {
                 completionHandler(nil)
             } else if let entry = result?.entry {
                 let node = NodeChildMapper.create(from: entry)
-                print("update list")
-                //self.folderChildrenDelegate?.updateListNode(with: node)
+                self.folderChildrenDelegate?.updateListNode(with: node)
                 completionHandler(node)
             }
         }
@@ -144,7 +166,7 @@ class BrowseViewModel: NSObject {
                     sSelf.insert(uploadTransfers: uploadTransfers,
                                  to: &sSelf.rawListNodes,
                                  totalItems: responsePagination?.totalItems ?? 0)
-                    //sSelf.delegate?.needsDisplayStateRefresh()
+                    sSelf.delegate?.needsDisplayStateRefresh()
                 }
                 sSelf.insert(uploadTransfers: uploadTransfers,
                              to: &listNodes,
@@ -158,6 +180,33 @@ class BrowseViewModel: NSObject {
         }
     }
     
+    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+        if let node = listNode(for: indexPath) {
+            if node.isAFileType() && node.markedFor == .upload {
+                let nodeSyncStatus = node.syncStatus
+                var entryListStatus: ListEntrySyncStatus
+
+                switch nodeSyncStatus {
+                case .pending:
+                    entryListStatus = .pending
+                case .error:
+                    entryListStatus = .error
+                case .inProgress:
+                    entryListStatus = .inProgress
+                case .synced:
+                    entryListStatus = .uploaded
+                default:
+                    entryListStatus = .undefined
+                }
+
+                return entryListStatus
+            }
+
+            return node.isMarkedOffline() ? .markedForOffline : .undefined
+        }
+        return .undefined
+    }
+
     // MARK: - Private interface
 
     private func updateNodeDetailsIfNecessary(handle: @escaping (Error?) -> Void) {

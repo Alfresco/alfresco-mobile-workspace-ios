@@ -101,7 +101,10 @@ class ThemingService: ThemingServiceProtocol {
             } else {
                 activate(theme: DefaultTheme.self)
             }
-        default: break
+        case .dark:
+            activate(theme: DarkTheme.self)
+        case .light:
+            activate(theme: DefaultTheme.self)
         }
     }
 

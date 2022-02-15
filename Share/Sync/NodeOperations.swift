@@ -60,17 +60,6 @@ class NodeOperations {
         }
     }
 
-    func fetchNodeIsFavorite(for guid: String,
-                             completion: @escaping ((_ data: FavoriteEntry?,
-                                                            _ error: Error?) -> Void)) {
-        sessionForCurrentAccount { _ in
-            FavoritesAPI.getFavorite(personId: APIConstants.me,
-                                     favoriteId: guid) { (result, error) in
-                completion(result, error)
-            }
-        }
-    }
-
     func fetchNodeDetails(for guid: String,
                           relativePath: String? = nil,
                           completion: @escaping ((_ data: NodeEntry?,
@@ -88,57 +77,6 @@ class NodeOperations {
         }
     }
 
-    func downloadContent(for node: ListNode,
-                         to destinationURL: URL,
-                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        let requestBuilder = NodesAPI.getNodeContentWithRequestBuilder(nodeId: node.guid)
-        let downloadURL = URL(string: requestBuilder.URLString)
-
-        if let url = downloadURL {
-            return downloadContent(from: url,
-                                   to: destinationURL,
-                                   completionHandler: completionHandler)
-        }
-
-        return nil
-    }
-
-    func downloadContent(from url: URL,
-                         to destinationURL: URL? = nil,
-                         completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        var destination: DownloadRequest.DownloadFileDestination? = nil
-        if let destinationUrl = destinationURL {
-            destination = { _, _ in
-                return (destinationUrl, [.removePreviousFile])
-            }
-        }
-
-        return Alamofire.download(url,
-                                  parameters: nil,
-                                  headers: AlfrescoContentAPI.customHeaders,
-                                  to: destination).response { response in
-            if let destinationUrl = response.destinationURL ?? response.temporaryURL,
-                                       let httpURLResponse = response.response {
-                                        if (200...299).contains(httpURLResponse.statusCode) {
-                                            completionHandler(destinationUrl, nil)
-                                        } else {
-                                            let error = APIError(domain: "",
-                                                                 code: httpURLResponse.statusCode)
-                                            completionHandler(nil, error)
-                                        }
-                                    } else {
-                                        if response.error?.code == NSURLErrorNetworkConnectionLost ||
-                                            response.error?.code == NSURLErrorCancelled {
-                                            completionHandler(nil, nil)
-                                        } else {
-                                            let error = APIError(domain: "",
-                                                                 error: response.error)
-                                            completionHandler(nil, error)
-                                        }
-                                    }
-                                  }
-    }
-    
     func createNode(nodeId: String,
                     name: String,
                     description: String?,

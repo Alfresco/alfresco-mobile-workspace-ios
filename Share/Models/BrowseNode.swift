@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,11 +16,23 @@
 //  limitations under the License.
 //
 
-import UIKit
-import AlfrescoAuth
-import AlfrescoCore
-import AlfrescoContent
+import Foundation
 
-enum RenditionType: String {
-    case pdf = "pdf", imagePreview = "imgpreview"
+enum BrowseType: String {
+    case personalFiles = "PersonalFiles"
+}
+
+struct BrowseNode {
+    var title: String
+    var icon: String
+    var type: BrowseType
+
+    init(type: BrowseType) {
+        self.type = type
+        switch type {
+        case .personalFiles:
+            self.title = LocalizationConstants.AppExtension.saveToAlfresco
+            self.icon = "ic-personal_files"
+        }
+    }
 }

@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,11 +16,30 @@
 //  limitations under the License.
 //
 
-import UIKit
-import AlfrescoAuth
-import AlfrescoCore
+import Foundation
 import AlfrescoContent
 
-enum RenditionType: String {
-    case pdf = "pdf", imagePreview = "imgpreview"
+class SearchViewModel: ListComponentViewModel {
+    var searchModel: SearchModelProtocol
+    init(model: SearchModelProtocol) {
+        searchModel = model
+        super.init(model: model)
+    }
+    
+    override func emptyList() -> EmptyListProtocol {
+        return EmptySearch()
+    }
+
+    func shouldDisplaySearchBar() -> Bool {
+        return true
+    }
+
+    func shouldDisplaySearchButton() -> Bool {
+        return true
+    }
+    
+    override func shouldDisplayListActionButton() -> Bool {
+        return false
+    }
 }
+

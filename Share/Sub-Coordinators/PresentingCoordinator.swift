@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,20 +17,19 @@
 //
 
 import UIKit
-import AlfrescoAuth
-import AlfrescoCore
-import AlfrescoContent
 
-class ShareViewModel: NSObject {
-    var repository: ServiceRepository {
-        return ApplicationBootstrap.shared().repository
+class PresentingCoordinator: Coordinator {
+    internal var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
+
+    func start() {
+        // To be overriden in child classes
     }
-    var accountService: AccountService? {
-        let identifier = AccountService.identifier
-        return repository.service(of: identifier) as? AccountService
-    }
-    var themingService: MaterialDesignThemingService? {
-        let identifier = MaterialDesignThemingService.identifier
-        return repository.service(of: identifier) as? MaterialDesignThemingService
+
+    func startFolderCoordinator(for node: ListNode,
+                                presenter: UINavigationController) {
+        let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: presenter,
+                                                                         listNode: node)
+        folderDrillDownCoordinator.start()
+        self.folderDrillDownCoordinator = folderDrillDownCoordinator
     }
 }

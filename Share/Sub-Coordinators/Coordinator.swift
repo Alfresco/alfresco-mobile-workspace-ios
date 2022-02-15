@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,21 +16,48 @@
 //  limitations under the License.
 //
 
-import UIKit
-import AlfrescoAuth
-import AlfrescoCore
-import AlfrescoContent
+protocol Coordinator {
+    func start()
+}
 
-class ShareViewModel: NSObject {
+class CoordinatorServices {
+    var accountService: AccountService?
+    var themingService: MaterialDesignThemingService?
+    var connectivityService: ConnectivityService?
+    var locationService: LocationService?
+}
+
+extension Coordinator {
     var repository: ServiceRepository {
         return ApplicationBootstrap.shared().repository
     }
+
     var accountService: AccountService? {
         let identifier = AccountService.identifier
         return repository.service(of: identifier) as? AccountService
     }
+
     var themingService: MaterialDesignThemingService? {
         let identifier = MaterialDesignThemingService.identifier
         return repository.service(of: identifier) as? MaterialDesignThemingService
+    }
+
+    var connectivityService: ConnectivityService? {
+        let identifier = ConnectivityService.identifier
+        return repository.service(of: identifier) as? ConnectivityService
+    }
+    
+    var locationService: LocationService? {
+        let identifier = LocationService.identifier
+        return repository.service(of: identifier) as? LocationService
+    }
+
+    var coordinatorServices: CoordinatorServices {
+        let coordinatorServices = CoordinatorServices()
+        coordinatorServices.accountService = accountService
+        coordinatorServices.themingService = themingService
+        coordinatorServices.connectivityService = connectivityService
+        coordinatorServices.locationService = locationService
+        return coordinatorServices
     }
 }

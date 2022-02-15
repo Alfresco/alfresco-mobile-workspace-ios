@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,10 +17,18 @@
 //
 
 import UIKit
-import AlfrescoAuth
-import AlfrescoCore
 import AlfrescoContent
 
-enum RenditionType: String {
-    case pdf = "pdf", imagePreview = "imgpreview"
+protocol ListItemActionDelegate: AnyObject {
+    func showPreview(for node: ListNode,
+                     from model: ListComponentModelProtocol)
+}
+
+protocol ListComponentActionDelegate: AnyObject {
+    func elementTapped(node: ListNode)
+    func didUpdateList(in listComponentViewController: ListComponentViewController,
+                       error: Error?,
+                       pagination: Pagination?)
+
+    func performListAction()
 }

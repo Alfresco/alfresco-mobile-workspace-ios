@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2022 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,10 +17,13 @@
 //
 
 import UIKit
-import AlfrescoAuth
-import AlfrescoCore
-import AlfrescoContent
 
-enum RenditionType: String {
-    case pdf = "pdf", imagePreview = "imgpreview"
+class ListSectionCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+    }
 }
