@@ -46,6 +46,7 @@ class ShareViewController: SystemThemableViewController {
     private func activateTheme() {
         viewModel.themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.hidesBackButton = true
     }
     
     override func applyComponentsThemes() {

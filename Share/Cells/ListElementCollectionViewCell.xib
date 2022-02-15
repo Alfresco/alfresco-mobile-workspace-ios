@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -10,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListElementCollectionViewCell" id="TZI-a9-K3a" customClass="ListElementCollectionViewCell" customModule="ContentApp" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ListElementCollectionViewCell" id="TZI-a9-K3a" customClass="ListElementCollectionViewCell" customModule="Share" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="412" height="64"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="zWN-x9-knr">
@@ -75,21 +76,30 @@
                             <constraint firstAttribute="width" secondItem="3o2-1v-beg" secondAttribute="height" multiplier="1:1" id="iIR-TP-rvx"/>
                         </constraints>
                     </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bBJ-p2-3As" userLabel="disableView">
+                        <rect key="frame" x="0.0" y="0.0" width="412" height="64"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="bBJ-p2-3As" secondAttribute="trailing" id="0KU-n6-13k"/>
                     <constraint firstItem="3o2-1v-beg" firstAttribute="leading" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="5" id="2SO-iH-8CB"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="3Xe-Cq-IYQ"/>
+                    <constraint firstAttribute="bottom" secondItem="bBJ-p2-3As" secondAttribute="bottom" id="4Db-vA-KnX"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="leading" secondItem="5U9-6I-Aoy" secondAttribute="trailing" constant="24" id="5jr-G8-6nt"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" constant="24" id="9zI-jq-c4P"/>
                     <constraint firstItem="YfJ-2w-APk" firstAttribute="leadingMargin" secondItem="XIF-x5-06A" secondAttribute="trailing" constant="24" id="ESQ-LN-QhT"/>
                     <constraint firstAttribute="trailing" secondItem="YfJ-2w-APk" secondAttribute="trailingMargin" constant="24" id="Imx-ML-NnS"/>
+                    <constraint firstItem="bBJ-p2-3As" firstAttribute="top" secondItem="zWN-x9-knr" secondAttribute="top" id="YsW-iu-D1e"/>
                     <constraint firstItem="3o2-1v-beg" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="bGo-BO-Hm8"/>
                     <constraint firstItem="5U9-6I-Aoy" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="iDa-6v-qzU"/>
                     <constraint firstItem="XIF-x5-06A" firstAttribute="centerY" secondItem="zWN-x9-knr" secondAttribute="centerY" id="jiv-k9-Ifw"/>
+                    <constraint firstItem="bBJ-p2-3As" firstAttribute="leading" secondItem="zWN-x9-knr" secondAttribute="leading" id="k1e-4B-D4A"/>
                 </constraints>
             </collectionViewCellContentView>
             <size key="customSize" width="412" height="64"/>
             <connections>
+                <outlet property="disableView" destination="bBJ-p2-3As" id="vMP-IT-KS3"/>
                 <outlet property="iconImageView" destination="5U9-6I-Aoy" id="z4N-k4-OX1"/>
                 <outlet property="moreButton" destination="YfJ-2w-APk" id="7XB-ik-Rl2"/>
                 <outlet property="subtitle" destination="dbq-hM-j4M" id="Tbm-Pq-VNJ"/>

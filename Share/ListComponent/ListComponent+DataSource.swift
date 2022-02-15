@@ -103,7 +103,7 @@ class ListComponentDataSource: DataSource {
                                          for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
             cell.node = node
             cell.delegate = configuration.cellDelegate
-            cell.applyTheme(configuration.services.themingService?.activeTheme)
+            cell.applyTheme(configuration.services.themingService?.activeTheme, node: node)
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
@@ -112,7 +112,7 @@ class ListComponentDataSource: DataSource {
             }
             if configuration.viewModel.shouldDisplaySubtitle(for: indexPath) == false {
                 cell.subtitle.text = ""
-            }
+            }            
 
             let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
             if isPaginationEnabled &&

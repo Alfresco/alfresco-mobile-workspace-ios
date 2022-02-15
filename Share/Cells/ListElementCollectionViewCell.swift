@@ -29,6 +29,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var syncStatusImageView: UIImageView!
+    @IBOutlet weak var disableView: UIView!
     weak var delegate: ListElementCollectionViewCellDelegate?
 
     override func awakeFromNib() {
@@ -59,7 +60,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         }
     }
 
-    func applyTheme(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?, node: ListNode?) {
         guard let currentTheme = currentTheme else { return }
         backgroundColor = currentTheme.surfaceColor
         title.applyStyleBody1OnSurface(theme: currentTheme)
@@ -69,8 +70,18 @@ class ListElementCollectionViewCell: ListSelectableCell {
         iconImageView.tintColor = currentTheme.onSurface60Color
         moreButton.tintColor = currentTheme.onSurface60Color
         syncStatusImageView.tintColor = currentTheme.onSurface60Color
+        
+        if node?.nodeType != .folder {
+            self.isUserInteractionEnabled = false
+            disableView.backgroundColor = currentTheme.surface60Color
+            disableView.alpha = 1
+        } else {
+            self.isUserInteractionEnabled = true
+            disableView.backgroundColor = .clear
+            disableView.alpha = 0
+        }
     }
-
+    
     @IBAction func moreButtonTapped(_ sender: UIButton) {
         delegate?.moreButtonTapped(for: node, in: self)
     }

@@ -40,6 +40,7 @@ class SystemSearchViewController: SystemThemableViewController {
         }
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
             addSearchButton()
+            addBackButton()
         }
         
         // unauthorized Notification
@@ -79,6 +80,7 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func searchButtonTapped() {
+        AlfrescoLog.debug("search button action")
     }
 
     // MARK: - Private Helpers
@@ -124,6 +126,34 @@ class SystemSearchViewController: SystemThemableViewController {
         currHeight?.isActive = true
 
         self.navigationItem.rightBarButtonItem = searchBarButtonItem
+    }
+    
+    private func addBackButton() {
+        let backButton = UIButton(type: .custom)
+        backButton.accessibilityIdentifier = "backButton"
+        backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: searchButtonAspectRatio,
+                                    height: searchButtonAspectRatio)
+        backButton.imageView?.contentMode = .scaleAspectFill
+        backButton.layer.masksToBounds = true
+        backButton.addTarget(self,
+                               action: #selector(backButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        backButton.setImage(UIImage(named: "ic-back"),
+                              for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = searchBarButtonItem
+    }
+    
+    @objc func backButtonTapped() {
+        AlfrescoLog.debug("back button action")
+        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
     }
 
     private func createSearchController() -> UISearchController {
