@@ -24,6 +24,8 @@ class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
+    weak var fileManagerDelegate: FileManagerAssetDelegate?
+    var fileManagerDataSource: FileManagerDataSource?
 
     // MARK: - View Life Cycle
 
@@ -34,6 +36,8 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.pageController = pageController
         listComponentViewController.viewModel = viewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
+        listComponentViewController.fileManagerDelegate = fileManagerDelegate
+        listComponentViewController.fileManagerDataSource = fileManagerDataSource
 
         listComponentViewController.listActionDelegate = self
         pageController?.delegate = listComponentViewController

@@ -9,13 +9,13 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<string>1</string>
+				<string>50</string>
 				<key>NSExtensionActivationSupportsAttachmentsWithMaxCount</key>
-				<string>1</string>
+				<string>50</string>
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
-				<string>1</string>
+				<string>50</string>
 				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<string>1</string>
+				<string>50</string>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>

@@ -21,6 +21,7 @@ import AlfrescoContent
 import MaterialComponents.MaterialActivityIndicator
 import MaterialComponents.MaterialProgressView
 import Micro
+import MobileCoreServices
 
 class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
@@ -41,7 +42,9 @@ class ListComponentViewController: SystemThemableViewController {
     
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
-    
+    weak var fileManagerDelegate: FileManagerAssetDelegate?
+    var fileManagerDataSource: FileManagerDataSource?
+
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -103,7 +106,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                object: nil)
         observeConnectivity()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -129,6 +132,14 @@ class ListComponentViewController: SystemThemableViewController {
         listActionDelegate?.performListAction()
     }
     
+    @IBAction func uploadButtonAction(_ sender: Any) {
+        if let decoded = UserDefaultsModel.value(for: KeyConstants.AppGroup.sharedFiles) as? Data {
+            if let decodedURLs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decoded) as? [URL] {
+                fileManagerDataSource?.fetchSelectedAssets(for: decodedURLs, and: fileManagerDelegate)
+            }
+        }
+    }
+        
     // MARK: - Public interface
     
     override func applyComponentsThemes() {

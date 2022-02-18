@@ -21,6 +21,7 @@ import UIKit
 class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var browseNode: BrowseNode
+    private var fileManagerDataSource: FileManagerDataSource?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -33,6 +34,12 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = browseNode.title
+        viewController.fileManagerDelegate = self
+        
+        let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        self.fileManagerDataSource = FileManagerDataSource(folderToSavePath: uploadFilePath)
+        viewController.fileManagerDataSource = self.fileManagerDataSource
 
         let viewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
         let pageController = ListPageController(dataSource: viewModel.model,
@@ -72,5 +79,44 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         } else {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
+    }
+}
+
+// MARK: - File manager delegate
+extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
+    func didEndFileManager(for selectedAssets: [FileAsset]) {
+        
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
+        else { return }
+        var uploadTransfers: [UploadTransfer] = []
+        for fileAsset in selectedAssets {
+            let assetURL = URL(fileURLWithPath: fileAsset.path)
+            _ = DiskService.uploadFolderPath(for: accountIdentifier) +
+                "/" + assetURL.lastPathComponent
+            
+            let uploadTransfer = UploadTransfer(parentNodeId: self.personalFilesNode().guid,
+                                                nodeName: fileAsset.fileName ?? "",
+                                                extensionType: fileAsset.fileExtension ?? "",
+                                                mimetype: assetURL.mimeType(),
+                                                nodeDescription: fileAsset.description,
+                                                localFilenamePath: assetURL.lastPathComponent)
+            uploadTransfers.append(uploadTransfer)
+        }
+
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
+
+        triggerUpload()
+    }
+    
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
+//        let syncTriggersService = coordinatorServices.syncTriggersService
+//        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+//
+//        if connectivityService?.status == .cellular &&
+//            UserProfile.allowSyncOverCellularData == false {
+//            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+//        }
     }
 }

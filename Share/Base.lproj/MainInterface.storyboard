@@ -173,6 +173,9 @@
                                     <constraint firstAttribute="height" constant="48" id="1Mq-u5-QSq"/>
                                 </constraints>
                                 <state key="normal" title="Upload"/>
+                                <connections>
+                                    <action selector="uploadButtonAction:" destination="qma-YY-fGt" eventType="touchUpInside" id="ReI-vb-w5f"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rFO-IL-Dkc"/>
