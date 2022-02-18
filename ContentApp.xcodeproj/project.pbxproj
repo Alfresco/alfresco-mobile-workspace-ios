@@ -152,6 +152,7 @@
 		C92F3DC327BFEEA700952C59 /* SyncStatusEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E350AFD525B1C12C00527D02 /* SyncStatusEvent.swift */; };
 		C92F3DC427BFEF4E00952C59 /* NodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECECF9254302420097DB3F /* NodeEvent.swift */; };
 		C92F3DC527BFEF5200952C59 /* Dictionary+HashableNodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECED3925432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift */; };
+		C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */; };
 		C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
@@ -767,6 +768,7 @@
 		C92F3DBD27BFEC6C00952C59 /* SyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		C92F3DBF27BFECCA00952C59 /* SyncOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOperationFactory.swift; sourceTree = "<group>"; };
 		C92F3DC127BFED0700952C59 /* EventBusService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBusService.swift; sourceTree = "<group>"; };
+		C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
 		C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
@@ -1634,6 +1636,7 @@
 				C918811E27AA41B900F850DF /* ThemingService.swift */,
 				C92F3DBD27BFEC6C00952C59 /* SyncService.swift */,
 				C92F3DC127BFED0700952C59 /* EventBusService.swift */,
+				C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3215,6 +3218,7 @@
 				C9A9119027A7BA5F002EBC7F /* PhotoGalleryDataSource.swift in Sources */,
 				C92F3DC027BFECCA00952C59 /* SyncOperationFactory.swift in Sources */,
 				C918811F27AA41B900F850DF /* ProfileService.swift in Sources */,
+				C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */,
 				C9A9110027A7B793002EBC7F /* Bundle+VersionString.swift in Sources */,
 				C9AFDFA527B8FE38007233A5 /* ListComponent+Delegates.swift in Sources */,
 				C9AFDF8127B8EF5C007233A5 /* FolderChildrenScreenCoordinator.swift in Sources */,

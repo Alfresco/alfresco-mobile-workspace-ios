@@ -36,9 +36,24 @@ class ApplicationBootstrap {
         self.repository.register(service: themingService())
         self.repository.register(service: authenticationService())
         self.repository.register(service: operationQueueService())
+        self.repository.register(service: databaseService())
+        self.repository.register(service: locationService())
 
         let accountService = self.accountService(with: connectivityService)
         self.repository.register(service: accountService)
+
+        let eventBusService = self.eventBusService()
+        self.repository.register(service: eventBusService)
+
+        let syncService = self.syncService(with: accountService, and: eventBusService)
+        self.repository.register(service: syncService)
+
+        let syncTriggersService = self.syncTriggersService(with: syncService,
+                                                           and: accountService,
+                                                           and: connectivityService)
+        self.repository.register(service: syncTriggersService)
+        
+        configureCameraKitModule()
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -61,11 +76,97 @@ class ApplicationBootstrap {
         return AccountService(connectivityService: connectivityService)
     }
 
+    private func eventBusService() -> EventBusService {
+        return EventBusService()
+    }
+
     private func operationQueueService() -> OperationQueueService {
         return OperationQueueService()
     }
 
+    private func databaseService() -> DatabaseService {
+        return DatabaseService()
+    }
+
+    private func syncService(with accountService: AccountService,
+                             and eventBusService: EventBusService) -> SyncService {
+        return SyncService(accountService: accountService, eventBusService: eventBusService)
+    }
+
+    private func syncTriggersService(with syncService: SyncService,
+                                     and accountService: AccountService,
+                                     and connectivityService: ConnectivityService) -> SyncTriggersService {
+        return SyncTriggersService(syncService: syncService,
+                                   accountService: accountService,
+                                   connectivityService: connectivityService)
+    }
+
     private func connectivityService() -> ConnectivityService {
         return ConnectivityService()
+    }
+    
+    private func locationService() -> LocationService {
+        return LocationService()
+    }
+
+    private func configureCameraKitModule() {
+        self.configureCameraKitTheme()
+        self.configureCameraKitLocalization()
+    }
+    
+    func configureCameraKitTheme() {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        guard let currentTheme = themingService?.activeTheme,
+              let textFieldScheme = themingService?.containerScheming(for: .loginTextField),
+              let buttonScheme = themingService?.containerScheming(for: .dialogButton)
+        else { return }
+        
+        let theme = CameraKitTheme(primaryColor: currentTheme.primaryT1Color,
+                                   onSurfaceColor: currentTheme.onSurfaceColor,
+                                   onSurface60Color: currentTheme.onSurface60Color,
+                                   onSurface15Color: currentTheme.onSurface15Color,
+                                   onSurface5Color: currentTheme.onSurface5Color,
+                                   surfaceColor: currentTheme.surfaceColor,
+                                   surface60Color: currentTheme.surface60Color,
+                                   photoShutterColor: currentTheme.photoShutterColor,
+                                   videoShutterColor: currentTheme.videoShutterColor,
+                                   textFieldScheme: textFieldScheme,
+                                   buttonScheme: buttonScheme,
+                                   subtitle2Font: currentTheme.subtitle2TextStyle.font,
+                                   headline6Font: currentTheme.headline6TextStyle.font,
+                                   body2Font: currentTheme.body2TextStyle.font,
+                                   overlineFont: currentTheme.overlineTextStyle.font)
+        CameraKit.applyTheme(theme: theme)
+    }
+    
+    func currentTheme() -> PresentationTheme? {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        return themingService?.activeTheme
+    }
+    
+    private func configureCameraKitLocalization() {
+        let localization = CameraKitLocalization(autoFlashText: LocalizationConstants.Camera.autoFlash,
+                                                 onFlashText: LocalizationConstants.Camera.onFlash,
+                                                 offFlashText: LocalizationConstants.Camera.offFlash,
+                                                 photoMode: LocalizationConstants.Camera.photoMode,
+                                                 videoMode: LocalizationConstants.Camera.videoMode,
+                                                 saveButton: LocalizationConstants.General.save,
+                                                 previewScreenTitle:
+                                                    LocalizationConstants.ScreenTitles.previewCaptureAsset,
+                                                 fileNameTextField:
+                                                    LocalizationConstants.TextFieldPlaceholders.filename,
+                                                 descriptionTextField:
+                                                    LocalizationConstants.TextFieldPlaceholders.description,
+                                                 errorNodeNameSpecialCharacters:
+                                                    LocalizationConstants.Errors.errorNodeNameSpecialCharacters,
+                                                 emptyGalleryTitle:
+                                                    LocalizationConstants.EmptyLists.galleryTitle,
+                                                 emptyGalleryDescription:
+                                                    LocalizationConstants.EmptyLists.galleryDescription,
+                                                 galleryTitle: LocalizationConstants.ScreenTitles.galleryUpload,
+                                                 errorEmptyFileName: LocalizationConstants.Errors.errorEmptyFileName)
+        CameraKit.applyLocalization(localization: localization)
     }
 }

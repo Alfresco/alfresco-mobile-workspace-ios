@@ -56,7 +56,6 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
         presenter.pushViewController(viewController, animated: false)
     }
     
@@ -111,12 +110,12 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
     
     func triggerUpload() {
         let connectivityService = coordinatorServices.connectivityService
-//        let syncTriggersService = coordinatorServices.syncTriggersService
-//        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
-//
-//        if connectivityService?.status == .cellular &&
-//            UserProfile.allowSyncOverCellularData == false {
-//            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
-//        }
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer, on: nil)
+        }
     }
 }
