@@ -22,6 +22,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var browseNode: BrowseNode
     private var fileManagerDataSource: FileManagerDataSource?
+    var listController: ListViewController?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -56,6 +57,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
+        self.listController = viewController
         presenter.pushViewController(viewController, animated: false)
     }
     
@@ -112,10 +114,6 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
         let connectivityService = coordinatorServices.connectivityService
         let syncTriggersService = coordinatorServices.syncTriggersService
         syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
-
-        if connectivityService?.status == .cellular &&
-            UserProfile.allowSyncOverCellularData == false {
-            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer, on: nil)
-        }
+        syncTriggersService?.showOverrideSyncOnAlfrescoMobileAppDialog(for: .userDidInitiateUploadTransfer, on: self.listController)
     }
 }

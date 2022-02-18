@@ -112,29 +112,22 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
         }
     }
     
-    func showOverrideSyncOnCellularDataDialog(for type: SyncTriggerType, on controller: UIViewController?) {
-        let title = LocalizationConstants.Dialog.overrideSyncCellularDataTitle
-        let message = LocalizationConstants.Dialog.overrideSyncCellularDataMessage
-
-        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.yes) { [weak self] _ in
-            guard let sSelf = self else { return }
-            UserProfile.allowOnceSyncOverCellularData = true
-            sSelf.triggerSync(for: type)
-        }
-        confirmAction.accessibilityIdentifier = "confirmActionButton"
-
-        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.later) { [weak self] _ in
-            guard let sSelf = self else { return }
-            UserProfile.allowOnceSyncOverCellularData = false
-            sSelf.syncDidTriedToStartOnConnectivity = true
-        }
-        cancelAction.accessibilityIdentifier = "cancelActionButton"
-
+    func showOverrideSyncOnAlfrescoMobileAppDialog(for type: SyncTriggerType, on controller: UIViewController?) {
         DispatchQueue.main.async {
             if let presentationContext = controller {
+                let title = LocalizationConstants.AppExtension.upload
+                let message = LocalizationConstants.AppExtension.overrideSyncOnAlfrescoAppDataMessage
+
+                let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+                    guard let sSelf = self else { return }
+                    UserProfile.allowOnceSyncOverCellularData = true
+                    sSelf.triggerSync(for: type)
+                    presentationContext.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+                }
+                confirmAction.accessibilityIdentifier = "confirmActionButton"
                 _ = presentationContext.showDialog(title: title,
                                                    message: message,
-                                                   actions: [confirmAction, cancelAction],
+                                                   actions: [confirmAction],
                                                    completionHandler: {})
             }
         }
