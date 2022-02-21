@@ -33,6 +33,7 @@ class ShareViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         activateTheme()
+        handleSharedFile()
         DispatchQueue.main.asyncAfter(deadline: .now()+1.0) {
             self.checkForUserSession()
         }
@@ -123,26 +124,36 @@ class ShareViewController: SystemThemableViewController {
     }
     
     private func handleSharedFile() {
-        // extracting the path to the URL that is being shared
+        let fetchGroup = DispatchGroup()
         let attachments = (self.extensionContext?.inputItems.first as? NSExtensionItem)?.attachments ?? []
         let contentType = kUTTypeData as String
+        var urlsArray = [URL]()
         for provider in attachments {
-            // Check if the content type is the same as we expected
+            fetchGroup.enter()
             if provider.hasItemConformingToTypeIdentifier(contentType) {
                 provider.loadItem(forTypeIdentifier: contentType,
-                                  options: nil) { [unowned self] (data, error) in
+                                  options: nil) { (data, error) in
                     // Handle the error here if you want
                     guard error == nil else { return }
-                    
-                    if let url = data as? URL,
-                       let imageData = try? Data(contentsOf: url) {
-                        //self.save(imageData, key: "imageData", value: imageData)
-                      //  self.viewModel.appURLString += "imageData"
+                    if let url = data as? URL {
+                        urlsArray.append(url)
+                        fetchGroup.leave()
                     } else {
                         // Handle this situation as you prefer
                         fatalError("Impossible to save image")
                     }
-                }}
+                }
+            }
+        }
+        
+        fetchGroup.notify(queue: CameraKit.cameraWorkerQueue) {
+            self.saveData(data: urlsArray)
+        }
+    }
+    
+    func saveData(data: [URL]) {
+        if let encodedData = try? NSKeyedArchiver.archivedData(withRootObject: data, requiringSecureCoding: false) {
+            UserDefaultsModel.set(value: encodedData, for: KeyConstants.AppGroup.sharedFiles)
         }
     }
 }

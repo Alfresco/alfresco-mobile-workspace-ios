@@ -25,6 +25,8 @@ class CoordinatorServices {
     var themingService: MaterialDesignThemingService?
     var connectivityService: ConnectivityService?
     var locationService: LocationService?
+    var syncService: SyncService?
+    var syncTriggersService: SyncTriggersService?
 }
 
 extension Coordinator {
@@ -51,6 +53,16 @@ extension Coordinator {
         let identifier = LocationService.identifier
         return repository.service(of: identifier) as? LocationService
     }
+    
+    var syncService: SyncService? {
+        let identifier = SyncService.identifier
+        return repository.service(of: identifier) as? SyncService
+    }
+
+    var syncTriggersService: SyncTriggersService? {
+        let identifier = SyncTriggersService.identifier
+        return repository.service(of: identifier) as? SyncTriggersService
+    }
 
     var coordinatorServices: CoordinatorServices {
         let coordinatorServices = CoordinatorServices()
@@ -58,6 +70,8 @@ extension Coordinator {
         coordinatorServices.themingService = themingService
         coordinatorServices.connectivityService = connectivityService
         coordinatorServices.locationService = locationService
+        coordinatorServices.syncService = syncService
+        coordinatorServices.syncTriggersService = syncTriggersService
         return coordinatorServices
     }
 }

@@ -269,6 +269,7 @@ struct LocalizationConstants {
     struct AppExtension {
         static let saveToAlfresco = NSLocalizedString("save-to-alfresco", comment: "")
         static let upload = NSLocalizedString("upload", comment: "")
+        static let overrideSyncOnAlfrescoAppDataMessage =  NSLocalizedString("dialog-override-sync-alfresco-app-message", comment: "")
     }
 }
 

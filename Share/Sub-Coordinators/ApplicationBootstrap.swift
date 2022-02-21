@@ -36,9 +36,22 @@ class ApplicationBootstrap {
         self.repository.register(service: themingService())
         self.repository.register(service: authenticationService())
         self.repository.register(service: operationQueueService())
+        self.repository.register(service: databaseService())
+        self.repository.register(service: locationService())
 
         let accountService = self.accountService(with: connectivityService)
         self.repository.register(service: accountService)
+
+        let eventBusService = self.eventBusService()
+        self.repository.register(service: eventBusService)
+
+        let syncService = self.syncService(with: accountService, and: eventBusService)
+        self.repository.register(service: syncService)
+
+        let syncTriggersService = self.syncTriggersService(with: syncService,
+                                                           and: accountService,
+                                                           and: connectivityService)
+        self.repository.register(service: syncTriggersService)
     }
 
     class func shared() -> ApplicationBootstrap {
@@ -61,11 +74,42 @@ class ApplicationBootstrap {
         return AccountService(connectivityService: connectivityService)
     }
 
+    private func eventBusService() -> EventBusService {
+        return EventBusService()
+    }
+
     private func operationQueueService() -> OperationQueueService {
         return OperationQueueService()
     }
 
+    private func databaseService() -> DatabaseService {
+        return DatabaseService()
+    }
+
+    private func syncService(with accountService: AccountService,
+                             and eventBusService: EventBusService) -> SyncService {
+        return SyncService(accountService: accountService, eventBusService: eventBusService)
+    }
+
+    private func syncTriggersService(with syncService: SyncService,
+                                     and accountService: AccountService,
+                                     and connectivityService: ConnectivityService) -> SyncTriggersService {
+        return SyncTriggersService(syncService: syncService,
+                                   accountService: accountService,
+                                   connectivityService: connectivityService)
+    }
+
     private func connectivityService() -> ConnectivityService {
         return ConnectivityService()
+    }
+    
+    private func locationService() -> LocationService {
+        return LocationService()
+    }
+        
+    func currentTheme() -> PresentationTheme? {
+        let identifier = MaterialDesignThemingService.identifier
+        let themingService = repository.service(of: identifier) as? MaterialDesignThemingService
+        return themingService?.activeTheme
     }
 }
