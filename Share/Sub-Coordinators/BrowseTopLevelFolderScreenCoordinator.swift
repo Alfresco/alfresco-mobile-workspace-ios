@@ -111,7 +111,6 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
     }
     
     func triggerUpload() {
-        let connectivityService = coordinatorServices.connectivityService
         let syncTriggersService = coordinatorServices.syncTriggersService
         syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
         syncTriggersService?.showOverrideSyncOnAlfrescoMobileAppDialog(for: .userDidInitiateUploadTransfer, on: self.listController)

@@ -39,6 +39,10 @@ class FolderDrillModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         rawListNodes.isEmpty
     }
+    
+    func isChildFolder() -> Bool {
+        return listNode?.parentGuid != APIConstants.my
+    }
 
     func numberOfItems(in section: Int) -> Int {
         return rawListNodes.count

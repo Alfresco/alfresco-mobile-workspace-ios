@@ -53,6 +53,10 @@ class ShareViewController: SystemThemableViewController {
     
     // MARK: - Check for user session
     func checkForUserSession() {
+        if self.viewModel.connectivityService?.hasInternetConnection() == false {
+            showAlertInternetUnavailable()
+            return
+        }
         if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
 

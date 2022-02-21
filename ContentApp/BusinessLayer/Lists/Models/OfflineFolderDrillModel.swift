@@ -36,6 +36,10 @@ class OfflineFolderDrillModel: ListComponentModelProtocol {
         return rawListNodes.isEmpty
     }
 
+    func isChildFolder() -> Bool {
+        return false
+    }
+    
     func numberOfItems(in section: Int) -> Int {
         return rawListNodes.count
     }

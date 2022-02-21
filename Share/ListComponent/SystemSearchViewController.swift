@@ -28,6 +28,7 @@ class SystemSearchViewController: SystemThemableViewController {
     var searchPageController: ListPageController?
 
     weak var listItemActionDelegate: ListItemActionDelegate?
+    var isChildFolder = false
 
     // MARK: - View Life Cycle
 
@@ -81,7 +82,6 @@ class SystemSearchViewController: SystemThemableViewController {
 
     @objc func searchButtonTapped() {
         AlfrescoLog.debug("search button action")
-
     }
 
     // MARK: - Private Helpers
@@ -152,9 +152,13 @@ class SystemSearchViewController: SystemThemableViewController {
         self.navigationItem.leftBarButtonItem = searchBarButtonItem
     }
     
+    // MARK: - Back Button
     @objc func backButtonTapped() {
-        AlfrescoLog.debug("back button action")
-        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        if self.isChildFolder {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
     }
 
     private func createSearchController() -> UISearchController {
