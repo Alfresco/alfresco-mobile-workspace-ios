@@ -26,7 +26,6 @@ class ListViewController: SystemSearchViewController {
     var viewModel: ListComponentViewModel?
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
-  //  var isChildFolder = false
 
     // MARK: - View Life Cycle
 

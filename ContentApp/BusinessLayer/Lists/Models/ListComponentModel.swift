@@ -50,7 +50,6 @@ protocol ListComponentModelProtocol: AnyObject {
 
     func fetchItems(with requestPagination: RequestPagination,
                     completionHandler: @escaping PagedResponseCompletionHandler)
-    func isChildFolder() -> Bool
 }
 
 extension ListComponentModelProtocol {
