@@ -277,4 +277,4 @@
 // MARK: - Extension
 "save-to-alfresco" = "Save to Alfresco";
 "upload" = "Upload";
-"dialog-override-sync-alfresco-app-message" = "Uploading is in queue. Please open Alfresco Mobile App to track the status.";
+"dialog-override-sync-alfresco-app-message" = "Uploading is in queue. Please track the status in the mobile app.";

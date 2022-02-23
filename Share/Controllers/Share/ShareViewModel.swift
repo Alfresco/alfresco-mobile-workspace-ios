@@ -33,4 +33,7 @@ class ShareViewModel: NSObject {
         let identifier = MaterialDesignThemingService.identifier
         return repository.service(of: identifier) as? MaterialDesignThemingService
     }
+    var connectivityService: ConnectivityService? {
+        return ConnectivityService()
+    }
 }

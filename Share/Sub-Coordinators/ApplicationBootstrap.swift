@@ -32,7 +32,6 @@ class ApplicationBootstrap {
 
         let connectivityService = self.connectivityService()
         self.repository.register(service: connectivityService)
-
         self.repository.register(service: themingService())
         self.repository.register(service: authenticationService())
         self.repository.register(service: operationQueueService())

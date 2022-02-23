@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialDialogs
 
 struct ControllerRotation {
     static func lockOrientation(_ orientation: UIInterfaceOrientationMask) {
@@ -70,5 +71,19 @@ class SystemThemableViewController: UIViewController {
         let activeTheme = coordinatorServices.themingService?.activeTheme
         offlineModeView?.backgroundColor = activeTheme?.onSurface5Color
         offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
+    }
+    
+    func showAlertInternetUnavailable() {
+        let title = LocalizationConstants.Dialog.internetUnavailableTitle
+        let message = LocalizationConstants.Dialog.internetUnavailableMessage
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        _ = self.showDialog(title: title,
+                            message: message,
+                            actions: [confirmAction],
+                            completionHandler: {})
     }
 }

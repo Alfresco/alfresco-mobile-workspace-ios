@@ -224,6 +224,8 @@ class ListComponentViewController: SystemThemableViewController {
                         if let node = model.listNode(for: context.indexPath) {
                             if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
                             if node.trashed == false {
+                                sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                          from: model)
                                 sSelf.listActionDelegate?.elementTapped(node: node)
                             }
                         }

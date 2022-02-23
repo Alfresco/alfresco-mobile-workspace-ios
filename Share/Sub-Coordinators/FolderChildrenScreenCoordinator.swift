@@ -26,6 +26,8 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var listNode: ListNode
     private var model: FolderDrillModel?
+    private var fileManagerDataSource: FileManagerDataSource?
+    var listController: ListViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -40,6 +42,13 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = listNode.title
+        viewController.fileManagerDelegate = self
+        viewController.isChildFolder = true
+
+        let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        self.fileManagerDataSource = FileManagerDataSource(folderToSavePath: uploadFilePath)
+        viewController.fileManagerDataSource = self.fileManagerDataSource
 
         let viewModel = folderChildrenDataSource.folderDrillDownViewModel
         let pageController = ListPageController(dataSource: viewModel.model,
@@ -56,7 +65,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
+        self.listController = viewController
         presenter.pushViewController(viewController, animated: true)
     }
 }
@@ -76,5 +85,39 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
 extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {
     func updateListNode(with node: ListNode) {
         self.listNode = node
+    }
+}
+
+// MARK: - File manager delegate
+extension FolderChildrenScreenCoordinator: FileManagerAssetDelegate {
+    func didEndFileManager(for selectedAssets: [FileAsset]) {
+        
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
+        else { return }
+        var uploadTransfers: [UploadTransfer] = []
+        for fileAsset in selectedAssets {
+            let assetURL = URL(fileURLWithPath: fileAsset.path)
+            _ = DiskService.uploadFolderPath(for: accountIdentifier) +
+                "/" + assetURL.lastPathComponent
+            
+            let uploadTransfer = UploadTransfer(parentNodeId: listNode.guid,
+                                                nodeName: fileAsset.fileName ?? "",
+                                                extensionType: fileAsset.fileExtension ?? "",
+                                                mimetype: assetURL.mimeType(),
+                                                nodeDescription: fileAsset.description,
+                                                localFilenamePath: assetURL.lastPathComponent)
+            uploadTransfers.append(uploadTransfer)
+        }
+
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
+
+        triggerUpload()
+    }
+    
+    func triggerUpload() {
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+        syncTriggersService?.showOverrideSyncOnAlfrescoMobileAppDialog(for: .userDidInitiateUploadTransfer, on: self.listController)
     }
 }
