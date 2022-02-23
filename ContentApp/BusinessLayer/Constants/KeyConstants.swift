@@ -49,4 +49,12 @@ struct KeyConstants {
         static let configFileExtension = "json"
         static let lastAPICallTime = "advance-search-api-call-time"
     }
+    
+    struct AppGroup {
+        static let name = "group.com.alfresco.contentapp.Share"
+        static let accessGroup = "W8N95J537P.com.alfresco.sharedItems"
+        static let service = "alfrescoAppFamilyService"
+        static let appURLString = "ShareExtension://"
+        static let sharedFiles = "sharedFiles"
+    }
 }

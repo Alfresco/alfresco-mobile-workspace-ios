@@ -57,7 +57,7 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
     }
 
     func showLoginContainerView() {
-        if let activeAccountIdentifier = UserDefaults.standard.value(forKey: KeyConstants.Save.activeAccountIdentifier) as? String {
+        if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
             let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
 
             // Check account type whether it's Basic or AIMS

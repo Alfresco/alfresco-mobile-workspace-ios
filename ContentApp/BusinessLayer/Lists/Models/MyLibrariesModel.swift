@@ -33,7 +33,7 @@ class MyLibrariesModel: ListComponentModelProtocol {
     func isEmpty() -> Bool {
         return rawListNodes.isEmpty
     }
-
+    
     func numberOfItems(in section: Int) -> Int {
         return rawListNodes.count
     }
