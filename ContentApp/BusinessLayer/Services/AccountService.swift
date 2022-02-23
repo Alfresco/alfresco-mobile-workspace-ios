@@ -76,14 +76,11 @@ class AccountService: AccountServiceProtocol, Service {
     }
     var activeAccount: AccountProtocol? {
         didSet {
-            let defaults = UserDefaults.standard
             if let activeAccountIdentifier = activeAccount?.identifier {
-                defaults.set(activeAccountIdentifier, forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.set(value: activeAccountIdentifier, for: KeyConstants.Save.activeAccountIdentifier)
             } else {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.remove(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
-
-            defaults.synchronize()
         }
     }
 
@@ -146,9 +143,8 @@ class AccountService: AccountServiceProtocol, Service {
 
     func unregister(account: AccountProtocol) {
         if let index = accounts.firstIndex(where: { account === $0 }) {
-            let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.remove(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
             accounts.remove(at: index)
@@ -157,9 +153,8 @@ class AccountService: AccountServiceProtocol, Service {
 
     func delete(account: AccountProtocol) {
         if let index = accounts.firstIndex(where: { account === $0 }) {
-            let defaults = UserDefaults.standard
             if account.identifier == activeAccount?.identifier {
-                defaults.removeObject(forKey: KeyConstants.Save.activeAccountIdentifier)
+                UserDefaultsModel.remove(forKey: KeyConstants.Save.activeAccountIdentifier)
             }
             account.unregister()
 

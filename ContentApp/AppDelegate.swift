@@ -47,8 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
         ServerEdition.shared.checkVersion()
-        UserDefaults.standard.set(true, forKey: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
-        UserDefaults.standard.synchronize()
+        UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         return true
     }
 

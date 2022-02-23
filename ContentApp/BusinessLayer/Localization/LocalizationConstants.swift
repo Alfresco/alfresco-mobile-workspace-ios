@@ -228,6 +228,10 @@ struct LocalizationConstants {
         static let overrideSyncCellularDataMessage =  NSLocalizedString("dialog-override-sync-cellular-data-message", comment: "")
         static let discardCapturedAssetsTitle = NSLocalizedString("dialog-discard-captures-title", comment: "")
         static let discardCapturedAssetsMessage = NSLocalizedString("dialog-discard-captures-message", comment: "")
+        static let sessionUnavailableTitle =  NSLocalizedString("dialog-session-unavailable-title", comment: "")
+        static let sessionUnavailableMessage =  NSLocalizedString("dialog-session-unavailable-message", comment: "")
+        static let internetUnavailableTitle =  NSLocalizedString("dialog-internet-unavailable-title", comment: "")
+        static let internetUnavailableMessage =  NSLocalizedString("dialog-internet-unavailable-message", comment: "")
     }
 
     struct EmptyLists {
@@ -266,4 +270,11 @@ struct LocalizationConstants {
         static let alertTitle = NSLocalizedString("alert-title", comment: "")
         static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
     }
+    
+    struct AppExtension {
+        static let saveToAlfresco = NSLocalizedString("save-to-alfresco", comment: "")
+        static let upload = NSLocalizedString("upload", comment: "")
+        static let overrideSyncOnAlfrescoAppDataMessage =  NSLocalizedString("dialog-override-sync-alfresco-app-message", comment: "")
+    }
 }
+

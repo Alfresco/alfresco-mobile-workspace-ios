@@ -49,8 +49,7 @@ class AuthenticationParameters: Codable {
     }
 
     static func parameters(for accountIdentifier: String) -> AuthenticationParameters {
-        let defaults = UserDefaults.standard
-        if let data = defaults.value(forKey: accountIdentifier) as? Data {
+        if let data = UserDefaultsModel.value(for: accountIdentifier) as? Data {
             if let params = try? PropertyListDecoder().decode(AuthenticationParameters.self, from: data) {
                 return params
             }
@@ -63,17 +62,12 @@ class AuthenticationParameters: Codable {
     }
 
     func save(for accountIdentifier: String) {
-        let defaults = UserDefaults.standard
-        defaults.set(try? PropertyListEncoder().encode(self),
-                                  forKey: accountIdentifier)
-        defaults.synchronize()
+        UserDefaultsModel.set(value: try? PropertyListEncoder().encode(self), for: accountIdentifier)
         AlfrescoLog.debug("Authentication parameters saved in UserDefaults:\n\(Mirror.description(for: self))")
     }
 
     func remove(for accountIdentifier: String) {
-        let defaults = UserDefaults.standard
-        defaults.removeObject(forKey: accountIdentifier)
-        defaults.synchronize()
+        UserDefaultsModel.remove(forKey: accountIdentifier)
         AlfrescoLog.debug("Authentication parameters removed for account: \(accountIdentifier)")
     }
 
