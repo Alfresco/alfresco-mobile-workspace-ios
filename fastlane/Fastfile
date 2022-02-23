@@ -10,6 +10,13 @@ platform :ios do
         build_configuration: ENV["CONFIGURATION"],
         code_signing_identity: ENV["SIGNING_IDENTITY"]
       )
+      update_project_provisioning(
+        xcodeproj: "ContentApp.xcodeproj",
+        profile: ENV["PROV_PROFILE_SHARE"],
+        target_filter: "Share",
+        build_configuration: ENV["CONFIGURATION"],
+        code_signing_identity: ENV["SIGNING_IDENTITY"]
+      )
       build_app(
         scheme: "ContentApp",
         configuration: ENV["CONFIGURATION"]

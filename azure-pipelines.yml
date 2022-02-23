@@ -61,12 +61,20 @@ steps:
    provisioningProfileLocation: 'secureFiles'
    provProfileSecureFile: '$(provisioning_profile)'
    removeProfile: true
-
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+   provisioningProfileLocation: 'secureFiles'
+   provProfileSecureFile: '$(provisioning_profile_share)'
+   removeProfile: true
 - task: DownloadSecureFile@1
   name: prov_profile
   inputs:
     secureFile: '$(provisioning_profile)'
 
+- task: DownloadSecureFile@1
+  name: prov_profile_share
+  inputs:
+    secureFile: '$(provisioning_profile_share)'
 - task: CmdLine@2
   displayName: 'Build and Pilot'
   inputs:
@@ -76,6 +84,7 @@ steps:
       FASTLANE_USER: $(appstore_upload_user)
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(appstore_upload_token)
       PROV_PROFILE: $(prov_profile.secureFilePath)
+      PROV_PROFILE_SHARE: $(prov_profile_share.secureFilePath)
       SIGNING_IDENTITY: $(signing_identity)
       APPSTORE_APP_ID: $(appstore_app_id)
       CONFIGURATION: $(configuration)
