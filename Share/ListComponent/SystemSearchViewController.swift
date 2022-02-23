@@ -81,9 +81,15 @@ class SystemSearchViewController: SystemThemableViewController {
     // MARK: - IBActions
 
     @objc func searchButtonTapped() {
-        AlfrescoLog.debug("search button action")
+        navigationItem.searchController = searchController
+        searchController?.searchBar.alpha = 0.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.searchController?.isActive = true
+            sSelf.searchController?.searchBar.becomeFirstResponder()
+        }
     }
-
+    
     // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
