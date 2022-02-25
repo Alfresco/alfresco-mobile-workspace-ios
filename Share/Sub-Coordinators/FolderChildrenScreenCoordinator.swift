@@ -117,7 +117,6 @@ extension FolderChildrenScreenCoordinator: FileManagerAssetDelegate {
     
     func triggerUpload() {
         let syncTriggersService = coordinatorServices.syncTriggersService
-        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
         syncTriggersService?.showOverrideSyncOnAlfrescoMobileAppDialog(for: .userDidInitiateUploadTransfer, on: self.listController)
     }
 }

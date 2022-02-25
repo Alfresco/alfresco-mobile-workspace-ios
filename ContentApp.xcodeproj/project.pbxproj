@@ -154,6 +154,10 @@
 		C92F3DC527BFEF5200952C59 /* Dictionary+HashableNodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECED3925432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift */; };
 		C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */; };
 		C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */; };
+		C93EF2BD27C7943900093E3D /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BC27C7943900093E3D /* URLExtension.swift */; };
+		C93EF2BE27C7943E00093E3D /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BC27C7943900093E3D /* URLExtension.swift */; };
+		C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */; };
+		C93EF2C127C7C24B00093E3D /* DatabaseMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */; };
 		C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */; };
 		C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC602726959C00912015 /* SearchListComponentViewController.swift */; };
 		C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */; };
@@ -770,6 +774,8 @@
 		C92F3DC127BFED0700952C59 /* EventBusService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBusService.swift; sourceTree = "<group>"; };
 		C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
 		C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C93EF2BC27C7943900093E3D /* URLExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
+		C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationService.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
 		C973EC602726959C00912015 /* SearchListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewController.swift; sourceTree = "<group>"; };
 		C973EC62272695AA00912015 /* SearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -1402,6 +1408,7 @@
 				133825D426300DC6000FFD4E /* String+Paths.swift */,
 				B95831D52632DB1400E90AE5 /* Data+Hash.swift */,
 				C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */,
+				C93EF2BC27C7943900093E3D /* URLExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1446,6 +1453,7 @@
 			isa = PBXGroup;
 			children = (
 				B97A124C258A2B4D00C052AA /* DatabaseService.swift */,
+				C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3162,6 +3170,7 @@
 				C9A910F627A7B775002EBC7F /* UIView+LayerTransformations.swift in Sources */,
 				C9AFDF5C27B8C679007233A5 /* ListPageController.swift in Sources */,
 				C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */,
+				C93EF2C127C7C24B00093E3D /* DatabaseMigrationService.swift in Sources */,
 				C9A9110C27A7B7C1002EBC7F /* CellConstants.swift in Sources */,
 				C9A9113727A7B85E002EBC7F /* EmptyRecents.swift in Sources */,
 				C9E1801227A96FCC0006747E /* EventObservable.swift in Sources */,
@@ -3190,6 +3199,7 @@
 				C9AFDF8827B8F28C007233A5 /* GlobalSearchModel.swift in Sources */,
 				C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */,
 				C9A9114C27A7B902002EBC7F /* FilePreview.swift in Sources */,
+				C93EF2BE27C7943E00093E3D /* URLExtension.swift in Sources */,
 				C9C7F22C27BB82940039A6AE /* SearchModel.swift in Sources */,
 				C9A9116027A7B989002EBC7F /* Date+Grouped.swift in Sources */,
 				C9AFDF7327B8CA72007233A5 /* FileIcon.swift in Sources */,
@@ -3421,6 +3431,7 @@
 				E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */,
 				B9BB9F202636D1F400C2FB85 /* AVCaptureDevice+Zoom.swift in Sources */,
 				E32B642724B326EB00085472 /* ListNode.swift in Sources */,
+				C93EF2BD27C7943900093E3D /* URLExtension.swift in Sources */,
 				E308A42A2566961B00A1D01E /* ActionsMenuCreateFAB.swift in Sources */,
 				E335E73C2538677D0036E090 /* ActionMenu.swift in Sources */,
 				B982949F25AF28E700EAA689 /* NodeOperations.swift in Sources */,
@@ -3500,6 +3511,7 @@
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
 				C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */,
 				F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */,
+				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,

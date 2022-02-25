@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,21 +16,101 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 import ObjectBox
 
-let databaseName = "MobileWorkspaceDB"
-
-class DatabaseService: Service {
+class DatabaseMigrationService: NSObject {
     private var store: Store?
+    var databaseService: DatabaseService?
 
-    init() {
+    override init() {
         do {
-            let storeURL = URL.storeURL()
-            self.store = try Store(directoryPath: storeURL.path)
+            let appSupport = try FileManager.default.url(for: .documentDirectory,
+                                                         in: .userDomainMask,
+                                                         appropriateFor: nil,
+                                                         create: true)
+                                                         .appendingPathComponent(Bundle.main.bundleIdentifier!)
+            let directory = appSupport.appendingPathComponent(databaseName)
+            try? FileManager.default.createDirectory(at: directory,
+                                                     withIntermediateDirectories: true,
+                                                     attributes: nil)
+
+            self.store = try Store(directoryPath: directory.path)
         } catch let error {
             AlfrescoLog.error("Unable to initialize persistence store: \(error)")
         }
+        super.init()
+    }
+    
+    func migrateDatabase() {
+        if self.databaseService == nil {
+            let repository = ApplicationBootstrap.shared().repository
+            self.databaseService = repository.service(of: DatabaseService.identifier) as? DatabaseService
+        }
+        
+        // uploading files
+        let uploadingNodes = self.queryAll(entity: UploadTransfer.self)  ?? []
+        if !uploadingNodes.isEmpty {
+            for node in uploadingNodes {
+                let nodeToBeUpload = node
+                if node.id != 0 {
+                    nodeToBeUpload.id = 0
+                }
+                databaseService?.store(entity: nodeToBeUpload)
+                self.remove(entity: node)
+            }
+        }
+        
+        // downloaded files
+        let downloadedNodes = self.queryAll(entity: ListNode.self) ?? []
+        if !downloadedNodes.isEmpty {
+            for node in downloadedNodes {
+                let nodeToBeStored = node
+                if node.id != 0 {
+                    nodeToBeStored.id = 0
+                }
+                databaseService?.store(entity: nodeToBeStored)
+                self.remove(entity: node)
+            }
+        }
+
+        migrateFilesInLocalDirectory()
+        UserDefaultsModel.set(value: true, for: KeyConstants.AppGroup.dataMigration)
+    }
+    
+    func migrateFilesInLocalDirectory() {
+        let oldDirectoryPath = oldDocumentDirectoryPath()
+        let newDirectoryPath = DiskService.documentsDirectoryPath()
+        if let files = try? FileManager.default.contentsOfDirectory(atPath: oldDirectoryPath) {
+            for file in files {
+                do {
+                    try FileManager.default.moveItem(atPath: "\(oldDirectoryPath)/\(file)", toPath: "\(newDirectoryPath)/\(file)")
+                } catch {
+                    AlfrescoLog.error("Error ----->>>> \(error)")
+                }
+            }
+        }
+    }
+    
+    func oldDocumentDirectoryPath() -> String {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
+                                                          in: .userDomainMask)[0]
+        return documentsDirectory.path
+    }
+    
+    func query(node: ListNode) -> ListNode? {
+        if let listBox = self.box(entity: ListNode.self) {
+            do {
+                let query: Query<ListNode> = try listBox.query {
+                    ListNode.guid == node.guid
+                }.build()
+                let node = try query.findUnique()
+                return node
+            } catch {
+                AlfrescoLog.error("Unable to retrieve node information.")
+            }
+        }
+        return nil
     }
 
     ///

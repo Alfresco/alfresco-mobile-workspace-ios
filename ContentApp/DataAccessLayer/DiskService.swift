@@ -97,8 +97,7 @@ class DiskService {
     // MARK: - Path creation
 
     static func documentsDirectoryPath() -> String {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory,
-                                                          in: .userDomainMask)[0]
+        let documentsDirectory = URL.storeURL()
         return documentsDirectory.path
     }
 
