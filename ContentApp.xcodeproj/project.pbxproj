@@ -303,15 +303,6 @@
 		C9A9119D27A7BA88002EBC7F /* UIView+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16A3ED3261D860C007D06FF /* UIView+Rotate.swift */; };
 		C9A9119E27A7BA8B002EBC7F /* AVCaptureDevice+Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BB9F1F2636D1F400C2FB85 /* AVCaptureDevice+Zoom.swift */; };
 		C9A9119F27A7BA8D002EBC7F /* Collection+SafeRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BB9F242636D36D00C2FB85 /* Collection+SafeRange.swift */; };
-		C9A911A027A7BAAF002EBC7F /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
-		C9A911A127A7BAB1002EBC7F /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
-		C9A911A227A7BAB4002EBC7F /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */; };
-		C9A911A327A7BAB6002EBC7F /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009224C84BD000F03D60 /* Inter-ExtraLight.ttf */; };
-		C9A911A427A7BAB8002EBC7F /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009024C84BD000F03D60 /* Inter-Light.ttf */; };
-		C9A911A527A7BABA002EBC7F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009124C84BD000F03D60 /* Inter-Medium.ttf */; };
-		C9A911A627A7BABD002EBC7F /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009424C84BD100F03D60 /* Inter-Regular.ttf */; };
-		C9A911A727A7BAC0002EBC7F /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */; };
-		C9A911A827A7BAC2002EBC7F /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009524C84BD100F03D60 /* Inter-Thin.ttf */; };
 		C9A911A927A7BAC7002EBC7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E334C04824755D9000F74880 /* Assets.xcassets */; };
 		C9A911AA27A7BADD002EBC7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E334C04A24755D9000F74880 /* LaunchScreen.storyboard */; };
 		C9A911AB27A7BB8A002EBC7F /* PresentationTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959CCD52476C96E00811F15 /* PresentationTheme.swift */; };
@@ -368,6 +359,15 @@
 		C9B6D27127C936F600CF0C73 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
 		C9B6D27227C9373000CF0C73 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
 		C9B6D27327C93D2700CF0C73 /* advance-search-config.json in Resources */ = {isa = PBXBuildFile; fileRef = C9AEE047270D9D9E00880235 /* advance-search-config.json */; };
+		C9B6D27427C9437B00CF0C73 /* Inter-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009524C84BD100F03D60 /* Inter-Thin.ttf */; };
+		C9B6D27527C9437E00CF0C73 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009324C84BD100F03D60 /* Inter-SemiBold.ttf */; };
+		C9B6D27627C9438100CF0C73 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009424C84BD100F03D60 /* Inter-Regular.ttf */; };
+		C9B6D27727C9438300CF0C73 /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009124C84BD000F03D60 /* Inter-Medium.ttf */; };
+		C9B6D27827C9438500CF0C73 /* Inter-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009024C84BD000F03D60 /* Inter-Light.ttf */; };
+		C9B6D27927C9438800CF0C73 /* Inter-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369009224C84BD000F03D60 /* Inter-ExtraLight.ttf */; };
+		C9B6D27A27C9438A00CF0C73 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008D24C84BD000F03D60 /* Inter-ExtraBold.ttf */; };
+		C9B6D27B27C9438D00CF0C73 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
+		C9B6D27C27C9438F00CF0C73 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
 		C9BE5F0A2721B15A0091719D /* SearchTextComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE5F092721B15A0091719D /* SearchTextComponentViewModel.swift */; };
 		C9C7F22327BB82020039A6AE /* FolderChildrenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22127BB82020039A6AE /* FolderChildrenViewModelFactory.swift */; };
 		C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22227BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift */; };
@@ -2882,22 +2882,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9A911A727A7BAC0002EBC7F /* Inter-SemiBold.ttf in Resources */,
-				C9A911A127A7BAB1002EBC7F /* Inter-Bold.ttf in Resources */,
-				C9A911A427A7BAB8002EBC7F /* Inter-Light.ttf in Resources */,
 				C9A911AA27A7BADD002EBC7F /* LaunchScreen.storyboard in Resources */,
 				C9A910CB27A7B6D2002EBC7F /* MediaPreview.xib in Resources */,
 				C9A911A927A7BAC7002EBC7F /* Assets.xcassets in Resources */,
+				C9B6D27A27C9438A00CF0C73 /* Inter-ExtraBold.ttf in Resources */,
+				C9B6D27527C9437E00CF0C73 /* Inter-SemiBold.ttf in Resources */,
+				C9B6D27927C9438800CF0C73 /* Inter-ExtraLight.ttf in Resources */,
+				C9B6D27B27C9438D00CF0C73 /* Inter-Bold.ttf in Resources */,
+				C9B6D27C27C9438F00CF0C73 /* Inter-Black.ttf in Resources */,
 				C9A9117127A7B9CE002EBC7F /* Localizable.strings in Resources */,
-				C9A911A327A7BAB6002EBC7F /* Inter-ExtraLight.ttf in Resources */,
-				C9A911A227A7BAB4002EBC7F /* Inter-ExtraBold.ttf in Resources */,
-				C9A911A027A7BAAF002EBC7F /* Inter-Black.ttf in Resources */,
+				C9B6D27427C9437B00CF0C73 /* Inter-Thin.ttf in Resources */,
+				C9B6D27627C9438100CF0C73 /* Inter-Regular.ttf in Resources */,
 				C9B6D27327C93D2700CF0C73 /* advance-search-config.json in Resources */,
 				C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */,
+				C9B6D27727C9438300CF0C73 /* Inter-Medium.ttf in Resources */,
+				C9B6D27827C9438500CF0C73 /* Inter-Light.ttf in Resources */,
 				C9AFDF6E27B8CA44007233A5 /* ListElementCollectionViewCell.xib in Resources */,
-				C9A911A627A7BABD002EBC7F /* Inter-Regular.ttf in Resources */,
-				C9A911A527A7BABA002EBC7F /* Inter-Medium.ttf in Resources */,
-				C9A911A827A7BAC2002EBC7F /* Inter-Thin.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

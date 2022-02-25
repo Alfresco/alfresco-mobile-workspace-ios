@@ -86,8 +86,10 @@ class ResultViewController: SystemThemableViewController {
     }
     
     func setQueryForFolderSearch() {
-        if let filters = self.resultsViewModel?.searchFilters, filters.count > 1 {
-            self.resultsViewModel?.searchModel.selectedSearchFilter = filters[1]
+        if let filters = self.resultsViewModel?.searchFilters, !filters.isEmpty {
+            if let index = filters.firstIndex(where: {$0.name == "APP.SEARCH.TEXT.FOLDER"}) {
+                self.resultsViewModel?.searchModel.selectedSearchFilter = filters[index]
+            }
         }
     }
 
