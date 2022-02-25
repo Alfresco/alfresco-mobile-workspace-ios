@@ -364,11 +364,13 @@
 		C9AFDFA627B9003E007233A5 /* DeleteNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA724CC2B3D00D8A7EC /* DeleteNodeMapper.swift */; };
 		C9AFDFA727B90074007233A5 /* SharedLinkMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E2BDA524CC29BC00D8A7EC /* SharedLinkMapper.swift */; };
 		C9AFDFAC27B903E7007233A5 /* ResultsNodeMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED3824CB00D200F1A2C2 /* ResultsNodeMapper.swift */; };
+		C9B6D27027C936D100CF0C73 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A90E7C2664F25F00B89766 /* SearchViewModel.swift */; };
+		C9B6D27127C936F600CF0C73 /* ConfigurationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE044270D9D9E00880235 /* ConfigurationManager.swift */; };
+		C9B6D27227C9373000CF0C73 /* ConfigurationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AEE045270D9D9E00880235 /* ConfigurationHelper.swift */; };
 		C9BE5F0A2721B15A0091719D /* SearchTextComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE5F092721B15A0091719D /* SearchTextComponentViewModel.swift */; };
 		C9C7F22327BB82020039A6AE /* FolderChildrenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22127BB82020039A6AE /* FolderChildrenViewModelFactory.swift */; };
 		C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22227BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift */; };
 		C9C7F22A27BB82940039A6AE /* FolderDrillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22627BB82940039A6AE /* FolderDrillModel.swift */; };
-		C9C7F22B27BB82940039A6AE /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22727BB82940039A6AE /* SearchViewModel.swift */; };
 		C9C7F22C27BB82940039A6AE /* SearchModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22827BB82940039A6AE /* SearchModel.swift */; };
 		C9C7F22D27BB82940039A6AE /* BrowseNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22927BB82940039A6AE /* BrowseNode.swift */; };
 		C9C7F23027BB82D30039A6AE /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */; };
@@ -835,7 +837,6 @@
 		C9C7F22127BB82020039A6AE /* FolderChildrenViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderChildrenViewModelFactory.swift; sourceTree = "<group>"; };
 		C9C7F22227BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopLevelBrowseViewModelFactory.swift; sourceTree = "<group>"; };
 		C9C7F22627BB82940039A6AE /* FolderDrillModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderDrillModel.swift; sourceTree = "<group>"; };
-		C9C7F22727BB82940039A6AE /* SearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C9C7F22827BB82940039A6AE /* SearchModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchModel.swift; sourceTree = "<group>"; };
 		C9C7F22927BB82940039A6AE /* BrowseNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrowseNode.swift; sourceTree = "<group>"; };
 		C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
@@ -1902,7 +1903,6 @@
 			isa = PBXGroup;
 			children = (
 				C9C7F22627BB82940039A6AE /* FolderDrillModel.swift */,
-				C9C7F22727BB82940039A6AE /* SearchViewModel.swift */,
 				C9C7F22827BB82940039A6AE /* SearchModel.swift */,
 				C9C7F22927BB82940039A6AE /* BrowseNode.swift */,
 				C92F3DBB27BF632300952C59 /* MimeType.swift */,
@@ -3177,6 +3177,7 @@
 				C9A9110827A7B7AF002EBC7F /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				C9AFDF8C27B8F328007233A5 /* SearchRequestBuilder.swift in Sources */,
 				C9A911B127A7BBC7002EBC7F /* NavigationURLPathComponent.swift in Sources */,
+				C9B6D27227C9373000CF0C73 /* ConfigurationHelper.swift in Sources */,
 				C9A9115B27A7B97D002EBC7F /* String+LiveSearch.swift in Sources */,
 				C9AFDF6F27B8CA44007233A5 /* ListSectionCollectionViewCell.swift in Sources */,
 				C9A9115F27A7B986002EBC7F /* NSError+Mapper.swift in Sources */,
@@ -3238,7 +3239,6 @@
 				C9A9116527A7B997002EBC7F /* String+Paths.swift in Sources */,
 				C9A9114D27A7B90D002EBC7F /* MultipleChoiceViewModelProtocol.swift in Sources */,
 				C9A910FC27A7B789002EBC7F /* CALayer+Animations.swift in Sources */,
-				C9C7F22B27BB82940039A6AE /* SearchViewModel.swift in Sources */,
 				C9A9112327A7B81B002EBC7F /* NeedHelpAIMSModel.swift in Sources */,
 				C9E17FE927A92CAD0006747E /* NodeChildMapper.swift in Sources */,
 				C9E1800E27A96DA30006747E /* AimsViewModel.swift in Sources */,
@@ -3266,6 +3266,7 @@
 				C9A9FB3D27ABB30F0091B7E8 /* ShareViewController.swift in Sources */,
 				C9A9110327A7B79A002EBC7F /* UImage+Color.swift in Sources */,
 				C918811B27AA417200F850DF /* Constants.swift in Sources */,
+				C9B6D27027C936D100CF0C73 /* SearchViewModel.swift in Sources */,
 				C9A9115027A7B918002EBC7F /* MultipleChoiceItem.swift in Sources */,
 				C9A910DB27A7B71B002EBC7F /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				C918813727AA66A500F850DF /* UploadTransferDataAccessor.swift in Sources */,
@@ -3305,6 +3306,7 @@
 				C9A9111127A7B7DE002EBC7F /* AccountProtocol.swift in Sources */,
 				C92F3DBC27BF632300952C59 /* MimeType.swift in Sources */,
 				C918811827AA414C00F850DF /* AIMSAccount.swift in Sources */,
+				C9B6D27127C936F600CF0C73 /* ConfigurationManager.swift in Sources */,
 				C9A9117A27A7BA10002EBC7F /* CameraKit.swift in Sources */,
 				C9A9110A27A7B7B3002EBC7F /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
 				C9A9116B27A7B9AC002EBC7F /* APIConstants.swift in Sources */,

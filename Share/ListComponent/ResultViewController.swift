@@ -74,6 +74,7 @@ class ResultViewController: SystemThemableViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         addLocalization()
+        self.resultsViewModel?.searchModel.selectedSearchFilter = self.resultsViewModel?.searchFilters[1]
     }
 
     override func viewDidAppear(_ animated: Bool) {
