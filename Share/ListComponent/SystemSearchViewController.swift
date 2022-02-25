@@ -215,6 +215,9 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
 
 extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
+        guard let searchViewModel = self.searchViewModel else { return }
+        
+        searchViewModel.loadAppConfigurationsForSearch()
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
 
