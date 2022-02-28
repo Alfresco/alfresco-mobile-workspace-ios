@@ -57,5 +57,6 @@ struct KeyConstants {
         static let service = "alfrescoAppFamilyService"
         static let appURLString = "ShareExtension://"
         static let sharedFiles = "sharedFiles"
+        static let dataMigration = "dataMigration"
     }
 }
