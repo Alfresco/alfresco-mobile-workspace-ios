@@ -27,7 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
     var logoutActionFlow = false
-
+    var uploadingFilesBanner: UploadingFilesBanner?
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { // swiftlint:disable:this discouraged_optional_collection
         let window = UIWindow(frame: UIScreen.main.bounds)

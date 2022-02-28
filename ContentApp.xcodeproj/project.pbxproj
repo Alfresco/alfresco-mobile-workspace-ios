@@ -396,6 +396,9 @@
 		C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */; };
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
 		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C9F0ECB327CCB78B002FAD74 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F0ECB227CCB78B002FAD74 /* SyncBannerService.swift */; };
+		C9F0ECB727CCCFC2002FAD74 /* UploadingFilesBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F0ECB627CCCFC2002FAD74 /* UploadingFilesBanner.swift */; };
+		C9F0ECB927CCCFD9002FAD74 /* UploadingFilesBanner.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */; };
 		C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */; };
 		C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */; };
 		C9F7945727B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */; };
@@ -856,6 +859,9 @@
 		C9E79E7B27A3E653002BC5A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9E79E8527A42298002BC5A0 /* ContentApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentApp.entitlements; sourceTree = "<group>"; };
 		C9E79E8627A4255D002BC5A0 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
+		C9F0ECB227CCB78B002FAD74 /* SyncBannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBannerService.swift; sourceTree = "<group>"; };
+		C9F0ECB627CCCFC2002FAD74 /* UploadingFilesBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadingFilesBanner.swift; sourceTree = "<group>"; };
+		C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadingFilesBanner.xib; sourceTree = "<group>"; };
 		C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewController.swift; sourceTree = "<group>"; };
 		C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewModel.swift; sourceTree = "<group>"; };
 		C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsModel.swift; sourceTree = "<group>"; };
@@ -1240,6 +1246,7 @@
 		B959CCCA2476AFE500811F15 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				C9F0ECB427CCCFAD002FAD74 /* Views */,
 				E334C06F24755DA700F74880 /* Storyboard */,
 				B91A5E4C247BD5910063E938 /* Coordinator */,
 				B96B9AEC2480F7A80035AE97 /* Authentication */,
@@ -1439,6 +1446,7 @@
 				E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */,
 				E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */,
 				F115D4702657DAE00049EF8D /* LocationService.swift */,
+				C9F0ECB227CCB78B002FAD74 /* SyncBannerService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1966,6 +1974,23 @@
 				C9E79E7B27A3E653002BC5A0 /* Info.plist */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		C9F0ECB427CCCFAD002FAD74 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C9F0ECB527CCCFAD002FAD74 /* Uploading Files */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C9F0ECB527CCCFAD002FAD74 /* Uploading Files */ = {
+			isa = PBXGroup;
+			children = (
+				C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */,
+				C9F0ECB627CCCFC2002FAD74 /* UploadingFilesBanner.swift */,
+			);
+			path = "Uploading Files";
 			sourceTree = "<group>";
 		};
 		C9F55152272BE2A9007A8B3A /* Calendar */ = {
@@ -2906,6 +2931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
+				C9F0ECB927CCCFD9002FAD74 /* UploadingFilesBanner.xib in Resources */,
 				B9F17149256C116900AD1E3A /* word.docx in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
 				E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */,
@@ -3422,6 +3448,7 @@
 				C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */,
 				E363E34E256285DA00CB5338 /* EmptyFavoritesLibraries.swift in Sources */,
 				E37618042476873900DA13ED /* AlfrescoLog.swift in Sources */,
+				C9F0ECB727CCCFC2002FAD74 /* UploadingFilesBanner.swift in Sources */,
 				B944AB09255AD4F500965709 /* DownloadDialog.swift in Sources */,
 				E3CF862924E69B4C001C86B5 /* FilePreviewScreenCoordinator.swift in Sources */,
 				E32A369C25C7E73A00F873CB /* DataPlanDialogViewModel.swift in Sources */,
@@ -3590,6 +3617,7 @@
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				F14E688A261702A9002FDEF9 /* CaptureSession.swift in Sources */,
 				C9F7945727B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */,
+				C9F0ECB327CCB78B002FAD74 /* SyncBannerService.swift in Sources */,
 				C9D4FAB7278344AA0008C4AA /* MimeType.swift in Sources */,
 				E3436F88250B8C4A00634C62 /* UIView+LoadNib.swift in Sources */,
 				E335E706253864CD0036E090 /* ActionMenuScreenCoordinator.swift in Sources */,

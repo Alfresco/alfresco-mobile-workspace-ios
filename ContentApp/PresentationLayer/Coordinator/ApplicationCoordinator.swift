@@ -38,6 +38,10 @@ class ApplicationCoordinator: Coordinator {
                                                selector: #selector(self.loadSplashScreenCoordinator(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.showLoginScreen),
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleSyncStartedNotification(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.syncStarted),
+                                               object: nil)
     }
 
     func start() {
@@ -89,5 +93,19 @@ class ApplicationCoordinator: Coordinator {
 
             sSelf.start()
         })
+    }
+    
+    @objc private func handleSyncStartedNotification(notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            let viewController =
+            sSelf.window.rootViewController?.presentedViewController ?? sSelf.window.rootViewController
+
+            if viewController is TabBarMainViewController {
+                if let controller = viewController as? TabBarMainViewController {
+                    SyncBannerService.showSyncBannerIfNecessary(on: controller, with: self?.themingService?.activeTheme)
+                }
+            }
+        }
     }
 }

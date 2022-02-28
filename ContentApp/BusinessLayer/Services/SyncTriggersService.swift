@@ -221,6 +221,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             guard let sSelf = self else { return }
 
             if authenticationProvider.areCredentialsValid() {
+                sSelf.postSyncServiceStartedNotification()
                 UserProfile.allowOnceSyncOverCellularData = false
                 sSelf.invalidateAllTimers()
                 sSelf.syncDidTriedToStartOnConnectivity = false
@@ -228,6 +229,12 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                 syncService.sync(nodeList: nodes)
             }
         })
+    }
+    
+    func postSyncServiceStartedNotification() {
+        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.syncStarted)
+        let notification = Notification(name: notificationName)
+        NotificationCenter.default.post(notification)
     }
 
     private func connectivityStatusChanged() {
