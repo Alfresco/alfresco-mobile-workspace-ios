@@ -93,21 +93,6 @@ class DatabaseMigrationService: NSObject {
                                                           in: .userDomainMask)[0]
         return documentsDirectory.path
     }
-    
-    func query(node: ListNode) -> ListNode? {
-        if let listBox = self.box(entity: ListNode.self) {
-            do {
-                let query: Query<ListNode> = try listBox.query {
-                    ListNode.guid == node.guid
-                }.build()
-                let node = try query.findUnique()
-                return node
-            } catch {
-                AlfrescoLog.error("Unable to retrieve node information.")
-            }
-        }
-        return nil
-    }
 
     ///
     /// Stores an entity in the database
