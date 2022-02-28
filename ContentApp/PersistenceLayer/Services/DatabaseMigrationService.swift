@@ -108,18 +108,6 @@ class DatabaseMigrationService: NSObject {
     }
 
     ///
-    /// Stores an array of entities in the database
-    /// - Parameter entity: Entity to be stored in the database
-    func store<E>(entities: [ObjectBox.Box<E>.EntityType]) {
-        let entityBox = store?.box(for: E.self)
-        do {
-            _ = try entityBox?.put(entities)
-        } catch let error {
-            AlfrescoLog.error("Unable to persist entities \(E.Type.self). Reason: \(error.localizedDescription)")
-        }
-    }
-
-    ///
     /// Removes an entity from the database.
     /// - Note: Entity must exist in the database to be removed. That means the *id* property of the object to be removed must be
     ///  different than 0.
@@ -131,16 +119,6 @@ class DatabaseMigrationService: NSObject {
         } catch let error {
             AlfrescoLog.error("Unable to remove entity \(E.Type.self). Reason: \(error.localizedDescription)")
         }
-    }
-
-    ///
-    /// Fetches database managed context for a specific entity
-    /// - Parameter entity: Entity for which the managed context is fetched
-    /// - Returns: Database managed object context
-    func box<E>(entity: E.Type = E.self) -> ObjectBox.Box<E>?  where E: ObjectBox.EntityInspectable,
-                                                                     E: ObjectBox.__EntityRelatable,
-                                                                     E == E.EntityBindingType.EntityType {
-        return store?.box(for: E.self)
     }
 
     ///
