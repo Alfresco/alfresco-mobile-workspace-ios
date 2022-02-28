@@ -118,10 +118,8 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                 let title = LocalizationConstants.AppExtension.upload
                 let message = LocalizationConstants.AppExtension.overrideSyncOnAlfrescoAppDataMessage
 
-                let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { [weak self] _ in
-                    guard let sSelf = self else { return }
+                let confirmAction = MDCAlertAction(title: LocalizationConstants.General.ok) { _ in
                     UserProfile.allowOnceSyncOverCellularData = true
-                    sSelf.triggerSync(for: type)
                     presentationContext.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
                 }
                 confirmAction.accessibilityIdentifier = "confirmActionButton"
@@ -200,16 +198,11 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
     // MARK: - Private Interface
 
     private func startSyncOperation() {
-        let listNodeDataAccessor = ListNodeDataAccessor()
-        let nodes = listNodeDataAccessor.queryMarkedOffline()
-
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        let nodes = uploadTransferDataAccessor.queryAll()
+        
         guard let syncService = self.syncService,
               accountService?.activeAccount != nil else { return }
-
-        if isSyncAllowedOverConnectivity() == false {
-            syncDidTriedToStartOnConnectivity = true
-            return
-        }
 
         accountService?.getSessionForCurrentAccount(completionHandler: { [weak self] (authenticationProvider) in
             guard let sSelf = self else { return }
@@ -219,7 +212,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
                 sSelf.invalidateAllTimers()
                 sSelf.syncDidTriedToStartOnConnectivity = false
                 sSelf.syncDidTriedToStartWhenSyncing = false
-                syncService.sync(nodeList: nodes)
+                syncService.sync(nodeList: nodes.map({$0.listNode()}))
             }
         })
     }

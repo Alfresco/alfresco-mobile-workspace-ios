@@ -46,17 +46,17 @@ class ResultViewController: SystemThemableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let listComponentViewController = ListComponentViewController.instantiateViewController()
         listComponentViewController.listActionDelegate = self
         listComponentViewController.coordinatorServices = coordinatorServices
         listComponentViewController.pageController = pageController
         listComponentViewController.viewModel = resultsViewModel
         pageController?.delegate = listComponentViewController
-
+        
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
-
+            
             view.insertSubview(listComponentView, aboveSubview: progressView)
             listComponentView.topAnchor.constraint(equalTo: progressView.bottomAnchor,
                                                    constant: 5).isActive = true
@@ -69,11 +69,28 @@ class ResultViewController: SystemThemableViewController {
         }
         resultsListController = listComponentViewController
         resultsListController?.listItemActionDelegate = self.listItemActionDelegate
-
+        
         // Set up progress view
         progressView.progress = 0
         progressView.mode = .indeterminate
         addLocalization()
+        setupBindings()
+    }
+    
+    // MARK: - Setup Bindings
+    private func setupBindings() {
+        /* observing advance search filter */
+        self.resultsViewModel?.searchFilterObservable.addObserver(fireNow: false, { ( _ ) in
+            self.setQueryForFolderSearch()
+        })
+    }
+    
+    func setQueryForFolderSearch() {
+        if let filters = self.resultsViewModel?.searchFilters, !filters.isEmpty {
+            if let index = filters.firstIndex(where: {$0.name == "APP.SEARCH.TEXT.FOLDER"}) {
+                self.resultsViewModel?.searchModel.selectedSearchFilter = filters[index]
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
