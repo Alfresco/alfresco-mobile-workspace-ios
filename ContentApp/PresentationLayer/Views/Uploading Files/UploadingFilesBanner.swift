@@ -44,4 +44,10 @@ class UploadingFilesBanner: UIView {
             progressView.progress = 0.3
         }
     }
+    
+    func updateProgress() {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        uploadingLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
+    }
 }

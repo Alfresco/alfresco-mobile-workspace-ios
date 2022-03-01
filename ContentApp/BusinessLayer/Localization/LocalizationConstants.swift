@@ -274,6 +274,5 @@ struct LocalizationConstants {
         static let uploadingTitle = NSLocalizedString("uploading-title", comment: "")
         static let waitingTitle = NSLocalizedString("waiting-title", comment: "")
         static let finishedUploadingMessage = NSLocalizedString("dialog-finished-uploading-message", comment: "")
-
     }
 }

@@ -22,10 +22,14 @@ class SyncBannerService: CoordinatorServices {
 
     class func showSyncBannerIfNecessary(on tabBarMainViewController: TabBarMainViewController?, with themingService: PresentationTheme?) {
         if let window = appDelegate()?.window, let tabBarMainViewController = tabBarMainViewController, let uploadingFilesBanner: UploadingFilesBanner = .fromNib() {
+            let dataAccessor = UploadTransferDataAccessor()
+            let pendingUploadTransfers = dataAccessor.queryAll()
+            print("Uploading Files: \(pendingUploadTransfers.count)")
             if appDelegate()?.uploadingFilesBanner == nil {
                 let yAxis =  tabBarMainViewController.tabBar.frame.origin.y - 71.5
                 uploadingFilesBanner.frame = CGRect(x: 0, y: yAxis, width: window.frame.size.width, height: 64.0)
                 uploadingFilesBanner.applyTheme(themingService)
+                uploadingFilesBanner.updateProgress()
                 tabBarMainViewController.view.addSubview(uploadingFilesBanner)
                 appDelegate()?.uploadingFilesBanner = uploadingFilesBanner
             }
