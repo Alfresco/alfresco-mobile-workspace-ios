@@ -24,14 +24,17 @@ class SyncBannerService: CoordinatorServices {
         if let window = appDelegate()?.window, let tabBarMainViewController = tabBarMainViewController, let uploadingFilesBanner: UploadingFilesBanner = .fromNib() {
             let dataAccessor = UploadTransferDataAccessor()
             let pendingUploadTransfers = dataAccessor.queryAll()
-            print("Uploading Files: \(pendingUploadTransfers.count)")
-            if appDelegate()?.uploadingFilesBanner == nil {
+            
+            if appDelegate()?.uploadingFilesBanner == nil && !pendingUploadTransfers.isEmpty {
+                appDelegate()?.totalUploadingFilesNeedsToBeSynced = pendingUploadTransfers.count
                 let yAxis =  tabBarMainViewController.tabBar.frame.origin.y - 71.5
                 uploadingFilesBanner.frame = CGRect(x: 0, y: yAxis, width: window.frame.size.width, height: 64.0)
                 uploadingFilesBanner.applyTheme(themingService)
                 uploadingFilesBanner.updateProgress()
                 tabBarMainViewController.view.addSubview(uploadingFilesBanner)
                 appDelegate()?.uploadingFilesBanner = uploadingFilesBanner
+            } else {
+                SyncBannerService.updateProgress()
             }
         }
     }
@@ -41,5 +44,9 @@ class SyncBannerService: CoordinatorServices {
             uploadingFilesBanner.removeFromSuperview()
             appDelegate()?.uploadingFilesBanner = nil
         }
+    }
+    
+    class func updateProgress() {
+        appDelegate()?.uploadingFilesBanner?.updateProgress()
     }
 }

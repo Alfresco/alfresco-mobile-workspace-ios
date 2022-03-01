@@ -401,6 +401,7 @@
 		C9F0ECB927CCCFD9002FAD74 /* UploadingFilesBanner.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */; };
 		C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */; };
 		C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */; };
+		C9F7732227CDFF40005A5E67 /* UploadingFilesBannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7732127CDFF3F005A5E67 /* UploadingFilesBannerViewModel.swift */; };
 		C9F7945727B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */; };
 		C9F7945827B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */; };
 		E300204F24A0EC90004FB12D /* RecentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E300204E24A0EC90004FB12D /* RecentViewModel.swift */; };
@@ -864,6 +865,7 @@
 		C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UploadingFilesBanner.xib; sourceTree = "<group>"; };
 		C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewController.swift; sourceTree = "<group>"; };
 		C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewModel.swift; sourceTree = "<group>"; };
+		C9F7732127CDFF3F005A5E67 /* UploadingFilesBannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadingFilesBannerViewModel.swift; sourceTree = "<group>"; };
 		C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsModel.swift; sourceTree = "<group>"; };
 		D117A831C5CD4ED4D3A104D3 /* Pods-ContentApp-ContentAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.release.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		D22A6BB90DFF5292D7C0473D /* Pods-ContentApp-ContentAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentApp-ContentAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ContentApp-ContentAppUITests/Pods-ContentApp-ContentAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1989,6 +1991,7 @@
 			children = (
 				C9F0ECB827CCCFD8002FAD74 /* UploadingFilesBanner.xib */,
 				C9F0ECB627CCCFC2002FAD74 /* UploadingFilesBanner.swift */,
+				C9F7732127CDFF3F005A5E67 /* UploadingFilesBannerViewModel.swift */,
 			);
 			path = "Uploading Files";
 			sourceTree = "<group>";
@@ -3406,6 +3409,7 @@
 				B9A9F128263AF3CD00F4428D /* CameraKitLocalization.swift in Sources */,
 				E3429F4125627F57004EBD2F /* EmptyFavoritesFilesFolders.swift in Sources */,
 				E319AA74250782F00072DFFE /* FilePreviewFactory.swift in Sources */,
+				C9F7732227CDFF40005A5E67 /* UploadingFilesBannerViewModel.swift in Sources */,
 				E3E9ED3924CB00D200F1A2C2 /* ResultsNodeMapper.swift in Sources */,
 				C9848014272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift in Sources */,
 				B97A124D258A2B4D00C052AA /* DatabaseService.swift in Sources */,

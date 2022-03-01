@@ -27,10 +27,10 @@ class UploadingFilesBanner: UIView {
     @IBOutlet weak var uploadingImage: UIImageView!
     @IBOutlet weak var uploadingLabel: UILabel!
     @IBOutlet weak var progressView: MDCProgressView!
+    lazy var viewModel = UploadingFilesBannerViewModel()
        
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
     
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -41,13 +41,45 @@ class UploadingFilesBanner: UIView {
             percentageLabel.textColor = theme.onSurface60Color
             uploadingLabel.font = theme.subtitle2TextStyle.font
             uploadingLabel.textColor = theme.onSurfaceColor
-            progressView.progress = 0.3
         }
     }
     
     func updateProgress() {
+        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let pendingUploadTransfers = self.queryAll()
+        let progress = calculateProgress()
+        
+        if pendingUploadTransfers.isEmpty {
+            uploadingImage.image = UIImage(named: UploadingStatusImage.done.rawValue)
+            uploadingLabel.text = String(format: LocalizationConstants.AppExtension.finishedUploadingMessage, totalFilesStartedUploading)
+            percentageLabel.text = "100%"
+            progressView.progress = 1.0
+            self.removeBanner()
+        } else {
+            uploadingImage.image = UIImage(named: UploadingStatusImage.uploading.rawValue)
+            uploadingLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
+            percentageLabel.text = String(format: "%.2f%%", progress*100.0)
+            progressView.progress = progress
+        }
+    }
+    
+    func calculateProgress() -> Float {
+        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let pendingUploadTransfers = self.queryAll().count
+        let uploadedCount = totalFilesStartedUploading - pendingUploadTransfers
+        let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
+        return value
+    }
+    
+    func queryAll() -> [UploadTransfer] {
         let dataAccessor = UploadTransferDataAccessor()
         let pendingUploadTransfers = dataAccessor.queryAll()
-        uploadingLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
+        return pendingUploadTransfers
+    }
+    
+    func removeBanner() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            SyncBannerService.removeSyncBanner()
+        }
     }
 }
