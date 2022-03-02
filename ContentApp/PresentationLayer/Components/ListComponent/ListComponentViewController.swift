@@ -32,10 +32,13 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var createButton: MDCFloatingButton!
     @IBOutlet weak var listActionButton: MDCButton!
     var refreshControl: UIRefreshControl?
-    @IBOutlet weak var syncBannerView: UIView!
-    @IBOutlet weak var syncBannerHeight: NSLayoutConstraint!
-    
-    
+    @IBOutlet weak var uploadingBannerView: UIView!
+    @IBOutlet weak var uploadingBannerHeight: NSLayoutConstraint!
+    @IBOutlet weak var uploadingPercentageLabel: UILabel!
+    @IBOutlet weak var uploadingFilesImageView: UIImageView!
+    @IBOutlet weak var uploadingFilesLabel: UILabel!
+    @IBOutlet weak var uploadingProgressView: MDCProgressView!
+            
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
     var dataSource: ListComponentDataSource?
@@ -82,16 +85,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                        bottom: listBottomInset,
                                                        right: 0)
         }
-        
-        // check for sync banner
-        if viewModel.shouldDisplaySyncBanner() {
-            syncBannerView.alpha = 1
-            syncBannerHeight.constant = bannerHeight
-        } else {
-            syncBannerView.alpha = 0
-            syncBannerHeight.constant = 0
-        }
-        
+                
         // Set up progress view
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -128,6 +122,9 @@ class ListComponentViewController: SystemThemableViewController {
         
         if coordinatorServices?.syncService?.syncServiceStatus != .idle {
             listActionButton.isEnabled = false
+            
+            // check for sync banner
+            checkForUploadingFilesBanner()
         }
         
         collectionView.reloadData()
@@ -176,8 +173,19 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
         
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        
+        uploadingBannerView.layer.cornerRadius = 8.0
+        uploadingBannerView.layer.borderWidth = 1.0
+        uploadingBannerView.layer.borderColor =  currentTheme.onSurface15Color.cgColor
+        uploadingBannerView.backgroundColor = currentTheme.primaryColorVariant
+        uploadingPercentageLabel.font = currentTheme.body2TextStyle.font
+        uploadingPercentageLabel.textColor = currentTheme.onSurface60Color
+        uploadingFilesLabel.font = currentTheme.subtitle2TextStyle.font
+        uploadingFilesLabel.textColor = currentTheme.onSurfaceColor
+        uploadingProgressView.progressTintColor = currentTheme.primaryT1Color
+        uploadingProgressView.trackTintColor = currentTheme.primary30T1Color
     }
-    
+        
     func startLoading() {
         progressView.startAnimating()
         progressView.setHidden(false, animated: true)
@@ -293,6 +301,9 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
         listActionButton.isEnabled = connectivityService?.hasInternetConnection() ?? false
+        if connectivityService?.hasInternetConnection() == false {
+            removeUploadingFileBanner()
+        }
     }
     
     internal func isPaginationEnabled() -> Bool {
@@ -378,6 +389,7 @@ extension ListComponentViewController: ListPageControllerDelegate {
 extension ListComponentViewController: ListComponentViewModelDelegate {
     func didUpdateListActionState(enable: Bool) {
         listActionButton.isEnabled = enable
+        checkForUploadingFilesBanner()
     }
 }
 
@@ -387,6 +399,61 @@ extension ListComponentViewController: ListComponentDataSourceDelegate {
     func shouldDisplayListLoadingIndicator() -> Bool {
         guard let displayLoadingIndicator = pageController?.shouldDisplayNextPageLoadingIndicator else { return false }
         return displayLoadingIndicator
+    }
+}
+
+// MARK: - Uploading File Banner
+extension ListComponentViewController {
+    func checkForUploadingFilesBanner() {
+        guard let viewModel = self.viewModel else { return }
+        let pendingUploadTransfers = self.queryAll()
+        if viewModel.shouldDisplaySyncBanner() && !pendingUploadTransfers.isEmpty && !listActionButton.isEnabled {
+            uploadingBannerView.alpha = 1
+            uploadingBannerHeight.constant = bannerHeight
+        } else {
+            removeUploadingFileBanner()
+        }
+    }
+    
+    func removeUploadingFileBanner() {
+        AlfrescoLog.debug("******* remove Uploading File Banner *******")
+        self.uploadingBannerHeight.constant = 0
+        self.uploadingBannerView.alpha = 0
+//        self.uploadingBannerView.backgroundColor = .red
+//        self.uploadingPercentageLabel.text = "100%"
+    }
+    
+    func reloadUploadingFilesBanner() {
+        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let pendingUploadTransfers = self.queryAll()
+        let progress = calculateProgress()
+        
+        if pendingUploadTransfers.isEmpty {
+            uploadingFilesImageView.image = UIImage(named: UploadingStatusImage.done.rawValue)
+            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.finishedUploadingMessage, totalFilesStartedUploading)
+            uploadingPercentageLabel.text = "100%"
+            uploadingProgressView.progress = 1.0
+            self.removeUploadingFileBanner()
+        } else {
+            uploadingFilesImageView.image = UIImage(named: UploadingStatusImage.uploading.rawValue)
+            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
+            uploadingPercentageLabel.text = String(format: "%.2f%%", progress*100.0)
+            uploadingProgressView.progress = progress
+        }
+    }
+    
+    private func queryAll() -> [UploadTransfer] {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        return pendingUploadTransfers
+    }
+    
+    private func calculateProgress() -> Float {
+        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let pendingUploadTransfers = self.queryAll().count
+        let uploadedCount = totalFilesStartedUploading - pendingUploadTransfers
+        let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
+        return value
     }
 }
 

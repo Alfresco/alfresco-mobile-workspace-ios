@@ -31,4 +31,8 @@ class ContextualSearchViewModel: SearchViewModel {
     override func shouldDisplaySearchButton() -> Bool {
         return true
     }
+    
+    override func shouldDisplayListActionButton() -> Bool {
+        return false
+    }
 }
