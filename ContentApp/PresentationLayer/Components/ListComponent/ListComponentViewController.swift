@@ -32,6 +32,9 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var createButton: MDCFloatingButton!
     @IBOutlet weak var listActionButton: MDCButton!
     var refreshControl: UIRefreshControl?
+    @IBOutlet weak var syncBannerView: UIView!
+    @IBOutlet weak var syncBannerHeight: NSLayoutConstraint!
+    
     
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
@@ -42,6 +45,7 @@ class ListComponentViewController: SystemThemableViewController {
     
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
+    private let bannerHeight: CGFloat = 60.0
     
     // MARK: - View Life Cycle
     
@@ -77,6 +81,15 @@ class ListComponentViewController: SystemThemableViewController {
                                                        left: 0,
                                                        bottom: listBottomInset,
                                                        right: 0)
+        }
+        
+        // check for sync banner
+        if viewModel.shouldDisplaySyncBanner() {
+            syncBannerView.alpha = 1
+            syncBannerHeight.constant = bannerHeight
+        } else {
+            syncBannerView.alpha = 0
+            syncBannerHeight.constant = 0
         }
         
         // Set up progress view
