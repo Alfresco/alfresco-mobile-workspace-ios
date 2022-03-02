@@ -34,4 +34,8 @@ class RecentViewModel: ListComponentViewModel {
     override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
         return true
     }
+    
+    override func shouldDisplaySyncBanner() -> Bool {
+        return true
+    }
 }
