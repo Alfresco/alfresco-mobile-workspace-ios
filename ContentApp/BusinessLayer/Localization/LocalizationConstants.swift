@@ -85,6 +85,7 @@ struct LocalizationConstants {
         static let offline = NSLocalizedString("offline", comment: "")
         static let previewCaptureAsset = NSLocalizedString("preview-capture-asset", comment: "")
         static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
+        static let transferFiles = NSLocalizedString("transfer-files", comment: "")
     }
 
     struct Help {

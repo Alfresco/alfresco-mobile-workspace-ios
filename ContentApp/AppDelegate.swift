@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
     var logoutActionFlow = false
-    var uploadingFilesBanner: UploadingFilesBanner?
     var totalUploadingFilesNeedsToBeSynced = 0
     
     func application(_ application: UIApplication,

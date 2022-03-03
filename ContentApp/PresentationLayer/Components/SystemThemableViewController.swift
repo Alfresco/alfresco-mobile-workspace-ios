@@ -78,13 +78,6 @@ class SystemThemableViewController: UIViewController {
         let activeTheme = coordinatorServices?.themingService?.activeTheme
         offlineModeView?.backgroundColor = activeTheme?.onSurface5Color
         offlineModeIcon?.tintColor = activeTheme?.onSurfaceColor
-        checkForUploadingFilesBanner(for: activeTheme)
-    }
-    
-    func checkForUploadingFilesBanner(for themingService: PresentationTheme?) {
-        if let uploadingFilesBanner = appDelegate()?.uploadingFilesBanner {
-            uploadingFilesBanner.applyTheme(themingService)
-        }
     }
 
     // MARK: Private Interface

@@ -111,6 +111,11 @@ class ListComponentViewController: SystemThemableViewController {
                                                selector: #selector(self.handleReSignIn(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.reSignin),
                                                object: nil)
+        // Sync Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleSyncStartedNotification(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.syncStarted),
+                                               object: nil)
         
         observeConnectivity()
     }
@@ -122,9 +127,6 @@ class ListComponentViewController: SystemThemableViewController {
         
         if coordinatorServices?.syncService?.syncServiceStatus != .idle {
             listActionButton.isEnabled = false
-            
-            // check for sync banner
-            checkForUploadingFilesBanner()
         }
         
         collectionView.reloadData()
@@ -389,7 +391,6 @@ extension ListComponentViewController: ListPageControllerDelegate {
 extension ListComponentViewController: ListComponentViewModelDelegate {
     func didUpdateListActionState(enable: Bool) {
         listActionButton.isEnabled = enable
-        checkForUploadingFilesBanner()
     }
 }
 
@@ -404,23 +405,34 @@ extension ListComponentViewController: ListComponentDataSourceDelegate {
 
 // MARK: - Uploading File Banner
 extension ListComponentViewController {
+    
+    @objc private func handleSyncStartedNotification(notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.checkForUploadingFilesBanner()
+        }
+    }
+        
     func checkForUploadingFilesBanner() {
         guard let viewModel = self.viewModel else { return }
         let pendingUploadTransfers = self.queryAll()
-        if viewModel.shouldDisplaySyncBanner() && !pendingUploadTransfers.isEmpty && !listActionButton.isEnabled {
-            uploadingBannerView.alpha = 1
-            uploadingBannerHeight.constant = bannerHeight
+        if viewModel.shouldDisplaySyncBanner() && !pendingUploadTransfers.isEmpty {
+            if uploadingBannerView.alpha == 0 {
+                uploadingBannerView.alpha = 1
+                uploadingBannerHeight.constant = bannerHeight
+                appDelegate()?.totalUploadingFilesNeedsToBeSynced = pendingUploadTransfers.count
+                reloadUploadingFilesBanner()
+            } else {
+                reloadUploadingFilesBanner()
+            }
         } else {
-            removeUploadingFileBanner()
+            reloadUploadingFilesBanner()
         }
     }
     
     func removeUploadingFileBanner() {
-        AlfrescoLog.debug("******* remove Uploading File Banner *******")
         self.uploadingBannerHeight.constant = 0
         self.uploadingBannerView.alpha = 0
-//        self.uploadingBannerView.backgroundColor = .red
-//        self.uploadingPercentageLabel.text = "100%"
     }
     
     func reloadUploadingFilesBanner() {
@@ -429,13 +441,15 @@ extension ListComponentViewController {
         let progress = calculateProgress()
         
         if pendingUploadTransfers.isEmpty {
-            uploadingFilesImageView.image = UIImage(named: UploadingStatusImage.done.rawValue)
+            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-done")
             uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.finishedUploadingMessage, totalFilesStartedUploading)
             uploadingPercentageLabel.text = "100%"
             uploadingProgressView.progress = 1.0
-            self.removeUploadingFileBanner()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
+                self.removeUploadingFileBanner()
+            })
         } else {
-            uploadingFilesImageView.image = UIImage(named: UploadingStatusImage.uploading.rawValue)
+            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-uploads")
             uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
             uploadingPercentageLabel.text = String(format: "%.2f%%", progress*100.0)
             uploadingProgressView.progress = progress
@@ -454,6 +468,12 @@ extension ListComponentViewController {
         let uploadedCount = totalFilesStartedUploading - pendingUploadTransfers
         let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
         return value
+    }
+    
+    @IBAction func didTapUploadListButtonAction(_ sender: Any) {
+        if let listItemActionDelegate = listItemActionDelegate {
+            listItemActionDelegate.showUploadingFiles()
+        }
     }
 }
 

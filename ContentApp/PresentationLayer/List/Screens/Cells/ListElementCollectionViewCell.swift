@@ -29,7 +29,9 @@ class ListElementCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var subtitle: UILabel!
     @IBOutlet weak var moreButton: UIButton!
     @IBOutlet weak var syncStatusImageView: UIImageView!
+    @IBOutlet weak var disableView: UIView!
     weak var delegate: ListElementCollectionViewCellDelegate?
+    var currentTheme: PresentationTheme?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -61,6 +63,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
+        self.currentTheme = currentTheme
         backgroundColor = currentTheme.surfaceColor
         title.applyStyleBody1OnSurface(theme: currentTheme)
         title.lineBreakMode = .byTruncatingTail
@@ -69,6 +72,19 @@ class ListElementCollectionViewCell: ListSelectableCell {
         iconImageView.tintColor = currentTheme.onSurface60Color
         moreButton.tintColor = currentTheme.onSurface60Color
         syncStatusImageView.tintColor = currentTheme.onSurface60Color
+    }
+    
+    func disableFiles(_ isDisable: Bool) {
+        guard let currentTheme = self.currentTheme else { return }
+        if !isDisable {
+            self.isUserInteractionEnabled = true
+            disableView.backgroundColor = .clear
+            disableView.alpha = 0
+        } else {
+            self.isUserInteractionEnabled = false
+            disableView.backgroundColor = currentTheme.surface60Color
+            disableView.alpha = 1
+        }
     }
 
     @IBAction func moreButtonTapped(_ sender: UIButton) {

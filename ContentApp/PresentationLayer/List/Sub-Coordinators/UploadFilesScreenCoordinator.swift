@@ -18,11 +18,19 @@
 
 import UIKit
 
-enum UploadingStatusImage: String {
-    case uploading = "ic-action-sync-uploads"
-    case done = "ic-action-sync-done"
-}
+class UploadFilesScreenCoordinator: PresentingCoordinator {
+    private let presenter: UINavigationController
+    private var uploadFilesViewController: UploadFilesViewController?
 
-class UploadingFilesBannerViewModel: NSObject {
-
+    init(with presenter: UINavigationController) {
+        self.presenter = presenter
+    }
+    
+    override func start() {
+        let viewController = UploadFilesViewController.instantiateViewController()
+        viewController.title = LocalizationConstants.ScreenTitles.transferFiles
+        viewController.coordinatorServices = coordinatorServices
+        viewController.uploadScreenCoordinatorDelegate = self
+        presenter.pushViewController(viewController, animated: true)
+    }
 }

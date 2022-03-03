@@ -93,7 +93,7 @@ extension OfflineViewModel: SyncServiceDelegate {
             guard let sSelf = self else { return }
             sSelf.shouldEnableListButton = true
             sSelf.delegate?.didUpdateListActionState(enable: true)
-            SyncBannerService.updateProgress()
+            SyncBannerService.triggerSyncNotifyService()
         }
     }
 }

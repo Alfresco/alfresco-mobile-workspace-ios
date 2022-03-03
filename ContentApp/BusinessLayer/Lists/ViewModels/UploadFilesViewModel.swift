@@ -18,11 +18,29 @@
 
 import UIKit
 
-class SyncBannerService: NSObject {
-
-    class func triggerSyncNotifyService() {
-        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.syncStarted)
-        let notification = Notification(name: notificationName)
-        NotificationCenter.default.post(notification)
+class UploadFilesViewModel {
+    
+    func queryAll() -> [UploadTransfer] {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        return pendingUploadTransfers
+    }
+    
+    func listNodes() -> [ListNode] {
+        let items = self.queryAll()
+        return items.map({$0.listNode()})
+    }
+    
+    func numberOfItems() -> Int {
+        return listNodes().count
+    }
+    
+    func isEmpty() -> Bool {
+        return listNodes().isEmpty
+    }
+    
+    func listNode(for index: Int) -> ListNode? {
+        return listNodes()[index]
     }
 }
+
