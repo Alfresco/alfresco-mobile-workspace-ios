@@ -21,7 +21,7 @@ import UIKit
 class UploadFilesViewController: SystemSearchViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     let regularCellHeight: CGFloat = 54.0
-    lazy var listViewModel = UploadFilesViewModel()
+    var listViewModel: ListComponentViewModel?
     weak var uploadScreenCoordinatorDelegate: UploadFilesScreenCoordinator?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
 
@@ -38,6 +38,7 @@ class UploadFilesViewController: SystemSearchViewController {
                                                selector: #selector(self.handleSyncStartedNotification(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
+        reloadCollection()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,9 +62,8 @@ class UploadFilesViewController: SystemSearchViewController {
 
 extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        return listViewModel.numberOfItems()
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return listViewModel?.model.numberOfItems(in: section) ?? 0
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -72,21 +72,25 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let identifierElement = String(describing: ListElementCollectionViewCell.self)
-        guard let node = listViewModel.listNode(for: indexPath.row) else {
+        guard let node = listViewModel?.model.listNode(for: indexPath), let listViewModel = self.listViewModel else {
             return UICollectionViewCell()
         }
         
         guard let cell = collectionView
                 .dequeueReusableCell(withReuseIdentifier: identifierElement,
                                      for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+        
         cell.node = node
         cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+        cell.syncStatus = listViewModel.model.syncStatusForNode(at: indexPath)
+        cell.moreButton.isHidden = !listViewModel.shouldDisplayMoreButton(for: indexPath)
+
         if node.nodeType == .fileLink || node.nodeType == .folderLink {
             cell.moreButton.isHidden = true
         }
-        
-        cell.subtitle.text = ""
-        cell.disableFiles(true)
+        if listViewModel.shouldDisplaySubtitle(for: indexPath) == false {
+            cell.subtitle.text = ""
+        }
         return cell
     }
     
@@ -100,7 +104,24 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
 // MARK: - Sync Notification
 extension UploadFilesViewController {
     @objc private func handleSyncStartedNotification(notification: Notification) {
+        reloadCollection()
+    }
+    
+    func reloadCollection() {
+        guard let listViewModel = self.listViewModel else { return }
+        listViewModel.model.rawListNodes = getListNodes()
         collectionView.reloadData()
+    }
+    
+    func getListNodes() -> [ListNode] {
+        let items = self.queryAll()
+        return items.map({$0.listNode()})
+    }
+    
+    func queryAll() -> [UploadTransfer] {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        return pendingUploadTransfers
     }
 }
 

@@ -18,55 +18,36 @@
 
 import UIKit
 
-typealias UploadNodesDataSource = (ListComponentViewModel)
+typealias UploadNodesDataSource = (UploadNodesViewModel)
 
 class UploadNodesViewModelFactory: NSObject {
     let services: CoordinatorServices
+    var model: UploadNodesModel?
 
     init(services: CoordinatorServices) {
         self.services = services
     }
    
     // MARK: - Private builders
-
-    private func uploadedFilesViewModel() -> ListComponentViewModel {
+    func uploadNodesDataSource() -> UploadNodesDataSource {
         let eventBusService = services.eventBusService
 
-        let model = FolderDrillModel(listNode: nil,
-                                     services: services)
-        let viewModel = FolderDrillViewModel(model: model)
-
-        eventBusService?.register(observer: model,
+        let uploadModel = UploadNodesModel(services: services)
+        let uploadNodesViewModel = UploadNodesViewModel(model: uploadModel)
+        
+        eventBusService?.register(observer: uploadModel,
                                   for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: model,
-                                  for: MoveEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: model,
-                                  for: OfflineEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: model,
-                                  for: SyncStatusEvent.self,
-                                  nodeTypes: [.file, .folder])
-        return viewModel
-    }
-
-    private func defaultViewModel() -> ListComponentViewModel {
-        let eventBusService = services.eventBusService
-
-        let model = FolderDrillModel(listNode: nil,
-                                     services: services)
-        let viewModel = FolderDrillViewModel(model: model)
-
-        eventBusService?.register(observer: model,
-                                  for: FavouriteEvent.self,
-                                  nodeTypes: [.file, .folder])
-        eventBusService?.register(observer: model,
+                                  nodeTypes: [.file])
+        eventBusService?.register(observer: uploadModel,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
-        eventBusService?.register(observer: model,
+        eventBusService?.register(observer: uploadModel,
                                   for: OfflineEvent.self,
                                   nodeTypes: [.file, .folder])
-        return viewModel
+        eventBusService?.register(observer: uploadModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file, .folder])
+
+        return uploadNodesViewModel
     }
 }

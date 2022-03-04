@@ -18,7 +18,7 @@
 
 import UIKit
 
-class UploadFilesViewModel {
+class UploadNodesViewModel: ListComponentViewModel {
     
     func queryAll() -> [UploadTransfer] {
         let dataAccessor = UploadTransferDataAccessor()
@@ -41,6 +41,46 @@ class UploadFilesViewModel {
     
     func listNode(for index: Int) -> ListNode? {
         return listNodes()[index]
+    }
+    
+    func syncStatusForNode(at index: Int) -> ListEntrySyncStatus {
+        if let node = listNode(for: index) {
+            if node.isAFileType() && node.markedFor == .upload {
+                let nodeSyncStatus = node.syncStatus
+                var entryListStatus: ListEntrySyncStatus
+
+                switch nodeSyncStatus {
+                case .pending:
+                    entryListStatus = .pending
+                case .error:
+                    entryListStatus = .error
+                case .inProgress:
+                    entryListStatus = .inProgress
+                case .synced:
+                    entryListStatus = .uploaded
+                default:
+                    entryListStatus = .undefined
+                }
+
+                return entryListStatus
+            }
+
+            return node.isMarkedOffline() ? .markedForOffline : .undefined
+        }
+        return .undefined
+    }
+    
+    func shouldDisplayMoreButton(for index: Int) -> Bool {
+        switch syncStatusForNode(at: index) {
+        case .pending:
+            return false
+        case .inProgress:
+            return false
+        case .error:
+            return false
+        default:
+            return true
+        }
     }
 }
 

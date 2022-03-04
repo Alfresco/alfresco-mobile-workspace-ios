@@ -21,16 +21,23 @@ import UIKit
 class UploadFilesScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var uploadFilesViewController: UploadFilesViewController?
+    private var model: UploadNodesModel?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
     }
     
     override func start() {
+        let viewModelFactory = UploadNodesViewModelFactory(services: coordinatorServices)
+        let folderChildrenDataSource = viewModelFactory.uploadNodesDataSource()
+        self.model = viewModelFactory.model
+
         let viewController = UploadFilesViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.transferFiles
+
+        let viewModel = folderChildrenDataSource
+        viewController.listViewModel = viewModel
         viewController.coordinatorServices = coordinatorServices
-        viewController.uploadScreenCoordinatorDelegate = self
         presenter.pushViewController(viewController, animated: true)
     }
 }

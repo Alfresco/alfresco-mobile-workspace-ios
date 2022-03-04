@@ -134,6 +134,7 @@ class ListComponentViewController: SystemThemableViewController {
         let activeTheme = coordinatorServices?.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
+        checkForUploadingFilesBanner()
     }
     
     override func willTransition(to newCollection: UITraitCollection,
