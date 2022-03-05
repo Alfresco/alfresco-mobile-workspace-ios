@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import AlfrescoContent
 
 class UploadFilesScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
@@ -34,6 +35,7 @@ class UploadFilesScreenCoordinator: PresentingCoordinator {
 
         let viewController = UploadFilesViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.transferFiles
+        uploadFilesViewController = viewController
 
         let viewModel = folderChildrenDataSource
         viewController.listViewModel = viewModel

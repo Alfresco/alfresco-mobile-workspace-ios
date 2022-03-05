@@ -19,7 +19,13 @@
 import UIKit
 
 class UploadNodesViewModel: ListComponentViewModel {
-    
+    private var shouldEnableListButton = false
+    var services: CoordinatorServices?
+
+    override func emptyList() -> EmptyListProtocol {
+        return EmptyUploads()
+    }
+
     func queryAll() -> [UploadTransfer] {
         let dataAccessor = UploadTransferDataAccessor()
         let pendingUploadTransfers = dataAccessor.queryAll()
@@ -43,35 +49,8 @@ class UploadNodesViewModel: ListComponentViewModel {
         return listNodes()[index]
     }
     
-    func syncStatusForNode(at index: Int) -> ListEntrySyncStatus {
-        if let node = listNode(for: index) {
-            if node.isAFileType() && node.markedFor == .upload {
-                let nodeSyncStatus = node.syncStatus
-                var entryListStatus: ListEntrySyncStatus
-
-                switch nodeSyncStatus {
-                case .pending:
-                    entryListStatus = .pending
-                case .error:
-                    entryListStatus = .error
-                case .inProgress:
-                    entryListStatus = .inProgress
-                case .synced:
-                    entryListStatus = .uploaded
-                default:
-                    entryListStatus = .undefined
-                }
-
-                return entryListStatus
-            }
-
-            return node.isMarkedOffline() ? .markedForOffline : .undefined
-        }
-        return .undefined
-    }
-    
-    func shouldDisplayMoreButton(for index: Int) -> Bool {
-        switch syncStatusForNode(at: index) {
+    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        switch model.syncStatusForNode(at: indexPath) {
         case .pending:
             return false
         case .inProgress:
@@ -82,5 +61,43 @@ class UploadNodesViewModel: ListComponentViewModel {
             return true
         }
     }
+    
+    override func shouldDisplayListActionButton() -> Bool {
+        return true
+    }
+    
+    override func listActionTitle() -> String? {
+        return LocalizationConstants.Buttons.syncAll
+    }
+    
+    override func performListAction() {
+        let connectivityService = services?.connectivityService
+        let syncTriggersService = services?.syncTriggersService
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateSync)
+        } else {
+            syncTriggersService?.triggerSync(for: .userDidInitiateSync)
+        }
+    }
 }
 
+// MARK: - SyncServiceDelegate
+
+extension UploadNodesViewModel: SyncServiceDelegate {
+    func syncDidStarted() {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.shouldEnableListButton = false
+            sSelf.delegate?.didUpdateListActionState(enable: false)
+        }
+    }
+
+    func syncDidFinished() {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.shouldEnableListButton = true
+            sSelf.delegate?.didUpdateListActionState(enable: true)
+        }
+    }
+}

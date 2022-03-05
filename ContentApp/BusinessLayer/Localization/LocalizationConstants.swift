@@ -244,6 +244,8 @@ struct LocalizationConstants {
         static let offlineDescription = NSLocalizedString("empty-offline-description", comment: "")
         static let galleryTitle = NSLocalizedString("empty-gallery-title", comment: "")
         static let galleryDescription = NSLocalizedString("empty-gallery-description", comment: "")
+        static let uploadsTitle = NSLocalizedString("empty-uploads-title", comment: "")
+        static let uploadsDescription = NSLocalizedString("empty-uploads-description", comment: "")
     }
 
     struct PrivacySettings {

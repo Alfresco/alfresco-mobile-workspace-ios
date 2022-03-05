@@ -118,6 +118,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                object: nil)
         
         observeConnectivity()
+        setPendingUploadCount()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,6 +135,7 @@ class ListComponentViewController: SystemThemableViewController {
         let activeTheme = coordinatorServices?.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
+       
         checkForUploadingFilesBanner()
     }
     
@@ -407,21 +409,24 @@ extension ListComponentViewController: ListComponentDataSourceDelegate {
 // MARK: - Uploading File Banner
 extension ListComponentViewController {
     
+    func setPendingUploadCount() {
+        let pendingUploadTransfers = self.queryAll()
+        SyncBannerService.updateTotalPendingUploadsCount(count: pendingUploadTransfers.count)
+    }
+    
     @objc private func handleSyncStartedNotification(notification: Notification) {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
             sSelf.checkForUploadingFilesBanner()
         }
     }
-        
+    
     func checkForUploadingFilesBanner() {
         guard let viewModel = self.viewModel else { return }
-        let pendingUploadTransfers = self.queryAll()
-        if viewModel.shouldDisplaySyncBanner() && !pendingUploadTransfers.isEmpty {
+        if viewModel.shouldDisplaySyncBanner() && !self.queryAll().isEmpty {
             if uploadingBannerView.alpha == 0 {
                 uploadingBannerView.alpha = 1
                 uploadingBannerHeight.constant = bannerHeight
-                appDelegate()?.totalUploadingFilesNeedsToBeSynced = pendingUploadTransfers.count
                 reloadUploadingFilesBanner()
             } else {
                 reloadUploadingFilesBanner()
@@ -437,7 +442,7 @@ extension ListComponentViewController {
     }
     
     func reloadUploadingFilesBanner() {
-        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
         let pendingUploadTransfers = self.queryAll()
         let progress = calculateProgress()
         
@@ -449,6 +454,7 @@ extension ListComponentViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
                 self.removeUploadingFileBanner()
             })
+            SyncBannerService.resetTotalPendingUploadsCount()
         } else {
             uploadingFilesImageView.image = UIImage(named: "ic-action-sync-uploads")
             uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
@@ -464,7 +470,7 @@ extension ListComponentViewController {
     }
     
     private func calculateProgress() -> Float {
-        let totalFilesStartedUploading = appDelegate()?.totalUploadingFilesNeedsToBeSynced ?? 0
+        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
         let pendingUploadTransfers = self.queryAll().count
         let uploadedCount = totalFilesStartedUploading - pendingUploadTransfers
         let value = Float(uploadedCount)/Float(totalFilesStartedUploading)

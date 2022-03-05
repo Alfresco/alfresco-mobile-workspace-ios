@@ -34,7 +34,10 @@ class UploadNodesViewModelFactory: NSObject {
 
         let uploadModel = UploadNodesModel(services: services)
         let uploadNodesViewModel = UploadNodesViewModel(model: uploadModel)
-        
+        uploadNodesViewModel.services = services
+        uploadNodesViewModel.model = uploadModel
+        services.syncService?.delegate = uploadNodesViewModel
+
         eventBusService?.register(observer: uploadModel,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])

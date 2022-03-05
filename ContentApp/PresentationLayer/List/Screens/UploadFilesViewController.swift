@@ -17,17 +17,32 @@
 //
 
 import UIKit
+import MaterialComponents.MaterialActivityIndicator
+import MaterialComponents.MaterialProgressView
+import AlfrescoContent
 
 class UploadFilesViewController: SystemSearchViewController {
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
+    @IBOutlet weak var emptyListImageView: UIImageView!
+    @IBOutlet weak var listActionButton: MDCButton!
+
     let regularCellHeight: CGFloat = 54.0
     var listViewModel: ListComponentViewModel?
     weak var uploadScreenCoordinatorDelegate: UploadFilesScreenCoordinator?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
+    private let listBottomInset: CGFloat = 70.0
+    private var kvoConnectivity: NSKeyValueObservation?
+    var shouldEnableListButton = true
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let listViewModel = self.listViewModel else { return }
+        listViewModel.delegate = self
+
         let identifier = String(describing: ListElementCollectionViewCell.self)
         collectionView?.register(UINib(nibName: identifier,
                                        bundle: nil),
@@ -38,23 +53,83 @@ class UploadFilesViewController: SystemSearchViewController {
                                                selector: #selector(self.handleSyncStartedNotification(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
-        reloadCollection()
+        
+        listActionButton.isHidden = !listViewModel.shouldDisplayListActionButton()
+        listActionButton.isUppercaseTitle = false
+        listActionButton.setTitle(listViewModel.listActionTitle(), for: .normal)
+        listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
+        
+        if listViewModel.shouldDisplayListActionButton() {
+            collectionView.contentInset = UIEdgeInsets(top: 0,
+                                                       left: 0,
+                                                       bottom: listBottomInset,
+                                                       right: 0)
+        }
+        
+        emptyListView.isHidden = true
+        getPendingUploads()
+        observeConnectivity()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        collectionView.reloadData()
+        if coordinatorServices?.syncService?.syncServiceStatus != .idle {
+            setListActionButtonStatus(enable: false)
+            reloadCollection()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        collectionView.reloadData()
+        reloadCollection()
     }
 
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme
+        else { return }
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListTitle.textAlignment = .center
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
+        
+        listActionButton.backgroundColor = currentTheme.primaryT1Color
+        listActionButton.tintColor = currentTheme.onPrimaryColor
+        listActionButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
+    }
+    
+    @IBAction func listActionButtonTapped(_ sender: Any) {
+        listViewModel?.performListAction()
+    }
+    
+    // MARK: Connectivity Helpers
+    
+    private func observeConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        kvoConnectivity = connectivityService?.observe(\.status,
+                                                       options: [.new],
+                                                       changeHandler: { [weak self] (_, _) in
+                                                        guard let sSelf = self else { return }
+                                                        sSelf.handleConnectivity()
+                                                        sSelf.reloadCollection()
+                                                       })
+    }
+    
+    private func handleConnectivity() {
+        let connectivityService = coordinatorServices?.connectivityService
+        setListActionButtonStatus(enable: connectivityService?.hasInternetConnection() ?? false)
+        reloadCollection()
     }
 }
 
@@ -82,15 +157,12 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
         
         cell.node = node
         cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
-        cell.syncStatus = listViewModel.model.syncStatusForNode(at: indexPath)
-        cell.moreButton.isHidden = !listViewModel.shouldDisplayMoreButton(for: indexPath)
+        cell.syncStatus = (listViewModel.model as! UploadNodesModel).syncStatusForNode(at: indexPath, and: shouldEnableListButton)
 
-        if node.nodeType == .fileLink || node.nodeType == .folderLink {
-            cell.moreButton.isHidden = true
-        }
         if listViewModel.shouldDisplaySubtitle(for: indexPath) == false {
             cell.subtitle.text = ""
         }
+        cell.disableFiles(true)
         return cell
     }
     
@@ -101,18 +173,41 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
     }
 }
 
+// MARK: - ListComponentViewModelDelegate
+extension UploadFilesViewController: ListComponentViewModelDelegate {
+    func didUpdateListActionState(enable: Bool) {
+        setListActionButtonStatus(enable: enable)
+    }
+}
+
 // MARK: - Sync Notification
 extension UploadFilesViewController {
-    @objc private func handleSyncStartedNotification(notification: Notification) {
-        reloadCollection()
-    }
-    
-    func reloadCollection() {
+    func getPendingUploads() {
         guard let listViewModel = self.listViewModel else { return }
         listViewModel.model.rawListNodes = getListNodes()
-        collectionView.reloadData()
+        reloadCollection()
+        showEmptyList()
     }
     
+    func showEmptyList() {
+        guard let listViewModel = self.listViewModel else { return }
+        let isListEmpty = listViewModel.model.isEmpty()
+        if isListEmpty {
+            DispatchQueue.main.async {
+                self.emptyListView.isHidden = false
+                let emptyList = listViewModel.emptyList()
+                self.emptyListImageView.image = emptyList.icon
+                self.emptyListTitle.text = emptyList.title
+                self.emptyListSubtitle.text = emptyList.description
+                self.setListActionButtonStatus(enable: false)
+            }
+        }
+    }
+    
+    @objc private func handleSyncStartedNotification(notification: Notification) {
+        getPendingUploads()
+    }
+
     func getListNodes() -> [ListNode] {
         let items = self.queryAll()
         return items.map({$0.listNode()})
@@ -122,6 +217,24 @@ extension UploadFilesViewController {
         let dataAccessor = UploadTransferDataAccessor()
         let pendingUploadTransfers = dataAccessor.queryAll()
         return pendingUploadTransfers
+    }
+    
+    func reloadCollection() {
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func setListActionButtonStatus(enable: Bool) {
+        guard let listViewModel = self.listViewModel else { return }
+        let isListEmpty = listViewModel.model.isEmpty()
+        if isListEmpty || enable == false {
+            self.listActionButton.isEnabled = false
+            self.shouldEnableListButton = self.listActionButton.isEnabled
+        } else {
+            self.listActionButton.isEnabled = true
+            self.shouldEnableListButton = self.listActionButton.isEnabled
+        }
     }
 }
 

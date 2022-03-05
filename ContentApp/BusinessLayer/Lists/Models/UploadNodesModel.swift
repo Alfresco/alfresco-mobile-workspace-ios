@@ -22,7 +22,6 @@ import AlfrescoContent
 class UploadNodesModel: ListComponentModelProtocol {
     private var services: CoordinatorServices
     internal var supportedNodeTypes: [NodeType] = []
-
     var rawListNodes: [ListNode] = []
     var delegate: ListComponentModelDelegate?
 
@@ -57,32 +56,21 @@ class UploadNodesModel: ListComponentModelProtocol {
                     completionHandler: @escaping PagedResponseCompletionHandler) {
     }
     
-    func syncStatusForNode(at indexPath: IndexPath) -> ListEntrySyncStatus {
+    func syncStatusForNode(at indexPath: IndexPath, and shouldEnableListButton: Bool) -> ListEntrySyncStatus {
         if let node = listNode(for: indexPath) {
             if node.isAFileType() {
-                let nodeSyncStatus = node.hasSyncStatus()
                 var entryListStatus: ListEntrySyncStatus
-
-                switch nodeSyncStatus {
-                case .pending:
+                if shouldEnableListButton {
                     entryListStatus = .pending
-                case .error:
-                    entryListStatus = .error
-                case .inProgress:
+                } else {
                     entryListStatus = .inProgress
-                case .synced:
-                    entryListStatus = .downloaded
-                default:
-                    entryListStatus = .undefined
                 }
-
                 return entryListStatus
             }
         }
         return .undefined
     }
 }
-
 
 // MARK: Event Observable
 
@@ -150,6 +138,7 @@ extension UploadNodesModel: EventObservable {
             let copyNode = rawListNodes[indexOfNode]
             copyNode.syncStatus = eventNode.syncStatus
             rawListNodes[indexOfNode] = copyNode
+            delegate?.needsDataSourceReload()
         }
     }
 }

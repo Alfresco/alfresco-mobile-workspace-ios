@@ -240,7 +240,7 @@
 "dialog-override-sync-cellular-data-title" = "Use cellular data?";
 "dialog-override-sync-cellular-data-message" = "This will override your settings and download over cellular data this time. Otherwise download will begin later after connecting to Wi-Fi.";
 "dialog-session-unavailable-title" = "Session unavailable";
-"dialog-session-unavailable-message" = "Please launch Alfresco Mobile Workspace before continuing.";
+"dialog-session-unavailable-message" = "Tap to launch Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet unavailable";
 "dialog-internet-unavailable-message" = "Please check your internet connection and Try again";
 
@@ -259,6 +259,8 @@
 "empty-offline-description" = "Content that you make available offline will show up here.";
 "empty-gallery-title" = "No photos or videos";
 "empty-gallery-description" = "Try to add some photos or videos to your device.";
+"empty-uploads-title" = "Transfer Completed!";
+"empty-uploads-description" = "Content that you make available to upload will show up here.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";

@@ -144,6 +144,7 @@
 		C918813727AA66A500F850DF /* UploadTransferDataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338258D262D817D000FFD4E /* UploadTransferDataAccessor.swift */; };
 		C918814A27AA8A1400F850DF /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
 		C918814C27AA8A4C00F850DF /* DataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13382592262D87ED000FFD4E /* DataAccessor.swift */; };
+		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
 		C92F3DBC27BF632300952C59 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DBB27BF632300952C59 /* MimeType.swift */; };
 		C92F3DBE27BFEC6C00952C59 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DBD27BFEC6C00952C59 /* SyncService.swift */; };
@@ -190,6 +191,7 @@
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
+		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
 		C9A9108127A7B45B002EBC7F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115D4702657DAE00049EF8D /* LocationService.swift */; };
 		C9A9108227A7B460002EBC7F /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E47247825E20063E938 /* ServiceRepository.swift */; };
@@ -817,6 +819,7 @@
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
+		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
 		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C9A9FB3C27ABB30F0091B7E8 /* ShareViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
@@ -2030,6 +2033,7 @@
 				E3429F4025627F57004EBD2F /* EmptyFavoritesFilesFolders.swift */,
 				E363E34D256285DA00CB5338 /* EmptyFavoritesLibraries.swift */,
 				E31CF0A825AF06D800620ADA /* EmptyOffline.swift */,
+				C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */,
 			);
 			path = EmptyList;
 			sourceTree = "<group>";
@@ -3224,6 +3228,7 @@
 				C9C7F22C27BB82940039A6AE /* SearchModel.swift in Sources */,
 				C9A9116027A7B989002EBC7F /* Date+Grouped.swift in Sources */,
 				C9AFDF7327B8CA72007233A5 /* FileIcon.swift in Sources */,
+				C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */,
 				C918812627AA421400F850DF /* NodeOperations.swift in Sources */,
 				C9A9110927A7B7B1002EBC7F /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				C9A9116627A7B99B002EBC7F /* Data+Hash.swift in Sources */,
@@ -3428,6 +3433,7 @@
 				C947C5B727D0C2FB0000D902 /* UploadFilesScreenCoordinator.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
+				C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */,
 				4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */,
 				E3A87A38251CBB2100AE8175 /* String+CompareVersions.swift in Sources */,
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,

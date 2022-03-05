@@ -16,23 +16,11 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-class SyncBannerService: NSObject {
-    static var totalUploadingFilesNeedsToBeSynced = 0
-
-    class func triggerSyncNotifyService() {
-        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.syncStarted)
-        let notification = Notification(name: notificationName)
-        NotificationCenter.default.post(notification)
-    }
-    
-    class func updateTotalPendingUploadsCount(count: Int) {
-        SyncBannerService.totalUploadingFilesNeedsToBeSynced = SyncBannerService.totalUploadingFilesNeedsToBeSynced + count
-    }
-    
-    class func resetTotalPendingUploadsCount() {
-        SyncBannerService.totalUploadingFilesNeedsToBeSynced = 0
-    }
+struct EmptyUploads: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.EmptyLists.uploadsTitle
+    var description = LocalizationConstants.EmptyLists.uploadsDescription
 }
-
