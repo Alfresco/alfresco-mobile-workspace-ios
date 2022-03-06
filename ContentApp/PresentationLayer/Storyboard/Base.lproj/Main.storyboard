@@ -1007,7 +1007,9 @@
                                     <constraint firstAttribute="height" constant="48" id="UnG-RE-Ql7"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="rmf-h5-am9"/>
                                 </constraints>
-                                <state key="normal" title="Sync all"/>
+                                <state key="normal" title="Sync all">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="jE8-Fy-AZj"/>
                                     <action selector="listActionButtonTapped:" destination="0Hu-ja-4r0" eventType="touchUpInside" id="Ow9-G0-F95"/>

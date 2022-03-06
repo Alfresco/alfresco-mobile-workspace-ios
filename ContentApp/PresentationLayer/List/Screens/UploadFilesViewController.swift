@@ -69,6 +69,7 @@ class UploadFilesViewController: SystemSearchViewController {
         emptyListView.isHidden = true
         getPendingUploads()
         observeConnectivity()
+        listActionButton.superview?.bringSubviewToFront(listActionButton)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -156,13 +157,12 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
                                      for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
         
         cell.node = node
-        cell.applyTheme(coordinatorServices?.themingService?.activeTheme)
+        cell.applyTheme(coordinatorServices?.themingService?.activeTheme, isDisable: true)
         cell.syncStatus = (listViewModel.model as! UploadNodesModel).syncStatusForNode(at: indexPath, and: shouldEnableListButton)
 
         if listViewModel.shouldDisplaySubtitle(for: indexPath) == false {
             cell.subtitle.text = ""
         }
-        cell.disableFiles(true)
         return cell
     }
     

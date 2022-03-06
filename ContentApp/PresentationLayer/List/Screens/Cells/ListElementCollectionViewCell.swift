@@ -61,7 +61,7 @@ class ListElementCollectionViewCell: ListSelectableCell {
         }
     }
 
-    func applyTheme(_ currentTheme: PresentationTheme?) {
+    func applyTheme(_ currentTheme: PresentationTheme?, isDisable: Bool = false) {
         guard let currentTheme = currentTheme else { return }
         self.currentTheme = currentTheme
         backgroundColor = currentTheme.surfaceColor
@@ -72,9 +72,10 @@ class ListElementCollectionViewCell: ListSelectableCell {
         iconImageView.tintColor = currentTheme.onSurface60Color
         moreButton.tintColor = currentTheme.onSurface60Color
         syncStatusImageView.tintColor = currentTheme.onSurface60Color
+        disableFiles(isDisable: isDisable)
     }
     
-    func disableFiles(_ isDisable: Bool) {
+    private func disableFiles(isDisable: Bool) {
         guard let currentTheme = self.currentTheme else { return }
         if !isDisable {
             self.isUserInteractionEnabled = true

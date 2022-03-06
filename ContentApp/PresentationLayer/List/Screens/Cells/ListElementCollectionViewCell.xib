@@ -76,7 +76,7 @@
                             <constraint firstAttribute="width" secondItem="3o2-1v-beg" secondAttribute="height" multiplier="1:1" id="iIR-TP-rvx"/>
                         </constraints>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ac-6u-5eL" userLabel="disableView">
+                    <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2ac-6u-5eL" userLabel="disableView">
                         <rect key="frame" x="0.0" y="0.0" width="412" height="64"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
