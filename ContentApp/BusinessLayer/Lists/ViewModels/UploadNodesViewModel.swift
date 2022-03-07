@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,55 +16,60 @@
 //  limitations under the License.
 //
 
-import Foundation
-import AlfrescoContent
-import MaterialComponents.MaterialDialogs
+import UIKit
 
-class OfflineViewModel: ListComponentViewModel {
-    private var shouldEnableListButton = true
+class UploadNodesViewModel: ListComponentViewModel {
+    private var shouldEnableListButton = false
     var services: CoordinatorServices?
 
     override func emptyList() -> EmptyListProtocol {
-        return EmptyOffline()
+        return EmptyUploads()
     }
 
-    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
+    func queryAll() -> [UploadTransfer] {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        return pendingUploadTransfers
+    }
+    
+    func listNodes() -> [ListNode] {
+        let items = self.queryAll()
+        return items.map({$0.listNode()})
+    }
+    
+    func numberOfItems() -> Int {
+        return listNodes().count
+    }
+    
+    func isEmpty() -> Bool {
+        return listNodes().isEmpty
+    }
+    
+    func listNode(for index: Int) -> ListNode? {
+        return listNodes()[index]
+    }
+    
+    override func shouldDisplayMoreButton(for indexPath: IndexPath) -> Bool {
+        switch model.syncStatusForNode(at: indexPath) {
+        case .pending:
+            return false
+        case .inProgress:
+            return false
+        case .error:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    override func shouldDisplayListActionButton() -> Bool {
         return true
     }
-
-    override func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
-        if let node = model.listNode(for: indexPath) {
-            let listNodeDataAccessor = ListNodeDataAccessor()
-            if node.isAFolderType() {
-                return true
-            }
-            if listNodeDataAccessor.isContentDownloaded(for: node) {
-                return true
-            }
-        }
-        return false
-    }
-
-    override func shouldDisplaySettingsButton() -> Bool {
-            return true
-    }
-
-    override func shouldDisplayListActionButton() -> Bool {
-        return !model.rawListNodes.isEmpty
-    }
-
+    
     override func listActionTitle() -> String? {
         return LocalizationConstants.Buttons.syncAll
     }
-
-    override func shouldEnableListActionButton() -> Bool {
-        return shouldEnableListButton
-    }
-
-    override func shouldDisplayPullToRefreshOffline() -> Bool {
-        true
-    }
-
+    
     override func performListAction() {
         let connectivityService = services?.connectivityService
         let syncTriggersService = services?.syncTriggersService
@@ -79,7 +84,7 @@ class OfflineViewModel: ListComponentViewModel {
 
 // MARK: - SyncServiceDelegate
 
-extension OfflineViewModel: SyncServiceDelegate {
+extension UploadNodesViewModel: SyncServiceDelegate {
     func syncDidStarted() {
         DispatchQueue.main.async { [weak self] in
             guard let sSelf = self else { return }
@@ -93,8 +98,6 @@ extension OfflineViewModel: SyncServiceDelegate {
             guard let sSelf = self else { return }
             sSelf.shouldEnableListButton = true
             sSelf.delegate?.didUpdateListActionState(enable: true)
-            SyncBannerService.triggerSyncNotifyService()
         }
     }
 }
-

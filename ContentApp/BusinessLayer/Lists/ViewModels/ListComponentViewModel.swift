@@ -71,4 +71,8 @@ class ListComponentViewModel {
     func shouldPreviewNode(at indexPath: IndexPath) -> Bool {
         return true
     }
+    
+    func shouldDisplaySyncBanner() -> Bool {
+        return false
+    }
 }

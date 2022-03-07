@@ -221,6 +221,7 @@ class SyncTriggersService: Service, SyncTriggersServiceProtocol {
             guard let sSelf = self else { return }
 
             if authenticationProvider.areCredentialsValid() {
+                SyncBannerService.triggerSyncNotifyService()
                 UserProfile.allowOnceSyncOverCellularData = false
                 sSelf.invalidateAllTimers()
                 sSelf.syncDidTriedToStartOnConnectivity = false
