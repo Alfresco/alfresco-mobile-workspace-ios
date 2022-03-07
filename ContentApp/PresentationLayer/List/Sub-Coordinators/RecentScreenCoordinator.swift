@@ -25,6 +25,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
     private var recentViewController: ListViewController?
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
+    private var uploadFilesScreenCoordinator: UploadFilesScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -100,6 +101,14 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
                                                           nodeActionViewModel: nodeActionsModel)
             coordinator.start()
             actionMenuCoordinator = coordinator
+        }
+    }
+    
+    func showUploadingFiles() {
+        if let navigationViewController = self.navigationViewController {
+            let uploadFilesScreenCoordinator = UploadFilesScreenCoordinator(with: navigationViewController)
+            uploadFilesScreenCoordinator.start()
+            self.uploadFilesScreenCoordinator = uploadFilesScreenCoordinator
         }
     }
 }

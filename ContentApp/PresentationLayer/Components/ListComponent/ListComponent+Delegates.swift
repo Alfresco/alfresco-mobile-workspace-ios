@@ -31,6 +31,7 @@ protocol ListItemActionDelegate: AnyObject {
     func showCamera()
     func showPhotoLibrary()
     func showFiles()
+    func showUploadingFiles()
 }
 
 protocol ListComponentActionDelegate: AnyObject {
@@ -61,6 +62,10 @@ extension ListItemActionDelegate {
     }
     
     func showFiles() {
+        // Do nothing
+    }
+    
+    func showUploadingFiles() {
         // Do nothing
     }
 }

@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
     var logoutActionFlow = false
-
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { // swiftlint:disable:this discouraged_optional_collection
         let window = UIWindow(frame: UIScreen.main.bounds)
@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let connectivityService = repository.service(of: ConnectivityService.identifier) as? ConnectivityService
         connectivityService?.startNetworkReachabilityObserver()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
+        UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.uploadCountFromExtension)
         migrateDatabaseIfNecessary()
         return true
     }
@@ -80,6 +81,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
             self.enterInForegroundTimestamp = nil
             self.enterInForegroundTimestamp = nil
+        }
+        
+        let pendingUploadCount = UserDefaultsModel.value(for: KeyConstants.AppGroup.uploadCountFromExtension) as? Int ?? 0
+        if pendingUploadCount > 0 {
+            SyncBannerService.updateTotalPendingUploadsCount(count: pendingUploadCount)
+            UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.uploadCountFromExtension)
+            SyncBannerService.triggerSyncNotifyService()
         }
     }
 

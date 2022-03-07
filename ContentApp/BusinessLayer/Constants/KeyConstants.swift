@@ -42,6 +42,7 @@ struct KeyConstants {
         static let showLoginScreen = "kShowLoginScreenNotification"
         static let unauthorizedRequest = "kAPIUnauthorizedRequestNotification"
         static let reSignin = "kReSignInNotification"
+        static let syncStarted = "kAPISyncStartedNotification"
     }
     
     struct AdvanceSearch {
@@ -58,5 +59,6 @@ struct KeyConstants {
         static let appURLString = "ShareExtension://"
         static let sharedFiles = "sharedFiles"
         static let dataMigration = "dataMigration"
+        static let uploadCountFromExtension = "uploadCountFromExtension"
     }
 }

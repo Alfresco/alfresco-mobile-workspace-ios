@@ -85,6 +85,7 @@ struct LocalizationConstants {
         static let offline = NSLocalizedString("offline", comment: "")
         static let previewCaptureAsset = NSLocalizedString("preview-capture-asset", comment: "")
         static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
+        static let transferFiles = NSLocalizedString("transfer-files", comment: "")
     }
 
     struct Help {
@@ -243,6 +244,8 @@ struct LocalizationConstants {
         static let offlineDescription = NSLocalizedString("empty-offline-description", comment: "")
         static let galleryTitle = NSLocalizedString("empty-gallery-title", comment: "")
         static let galleryDescription = NSLocalizedString("empty-gallery-description", comment: "")
+        static let uploadsTitle = NSLocalizedString("empty-uploads-title", comment: "")
+        static let uploadsDescription = NSLocalizedString("empty-uploads-description", comment: "")
     }
 
     struct PrivacySettings {
@@ -274,6 +277,5 @@ struct LocalizationConstants {
         static let uploadingTitle = NSLocalizedString("uploading-title", comment: "")
         static let waitingTitle = NSLocalizedString("waiting-title", comment: "")
         static let finishedUploadingMessage = NSLocalizedString("dialog-finished-uploading-message", comment: "")
-
     }
 }
