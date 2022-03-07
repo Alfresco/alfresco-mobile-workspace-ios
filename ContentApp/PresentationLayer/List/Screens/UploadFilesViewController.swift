@@ -158,7 +158,9 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
         
         cell.node = node
         cell.applyTheme(coordinatorServices?.themingService?.activeTheme, isDisable: true)
-        cell.syncStatus = (listViewModel.model as! UploadNodesModel).syncStatusForNode(at: indexPath, and: shouldEnableListButton)
+        if let model = listViewModel.model as? UploadNodesModel {
+            cell.syncStatus = model.syncStatusForNode(at: indexPath, and: shouldEnableListButton)
+        }
 
         if listViewModel.shouldDisplaySubtitle(for: indexPath) == false {
             cell.subtitle.text = ""
