@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -17,22 +17,10 @@
 //
 
 import Foundation
+import UIKit
 
-class ContextualSearchViewModel: SearchViewModel {
-
-    override func shouldDisplaySubtitle(for indexPath: IndexPath) -> Bool {
-        return searchModel.isNodePathEnabled()
-    }
-
-    override func shouldDisplaySearchBar() -> Bool {
-        return false
-    }
-
-    override func shouldDisplaySearchButton() -> Bool {
-        return true
-    }
-    
-    override func shouldDisplayListActionButton() -> Bool {
-        return false
-    }
+struct EmptyUploads: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.EmptyLists.uploadsTitle
+    var description = LocalizationConstants.EmptyLists.uploadsDescription
 }

@@ -107,6 +107,7 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
 
+        UserDefaultsModel.set(value: uploadTransfers.count, for: KeyConstants.AppGroup.uploadCountFromExtension)
         triggerUpload()
     }
     
