@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2020 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -239,6 +239,11 @@
 "dialog-session-expired-message" = "Vous n'êtes plus connecté. Reconnectez-vous pour continuer.";
 "dialog-override-sync-cellular-data-title" = "Utiliser des données cellulaires ?";
 "dialog-override-sync-cellular-data-message" = "Vos paramètres seront remplacés et des données cellulaires seront utilisées pour le téléchargement. Sinon, le téléchargement aura lieu plus tard lorsque la connexion Wi-Fi sera disponible.";
+"dialog-session-unavailable-title" = "Session non disponible";
+"dialog-session-unavailable-message" = "Appuyez sur pour lancer Alfresco Mobile Workspace";
+"dialog-internet-unavailable-title" = "Internet non disponible";
+"dialog-internet-unavailable-message" = "Veuillez vérifier votre connexion Internet et réessayer";
+
 
 // MARK: - Empty List
 "empty-recent-title" = "Aucun fichier récent";
@@ -254,6 +259,8 @@
 "empty-offline-description" = "Le contenu disponible hors ligne s'affichera ici.";
 "empty-gallery-title" = "Aucune photo ou vidéo";
 "empty-gallery-description" = "Essayez d'ajouter des photos ou des vidéos dans votre appareil.";
+"empty-uploads-title" = "Transfert terminée !";
+"empty-uploads-description" = "Le contenu disponible hors ligne s'affichera ici.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
@@ -268,3 +275,13 @@
 "auto-flash" = "Auto";
 "on-flash" = "Activé";
 "off-flash" = "Désactivé";
+
+// MARK: - Extension
+"save-to-alfresco" = "Enregistrer dans Alfresco";
+"upload" = "Importer";
+"dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile.";
+"dialog-uploading-message" = "Importer %d fichier(s)";
+"uploading-title" = "Importation de '%@' en cours";
+"waiting-title" = "Attendre";
+"dialog-finished-uploading-message" = "%d fichier(s) a terminé l'importation";
+"transfer-files" = "Transferts";
