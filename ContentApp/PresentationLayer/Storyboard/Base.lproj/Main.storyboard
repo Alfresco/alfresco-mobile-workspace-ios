@@ -1011,9 +1011,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="jE8-Fy-AZj"/>
                                     <action selector="listActionButtonTapped:" destination="0Hu-ja-4r0" eventType="touchUpInside" id="Ow9-G0-F95"/>
-                                    <action selector="listActionButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="eAl-ej-2yR"/>
                                 </connections>
                             </button>
                         </subviews>

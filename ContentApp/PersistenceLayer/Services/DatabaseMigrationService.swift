@@ -50,20 +50,32 @@ class DatabaseMigrationService: NSObject {
         
         // uploading files
         let uploadingNodes = self.queryAll(entity: UploadTransfer.self)  ?? []
-        let listNodes = uploadingNodes.map({$0.listNode()})
-        process(listNodes)
+        processUploading(uploadingNodes)
         
         // downloaded files
         let downloadedNodes = self.queryAll(entity: ListNode.self) ?? []
-        process(downloadedNodes)
+        processDownloading(downloadedNodes)
 
         migrateFilesInLocalDirectory()
         UserDefaultsModel.set(value: true, for: KeyConstants.AppGroup.dataMigration)
     }
     
-    fileprivate func process(_ downloadedNodes: [ListNode]) {
-        if !downloadedNodes.isEmpty {
-            for node in downloadedNodes {
+    fileprivate func processUploading(_ nodes: [UploadTransfer]) {
+        if !nodes.isEmpty {
+            for node in nodes {
+                let nodeToBeStored = node
+                if node.id != 0 {
+                    nodeToBeStored.id = 0
+                }
+                databaseService?.store(entity: nodeToBeStored)
+                self.remove(entity: node)
+            }
+        }
+    }
+    
+    fileprivate func processDownloading(_ nodes: [ListNode]) {
+        if !nodes.isEmpty {
+            for node in nodes {
                 let nodeToBeStored = node
                 if node.id != 0 {
                     nodeToBeStored.id = 0

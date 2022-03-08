@@ -7,8 +7,8 @@ inhibit_all_warnings!
 target 'ContentApp' do
   pod 'SwiftLint', '~> 0'
   pod 'JWTDecode', '~> 2.0'
-  pod 'Firebase/Crashlytics', '~> 7.0'
-  pod 'Firebase/Analytics', '~> 7.0'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
   pod 'Nuke', '~> 9.0'
   pod 'Gifu', '~> 3.0'
   pod 'SVGKit', '~> 2.0'
