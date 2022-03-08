@@ -21,6 +21,17 @@ import UIKit
 class SyncBannerService: NSObject {
     static var totalUploadingFilesNeedsToBeSynced = 0
 
+    class func setPendingUploadCount() {
+        let pendingUploadTransfers = SyncBannerService.queryAllUploadingNodes()
+        SyncBannerService.updateTotalPendingUploadsCount(count: pendingUploadTransfers.count)
+    }
+    
+    class func queryAllUploadingNodes() -> [UploadTransfer] {
+        let dataAccessor = UploadTransferDataAccessor()
+        let pendingUploadTransfers = dataAccessor.queryAll()
+        return pendingUploadTransfers
+    }
+    
     class func triggerSyncNotifyService() {
         let notificationName = Notification.Name(rawValue: KeyConstants.Notification.syncStarted)
         let notification = Notification(name: notificationName)
@@ -33,6 +44,17 @@ class SyncBannerService: NSObject {
     
     class func resetTotalPendingUploadsCount() {
         SyncBannerService.totalUploadingFilesNeedsToBeSynced = 0
+    }
+    
+    class func calculateProgress() -> Float {
+        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
+        let pendingUploads = SyncBannerService.queryAllUploadingNodes().count
+        if totalFilesStartedUploading > 0 && pendingUploads > 0 {
+            let uploadedCount = totalFilesStartedUploading - pendingUploads
+            let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
+            return value
+        }
+        return 0.0
     }
 }
 
