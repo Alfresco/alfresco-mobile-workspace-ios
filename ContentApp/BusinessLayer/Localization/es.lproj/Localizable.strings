@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -241,6 +241,10 @@
 "dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
 "dialog-discard-captures-title" = "¿Desea descartar las fotos y vídeos?";
 "dialog-discard-captures-message" = "Si sale, se descartarán %d ficheros multimedia.";
+"dialog-session-unavailable-title" = "Sesión no disponible";
+"dialog-session-unavailable-message" = "Toque para iniciar Alfresco Mobile Workspace";
+"dialog-internet-unavailable-title" = "Internet no disponible";
+"dialog-internet-unavailable-message" = "Verifique su conexión a Internet y vuelva a intentarlo";
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
@@ -256,6 +260,8 @@
 "empty-offline-description" = "Contenido disponible sin conexión se mostrará aquí.";
 "empty-gallery-title" = "No hay fotos o vídeos";
 "empty-gallery-description" = "Intente añadir algunas fotos o vídeos a su dispositivo.";
+"empty-uploads-title" = "¡Transferencia completada! ";
+"empty-uploads-description" = "El contenido puesto a disposición para cargar se mostrará aquí.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
@@ -274,3 +280,13 @@
 // MARK: - Alert
 "alert-title" = "Avisos";
 "camera-unavailable" = "El dispositivo no es compatible con la cámara";
+
+// MARK: - Extension
+"save-to-alfresco" = "Guardar en Alfresco";
+"upload" = "Cargar";
+"dialog-override-sync-alfresco-app-message" = "La carga está en cola. Haga un seguimiento del estado en la aplicación móvil.";
+"dialog-uploading-message" = "Cargando %d ficheros";
+"uploading-title" = "Cargando";
+"waiting-title" = "En espera";
+"dialog-finished-uploading-message" = "Finalizada la carga de %d ficheros";
+"transfer-files" = "Transferencias";

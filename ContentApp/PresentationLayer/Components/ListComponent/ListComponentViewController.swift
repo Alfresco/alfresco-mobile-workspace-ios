@@ -118,7 +118,10 @@ class ListComponentViewController: SystemThemableViewController {
                                                object: nil)
         
         observeConnectivity()
-        setPendingUploadCount()
+        guard let viewModel = self.viewModel else { return }
+        if viewModel.model is RecentModel {
+            SyncBannerService.setPendingUploadCount()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -409,72 +412,52 @@ extension ListComponentViewController: ListComponentDataSourceDelegate {
 // MARK: - Uploading File Banner
 extension ListComponentViewController {
     
-    func setPendingUploadCount() {
-        let pendingUploadTransfers = self.queryAll()
-        SyncBannerService.updateTotalPendingUploadsCount(count: pendingUploadTransfers.count)
-    }
-    
     @objc private func handleSyncStartedNotification(notification: Notification) {
-        DispatchQueue.main.async { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.checkForUploadingFilesBanner()
+        guard let viewModel = self.viewModel else { return }
+        if viewModel.shouldDisplaySyncBanner() {
+            DispatchQueue.main.async { [weak self] in
+                guard let sSelf = self else { return }
+                sSelf.checkForUploadingFilesBanner()
+            }
         }
     }
     
     func checkForUploadingFilesBanner() {
         guard let viewModel = self.viewModel else { return }
-        if viewModel.shouldDisplaySyncBanner() && !self.queryAll().isEmpty {
-            if uploadingBannerView.alpha == 0 {
+        if viewModel.model is RecentModel {
+            if viewModel.shouldDisplaySyncBanner() && !SyncBannerService.queryAllUploadingNodes().isEmpty && uploadingBannerView.alpha == 0 {
                 uploadingBannerView.alpha = 1
                 uploadingBannerHeight.constant = bannerHeight
-                reloadUploadingFilesBanner()
-            } else {
-                reloadUploadingFilesBanner()
             }
-        } else {
             reloadUploadingFilesBanner()
+        }
+    }
+    
+    func reloadUploadingFilesBanner() {
+        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
+        if SyncBannerService.queryAllUploadingNodes().isEmpty && totalFilesStartedUploading > 0 {
+            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-done")
+            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.finishedUploadingMessage, totalFilesStartedUploading)
+            uploadingPercentageLabel.text = "100%"
+            uploadingProgressView.progress = 1.0
+            SyncBannerService.resetTotalPendingUploadsCount()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
+                self.removeUploadingFileBanner()
+            })
+        } else if !SyncBannerService.queryAllUploadingNodes().isEmpty {
+            let pendingUploads = SyncBannerService.queryAllUploadingNodes()
+            let progress = SyncBannerService.calculateProgress()
+            let progressPercentage = progress*100.0
+            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-uploads")
+            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploads.count)
+            uploadingPercentageLabel.text = String(format: "%.2f%%", progressPercentage)
+            uploadingProgressView.progress = progress
         }
     }
     
     func removeUploadingFileBanner() {
         self.uploadingBannerHeight.constant = 0
         self.uploadingBannerView.alpha = 0
-    }
-    
-    func reloadUploadingFilesBanner() {
-        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
-        let pendingUploadTransfers = self.queryAll()
-        let progress = calculateProgress()
-        
-        if pendingUploadTransfers.isEmpty {
-            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-done")
-            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.finishedUploadingMessage, totalFilesStartedUploading)
-            uploadingPercentageLabel.text = "100%"
-            uploadingProgressView.progress = 1.0
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0, execute: {
-                self.removeUploadingFileBanner()
-            })
-            SyncBannerService.resetTotalPendingUploadsCount()
-        } else {
-            uploadingFilesImageView.image = UIImage(named: "ic-action-sync-uploads")
-            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, pendingUploadTransfers.count)
-            uploadingPercentageLabel.text = String(format: "%.2f%%", progress*100.0)
-            uploadingProgressView.progress = progress
-        }
-    }
-    
-    private func queryAll() -> [UploadTransfer] {
-        let dataAccessor = UploadTransferDataAccessor()
-        let pendingUploadTransfers = dataAccessor.queryAll()
-        return pendingUploadTransfers
-    }
-    
-    private func calculateProgress() -> Float {
-        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
-        let pendingUploadTransfers = self.queryAll().count
-        let uploadedCount = totalFilesStartedUploading - pendingUploadTransfers
-        let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
-        return value
     }
     
     @IBAction func didTapUploadListButtonAction(_ sender: Any) {

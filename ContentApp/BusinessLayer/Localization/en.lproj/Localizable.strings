@@ -288,8 +288,8 @@
 "save-to-alfresco" = "Save to Alfresco";
 "upload" = "Upload";
 "dialog-override-sync-alfresco-app-message" = "Uploading is in queue. Please track the status in the mobile app.";
-"dialog-uploading-message" = "Uploading %d files";
+"dialog-uploading-message" = "Uploading %d file(s)";
 "uploading-title" = "Uploading";
 "waiting-title" = "Waiting";
-"dialog-finished-uploading-message" = "%d files finished uploading";
+"dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";

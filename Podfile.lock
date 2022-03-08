@@ -394,8 +394,8 @@ DEPENDENCIES:
   - AlfrescoContent
   - DropDown
   - FastCoding (~> 3.0)
-  - Firebase/Analytics (~> 7.0)
-  - Firebase/Crashlytics (~> 7.0)
+  - Firebase/Analytics
+  - Firebase/Crashlytics
   - Gifu (~> 3.0)
   - JWTDecode (~> 2.0)
   - MaterialComponents/ActivityIndicator (~> 124.0)
@@ -489,6 +489,6 @@ SPEC CHECKSUMS:
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
 
-PODFILE CHECKSUM: 74422c28961717fbe0d482b2e4975d2bfe461a2c
+PODFILE CHECKSUM: 26f7fab81157642a982fdc33d4c574cb42bbd898
 
 COCOAPODS: 1.11.2

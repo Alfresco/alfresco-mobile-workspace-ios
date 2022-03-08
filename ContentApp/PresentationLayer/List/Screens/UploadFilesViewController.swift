@@ -157,6 +157,7 @@ extension UploadFilesViewController: UICollectionViewDelegateFlowLayout, UIColle
                                      for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
         
         cell.node = node
+        cell.moreButton.alpha = 0
         cell.applyTheme(coordinatorServices?.themingService?.activeTheme, isDisable: true)
         if let model = listViewModel.model as? UploadNodesModel {
             cell.syncStatus = model.syncStatusForNode(at: indexPath, and: shouldEnableListButton)
