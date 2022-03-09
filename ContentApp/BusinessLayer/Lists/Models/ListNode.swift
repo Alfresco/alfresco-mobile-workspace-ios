@@ -51,7 +51,7 @@ enum AllowableOperationsType: String {
     case unknown
 }
 
-enum SyncStatus: String {
+enum SyncStatus: String, Codable {
     case pending
     case inProgress
     case synced
