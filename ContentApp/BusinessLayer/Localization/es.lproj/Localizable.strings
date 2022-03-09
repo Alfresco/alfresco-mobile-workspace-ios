@@ -280,8 +280,8 @@
 "save-to-alfresco" = "Guardar en Alfresco";
 "upload" = "Cargar";
 "dialog-override-sync-alfresco-app-message" = "La carga está en cola. Haga un seguimiento del estado en la aplicación móvil.";
-"dialog-uploading-message" = "Cargando %d ficheros";
+"dialog-uploading-message" = "Cargando %d fichero(s)";
 "uploading-title" = "Cargando";
 "waiting-title" = "En espera";
-"dialog-finished-uploading-message" = "Finalizada la carga de %d ficheros";
+"dialog-finished-uploading-message" = "Finalizada la carga de %d fichero(s)";
 "transfer-files" = "Transferencias";

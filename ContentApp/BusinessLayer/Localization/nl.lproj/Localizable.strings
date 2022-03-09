@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -186,7 +186,7 @@
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facetquery's op basis van type";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facetquery's op basis van grootte";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Zoeken";
-"file-size-unit" = "KB";
+"file-size-unit" = "kB";
 
 // MARK: - Group List Section
 "today" = "Vandaag";
@@ -239,6 +239,11 @@
 "dialog-session-expired-message" = "U bent niet meer aangemeld. Meld u opnieuw aan om door te gaan.";
 "dialog-override-sync-cellular-data-title" = "Mobiele dataverbinding gebruiken?";
 "dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via een mobiele dataverbinding. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
+"dialog-session-unavailable-title" = "Sessie niet beschikbaar";
+"dialog-session-unavailable-message" = "Tik om Alfresco Mobile Workspace te starten";
+"dialog-internet-unavailable-title" = "Internet niet beschikbaar";
+"dialog-internet-unavailable-message" = "Controleer uw internetverbinding en probeer het opnieuw";
+
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
@@ -254,6 +259,8 @@
 "empty-offline-description" = "Content die u offline beschikbaar maakt, wordt hier weergegeven.";
 "empty-gallery-title" = "Geen foto's of video's";
 "empty-gallery-description" = "Probeer foto's of video's toe te voegen aan uw apparaat.";
+"empty-uploads-title" = "Overdracht voltooid!";
+"empty-uploads-description" = "Content die u beschikbaar maakt om te uploaden wordt hier weergegeven.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
@@ -268,3 +275,13 @@
 "auto-flash" = "Auto";
 "on-flash" = "Aan";
 "off-flash" = "Uit";
+
+// MARK: - Extension
+"save-to-alfresco" = "Opslaan naar Alfresco";
+"upload" = "Uploaden";
+"dialog-override-sync-alfresco-app-message" = "Uploaden staat in de wachtrij. Volg de status in de mobiele app.";
+"dialog-uploading-message" = "%d bestanden uploaden";
+"uploading-title" = "Uploaden";
+"waiting-title" = "Wachten";
+"dialog-finished-uploading-message" = "Uploaden van %d bestanden is voltooid";
+"transfer-files" = "Overdrachten";
