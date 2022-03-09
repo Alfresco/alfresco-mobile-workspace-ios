@@ -19,7 +19,7 @@
 import Foundation
 import ObjectBox
 
-class UploadTransfer: Entity {
+class UploadTransfer: Entity, Codable {
     var id: Id = 0 // swiftlint:disable:this identifier_name
     var parentNodeId = ""
     var nodeName = ""
