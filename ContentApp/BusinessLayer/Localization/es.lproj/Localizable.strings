@@ -28,7 +28,6 @@
 "delete" = "Eliminar";
 "create" = "Crear";
 "save" = "Guardar";
-"discard" = "Descartar";
 
 // MARK: - Buttons
 "connect" = "Conectar";
@@ -230,6 +229,7 @@
 "action-menu-upload-media" = "Cargar fotos o vídeos";
 "action-menu-upload-files" = "Cargar ficheros";
 
+
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
 "dialog-delete-message" = "%@ se eliminará permanentemente.";
@@ -239,12 +239,11 @@
 "dialog-session-expired-message" = "Su sesión ya no está activa. Vuelva a iniciar sesión para continuar.";
 "dialog-override-sync-cellular-data-title" = "¿Utilizar los datos móviles?";
 "dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
-"dialog-discard-captures-title" = "¿Desea descartar las fotos y vídeos?";
-"dialog-discard-captures-message" = "Si sale, se descartarán %d ficheros multimedia.";
 "dialog-session-unavailable-title" = "Sesión no disponible";
 "dialog-session-unavailable-message" = "Toque para iniciar Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet no disponible";
 "dialog-internet-unavailable-message" = "Verifique su conexión a Internet y vuelva a intentarlo";
+
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
@@ -277,16 +276,12 @@
 "on-flash" = "Encendido";
 "off-flash" = "Apagado";
 
-// MARK: - Alert
-"alert-title" = "Avisos";
-"camera-unavailable" = "El dispositivo no es compatible con la cámara";
-
 // MARK: - Extension
 "save-to-alfresco" = "Guardar en Alfresco";
 "upload" = "Cargar";
 "dialog-override-sync-alfresco-app-message" = "La carga está en cola. Haga un seguimiento del estado en la aplicación móvil.";
-"dialog-uploading-message" = "Cargando %d ficheros";
+"dialog-uploading-message" = "Cargando %d fichero(s)";
 "uploading-title" = "Cargando";
 "waiting-title" = "En espera";
-"dialog-finished-uploading-message" = "Finalizada la carga de %d ficheros";
+"dialog-finished-uploading-message" = "Finalizada la carga de %d fichero(s)";
 "transfer-files" = "Transferencias";
