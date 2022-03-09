@@ -238,6 +238,7 @@ extension UploadFilesViewController {
             self.listActionButton.isEnabled = true
             self.shouldEnableListButton = self.listActionButton.isEnabled
         }
+        reloadCollection()
     }
 }
 

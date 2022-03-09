@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -28,7 +28,6 @@
 "delete" = "Elimina";
 "create" = "Crea";
 "save" = "Salva";
-"discard" = "Elimina";
 
 // MARK: - Buttons
 "connect" = "Connetti";
@@ -226,11 +225,10 @@
 "action-menu-create-folder" = "Nuova cartella";
 "action-menu-mark-offline" = "Rendi disponibile offline";
 "action-menu-remove-offline" = "Rimuovi offline";
-"action-menu-create-media" = "Acquisisci foto o video";
+"action-menu-create-media" = "Acquisisci una foto o un video";
 "action-menu-upload-media" = "Carica foto o video";
-"action-menu-create-single-media" = "Acquisisci una foto o un video";
-"action-menu-upload-single-media" = "Carica una foto o un video";
 "action-menu-upload-files" = "Carica file";
+
 
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";
@@ -241,8 +239,11 @@
 "dialog-session-expired-message" = "Non sei più connesso. Accedi di nuovo per continuare.";
 "dialog-override-sync-cellular-data-title" = "Vuoi utilizzare i dati cellulare?";
 "dialog-override-sync-cellular-data-message" = "Le tue impostazioni saranno sostituite e questa volta il download verrà eseguito usando i dati cellulari. Altrimenti, il download inizierà dopo la connessione alla rete Wi-Fi.";
-"dialog-discard-captures-title" = "Vuoi eliminare le acquisizioni?";
-"dialog-discard-captures-message" = "Se esci, verranno eliminati %d file multimediali.";
+"dialog-session-unavailable-title" = "Sessione non disponibile";
+"dialog-session-unavailable-message" = "Tocca per lanciare Alfresco Mobile Workspace";
+"dialog-internet-unavailable-title" = "Internet non disponibile";
+"dialog-internet-unavailable-message" = "Verifica la connessione Internet e riprova.";
+
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
@@ -258,6 +259,8 @@
 "empty-offline-description" = "Il contenuto che hai reso disponibile offline verrà visualizzato qui.";
 "empty-gallery-title" = "Nessuna foto o video";
 "empty-gallery-description" = "Prova ad aggiungere delle foto o dei video al tuo dispositivo.";
+"empty-uploads-title" = "Trasferimento completato!";
+"empty-uploads-description" = "Il contenuto che rendi disponibile per il caricamento verrà visualizzato qui.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace deve accedere alle foto";
@@ -273,6 +276,12 @@
 "on-flash" = "Attiva";
 "off-flash" = "Disattiva";
 
-// MARK: - Alert
-"alert-title" = "Avviso";
-"camera-unavailable" = "Il dispositivo non supporta la fotocamera";
+// MARK: - Extension
+"save-to-alfresco" = "Salva in Alfresco";
+"upload" = "Carica";
+"dialog-override-sync-alfresco-app-message" = "Il caricamento è in coda. Tieni traccia dello stato nell'app mobile.";
+"dialog-uploading-message" = "Carico %d file";
+"uploading-title" = "Carico";
+"waiting-title" = "Attendo";
+"dialog-finished-uploading-message" = "Caricamento di %d file terminato";
+"transfer-files" = "Trasferimenti";
