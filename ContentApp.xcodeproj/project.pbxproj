@@ -191,6 +191,10 @@
 		C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C98C128F271E8687001C84D6 /* SearchComponents.storyboard */; };
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
+		C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993459527D89CAD0079DABD /* UserDefaultExtension.swift */; };
+		C993459727D89D940079DABD /* UserDefaultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993459527D89CAD0079DABD /* UserDefaultExtension.swift */; };
+		C993504627D8D9C900E2B849 /* SyncSharedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */; };
+		C993504727D8DB2B00E2B849 /* SyncSharedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
 		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
@@ -824,6 +828,8 @@
 		C98C128F271E8687001C84D6 /* SearchComponents.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchComponents.storyboard; sourceTree = "<group>"; };
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C993459527D89CAD0079DABD /* UserDefaultExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultExtension.swift; sourceTree = "<group>"; };
+		C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedNodes.swift; sourceTree = "<group>"; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
 		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
 		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -1443,6 +1449,7 @@
 				B95831D52632DB1400E90AE5 /* Data+Hash.swift */,
 				C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */,
 				C93EF2BC27C7943900093E3D /* URLExtension.swift */,
+				C993459527D89CAD0079DABD /* UserDefaultExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1919,6 +1926,7 @@
 				C9AFDF7E27B8EF25007233A5 /* PresentingCoordinator.swift */,
 				C9AFDF7A27B8EE32007233A5 /* BrowseTopLevelFolderScreenCoordinator.swift */,
 				C9AFDF8027B8EF5C007233A5 /* FolderChildrenScreenCoordinator.swift */,
+				C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -3276,8 +3284,10 @@
 				C9E1800E27A96DA30006747E /* AimsViewModel.swift in Sources */,
 				C9A910FE27A7B78E002EBC7F /* UIFont+InterFont.swift in Sources */,
 				C9A9113C27A7B86B002EBC7F /* EmptyOffline.swift in Sources */,
+				C993459727D89D940079DABD /* UserDefaultExtension.swift in Sources */,
 				C9A9115927A7B978002EBC7F /* String+Encoding.swift in Sources */,
 				C9A910F927A7B780002EBC7F /* UITextView+Theming.swift in Sources */,
+				C993504627D8D9C900E2B849 /* SyncSharedNodes.swift in Sources */,
 				C9A9113827A7B861002EBC7F /* EmptySearch.swift in Sources */,
 				C9A9111B27A7B805002EBC7F /* AdvancedSettingsViewModel.swift in Sources */,
 				C9AFDFA027B8F7AF007233A5 /* ResultViewController.swift in Sources */,
@@ -3376,6 +3386,7 @@
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				133825D526300DC6000FFD4E /* String+Paths.swift in Sources */,
 				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
+				C993504727D8DB2B00E2B849 /* SyncSharedNodes.swift in Sources */,
 				F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */,
 				F168F46E262488150002D3A5 /* PhotoGalleryDataSource.swift in Sources */,
 				E315151125AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift in Sources */,
@@ -3596,6 +3607,7 @@
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,
 				B9834C5D267368A00052E138 /* FavoritesModel.swift in Sources */,
+				C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */,
 				E3F5625C2476D6440091896D /* KeyboardHandling.swift in Sources */,
 				B9B17B0F25DBE95D00F534E6 /* ListComponent+DataSource.swift in Sources */,
 				E3A2A8FC247E7D230046582C /* StoryboardInstantiable.swift in Sources */,
