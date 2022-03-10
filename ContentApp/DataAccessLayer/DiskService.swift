@@ -97,7 +97,7 @@ class DiskService {
     // MARK: - Path creation
 
     static func documentsDirectoryPath() -> String {
-        let documentsDirectory = URL.storeURL()
+        let documentsDirectory = URL.fileURL()
         return documentsDirectory.path
     }
 

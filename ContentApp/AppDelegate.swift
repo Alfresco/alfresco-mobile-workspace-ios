@@ -48,9 +48,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         connectivityService?.startNetworkReachabilityObserver()
         ServerEdition.shared.checkVersion()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
+        migrateDatabaseIfNecessary()
         return true
     }
 
+    func migrateDatabaseIfNecessary() {
+        let isDataMigrated = UserDefaultsModel.value(for: KeyConstants.AppGroup.dataMigration) as? Bool
+        if isDataMigrated == false || isDataMigrated == nil {
+            DatabaseMigrationService().migrateDatabase()
+        }
+    }
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
         let repository = applicationCoordinator?.repository
 
@@ -87,9 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let nodes = processUploadingNodes(uploadingNodesFromExtension)
             uploadTransferDataAccessor.store(uploadTransfers: nodes)
             
-            // update pending upload nodes count
-            SyncBannerService.updateTotalPendingUploadsCount(count: uploadingNodesFromExtension.count)
-
             // clear user default
             UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.pendingUploadNodes)
 

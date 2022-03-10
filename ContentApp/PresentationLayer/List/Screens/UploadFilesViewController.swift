@@ -212,14 +212,9 @@ extension UploadFilesViewController {
     }
 
     func getListNodes() -> [ListNode] {
-        let items = self.queryAll()
-        return items.map({$0.listNode()})
-    }
-    
-    func queryAll() -> [UploadTransfer] {
         let dataAccessor = UploadTransferDataAccessor()
-        let pendingUploadTransfers = dataAccessor.queryAll()
-        return pendingUploadTransfers
+        let items = dataAccessor.queryAllForPendingUploadNodes()
+        return items.map({$0.listNode()})
     }
     
     func reloadCollection() {
