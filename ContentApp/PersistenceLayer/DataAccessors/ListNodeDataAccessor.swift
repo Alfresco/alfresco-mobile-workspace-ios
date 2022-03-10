@@ -247,6 +247,16 @@ class ListNodeDataAccessor: DataAccessor {
             }
         }
     }
+    
+    func removeAllPendingUploadNodes() {
+        if let listBox = databaseService?.box(entity: UploadTransfer.self) {
+            do {
+                try listBox.removeAll()
+            } catch {
+                AlfrescoLog.error("Unable to remove all UploadTransfer entity.")
+            }
+        }
+    }
 
     // MARK: Private Helpers
 
