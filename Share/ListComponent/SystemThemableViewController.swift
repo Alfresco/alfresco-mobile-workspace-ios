@@ -86,4 +86,13 @@ class SystemThemableViewController: UIViewController {
                             actions: [confirmAction],
                             completionHandler: {})
     }
+    
+    func clearLocalDatabaseIfNecessary() {
+        let uploadedNodes = SyncSharedNodes.getSavedUploadedNodes()
+        for node in uploadedNodes {
+            let uploadDataAccessor = UploadTransferDataAccessor()
+            uploadDataAccessor.remove(transfer: node)
+        }
+        UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.uploadedNodes)
+    }
 }

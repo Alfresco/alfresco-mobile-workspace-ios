@@ -20,14 +20,19 @@ import UIKit
 
 class UserDefaultsModel: NSObject {
 
-    static func set(value: Any, for key: String) {
+    static func getUserDefault() -> UserDefaults? {
         let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        return userDefaults
+    }
+    
+    static func set(value: Any, for key: String) {
+        let userDefaults = UserDefaultsModel.getUserDefault()
         userDefaults?.set(value, forKey: key)
         userDefaults?.synchronize()
     }
     
     static func value(for key: String) -> Any? {
-        let userDefaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        let userDefaults = UserDefaultsModel.getUserDefault()
         let value = userDefaults?.value(forKey: key)
         if let returnValue = value {
             return returnValue
@@ -39,7 +44,7 @@ class UserDefaultsModel: NSObject {
     }
     
     static func remove(forKey: String) {
-        let defaults = UserDefaults(suiteName: KeyConstants.AppGroup.name)
+        let defaults = UserDefaultsModel.getUserDefault()
         defaults?.removeObject(forKey: forKey)
         defaults?.synchronize()
         UserDefaults.standard.removeObject(forKey: forKey)

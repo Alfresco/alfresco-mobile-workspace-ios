@@ -89,8 +89,8 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.listItemActionDelegate = self.listItemActionDelegate
 
         // Set up progress view
-        progressView.progress = 0
-        progressView.mode = .indeterminate
+        progressView?.progress = 0
+        progressView?.mode = .indeterminate
 
         addLocalization()
         addChipsCollectionViewFlowLayout()
@@ -109,8 +109,8 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.viewWillAppear(animated)
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        progressView.progressTintColor = activeTheme?.primaryT1Color
-        progressView.trackTintColor = activeTheme?.primary30T1Color
+        progressView?.progressTintColor = activeTheme?.primaryT1Color
+        progressView?.trackTintColor = activeTheme?.primary30T1Color
     }
 
     override func willTransition(to newCollection: UITraitCollection,
@@ -121,8 +121,8 @@ class ResultViewController: SystemThemableViewController {
         resultsListController?.willTransition(to: newCollection, with: coordinator)
 
         let activeTheme = coordinatorServices?.themingService?.activeTheme
-        progressView.progressTintColor = activeTheme?.primaryT1Color
-        progressView.trackTintColor = activeTheme?.primary30T1Color
+        progressView?.progressTintColor = activeTheme?.primaryT1Color
+        progressView?.trackTintColor = activeTheme?.primary30T1Color
     }
 
     override func viewWillTransition(to size: CGSize,
@@ -138,13 +138,13 @@ class ResultViewController: SystemThemableViewController {
     // MARK: - Public Helpers
 
     func startLoading() {
-        progressView.startAnimating()
-        progressView.setHidden(false, animated: false)
+        progressView?.startAnimating()
+        progressView?.setHidden(false, animated: false)
     }
 
     func stopLoading() {
-        progressView.stopAnimating()
-        progressView.setHidden(true, animated: false)
+        progressView?.stopAnimating()
+        progressView?.setHidden(true, animated: false)
         resultsListController?.refreshControl?.endRefreshing()
     }
     
