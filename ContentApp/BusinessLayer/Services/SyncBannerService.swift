@@ -19,42 +19,37 @@
 import UIKit
 
 class SyncBannerService: NSObject {
-    static var totalUploadingFilesNeedsToBeSynced = 0
 
-    class func setPendingUploadCount() {
-        let pendingUploadTransfers = SyncBannerService.queryAllUploadingNodes()
-        SyncBannerService.updateTotalPendingUploadsCount(count: pendingUploadTransfers.count)
-    }
-    
-    class func queryAllUploadingNodes() -> [UploadTransfer] {
-        let dataAccessor = UploadTransferDataAccessor()
-        let pendingUploadTransfers = dataAccessor.queryAll()
-        return pendingUploadTransfers
-    }
-    
     class func triggerSyncNotifyService() {
         let notificationName = Notification.Name(rawValue: KeyConstants.Notification.syncStarted)
         let notification = Notification(name: notificationName)
         NotificationCenter.default.post(notification)
     }
     
-    class func updateTotalPendingUploadsCount(count: Int) {
-        SyncBannerService.totalUploadingFilesNeedsToBeSynced = SyncBannerService.totalUploadingFilesNeedsToBeSynced + count
-    }
-    
-    class func resetTotalPendingUploadsCount() {
-        SyncBannerService.totalUploadingFilesNeedsToBeSynced = 0
-    }
-    
     class func calculateProgress() -> Float {
-        let totalFilesStartedUploading = SyncBannerService.totalUploadingFilesNeedsToBeSynced
-        let pendingUploads = SyncBannerService.queryAllUploadingNodes().count
-        if totalFilesStartedUploading > 0 && pendingUploads > 0 {
-            let uploadedCount = totalFilesStartedUploading - pendingUploads
-            let value = Float(uploadedCount)/Float(totalFilesStartedUploading)
-            return value
+        let totalFiles = SyncBannerService.totalUploadNodes()
+        let uploadedFiles = SyncBannerService.totalUploadedNodes()
+        let percentage = Float(uploadedFiles)/Float(totalFiles + uploadedFiles)
+        return percentage
+    }
+    
+    class func totalUploadNodes() -> Int {
+        let uploadTransferAccessor = UploadTransferDataAccessor()
+        return uploadTransferAccessor.queryAllForPendingUploadNodes().count
+    }
+    
+    class func totalUploadedNodes() -> Int {
+        let uploadTransferAccessor = UploadTransferDataAccessor()
+        return uploadTransferAccessor.queryAllForUploadedNodes().count
+    }
+    
+    class func removeAllUploadedNodesFromDatabase() {
+        let uploadTransferAccessor = UploadTransferDataAccessor()
+        let nodes = uploadTransferAccessor.queryAllForUploadedNodes()
+        if !nodes.isEmpty {
+            for node in nodes {
+                uploadTransferAccessor.removeNode(node: node)
+            }
         }
-        return 0.0
     }
 }
-

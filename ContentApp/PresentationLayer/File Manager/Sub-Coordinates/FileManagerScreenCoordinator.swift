@@ -77,7 +77,6 @@ extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
 
-        SyncBannerService.updateTotalPendingUploadsCount(count: uploadTransfers.count)
         triggerUpload()
     }
     
