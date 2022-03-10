@@ -162,6 +162,11 @@ class SettingsViewModel {
                 sSelf.coordinatorServices?.syncTriggersService?.invalidateTriggers()
                 sSelf.coordinatorServices?.syncService?.stopSync()
                 accountService?.delete(account: currentAccount)
+                
+                // delete pending uploading nodes if user is explicitly log out
+                let listNodeDataAccessor = ListNodeDataAccessor()
+                listNodeDataAccessor.removeAllPendingUploadNodes()
+            
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })

@@ -115,4 +115,42 @@ class UploadTransferDataAccessor: DataAccessor {
         guard let uploadTransfer = query(uploadTransfer: uploadTransfer) else { return .undefined }
         return uploadTransfer.syncStatus
     }
+    
+    // MARK: - Query all for pending uploading nodes
+    func queryAllForPendingUploadNodes() -> [UploadTransfer] {
+        guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
+        
+        do {
+            let query: Query<UploadTransfer> = try transfersBox.query {
+                UploadTransfer.syncStatus == SyncStatus.pending.rawValue
+            }.build()
+            return try query.find()
+        } catch {
+            AlfrescoLog.error("Unable to retrieve transfer information.")
+        }
+        return []
+    }
+    
+    // MARK: - Query all for uploaded nodes
+    func queryAllForUploadedNodes() -> [UploadTransfer] {
+        guard let transfersBox = databaseService?.box(entity: UploadTransfer.self) else { return [] }
+        
+        do {
+            let query: Query<UploadTransfer> = try transfersBox.query {
+                UploadTransfer.syncStatus == SyncStatus.synced.rawValue
+            }.build()
+            return try query.find()
+        } catch {
+            AlfrescoLog.error("Unable to retrieve transfer information.")
+        }
+        return []
+    }
+    
+    func updateNode(node: UploadTransfer) {
+        databaseService?.store(entity: node)
+    }
+    
+    func removeNode(node: UploadTransfer) {
+        databaseService?.remove(entity: node)
+    }
 }
