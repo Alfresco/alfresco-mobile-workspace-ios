@@ -21,14 +21,7 @@ import UIKit
 public extension URL {
 
     /// Returns a URL for the given app group and database pointing to the sqlite database.
-    static func storeURL() -> URL {
-        guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: KeyConstants.AppGroup.name) else {
-            fatalError("Shared file container could not be created.")
-        }
 
-        return fileContainer.appendingPathComponent("\(databaseName)")
-    }
-    
     static func fileURL() -> URL {
         guard let fileContainer = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: KeyConstants.AppGroup.name) else {
             fatalError("Shared file container could not be created.")
