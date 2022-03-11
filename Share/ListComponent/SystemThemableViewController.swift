@@ -104,7 +104,7 @@ class SystemThemableViewController: UIViewController {
             for node in nodes {
                 uploadTransfer.remove(transfer: node)
             }
-            UserDefaultsModel.set(value: true, for: KeyConstants.AppGroup.userDidInitiateLogout)
+            UserDefaultsModel.set(value: false, for: KeyConstants.AppGroup.userDidInitiateLogout)
         }
     }
 }
