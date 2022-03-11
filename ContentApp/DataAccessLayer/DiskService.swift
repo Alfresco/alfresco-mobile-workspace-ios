@@ -119,7 +119,6 @@ class DiskService {
         let documentsPath = self.documentsDirectoryPath() as NSString
         let md5Path = MD5Path(path: accountIdentifier)
         let accountDocumentsPath = documentsPath.appendingPathComponent(md5Path)
-
         return accountDocumentsPath
     }
 

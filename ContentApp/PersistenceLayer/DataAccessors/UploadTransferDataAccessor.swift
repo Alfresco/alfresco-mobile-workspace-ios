@@ -122,7 +122,7 @@ class UploadTransferDataAccessor: DataAccessor {
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.syncStatus == SyncStatus.pending.rawValue
+                UploadTransfer.syncStatus == SyncStatus.pending.rawValue || UploadTransfer.syncStatus == SyncStatus.error.rawValue
             }.build()
             return try query.find()
         } catch {
