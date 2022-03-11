@@ -76,6 +76,20 @@ class DiskService {
         }
         return true
     }
+    
+    static func clearSharedDirectory(itemAtPath: String) -> Bool {
+        let fileManager = FileManager.default
+        let folderPath = documentsDirectoryPath()
+        if fileManager.fileExists(atPath: folderPath) {
+            do {
+                try fileManager.removeItem(atPath: itemAtPath)
+            } catch {
+                AlfrescoLog.error("Failed to delete item at path: \(itemAtPath).")
+                return false
+            }
+        }
+        return true
+    }
 
     static func copy(itemAtPath: String, to path: String) -> Bool {
         let fileManager = FileManager.default

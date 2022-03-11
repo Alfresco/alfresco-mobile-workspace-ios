@@ -99,7 +99,7 @@ class UploadTransferDataAccessor: DataAccessor {
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.parentNodeId == parentNodeId
+                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue
             }.build()
             allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
                 changeHandler(transfers)
