@@ -45,12 +45,12 @@ class FileAsset {
          fileExtension: String?) {
         self.type = type
         self.fileName = fileName
-        
+        self.fileExtension = fileExtension
+
         let locaFilePath = composeLocalFilePath(in: folderPath as NSString)
         _ = DiskService.copy(itemAtPath: path, to: locaFilePath)
         
         self.path = locaFilePath
-        self.fileExtension = fileExtension
     }
     
     init(type: String?,

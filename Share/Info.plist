@@ -9,15 +9,15 @@
 			<key>NSExtensionActivationRule</key>
 			<dict>
 				<key>NSExtensionActivationSupportsImageWithMaxCount</key>
-				<integer>50</integer>
+				<integer>20</integer>
 				<key>NSExtensionActivationSupportsAttachmentsWithMaxCount</key>
-				<integer>50</integer>
+				<integer>20</integer>
 				<key>NSExtensionActivationSupportsFileWithMaxCount</key>
-				<integer>50</integer>
+				<integer>20</integer>
 				<key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-				<integer>50</integer>
+				<integer>20</integer>
 				<key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-				<integer>50</integer>
+				<integer>20</integer>
 				<key>NSExtensionActivationSupportsText</key>
 				<true/>
 			</dict>

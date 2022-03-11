@@ -443,11 +443,10 @@ extension ListComponentViewController {
                 SyncBannerService.removeAllUploadedNodesFromDatabase()
             })
         } else if totalNodes != 0 {
-            let actualTotal = totalNodes + uploadedNodes
             let progress = SyncBannerService.calculateProgress()
             let progressPercentage = progress*100.0
             uploadingFilesImageView.image = UIImage(named: "ic-action-sync-uploads")
-            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, totalNodes) + " Total Nodes: \(actualTotal)"
+            uploadingFilesLabel.text = String(format: LocalizationConstants.AppExtension.uploadingFiles, totalNodes)
             uploadingPercentageLabel.text = String(format: "%.2f%%", progressPercentage)
             uploadingProgressView.progress = progress
         }
