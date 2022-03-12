@@ -99,7 +99,7 @@ class UploadTransferDataAccessor: DataAccessor {
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.parentNodeId == parentNodeId
+                UploadTransfer.parentNodeId == parentNodeId && UploadTransfer.syncStatus != SyncStatus.synced.rawValue
             }.build()
             allTransfersQueryObserver = query.subscribe(resultHandler: { transfers, _ in
                 changeHandler(transfers)
@@ -122,7 +122,7 @@ class UploadTransferDataAccessor: DataAccessor {
         
         do {
             let query: Query<UploadTransfer> = try transfersBox.query {
-                UploadTransfer.syncStatus == SyncStatus.pending.rawValue
+                UploadTransfer.syncStatus == SyncStatus.pending.rawValue || UploadTransfer.syncStatus == SyncStatus.error.rawValue
             }.build()
             return try query.find()
         } catch {
