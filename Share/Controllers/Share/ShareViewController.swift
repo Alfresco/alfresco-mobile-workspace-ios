@@ -33,6 +33,7 @@ class ShareViewController: SystemThemableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         clearLocalDatabaseIfNecessary()
+        clearDatabaseOnLogout()
         activateTheme()
         handleSharedFile()
         DispatchQueue.main.asyncAfter(deadline: .now()+1.0) {
