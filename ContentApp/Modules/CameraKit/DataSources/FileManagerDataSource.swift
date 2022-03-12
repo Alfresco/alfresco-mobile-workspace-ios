@@ -61,15 +61,8 @@ class FileManagerDataSource {
 
         workerQueue.async { [weak self] in
             guard let sSelf = self else { return }
-            
-            print("**** fileName **** \(fileName) ***** url ****** \(url)")
-            do {
-               // let fileData = try Data(contentsOf: url)
-                let fileAsset = FileAsset(type: fileType, fileName: fileName, path: url.path, saveIn: sSelf.folderToSavePath, fileExtension: fileType)
-                completionHandler(fileAsset)
-            } catch let error {
-                print("**** error ***** \(error)")
-            }
+            let fileAsset = FileAsset(type: fileType, fileName: fileName, path: url.path, saveIn: sSelf.folderToSavePath, fileExtension: fileType)
+            completionHandler(fileAsset)
         }
     }
 }
