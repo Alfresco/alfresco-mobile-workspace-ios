@@ -65,7 +65,7 @@ class FileManagerDataSource {
             print("**** fileName **** \(fileName) ***** url ****** \(url)")
             do {
                // let fileData = try Data(contentsOf: url)
-                let fileAsset = FileAsset(type: fileType, fileName: fileName, path: url.absoluteString, saveIn: sSelf.folderToSavePath, fileExtension: fileType)
+                let fileAsset = FileAsset(type: fileType, fileName: fileName, path: url.path, saveIn: sSelf.folderToSavePath, fileExtension: fileType)
                 completionHandler(fileAsset)
             } catch let error {
                 print("**** error ***** \(error)")
