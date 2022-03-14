@@ -28,7 +28,7 @@ class UploadNodesViewModel: ListComponentViewModel {
 
     func queryAll() -> [UploadTransfer] {
         let dataAccessor = UploadTransferDataAccessor()
-        let pendingUploadTransfers = dataAccessor.queryAllForPendingUploadNodes()
+        let pendingUploadTransfers = dataAccessor.queryAll()
         return pendingUploadTransfers
     }
     
