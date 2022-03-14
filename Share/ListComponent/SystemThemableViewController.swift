@@ -100,7 +100,7 @@ class SystemThemableViewController: UIViewController {
         let isLogout = UserDefaultsModel.value(for: KeyConstants.AppGroup.userDidInitiateLogout) as? Bool ?? false
         if isLogout {
             let uploadTransfer = UploadTransferDataAccessor()
-            let nodes = uploadTransfer.queryAllForPendingUploadNodes()
+            let nodes = uploadTransfer.queryAll()
             for node in nodes {
                 uploadTransfer.remove(transfer: node)
             }
