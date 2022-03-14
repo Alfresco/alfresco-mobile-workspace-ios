@@ -213,7 +213,7 @@ extension UploadFilesViewController {
 
     func getListNodes() -> [ListNode] {
         let dataAccessor = UploadTransferDataAccessor()
-        let items = dataAccessor.queryAllForPendingUploadNodes()
+        let items = dataAccessor.queryAll()
         return items.map({$0.listNode()})
     }
     
