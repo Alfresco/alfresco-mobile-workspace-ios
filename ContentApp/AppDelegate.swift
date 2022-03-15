@@ -58,6 +58,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
+    // MARK: - Start Sync
+    func startSyncOperation() {
+        let repository = applicationCoordinator?.repository
+        let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
+        syncTriggerService?.triggerSync(for: .userDidInitiateSync)
+    }
+    
     func applicationDidBecomeActive(_ application: UIApplication) {
         let repository = applicationCoordinator?.repository
 
