@@ -105,5 +105,6 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
 
         tabBarScreenCoordinator = TabBarScreenCoordinator(with: presenter)
         tabBarScreenCoordinator?.start()
+        appDelegate()?.startSyncOperation()
     }
 }
