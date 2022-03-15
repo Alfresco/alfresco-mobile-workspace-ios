@@ -263,8 +263,8 @@
 "empty-offline-description" = "Content that you make available offline will show up here.";
 "empty-gallery-title" = "No photos or videos";
 "empty-gallery-description" = "Try to add some photos or videos to your device.";
-"empty-uploads-title" = "Transfer Completed!";
-"empty-uploads-description" = "Content that you make available to upload will show up here.";
+"empty-uploads-title" = "Upload completed!";
+"empty-uploads-description" = "No more files to upload. Please view files from their respective folders.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace needs photos access";
