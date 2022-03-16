@@ -259,8 +259,8 @@
 "empty-offline-description" = "Le contenu disponible hors ligne s'affichera ici.";
 "empty-gallery-title" = "Aucune photo ou vidéo";
 "empty-gallery-description" = "Essayez d'ajouter des photos ou des vidéos dans votre appareil.";
-"empty-uploads-title" = "Transfert terminée !";
-"empty-uploads-description" = "Le contenu disponible hors ligne s'affichera ici.";
+"empty-uploads-title" = "Importation terminée !";
+"empty-uploads-description" = "Il n\'y a plus de fichiers à importer. Veuillez afficher les fichiers dans leurs dossiers respectifs.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
