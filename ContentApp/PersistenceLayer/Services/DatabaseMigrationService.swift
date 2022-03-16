@@ -27,11 +27,11 @@ class DatabaseMigrationService: NSObject {
     }
     
     func migrateFilesInLocalDirectory() {
+        let bundleID = Bundle.main.bundleIdentifier
         let oldDirectoryPath = oldDocumentDirectoryPath()
-        
         if let files = try? FileManager.default.contentsOfDirectory(atPath: oldDirectoryPath) {
             let newDirectoryPath = DiskService.documentsDirectoryPath()
-            for file in files {
+            for file in files where file != bundleID {
                 do {
                     try FileManager.default.moveItem(atPath: "\(oldDirectoryPath)/\(file)", toPath: "\(newDirectoryPath)/\(file)")
                 } catch let error {
