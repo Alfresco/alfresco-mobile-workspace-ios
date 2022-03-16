@@ -259,8 +259,8 @@
 "empty-offline-description" = "Contenido disponible sin conexión se mostrará aquí.";
 "empty-gallery-title" = "No hay fotos o vídeos";
 "empty-gallery-description" = "Intente añadir algunas fotos o vídeos a su dispositivo.";
-"empty-uploads-title" = "¡Transferencia completada! ";
-"empty-uploads-description" = "El contenido puesto a disposición para cargar se mostrará aquí.";
+"empty-uploads-title" = "¡Carga completada!";
+"empty-uploads-description" = "No quedan ficheros para cargar. Vea que los ficheros estén en sus respectivas carpetas.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";

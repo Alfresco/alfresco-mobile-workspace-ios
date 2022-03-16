@@ -259,8 +259,8 @@
 "empty-offline-description" = "Content die u offline beschikbaar maakt, wordt hier weergegeven.";
 "empty-gallery-title" = "Geen foto's of video's";
 "empty-gallery-description" = "Probeer foto's of video's toe te voegen aan uw apparaat.";
-"empty-uploads-title" = "Overdracht voltooid!";
-"empty-uploads-description" = "Content die u beschikbaar maakt om te uploaden wordt hier weergegeven.";
+"empty-uploads-title" = "Uploaden voltooid!";
+"empty-uploads-description" = "Er zijn geen bestanden meer om te uploaden. Kijk of bestanden in de desbetreffende mappen staan.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
