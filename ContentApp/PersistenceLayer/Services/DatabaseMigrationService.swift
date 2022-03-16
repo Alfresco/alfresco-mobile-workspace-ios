@@ -31,7 +31,7 @@ class DatabaseMigrationService: NSObject {
         
         if let files = try? FileManager.default.contentsOfDirectory(atPath: oldDirectoryPath) {
             let newDirectoryPath = DiskService.documentsDirectoryPath()
-            for file in files {
+            for file in files where file != "com.alfresco.contentapp" {
                 do {
                     try FileManager.default.moveItem(atPath: "\(oldDirectoryPath)/\(file)", toPath: "\(newDirectoryPath)/\(file)")
                 } catch let error {
