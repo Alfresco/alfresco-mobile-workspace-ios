@@ -260,7 +260,7 @@
 "empty-gallery-title" = "Keine Fotos oder Videos";
 "empty-gallery-description" = "Versuchen Sie einige Fotos oder Videos zu Ihrem Gerät hinzuzufügen.";
 "empty-uploads-title" = "Übertragung abgeschlossen!";
-"empty-uploads-description" = "Die von Ihnen zum Hochladen freigegebenen Inhalte werden hier angezeigt.";
+"empty-uploads-description" = "Es sind keine weiteren Dateien zum Hochladen ausgewählt. Sie können die hochgeladenen Dateien nun in ihren jeweiligen Zielordnern aufrufen.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";
