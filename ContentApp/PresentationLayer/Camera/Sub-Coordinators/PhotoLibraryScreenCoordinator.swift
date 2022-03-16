@@ -103,7 +103,8 @@ extension PhotoLibraryScreenCoordinator: CameraKitCaptureDelegate {
                                                 extensionType: capturedAsset.type.ext,
                                                 mimetype: capturedAsset.type.mimetype,
                                                 nodeDescription: capturedAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                fullFilePath: capturedAsset.path)
             uploadTransfers.append(uploadTransfer)
         }
 

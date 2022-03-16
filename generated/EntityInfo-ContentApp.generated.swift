@@ -452,9 +452,10 @@ extension UploadTransfer: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "mimetype", type: String.entityPropertyType, id: 9, uid: 5958632298443843840)
         try entityBuilder.addProperty(name: "nodeDescription", type: String.entityPropertyType, id: 4, uid: 8762750373210733056)
         try entityBuilder.addProperty(name: "localFilenamePath", type: String.entityPropertyType, id: 10, uid: 5866070128195577600)
+        try entityBuilder.addProperty(name: "fullFilePath", type: String.entityPropertyType, id: 11, uid: 8411143145022699520)
         try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 6, uid: 370033443724301568)
 
-        try entityBuilder.lastProperty(id: 10, uid: 5866070128195577600)
+        try entityBuilder.lastProperty(id: 11, uid: 8411143145022699520)
     }
 }
 
@@ -501,6 +502,12 @@ extension UploadTransfer {
     ///
     ///     box.query { UploadTransfer.localFilenamePath.startsWith("X") }
     internal static var localFilenamePath: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 10, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { UploadTransfer.fullFilePath.startsWith("X") }
+    internal static var fullFilePath: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 11, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -574,6 +581,14 @@ extension ObjectBox.Property where E == UploadTransfer {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .fullFilePath.startsWith("X") }
+
+    internal static var fullFilePath: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 11, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .syncStatus.startsWith("X") }
 
     internal static var syncStatus: Property<UploadTransfer, String, Void> { return Property<UploadTransfer, String, Void>(propertyId: 6, isPrimaryKey: false) }
@@ -606,6 +621,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         let propertyOffset_mimetype = propertyCollector.prepare(string: entity.mimetype)
         let propertyOffset_nodeDescription = propertyCollector.prepare(string: entity.nodeDescription)
         let propertyOffset_localFilenamePath = propertyCollector.prepare(string: entity.localFilenamePath)
+        let propertyOffset_fullFilePath = propertyCollector.prepare(string: entity.fullFilePath)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
 
         propertyCollector.collect(id, at: 2 + 2 * 1)
@@ -615,6 +631,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_mimetype, at: 2 + 2 * 9)
         propertyCollector.collect(dataOffset: propertyOffset_nodeDescription, at: 2 + 2 * 4)
         propertyCollector.collect(dataOffset: propertyOffset_localFilenamePath, at: 2 + 2 * 10)
+        propertyCollector.collect(dataOffset: propertyOffset_fullFilePath, at: 2 + 2 * 11)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 6)
     }
 
@@ -628,6 +645,7 @@ internal class UploadTransferBinding: ObjectBox.EntityBinding {
         entity.mimetype = entityReader.read(at: 2 + 2 * 9)
         entity.nodeDescription = entityReader.read(at: 2 + 2 * 4)
         entity.localFilenamePath = entityReader.read(at: 2 + 2 * 10)
+        entity.fullFilePath = entityReader.read(at: 2 + 2 * 11)
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 6)) ?? .undefined
 
         return entity

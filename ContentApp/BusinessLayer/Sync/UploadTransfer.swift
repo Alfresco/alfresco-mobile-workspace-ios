@@ -27,6 +27,7 @@ class UploadTransfer: Entity, Codable {
     var mimetype: String = ""
     var nodeDescription = ""
     var localFilenamePath = ""
+    var fullFilePath = ""
     // objectbox: convert = { "default": ".undefined" }
     var syncStatus: SyncStatus = .pending
 
@@ -39,13 +40,15 @@ class UploadTransfer: Entity, Codable {
          extensionType: String,
          mimetype: String,
          nodeDescription: String?,
-         localFilenamePath: String) {
+         localFilenamePath: String,
+         fullFilePath: String) {
         self.parentNodeId = parentNodeId
         self.nodeName = nodeName
         self.extensionType = extensionType
         self.mimetype = mimetype
         self.nodeDescription = nodeDescription ?? ""
         self.localFilenamePath = localFilenamePath
+        self.fullFilePath = fullFilePath
     }
 
     // MARK: - Public Helpers
@@ -55,6 +58,7 @@ class UploadTransfer: Entity, Codable {
         nodeName = newVersion.nodeName
         nodeDescription = newVersion.nodeDescription
         localFilenamePath = newVersion.localFilenamePath
+        fullFilePath = newVersion.fullFilePath
     }
     
     func listNode() -> ListNode {

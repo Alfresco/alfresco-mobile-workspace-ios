@@ -100,7 +100,8 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
                                                 extensionType: fileAsset.fileExtension ?? "",
                                                 mimetype: assetURL.mimeType(),
                                                 nodeDescription: fileAsset.description,
-                                                localFilenamePath: assetURL.lastPathComponent)
+                                                localFilenamePath: assetURL.lastPathComponent,
+                                                fullFilePath: fileAsset.path)
             uploadTransfers.append(uploadTransfer)
         }
 
