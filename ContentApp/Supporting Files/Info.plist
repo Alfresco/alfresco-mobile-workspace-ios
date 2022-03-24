@@ -24,6 +24,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>iosacsapp</string>
+				<string>ioscontentapp</string>
 			</array>
 		</dict>
 		<dict>
