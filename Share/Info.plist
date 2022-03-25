@@ -29,7 +29,7 @@
                         || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.data"
                         || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.content"
                         )
-                        ).@count == $extensionItem.attachments.@count
+                        ).@count &lt;= 50
                         ).@count > 0
                     </string>
 		</dict>
