@@ -395,6 +395,7 @@
 		C9D4FAB327830EA50008C4AA /* FileManagerAssetDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB227830EA50008C4AA /* FileManagerAssetDelegate.swift */; };
 		C9D4FAB5278329F50008C4AA /* FileAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB4278329F50008C4AA /* FileAsset.swift */; };
 		C9D4FAB7278344AA0008C4AA /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB6278344AA0008C4AA /* MimeType.swift */; };
+		C9DC44C427F2CD0500D59681 /* Snackbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EFAB26248F99BE00635521 /* Snackbar.swift */; };
 		C9E17FE927A92CAD0006747E /* NodeChildMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E9ED4E24CB3E4800F1A2C2 /* NodeChildMapper.swift */; };
 		C9E17FF627A934AA0006747E /* ListNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32B642624B326EB00085472 /* ListNode.swift */; };
 		C9E17FF827A94BD40006747E /* AccountService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7D60824911F190056292B /* AccountService.swift */; };
@@ -3171,6 +3172,7 @@
 				C918814A27AA8A1400F850DF /* UserProfile.swift in Sources */,
 				C9A9115D27A7B982002EBC7F /* String+Range.swift in Sources */,
 				C9A9115727A7B970002EBC7F /* ActionsMenuCreateFAB.swift in Sources */,
+				C9DC44C427F2CD0500D59681 /* Snackbar.swift in Sources */,
 				C9A9116F27A7B9BF002EBC7F /* OperationQueueService.swift in Sources */,
 				C9E17FFA27A94C1E0006747E /* EntityInfo-ContentApp.generated.swift in Sources */,
 				C9AFDF7027B8CA44007233A5 /* ListElementCollectionViewCell.swift in Sources */,

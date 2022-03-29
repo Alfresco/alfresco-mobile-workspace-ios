@@ -144,9 +144,22 @@ class ShareViewController: SystemThemableViewController {
                     if let url = data as? URL {
                         urlsArray.append(url)
                         fetchGroup.leave()
-                    } else {
-                        // Handle this situation as you prefer
-                        fatalError("Impossible to save image")
+                    } else if provider.hasItemConformingToTypeIdentifier("public.file-url") {
+                        provider.loadItem(forTypeIdentifier: "public.file-url" as String,
+                                          options: nil) { (data, error) in
+                            // Handle the error here if you want
+                            guard error == nil else { return }
+                            if let url = data as? URL {
+                                urlsArray.append(url)
+                                fetchGroup.leave()
+                            } else {
+        //                         Handle this situation as you prefer
+                                Snackbar.display(with: LocalizationConstants.AppExtension.unsupportedFileFormat,
+                                                 type: .approve,
+                                                 presentationHostViewOverride: self.view,
+                                                 finish: nil)
+                            }
+                        }
                     }
                 }
             }
