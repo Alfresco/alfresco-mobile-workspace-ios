@@ -293,3 +293,4 @@
 "waiting-title" = "Waiting";
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
+"unsupported-file-format" = "Unsupported File Format";
