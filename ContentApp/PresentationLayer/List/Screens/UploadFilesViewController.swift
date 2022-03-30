@@ -204,6 +204,11 @@ extension UploadFilesViewController {
                 self.emptyListSubtitle.text = emptyList.description
                 self.setListActionButtonStatus(enable: false)
             }
+        } else {
+            DispatchQueue.main.async {
+                self.emptyListView.isHidden = true
+                self.setListActionButtonStatus(enable: true)
+            }
         }
     }
     
