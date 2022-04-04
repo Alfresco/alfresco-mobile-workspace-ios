@@ -40,7 +40,9 @@ class SystemSearchViewController: SystemThemableViewController {
             navigationItem.searchController = searchController
         }
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
-            addSearchButton()
+            let searchBarButtonItem = createSearchBarButton()
+            let createFolderBarButtonItem = createFolderBarButton()
+            self.navigationItem.rightBarButtonItems = [searchBarButtonItem, createFolderBarButtonItem]
             addBackButton()
         }
         
@@ -90,6 +92,23 @@ class SystemSearchViewController: SystemThemableViewController {
         }
     }
     
+    @objc func createFolderButtonTapped() {
+        AlfrescoLog.debug("****** Create Folder ******")
+        
+        
+        resultsViewController?.resultsListController
+        if let controller = self.superclass?.superclass()?.superclass() as? ListViewController {
+            AlfrescoLog.debug("****** Create Folder Super class ******")
+        }
+        
+//        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+//                                type: .createFolder)
+//        listItemActionDelegate?.showNodeCreationDialog(with: action,
+//                                                       delegate: nil)
+        
+       // resultsViewController?.resultsListController?.createFolderButtonTapped()
+    }
+    
     // MARK: - Private Helpers
 
     override func applyComponentsThemes() {
@@ -110,7 +129,7 @@ class SystemSearchViewController: SystemThemableViewController {
              NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
-    private func addSearchButton() {
+    private func createSearchBarButton() -> UIBarButtonItem {
         let searchButton = UIButton(type: .custom)
         searchButton.accessibilityIdentifier = "searchButton"
         searchButton.frame = CGRect(x: 0.0, y: 0.0,
@@ -124,17 +143,39 @@ class SystemSearchViewController: SystemThemableViewController {
                                for: UIControl.Event.touchUpInside)
         searchButton.setImage(UIImage(named: "ic-search"),
                               for: .normal)
-
+        
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currHeight?.isActive = true
-
-        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+        return searchBarButtonItem
     }
     
+    private func createFolderBarButton() -> UIBarButtonItem {
+        let createFolderButton = UIButton(type: .custom)
+        createFolderButton.accessibilityIdentifier = "createFolderBarButton"
+        createFolderButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: searchButtonAspectRatio,
+                                    height: searchButtonAspectRatio)
+        createFolderButton.imageView?.contentMode = .scaleAspectFill
+        createFolderButton.layer.masksToBounds = true
+        createFolderButton.addTarget(self,
+                               action: #selector(createFolderButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        createFolderButton.setImage(UIImage(named: "ic-action-create-folder"),
+                              for: .normal)
+        
+        let createFolderBarButtonItem = UIBarButtonItem(customView: createFolderButton)
+        createFolderBarButtonItem.accessibilityIdentifier = "createFolderBarButton"
+        let currWidth = createFolderBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currWidth?.isActive = true
+        let currHeight = createFolderBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currHeight?.isActive = true
+        return createFolderBarButtonItem
+    }
+
     private func addBackButton() {
         let backButton = UIButton(type: .custom)
         backButton.accessibilityIdentifier = "backButton"

@@ -129,7 +129,9 @@ class ListComponentViewController: SystemThemableViewController {
     
     // MARK: - Actions
     @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
-        listActionDelegate?.performListAction()
+        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                type: .createFolder)
+        listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
     }
     
     @IBAction func uploadButtonAction(_ sender: Any) {
@@ -139,7 +141,7 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
     }
-        
+    
     // MARK: - Public interface
     
     override func applyComponentsThemes() {
