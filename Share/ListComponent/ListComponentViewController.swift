@@ -127,13 +127,6 @@ class ListComponentViewController: SystemThemableViewController {
         coordinatorServices.themingService?.activeTheme?.primary30T1Color
     }
     
-    // MARK: - Actions
-    @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
-        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
-                                type: .createFolder)
-        listItemActionDelegate?.showNodeCreationDialog(with: action, delegate: self)
-    }
-    
     @IBAction func uploadButtonAction(_ sender: Any) {
         if let decoded = UserDefaultsModel.value(for: KeyConstants.AppGroup.sharedFiles) as? Data {
             if let decodedURLs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decoded) as? [URL] {

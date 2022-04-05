@@ -96,15 +96,15 @@ class SystemSearchViewController: SystemThemableViewController {
         AlfrescoLog.debug("****** Create Folder ******")
         
         
-        resultsViewController?.resultsListController
-        if let controller = self.superclass?.superclass()?.superclass() as? ListViewController {
-            AlfrescoLog.debug("****** Create Folder Super class ******")
-        }
+//        resultsViewController?.resultsListController
+//        if let controller = self.superclass?.superclass()?.superclass() as? ListViewController {
+//            AlfrescoLog.debug("****** Create Folder Super class ******")
+//        }
         
-//        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
-//                                type: .createFolder)
-//        listItemActionDelegate?.showNodeCreationDialog(with: action,
-//                                                       delegate: nil)
+        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                type: .createFolder)
+        listItemActionDelegate?.showNodeCreationDialog(with: action,
+                                                       delegate: self)
         
        // resultsViewController?.resultsListController?.createFolderButtonTapped()
     }

@@ -1928,11 +1928,11 @@
 			children = (
 				C9AFDF7727B8D171007233A5 /* SystemThemableViewController.swift */,
 				C9AFDF9D27B8F790007233A5 /* SystemSearchViewController.swift */,
+				C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */,
 				C9AFDF6027B8C877007233A5 /* ListComponentViewController.swift */,
 				C9AFDF6227B8C9BF007233A5 /* ListComponent+DataSource.swift */,
 				C9AFDFA427B8FE38007233A5 /* ListComponent+Delegates.swift */,
 				C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */,
-				C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */,
 				C9AFDF5B27B8C679007233A5 /* ListPageController.swift */,
 				C9AFDF9B27B8F757007233A5 /* ListViewController.swift */,
 				C9AFDF9F27B8F7AF007233A5 /* ResultViewController.swift */,

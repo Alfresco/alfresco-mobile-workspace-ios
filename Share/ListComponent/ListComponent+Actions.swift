@@ -18,7 +18,7 @@
 
 import Foundation
 
-extension ListComponentViewController: NodeActionsViewModelDelegate,
+extension SystemSearchViewController: NodeActionsViewModelDelegate,
                                        CreateNodeViewModelDelegate {
 
     func handleCreatedNode(node: ListNode?, error: Error?) {
