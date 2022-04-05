@@ -191,10 +191,20 @@
 		C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C98C128F271E8687001C84D6 /* SearchComponents.storyboard */; };
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
+		C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */; };
+		C992F4D527FAC754002C4D41 /* CreateNodeSheetViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */; };
+		C992F4D827FB01EE002C4D41 /* NodeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */; };
 		C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993459527D89CAD0079DABD /* UserDefaultExtension.swift */; };
 		C993459727D89D940079DABD /* UserDefaultExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993459527D89CAD0079DABD /* UserDefaultExtension.swift */; };
 		C993504627D8D9C900E2B849 /* SyncSharedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */; };
 		C993504727D8DB2B00E2B849 /* SyncSharedNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */; };
+		C99786B927F738F60033DB3E /* CreateNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99786B827F738F60033DB3E /* CreateNodeViewModel.swift */; };
+		C99786BA27F739530033DB3E /* MoveEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3ABECE625519C4B005F0A66 /* MoveEvent.swift */; };
+		C99786BB27F739AA0033DB3E /* DownloadDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B944AB08255AD4F500965709 /* DownloadDialog.swift */; };
+		C99786BC27F739B40033DB3E /* DownloadDialog.xib in Resources */ = {isa = PBXBuildFile; fileRef = B944AB25255BF20500965709 /* DownloadDialog.xib */; };
+		C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */; };
+		C99786BF27F75F730033DB3E /* OfflineEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30FCD8325A6F73500C4ABAF /* OfflineEvent.swift */; };
+		C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
 		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
@@ -829,8 +839,13 @@
 		C98C128F271E8687001C84D6 /* SearchComponents.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchComponents.storyboard; sourceTree = "<group>"; };
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetCoordinator.swift; sourceTree = "<group>"; };
+		C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetViewControler.swift; sourceTree = "<group>"; };
+		C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeActionsViewModel.swift; sourceTree = "<group>"; };
 		C993459527D89CAD0079DABD /* UserDefaultExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultExtension.swift; sourceTree = "<group>"; };
 		C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedNodes.swift; sourceTree = "<group>"; };
+		C99786B827F738F60033DB3E /* CreateNodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeViewModel.swift; sourceTree = "<group>"; };
+		C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Actions.swift"; sourceTree = "<group>"; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
 		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
 		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -1855,6 +1870,41 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		C992F4D027FAC753002C4D41 /* Sub-Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */,
+			);
+			path = "Sub-Coordinators";
+			sourceTree = "<group>";
+		};
+		C992F4D227FAC754002C4D41 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		C99786B627F738C70033DB3E /* Action Menu */ = {
+			isa = PBXGroup;
+			children = (
+				C992F4D227FAC754002C4D41 /* Screens */,
+				C992F4D027FAC753002C4D41 /* Sub-Coordinators */,
+				C99786B727F738C70033DB3E /* ViewModels */,
+			);
+			path = "Action Menu";
+			sourceTree = "<group>";
+		};
+		C99786B727F738C70033DB3E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				C99786B827F738F60033DB3E /* CreateNodeViewModel.swift */,
+				C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		C9A9FB3827ABB30F0091B7E8 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1894,6 +1944,7 @@
 			children = (
 				C9AFDF7727B8D171007233A5 /* SystemThemableViewController.swift */,
 				C9AFDF9D27B8F790007233A5 /* SystemSearchViewController.swift */,
+				C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */,
 				C9AFDF6027B8C877007233A5 /* ListComponentViewController.swift */,
 				C9AFDF6227B8C9BF007233A5 /* ListComponent+DataSource.swift */,
 				C9AFDFA427B8FE38007233A5 /* ListComponent+Delegates.swift */,
@@ -1991,6 +2042,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C03BB327AB014500DA49B2 /* ShareDebug.entitlements */,
+				C99786B627F738C70033DB3E /* Action Menu */,
 				C93A06AD27B91A530027097B /* Extensions */,
 				C918811927AA417200F850DF /* Constants */,
 				C9AFDF7927B8EE01007233A5 /* Sub-Coordinators */,
@@ -2935,6 +2987,7 @@
 				C9B6D27727C9438300CF0C73 /* Inter-Medium.ttf in Resources */,
 				C9B6D27827C9438500CF0C73 /* Inter-Light.ttf in Resources */,
 				C9AFDF6E27B8CA44007233A5 /* ListElementCollectionViewCell.xib in Resources */,
+				C99786BC27F739B40033DB3E /* DownloadDialog.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3181,8 +3234,10 @@
 				C9DC44C427F2CD0500D59681 /* Snackbar.swift in Sources */,
 				C9A9116F27A7B9BF002EBC7F /* OperationQueueService.swift in Sources */,
 				C9E17FFA27A94C1E0006747E /* EntityInfo-ContentApp.generated.swift in Sources */,
+				C99786B927F738F60033DB3E /* CreateNodeViewModel.swift in Sources */,
 				C9AFDF7027B8CA44007233A5 /* ListElementCollectionViewCell.swift in Sources */,
 				C9A9110727A7B7AC002EBC7F /* LoginComponentsThemingServiceWorker.swift in Sources */,
+				C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */,
 				C9A910FD27A7B78B002EBC7F /* NSAttributedString+LocalizedHTML.swift in Sources */,
 				C9C7F22A27BB82940039A6AE /* FolderDrillModel.swift in Sources */,
 				C9AFDF8627B8F0FE007233A5 /* SearchModelProtocol.swift in Sources */,
@@ -3212,6 +3267,7 @@
 				C9AFCB6E27C609D100660162 /* ConfigurationHelper.swift in Sources */,
 				C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */,
 				C93EF2C127C7C24B00093E3D /* DatabaseMigrationService.swift in Sources */,
+				C992F4D527FAC754002C4D41 /* CreateNodeSheetViewControler.swift in Sources */,
 				C9A9110C27A7B7C1002EBC7F /* CellConstants.swift in Sources */,
 				C9A9113727A7B85E002EBC7F /* EmptyRecents.swift in Sources */,
 				C9E1801227A96FCC0006747E /* EventObservable.swift in Sources */,
@@ -3236,6 +3292,7 @@
 				C9AFDFA727B90074007233A5 /* SharedLinkMapper.swift in Sources */,
 				C9A9117527A7B9EE002EBC7F /* DiskService.swift in Sources */,
 				C9A910C927A7B6CB002EBC7F /* ImagePreview.swift in Sources */,
+				C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */,
 				C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */,
 				C9AFDF8827B8F28C007233A5 /* GlobalSearchModel.swift in Sources */,
 				C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */,
@@ -3251,6 +3308,7 @@
 				C9A9119127A7BA62002EBC7F /* FileManagerDataSource.swift in Sources */,
 				C9E17FF827A94BD40006747E /* AccountService.swift in Sources */,
 				C9AFDF6127B8C877007233A5 /* ListComponentViewController.swift in Sources */,
+				C99786BB27F739AA0033DB3E /* DownloadDialog.swift in Sources */,
 				C9A9113E27A7B873002EBC7F /* GroupedList.swift in Sources */,
 				C9A9111527A7B7F2002EBC7F /* AuthenticationProviderProtocol.swift in Sources */,
 				C9A9119B27A7BA83002EBC7F /* TableViewExtension.swift in Sources */,
@@ -3302,6 +3360,7 @@
 				C9A9115427A7B969002EBC7F /* ActionMenu.swift in Sources */,
 				C9A9116C27A7B9AF002EBC7F /* KeyConstants.swift in Sources */,
 				C9A910F827A7B77D002EBC7F /* UITextView+Size.swift in Sources */,
+				C992F4D827FB01EE002C4D41 /* NodeActionsViewModel.swift in Sources */,
 				C9A9116A27A7B9AA002EBC7F /* ErrorCodes.swift in Sources */,
 				C9A9117C27A7BA16002EBC7F /* CameraKitLocalization.swift in Sources */,
 				C9A9117227A7B9DC002EBC7F /* AsyncOperation.swift in Sources */,
@@ -3325,6 +3384,7 @@
 				C9A911B527A7BBF5002EBC7F /* RowViewModel.swift in Sources */,
 				C9A9FB3427AB8EFE0091B7E8 /* UIViewController+Dialog.swift in Sources */,
 				C92F3DC327BFEEA700952C59 /* SyncStatusEvent.swift in Sources */,
+				C99786BA27F739530033DB3E /* MoveEvent.swift in Sources */,
 				C9A9119627A7BA74002EBC7F /* FileAsset.swift in Sources */,
 				C918812527AA421400F850DF /* ListNodeDataAccessor.swift in Sources */,
 				C9E17FF927A94C090006747E /* DatabaseService.swift in Sources */,
@@ -3362,6 +3422,7 @@
 				C9A9115C27A7B97F002EBC7F /* String+CompareVersions.swift in Sources */,
 				C9A9110D27A7B7C5002EBC7F /* PrivacyNoticeModelProtocol.swift in Sources */,
 				C9AFDF7827B8D171007233A5 /* SystemThemableViewController.swift in Sources */,
+				C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */,
 				C9A911AD27A7BB95002EBC7F /* DarkTheme.swift in Sources */,
 				C9A9110227A7B798002EBC7F /* UILabel+Theming.swift in Sources */,
 				C9A9111E27A7B80F002EBC7F /* AuthenticationParameters.swift in Sources */,
@@ -3372,6 +3433,7 @@
 				C9A910FF27A7B791002EBC7F /* UIScrollView+ScrollTo.swift in Sources */,
 				C9A9110627A7B7AA002EBC7F /* MaterialDesignThemingServiceWorkerProtocol.swift in Sources */,
 				C9A9113B27A7B868002EBC7F /* EmptyFavoritesLibraries.swift in Sources */,
+				C99786BF27F75F730033DB3E /* OfflineEvent.swift in Sources */,
 				C9A911AB27A7BB8A002EBC7F /* PresentationTheme.swift in Sources */,
 				C9A9112127A7B816002EBC7F /* NeedHelpConnectScreenModel.swift in Sources */,
 				C9A9119D27A7BA88002EBC7F /* UIView+Rotate.swift in Sources */,

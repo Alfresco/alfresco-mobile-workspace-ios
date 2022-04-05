@@ -22,6 +22,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private var browseNode: BrowseNode
     private var fileManagerDataSource: FileManagerDataSource?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     var listController: ListViewController?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
@@ -80,6 +81,16 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         } else {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
+    }
+
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
+        let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                     actionMenu: actionMenu,
+                                                     parentListNode: personalFilesNode(),
+                                                     createNodeViewModelDelegate: delegate)
+        coordinator.start()
+        createNodeSheetCoordinator = coordinator
     }
 }
 
