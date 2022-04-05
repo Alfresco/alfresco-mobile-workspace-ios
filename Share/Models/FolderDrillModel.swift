@@ -280,7 +280,6 @@ class FolderDrillModel: ListComponentModelProtocol {
     }
 }
 
-
 // MARK: Event observable
 
 extension FolderDrillModel: EventObservable {
