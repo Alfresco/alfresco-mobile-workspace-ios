@@ -342,6 +342,103 @@
             </objects>
             <point key="canvasLocation" x="864" y="803"/>
         </scene>
+        <!--Create Node Sheet View Controler-->
+        <scene sceneID="LmJ-OO-yMZ">
+            <objects>
+                <viewController storyboardIdentifier="CreateNodeSheetViewControler" useStoryboardIdentifierAsRestorationIdentifier="YES" id="XIz-uB-Jjd" customClass="CreateNodeSheetViewControler" customModule="Share" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ian-De-EbI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YfT-Uq-Wwc">
+                                <rect key="frame" x="24" y="68" width="366" height="20.5"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createNodeTitleLabel">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="sZJ-MV-Juz" customClass="MDCOutlinedTextField">
+                                <rect key="frame" x="24" y="108.5" width="366" height="50"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createNodeNameTextField">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="3zC-Re-wpa"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                <connections>
+                                    <outlet property="delegate" destination="XIz-uB-Jjd" id="1fq-VY-AFT"/>
+                                </connections>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sdo-Q1-cvC" customClass="MDCButton">
+                                <rect key="frame" x="376" y="282.5" width="30" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createNodeUploadButton">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="TIp-Np-LNc"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="uploadButtonTapped:" destination="XIz-uB-Jjd" eventType="touchUpInside" id="8GG-nt-kZZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgm-eC-DNP" customClass="MDCButton">
+                                <rect key="frame" x="330" y="282.5" width="30" height="48"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createNodeCancelButton">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="tlL-yb-pyd"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="XIz-uB-Jjd" eventType="touchUpInside" id="fCT-9s-Yne"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A38-aE-qOf" customClass="MDCOutlinedTextArea">
+                                <rect key="frame" x="24" y="206.5" width="366" height="60"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="createNodeDescriptionTextArea">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="sVl-jY-Vaf"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="c2z-7C-O9R"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="YfT-Uq-Wwc" firstAttribute="leading" secondItem="c2z-7C-O9R" secondAttribute="leading" priority="750" constant="24" id="8Jo-jH-gcj"/>
+                            <constraint firstItem="hgm-eC-DNP" firstAttribute="centerY" secondItem="sdo-Q1-cvC" secondAttribute="centerY" id="DFs-WT-H8L"/>
+                            <constraint firstItem="sZJ-MV-Juz" firstAttribute="top" secondItem="YfT-Uq-Wwc" secondAttribute="bottom" constant="20" id="Gaf-OX-jGU"/>
+                            <constraint firstItem="sdo-Q1-cvC" firstAttribute="trailingMargin" secondItem="sZJ-MV-Juz" secondAttribute="trailing" constant="8" id="Ndy-om-gfk"/>
+                            <constraint firstItem="YfT-Uq-Wwc" firstAttribute="top" secondItem="c2z-7C-O9R" secondAttribute="top" constant="24" id="Ppr-AF-DPH"/>
+                            <constraint firstItem="sdo-Q1-cvC" firstAttribute="top" secondItem="A38-aE-qOf" secondAttribute="bottom" constant="16" id="TRS-xR-0Ue"/>
+                            <constraint firstItem="c2z-7C-O9R" firstAttribute="trailing" secondItem="A38-aE-qOf" secondAttribute="trailing" priority="750" constant="24" id="Usv-hv-peO"/>
+                            <constraint firstItem="c2z-7C-O9R" firstAttribute="bottom" secondItem="sdo-Q1-cvC" secondAttribute="bottom" priority="250" id="XRl-An-Dup"/>
+                            <constraint firstItem="A38-aE-qOf" firstAttribute="top" secondItem="sZJ-MV-Juz" secondAttribute="bottom" constant="48" id="eRu-wE-ePg"/>
+                            <constraint firstItem="sZJ-MV-Juz" firstAttribute="leading" secondItem="c2z-7C-O9R" secondAttribute="leading" priority="750" constant="24" id="gKV-NO-CL2"/>
+                            <constraint firstItem="A38-aE-qOf" firstAttribute="leading" secondItem="c2z-7C-O9R" secondAttribute="leading" priority="750" constant="24" id="iNo-67-kAQ"/>
+                            <constraint firstItem="c2z-7C-O9R" firstAttribute="trailing" secondItem="YfT-Uq-Wwc" secondAttribute="trailing" priority="750" constant="24" id="o06-nq-Cvj"/>
+                            <constraint firstItem="sdo-Q1-cvC" firstAttribute="leadingMargin" secondItem="hgm-eC-DNP" secondAttribute="trailingMargin" constant="32" id="s7Y-qa-HGU"/>
+                            <constraint firstItem="c2z-7C-O9R" firstAttribute="trailing" secondItem="sZJ-MV-Juz" secondAttribute="trailing" priority="750" constant="24" id="zOG-jX-r2I"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="hgm-eC-DNP" id="BUe-Zp-xTh"/>
+                        <outlet property="descriptionTextArea" destination="A38-aE-qOf" id="9ZZ-KC-xXo"/>
+                        <outlet property="nameTextField" destination="sZJ-MV-Juz" id="hR6-dq-HBY"/>
+                        <outlet property="titleCreate" destination="YfT-Uq-Wwc" id="X9z-GX-h2d"/>
+                        <outlet property="uploadButton" destination="sdo-Q1-cvC" id="7vR-Ft-q6m"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oO2-1R-519" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3590" y="3192"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic-recent-searches" width="24" height="24"/>

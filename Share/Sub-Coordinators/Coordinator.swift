@@ -22,6 +22,7 @@ protocol Coordinator {
 
 class CoordinatorServices {
     var accountService: AccountService?
+    var eventBusService: EventBusService?
     var themingService: MaterialDesignThemingService?
     var connectivityService: ConnectivityService?
     var locationService: LocationService?
@@ -42,6 +43,11 @@ extension Coordinator {
     var themingService: MaterialDesignThemingService? {
         let identifier = MaterialDesignThemingService.identifier
         return repository.service(of: identifier) as? MaterialDesignThemingService
+    }
+    
+    var eventBusService: EventBusService? {
+        let identifier = EventBusService.identifier
+        return repository.service(of: identifier) as? EventBusService
     }
 
     var connectivityService: ConnectivityService? {
@@ -67,6 +73,7 @@ extension Coordinator {
     var coordinatorServices: CoordinatorServices {
         let coordinatorServices = CoordinatorServices()
         coordinatorServices.accountService = accountService
+        coordinatorServices.eventBusService = eventBusService
         coordinatorServices.themingService = themingService
         coordinatorServices.connectivityService = connectivityService
         coordinatorServices.locationService = locationService

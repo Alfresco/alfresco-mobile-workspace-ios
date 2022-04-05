@@ -339,6 +339,60 @@ extension SearchModel: ListComponentModelProtocol {
     }
 }
 
+// MARK: - Event observable
+
+extension SearchModel: EventObservable {
+    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
+        if let publishedEvent = event as? FavouriteEvent {
+            handleFavorite(event: publishedEvent)
+        } else if let publishedEvent = event as? MoveEvent {
+            handleMove(event: publishedEvent)
+        } else if let publishedEvent = event as? OfflineEvent {
+            handleOffline(event: publishedEvent)
+        }
+    }
+
+    private func handleFavorite(event: FavouriteEvent) {
+        let node = event.node
+        for listNode in rawListNodes where listNode.guid == node.guid {
+            listNode.favorite = node.favorite
+        }
+    }
+
+    private func handleMove(event: MoveEvent) {
+        let node = event.node
+        switch event.eventType {
+        case .moveToTrash:
+            if node.nodeType == .file {
+                if let indexOfMovedNode = rawListNodes.firstIndex(where: { listNode in
+                    listNode.guid == node.guid
+                }) {
+                    rawListNodes.remove(at: indexOfMovedNode)
+                    delegate?.needsDisplayStateRefresh()
+                }
+            } else {
+                delegate?.needsDataSourceReload()
+            }
+        case .restore:
+            delegate?.needsDataSourceReload()
+        default: break
+        }
+    }
+
+    private func handleOffline(event: OfflineEvent) {
+        let node = event.node
+
+        if let indexOfOfflineNode = rawListNodes.firstIndex(where: { listNode in
+            listNode.guid == node.guid
+        }) {
+            rawListNodes[indexOfOfflineNode] = node
+
+            let indexPath = IndexPath(row: indexOfOfflineNode, section: 0)
+            delegate?.forceDisplayRefresh(for: indexPath)
+        }
+    }
+}
+
 class SearchCompletionHandler: Equatable {
     static func == (lhs: SearchCompletionHandler, rhs: SearchCompletionHandler) -> Bool {
         return lhs === rhs
@@ -353,11 +407,8 @@ class SearchCompletionHandler: Equatable {
 
 // MARK: - Facet Search
 extension SearchModel {
+    
     func facetSearchChips(for searchFacets: [SearchFacets]) -> [SearchChipItem] {
         return []
-    }
-    
-    func handle(event: BaseNodeEvent, on queue: EventQueueType) {
-        
     }
 }

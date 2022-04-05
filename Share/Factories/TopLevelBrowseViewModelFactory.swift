@@ -75,9 +75,24 @@ class TopLevelBrowseViewModelFactory {
     // MARK: - Private builders
 
     private func personalFilesViewModel() -> ListComponentViewModel {
+        let eventBusService = services.eventBusService
+
         let model = FolderDrillModel(listNode: nil,
                                      services: services)
         let viewModel = FolderDrillViewModel(model: model)
+
+        eventBusService?.register(observer: model,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: model,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: model,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: model,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file, .folder])
         return viewModel
     }
 

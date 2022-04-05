@@ -22,6 +22,8 @@ import AlfrescoContent
 protocol ListItemActionDelegate: AnyObject {
     func showPreview(for node: ListNode,
                      from model: ListComponentModelProtocol)
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: AnyObject {
