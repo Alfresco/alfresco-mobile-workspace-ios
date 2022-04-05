@@ -7,7 +7,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>NSExtensionActivationRule</key>
-            <string>SUBQUERY (
+			<string>SUBQUERY (
                         extensionItems,
                         $extensionItem,
                         SUBQUERY (
@@ -33,7 +33,7 @@
                         || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.item"
                         )
                         ).@count &lt;= 50
-                        ).@count > 0
+                        ).@count &gt; 0
                     </string>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
