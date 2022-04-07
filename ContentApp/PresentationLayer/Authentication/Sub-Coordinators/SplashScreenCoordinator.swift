@@ -107,4 +107,41 @@ extension SplashScreenCoordinator: SplashScreenCoordinatorDelegate {
         tabBarScreenCoordinator?.start()
         appDelegate()?.startSyncOperation()
     }
+    
+    func refreshSession() {
+        if let activeAccountIdentifier = UserDefaultsModel.value(for: KeyConstants.Save.activeAccountIdentifier) as? String {
+            let parameters = AuthenticationParameters.parameters(for: activeAccountIdentifier)
+
+            // Check account type whether it's Basic or AIMS
+            if let activeAccountPassword = Keychain.string(forKey: activeAccountIdentifier) {
+                let basicAuthCredential = BasicAuthCredential(username: activeAccountIdentifier, password: activeAccountPassword)
+                let account = BasicAuthAccount(with: parameters, credential: basicAuthCredential)
+
+                update(account: account)
+            } else if let activeAccountSessionData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoAuthSession.self))"),
+                let activeAccountCredentialData = Keychain.data(forKey: "\(activeAccountIdentifier)-\(String(describing: AlfrescoCredential.self))") {
+
+                do {
+                    let decoder = JSONDecoder()
+
+                    if let aimsSession = FastCoder.object(with: activeAccountSessionData) as? AlfrescoAuthSession {
+                        let aimsCredential = try decoder.decode(AlfrescoCredential.self, from: activeAccountCredentialData)
+
+                        let accountSession = AIMSSession(with: aimsSession, parameters: parameters, credential: aimsCredential)
+                        let account = AIMSAccount(with: accountSession)
+
+                        update(account: account)
+                    }
+                } catch {
+                    AlfrescoLog.error("Unable to deserialize session information")
+                }
+            }
+        }
+    }
+    
+    private func update(account: AccountProtocol) {
+        AlfrescoContentAPI.basePath = account.apiBasePath
+        accountService?.register(account: account)
+        accountService?.activeAccount = account
+    }
 }

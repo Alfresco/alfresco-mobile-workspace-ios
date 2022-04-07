@@ -151,6 +151,8 @@ extension AIMSAccount: AIMSAccountDelegate {
 
             session.parameters.remove(for: oldAccountIdentifier)
         }
+        
+        UserDefaultsModel.set(value: true, for: KeyConstants.AppGroup.loggedInFromAppExtension)
 
         let notification = NSNotification.Name(rawValue: KeyConstants.Notification.reSignin)
         NotificationCenter.default.post(name: notification,

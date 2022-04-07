@@ -64,9 +64,12 @@ class ApplicationCoordinator: Coordinator {
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Buttons.signin) { [weak self] _ in
             guard let sSelf = self else { return }
-            if let viewController = viewController {
-                sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
-            }
+            
+            sSelf.accountService?.activeAccount?.getSession(completionHandler: { authenticationProivder in
+                if authenticationProivder.areCredentialsValid() == false, let viewController = viewController {
+                    sSelf.accountService?.activeAccount?.reSignIn(onViewController: viewController)
+                }
+            })
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"
         
@@ -91,3 +94,5 @@ class ApplicationCoordinator: Coordinator {
         })
     }
 }
+
+

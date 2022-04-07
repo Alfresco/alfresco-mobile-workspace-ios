@@ -71,9 +71,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let themingService = repository?.service(of: MaterialDesignThemingService.identifier) as? MaterialDesignThemingService
         themingService?.activateAutoTheme(for: UIScreen.main.traitCollection.userInterfaceStyle)
 
+        let isLoggedInFromAppExtension = UserDefaultsModel.value(for: KeyConstants.AppGroup.loggedInFromAppExtension) as? Bool ?? false
+        if isLoggedInFromAppExtension {
+            UserDefaultsModel.set(value: false, for: KeyConstants.AppGroup.loggedInFromAppExtension)
+            self.applicationCoordinator?.splashScreenCoordinator.refreshSession()
+        }
         let accountService = repository?.service(of: AccountService.identifier) as? AccountService
         accountService?.createTicketForCurrentAccount()
-
+        
         let syncTriggerService = repository?.service(of: SyncTriggersService.identifier) as? SyncTriggersService
 
         enterInForegroundTimestamp = Date().timeIntervalSince1970

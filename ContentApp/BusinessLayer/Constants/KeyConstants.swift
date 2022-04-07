@@ -62,5 +62,6 @@ struct KeyConstants {
         static let pendingUploadNodes = "pendingUploadNodes"
         static let uploadedNodes = "uploadedNodes"
         static let userDidInitiateLogout = "userDidInitiateLogout"
+        static let loggedInFromAppExtension = "loggedInFromAppExtension"
     }
 }
