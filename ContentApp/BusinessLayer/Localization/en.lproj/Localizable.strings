@@ -228,6 +228,7 @@
 "action-menu-create-media" = "Take a photo or video";
 "action-menu-upload-media" = "Upload photos or videos";
 "action-menu-upload-files" = "Upload files";
+"action-menu-move-folder" = "Move to Folder";
 
 
 // MARK: - Dialog

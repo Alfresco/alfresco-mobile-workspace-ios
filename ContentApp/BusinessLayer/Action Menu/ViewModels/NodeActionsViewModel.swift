@@ -111,6 +111,8 @@ class NodeActionsViewModel {
                 sSelf.requestRestoreFromTrash(action: action)
             case .permanentlyDelete:
                 sSelf.requestPermanentlyDelete(action: action)
+            case .moveToFolder:
+                sSelf.requestMoveToFolder(action: action)
             default: break
             }
         }
@@ -245,6 +247,40 @@ class NodeActionsViewModel {
                 sSelf.handleResponse(error: error, action: action)
             }
         }
+    }
+    
+    private func requestMoveToFolder(action: ActionMenu) {
+        guard let node = self.node else { return }
+       /* if node.nodeType == .site {
+            SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    sSelf.node?.trashed = true
+
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                }
+                sSelf.handleResponse(error: error, action: action)
+            }
+        } else {
+            NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    sSelf.node?.trashed = true
+
+                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
+                        queriedNode.markedFor = .removal
+                        sSelf.listNodeDataAccessor.store(node: queriedNode)
+                    }
+
+                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                }
+                sSelf.handleResponse(error: error, action: action)
+            }
+        }*/
     }
 
     private func requestRestoreFromTrash(action: ActionMenu) {

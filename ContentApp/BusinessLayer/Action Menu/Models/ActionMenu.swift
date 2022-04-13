@@ -49,7 +49,7 @@ enum ActionMenuType: String {
     }
 
     var isMoveActions: Bool {
-        return [.moveTrash, .restore, .permanentlyDelete].contains(self)
+        return [.moveTrash, .restore, .permanentlyDelete, .moveToFolder].contains(self)
     }
 
     var isDownloadActions: Bool {
@@ -78,6 +78,8 @@ enum ActionMenuType: String {
     case moveTrash = "ic-action-delete"
     case restore = "ic-restore"
     case permanentlyDelete = "ic-action-delete-forever"
+    case moveToFolder = "ic-action-mov-to-folder"
+
 
     case download = "ic-action-download"
     case markOffline = "ic-action-outline-offline"
