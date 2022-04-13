@@ -127,11 +127,6 @@ class ListComponentViewController: SystemThemableViewController {
         coordinatorServices.themingService?.activeTheme?.primary30T1Color
     }
     
-    // MARK: - Actions
-    @IBAction func listActionButtonTapped(_ sender: MDCFloatingButton) {
-        listActionDelegate?.performListAction()
-    }
-    
     @IBAction func uploadButtonAction(_ sender: Any) {
         if let decoded = UserDefaultsModel.value(for: KeyConstants.AppGroup.sharedFiles) as? Data {
             if let decodedURLs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(decoded) as? [URL] {
@@ -139,7 +134,7 @@ class ListComponentViewController: SystemThemableViewController {
             }
         }
     }
-        
+    
     // MARK: - Public interface
     
     override func applyComponentsThemes() {

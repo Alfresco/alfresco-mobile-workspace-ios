@@ -20,22 +20,6 @@ import UIKit
 import ObjectBox
 
 class DatabaseMigrationService: NSObject {
-
-    override init() {
-//        do {
-//            let appSupport = try FileManager.default.url(for: .documentDirectory,
-//                                                         in: .userDomainMask,
-//                                                         appropriateFor: nil,
-//                                                         create: true)
-//                                                         .appendingPathComponent(Bundle.main.bundleIdentifier!)
-//            let directory = appSupport.appendingPathComponent(databaseName)
-//            try? FileManager.default.createDirectory(at: directory,
-//                                                     withIntermediateDirectories: true,
-//                                                     attributes: nil)
-//        } catch let error {
-//            AlfrescoLog.error("Unable to initialize persistence store: \(error)")
-//        }
-    }
     
     func migrateDatabase() {
         migrateFilesInLocalDirectory()
@@ -43,14 +27,15 @@ class DatabaseMigrationService: NSObject {
     }
     
     func migrateFilesInLocalDirectory() {
+        let bundleID = Bundle.main.bundleIdentifier
         let oldDirectoryPath = oldDocumentDirectoryPath()
-        let newDirectoryPath = DiskService.documentsDirectoryPath()
         if let files = try? FileManager.default.contentsOfDirectory(atPath: oldDirectoryPath) {
-            for file in files {
+            let newDirectoryPath = DiskService.documentsDirectoryPath()
+            for file in files where file != bundleID {
                 do {
                     try FileManager.default.moveItem(atPath: "\(oldDirectoryPath)/\(file)", toPath: "\(newDirectoryPath)/\(file)")
-                } catch {
-                    AlfrescoLog.error("Error ----->>>> \(error)")
+                } catch let error {
+                    AlfrescoLog.error("Error ----->>>> \(error.localizedDescription)")
                 }
             }
         }

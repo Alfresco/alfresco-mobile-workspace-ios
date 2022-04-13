@@ -204,6 +204,11 @@ extension UploadFilesViewController {
                 self.emptyListSubtitle.text = emptyList.description
                 self.setListActionButtonStatus(enable: false)
             }
+        } else {
+            DispatchQueue.main.async {
+                self.emptyListView.isHidden = true
+                self.setListActionButtonStatus(enable: true)
+            }
         }
     }
     
@@ -213,7 +218,7 @@ extension UploadFilesViewController {
 
     func getListNodes() -> [ListNode] {
         let dataAccessor = UploadTransferDataAccessor()
-        let items = dataAccessor.queryAllForPendingUploadNodes()
+        let items = dataAccessor.queryAll()
         return items.map({$0.listNode()})
     }
     

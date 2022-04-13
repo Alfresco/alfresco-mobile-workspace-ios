@@ -2,28 +2,44 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSExtension</key>
-    <dict>
-        <key>NSExtensionAttributes</key>
-        <dict>
-            <key>NSExtensionActivationRule</key>
-            <dict>
-                <key>NSExtensionActivationSupportsImageWithMaxCount</key>
-                <integer>50</integer>
-                <key>NSExtensionActivationSupportsAttachmentsWithMaxCount</key>
-                <integer>50</integer>
-                <key>NSExtensionActivationSupportsFileWithMaxCount</key>
-                <integer>50</integer>
-                <key>NSExtensionActivationSupportsMovieWithMaxCount</key>
-                <integer>50</integer>
-                <key>NSExtensionActivationSupportsWebURLWithMaxCount</key>
-                <integer>50</integer>
-            </dict>
-        </dict>
-        <key>NSExtensionMainStoryboard</key>
-        <string>MainInterface</string>
-        <key>NSExtensionPointIdentifier</key>
-        <string>com.apple.share-services</string>
-    </dict>
+	<key>NSExtension</key>
+	<dict>
+		<key>NSExtensionAttributes</key>
+		<dict>
+			<key>NSExtensionActivationRule</key>
+			<string>SUBQUERY (
+                        extensionItems,
+                        $extensionItem,
+                        SUBQUERY (
+                        $extensionItem.attachments,
+                        $attachment,
+                        (
+                        ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.adobe.pdf"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.plain-text"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.png"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.jpeg-2000"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.compuserve.gif"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.microsoft.bmp"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.camera-raw-imag"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.public.xbitmap-image"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.movie"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.content"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "com.apple.quicktime-movie"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.html"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audiovisual-content"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.mpeg"
+                        || ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.item"
+                        )
+                        ).@count &lt;= 50
+                        ).@count &gt; 0
+                    </string>
+		</dict>
+		<key>NSExtensionMainStoryboard</key>
+		<string>MainInterface</string>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.share-services</string>
+	</dict>
 </dict>
 </plist>

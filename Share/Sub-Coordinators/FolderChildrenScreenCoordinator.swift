@@ -27,6 +27,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var listNode: ListNode
     private var model: FolderDrillModel?
     private var fileManagerDataSource: FileManagerDataSource?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     var listController: ListViewController?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
@@ -79,6 +80,16 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         } else {
             AlfrescoLog.error("Unable to show preview for unknown node type")
         }
+    }
+    
+    func showNodeCreationDialog(with actionMenu: ActionMenu,
+                                delegate: CreateNodeViewModelDelegate?) {
+        let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                     actionMenu: actionMenu,
+                                                     parentListNode: listNode,
+                                                     createNodeViewModelDelegate: delegate)
+        coordinator.start()
+        createNodeSheetCoordinator = coordinator
     }
 }
 
