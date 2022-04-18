@@ -43,13 +43,10 @@ class UploadTransferDataAccessor: DataAccessor {
 
     func remove(transfer: UploadTransfer) {
         var transferToBeDeleted = transfer
-
-        if transfer.id == 0 {
-            if let queriedTransfer = query(uploadTransfer: transfer) {
-                transferToBeDeleted = queriedTransfer
-            }
+        if let queriedTransfer = query(uploadTransfer: transfer) {
+            transferToBeDeleted = queriedTransfer
         }
-
+        
         databaseService?.remove(entity: transferToBeDeleted)
         if let uploadURL = uploadLocalPath(for: transfer) {
             _ = DiskService.delete(itemAtPath: uploadURL.path)

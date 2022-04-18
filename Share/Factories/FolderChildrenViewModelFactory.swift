@@ -30,6 +30,8 @@ class FolderChildrenViewModelFactory {
     }
 
     func folderChildrenDataSource(for listNode: ListNode) -> FolderChildrenDataSource {
+        let eventBusService = services.eventBusService
+
         let folderDrillModel = FolderDrillModel(listNode: listNode,
                                                 services: services)
         self.model = folderDrillModel
@@ -43,6 +45,29 @@ class FolderChildrenViewModelFactory {
 
         let contextualSearchViewModel =
             ContextualSearchViewModel(model: searchModel)
+
+        eventBusService?.register(observer: folderDrillModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: folderDrillModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: folderDrillModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
+        eventBusService?.register(observer: folderDrillModel,
+                                  for: SyncStatusEvent.self,
+                                  nodeTypes: [.file, .folder])
+
+        eventBusService?.register(observer: searchModel,
+                                  for: FavouriteEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: searchModel,
+                                  for: MoveEvent.self,
+                                  nodeTypes: [.file, .folder, .site])
+        eventBusService?.register(observer: searchModel,
+                                  for: OfflineEvent.self,
+                                  nodeTypes: [.file, .folder])
 
         return (folderDrillViewModel, contextualSearchViewModel)
     }
