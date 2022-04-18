@@ -20,7 +20,6 @@ import UIKit
 
 class SyncSharedNodes: NSObject {
 
-    
     // MARK: - Functions for nodes to be upload
     static func store(uploadTransfers: [UploadTransfer]) {
         let userDefaults = UserDefaultsModel.getUserDefault()
