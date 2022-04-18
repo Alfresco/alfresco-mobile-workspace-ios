@@ -88,39 +88,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.enterInForegroundTimestamp = nil
             self.enterInForegroundTimestamp = nil
         }
-        
-        // ----- migrate data from app extension to the local data base ------ //
-        migrateDataFromAppExtension()
-    }
-    
-    // MARK: - Upload nodes migration from app extension
-    func migrateDataFromAppExtension() {
-        let uploadingNodesFromExtension = SyncSharedNodes.getPendingUploads()
-        if !uploadingNodesFromExtension.isEmpty {
-            let uploadTransferDataAccessor = UploadTransferDataAccessor()
-            let nodes = processUploadingNodes(uploadingNodesFromExtension)
-            uploadTransferDataAccessor.store(uploadTransfers: nodes)
             
-            // clear user default
-            UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.pendingUploadNodes)
-
-            // trigger notification
-            SyncBannerService.triggerSyncNotifyService()
-        }
-    }
-    
-    fileprivate func processUploadingNodes(_ nodes: [UploadTransfer]) -> [UploadTransfer] {
-        var uploadingNodes = [UploadTransfer]()
-        if !nodes.isEmpty {
-            for node in nodes {
-                let nodeToBeStored = node
-                if node.id != 0 {
-                    nodeToBeStored.id = 0
-                }
-                uploadingNodes.append(nodeToBeStored)
-            }
-        }
-        return uploadingNodes
+        // trigger notification
+        SyncBannerService.triggerSyncNotifyService()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {

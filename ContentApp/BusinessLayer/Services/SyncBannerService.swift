@@ -48,7 +48,9 @@ class SyncBannerService: NSObject {
         let nodes = uploadTransferAccessor.queryAllForUploadedNodes()
         if !nodes.isEmpty {
             for node in nodes {
-                uploadTransferAccessor.removeNode(node: node)
+               // uploadTransferAccessor.removeNode(node: node)
+                uploadTransferAccessor.remove(transfer: node)
+                
             }
         }
     }

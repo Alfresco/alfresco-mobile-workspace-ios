@@ -32,7 +32,6 @@ class ShareViewController: SystemThemableViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-        clearLocalDatabaseIfNecessary()
         clearDatabaseOnLogout()
         activateTheme()
         handleSharedFile()

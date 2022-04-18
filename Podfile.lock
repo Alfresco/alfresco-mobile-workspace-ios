@@ -383,7 +383,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - Nuke (9.5.0)
-  - ObjectBox (1.5.0)
+  - ObjectBox (1.7.0)
   - PromisesObjC (1.2.12)
   - SVGKit (2.1.1):
     - CocoaLumberjack (~> 3.0)
@@ -420,7 +420,7 @@ DEPENDENCIES:
   - "MaterialComponents/TextControls+OutlinedTextFields (~> 124.0)"
   - "MaterialComponents/TextControls+OutlinedTextFieldsTheming (~> 124.0)"
   - Nuke (~> 9.0)
-  - ObjectBox (~> 1.5.0-sync-rc5)
+  - ObjectBox
   - SVGKit (~> 2.0)
   - SwiftLint (~> 0)
 
@@ -484,11 +484,11 @@ SPEC CHECKSUMS:
   MotionInterchange: 13adae439b377e31d1674cc165539d50e1d1566a
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   Nuke: 6f400a4ea957e09149ec335a3c6acdcc814d89e4
-  ObjectBox: 3c91dfac79ef926595ee08c5833bf0c3227c9ca8
+  ObjectBox: 6410cda891ee71682ea1b0330a9544c52b2ba988
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   SwiftLint: 06ac37e4d38c7068e0935bb30cda95f093bec761
 
-PODFILE CHECKSUM: 26f7fab81157642a982fdc33d4c574cb42bbd898
+PODFILE CHECKSUM: ddd13055b9d81989e12526473ae63b1f68dca0a4
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

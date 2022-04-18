@@ -26,17 +26,12 @@ class DatabaseService: Service {
 
     init() {
         do {
-            let appSupport = try FileManager.default.url(for: .documentDirectory,
-                                                         in: .userDomainMask,
-                                                         appropriateFor: nil,
-                                                         create: true)
-                                                         .appendingPathComponent(Bundle.main.bundleIdentifier!)
-            let directory = appSupport.appendingPathComponent(databaseName)
-            try? FileManager.default.createDirectory(at: directory,
-                                                     withIntermediateDirectories: true,
-                                                     attributes: nil)
-
-            self.store = try Store(directoryPath: directory.path)
+            let directory = URL.storeURL()
+            if (try Store.isOpen(directory: directory.path)) == true {
+                self.store = try? Store.attachTo(directory: directory.path)
+            } else {
+                self.store = try? Store(directoryPath: directory.path)
+            }
         } catch let error {
             AlfrescoLog.error("Unable to initialize persistence store: \(error)")
         }

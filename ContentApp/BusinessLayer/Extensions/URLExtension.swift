@@ -29,4 +29,9 @@ public extension URL {
 
         return fileContainer
     }
+    
+    static func storeURL() -> URL {
+        let fileContainer = URL.fileURL()
+        return fileContainer.appendingPathComponent("\(databaseName)")
+    }
 }

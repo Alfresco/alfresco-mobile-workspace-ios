@@ -87,15 +87,6 @@ class SystemThemableViewController: UIViewController {
                             completionHandler: {})
     }
     
-    func clearLocalDatabaseIfNecessary() {
-        let uploadedNodes = SyncSharedNodes.getSavedUploadedNodes()
-        for node in uploadedNodes {
-            let uploadDataAccessor = UploadTransferDataAccessor()
-            uploadDataAccessor.remove(transfer: node)
-        }
-        UserDefaultsModel.remove(forKey: KeyConstants.AppGroup.uploadedNodes)
-    }
-    
     func clearDatabaseOnLogout() {
         let isLogout = UserDefaultsModel.value(for: KeyConstants.AppGroup.userDidInitiateLogout) as? Bool ?? false
         if isLogout {

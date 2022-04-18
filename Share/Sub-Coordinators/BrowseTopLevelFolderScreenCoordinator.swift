@@ -106,9 +106,6 @@ extension BrowseTopLevelFolderScreenCoordinator: FileManagerAssetDelegate {
 
         let uploadTransferDataAccessor = UploadTransferDataAccessor()
         uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
-        
-        // --- save data ------
-        SyncSharedNodes.store(uploadTransfers: uploadTransfers)
 
         // --- trigger upload ----
         triggerUpload()
