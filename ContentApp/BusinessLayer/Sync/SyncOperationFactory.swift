@@ -291,8 +291,8 @@ class SyncOperationFactory {
                                                             transfer.syncStatus = .synced
                                                             let listNode = transfer.updateListNode(with: node)
                                                             sSelf.publishSyncStatusEvent(for: listNode)
-                                                            transferDataAccessor.updateNode(node: transfer)
-//                                                             transferDataAccessor.remove(transfer: transfer)
+                                                           // transferDataAccessor.updateNode(node: transfer)
+                                                            transferDataAccessor.remove(transfer: transfer)
                                                             SyncBannerService.triggerSyncNotifyService()
                                                         } else {
                                                             transfer.syncStatus = .error

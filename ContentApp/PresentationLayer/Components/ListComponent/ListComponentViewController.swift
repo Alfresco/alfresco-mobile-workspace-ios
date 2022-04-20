@@ -117,6 +117,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
         
+        RefreshListService.shared.refreshListDelegate = self
         observeConnectivity()
     }
     
@@ -461,6 +462,13 @@ extension ListComponentViewController {
         if let listItemActionDelegate = listItemActionDelegate {
             listItemActionDelegate.showUploadingFiles()
         }
+    }
+}
+
+// MARK: - Refresh List
+extension ListComponentViewController: RefreshListDelegate {
+    func forceRefreshList() {
+        self.handlePullToRefresh()
     }
 }
 

@@ -21,37 +21,37 @@ import UIKit
 class SyncSharedNodes: NSObject {
 
     // MARK: - Functions for nodes to be upload
-    static func store(uploadTransfers: [UploadTransfer]) {
-        let userDefaults = UserDefaultsModel.getUserDefault()
-        let pending = SyncSharedNodes.getPendingUploads()
-        
-        if !pending.isEmpty {
-            // store from local database
-            let uploadTransferAccessor = UploadTransferDataAccessor()
-            let nodes = uploadTransferAccessor.queryAll()
-            try? userDefaults?.setObjects(nodes, forKey: KeyConstants.AppGroup.pendingUploadNodes)
-        } else {
-            try? userDefaults?.setObjects(uploadTransfers, forKey: KeyConstants.AppGroup.pendingUploadNodes)
-        }
-    }
+//    static func store(uploadTransfers: [UploadTransfer]) {
+//        let userDefaults = UserDefaultsModel.getUserDefault()
+//        let pending = SyncSharedNodes.getPendingUploads()
+//
+//        if !pending.isEmpty {
+//            // store from local database
+//            let uploadTransferAccessor = UploadTransferDataAccessor()
+//            let nodes = uploadTransferAccessor.queryAll()
+//            try? userDefaults?.setObjects(nodes, forKey: KeyConstants.AppGroup.pendingUploadNodes)
+//        } else {
+//            try? userDefaults?.setObjects(uploadTransfers, forKey: KeyConstants.AppGroup.pendingUploadNodes)
+//        }
+//    }
     
     static func getPendingUploads() -> [UploadTransfer] {
-        let userDefaults = UserDefaultsModel.getUserDefault()
-        let nodes = try? userDefaults?.getObjects(forKey: KeyConstants.AppGroup.pendingUploadNodes, castTo: [UploadTransfer].self) ?? []
-        return nodes ?? [UploadTransfer]()
+        let dataAccessor = UploadTransferDataAccessor()
+        let items = dataAccessor.queryAll()
+        return items
     }
     
     // MARK: - Functions for nodes uploaded
-    static func store(uploadedNode: UploadTransfer) {
-        let userDefaults = UserDefaultsModel.getUserDefault()
-        var uploaded = SyncSharedNodes.getSavedUploadedNodes()
-        uploaded.append(uploadedNode)
-        try? userDefaults?.setObjects(uploaded, forKey: KeyConstants.AppGroup.uploadedNodes)
-    }
-    
-    static func getSavedUploadedNodes() -> [UploadTransfer] {
-        let userDefaults = UserDefaultsModel.getUserDefault()
-        let nodes = try? userDefaults?.getObjects(forKey: KeyConstants.AppGroup.uploadedNodes, castTo: [UploadTransfer].self) ?? []
-        return nodes ?? [UploadTransfer]()
-    }
+//    static func store(uploadedNode: UploadTransfer) {
+//        let userDefaults = UserDefaultsModel.getUserDefault()
+//        var uploaded = SyncSharedNodes.getSavedUploadedNodes()
+//        uploaded.append(uploadedNode)
+//        try? userDefaults?.setObjects(uploaded, forKey: KeyConstants.AppGroup.uploadedNodes)
+//    }
+//    
+//    static func getSavedUploadedNodes() -> [UploadTransfer] {
+//        let userDefaults = UserDefaultsModel.getUserDefault()
+//        let nodes = try? userDefaults?.getObjects(forKey: KeyConstants.AppGroup.uploadedNodes, castTo: [UploadTransfer].self) ?? []
+//        return nodes ?? [UploadTransfer]()
+//    }
 }

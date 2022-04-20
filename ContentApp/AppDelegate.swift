@@ -89,8 +89,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.enterInForegroundTimestamp = nil
         }
             
-        // trigger notification
-        SyncBannerService.triggerSyncNotifyService()
+        // ----- migrate data from app extension to the local data base ------ //
+        syncNodeListFromAppExtension()
+    }
+    
+    // MARK: - Sync Node List
+    func syncNodeListFromAppExtension() {
+        let uploadingNodesFromExtension = SyncSharedNodes.getPendingUploads()
+        if !uploadingNodesFromExtension.isEmpty {
+            
+            // trigger notifications
+            SyncBannerService.triggerSyncNotifyService()
+            RefreshListService.shared.forceRefreshList()
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {

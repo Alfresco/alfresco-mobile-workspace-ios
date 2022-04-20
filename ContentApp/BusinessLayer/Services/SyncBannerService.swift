@@ -44,7 +44,7 @@ class SyncBannerService: NSObject {
     }
     
     class func removeAllUploadedNodesFromDatabase() {
-        let uploadTransferAccessor = UploadTransferDataAccessor()
+       /* let uploadTransferAccessor = UploadTransferDataAccessor()
         let nodes = uploadTransferAccessor.queryAllForUploadedNodes()
         if !nodes.isEmpty {
             for node in nodes {
@@ -52,6 +52,6 @@ class SyncBannerService: NSObject {
                 uploadTransferAccessor.remove(transfer: node)
                 
             }
-        }
+        } */
     }
 }

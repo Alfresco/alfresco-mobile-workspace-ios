@@ -190,6 +190,7 @@
 		C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C98C128F271E8687001C84D6 /* SearchComponents.storyboard */; };
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
+		C98C3899280FBE4E008AF8CD /* RefreshListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C3898280FBE4E008AF8CD /* RefreshListService.swift */; };
 		C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */; };
 		C992F4D527FAC754002C4D41 /* CreateNodeSheetViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */; };
 		C992F4D827FB01EE002C4D41 /* NodeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */; };
@@ -833,6 +834,7 @@
 		C98C128F271E8687001C84D6 /* SearchComponents.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchComponents.storyboard; sourceTree = "<group>"; };
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C98C3898280FBE4E008AF8CD /* RefreshListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshListService.swift; sourceTree = "<group>"; };
 		C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetCoordinator.swift; sourceTree = "<group>"; };
 		C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetViewControler.swift; sourceTree = "<group>"; };
 		C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeActionsViewModel.swift; sourceTree = "<group>"; };
@@ -1477,6 +1479,7 @@
 				B9B7530425AC422B004F16E5 /* SyncService.swift */,
 				E3337DC925BF105400C7B5C8 /* SyncTriggersService.swift */,
 				C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */,
+				C98C3898280FBE4E008AF8CD /* RefreshListService.swift */,
 				E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */,
 				F115D4702657DAE00049EF8D /* LocationService.swift */,
 			);
@@ -3459,6 +3462,7 @@
 				F137B6D0260495FE00A60054 /* UINavigationBar+Subviews.swift in Sources */,
 				E3E9ED4924CB31AB00F1A2C2 /* BrowseSectionCollectionReusableView.swift in Sources */,
 				E31CF0A925AF06D800620ADA /* EmptyOffline.swift in Sources */,
+				C98C3899280FBE4E008AF8CD /* RefreshListService.swift in Sources */,
 				F115D4712657DAE00049EF8D /* LocationService.swift in Sources */,
 				E3E0F81E25CAFC5700DBC6F6 /* ErrorCodes.swift in Sources */,
 				E3EB8EA3253ED44C005CA0D9 /* NodeActionsViewModel.swift in Sources */,

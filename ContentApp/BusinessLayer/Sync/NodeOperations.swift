@@ -46,7 +46,7 @@ class NodeOperations {
                            relativePath: String? = nil,
                            completion: @escaping ((_ data: NodeChildAssociationPaging?,
                                                    _ error: Error?) -> Void)) {
-        sessionForCurrentAccount { _ in
+          sessionForCurrentAccount { _ in
             NodesAPI.listNodeChildren(nodeId: guid,
                                       skipCount: pagination.skipCount,
                                       maxItems: pagination.maxItems,
