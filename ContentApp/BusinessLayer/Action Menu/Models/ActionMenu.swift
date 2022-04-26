@@ -80,7 +80,6 @@ enum ActionMenuType: String {
     case permanentlyDelete = "ic-action-delete-forever"
     case moveToFolder = "ic-action-mov-to-folder"
 
-
     case download = "ic-action-download"
     case markOffline = "ic-action-outline-offline"
     case removeOffline = "ic-action-fill-offline"

@@ -26,6 +26,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var uploadFilesScreenCoordinator: UploadFilesScreenCoordinator?
+    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -54,6 +55,7 @@ class RecentScreenCoordinator: PresentingCoordinator,
 
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
+        viewController.browseScreenCoordinatorDelegate = self
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -109,6 +111,18 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             let uploadFilesScreenCoordinator = UploadFilesScreenCoordinator(with: navigationViewController)
             uploadFilesScreenCoordinator.start()
             self.uploadFilesScreenCoordinator = uploadFilesScreenCoordinator
+        }
+    }
+}
+
+extension RecentScreenCoordinator: BrowseScreenCoordinatorDelegate {
+    func showTopLevelFolderScreen(from browseNode: BrowseNode) {
+        if let navigationViewController = self.navigationViewController {
+            let staticFolderScreenCoordinator =
+                BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
+                                                      browseNode: browseNode)
+            staticFolderScreenCoordinator.start()
+            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
     }
 }
