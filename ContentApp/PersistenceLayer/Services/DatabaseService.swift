@@ -27,13 +27,18 @@ class DatabaseService: Service {
     init() {
         do {
             let directory = URL.storeURL()
-            if (try Store.isOpen(directory: directory.path)) == true {
+            
+            if ((try? Store.isOpen(directory: directory.path)) != nil) {
                 self.store = try? Store.attachTo(directory: directory.path)
             } else {
                 self.store = try? Store(directoryPath: directory.path)
             }
-        } catch let error {
-            AlfrescoLog.error("Unable to initialize persistence store: \(error)")
+                
+//            if let isOpen = try? Store.isOpen(directory: directory.path), isOpen == false {
+//                self.store = try? Store.attachTo(directory: directory.path)
+//            } else {
+//                self.store = try? Store(directoryPath: directory.path)
+//            }
         }
     }
 

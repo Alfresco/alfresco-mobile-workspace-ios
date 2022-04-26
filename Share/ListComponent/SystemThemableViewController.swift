@@ -86,16 +86,4 @@ class SystemThemableViewController: UIViewController {
                             actions: [confirmAction],
                             completionHandler: {})
     }
-    
-    func clearDatabaseOnLogout() {
-        let isLogout = UserDefaultsModel.value(for: KeyConstants.AppGroup.userDidInitiateLogout) as? Bool ?? false
-        if isLogout {
-            let uploadTransfer = UploadTransferDataAccessor()
-            let nodes = uploadTransfer.queryAll()
-            for node in nodes {
-                uploadTransfer.remove(transfer: node)
-            }
-            UserDefaultsModel.set(value: false, for: KeyConstants.AppGroup.userDidInitiateLogout)
-        }
-    }
 }

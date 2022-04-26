@@ -100,7 +100,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             // trigger notifications
             SyncBannerService.triggerSyncNotifyService()
-            RefreshListService.shared.forceRefreshList()
+            
+            // let refreshListService = RefreshListService()
+            // refreshListService.forceRefreshList()
+            //self.refreshListComponent()
+        }
+    }
+    
+    func refreshListComponent() {
+        if let viewControllers = self.window?.rootViewController?.children {
+            for viewController in viewControllers {
+                if viewController.isKind(of: ListComponentViewController.self) {
+                    (viewController as! ListComponentViewController).forceRefreshList()
+                   // (viewController as! ListComponentViewController).refreshListService.forceRefreshList()
+                    break
+                }
+            }
         }
     }
 

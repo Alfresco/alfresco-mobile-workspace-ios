@@ -59,8 +59,5 @@ struct KeyConstants {
         static let appURLString = "ShareExtension://"
         static let sharedFiles = "sharedFiles"
         static let dataMigration = "dataMigration"
-        static let pendingUploadNodes = "pendingUploadNodes"
-        static let uploadedNodes = "uploadedNodes"
-        static let userDidInitiateLogout = "userDidInitiateLogout"
     }
 }

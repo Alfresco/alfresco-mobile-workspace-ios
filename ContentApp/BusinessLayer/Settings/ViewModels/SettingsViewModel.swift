@@ -166,8 +166,6 @@ class SettingsViewModel {
                 // delete pending uploading nodes if user is explicitly log out
                 let listNodeDataAccessor = ListNodeDataAccessor()
                 listNodeDataAccessor.removeAllPendingUploadNodes()
-                UserDefaultsModel.set(value: true, for: KeyConstants.AppGroup.userDidInitiateLogout)
-            
                 sSelf.viewModelDelegate?.logOutWithSuccess()
             }
         })

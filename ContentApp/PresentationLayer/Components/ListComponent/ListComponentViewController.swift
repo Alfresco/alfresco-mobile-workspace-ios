@@ -49,7 +49,8 @@ class ListComponentViewController: SystemThemableViewController {
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
     private let bannerHeight: CGFloat = 60.0
-    
+    var refreshListService = RefreshListService()
+
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -117,7 +118,7 @@ class ListComponentViewController: SystemThemableViewController {
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
         
-        RefreshListService.shared.refreshListDelegate = self
+        refreshListService.refreshListDelegate = self
         observeConnectivity()
     }
     

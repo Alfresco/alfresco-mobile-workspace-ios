@@ -23,7 +23,6 @@ protocol RefreshListDelegate {
 }
 
 class RefreshListService: NSObject {
-    static let shared = RefreshListService()
     var refreshListDelegate: RefreshListDelegate?
     
     func forceRefreshList() {

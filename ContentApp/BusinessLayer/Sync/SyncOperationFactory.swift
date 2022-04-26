@@ -287,7 +287,7 @@ class SyncOperationFactory {
                                                         }
 
                                                         if error == nil, let node = entry {
-//                                                            SyncSharedNodes.store(uploadedNode: transfer)
+                                                          //  SyncSharedNodes.store(uploadedNode: transfer)
                                                             transfer.syncStatus = .synced
                                                             let listNode = transfer.updateListNode(with: node)
                                                             sSelf.publishSyncStatusEvent(for: listNode)
