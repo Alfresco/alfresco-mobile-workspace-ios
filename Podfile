@@ -12,7 +12,7 @@ target 'ContentApp' do
   pod 'Nuke', '~> 9.0'
   pod 'Gifu', '~> 3.0'
   pod 'SVGKit', '~> 2.0'
-  pod 'ObjectBox'
+  pod 'ObjectBox', '~> 1.5.0-sync-rc5'
   pod 'FastCoding', '~> 3.0'
   pod 'DropDown'
 
