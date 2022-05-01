@@ -101,9 +101,13 @@ class ListComponentDataSource: DataSource {
             guard let cell = collectionView
                     .dequeueReusableCell(withReuseIdentifier: identifierElement,
                                          for: indexPath) as? ListElementCollectionViewCell else { return UICollectionViewCell() }
+            let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow ?? false
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
+            if isMoveFiles {
+                cell.disableFilesToMove(configuration.services.themingService?.activeTheme, node: node)
+            }
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 

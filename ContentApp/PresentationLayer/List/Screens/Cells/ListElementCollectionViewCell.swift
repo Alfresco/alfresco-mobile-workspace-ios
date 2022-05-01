@@ -87,7 +87,20 @@ class ListElementCollectionViewCell: ListSelectableCell {
             disableView.alpha = 1
         }
     }
-
+    
+    func disableFilesToMove(_ currentTheme: PresentationTheme?, node: ListNode?) {
+        guard let currentTheme = currentTheme else { return }
+        if node?.nodeType != .folder {
+            self.isUserInteractionEnabled = false
+            disableView.backgroundColor = currentTheme.surface60Color
+            disableView.alpha = 1
+        } else {
+            self.isUserInteractionEnabled = true
+            disableView.backgroundColor = .clear
+            disableView.alpha = 0
+        }
+    }
+    
     @IBAction func moreButtonTapped(_ sender: UIButton) {
         delegate?.moreButtonTapped(for: node, in: self)
     }
