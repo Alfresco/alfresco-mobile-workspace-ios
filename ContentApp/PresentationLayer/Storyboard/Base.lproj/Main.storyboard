@@ -2419,6 +2419,30 @@
                                     <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7G7-4Z-gpZ"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auz-3a-eUz" userLabel="moveFilesView">
+                                <rect key="frame" x="0.0" y="813" width="428" height="79"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqO-og-njZ" userLabel="moveButton" customClass="MDCButton">
+                                        <rect key="frame" x="298" y="15.666666666666629" width="120" height="48"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="listActionButton">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="JYY-Hy-W3B"/>
+                                            <constraint firstAttribute="height" constant="48" id="gjE-53-CbR"/>
+                                        </constraints>
+                                        <state key="normal" title="Move here"/>
+                                        <connections>
+                                            <action selector="moveFilesButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="4Oy-ej-vOB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="uqO-og-njZ" secondAttribute="trailing" constant="10" id="aae-vM-kvX"/>
+                                    <constraint firstItem="uqO-og-njZ" firstAttribute="centerY" secondItem="auz-3a-eUz" secondAttribute="centerY" id="pQZ-DX-fsN"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9rc-8Z-DQe"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2426,9 +2450,11 @@
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="Auu-tI-yd0" secondAttribute="trailing" id="3VJ-ps-xPa"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="9q7-tN-q37" secondAttribute="bottom" id="3nq-c3-6xK"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="ddo-cc-nfp" secondAttribute="bottom" id="44e-4L-G3P"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="auz-3a-eUz" secondAttribute="trailing" id="5QO-uZ-krJ"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="top" secondItem="f36-KL-HL7" secondAttribute="bottom" constant="10" id="AGp-OR-z9k"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="auz-3a-eUz" secondAttribute="bottom" id="Km0-Mz-4hu"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="23" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
@@ -2436,9 +2462,11 @@
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
                             <constraint firstItem="f36-KL-HL7" firstAttribute="top" secondItem="Auu-tI-yd0" secondAttribute="bottom" constant="2" id="ZBY-Kh-NvC"/>
+                            <constraint firstItem="auz-3a-eUz" firstAttribute="top" secondItem="W6C-F8-M04" secondAttribute="top" id="aGs-mZ-E94"/>
                             <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerX" secondItem="9rc-8Z-DQe" secondAttribute="centerX" id="byi-XX-C5V"/>
                             <constraint firstItem="f36-KL-HL7" firstAttribute="leading" secondItem="emp-jD-3BY" secondAttribute="leading" constant="10" id="hsv-2W-ecb"/>
                             <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerY" secondItem="W6C-F8-M04" secondAttribute="centerY" id="rDL-1Q-ZwM"/>
+                            <constraint firstItem="auz-3a-eUz" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="u8m-Qo-qGw"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="weR-Sh-vAF"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="9q7-tN-q37" secondAttribute="trailing" id="zHv-6Z-X6B"/>
                         </constraints>
@@ -2452,6 +2480,8 @@
                         <outlet property="emptyListTitle" destination="qbf-LQ-gvV" id="EHq-ol-yWz"/>
                         <outlet property="emptyListView" destination="ddo-cc-nfp" id="Bia-uS-1QO"/>
                         <outlet property="listActionButton" destination="Mp9-wt-XHA" id="Ktg-dX-9lh"/>
+                        <outlet property="moveFilesBottomView" destination="auz-3a-eUz" id="ZEB-um-ud0"/>
+                        <outlet property="moveFilesButton" destination="uqO-og-njZ" id="mmn-u9-FvS"/>
                         <outlet property="progressView" destination="Auu-tI-yd0" id="I3y-1e-e3K"/>
                         <outlet property="uploadingBannerHeight" destination="mTY-41-qKi" id="Sa2-Xo-Lzx"/>
                         <outlet property="uploadingBannerView" destination="f36-KL-HL7" id="X9U-hw-Jww"/>

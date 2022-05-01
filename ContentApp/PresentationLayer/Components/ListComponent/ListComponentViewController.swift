@@ -50,6 +50,9 @@ class ListComponentViewController: SystemThemableViewController {
     private let listBottomInset: CGFloat = 70.0
     private let bannerHeight: CGFloat = 60.0
     
+    @IBOutlet weak var moveFilesBottomView: UIView!
+    @IBOutlet weak var moveFilesButton: MDCButton!
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -74,10 +77,16 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListView.isHidden = true
         createButton.isHidden = !viewModel.shouldDisplayCreateButton()
         listActionButton.isHidden = !viewModel.shouldDisplayListActionButton()
+        
         listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
         
+        moveFilesBottomView.isHidden = viewModel.shouldHideMoveItemView()
+        moveFilesButton.isUppercaseTitle = false
+        moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
+        moveFilesButton.layer.cornerRadius = moveFilesButton.frame.height / 2
+
         if viewModel.shouldDisplayCreateButton() ||
             viewModel.shouldDisplayListActionButton() {
             collectionView.contentInset = UIEdgeInsets(top: 0,
@@ -118,6 +127,11 @@ class ListComponentViewController: SystemThemableViewController {
                                                object: nil)
         
         observeConnectivity()
+    }
+    
+    // MARK: - Move files
+    @IBAction func moveFilesButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("Move Files Button Action")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -175,6 +189,11 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.backgroundColor = currentTheme.primaryT1Color
         listActionButton.tintColor = currentTheme.onPrimaryColor
         listActionButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
+        
+        moveFilesButton.backgroundColor = currentTheme.primaryT1Color
+        moveFilesButton.tintColor = currentTheme.onPrimaryColor
+        moveFilesButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
+        moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
         
         refreshControl?.tintColor = currentTheme.primaryT1Color
         
@@ -351,6 +370,8 @@ extension ListComponentViewController: ListPageControllerDelegate {
         }
         
         listActionButton.isHidden = !(viewModel?.shouldDisplayListActionButton() ?? false)
+        moveFilesBottomView.isHidden = (viewModel?.shouldHideMoveItemView() ?? true)
+
         let isListEmpty = model.isEmpty()
         emptyListView.isHidden = !isListEmpty
         if isListEmpty {

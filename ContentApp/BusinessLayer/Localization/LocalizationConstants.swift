@@ -44,6 +44,7 @@ struct LocalizationConstants {
         static let signInWithSSO = NSLocalizedString("sign-in-with-sso", comment: "")
         static let signOut = NSLocalizedString("sign-out", comment: "")
         static let syncAll = NSLocalizedString("sync-all", comment: "")
+        static let moveHere = NSLocalizedString("move-here", comment: "")
     }
 
     struct TextFieldPlaceholders {
