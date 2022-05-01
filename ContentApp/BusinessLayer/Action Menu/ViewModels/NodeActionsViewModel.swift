@@ -30,6 +30,10 @@ protocol NodeActionsViewModelDelegate: AnyObject {
                               error: Error?)
 }
 
+protocol NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?)
+}
+
 class NodeActionsViewModel {
     private var node: ListNode?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
@@ -37,6 +41,7 @@ class NodeActionsViewModel {
     private let nodeOperations: NodeOperations
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
+    var moveDelegate: NodeActionMoveDelegate?
 
     private let sheetDismissDelay = 0.5
 
@@ -251,9 +256,11 @@ class NodeActionsViewModel {
     
     private func requestMoveToFolder(action: ActionMenu) {
         guard let node = self.node else { return }
-        
-        
-       // browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
+        DispatchQueue.main.async {
+            self.moveDelegate?.didSelectMoveFile(node: node)
+        }
+      
+        // browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
 
         
      //   BrowseTopLevelFolderScreenCoordinator(with:

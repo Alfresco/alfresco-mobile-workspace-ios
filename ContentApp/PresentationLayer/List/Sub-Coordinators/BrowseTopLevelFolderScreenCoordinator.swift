@@ -54,7 +54,6 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
         presenter.pushViewController(viewController, animated: true)
     }
     

@@ -27,7 +27,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enterInBackgroundTimestamp: TimeInterval?
     var enterInForegroundTimestamp: TimeInterval?
     var logoutActionFlow = false
-    var isMoveFilesFlow = false
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool { // swiftlint:disable:this discouraged_optional_collection

@@ -26,7 +26,6 @@ class RecentScreenCoordinator: PresentingCoordinator,
     private var navigationViewController: UINavigationController?
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var uploadFilesScreenCoordinator: UploadFilesScreenCoordinator?
-    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -55,7 +54,6 @@ class RecentScreenCoordinator: PresentingCoordinator,
 
         viewController.tabBarScreenDelegate = presenter
         viewController.listItemActionDelegate = self
-        viewController.browseScreenCoordinatorDelegate = self
 
         let navigationViewController = UINavigationController(rootViewController: viewController)
         presenter.viewControllers = [navigationViewController]
@@ -98,6 +96,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)
@@ -115,14 +114,15 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     }
 }
 
-extension RecentScreenCoordinator: BrowseScreenCoordinatorDelegate {
-    func showTopLevelFolderScreen(from browseNode: BrowseNode) {
+extension RecentScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?) {
         if let navigationViewController = self.navigationViewController {
-            let staticFolderScreenCoordinator =
-                BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
-                                                      browseNode: browseNode)
-            staticFolderScreenCoordinator.start()
-            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
+            let browseNode = BrowseNode(type: .personalFiles)
+            let controller = FilesandFolderListViewController.instantiateViewController()
+            controller.coordinatorServices = coordinatorServices
+            controller.viewModel.browseNode = browseNode
+            let navController = UINavigationController(rootViewController: controller)
+            navigationViewController.present(navController, animated: true)
         }
     }
 }

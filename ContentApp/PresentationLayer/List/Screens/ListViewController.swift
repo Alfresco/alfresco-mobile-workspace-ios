@@ -70,7 +70,7 @@ class ListViewController: SystemSearchViewController {
         listController?.viewWillAppear(animated)
         addAvatarInSettingsButton()
     }
-
+    
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
         listController?.willTransition(to: newCollection, with: coordinator)
