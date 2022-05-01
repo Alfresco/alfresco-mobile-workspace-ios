@@ -27,6 +27,7 @@ class SystemSearchViewController: SystemThemableViewController {
     var searchPageController: ListPageController?
 
     weak var listItemActionDelegate: ListItemActionDelegate?
+    var isChildFolder = false
 
     // MARK: - View Life Cycle
 
@@ -39,6 +40,7 @@ class SystemSearchViewController: SystemThemableViewController {
         }
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
             addSearchButton()
+            addBackButton()
         }
     }
     
@@ -145,6 +147,41 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
         return searchController
+    }
+    
+    private func addBackButton() {
+        if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles {
+            let backButton = UIButton(type: .custom)
+            backButton.accessibilityIdentifier = "backButton"
+            backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                        width: searchButtonAspectRatio,
+                                        height: searchButtonAspectRatio)
+            backButton.imageView?.contentMode = .scaleAspectFill
+            backButton.layer.masksToBounds = true
+            backButton.addTarget(self,
+                                   action: #selector(backButtonTapped),
+                                   for: UIControl.Event.touchUpInside)
+            backButton.setImage(UIImage(named: "ic-back"),
+                                  for: .normal)
+
+            let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+            searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+            let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+            currWidth?.isActive = true
+            let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+            currHeight?.isActive = true
+            self.navigationItem.leftBarButtonItem = searchBarButtonItem
+        }
+    }
+    
+    // MARK: - Back Button Action
+    @objc func backButtonTapped() {
+        if self.isChildFolder {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            appDelegate()?.isMoveFilesAndFolderFlow = false
+            self.navigationController?.dismiss(animated: true)
+        }
     }
 }
 

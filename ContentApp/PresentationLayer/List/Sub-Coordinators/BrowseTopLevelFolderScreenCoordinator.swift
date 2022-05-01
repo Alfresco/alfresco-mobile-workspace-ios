@@ -54,7 +54,11 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-        presenter.pushViewController(viewController, animated: true)
+        if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles {
+            presenter.pushViewController(viewController, animated: false)
+        } else {
+            presenter.pushViewController(viewController, animated: true)
+        }
     }
     
     // MARK: - Private interface

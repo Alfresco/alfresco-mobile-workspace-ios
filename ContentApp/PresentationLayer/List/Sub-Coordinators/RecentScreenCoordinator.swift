@@ -117,10 +117,7 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
 extension RecentScreenCoordinator: NodeActionMoveDelegate {
     func didSelectMoveFile(node: ListNode?) {
         if let navigationViewController = self.navigationViewController {
-            let browseNode = BrowseNode(type: .personalFiles)
             let controller = FilesandFolderListViewController.instantiateViewController()
-            controller.coordinatorServices = coordinatorServices
-            controller.viewModel.browseNode = browseNode
             let navController = UINavigationController(rootViewController: controller)
             navigationViewController.present(navController, animated: true)
         }

@@ -58,6 +58,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
         viewController.searchPageController = searchPageController
         viewController.viewModel = viewModel
         viewController.searchViewModel = searchViewModel
+        viewController.isChildFolder = true
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self

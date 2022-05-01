@@ -20,126 +20,33 @@ import UIKit
 
 class FilesandFolderListViewController: SystemThemableViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
-    lazy var viewModel = FilesandFolderListViewModel()
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-    }
+    private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
     
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureNavigationBar()
-        
-        let searchBarButtonItem = createSearchBarButton()
-        self.navigationItem.rightBarButtonItems = [searchBarButtonItem]
-        addBackButton()
-        addLocalization()
+        activateTheme()
+        showPersonalFiles()
     }
     
-    func configureNavigationBar() {
-        definesPresentationContext = true
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationController?.navigationBar.isTranslucent = true
-        navigationItem.largeTitleDisplayMode = .automatic
-        navigationItem.hidesSearchBarWhenScrolling = false
-
-        // Back Button
+    private func activateTheme() {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationController?.navigationBar.backIndicatorImage =  UIImage(named: "ic-back")
-        navigationController?.navigationBar.backIndicatorTransitionMaskImage =  UIImage(named: "ic-back")
+        navigationItem.hidesBackButton = true
     }
     
-    private func createSearchBarButton() -> UIBarButtonItem {
-        let searchButton = UIButton(type: .custom)
-        searchButton.accessibilityIdentifier = "searchButton"
-        searchButton.frame = CGRect(x: 0.0, y: 0.0,
-                                    width: searchButtonAspectRatio,
-                                    height: searchButtonAspectRatio)
-        searchButton.imageView?.contentMode = .scaleAspectFill
-        searchButton.layer.cornerRadius = searchButtonAspectRatio / 2
-        searchButton.layer.masksToBounds = true
-        searchButton.addTarget(self,
-                               action: #selector(searchButtonTapped),
-                               for: UIControl.Event.touchUpInside)
-        searchButton.setImage(UIImage(named: "ic-search"),
-                              for: .normal)
-        
-        let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
-        searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currHeight?.isActive = true
-        return searchBarButtonItem
+    // MARK: - Show Personal Files
+    func showPersonalFiles() {
+        if let navigationViewController = self.navigationController {
+            let browseNode = BrowseNode(type: .personalFiles)
+            let staticFolderScreenCoordinator =
+            BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
+                                                  browseNode: browseNode)
+            appDelegate()?.isMoveFilesAndFolderFlow = true
+            staticFolderScreenCoordinator.start()
+            self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
+        }
     }
     
-    private func addBackButton() {
-        let backButton = UIButton(type: .custom)
-        backButton.accessibilityIdentifier = "backButton"
-        backButton.frame = CGRect(x: 0.0, y: 0.0,
-                                    width: searchButtonAspectRatio,
-                                    height: searchButtonAspectRatio)
-        backButton.imageView?.contentMode = .scaleAspectFill
-        backButton.layer.masksToBounds = true
-        backButton.addTarget(self,
-                               action: #selector(backButtonTapped),
-                               for: UIControl.Event.touchUpInside)
-        backButton.setImage(UIImage(named: "ic-back"),
-                              for: .normal)
-
-        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
-        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
-        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currWidth?.isActive = true
-        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
-        currHeight?.isActive = true
-        self.navigationItem.leftBarButtonItem = searchBarButtonItem
-    }
-    
-    // MARK: - Back Button
-    @objc func backButtonTapped() {
-//        if self.isChildFolder {
-//            self.navigationController?.popViewController(animated: true)
-//        } else {
-//            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-//        }
-    }
-    
-    // MARK: - IBActions
-
-    @objc func searchButtonTapped() {
-//        navigationItem.searchController = searchController
-//        searchController?.searchBar.alpha = 0.0
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
-//            guard let sSelf = self else { return }
-//            sSelf.searchController?.isActive = true
-//            sSelf.searchController?.searchBar.becomeFirstResponder()
-//        }
-    }
-    
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-            
-        view.backgroundColor = currentTheme.surfaceColor
-        let image = UIImage(color: currentTheme.surfaceColor,
-                            size: navigationController?.navigationBar.bounds.size)
-        navigationController?.navigationBar.setBackgroundImage(image, for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.tintColor = currentTheme.onSurface60Color
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.barTintColor = currentTheme.surfaceColor
-        navigationController?.navigationBar.titleTextAttributes =
-            [NSAttributedString.Key.font: currentTheme.headline6TextStyle.font,
-             NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
-    }
-    
-    func addLocalization() {
-        self.title = viewModel.title
-    }
 }
 
 // MARK: - Storyboard Instantiable
