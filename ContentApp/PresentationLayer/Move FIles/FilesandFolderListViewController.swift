@@ -25,6 +25,7 @@ class FilesandFolderListViewController: SystemThemableViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.presentationController?.delegate = self
         activateTheme()
         showPersonalFiles()
     }
@@ -47,6 +48,12 @@ class FilesandFolderListViewController: SystemThemableViewController {
         }
     }
     
+}
+
+extension FilesandFolderListViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        appDelegate()?.isMoveFilesAndFolderFlow = false
+    }
 }
 
 // MARK: - Storyboard Instantiable
