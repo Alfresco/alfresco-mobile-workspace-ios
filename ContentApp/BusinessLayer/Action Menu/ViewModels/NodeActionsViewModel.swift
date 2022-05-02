@@ -259,9 +259,7 @@ class NodeActionsViewModel {
         DispatchQueue.main.async {
             self.moveDelegate?.didSelectMoveFile(node: node)
         }
-      
         // browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
-
         
      //   BrowseTopLevelFolderScreenCoordinator(with:
         
