@@ -47,7 +47,6 @@ class FilesandFolderListViewController: SystemThemableViewController {
             self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
     }
-    
 }
 
 extension FilesandFolderListViewController: UIAdaptivePresentationControllerDelegate {

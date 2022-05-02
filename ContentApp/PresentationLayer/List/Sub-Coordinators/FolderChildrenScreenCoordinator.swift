@@ -89,6 +89,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
@@ -144,5 +145,14 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
 extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {
     func updateListNode(with node: ListNode) {
         self.listNode = node
+    }
+}
+
+extension FolderChildrenScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?) {
+        let navigationViewController = self.presenter
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        navigationViewController.present(navController, animated: true)
     }
 }

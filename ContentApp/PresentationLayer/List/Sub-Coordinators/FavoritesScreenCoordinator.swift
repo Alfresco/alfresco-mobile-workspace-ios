@@ -99,11 +99,22 @@ extension FavoritesScreenCoordinator: ListItemActionDelegate {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)
             coordinator.start()
             actionMenuCoordinator = coordinator
+        }
+    }
+}
+
+extension FavoritesScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?) {
+        if let navigationViewController = self.navigationViewController {
+            let controller = FilesandFolderListViewController.instantiateViewController()
+            let navController = UINavigationController(rootViewController: controller)
+            navigationViewController.present(navController, animated: true)
         }
     }
 }

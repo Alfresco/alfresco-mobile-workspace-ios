@@ -87,10 +87,20 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+}
+
+extension OfflineFolderChildrenScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?) {
+        let navigationViewController = self.presenter
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        navigationViewController.present(navController, animated: true)
     }
 }
