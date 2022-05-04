@@ -21,10 +21,15 @@ import UIKit
 class FilesandFolderListViewController: SystemThemableViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
     private var browseTopLevelFolderScreenCoordinator: BrowseTopLevelFolderScreenCoordinator?
+    var sourceNodeToMove: ListNode?
     
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleFilesFolderMoveFinishedNotification(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.moveFileFolderFinished),
+                                               object: nil)
         self.navigationController?.presentationController?.delegate = self
         activateTheme()
         showPersonalFiles()
@@ -43,10 +48,33 @@ class FilesandFolderListViewController: SystemThemableViewController {
             BrowseTopLevelFolderScreenCoordinator(with: navigationViewController,
                                                   browseNode: browseNode)
             appDelegate()?.isMoveFilesAndFolderFlow = true
+            staticFolderScreenCoordinator.sourceNodeToMove = sourceNodeToMove
             staticFolderScreenCoordinator.start()
             self.browseTopLevelFolderScreenCoordinator = staticFolderScreenCoordinator
         }
     }
+    
+    @objc private func handleFilesFolderMoveFinishedNotification(notification: Notification) {
+        self.navigationController?.dismiss(animated: true)
+//        self.navigationController?.dismiss(animated: true, completion: {
+//            let snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess)
+//            self.displaySnackbar(with: snackBarMessage, type: .approve)
+//        })
+    }
+    
+//    func displaySnackbar(with message: String?, type: SnackBarType?) {
+//        if let message = message, let type = type {
+//            let window = UIApplication
+//                .shared
+//                .connectedScenes
+//                .flatMap { ($0 as? UIWindowScene)?.windows ?? [] }
+//                .last { $0.isKeyWindow }
+//
+//            let snackBar = Snackbar(with: message, type: type)
+//            snackBar.snackBar.presentationHostViewOverride = window?.rootViewController?.view
+//            snackBar.show(completion: nil)
+//        }
+//    }
 }
 
 extension FilesandFolderListViewController: UIAdaptivePresentationControllerDelegate {

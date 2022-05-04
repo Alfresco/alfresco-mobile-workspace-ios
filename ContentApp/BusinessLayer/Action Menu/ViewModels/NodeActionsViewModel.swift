@@ -31,7 +31,7 @@ protocol NodeActionsViewModelDelegate: AnyObject {
 }
 
 protocol NodeActionMoveDelegate {
-    func didSelectMoveFile(node: ListNode?)
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu)
 }
 
 class NodeActionsViewModel {
@@ -257,42 +257,23 @@ class NodeActionsViewModel {
     private func requestMoveToFolder(action: ActionMenu) {
         guard let node = self.node else { return }
         DispatchQueue.main.async {
-            self.moveDelegate?.didSelectMoveFile(node: node)
+            self.moveDelegate?.didSelectMoveFile(node: node, action: action)
         }
-        // browseScreenCoordinatorDelegate?.showTopLevelFolderScreen(from: node)
-        
-     //   BrowseTopLevelFolderScreenCoordinator(with:
-        
-       /* if node.nodeType == .site {
-            SitesAPI.deleteSite(siteId: node.siteID) { [weak self] (_, error) in
+    }
+    
+    func moveFilesAndFolder(with sourceNode: ListNode, and destinationNode: ListNode, action: ActionMenu) {
+        sessionForCurrentAccount { [weak self] (_) in
+            let nodeBodyMove = NodeBodyMove(targetParentId: destinationNode.guid, name: nil)
+            NodesAPI.moveNode(nodeId: sourceNode.guid, nodeBodyMove: nodeBodyMove) { [weak self] (data, error) in
                 guard let sSelf = self else { return }
                 if error == nil {
-                    sSelf.node?.trashed = true
-
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                    let moveEvent = MoveEvent(node: sourceNode, eventType: .moveToFolder)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }
                 sSelf.handleResponse(error: error, action: action)
             }
-        } else {
-            NodesAPI.deleteNode(nodeId: node.guid) { [weak self] (_, error) in
-                guard let sSelf = self else { return }
-                if error == nil {
-                    sSelf.node?.trashed = true
-
-                    if let queriedNode = sSelf.listNodeDataAccessor.query(node: node) {
-                        queriedNode.markedFor = .removal
-                        sSelf.listNodeDataAccessor.store(node: queriedNode)
-                    }
-
-                    let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
-                    let eventBusService = sSelf.coordinatorServices?.eventBusService
-                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
-                }
-                sSelf.handleResponse(error: error, action: action)
-            }
-        }*/
+        }
     }
 
     private func requestRestoreFromTrash(action: ActionMenu) {

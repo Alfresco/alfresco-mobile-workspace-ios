@@ -25,6 +25,8 @@ class ListViewController: SystemSearchViewController {
     var viewModel: ListComponentViewModel?
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
+    var destinationNodeToMove: ListNode?
+    var sourceNodeToMove: ListNode?
 
     // MARK: - View Life Cycle
 
@@ -35,7 +37,9 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.pageController = pageController
         listComponentViewController.viewModel = viewModel
         listComponentViewController.coordinatorServices = self.coordinatorServices
-
+        listComponentViewController.destinationNodeToMove = destinationNodeToMove
+        listComponentViewController.sourceNodeToMove = sourceNodeToMove
+        
         listComponentViewController.listActionDelegate = self
         pageController?.delegate = listComponentViewController
         viewModel?.delegate = listComponentViewController

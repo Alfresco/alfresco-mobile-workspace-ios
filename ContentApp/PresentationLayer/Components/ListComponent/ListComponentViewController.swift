@@ -52,7 +52,9 @@ class ListComponentViewController: SystemThemableViewController {
     
     @IBOutlet weak var moveFilesBottomView: UIView!
     @IBOutlet weak var moveFilesButton: MDCButton!
-    
+    var destinationNodeToMove: ListNode?
+    var sourceNodeToMove: ListNode?
+
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -131,7 +133,10 @@ class ListComponentViewController: SystemThemableViewController {
     
     // MARK: - Move files
     @IBAction func moveFilesButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("Move Files Button Action")
+        guard let source = self.sourceNodeToMove, let destination = self.destinationNodeToMove else { return }
+        let menu = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
+                              type: .moveToFolder)
+        self.listItemActionDelegate?.moveNodeTapped(for: source, destinationNode: destination, delegate: self, actionMenu: menu)
     }
     
     override func viewWillAppear(_ animated: Bool) {
