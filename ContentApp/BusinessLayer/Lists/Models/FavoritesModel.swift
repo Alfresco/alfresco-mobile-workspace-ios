@@ -145,6 +145,8 @@ extension FavoritesModel: EventObservable {
             }
         case .restore:
             delegate?.needsDataSourceReload()
+        case .moveToFolder:
+            delegate?.needsDataSourceReload()
         default: break
         }
     }

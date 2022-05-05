@@ -322,6 +322,8 @@ extension FolderDrillModel: EventObservable {
             if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
                 delegate?.needsDataSourceReload()
             }
+        case .moveToFolder:
+            delegate?.needsDataSourceReload()
         default: break
         }
     }

@@ -174,6 +174,8 @@ extension RecentModel: EventObservable {
             }
         case .restore:
             delegate?.needsDataSourceReload()
+        case .moveToFolder:
+            delegate?.needsDataSourceReload()
         default: break
         }
     }
