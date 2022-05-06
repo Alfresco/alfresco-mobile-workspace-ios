@@ -64,6 +64,10 @@ extension FilesandFolderListViewController: UIAdaptivePresentationControllerDele
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         appDelegate()?.isMoveFilesAndFolderFlow = false
     }
+    
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        appDelegate()?.isMoveFilesAndFolderFlow = false
+    }
 }
 
 // MARK: - Storyboard Instantiable

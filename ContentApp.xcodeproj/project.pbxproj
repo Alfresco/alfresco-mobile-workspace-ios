@@ -399,6 +399,7 @@
 		C9C7F23027BB82D30039A6AE /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */; };
 		C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22F27BB82D30039A6AE /* Coordinator.swift */; };
 		C9C7F23327BBA1DD0039A6AE /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */; };
+		C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */; };
 		C9D4FAAD278305730008C4AA /* FileManagerScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */; };
 		C9D4FAAF278305D10008C4AA /* FileManagerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */; };
 		C9D4FAB127830B480008C4AA /* FileManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */; };
@@ -881,6 +882,7 @@
 		C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		C9C7F22F27BB82D30039A6AE /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListComponentViewModel.swift; sourceTree = "<group>"; };
+		C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SystemSearch+ListActions.swift"; sourceTree = "<group>"; };
 		C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerScreenCoordinator.swift; sourceTree = "<group>"; };
 		C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerDataSource.swift; sourceTree = "<group>"; };
 		C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerViewController.swift; sourceTree = "<group>"; };
@@ -1564,6 +1566,7 @@
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
 				E387387B24D1D1820028F76B /* SystemSearchViewController.swift */,
+				C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
@@ -3570,6 +3573,7 @@
 				C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */,
 				C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */,
 				C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */,
+				C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */,
 				F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				E3A433A22566CAA7000DD886 /* CreateNodeSheetCoordinator.swift in Sources */,
