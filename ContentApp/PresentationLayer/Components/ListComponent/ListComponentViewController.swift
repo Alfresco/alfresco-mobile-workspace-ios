@@ -38,7 +38,10 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var uploadingFilesImageView: UIImageView!
     @IBOutlet weak var uploadingFilesLabel: UILabel!
     @IBOutlet weak var uploadingProgressView: MDCProgressView!
-            
+    @IBOutlet weak var moveFilesBottomView: UIView!
+    @IBOutlet weak var moveFilesButton: MDCButton!
+    @IBOutlet weak var cancelMoveButton: MDCButton!
+    
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
     var dataSource: ListComponentDataSource?
@@ -50,11 +53,9 @@ class ListComponentViewController: SystemThemableViewController {
     private let listBottomInset: CGFloat = 70.0
     private let bannerHeight: CGFloat = 60.0
     
-    @IBOutlet weak var moveFilesBottomView: UIView!
-    @IBOutlet weak var moveFilesButton: MDCButton!
     var destinationNodeToMove: ListNode?
     var sourceNodeToMove: ListNode?
-
+    
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -83,11 +84,7 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.isUppercaseTitle = false
         listActionButton.setTitle(viewModel.listActionTitle(), for: .normal)
         listActionButton.layer.cornerRadius = listActionButton.frame.height / 2
-        
         moveFilesBottomView.isHidden = viewModel.shouldHideMoveItemView()
-        moveFilesButton.isUppercaseTitle = false
-        moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
-        moveFilesButton.layer.cornerRadius = moveFilesButton.frame.height / 2
 
         if viewModel.shouldDisplayCreateButton() ||
             viewModel.shouldDisplayListActionButton() {
@@ -139,6 +136,10 @@ class ListComponentViewController: SystemThemableViewController {
         self.listItemActionDelegate?.moveNodeTapped(for: source, destinationNode: destination, delegate: self, actionMenu: menu)
     }
     
+    @IBAction func cancelMoveButtonAction(_ sender: Any) {
+        triggerMoveNotifyService()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -181,8 +182,11 @@ class ListComponentViewController: SystemThemableViewController {
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton),
+              let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton)
         else { return }
+        
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListTitle.textAlignment = .center
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
@@ -194,11 +198,6 @@ class ListComponentViewController: SystemThemableViewController {
         listActionButton.backgroundColor = currentTheme.primaryT1Color
         listActionButton.tintColor = currentTheme.onPrimaryColor
         listActionButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
-        
-        moveFilesButton.backgroundColor = currentTheme.primaryT1Color
-        moveFilesButton.tintColor = currentTheme.onPrimaryColor
-        moveFilesButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
-        moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
         
         refreshControl?.tintColor = currentTheme.primaryT1Color
         
@@ -212,6 +211,20 @@ class ListComponentViewController: SystemThemableViewController {
         uploadingFilesLabel.textColor = currentTheme.onSurfaceColor
         uploadingProgressView.progressTintColor = currentTheme.primaryT1Color
         uploadingProgressView.trackTintColor = currentTheme.primary30T1Color
+        
+        moveFilesBottomView.backgroundColor = currentTheme.surfaceColor
+        moveFilesButton.applyContainedTheme(withScheme: buttonScheme)
+        moveFilesButton.isUppercaseTitle = false
+        moveFilesButton.setTitle(LocalizationConstants.Buttons.moveHere, for: .normal)
+        moveFilesButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        moveFilesButton.setShadowColor(.clear, for: .normal)
+        
+        cancelMoveButton.applyContainedTheme(withScheme: bigButtonScheme)
+        cancelMoveButton.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
+        cancelMoveButton.isUppercaseTitle = false
+        cancelMoveButton.setShadowColor(.clear, for: .normal)
+        cancelMoveButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
+        cancelMoveButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
     }
         
     func startLoading() {

@@ -2422,25 +2422,81 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auz-3a-eUz" userLabel="moveFilesView">
                                 <rect key="frame" x="0.0" y="813" width="428" height="79"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uqO-og-njZ" userLabel="moveButton" customClass="MDCButton">
-                                        <rect key="frame" x="298" y="15.666666666666629" width="120" height="48"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="listActionButton">
-                                            <bool key="isElement" value="YES"/>
-                                        </accessibility>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvU-wJ-Jb1" userLabel="moveView">
+                                        <rect key="frame" x="214" y="0.0" width="214" height="79"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PaO-B7-V6H" userLabel="moveButton" customClass="MDCButton">
+                                                <rect key="frame" x="12" y="15.666666666666629" width="178" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="5Hi-el-m1y"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Apply">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="moveFilesButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="FWV-zJ-oJr"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="JYY-Hy-W3B"/>
-                                            <constraint firstAttribute="height" constant="48" id="gjE-53-CbR"/>
+                                            <constraint firstAttribute="trailing" secondItem="PaO-B7-V6H" secondAttribute="trailing" constant="24" id="3Qg-0V-9P1"/>
+                                            <constraint firstItem="PaO-B7-V6H" firstAttribute="leading" secondItem="mvU-wJ-Jb1" secondAttribute="leading" constant="12" id="O4U-vm-DKy"/>
+                                            <constraint firstItem="PaO-B7-V6H" firstAttribute="centerY" secondItem="mvU-wJ-Jb1" secondAttribute="centerY" id="fr2-bj-kml"/>
                                         </constraints>
-                                        <state key="normal" title="Move here"/>
-                                        <connections>
-                                            <action selector="moveFilesButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="4Oy-ej-vOB"/>
-                                        </connections>
-                                    </button>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmk-Qe-rZE" userLabel="cancelView">
+                                        <rect key="frame" x="0.0" y="0.0" width="214" height="79"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKE-2S-ORi" userLabel="cancelMoveButton" customClass="MDCButton">
+                                                <rect key="frame" x="24" y="15.666666666666629" width="178" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="P3Y-1o-qX7"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelMoveButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="zS0-Wu-uNb"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="zKE-2S-ORi" secondAttribute="trailing" constant="12" id="2D6-m7-QfS"/>
+                                            <constraint firstItem="zKE-2S-ORi" firstAttribute="centerY" secondItem="Kmk-Qe-rZE" secondAttribute="centerY" id="XHF-yU-NWZ"/>
+                                            <constraint firstItem="zKE-2S-ORi" firstAttribute="leading" secondItem="Kmk-Qe-rZE" secondAttribute="leading" constant="24" id="vZK-Lf-iXW"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="uqO-og-njZ" secondAttribute="trailing" constant="10" id="aae-vM-kvX"/>
-                                    <constraint firstItem="uqO-og-njZ" firstAttribute="centerY" secondItem="auz-3a-eUz" secondAttribute="centerY" id="pQZ-DX-fsN"/>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="top" secondItem="auz-3a-eUz" secondAttribute="top" id="Dbb-4T-Xfj"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="leading" secondItem="auz-3a-eUz" secondAttribute="leading" id="Dcr-9K-DOM"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="top" secondItem="mvU-wJ-Jb1" secondAttribute="top" id="HUM-wM-Mx6"/>
+                                    <constraint firstAttribute="trailing" secondItem="mvU-wJ-Jb1" secondAttribute="trailing" id="IS1-bk-SZN"/>
+                                    <constraint firstAttribute="bottom" secondItem="mvU-wJ-Jb1" secondAttribute="bottom" id="O4Z-Hd-tDw"/>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="width" secondItem="auz-3a-eUz" secondAttribute="width" multiplier="0.5" id="XY1-6D-40n"/>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="leading" secondItem="Kmk-Qe-rZE" secondAttribute="trailing" id="b94-7Q-ODw"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="bottom" secondItem="mvU-wJ-Jb1" secondAttribute="bottom" id="gtV-rY-TAR"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -2473,6 +2529,7 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="kdK-fz-nwD"/>
                     <connections>
+                        <outlet property="cancelMoveButton" destination="zKE-2S-ORi" id="pZs-hD-shf"/>
                         <outlet property="collectionView" destination="9q7-tN-q37" id="GAq-bv-IKB"/>
                         <outlet property="createButton" destination="W6C-F8-M04" id="Uix-0T-wAV"/>
                         <outlet property="emptyListImageView" destination="vM6-Fd-wHr" id="uxv-By-NAa"/>
@@ -2481,7 +2538,7 @@
                         <outlet property="emptyListView" destination="ddo-cc-nfp" id="Bia-uS-1QO"/>
                         <outlet property="listActionButton" destination="Mp9-wt-XHA" id="Ktg-dX-9lh"/>
                         <outlet property="moveFilesBottomView" destination="auz-3a-eUz" id="ZEB-um-ud0"/>
-                        <outlet property="moveFilesButton" destination="uqO-og-njZ" id="mmn-u9-FvS"/>
+                        <outlet property="moveFilesButton" destination="PaO-B7-V6H" id="8Xb-oN-HeV"/>
                         <outlet property="progressView" destination="Auu-tI-yd0" id="I3y-1e-e3K"/>
                         <outlet property="uploadingBannerHeight" destination="mTY-41-qKi" id="Sa2-Xo-Lzx"/>
                         <outlet property="uploadingBannerView" destination="f36-KL-HL7" id="X9U-hw-Jww"/>
