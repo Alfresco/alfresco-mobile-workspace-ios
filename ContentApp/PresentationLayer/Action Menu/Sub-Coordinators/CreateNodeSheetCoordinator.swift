@@ -26,7 +26,7 @@ class CreateNodeSheetCoordinator: Coordinator {
     private let parentListNode: ListNode
     private weak var createNodeViewModelDelegate: CreateNodeViewModelDelegate?
     private var dialogTransitionController: MDCDialogTransitionController
-    var isRenameNode = false
+    private var isRenameNode = false
 
     init(with presenter: UINavigationController,
          actionMenu: ActionMenu,
@@ -47,7 +47,8 @@ class CreateNodeSheetCoordinator: Coordinator {
         let createNodeViewModel = CreateNodeViewModel(with: actionMenu,
                                                       parentListNode: parentListNode,
                                                       coordinatorServices: coordinatorServices,
-                                                      delegate: createNodeViewModelDelegate)
+                                                      delegate: createNodeViewModelDelegate,
+                                                      isRenameNode: isRenameNode)
 
         viewController.coordinatorServices = coordinatorServices
         viewController.createNodeViewModel = createNodeViewModel

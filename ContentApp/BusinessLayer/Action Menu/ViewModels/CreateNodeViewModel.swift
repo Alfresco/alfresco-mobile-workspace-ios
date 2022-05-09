@@ -29,26 +29,28 @@ class CreateNodeViewModel {
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
     private var actionMenu: ActionMenu
-    private var parentListNode: ListNode
+    var parentListNode: ListNode
     private var nodeName: String?
     private var nodeDescription: String?
     private weak var delegate: CreateNodeViewModelDelegate?
-
     private var uploadDialog: MDCAlertController?
     private var uploadRequest: UploadRequest?
+    var isRenameNode = false
 
     // MARK: - Init
 
     init(with actionMenu: ActionMenu,
          parentListNode: ListNode,
          coordinatorServices: CoordinatorServices?,
-         delegate: CreateNodeViewModelDelegate?) {
+         delegate: CreateNodeViewModelDelegate?,
+         isRenameNode: Bool) {
 
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.delegate = delegate
+        self.isRenameNode = isRenameNode
     }
 
     // MARK: - Public

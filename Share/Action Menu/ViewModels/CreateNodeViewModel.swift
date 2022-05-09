@@ -33,7 +33,6 @@ class CreateNodeViewModel {
     private var nodeName: String?
     private var nodeDescription: String?
     private weak var delegate: CreateNodeViewModelDelegate?
-
     private var uploadDialog: MDCAlertController?
     private var uploadRequest: UploadRequest?
 
