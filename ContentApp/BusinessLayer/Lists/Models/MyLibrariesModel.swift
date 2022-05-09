@@ -113,7 +113,7 @@ extension MyLibrariesModel: EventObservable {
                 rawListNodes.remove(at: indexOfMovedNode)
                 delegate?.needsDisplayStateRefresh()
             }
-        case .restore:
+        case .restore, .moveToFolder:
             delegate?.needsDataSourceReload()
         default: break
         }

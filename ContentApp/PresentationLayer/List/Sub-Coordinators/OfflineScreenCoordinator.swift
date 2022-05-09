@@ -27,6 +27,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var folderDrillDownCoordinator: FolderChildrenScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var offlineDataSource: OfflineDataSource?
+    var nodeActionsModel: NodeActionsViewModel?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -133,11 +134,34 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
             let nodeActionsModel = NodeActionsViewModel(node: node,
                                                         delegate: delegate,
                                                         coordinatorServices: coordinatorServices)
+            nodeActionsModel.moveDelegate = self
             let coordinator = ActionMenuScreenCoordinator(with: navigationViewController,
                                                           actionMenuViewModel: actionMenuViewModel,
                                                           nodeActionViewModel: nodeActionsModel)
             coordinator.start()
             actionMenuCoordinator = coordinator
+        }
+    }
+    
+    func moveNodeTapped(for sourceNode: ListNode,
+                        destinationNode: ListNode,
+                        delegate: NodeActionsViewModelDelegate,
+                        actionMenu: ActionMenu) {
+        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
+        self.nodeActionsModel = nodeActionsModel
+    }
+}
+
+extension OfflineScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+        if let navigationViewController = self.navigationViewController {
+            let controller = FilesandFolderListViewController.instantiateViewController()
+            controller.sourceNodeToMove = node
+            let navController = UINavigationController(rootViewController: controller)
+            navigationViewController.present(navController, animated: true)
         }
     }
 }

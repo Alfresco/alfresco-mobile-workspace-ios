@@ -35,4 +35,8 @@ class ContextualSearchViewModel: SearchViewModel {
     override func shouldDisplayListActionButton() -> Bool {
         return false
     }
+    
+    override func shouldHideMoveItemView() -> Bool {
+        return true
+    }
 }

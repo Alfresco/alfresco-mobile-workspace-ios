@@ -52,6 +52,10 @@ class OfflineViewModel: ListComponentViewModel {
     override func shouldDisplayListActionButton() -> Bool {
         return !model.rawListNodes.isEmpty
     }
+    
+    override func shouldHideMoveItemView() -> Bool {
+        return true
+    }
 
     override func listActionTitle() -> String? {
         return LocalizationConstants.Buttons.syncAll

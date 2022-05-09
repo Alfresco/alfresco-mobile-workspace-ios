@@ -31,6 +31,8 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var model: FolderDrillModel?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    var sourceNodeToMove: ListNode?
+    var nodeActionsModel: NodeActionsViewModel?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -45,6 +47,8 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = listNode.title
+        viewController.sourceNodeToMove = sourceNodeToMove
+        viewController.destinationNodeToMove = listNode
 
         let viewModel = folderChildrenDataSource.folderDrillDownViewModel
         let pageController = ListPageController(dataSource: viewModel.model,
@@ -58,6 +62,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
         viewController.searchPageController = searchPageController
         viewController.viewModel = viewModel
         viewController.searchViewModel = searchViewModel
+        viewController.isChildFolder = true
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
@@ -71,7 +76,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                      from dataSource: ListComponentModelProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
-                                   presenter: self.presenter)
+                                   presenter: self.presenter,
+                                   sourceNodeToMove: sourceNodeToMove)
         } else if node.isAFileType() {
             startFileCoordinator(for: node,
                                  presenter: self.presenter)
@@ -88,6 +94,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
@@ -138,10 +145,31 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         coordinator.start()
         fileManagerCoordinator = coordinator
     }
+    
+    func moveNodeTapped(for sourceNode: ListNode,
+                        destinationNode: ListNode,
+                        delegate: NodeActionsViewModelDelegate,
+                        actionMenu: ActionMenu) {
+        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
+        self.nodeActionsModel = nodeActionsModel
+    }
 }
 
 extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {
     func updateListNode(with node: ListNode) {
         self.listNode = node
+    }
+}
+
+extension FolderChildrenScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+        let navigationViewController = self.presenter
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        controller.sourceNodeToMove = node
+        let navController = UINavigationController(rootViewController: controller)
+        navigationViewController.present(navController, animated: true)
     }
 }

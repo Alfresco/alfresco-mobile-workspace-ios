@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u8X-4F-Wje">
     <device id="retina6_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -1708,6 +1708,21 @@
             </objects>
             <point key="canvasLocation" x="1211.5942028985507" y="3192.8571428571427"/>
         </scene>
+        <!--Filesand Folder List View Controller-->
+        <scene sceneID="wD9-AX-oSs">
+            <objects>
+                <viewController storyboardIdentifier="FilesandFolderListViewController" id="nzo-5D-9fW" customClass="FilesandFolderListViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="A7Q-GU-eNH">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="6xp-dq-wVm"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zyO-FW-Qkb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1226" y="3961"/>
+        </scene>
         <!--Tab Bar Main View Controller-->
         <scene sceneID="da4-wW-oHr">
             <objects>
@@ -2404,6 +2419,86 @@
                                     <action selector="createButtonTapped:" destination="P81-6X-vge" eventType="touchUpInside" id="7G7-4Z-gpZ"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auz-3a-eUz" userLabel="moveFilesView">
+                                <rect key="frame" x="0.0" y="813" width="428" height="79"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mvU-wJ-Jb1" userLabel="moveView">
+                                        <rect key="frame" x="214" y="0.0" width="214" height="79"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PaO-B7-V6H" userLabel="moveButton" customClass="MDCButton">
+                                                <rect key="frame" x="12" y="15.666666666666629" width="178" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="5Hi-el-m1y"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Apply">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="moveFilesButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="FWV-zJ-oJr"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="PaO-B7-V6H" secondAttribute="trailing" constant="24" id="3Qg-0V-9P1"/>
+                                            <constraint firstItem="PaO-B7-V6H" firstAttribute="leading" secondItem="mvU-wJ-Jb1" secondAttribute="leading" constant="12" id="O4U-vm-DKy"/>
+                                            <constraint firstItem="PaO-B7-V6H" firstAttribute="centerY" secondItem="mvU-wJ-Jb1" secondAttribute="centerY" id="fr2-bj-kml"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kmk-Qe-rZE" userLabel="cancelView">
+                                        <rect key="frame" x="0.0" y="0.0" width="214" height="79"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zKE-2S-ORi" userLabel="cancelMoveButton" customClass="MDCButton">
+                                                <rect key="frame" x="24" y="15.666666666666629" width="178" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="P3Y-1o-qX7"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelMoveButtonAction:" destination="P81-6X-vge" eventType="touchUpInside" id="zS0-Wu-uNb"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="zKE-2S-ORi" secondAttribute="trailing" constant="12" id="2D6-m7-QfS"/>
+                                            <constraint firstItem="zKE-2S-ORi" firstAttribute="centerY" secondItem="Kmk-Qe-rZE" secondAttribute="centerY" id="XHF-yU-NWZ"/>
+                                            <constraint firstItem="zKE-2S-ORi" firstAttribute="leading" secondItem="Kmk-Qe-rZE" secondAttribute="leading" constant="24" id="vZK-Lf-iXW"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="top" secondItem="auz-3a-eUz" secondAttribute="top" id="Dbb-4T-Xfj"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="leading" secondItem="auz-3a-eUz" secondAttribute="leading" id="Dcr-9K-DOM"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="top" secondItem="mvU-wJ-Jb1" secondAttribute="top" id="HUM-wM-Mx6"/>
+                                    <constraint firstAttribute="trailing" secondItem="mvU-wJ-Jb1" secondAttribute="trailing" id="IS1-bk-SZN"/>
+                                    <constraint firstAttribute="bottom" secondItem="mvU-wJ-Jb1" secondAttribute="bottom" id="O4Z-Hd-tDw"/>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="width" secondItem="auz-3a-eUz" secondAttribute="width" multiplier="0.5" id="XY1-6D-40n"/>
+                                    <constraint firstItem="mvU-wJ-Jb1" firstAttribute="leading" secondItem="Kmk-Qe-rZE" secondAttribute="trailing" id="b94-7Q-ODw"/>
+                                    <constraint firstItem="Kmk-Qe-rZE" firstAttribute="bottom" secondItem="mvU-wJ-Jb1" secondAttribute="bottom" id="gtV-rY-TAR"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="9rc-8Z-DQe"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2411,9 +2506,11 @@
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="Auu-tI-yd0" secondAttribute="trailing" id="3VJ-ps-xPa"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="9q7-tN-q37" secondAttribute="bottom" id="3nq-c3-6xK"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="ddo-cc-nfp" secondAttribute="bottom" id="44e-4L-G3P"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="auz-3a-eUz" secondAttribute="trailing" id="5QO-uZ-krJ"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="9pG-P2-Fm7"/>
                             <constraint firstItem="9q7-tN-q37" firstAttribute="top" secondItem="f36-KL-HL7" secondAttribute="bottom" constant="10" id="AGp-OR-z9k"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="Jvq-ZA-nyO"/>
+                            <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="auz-3a-eUz" secondAttribute="bottom" id="Km0-Mz-4hu"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="W6C-F8-M04" secondAttribute="trailing" constant="16" id="OaE-t4-Xzm"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="bottom" secondItem="W6C-F8-M04" secondAttribute="bottom" constant="23" id="TUs-8u-Qcm"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="UGA-90-oCm"/>
@@ -2421,15 +2518,18 @@
                             <constraint firstItem="9q7-tN-q37" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="WbF-dD-Bff"/>
                             <constraint firstItem="ddo-cc-nfp" firstAttribute="trailing" secondItem="9rc-8Z-DQe" secondAttribute="trailing" id="Z0A-5z-oXR"/>
                             <constraint firstItem="f36-KL-HL7" firstAttribute="top" secondItem="Auu-tI-yd0" secondAttribute="bottom" constant="2" id="ZBY-Kh-NvC"/>
+                            <constraint firstItem="auz-3a-eUz" firstAttribute="top" secondItem="W6C-F8-M04" secondAttribute="top" id="aGs-mZ-E94"/>
                             <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerX" secondItem="9rc-8Z-DQe" secondAttribute="centerX" id="byi-XX-C5V"/>
                             <constraint firstItem="f36-KL-HL7" firstAttribute="leading" secondItem="emp-jD-3BY" secondAttribute="leading" constant="10" id="hsv-2W-ecb"/>
                             <constraint firstItem="Mp9-wt-XHA" firstAttribute="centerY" secondItem="W6C-F8-M04" secondAttribute="centerY" id="rDL-1Q-ZwM"/>
+                            <constraint firstItem="auz-3a-eUz" firstAttribute="leading" secondItem="9rc-8Z-DQe" secondAttribute="leading" id="u8m-Qo-qGw"/>
                             <constraint firstItem="Auu-tI-yd0" firstAttribute="top" secondItem="9rc-8Z-DQe" secondAttribute="top" id="weR-Sh-vAF"/>
                             <constraint firstItem="9rc-8Z-DQe" firstAttribute="trailing" secondItem="9q7-tN-q37" secondAttribute="trailing" id="zHv-6Z-X6B"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 1" id="kdK-fz-nwD"/>
                     <connections>
+                        <outlet property="cancelMoveButton" destination="zKE-2S-ORi" id="pZs-hD-shf"/>
                         <outlet property="collectionView" destination="9q7-tN-q37" id="GAq-bv-IKB"/>
                         <outlet property="createButton" destination="W6C-F8-M04" id="Uix-0T-wAV"/>
                         <outlet property="emptyListImageView" destination="vM6-Fd-wHr" id="uxv-By-NAa"/>
@@ -2437,6 +2537,8 @@
                         <outlet property="emptyListTitle" destination="qbf-LQ-gvV" id="EHq-ol-yWz"/>
                         <outlet property="emptyListView" destination="ddo-cc-nfp" id="Bia-uS-1QO"/>
                         <outlet property="listActionButton" destination="Mp9-wt-XHA" id="Ktg-dX-9lh"/>
+                        <outlet property="moveFilesBottomView" destination="auz-3a-eUz" id="ZEB-um-ud0"/>
+                        <outlet property="moveFilesButton" destination="PaO-B7-V6H" id="8Xb-oN-HeV"/>
                         <outlet property="progressView" destination="Auu-tI-yd0" id="I3y-1e-e3K"/>
                         <outlet property="uploadingBannerHeight" destination="mTY-41-qKi" id="Sa2-Xo-Lzx"/>
                         <outlet property="uploadingBannerView" destination="f36-KL-HL7" id="X9U-hw-Jww"/>

@@ -23,7 +23,7 @@ class ActionMenuScreenCoordinator: NSObject, Coordinator {
     private let presenter: UINavigationController
     private var actionMenuViewController: ActionMenuViewController?
     private let actionMenuViewModel: ActionMenuViewModel
-    private let nodeActionViewModel: NodeActionsViewModel
+    let nodeActionViewModel: NodeActionsViewModel
     private let dismissHandler: () -> Void
 
     init(with presenter: UINavigationController,
