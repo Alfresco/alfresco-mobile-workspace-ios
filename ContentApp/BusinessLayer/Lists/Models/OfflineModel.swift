@@ -138,11 +138,8 @@ extension OfflineModel: EventObservable {
             } else {
                 delegate?.needsDataSourceReload()
             }
-        case .restore:
+        case .restore, .moveToFolder:
             delegate?.needsDataSourceReload()
-        case .moveToFolder:
-            delegate?.needsDataSourceReload()
-
         default: break
         }
     }

@@ -30,7 +30,7 @@ protocol NodeActionsViewModelDelegate: AnyObject {
                               error: Error?)
 }
 
-protocol NodeActionMoveDelegate {
+protocol NodeActionMoveDelegate: AnyObject {
     func didSelectMoveFile(node: ListNode?, action: ActionMenu)
 }
 
@@ -41,7 +41,7 @@ class NodeActionsViewModel {
     private let nodeOperations: NodeOperations
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
-    var moveDelegate: NodeActionMoveDelegate?
+    weak var moveDelegate: NodeActionMoveDelegate?
 
     private let sheetDismissDelay = 0.5
 

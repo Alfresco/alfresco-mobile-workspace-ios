@@ -80,7 +80,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                                      node.truncateTailTitle())
         case .moveToFolder:
             snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess)
-            self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 2.0)
+            self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 1.0)
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)

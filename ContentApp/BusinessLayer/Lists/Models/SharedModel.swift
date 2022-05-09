@@ -119,9 +119,7 @@ extension SharedModel: EventObservable {
             } else {
                 delegate?.needsDataSourceReload()
             }
-        case .restore:
-            delegate?.needsDataSourceReload()
-        case .moveToFolder:
+        case .restore, .moveToFolder:
             delegate?.needsDataSourceReload()
         default: break
         }

@@ -55,17 +55,21 @@ class FilesandFolderListViewController: SystemThemableViewController {
     }
     
     @objc private func handleFilesFolderMoveFinishedNotification(notification: Notification) {
-        appDelegate()?.isMoveFilesAndFolderFlow = false
-        self.navigationController?.dismiss(animated: true)
+        resetMoveFilesAndFolderFlow()
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 extension FilesandFolderListViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-        appDelegate()?.isMoveFilesAndFolderFlow = false
+        resetMoveFilesAndFolderFlow()
+    }
+
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        resetMoveFilesAndFolderFlow()
     }
     
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+    func resetMoveFilesAndFolderFlow() {
         appDelegate()?.isMoveFilesAndFolderFlow = false
     }
 }

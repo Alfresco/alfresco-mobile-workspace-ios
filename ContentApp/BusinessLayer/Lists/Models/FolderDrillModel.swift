@@ -316,14 +316,12 @@ extension FolderDrillModel: EventObservable {
             } else {
                 delegate?.needsDataSourceReload()
             }
-        case .restore:
+        case .restore, .moveToFolder:
             delegate?.needsDataSourceReload()
         case .created:
             if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {
                 delegate?.needsDataSourceReload()
             }
-        case .moveToFolder:
-            delegate?.needsDataSourceReload()
         default: break
         }
     }
