@@ -399,6 +399,7 @@
 		C9C7F23027BB82D30039A6AE /* ApplicationBootstrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */; };
 		C9C7F23127BB82D30039A6AE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22F27BB82D30039A6AE /* Coordinator.swift */; };
 		C9C7F23327BBA1DD0039A6AE /* ListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */; };
+		C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */; };
 		C9D4FAAD278305730008C4AA /* FileManagerScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */; };
 		C9D4FAAF278305D10008C4AA /* FileManagerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */; };
 		C9D4FAB127830B480008C4AA /* FileManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */; };
@@ -419,6 +420,7 @@
 		C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */; };
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
 		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */; };
 		C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */; };
 		C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */; };
 		C9F7945727B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */; };
@@ -880,6 +882,7 @@
 		C9C7F22E27BB82D30039A6AE /* ApplicationBootstrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApplicationBootstrap.swift; sourceTree = "<group>"; };
 		C9C7F22F27BB82D30039A6AE /* Coordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		C9C7F23227BBA1DD0039A6AE /* ListComponentViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListComponentViewModel.swift; sourceTree = "<group>"; };
+		C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SystemSearch+ListActions.swift"; sourceTree = "<group>"; };
 		C9D4FAAC278305730008C4AA /* FileManagerScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerScreenCoordinator.swift; sourceTree = "<group>"; };
 		C9D4FAAE278305D10008C4AA /* FileManagerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerDataSource.swift; sourceTree = "<group>"; };
 		C9D4FAB027830B480008C4AA /* FileManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerViewController.swift; sourceTree = "<group>"; };
@@ -893,6 +896,7 @@
 		C9E79E7B27A3E653002BC5A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9E79E8527A42298002BC5A0 /* ContentApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentApp.entitlements; sourceTree = "<group>"; };
 		C9E79E8627A4255D002BC5A0 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
+		C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesandFolderListViewController.swift; sourceTree = "<group>"; };
 		C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewController.swift; sourceTree = "<group>"; };
 		C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCalendarComponentViewModel.swift; sourceTree = "<group>"; };
 		C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsModel.swift; sourceTree = "<group>"; };
@@ -1292,6 +1296,7 @@
 				B99E1C4D247FE58B00116F05 /* Components */,
 				E3A2A8F9247E7D230046582C /* Extensions */,
 				B959CCD02476B18D00811F15 /* Services */,
+				C9EA38F5281E413D008AC8C8 /* Move FIles */,
 			);
 			path = PresentationLayer;
 			sourceTree = "<group>";
@@ -1561,6 +1566,7 @@
 				E3F5625B2476D6440091896D /* KeyboardHandling.swift */,
 				E3EFAB26248F99BE00635521 /* Snackbar.swift */,
 				E387387B24D1D1820028F76B /* SystemSearchViewController.swift */,
+				C9CD69CC2824B42E00A98FD0 /* SystemSearch+ListActions.swift */,
 				B96B09B524BD8FDB0063D3C6 /* SystemThemableViewController.swift */,
 				B9AE0BBA24C17D880001289C /* PageFetchableCollectionView.swift */,
 				B9958E0D24DA9D570058BCE1 /* ScrollViewPageController.swift */,
@@ -2044,6 +2050,14 @@
 				C9E79E7B27A3E653002BC5A0 /* Info.plist */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		C9EA38F5281E413D008AC8C8 /* Move FIles */ = {
+			isa = PBXGroup;
+			children = (
+				C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */,
+			);
+			path = "Move FIles";
 			sourceTree = "<group>";
 		};
 		C9F55152272BE2A9007A8B3A /* Calendar */ = {
@@ -3559,6 +3573,7 @@
 				C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */,
 				C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */,
 				C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */,
+				C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */,
 				F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
 				E3A433A22566CAA7000DD886 /* CreateNodeSheetCoordinator.swift in Sources */,
@@ -3571,6 +3586,7 @@
 				E3436F89250B8C4A00634C62 /* MediaPreview.swift in Sources */,
 				E348EDE32498A40E00F489B4 /* SettingsComponentsThemingServiceWorker.swift in Sources */,
 				B9B630AC248125A8004833BC /* NeedHelpAIMSModel.swift in Sources */,
+				C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */,
 				E3B1EAED24C1B33D00E72712 /* ListSectionCollectionViewCell.swift in Sources */,
 				E31184D8247BFAFA0044BE0D /* UITextField+Replacement.swift in Sources */,
 				B9ECECFF254302EF0097DB3F /* EventBusService.swift in Sources */,

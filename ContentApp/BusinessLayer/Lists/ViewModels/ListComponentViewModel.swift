@@ -45,6 +45,11 @@ class ListComponentViewModel {
     func shouldDisplayListActionButton() -> Bool {
         return false
     }
+    
+    func shouldHideMoveItemView() -> Bool {
+        let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        return !isMoveFiles
+    }
 
     func shouldDisplayPullToRefreshOffline() -> Bool {
         return false

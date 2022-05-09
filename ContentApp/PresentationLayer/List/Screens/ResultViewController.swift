@@ -44,6 +44,8 @@ class ResultViewController: SystemThemableViewController {
     @IBOutlet weak var configurationImageView: UIImageView!
     weak var resultScreenDelegate: ResultViewControllerDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
+    weak var browseScreenCoordinatorDelegate: BrowseScreenCoordinatorDelegate?
+    
     lazy var dropDown = DropDown()
     private var presenter: UINavigationController?
     var resultsListController: ListComponentViewController?
