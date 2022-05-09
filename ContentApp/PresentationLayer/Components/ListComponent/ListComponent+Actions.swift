@@ -46,7 +46,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             } else if action.type.isMoveActions {
                 handleMove(action: action, node: node)
             } else if action.type.isCreateActions {
-                handleSheetCreate(action: action)
+                handleSheetCreate(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             }
@@ -93,7 +93,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         NotificationCenter.default.post(notification)
     }
 
-    func handleSheetCreate(action: ActionMenu) {
+    func handleSheetCreate(action: ActionMenu, node: ListNode?) {
         switch action.type {
         case .createMSWord, .createMSExcel, .createMSPowerPoint,
              .createFolder:
@@ -105,6 +105,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             listItemActionDelegate?.showPhotoLibrary()
         case .uploadFiles:
             listItemActionDelegate?.showFiles()
+        case .renameNode:
+            listItemActionDelegate?.renameNodeForListItem(for: node, actionMenu: action, delegate: self)
         default: break
         }
     }

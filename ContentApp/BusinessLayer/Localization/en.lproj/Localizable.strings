@@ -230,6 +230,7 @@
 "action-menu-upload-media" = "Upload photos or videos";
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move to Folder";
+"action-menu-rename-node" = "Rename";
 
 
 // MARK: - Dialog

@@ -107,6 +107,10 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
         self.nodeActionsModel = nodeActionsModel
     }
 
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        AlfrescoLog.debug("offline folder children Screen Coordinator: renameNodeForListItem")
+    }
 }
 
 extension OfflineFolderChildrenScreenCoordinator: NodeActionMoveDelegate {

@@ -126,6 +126,11 @@ extension BrowseScreenCoordinator: ListItemActionDelegate {
         nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
         self.nodeActionsModel = nodeActionsModel
     }
+    
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        AlfrescoLog.debug("Browse Screen Coordinator: renameNodeForListItem")
+    }
 }
 
 extension BrowseScreenCoordinator: NodeActionMoveDelegate {

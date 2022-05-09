@@ -58,7 +58,7 @@ enum ActionMenuType: String {
 
     var isCreateActions: Bool {
         return [.createMSWord, .createMSExcel, .createMSPowerPoint,
-                .createFolder,
+                .createFolder, .renameNode,
                 .createMedia, .uploadMedia, .uploadFiles].contains(self)
     }
 
@@ -92,4 +92,5 @@ enum ActionMenuType: String {
     case createMedia = "ic-action-capture-media"
     case uploadMedia = "ic-action-upload-media-files"
     case uploadFiles = "ic-action-upload-files"
+    case renameNode = "ic-action-rename"
 }

@@ -46,6 +46,10 @@ struct ActionsMenuGeneric {
         if let action = moveToFolderAction(for: node) {
             actions2.append(action)
         }
+        
+        if let action = renameNodeAction(for: node) {
+            actions2.append(action)
+        }
 
         actions.append([infoAction])
         actions.append(actions2)
@@ -122,6 +126,21 @@ struct ActionsMenuGeneric {
             return node.hasRole(to: .manager) ? moveAction : nil
         default:
             return node.hasPersmission(to: .delete) ? moveAction : nil
+        }
+    }
+    
+    static private func renameNodeAction(for node: ListNode) -> ActionMenu? {
+        if node.markedFor == .upload &&
+            node.syncStatus != .synced {
+            return nil
+        }
+        let renameAction = ActionMenu(title: LocalizationConstants.ActionMenu.renameNode,
+                                      type: .renameNode)
+        switch node.nodeType {
+        case .site:
+            return node.hasRole(to: .manager) ? renameAction : nil
+        default:
+            return node.hasPersmission(to: .delete) ? renameAction : nil
         }
     }
 }

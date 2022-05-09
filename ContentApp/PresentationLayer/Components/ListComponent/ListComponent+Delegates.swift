@@ -36,6 +36,8 @@ protocol ListItemActionDelegate: AnyObject {
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,
                         actionMenu: ActionMenu)
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?)
 }
 
 protocol ListComponentActionDelegate: AnyObject {

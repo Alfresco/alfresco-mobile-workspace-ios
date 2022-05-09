@@ -160,6 +160,11 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
         self.nodeActionsModel = nodeActionsModel
     }
+    
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        AlfrescoLog.debug("Broese top level folder screen Screen Coordinator: renameNodeForListItem")
+    }
 }
 
 extension BrowseTopLevelFolderScreenCoordinator: NodeActionMoveDelegate {
