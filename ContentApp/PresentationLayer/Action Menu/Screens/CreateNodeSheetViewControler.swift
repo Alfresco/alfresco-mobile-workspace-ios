@@ -77,6 +77,9 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
                 if isRenameNode {
                     AlfrescoLog.debug("Rename Node API")
+                    if let node = sSelf.createNodeViewModel?.parentListNode {
+                        sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
+                    }
                 } else {
                     sSelf.createNodeViewModel?.createNode(with: nodeName,
                                                           description: (descriptionNode.isEmpty) ? nil : descriptionNode)

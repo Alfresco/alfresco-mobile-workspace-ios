@@ -164,6 +164,15 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?) {
         AlfrescoLog.debug("Broese top level folder screen Screen Coordinator: renameNodeForListItem")
+        if let node = node {
+            let coordinator = CreateNodeSheetCoordinator(with: presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         isRenameNode: true)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 

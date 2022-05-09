@@ -21,15 +21,21 @@ import Foundation
 extension ListComponentViewController: NodeActionsViewModelDelegate,
                                        CreateNodeViewModelDelegate {
 
-    func handleCreatedNode(node: ListNode?, error: Error?) {
+    func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool) {
         if node == nil && error == nil {
             return
         } else if let error = error {
             self.display(error: error)
         } else {
-            displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
-                                         node?.truncateTailTitle() ?? ""),
-                            type: .approve)
+            if isUpdate {
+                displaySnackbar(with: String(format: LocalizationConstants.Approved.updated,
+                                             node?.truncateTailTitle() ?? ""),
+                                type: .approve)
+            } else {
+                displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
+                                             node?.truncateTailTitle() ?? ""),
+                                type: .approve)
+            }
         }
     }
 

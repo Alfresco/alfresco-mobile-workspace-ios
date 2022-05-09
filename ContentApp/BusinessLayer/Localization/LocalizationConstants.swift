@@ -130,6 +130,8 @@ struct LocalizationConstants {
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
         static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
+        static let updated = NSLocalizedString("approved-update", comment: "")
+
     }
 
     struct Theme {

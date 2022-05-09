@@ -116,6 +116,7 @@
 "approved-remove-offline" = "%@ will no longer be available offline.";
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
+"approved-update" = "%@ was updated";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
