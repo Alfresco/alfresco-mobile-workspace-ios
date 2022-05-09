@@ -45,6 +45,7 @@ struct LocalizationConstants {
         static let signInWithSSO = NSLocalizedString("sign-in-with-sso", comment: "")
         static let signOut = NSLocalizedString("sign-out", comment: "")
         static let syncAll = NSLocalizedString("sync-all", comment: "")
+        static let moveHere = NSLocalizedString("move-here", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -128,6 +129,7 @@ struct LocalizationConstants {
         static let markOffline = NSLocalizedString("approved-mark-offline", comment: "")
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
+        static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
     }
 
     struct Theme {
@@ -215,6 +217,7 @@ struct LocalizationConstants {
         static let createSingleMedia = NSLocalizedString("action-menu-create-single-media", comment: "")
         static let uploadSingleMedia = NSLocalizedString("action-menu-upload-single-media", comment: "")
         static let uploadFiles = NSLocalizedString("action-menu-upload-files", comment: "")
+        static let moveToFolder = NSLocalizedString("action-menu-move-folder", comment: "")
     }
 
     struct Dialog {

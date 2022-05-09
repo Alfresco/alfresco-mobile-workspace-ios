@@ -35,9 +35,11 @@ class PresentingCoordinator: Coordinator {
     }
 
     func startFolderCoordinator(for node: ListNode,
-                                presenter: UINavigationController) {
+                                presenter: UINavigationController,
+                                sourceNodeToMove: ListNode?) {
         let folderDrillDownCoordinator = FolderChildrenScreenCoordinator(with: presenter,
                                                                          listNode: node)
+        folderDrillDownCoordinator.sourceNodeToMove = sourceNodeToMove
         folderDrillDownCoordinator.start()
         self.folderDrillDownCoordinator = folderDrillDownCoordinator
     }

@@ -27,6 +27,8 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    var sourceNodeToMove: ListNode?
+    var nodeActionsModel: NodeActionsViewModel?
 
     init(with presenter: UINavigationController, browseNode: BrowseNode) {
         self.presenter = presenter
@@ -39,6 +41,8 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = browseNode.title
+        viewController.sourceNodeToMove = sourceNodeToMove
+        viewController.destinationNodeToMove = personalFilesNode()
 
         let viewModel = topLevelBrowseDataSource.topLevelBrowseViewModel
         let pageController = ListPageController(dataSource: viewModel.model,
@@ -55,8 +59,11 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         viewController.coordinatorServices = coordinatorServices
         viewController.listItemActionDelegate = self
-
-        presenter.pushViewController(viewController, animated: true)
+        if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles {
+            presenter.pushViewController(viewController, animated: false)
+        } else {
+            presenter.pushViewController(viewController, animated: true)
+        }
     }
     
     // MARK: - Private interface
@@ -74,7 +81,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                      from dataSource: ListComponentModelProtocol) {
         if node.isAFolderType() || node.nodeType == .site {
             startFolderCoordinator(for: node,
-                                   presenter: self.presenter)
+                                   presenter: self.presenter,
+                                   sourceNodeToMove: sourceNodeToMove)
         } else if node.isAFileType() {
             startFileCoordinator(for: node,
                                  presenter: self.presenter)
@@ -91,6 +99,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let nodeActionsModel = NodeActionsViewModel(node: node,
                                                     delegate: delegate,
                                                     coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: self.presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsModel)
@@ -157,5 +166,26 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                         parentListNode: personalFilesNode())
         coordinator.start()
         fileManagerCoordinator = coordinator
+    }
+    
+    func moveNodeTapped(for sourceNode: ListNode,
+                        destinationNode: ListNode,
+                        delegate: NodeActionsViewModelDelegate,
+                        actionMenu: ActionMenu) {
+        let nodeActionsModel = NodeActionsViewModel(node: sourceNode,
+                                                    delegate: delegate,
+                                                    coordinatorServices: coordinatorServices)
+        nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
+        self.nodeActionsModel = nodeActionsModel
+    }
+}
+
+extension BrowseTopLevelFolderScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+        let navigationViewController = self.presenter
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        controller.sourceNodeToMove = node
+        let navController = UINavigationController(rootViewController: controller)
+        navigationViewController.present(navController, animated: true)
     }
 }

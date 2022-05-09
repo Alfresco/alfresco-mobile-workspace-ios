@@ -42,6 +42,10 @@ struct ActionsMenuGeneric {
         if let action = deleteAction(for: node) {
             actions2.append(action)
         }
+        
+        if let action = moveToFolderAction(for: node) {
+            actions2.append(action)
+        }
 
         actions.append([infoAction])
         actions.append(actions2)
@@ -103,6 +107,21 @@ struct ActionsMenuGeneric {
             return node.hasRole(to: .manager) ? deleteAction : nil
         default:
             return node.hasPersmission(to: .delete) ? deleteAction : nil
+        }
+    }
+    
+    static private func moveToFolderAction(for node: ListNode) -> ActionMenu? {
+        if node.markedFor == .upload &&
+            node.syncStatus != .synced {
+            return nil
+        }
+        let moveAction = ActionMenu(title: LocalizationConstants.ActionMenu.moveToFolder,
+                                      type: .moveToFolder)
+        switch node.nodeType {
+        case .site:
+            return node.hasRole(to: .manager) ? moveAction : nil
+        default:
+            return node.hasPersmission(to: .delete) ? moveAction : nil
         }
     }
 }

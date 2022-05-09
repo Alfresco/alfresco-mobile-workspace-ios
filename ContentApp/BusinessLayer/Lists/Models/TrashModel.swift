@@ -106,6 +106,8 @@ extension TrashModel: EventObservable {
                 rawListNodes.remove(at: indexOfRemovedFavorite)
                 delegate?.needsDisplayStateRefresh()
             }
+        case .moveToFolder:
+            delegate?.needsDisplayStateRefresh()
         case .created: break
         }
     }
