@@ -78,9 +78,19 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
         case .permanentlyDelete:
             snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                      node.truncateTailTitle())
+        case .moveToFolder:
+            snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess,
+                                     node.truncateTailTitle())
+            self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 1.0)
         default: break
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
+    }
+    
+    @objc func triggerMoveNotifyService() {
+        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.moveFileFolderFinished)
+        let notification = Notification(name: notificationName)
+        NotificationCenter.default.post(notification)
     }
 
     func handleSheetCreate(action: ActionMenu) {

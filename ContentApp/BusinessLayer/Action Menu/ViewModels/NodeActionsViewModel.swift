@@ -30,6 +30,10 @@ protocol NodeActionsViewModelDelegate: AnyObject {
                               error: Error?)
 }
 
+protocol NodeActionMoveDelegate: AnyObject {
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu)
+}
+
 class NodeActionsViewModel {
     private var node: ListNode?
     private var actionFinishedHandler: ActionFinishedCompletionHandler?
@@ -37,6 +41,7 @@ class NodeActionsViewModel {
     private let nodeOperations: NodeOperations
     private let listNodeDataAccessor = ListNodeDataAccessor()
     weak var delegate: NodeActionsViewModelDelegate?
+    weak var moveDelegate: NodeActionMoveDelegate?
 
     private let sheetDismissDelay = 0.5
 
@@ -111,6 +116,8 @@ class NodeActionsViewModel {
                 sSelf.requestRestoreFromTrash(action: action)
             case .permanentlyDelete:
                 sSelf.requestPermanentlyDelete(action: action)
+            case .moveToFolder:
+                sSelf.requestMoveToFolder(action: action)
             default: break
             }
         }
@@ -239,6 +246,28 @@ class NodeActionsViewModel {
                     }
 
                     let moveEvent = MoveEvent(node: node, eventType: .moveToTrash)
+                    let eventBusService = sSelf.coordinatorServices?.eventBusService
+                    eventBusService?.publish(event: moveEvent, on: .mainQueue)
+                }
+                sSelf.handleResponse(error: error, action: action)
+            }
+        }
+    }
+    
+    private func requestMoveToFolder(action: ActionMenu) {
+        guard let node = self.node else { return }
+        DispatchQueue.main.async {
+            self.moveDelegate?.didSelectMoveFile(node: node, action: action)
+        }
+    }
+    
+    func moveFilesAndFolder(with sourceNode: ListNode, and destinationNode: ListNode, action: ActionMenu) {
+        sessionForCurrentAccount { [weak self] (_) in
+            let nodeBodyMove = NodeBodyMove(targetParentId: destinationNode.guid, name: nil)
+            NodesAPI.moveNode(nodeId: sourceNode.guid, nodeBodyMove: nodeBodyMove) { [weak self] (data, error) in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    let moveEvent = MoveEvent(node: sourceNode, eventType: .moveToFolder)
                     let eventBusService = sSelf.coordinatorServices?.eventBusService
                     eventBusService?.publish(event: moveEvent, on: .mainQueue)
                 }

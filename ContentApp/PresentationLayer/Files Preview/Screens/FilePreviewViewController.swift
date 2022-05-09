@@ -318,7 +318,7 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 handleMove(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
-            }
+            } 
         }
     }
 

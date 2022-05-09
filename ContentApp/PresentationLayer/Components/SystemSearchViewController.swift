@@ -27,6 +27,7 @@ class SystemSearchViewController: SystemThemableViewController {
     var searchPageController: ListPageController?
 
     weak var listItemActionDelegate: ListItemActionDelegate?
+    var isChildFolder = false
 
     // MARK: - View Life Cycle
 
@@ -38,7 +39,14 @@ class SystemSearchViewController: SystemThemableViewController {
             navigationItem.searchController = searchController
         }
         if searchViewModel?.shouldDisplaySearchButton() ?? false {
-            addSearchButton()
+            let searchBarButtonItem = createSearchBarButton()
+            let createFolderBarButtonItem = createFolderBarButton()
+            if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles == true {
+                self.navigationItem.rightBarButtonItems = [searchBarButtonItem, createFolderBarButtonItem]
+            } else {
+                self.navigationItem.rightBarButtonItems = [searchBarButtonItem]
+            }
+            addBackButton()
         }
     }
     
@@ -80,6 +88,13 @@ class SystemSearchViewController: SystemThemableViewController {
             sSelf.searchController?.searchBar.becomeFirstResponder()
         }
     }
+    
+    @objc func createFolderButtonTapped() {
+        let action = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
+                                type: .createFolder)
+        listItemActionDelegate?.showNodeCreationDialog(with: action,
+                                                       delegate: self)
+    }
 
     // MARK: - Private Helpers
 
@@ -101,7 +116,7 @@ class SystemSearchViewController: SystemThemableViewController {
              NSAttributedString.Key.foregroundColor: currentTheme.onSurfaceColor]
     }
 
-    private func addSearchButton() {
+    private func createSearchBarButton() -> UIBarButtonItem {
         let searchButton = UIButton(type: .custom)
         searchButton.accessibilityIdentifier = "searchButton"
         searchButton.frame = CGRect(x: 0.0, y: 0.0,
@@ -115,15 +130,37 @@ class SystemSearchViewController: SystemThemableViewController {
                                for: UIControl.Event.touchUpInside)
         searchButton.setImage(UIImage(named: "ic-search"),
                               for: .normal)
-
+        
         let searchBarButtonItem = UIBarButtonItem(customView: searchButton)
         searchBarButtonItem.accessibilityIdentifier = "searchBarButton"
         let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currWidth?.isActive = true
         let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
         currHeight?.isActive = true
-
-        self.navigationItem.rightBarButtonItem = searchBarButtonItem
+        return searchBarButtonItem
+    }
+    
+    private func createFolderBarButton() -> UIBarButtonItem {
+        let createFolderButton = UIButton(type: .custom)
+        createFolderButton.accessibilityIdentifier = "createFolderBarButton"
+        createFolderButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: searchButtonAspectRatio,
+                                    height: searchButtonAspectRatio)
+        createFolderButton.imageView?.contentMode = .scaleAspectFill
+        createFolderButton.layer.masksToBounds = true
+        createFolderButton.addTarget(self,
+                               action: #selector(createFolderButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        createFolderButton.setImage(UIImage(named: "ic-action-create-folder"),
+                              for: .normal)
+        
+        let createFolderBarButtonItem = UIBarButtonItem(customView: createFolderButton)
+        createFolderBarButtonItem.accessibilityIdentifier = "createFolderBarButton"
+        let currWidth = createFolderBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currWidth?.isActive = true
+        let currHeight = createFolderBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currHeight?.isActive = true
+        return createFolderBarButtonItem
     }
 
     private func createSearchController() -> UISearchController {
@@ -145,6 +182,41 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
         return searchController
+    }
+    
+    private func addBackButton() {
+        if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles {
+            let backButton = UIButton(type: .custom)
+            backButton.accessibilityIdentifier = "backButton"
+            backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                        width: searchButtonAspectRatio,
+                                        height: searchButtonAspectRatio)
+            backButton.imageView?.contentMode = .scaleAspectFill
+            backButton.layer.masksToBounds = true
+            backButton.addTarget(self,
+                                   action: #selector(backButtonTapped),
+                                   for: UIControl.Event.touchUpInside)
+            backButton.setImage(UIImage(named: "ic-back"),
+                                  for: .normal)
+
+            let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+            searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+            let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+            currWidth?.isActive = true
+            let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+            currHeight?.isActive = true
+            self.navigationItem.leftBarButtonItem = searchBarButtonItem
+        }
+    }
+    
+    // MARK: - Back Button Action
+    @objc func backButtonTapped() {
+        if self.isChildFolder {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            appDelegate()?.isMoveFilesAndFolderFlow = false
+            self.navigationController?.dismiss(animated: true)
+        }
     }
 }
 
