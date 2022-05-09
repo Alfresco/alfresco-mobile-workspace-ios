@@ -79,7 +79,8 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             snackBarMessage = String(format: LocalizationConstants.Approved.deleted,
                                      node.truncateTailTitle())
         case .moveToFolder:
-            snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess)
+            snackBarMessage = String(format: LocalizationConstants.Approved.movedFileFolderSuccess,
+                                     node.truncateTailTitle())
             self.perform(#selector(triggerMoveNotifyService), with: nil, afterDelay: 1.0)
         default: break
         }
