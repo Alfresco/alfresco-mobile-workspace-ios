@@ -61,7 +61,7 @@ class ListPageController: ListPageControllerProtocol {
     var totalItems: Int64 = 0
     var hasMoreItems = true
     var shouldDisplayNextPageLoadingIndicator = false
-    
+
     private var shouldRefreshList = true
     private var requestInProgress = false
 

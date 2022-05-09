@@ -45,6 +45,10 @@ class ListComponentViewModel {
     func shouldDisplayListActionButton() -> Bool {
         return true
     }
+    
+    func shouldHideMoveItemView() -> Bool {
+        return true
+    }
 
     func shouldDisplayPullToRefreshOffline() -> Bool {
         return false

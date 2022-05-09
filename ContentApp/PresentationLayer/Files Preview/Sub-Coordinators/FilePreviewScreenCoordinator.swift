@@ -80,6 +80,7 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         guard let filePreviewViewController = filePreviewViewController,
               let actionMenuViewModel = filePreviewViewController.filePreviewViewModel?.actionMenuViewModel,
               let nodeActionsViewModel = filePreviewViewController.filePreviewViewModel?.nodeActionsViewModel else { return }
+        nodeActionsViewModel.moveDelegate = self
         let coordinator = ActionMenuScreenCoordinator(with: presenter,
                                                       actionMenuViewModel: actionMenuViewModel,
                                                       nodeActionViewModel: nodeActionsViewModel) { [weak self] in
@@ -90,3 +91,14 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         actionMenuCoordinator = coordinator
     }
 }
+
+extension FilePreviewScreenCoordinator: NodeActionMoveDelegate {
+    func didSelectMoveFile(node: ListNode?, action: ActionMenu) {
+        let navigationViewController = self.presenter
+        let controller = FilesandFolderListViewController.instantiateViewController()
+        controller.sourceNodeToMove = node
+        let navController = UINavigationController(rootViewController: controller)
+        navigationViewController.present(navController, animated: true)
+    }
+}
+

@@ -42,6 +42,7 @@ struct KeyConstants {
         static let unauthorizedRequest = "kAPIUnauthorizedRequestNotification"
         static let reSignin = "kReSignInNotification"
         static let syncStarted = "kAPISyncStartedNotification"
+        static let moveFileFolderFinished = "kMoveFileFolderFinishedNotification"
     }
     
     struct AdvanceSearch {

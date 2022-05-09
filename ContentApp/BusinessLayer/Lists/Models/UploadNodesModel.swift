@@ -108,9 +108,8 @@ extension UploadNodesModel: EventObservable {
             } else {
                 delegate?.needsDataSourceReload()
             }
-        case .restore:
+        case .restore, .moveToFolder:
             delegate?.needsDataSourceReload()
-
         default: break
         }
     }
