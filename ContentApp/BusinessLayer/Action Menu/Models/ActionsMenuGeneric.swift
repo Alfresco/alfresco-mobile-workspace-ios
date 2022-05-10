@@ -129,7 +129,7 @@ struct ActionsMenuGeneric {
         }
     }
     
-    static private func renameNodeAction(for node: ListNode) -> ActionMenu? {
+    static func renameNodeAction(for node: ListNode) -> ActionMenu? {
         if node.markedFor == .upload &&
             node.syncStatus != .synced {
             return nil
