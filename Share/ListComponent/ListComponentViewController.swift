@@ -31,15 +31,16 @@ class ListComponentViewController: SystemThemableViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var uploadButton: MDCButton!
-    var refreshControl: UIRefreshControl?
+    @IBOutlet weak var cancelButton: MDCButton!
+    @IBOutlet weak var uploadFilesView: UIView!
     
+    var refreshControl: UIRefreshControl?
     var pageController: ListPageController?
     var viewModel: ListComponentViewModel?
     var dataSource: ListComponentDataSource?
     
     weak var listActionDelegate: ListComponentActionDelegate?
     weak var listItemActionDelegate: ListItemActionDelegate?
-    
     private var kvoConnectivity: NSKeyValueObservation?
     private let listBottomInset: CGFloat = 70.0
     weak var fileManagerDelegate: FileManagerAssetDelegate?
@@ -66,10 +67,7 @@ class ListComponentViewController: SystemThemableViewController {
         collectionView.delegate = dataSource
         collectionView.pageDelegate = self
         emptyListView.isHidden = true
-        uploadButton.isHidden = !viewModel.shouldDisplayListActionButton()
-        uploadButton.isUppercaseTitle = false
-        uploadButton.setTitle(LocalizationConstants.AppExtension.upload, for: .normal)
-        uploadButton.layer.cornerRadius = 8.0
+        uploadFilesView.isHidden = !viewModel.shouldDisplayListActionButton()
         
         if viewModel.shouldDisplayCreateButton() ||
             viewModel.shouldDisplayListActionButton() {
@@ -135,12 +133,18 @@ class ListComponentViewController: SystemThemableViewController {
         }
     }
     
+    @IBAction func cancelButtonAction(_ sender: Any) {
+        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+    }
+    
     // MARK: - Public interface
     
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         
-        guard let currentTheme = coordinatorServices.themingService?.activeTheme
+        guard let currentTheme = coordinatorServices.themingService?.activeTheme,
+              let bigButtonScheme = coordinatorServices.themingService?.containerScheming(for: .loginBigButton),
+              let buttonScheme = coordinatorServices.themingService?.containerScheming(for: .dialogButton)
         else { return }
         emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
         emptyListTitle.textAlignment = .center
@@ -148,9 +152,20 @@ class ListComponentViewController: SystemThemableViewController {
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
         
-        uploadButton.backgroundColor = currentTheme.primaryT1Color
-        uploadButton.tintColor = currentTheme.onPrimaryColor
-        uploadButton.setTitleFont(currentTheme.subtitle2TextStyle.font, for: .normal)
+        uploadFilesView.backgroundColor = currentTheme.surfaceColor
+        uploadButton.applyContainedTheme(withScheme: buttonScheme)
+        uploadButton.isUppercaseTitle = false
+        uploadButton.setTitle(LocalizationConstants.AppExtension.upload, for: .normal)
+        uploadButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        uploadButton.setShadowColor(.clear, for: .normal)
+        
+        cancelButton.applyContainedTheme(withScheme: bigButtonScheme)
+        cancelButton.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
+        cancelButton.isUppercaseTitle = false
+        cancelButton.setShadowColor(.clear, for: .normal)
+        cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
+        cancelButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
+        cancelButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
     }
     
     func startLoading() {

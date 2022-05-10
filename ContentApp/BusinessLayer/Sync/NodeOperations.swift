@@ -362,8 +362,7 @@ class NodeOperations {
         }
     }
     
-    private func nodePropertiesToUpdate(for name: String, description: String?) -> [String:String]?
-    {
+    private func nodePropertiesToUpdate(for name: String, description: String?) -> [String: String] {
         if let description = description {
             return ["cm:title": name,
                     "cm:description": description]
