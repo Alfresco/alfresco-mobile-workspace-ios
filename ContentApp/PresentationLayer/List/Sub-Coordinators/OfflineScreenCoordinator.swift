@@ -28,6 +28,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     private var offlineDataSource: OfflineDataSource?
     var nodeActionsModel: NodeActionsViewModel?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: TabBarMainViewController) {
         self.presenter = presenter
@@ -156,7 +157,15 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?) {
-        AlfrescoLog.debug("offline Screen Coordinator: renameNodeForListItem")
+        if let node = node, let navigationViewController = self.navigationViewController {
+            let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         isRenameNode: true)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 

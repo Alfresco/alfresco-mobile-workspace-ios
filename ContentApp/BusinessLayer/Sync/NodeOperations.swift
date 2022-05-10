@@ -83,7 +83,6 @@ class NodeOperations {
                                        APIConstants.Include.properties],
                              relativePath: relativePath) { (result, error) in
                 completion(result, error)
-
             }
         }
     }
@@ -206,10 +205,15 @@ class NodeOperations {
                     name: String,
                     description: String?,
                     autoRename: Bool,
+                    isFolder: Bool,
                     completionHandler: @escaping (ListNode?, Error?) -> Void) {
         
+        var nodeType = "cm:content"
+        if isFolder {
+            nodeType = "cm:folder"
+        }
         let nodeBody = NodeBodyUpdate(name: name,
-                                            nodeType: "cm:folder",
+                                            nodeType: nodeType,
                                             aspectNames: nil,
                                             properties: nodePropertiesToUpdate(for: name, description: description),
                                             permissions: nil)

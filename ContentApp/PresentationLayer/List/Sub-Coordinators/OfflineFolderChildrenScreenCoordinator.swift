@@ -25,6 +25,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
     private var actionMenuCoordinator: ActionMenuScreenCoordinator?
     private var filePreviewCoordinator: FilePreviewScreenCoordinator?
     var nodeActionsModel: NodeActionsViewModel?
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController, listNode: ListNode) {
         self.presenter = presenter
@@ -109,7 +110,15 @@ extension OfflineFolderChildrenScreenCoordinator: ListItemActionDelegate {
 
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?) {
-        AlfrescoLog.debug("offline folder children Screen Coordinator: renameNodeForListItem")
+        if let node = node {
+            let coordinator = CreateNodeSheetCoordinator(with: self.presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         isRenameNode: true)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 

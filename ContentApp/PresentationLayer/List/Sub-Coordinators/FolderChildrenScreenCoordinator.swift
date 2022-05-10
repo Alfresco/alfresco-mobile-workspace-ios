@@ -159,7 +159,15 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?) {
-        AlfrescoLog.debug("folder children Screen Coordinator: renameNodeForListItem")
+        if let node = node {
+            let coordinator = CreateNodeSheetCoordinator(with: self.presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         isRenameNode: true)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 

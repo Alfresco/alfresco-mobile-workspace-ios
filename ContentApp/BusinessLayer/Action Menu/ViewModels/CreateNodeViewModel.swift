@@ -87,7 +87,12 @@ class CreateNodeViewModel {
         self.nodeName = name
         self.nodeDescription = description
         let shouldAutorename = (ListNode.getExtension(from: self.actionMenu.type) != nil)
-        self.updateNode(nodeId: node.guid, autoRename: shouldAutorename)
+        let nodeType = node.nodeType
+        var isFolder = false
+        if nodeType == .folder || nodeType == .folderLink {
+            isFolder = true
+        }
+        self.updateNode(nodeId: node.guid, autoRename: shouldAutorename, isFolder: isFolder)
     }
 
     func creatingNewFolder() -> Bool {
@@ -122,12 +127,14 @@ class CreateNodeViewModel {
     }
     
     private func updateNode(nodeId: String,
-                            autoRename: Bool) {
+                            autoRename: Bool,
+                            isFolder: Bool) {
         if let name = nodeName {
             nodeOperations.updateNode(nodeId: nodeId,
                                       name: name,
                                       description: nodeDescription,
-                                      autoRename: autoRename) { [weak self] (result, error) in
+                                      autoRename: autoRename,
+                                      isFolder: isFolder) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
 
                 if let error = error {

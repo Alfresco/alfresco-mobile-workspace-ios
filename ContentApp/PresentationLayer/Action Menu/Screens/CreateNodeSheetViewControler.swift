@@ -97,7 +97,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     func addLocalization() {
         let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
         if isRenameNode {
-            uploadButton.setTitle(LocalizationConstants.General.rename, for: .normal)
+            uploadButton.setTitle(LocalizationConstants.General.update, for: .normal)
             nameTextField.text = self.createNodeViewModel?.parentListNode.title ?? ""
             enableUploadButton(for: nameTextField.text)
         } else {

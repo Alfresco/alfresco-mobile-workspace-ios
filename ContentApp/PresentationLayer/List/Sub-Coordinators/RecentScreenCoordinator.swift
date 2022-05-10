@@ -130,7 +130,6 @@ extension RecentScreenCoordinator: ListItemActionDelegate {
     
     func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
                                delegate: CreateNodeViewModelDelegate?) {
-        AlfrescoLog.debug("recent Screen Coordinator: renameNodeForListItem")
         if let node = node, let navigationViewController = self.navigationViewController {
             let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
                                                          actionMenu: actionMenu,
