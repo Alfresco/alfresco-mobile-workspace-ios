@@ -232,7 +232,7 @@
 "action-menu-create-media" = "Take a photo or video";
 "action-menu-upload-media" = "Upload photos or videos";
 "action-menu-upload-files" = "Upload files";
-"action-menu-move-folder" = "Move to Folder";
+"action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
 
 
@@ -292,4 +292,3 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
-"move-here" = "Move here";

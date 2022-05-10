@@ -28,18 +28,15 @@ struct ActionsMenuGeneric {
 
         var actions2: [ActionMenu] = []
 
-        if let action = offlineAction(for: node) {
-            actions2.append(action)
-        }
-        if let action = favoriteAction(for: node) {
-            actions2.append(action)
-        }
-
         if let action = downloadAction(for: node) {
             actions2.append(action)
         }
 
-        if let action = deleteAction(for: node) {
+        if let action = favoriteAction(for: node) {
+            actions2.append(action)
+        }
+        
+        if let action = renameNodeAction(for: node) {
             actions2.append(action)
         }
         
@@ -47,7 +44,11 @@ struct ActionsMenuGeneric {
             actions2.append(action)
         }
         
-        if let action = renameNodeAction(for: node) {
+        if let action = offlineAction(for: node) {
+            actions2.append(action)
+        }
+        
+        if let action = deleteAction(for: node) {
             actions2.append(action)
         }
 
