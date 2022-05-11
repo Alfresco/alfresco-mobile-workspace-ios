@@ -316,7 +316,7 @@ extension FolderDrillModel: EventObservable {
             } else {
                 delegate?.needsDataSourceReload()
             }
-        case .restore, .moveToFolder:
+        case .restore, .moveToFolder, .updated:
             delegate?.needsDataSourceReload()
         case .created:
             if (listNode == nil && node.guid == APIConstants.my) || listNode?.guid == node.guid {

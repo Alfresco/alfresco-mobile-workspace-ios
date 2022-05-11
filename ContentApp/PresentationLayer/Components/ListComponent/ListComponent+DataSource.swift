@@ -105,9 +105,6 @@ class ListComponentDataSource: DataSource {
             cell.node = node
             cell.delegate = configuration.cellDelegate
             cell.applyTheme(configuration.services.themingService?.activeTheme)
-            if isMoveFiles {
-                cell.disableFilesToMove(configuration.services.themingService?.activeTheme, node: node)
-            }
             cell.syncStatus = configuration.viewModel.model.syncStatusForNode(at: indexPath)
             cell.moreButton.isHidden = !configuration.viewModel.shouldDisplayMoreButton(for: indexPath)
 
@@ -118,6 +115,11 @@ class ListComponentDataSource: DataSource {
                 cell.subtitle.text = ""
             }
 
+            if isMoveFiles {
+                cell.moreButton.isEnabled = false
+                cell.disableFilesToMove(configuration.services.themingService?.activeTheme, node: node)
+            }
+            
             let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
             if isPaginationEnabled &&
                 collectionView.lastItemIndexPath() == indexPath &&

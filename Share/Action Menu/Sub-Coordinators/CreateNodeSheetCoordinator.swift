@@ -41,10 +41,11 @@ class CreateNodeSheetCoordinator: Coordinator {
 
     func start() {
         let viewController = CreateNodeSheetViewControler.instantiateViewController()
-        let createNodeViewModel = CreateNodeViewModel(with: actionMenu,
-                                                      parentListNode: parentListNode,
-                                                      coordinatorServices: coordinatorServices,
-                                                      delegate: createNodeViewModelDelegate)
+        let extractedExpr = CreateNodeViewModel(with: actionMenu,
+                                                parentListNode: parentListNode,
+                                                coordinatorServices: coordinatorServices,
+                                                delegate: createNodeViewModelDelegate)
+        let createNodeViewModel = extractedExpr
 
         viewController.coordinatorServices = coordinatorServices
         viewController.createNodeViewModel = createNodeViewModel
