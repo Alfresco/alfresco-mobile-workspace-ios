@@ -83,7 +83,6 @@ class NodeOperations {
                                        APIConstants.Include.properties],
                              relativePath: relativePath) { (result, error) in
                 completion(result, error)
-
             }
         }
     }
@@ -203,6 +202,34 @@ class NodeOperations {
         }
     }
 
+    func updateNode(nodeId: String,
+                    name: String,
+                    description: String?,
+                    autoRename: Bool,
+                    isFolder: Bool,
+                    completionHandler: @escaping (ListNode?, Error?) -> Void) {
+        
+        var nodeType = "cm:content"
+        if isFolder {
+            nodeType = "cm:folder"
+        }
+        let nodeBody = NodeBodyUpdate(name: name,
+                                            nodeType: nodeType,
+                                            aspectNames: nil,
+                                            properties: nodePropertiesToUpdate(for: name, description: description),
+                                            permissions: nil)
+        let requestBuilder = NodesAPI.updateNodeWithRequestBuilder(nodeId: nodeId, nodeBodyUpdate: nodeBody)
+        
+        requestBuilder.execute { (result, error) in
+            if let error = error {
+                completionHandler(nil, error)
+            } else if let node = result?.body?.entry {
+                let listNode = NodeChildMapper.create(from: node)
+                completionHandler(listNode, nil)
+            }
+        }
+    }
+    
     func fetchContentURL(for node: ListNode?) -> URL? {
         guard let ticket = accountService?.activeAccount?.getTicket(),
               let basePathURL = accountService?.activeAccount?.apiBasePath,
@@ -333,6 +360,15 @@ class NodeOperations {
         } else {
             return JSONValue(dictionaryLiteral:
                                 ("cm:title", JSONValue(stringLiteral: name)))
+        }
+    }
+    
+    private func nodePropertiesToUpdate(for name: String, description: String?) -> [String: String] {
+        if let description = description {
+            return ["cm:title": name,
+                    "cm:description": description]
+        } else {
+            return ["cm:title": name]
         }
     }
 }

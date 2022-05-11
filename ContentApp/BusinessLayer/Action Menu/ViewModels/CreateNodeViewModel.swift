@@ -22,33 +22,35 @@ import Alamofire
 import MaterialComponents.MaterialDialogs
 
 protocol CreateNodeViewModelDelegate: AnyObject {
-    func handleCreatedNode(node: ListNode?, error: Error?)
+    func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool)
 }
 
 class CreateNodeViewModel {
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
     private var actionMenu: ActionMenu
-    private var parentListNode: ListNode
+    var parentListNode: ListNode
     private var nodeName: String?
     private var nodeDescription: String?
     private weak var delegate: CreateNodeViewModelDelegate?
-
     private var uploadDialog: MDCAlertController?
     private var uploadRequest: UploadRequest?
+    var isRenameNode = false
 
     // MARK: - Init
 
     init(with actionMenu: ActionMenu,
          parentListNode: ListNode,
          coordinatorServices: CoordinatorServices?,
-         delegate: CreateNodeViewModelDelegate?) {
+         delegate: CreateNodeViewModelDelegate?,
+         isRenameNode: Bool) {
 
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.delegate = delegate
+        self.isRenameNode = isRenameNode
     }
 
     // MARK: - Public
@@ -79,6 +81,19 @@ class CreateNodeViewModel {
             }
         }
     }
+    
+    // MARK: - Update Node
+    func updateNode(with node: ListNode, name: String, description: String?) {
+        self.nodeName = name
+        self.nodeDescription = description
+        let shouldAutorename = (ListNode.getExtension(from: self.actionMenu.type) != nil)
+        let nodeType = node.nodeType
+        var isFolder = false
+        if nodeType == .folder || nodeType == .folderLink {
+            isFolder = true
+        }
+        self.updateNode(nodeId: node.guid, autoRename: shouldAutorename, isFolder: isFolder)
+    }
 
     func creatingNewFolder() -> Bool {
         return actionMenu.type == .createFolder
@@ -101,11 +116,34 @@ class CreateNodeViewModel {
 
                 if let error = error {
                     sSelf.delegate?.handleCreatedNode(node: nil,
-                                                      error: error)
+                                                      error: error, isUpdate: false)
                     AlfrescoLog.error(error)
                 } else if let listNode = result {
-                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil, isUpdate: false)
                     sSelf.publishEventBus(with: listNode)
+                }
+            }
+        }
+    }
+    
+    private func updateNode(nodeId: String,
+                            autoRename: Bool,
+                            isFolder: Bool) {
+        if let name = nodeName {
+            nodeOperations.updateNode(nodeId: nodeId,
+                                      name: name,
+                                      description: nodeDescription,
+                                      autoRename: autoRename,
+                                      isFolder: isFolder) { [weak self] (result, error) in
+                guard let sSelf = self else { return }
+
+                if let error = error {
+                    sSelf.delegate?.handleCreatedNode(node: nil,
+                                                      error: error, isUpdate: true)
+                    AlfrescoLog.error(error)
+                } else if let listNode = result {
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil, isUpdate: true)
+                    sSelf.publishEventBusToUpdateNode(with: listNode)
                 }
             }
         }
@@ -129,7 +167,7 @@ class CreateNodeViewModel {
                 if let transferError = error {
                     sSelf.handle(error: transferError)
                 } else if let listNode = result {
-                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil)
+                    sSelf.delegate?.handleCreatedNode(node: listNode, error: nil, isUpdate: false)
                     sSelf.publishEventBus(with: listNode)
                 }
             }
@@ -157,7 +195,13 @@ class CreateNodeViewModel {
         let eventBusService = coordinatorServices?.eventBusService
         eventBusService?.publish(event: moveEvent, on: .mainQueue)
     }
-
+    
+    private func publishEventBusToUpdateNode(with listNode: ListNode) {
+        let moveEvent = MoveEvent(node: parentListNode, eventType: .updated)
+        let eventBusService = coordinatorServices?.eventBusService
+        eventBusService?.publish(event: moveEvent, on: .mainQueue)
+    }
+    
     private func dataFromTemplateFile() -> Data? {
         guard let stringPath = ListNode.templateFileBundlePath(from: actionMenu.type)
         else { return nil }
@@ -199,10 +243,10 @@ class CreateNodeViewModel {
     private func handle(error: Error) {
         if error.code == NSURLErrorNetworkConnectionLost ||
             error.code == NSURLErrorCancelled {
-            delegate?.handleCreatedNode(node: nil, error: nil)
+            delegate?.handleCreatedNode(node: nil, error: nil, isUpdate: false)
             return
         }
-        delegate?.handleCreatedNode(node: nil, error: error)
+        delegate?.handleCreatedNode(node: nil, error: error, isUpdate: false)
         AlfrescoLog.error(error)
     }
 }

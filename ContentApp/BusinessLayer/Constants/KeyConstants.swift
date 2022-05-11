@@ -43,6 +43,7 @@ struct KeyConstants {
         static let reSignin = "kReSignInNotification"
         static let syncStarted = "kAPISyncStartedNotification"
         static let moveFileFolderFinished = "kMoveFileFolderFinishedNotification"
+        static let dismissAppExtensionNotification = "dismissAppExtensionNotification"
     }
     
     struct AdvanceSearch {

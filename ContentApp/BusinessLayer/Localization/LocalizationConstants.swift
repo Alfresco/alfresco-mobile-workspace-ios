@@ -33,6 +33,8 @@ struct LocalizationConstants {
         static let save = NSLocalizedString("save", comment: "")
         static let discard = NSLocalizedString("discard", comment: "")
         static let done = NSLocalizedString("done", comment: "")
+        static let rename = NSLocalizedString("rename", comment: "")
+        static let update = NSLocalizedString("update", comment: "")
     }
 
     struct Buttons {
@@ -45,7 +47,7 @@ struct LocalizationConstants {
         static let signInWithSSO = NSLocalizedString("sign-in-with-sso", comment: "")
         static let signOut = NSLocalizedString("sign-out", comment: "")
         static let syncAll = NSLocalizedString("sync-all", comment: "")
-        static let moveHere = NSLocalizedString("move-here", comment: "")
+        static let moveHere = NSLocalizedString("action-menu-move-folder", comment: "")
     }
 
     struct TextFieldPlaceholders {
@@ -130,6 +132,8 @@ struct LocalizationConstants {
         static let removeOffline = NSLocalizedString("approved-remove-offline", comment: "")
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
         static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
+        static let updated = NSLocalizedString("approved-update", comment: "")
+
     }
 
     struct Theme {
@@ -218,6 +222,7 @@ struct LocalizationConstants {
         static let uploadSingleMedia = NSLocalizedString("action-menu-upload-single-media", comment: "")
         static let uploadFiles = NSLocalizedString("action-menu-upload-files", comment: "")
         static let moveToFolder = NSLocalizedString("action-menu-move-folder", comment: "")
+        static let renameNode = NSLocalizedString("action-menu-rename-node", comment: "")
     }
 
     struct Dialog {

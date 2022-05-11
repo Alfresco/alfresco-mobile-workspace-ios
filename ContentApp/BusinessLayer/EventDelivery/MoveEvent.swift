@@ -24,6 +24,7 @@ enum MoveEventType {
     case permanentlyDelete
     case created
     case moveToFolder
+    case updated
 }
 
 class MoveEvent: BaseNodeEvent {

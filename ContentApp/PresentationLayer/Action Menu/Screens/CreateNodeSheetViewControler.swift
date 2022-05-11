@@ -31,6 +31,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     @IBOutlet weak var cancelButton: MDCButton!
 
     var createNodeViewModel: CreateNodeViewModel?
+    var isRenameNode = false
 
     var enableUploadButton = false {
         didSet {
@@ -68,13 +69,21 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
+        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
         if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self,
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
-                sSelf.createNodeViewModel?.createNode(with: nodeName,
-                                                      description: (descriptionNode.isEmpty) ? nil : descriptionNode)
+                if isRenameNode {
+                    AlfrescoLog.debug("Rename Node API")
+                    if let node = sSelf.createNodeViewModel?.parentListNode {
+                        sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
+                    }
+                } else {
+                    sSelf.createNodeViewModel?.createNode(with: nodeName,
+                                                          description: (descriptionNode.isEmpty) ? nil : descriptionNode)
+                }
             }
         }
     }
@@ -86,7 +95,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
-        uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
+        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
+        if isRenameNode {
+            uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
+            nameTextField.text = self.createNodeViewModel?.parentListNode.title ?? ""
+            enableUploadButton(for: nameTextField.text)
+        } else {
+            uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
+        }
         cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name

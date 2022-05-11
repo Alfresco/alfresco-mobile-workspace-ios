@@ -29,6 +29,8 @@
 "create" = "Create";
 "save" = "Save";
 "discard" = "Discard";
+"rename" = "Rename";
+"update" = "Update";
 
 // MARK: - Buttons
 "connect" = "Connect";
@@ -116,6 +118,7 @@
 "approved-remove-offline" = "%@ will no longer be available offline.";
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
+"approved-update" = "%@ was updated";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -232,7 +235,8 @@
 "action-menu-create-single-media" = "Take a photo or video";
 "action-menu-upload-single-media" = "Upload a photo or video";
 "action-menu-upload-files" = "Upload files";
-"action-menu-move-folder" = "Move to Folder";
+"action-menu-move-folder" = "Move";
+"action-menu-rename-node" = "Rename";
 
 
 // MARK: - Dialog
@@ -296,4 +300,3 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
-"move-here" = "Move here";

@@ -174,6 +174,19 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         nodeActionsModel.moveFilesAndFolder(with: sourceNode, and: destinationNode, action: actionMenu)
         self.nodeActionsModel = nodeActionsModel
     }
+    
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        if let node = node {
+            let coordinator = CreateNodeSheetCoordinator(with: self.presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         isRenameNode: true)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
+    }
 }
 
 extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelegate {

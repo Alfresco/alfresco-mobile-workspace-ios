@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cIn-lq-r9F">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cIn-lq-r9F">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -164,47 +164,117 @@
                                     <constraint firstItem="hWR-A0-S5m" firstAttribute="top" secondItem="zSH-Jn-3PK" secondAttribute="bottom" constant="16" id="vdY-Bg-tuS"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mhN-zp-o7h" userLabel="uploadButton" customClass="MDCButton">
-                                <rect key="frame" x="20" y="791" width="374" height="48"/>
-                                <accessibility key="accessibilityConfiguration" identifier="listActionButton">
-                                    <bool key="isElement" value="YES"/>
-                                </accessibility>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FHg-Ff-ddc" userLabel="uploadFilesView">
+                                <rect key="frame" x="0.0" y="791" width="414" height="48"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wZK-D1-1Gv" userLabel="uploadView">
+                                        <rect key="frame" x="207" y="0.0" width="207" height="48"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sqy-HS-a8h" userLabel="uploadButton" customClass="MDCButton">
+                                                <rect key="frame" x="12" y="0.0" width="171" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="YMd-BL-bmI"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Apply">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="uploadButtonAction:" destination="qma-YY-fGt" eventType="touchUpInside" id="GD9-Uu-NRU"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="sqy-HS-a8h" firstAttribute="leading" secondItem="wZK-D1-1Gv" secondAttribute="leading" constant="12" id="C2T-oX-wxo"/>
+                                            <constraint firstItem="sqy-HS-a8h" firstAttribute="centerY" secondItem="wZK-D1-1Gv" secondAttribute="centerY" id="FMv-Qs-CqR"/>
+                                            <constraint firstAttribute="trailing" secondItem="sqy-HS-a8h" secondAttribute="trailing" constant="24" id="ens-vt-sXi"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4bn-Wx-L3P" userLabel="cancelView">
+                                        <rect key="frame" x="0.0" y="0.0" width="207" height="48"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8J-Hf-Gpg" userLabel="cancelButton" customClass="MDCButton">
+                                                <rect key="frame" x="24" y="0.0" width="171" height="48"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="saveButton">
+                                                    <bool key="isElement" value="YES"/>
+                                                </accessibility>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="48" id="JkC-6u-JsU"/>
+                                                </constraints>
+                                                <color key="tintColor" red="0.20411634449999999" green="0.47271108630000003" blue="0.96475440260000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <inset key="imageEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                <state key="normal" title="Cancel">
+                                                    <color key="titleColor" red="0.20392156859999999" green="0.47450980390000003" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </state>
+                                                <state key="disabled">
+                                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="cancelButtonAction:" destination="qma-YY-fGt" eventType="touchUpInside" id="PYX-Db-kbt"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="z8J-Hf-Gpg" secondAttribute="trailing" constant="12" id="2ec-bE-7av"/>
+                                            <constraint firstItem="z8J-Hf-Gpg" firstAttribute="leading" secondItem="4bn-Wx-L3P" secondAttribute="leading" constant="24" id="gIB-0I-yxe"/>
+                                            <constraint firstItem="z8J-Hf-Gpg" firstAttribute="centerY" secondItem="4bn-Wx-L3P" secondAttribute="centerY" id="nkW-EL-Ktv"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="1Mq-u5-QSq"/>
+                                    <constraint firstItem="wZK-D1-1Gv" firstAttribute="leading" secondItem="4bn-Wx-L3P" secondAttribute="trailing" id="COa-E1-zdn"/>
+                                    <constraint firstAttribute="bottom" secondItem="wZK-D1-1Gv" secondAttribute="bottom" id="E5y-xF-PG6"/>
+                                    <constraint firstItem="4bn-Wx-L3P" firstAttribute="top" secondItem="wZK-D1-1Gv" secondAttribute="top" id="FUQ-MK-SHr"/>
+                                    <constraint firstItem="4bn-Wx-L3P" firstAttribute="bottom" secondItem="wZK-D1-1Gv" secondAttribute="bottom" id="TYl-2a-LhS"/>
+                                    <constraint firstItem="wZK-D1-1Gv" firstAttribute="width" secondItem="FHg-Ff-ddc" secondAttribute="width" multiplier="0.5" id="mmE-se-R9q"/>
+                                    <constraint firstAttribute="height" constant="48" id="otX-60-E20"/>
+                                    <constraint firstItem="4bn-Wx-L3P" firstAttribute="leading" secondItem="FHg-Ff-ddc" secondAttribute="leading" id="pJi-c0-GNb"/>
+                                    <constraint firstItem="wZK-D1-1Gv" firstAttribute="top" secondItem="FHg-Ff-ddc" secondAttribute="top" id="rA0-nb-TQi"/>
+                                    <constraint firstAttribute="trailing" secondItem="wZK-D1-1Gv" secondAttribute="trailing" id="x0d-Ab-dth"/>
                                 </constraints>
-                                <state key="normal" title="Upload"/>
-                                <connections>
-                                    <action selector="uploadButtonAction:" destination="qma-YY-fGt" eventType="touchUpInside" id="ReI-vb-w5f"/>
-                                </connections>
-                            </button>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="rFO-IL-Dkc"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rFO-IL-Dkc" firstAttribute="trailing" secondItem="CrX-XL-hLY" secondAttribute="trailing" id="0oY-RG-e1F"/>
                             <constraint firstItem="CrX-XL-hLY" firstAttribute="leading" secondItem="rFO-IL-Dkc" secondAttribute="leading" id="2b9-y3-a6V"/>
+                            <constraint firstItem="rFO-IL-Dkc" firstAttribute="bottom" secondItem="FHg-Ff-ddc" secondAttribute="bottom" constant="23" id="6EQ-ZT-v8E"/>
                             <constraint firstItem="rFO-IL-Dkc" firstAttribute="bottom" secondItem="Vea-XS-ZkL" secondAttribute="bottom" id="6Lv-Ea-00f"/>
-                            <constraint firstItem="rFO-IL-Dkc" firstAttribute="trailing" secondItem="mhN-zp-o7h" secondAttribute="trailing" constant="20" id="A4G-ml-1Gr"/>
-                            <constraint firstItem="rFO-IL-Dkc" firstAttribute="bottom" secondItem="mhN-zp-o7h" secondAttribute="bottom" constant="23" id="BXe-wv-10W"/>
+                            <constraint firstItem="rFO-IL-Dkc" firstAttribute="leading" secondItem="FHg-Ff-ddc" secondAttribute="leading" id="DWl-DP-OAg"/>
                             <constraint firstItem="QxQ-YC-wkd" firstAttribute="top" secondItem="rFO-IL-Dkc" secondAttribute="top" id="FUG-al-tTD"/>
                             <constraint firstItem="rFO-IL-Dkc" firstAttribute="bottom" secondItem="QxQ-YC-wkd" secondAttribute="bottom" id="IdY-Xa-Hb1"/>
                             <constraint firstItem="Vea-XS-ZkL" firstAttribute="leading" secondItem="rFO-IL-Dkc" secondAttribute="leading" id="JeU-6y-KXD"/>
                             <constraint firstItem="CrX-XL-hLY" firstAttribute="top" secondItem="rFO-IL-Dkc" secondAttribute="top" id="Mwi-PN-Jhi"/>
+                            <constraint firstItem="rFO-IL-Dkc" firstAttribute="trailing" secondItem="FHg-Ff-ddc" secondAttribute="trailing" id="PB9-DH-Tpj"/>
                             <constraint firstItem="QxQ-YC-wkd" firstAttribute="trailing" secondItem="rFO-IL-Dkc" secondAttribute="trailing" id="l3K-ES-S2C"/>
-                            <constraint firstItem="mhN-zp-o7h" firstAttribute="leading" secondItem="rFO-IL-Dkc" secondAttribute="leading" constant="20" id="liw-i6-8pJ"/>
                             <constraint firstItem="rFO-IL-Dkc" firstAttribute="trailing" secondItem="Vea-XS-ZkL" secondAttribute="trailing" id="r3r-sH-4B5"/>
                             <constraint firstItem="QxQ-YC-wkd" firstAttribute="leading" secondItem="rFO-IL-Dkc" secondAttribute="leading" id="s3g-hB-CTW"/>
                             <constraint firstItem="Vea-XS-ZkL" firstAttribute="top" secondItem="rFO-IL-Dkc" secondAttribute="top" id="uQF-93-IsZ"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="z8J-Hf-Gpg" id="NJp-8y-37Q"/>
                         <outlet property="collectionView" destination="Vea-XS-ZkL" id="iB2-Wf-WLh"/>
                         <outlet property="emptyListImageView" destination="zSH-Jn-3PK" id="NfP-q7-vsG"/>
                         <outlet property="emptyListSubtitle" destination="x75-uZ-Tbd" id="BI7-kh-DvW"/>
                         <outlet property="emptyListTitle" destination="hWR-A0-S5m" id="fuM-V2-FYZ"/>
                         <outlet property="emptyListView" destination="QxQ-YC-wkd" id="0Jy-08-mVo"/>
                         <outlet property="progressView" destination="CrX-XL-hLY" id="ui1-la-hYK"/>
-                        <outlet property="uploadButton" destination="mhN-zp-o7h" id="veH-Po-iY0"/>
+                        <outlet property="uploadButton" destination="sqy-HS-a8h" id="H9d-9E-7aL"/>
+                        <outlet property="uploadFilesView" destination="FHg-Ff-ddc" id="Def-Ic-kCL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8y8-3A-WEm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

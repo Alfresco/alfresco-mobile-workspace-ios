@@ -85,7 +85,9 @@ class SystemSearchViewController: SystemThemableViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { [weak self] in
             guard let sSelf = self else { return }
             sSelf.searchController?.isActive = true
-            sSelf.searchController?.searchBar.becomeFirstResponder()
+            DispatchQueue.main.async {
+                sSelf.searchController?.searchBar.becomeFirstResponder()
+            }
         }
     }
     
