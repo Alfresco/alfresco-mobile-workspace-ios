@@ -134,7 +134,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
-        self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: - Public interface
