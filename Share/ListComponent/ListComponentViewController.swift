@@ -134,7 +134,9 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func cancelButtonAction(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        let notificationName = Notification.Name(rawValue: KeyConstants.Notification.dismissAppExtensionNotification)
+        let notification = Notification(name: notificationName)
+        NotificationCenter.default.post(notification)
     }
     
     // MARK: - Public interface

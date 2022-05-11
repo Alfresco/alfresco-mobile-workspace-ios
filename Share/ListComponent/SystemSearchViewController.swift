@@ -51,6 +51,12 @@ class SystemSearchViewController: SystemThemableViewController {
                                                selector: #selector(self.handleUnauthorizedAPIAccess(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.unauthorizedRequest),
                                                object: nil)
+        
+        // dismiss extension
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.backButtonTapped),
+                                               name: Notification.Name(KeyConstants.Notification.dismissAppExtensionNotification),
+                                               object: nil)
     }
     
     override func viewWillTransition(to size: CGSize,
