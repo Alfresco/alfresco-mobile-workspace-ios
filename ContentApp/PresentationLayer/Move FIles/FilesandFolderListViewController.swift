@@ -64,10 +64,6 @@ extension FilesandFolderListViewController: UIAdaptivePresentationControllerDele
     func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         resetMoveFilesAndFolderFlow()
     }
-
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        resetMoveFilesAndFolderFlow()
-    }
     
     func resetMoveFilesAndFolderFlow() {
         appDelegate()?.isMoveFilesAndFolderFlow = false
