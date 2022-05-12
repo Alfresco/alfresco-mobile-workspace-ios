@@ -41,6 +41,7 @@ class ListViewController: SystemSearchViewController {
         listComponentViewController.sourceNodeToMove = sourceNodeToMove
         
         listComponentViewController.listActionDelegate = self
+        pageController?.sourceNodeToMove = sourceNodeToMove
         pageController?.delegate = listComponentViewController
         viewModel?.delegate = listComponentViewController
 
