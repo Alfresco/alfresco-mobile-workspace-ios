@@ -55,7 +55,7 @@ class ListComponentViewController: SystemThemableViewController {
     
     var destinationNodeToMove: ListNode?
     var sourceNodeToMove: ListNode?
-    
+
     // MARK: - View Life Cycle
     
     override func viewDidLoad() {
@@ -124,7 +124,6 @@ class ListComponentViewController: SystemThemableViewController {
                                                selector: #selector(self.handleSyncStartedNotification(notification:)),
                                                name: Notification.Name(KeyConstants.Notification.syncStarted),
                                                object: nil)
-        
         observeConnectivity()
     }
     
@@ -307,6 +306,18 @@ class ListComponentViewController: SystemThemableViewController {
         }
         
         self.forceRefresh(with: indexPaths)
+    }
+    
+    func openFolderAfterCreate(for node: ListNode?) {
+        let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        if let node = node, isMove {
+            guard let model = pageController?.dataSource else {
+                return
+            }
+            self.listItemActionDelegate?.showPreview(for: node,
+                                                      from: model)
+            self.listActionDelegate?.elementTapped(node: node)
+        }
     }
     
     private func forceRefresh(with indexPaths: [IndexPath]) {

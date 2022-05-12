@@ -28,6 +28,7 @@ class SystemSearchViewController: SystemThemableViewController {
 
     weak var listItemActionDelegate: ListItemActionDelegate?
     var isChildFolder = false
+    var openNodeDelegate: OpenNodeDelegate?
 
     // MARK: - View Life Cycle
 
