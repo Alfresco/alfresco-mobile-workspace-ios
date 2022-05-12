@@ -64,6 +64,7 @@ class ListPageController: ListPageControllerProtocol {
 
     private var shouldRefreshList = true
     private var requestInProgress = false
+    var sourceNodeToMove: ListNode?
 
     init(dataSource: ListComponentModelProtocol, services: CoordinatorServices) {
         self.dataSource = dataSource
@@ -147,17 +148,29 @@ class ListPageController: ListPageControllerProtocol {
     private func update(with results: [ListNode],
                         pagination: Pagination?,
                         error: Error?) {
-        if !results.isEmpty {
+        var listNodes = results
+        let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        if isMove, let node = sourceNodeToMove {
+            if let index = listNodes.firstIndex(where: {$0.guid == node.guid}) {
+                listNodes.remove(at: index)
+            }
+        }
+        
+        if !listNodes.isEmpty {
             if pagination?.skipCount != 0 {
-                addNewResults(results: results, pagination: pagination)
+                addNewResults(results: listNodes, pagination: pagination)
             } else {
-                addResults(results: results, pagination: pagination)
+                addResults(results: listNodes, pagination: pagination)
             }
         } else if pagination?.skipCount == 0 || error == nil {
             self.dataSource.rawListNodes = []
             if let totalItems = pagination?.totalItems {
                 shouldDisplayNextPageLoadingIndicator =
                     (Int64(self.dataSource.rawListNodes.count) >= totalItems) ? false : true
+                
+                if isMove && listNodes.isEmpty {
+                    shouldDisplayNextPageLoadingIndicator = false
+                }
             }
         }
         delegate?.didUpdateList(error: error,
