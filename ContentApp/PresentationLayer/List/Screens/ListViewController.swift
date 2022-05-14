@@ -19,6 +19,10 @@
 import UIKit
 import AlfrescoContent
 
+protocol OpenNodeDelegate {
+    func openNode(with node: ListNode?)
+}
+
 class ListViewController: SystemSearchViewController {
     var listController: ListComponentViewController?
     var pageController: ListPageController?
@@ -29,7 +33,7 @@ class ListViewController: SystemSearchViewController {
     var sourceNodeToMove: ListNode?
 
     // MARK: - View Life Cycle
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +49,7 @@ class ListViewController: SystemSearchViewController {
         pageController?.delegate = listComponentViewController
         viewModel?.delegate = listComponentViewController
 
+        super.openNodeDelegate = self
         if let listComponentView = listComponentViewController.view {
             listComponentView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -113,5 +118,11 @@ extension ListViewController: ListComponentActionDelegate {
 
     func performListAction() {
         viewModel?.performListAction()
+    }
+}
+
+extension ListViewController: OpenNodeDelegate {
+    func openNode(with node: ListNode?) {
+        self.listController?.openFolderAfterCreate(for: node)
     }
 }
