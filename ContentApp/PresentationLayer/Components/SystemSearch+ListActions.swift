@@ -65,6 +65,8 @@ extension SystemSearchViewController: NodeActionsViewModelDelegate,
             
         case .uploadFiles: break
             
+        case .scanDocuments: break
+            
         default: break
         }
     }

@@ -27,6 +27,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
     private var cameraCoordinator: CameraScreenCoordinator?
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    private var scanDocumentsCoordinator: ScanDocumentsScreenCoordinator?
     var sourceNodeToMove: ListNode?
     var nodeActionsModel: NodeActionsViewModel?
 
@@ -166,6 +167,13 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                         parentListNode: personalFilesNode())
         coordinator.start()
         fileManagerCoordinator = coordinator
+    }
+    
+    func scanDocumentsAction() {
+        let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
+                                                        parentListNode: personalFilesNode())
+        coordinator.start()
+        scanDocumentsCoordinator = coordinator
     }
     
     func moveNodeTapped(for sourceNode: ListNode,

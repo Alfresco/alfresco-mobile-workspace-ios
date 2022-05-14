@@ -164,6 +164,10 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         fileManagerCoordinator = coordinator
     }
     
+    func scanDocumentsAction() {
+        AlfrescoLog.debug("FolderChildrenScreenCoordinator: scanDocumentsAction")
+    }
+    
     func moveNodeTapped(for sourceNode: ListNode,
                         destinationNode: ListNode,
                         delegate: NodeActionsViewModelDelegate,

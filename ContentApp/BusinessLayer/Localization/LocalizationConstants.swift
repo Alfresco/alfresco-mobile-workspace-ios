@@ -223,6 +223,7 @@ struct LocalizationConstants {
         static let uploadFiles = NSLocalizedString("action-menu-upload-files", comment: "")
         static let moveToFolder = NSLocalizedString("action-menu-move-folder", comment: "")
         static let renameNode = NSLocalizedString("action-menu-rename-node", comment: "")
+        static let scanDocuments = NSLocalizedString("action-menu-scan-documents", comment: "")
     }
 
     struct Dialog {

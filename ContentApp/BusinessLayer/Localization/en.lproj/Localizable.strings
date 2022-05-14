@@ -237,6 +237,7 @@
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
+"action-menu-scan-documents" = "Scan documents";
 
 
 // MARK: - Dialog
