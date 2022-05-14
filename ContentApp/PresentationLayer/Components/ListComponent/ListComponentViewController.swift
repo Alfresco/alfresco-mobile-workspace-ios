@@ -309,8 +309,7 @@ class ListComponentViewController: SystemThemableViewController {
     }
     
     func openFolderAfterCreate(for node: ListNode?) {
-        let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
-        if let node = node, isMove {
+        if let node = node {
             guard let model = pageController?.dataSource else {
                 return
             }
