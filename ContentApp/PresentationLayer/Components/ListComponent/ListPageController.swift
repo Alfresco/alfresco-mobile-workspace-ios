@@ -198,6 +198,11 @@ class ListPageController: ListPageControllerProtocol {
                 // consider counts past the raw collection size
                 shouldDisplayNextPageLoadingIndicator =
                     (Int64(self.dataSource.rawListNodes.count) >= totalItems) ? false : true
+                
+                let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+                if isMove && Int64(results.count) == totalItems - 1 {
+                    shouldDisplayNextPageLoadingIndicator = false
+                }
             }
         }
     }
@@ -212,6 +217,11 @@ class ListPageController: ListPageControllerProtocol {
                 // consider counts past the raw collection size
                 shouldDisplayNextPageLoadingIndicator =
                     (Int64(results.count) >= totalItems) ? false : true
+                
+                let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+                if isMove && Int64(results.count) == totalItems - 1 {
+                    shouldDisplayNextPageLoadingIndicator = false
+                }
             }
         }
     }
