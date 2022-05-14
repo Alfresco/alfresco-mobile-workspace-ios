@@ -35,6 +35,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
                 displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
                                              node?.truncateTailTitle() ?? ""),
                                 type: .approve)
+                self.openFolderAfterCreate(for: node)
             }
         }
     }

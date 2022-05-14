@@ -35,6 +35,7 @@ extension SystemSearchViewController: NodeActionsViewModelDelegate,
                 displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
                                              node?.truncateTailTitle() ?? ""),
                                 type: .approve)
+                self.openNodeDelegate?.openNode(with: node)
             }
         }
     }
