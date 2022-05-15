@@ -19,22 +19,20 @@
 import UIKit
 import VisionKit
 
-class ScanDocumentsViewController: UIViewController {
-    var cameraViewModel: CameraViewModel?
-    weak var cameraDelegate: CameraKitCaptureDelegate?
+class ScanDocumentsViewController: SystemThemableViewController {
+    weak var fileManagerDelegate: FileManagerAssetDelegate?
+    var fileManagerDataSource: FileManagerDataSource?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         ApplicationBootstrap.shared().configureCameraKitTheme()
-        applyComponentsThemes()
-        cameraViewModel?.delegate = self
         DispatchQueue.main.asyncAfter(deadline: .now(), execute: {
             self.showDocumentScanner()
         })
     }
-    
-    // MARK: - Private Methods
-    private func applyComponentsThemes() {
+
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
         guard let theme = CameraKit.theme else { return }
         view.backgroundColor = theme.surfaceColor
     }
@@ -54,10 +52,11 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
             let image = scan.imageOfPage(at: page)
             images.append(image)
         }
-        self.createPDF(with: images)
-//        controller.dismiss(animated: false) {
-//            self.dismiss(animated: true)
-//        }
+        controller.dismiss(animated: false) {
+            self.dismiss(animated: true) {
+                self.createPDF(with: images)
+            }
+        }
     }
     
     func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
@@ -69,19 +68,13 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
     func createPDF(with images: [UIImage]) {
         AlfrescoLog.debug("Images: \(images)")
         let pdf = images.makePDF()
-        AlfrescoLog.debug("PDF: \(pdf)")
-    }
-}
-
-// MARK: - CameraViewModel Delegate
-
-extension ScanDocumentsViewController: CameraViewModelDelegate {
-    func deleteAllCapturedAssets() {
-        
-    }
-    
-    func finishProcess(capturedAsset: CapturedAsset?, error: Error?) {
-        guard error == nil else { return }
+        if let data = pdf?.dataRepresentation() {
+            let name = UIFunction.defaultFileName(with: prefixPDFFileName)
+            PDCache.shared.saveData(obj: data, fileName: name)
+            if let url = PDCache.shared.getData(fileName: name) {
+                fileManagerDataSource?.fetchSelectedAssets(for: [url], and: fileManagerDelegate)
+            }
+        }
     }
 }
 

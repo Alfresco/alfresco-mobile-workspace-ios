@@ -131,6 +131,8 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
+		C90A2CB22830D134008601F5 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A2CB12830D134008601F5 /* UIFunction.swift */; };
+		C90A2CB42830E286008601F5 /* PDCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A2CB32830E286008601F5 /* PDCache.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
@@ -794,6 +796,8 @@
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		C733BE845AAF1A36661ED9DA /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
+		C90A2CB12830D134008601F5 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
+		C90A2CB32830E286008601F5 /* PDCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDCache.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
@@ -1492,6 +1496,8 @@
 				E3E0F81D25CAFC5700DBC6F6 /* ErrorCodes.swift */,
 				E3E0F82225CB09E500DBC6F6 /* APIConstants.swift */,
 				E3724FD725CBD2D10005AA1C /* KeyConstants.swift */,
+				C90A2CB12830D134008601F5 /* UIFunction.swift */,
+				C90A2CB32830E286008601F5 /* PDCache.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -3672,6 +3678,7 @@
 				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
+				C90A2CB22830D134008601F5 /* UIFunction.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
@@ -3802,6 +3809,7 @@
 				1338258E262D817D000FFD4E /* UploadTransferDataAccessor.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */,
 				E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */,
+				C90A2CB42830E286008601F5 /* PDCache.swift in Sources */,
 				C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */,
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,
 				E3429F1625627B66004EBD2F /* EmptyListProtocol.swift in Sources */,

@@ -31,15 +31,15 @@ class ScanDocumentsScreenCoordinator: Coordinator {
         self.presenter = presenter
     }
     
-    func start() {        
+    func start() {
         let viewController = ScanDocumentsViewController.instantiateViewController()
-        let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier ?? ""
-        let folderPath = DiskService.mediaFolderPath(for: accountIdentifier)
-        let cameraViewModel = CameraViewModel(folderToSavePath: folderPath)
-        mediaFilesFolderPath = folderPath
-        viewController.cameraViewModel = cameraViewModel
-        viewController.cameraDelegate = self
+        viewController.fileManagerDelegate = self
         viewController.modalPresentationStyle = .fullScreen
+        
+        let accountIdentifier = self.coordinatorServices.accountService?.activeAccount?.identifier ?? ""
+        let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier)
+        self.fileManagerDataSource = FileManagerDataSource(folderToSavePath: uploadFilePath)
+        viewController.fileManagerDataSource = self.fileManagerDataSource
        
         requestAuthorizationForCameraUsage { [weak self] (granted) in
             if granted {
@@ -82,15 +82,14 @@ class ScanDocumentsScreenCoordinator: Coordinator {
     }
 }
 
-// MARK: - CameraKitCapture Delegate
-
-extension ScanDocumentsScreenCoordinator: CameraKitCaptureDelegate {
-    func didEndReview(for capturedAssets: [CapturedAsset]) {
+// MARK: - File manager Delegate
+extension ScanDocumentsScreenCoordinator: FileManagerAssetDelegate {
+    func didEndFileManager(for selectedAssets: [FileAsset]) {
         
-        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier,
-              let mediaPath = mediaFilesFolderPath else { return }
-        
-        if !capturedAssets.isEmpty {
+        guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
+        else { return }
+/*
+        if !selectedAssets.isEmpty {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
                 guard let sSelf = self else { return }
                 Snackbar.display(with: LocalizationConstants.Approved.uploadMedia,
@@ -100,34 +99,36 @@ extension ScanDocumentsScreenCoordinator: CameraKitCaptureDelegate {
             })
         }
         
-//        for capturedAsset in capturedAssets {
-//            let assetURL = URL(fileURLWithPath: capturedAsset.path)
-//            let uploadFilePath = DiskService.uploadFolderPath(for: accountIdentifier) +
-//                "/" + assetURL.lastPathComponent
-//            _ = DiskService.copy(itemAtPath: capturedAsset.path, to: uploadFilePath)
-//
-//            let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
-//                                                nodeName: capturedAsset.fileName,
-//                                                extensionType: capturedAsset.type.ext,
-//                                                mimetype: capturedAsset.type.mimetype,
-//                                                nodeDescription: capturedAsset.description,
-//                                                localFilenamePath: assetURL.lastPathComponent)
-//            let uploadTransferDataAccessor = UploadTransferDataAccessor()
-//            uploadTransferDataAccessor.store(uploadTransfer: uploadTransfer)
-//        }
-//
-//        _ = DiskService.delete(itemAtPath: mediaPath)
-//        triggerUpload()
-    }
+        var uploadTransfers: [UploadTransfer] = []
+        for fileAsset in selectedAssets {
+            let assetURL = URL(fileURLWithPath: fileAsset.path)
+            _ = DiskService.uploadFolderPath(for: accountIdentifier) +
+                "/" + assetURL.lastPathComponent
+            
+            let uploadTransfer = UploadTransfer(parentNodeId: parentListNode.guid,
+                                                nodeName: fileAsset.fileName ?? "",
+                                                extensionType: fileAsset.fileExtension ?? "",
+                                                mimetype: assetURL.mimeType(),
+                                                nodeDescription: fileAsset.description,
+                                                localFilenamePath: assetURL.lastPathComponent)
+            uploadTransfers.append(uploadTransfer)
+        }
 
-//    func triggerUpload() {
-//        let connectivityService = coordinatorServices.connectivityService
-//        let syncTriggersService = coordinatorServices.syncTriggersService
-//        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
-//
-//        if connectivityService?.status == .cellular &&
-//            UserProfile.allowSyncOverCellularData == false {
-//            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
-//        }
-//    }
+        let uploadTransferDataAccessor = UploadTransferDataAccessor()
+        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
+
+        triggerUpload()
+        */
+    }
+    
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        }
+    }
 }
