@@ -62,6 +62,7 @@ class FilePreviewViewModel {
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol?
     var isLocalFilePreview = false
+    var isScannedDocument: Bool
 
     // MARK: - Public interface
 
@@ -70,7 +71,8 @@ class FilePreviewViewModel {
          coordinatorServices: CoordinatorServices,
          excludedActions: [ActionMenuType] = [],
          shouldPreviewLatestContent: Bool,
-         isLocalFilePreview: Bool) {
+         isLocalFilePreview: Bool,
+         isScannedDocument: Bool) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
@@ -79,6 +81,7 @@ class FilePreviewViewModel {
         self.excludedActionsTypes = excludedActions
         self.shouldPreviewLatestContent = shouldPreviewLatestContent
         self.isLocalFilePreview = isLocalFilePreview
+        self.isScannedDocument = isScannedDocument
     }
 
     func requestUpdateNodeDetails() {
@@ -176,7 +179,7 @@ class FilePreviewViewModel {
 
     func shouldDisplayActionsToolbar() -> Bool {
         guard let listNode = listNode else { return  false}
-        return listNode.syncStatus != .error
+        return listNode.syncStatus != .error && !self.isScannedDocument
     }
 
     // MARK: - Analytics
@@ -218,7 +221,6 @@ class FilePreviewViewModel {
             listNodeDataAccessor.isContentDownloaded(for: listNode) {
             return true
         }
-        
         return false
     }
 

@@ -115,7 +115,6 @@ extension ScanDocumentsScreenCoordinator: FileManagerAssetDelegate {
 // MARK: - List Item Action Delegate
 extension ScanDocumentsScreenCoordinator {
     func showPreview(for node: ListNode) {
-        startFileCoordinator(for: node,
-                             presenter: self.presenter)
+        startFileCoordinator(for: node, presenter: self.presenter, isScannedDocument: true)
     }
 }

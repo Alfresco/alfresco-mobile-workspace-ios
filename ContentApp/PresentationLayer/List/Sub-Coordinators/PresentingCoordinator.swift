@@ -27,9 +27,11 @@ class PresentingCoordinator: Coordinator {
     }
 
     func startFileCoordinator(for node: ListNode,
-                              presenter: UINavigationController) {
+                              presenter: UINavigationController,
+                              isScannedDocument: Bool = false) {
         let filePreviewCoordinator = FilePreviewScreenCoordinator(with: presenter,
-                                                                  listNode: node)
+                                                                  listNode: node,
+                                                                  isScannedDocument: isScannedDocument)
         filePreviewCoordinator.start()
         self.filePreviewCoordinator = filePreviewCoordinator
     }
