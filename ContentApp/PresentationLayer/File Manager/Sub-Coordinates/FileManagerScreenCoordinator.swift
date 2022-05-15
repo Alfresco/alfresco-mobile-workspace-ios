@@ -44,7 +44,7 @@ class FileManagerScreenCoordinator: Coordinator {
 }
 
 extension FileManagerScreenCoordinator: FileManagerAssetDelegate {
-    func didEndFileManager(for selectedAssets: [FileAsset]) {
+    func didEndFileManager(for selectedAssets: [FileAsset], isScannedDocument: Bool) {
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }

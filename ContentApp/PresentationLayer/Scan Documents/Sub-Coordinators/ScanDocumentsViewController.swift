@@ -72,7 +72,7 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
             let name = UIFunction.defaultFileName(with: prefixPDFFileName)
             PDCache.shared.saveData(obj: data, fileName: name)
             if let url = PDCache.shared.getData(fileName: name) {
-                fileManagerDataSource?.fetchSelectedAssets(for: [url], and: fileManagerDelegate)
+                fileManagerDataSource?.fetchSelectedAssets(for: [url], and: fileManagerDelegate, isScannedDocument: true)
             }
         }
     }

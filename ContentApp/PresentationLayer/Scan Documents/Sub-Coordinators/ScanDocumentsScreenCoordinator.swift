@@ -19,7 +19,7 @@
 import UIKit
 import AVFoundation
 
-class ScanDocumentsScreenCoordinator: Coordinator {
+class ScanDocumentsScreenCoordinator: PresentingCoordinator {
     private let presenter: UINavigationController
     private let parentListNode: ListNode
     private var fileManagerDataSource: FileManagerDataSource?
@@ -31,7 +31,7 @@ class ScanDocumentsScreenCoordinator: Coordinator {
         self.presenter = presenter
     }
     
-    func start() {
+    override func start() {
         let viewController = ScanDocumentsViewController.instantiateViewController()
         viewController.fileManagerDelegate = self
         viewController.modalPresentationStyle = .fullScreen
@@ -84,20 +84,10 @@ class ScanDocumentsScreenCoordinator: Coordinator {
 
 // MARK: - File manager Delegate
 extension ScanDocumentsScreenCoordinator: FileManagerAssetDelegate {
-    func didEndFileManager(for selectedAssets: [FileAsset]) {
+    func didEndFileManager(for selectedAssets: [FileAsset], isScannedDocument: Bool) {
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }
-/*
-        if !selectedAssets.isEmpty {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
-                guard let sSelf = self else { return }
-                Snackbar.display(with: LocalizationConstants.Approved.uploadMedia,
-                                 type: .approve,
-                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
-                                 finish: nil)
-            })
-        }
         
         var uploadTransfers: [UploadTransfer] = []
         for fileAsset in selectedAssets {
@@ -114,21 +104,18 @@ extension ScanDocumentsScreenCoordinator: FileManagerAssetDelegate {
             uploadTransfers.append(uploadTransfer)
         }
 
-        let uploadTransferDataAccessor = UploadTransferDataAccessor()
-        uploadTransferDataAccessor.store(uploadTransfers: uploadTransfers)
-
-        triggerUpload()
-        */
-    }
-    
-    func triggerUpload() {
-        let connectivityService = coordinatorServices.connectivityService
-        let syncTriggersService = coordinatorServices.syncTriggersService
-        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
-
-        if connectivityService?.status == .cellular &&
-            UserProfile.allowSyncOverCellularData == false {
-            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        if let listNode = uploadTransfers.first?.listNode() {
+            DispatchQueue.main.async {
+                self.showPreview(for: listNode)
+            }
         }
+    }
+}
+
+// MARK: - List Item Action Delegate
+extension ScanDocumentsScreenCoordinator {
+    func showPreview(for node: ListNode) {
+        startFileCoordinator(for: node,
+                             presenter: self.presenter)
     }
 }

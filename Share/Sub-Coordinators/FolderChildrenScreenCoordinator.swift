@@ -101,7 +101,7 @@ extension FolderChildrenScreenCoordinator: FolderChildrenScreenCoordinatorDelega
 
 // MARK: - File manager delegate
 extension FolderChildrenScreenCoordinator: FileManagerAssetDelegate {
-    func didEndFileManager(for selectedAssets: [FileAsset]) {
+    func didEndFileManager(for selectedAssets: [FileAsset], isScannedDocument: Bool) {
         
         guard let accountIdentifier = coordinatorServices.accountService?.activeAccount?.identifier
         else { return }
