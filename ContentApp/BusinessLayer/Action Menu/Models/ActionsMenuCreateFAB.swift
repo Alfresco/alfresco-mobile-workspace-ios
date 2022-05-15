@@ -30,6 +30,8 @@ struct ActionsMenuCreateFAB {
                                            type: .createMedia)
         let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
                                             type: .uploadFiles)
+        let actionScanDocuments = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments,
+                                            type: .scanDocuments)
         
         if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
@@ -41,7 +43,8 @@ struct ActionsMenuCreateFAB {
         let actions1 = [actionCreateFolder,
                         actionUploadMedia,
                         actionCreateMedia,
-                        actionUploadFiles]
+                        actionUploadFiles,
+                        actionScanDocuments]
         
         actions.append(actions1)
         return actions

@@ -20,7 +20,6 @@ import UIKit
 import UniformTypeIdentifiers
 
 class FileManagerViewController: UIViewController {
-
     weak var fileManagerDelegate: FileManagerAssetDelegate?
     var fileManagerDataSource: FileManagerDataSource?
 
@@ -53,7 +52,6 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        AlfrescoLog.debug("Selected Document: \(urls)")
         fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate)
         self.dismiss(animated: true, completion: nil)
     }
