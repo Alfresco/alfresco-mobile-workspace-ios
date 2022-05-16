@@ -301,3 +301,8 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Discard scan Files?";
+"dialog-discard-scanner-message" = "Scan files will be discarded if you exit.";
+

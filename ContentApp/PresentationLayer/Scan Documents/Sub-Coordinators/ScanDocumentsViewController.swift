@@ -43,7 +43,7 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
     func showDocumentScanner() {
         let scanningDocumentVC = VNDocumentCameraViewController()
         scanningDocumentVC.delegate = self
-        self.present(scanningDocumentVC, animated: true)
+        self.present(scanningDocumentVC, animated: false)
     }
     
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
@@ -69,7 +69,7 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
         AlfrescoLog.debug("Images: \(images)")
         let pdf = images.makePDF()
         if let data = pdf?.dataRepresentation() {
-            let name = UIFunction.defaultFileName(with: prefixPDFFileName)
+            let name = UIFunction.defaultFileName(with: prefixScannedFileName)
             PDCache.shared.saveData(obj: data, fileName: name)
             if let url = PDCache.shared.getData(fileName: name) {
                 fileManagerDataSource?.fetchSelectedAssets(for: [url], and: fileManagerDelegate, isScannedDocument: true)

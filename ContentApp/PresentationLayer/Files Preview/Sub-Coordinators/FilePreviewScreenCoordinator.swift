@@ -32,6 +32,7 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let shouldPreviewLatestContent: Bool
     private let isLocalFilePreview: Bool
     private let isScannedDocument: Bool
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
@@ -92,6 +93,20 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         }
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+    
+    func createScannedDocument(for node: ListNode?) {
+//        let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments, type: .scanDocuments)
+//        if let node = node {
+//            let navigationViewController = self.presenter
+//            let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
+//                                                         actionMenu: actionMenu,
+//                                                         parentListNode: node,
+//                                                         createNodeViewModelDelegate: delegate,
+//                                                         isRenameNode: false)
+//            coordinator.start()
+//            createNodeSheetCoordinator = coordinator
+//        }
     }
 }
 
