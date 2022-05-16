@@ -197,6 +197,7 @@ class NodeOperations {
                 completionHandler(nil, error)
             } else if let node = result?.body?.entry {
                 let listNode = NodeChildMapper.create(from: node)
+                listNode.allowableOperations = [.update, .create, .updatePermissions, .delete]
                 completionHandler(listNode, nil)
             }
         }
