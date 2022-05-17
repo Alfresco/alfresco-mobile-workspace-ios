@@ -67,6 +67,7 @@ class FilePreviewViewController: SystemThemableViewController {
 
             addSaveBarButton()
             addBackButton()
+            saveButtonTapped()
         }
     }
     
@@ -117,6 +118,7 @@ class FilePreviewViewController: SystemThemableViewController {
     
     @objc func saveButtonTapped() {
         AlfrescoLog.debug("save button tapped")
+        filePreviewCoordinatorDelegate?.saveScannedDocument(for: filePreviewViewModel?.listNode, delegate: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -473,6 +475,14 @@ extension FilePreviewViewController: FilePreviewDelegate {
         if filePreviewViewModel.shouldDisplayActionsToolbar() {
             toolbar.isHidden = enable
         }
+    }
+}
+
+// MARK: - Create Node Delegate
+
+extension FilePreviewViewController: CreateNodeViewModelDelegate {
+    func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool) {
+        
     }
 }
 

@@ -162,7 +162,7 @@ extension OfflineScreenCoordinator: ListItemActionDelegate {
                                                          actionMenu: actionMenu,
                                                          parentListNode: node,
                                                          createNodeViewModelDelegate: delegate,
-                                                         isRenameNode: true)
+                                                         createNodeViewType: .rename)
             coordinator.start()
             createNodeSheetCoordinator = coordinator
         }

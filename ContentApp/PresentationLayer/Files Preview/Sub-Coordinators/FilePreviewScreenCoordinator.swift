@@ -21,6 +21,7 @@ import UIKit
 protocol FilePreviewScreenCoordinatorDelegate: AnyObject {
     func navigateBack()
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
+    func saveScannedDocument(for node: ListNode?, delegate: CreateNodeViewModelDelegate?)
 }
 
 class FilePreviewScreenCoordinator: Coordinator {
@@ -33,6 +34,7 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let isLocalFilePreview: Bool
     private let isScannedDocument: Bool
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
@@ -95,18 +97,18 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         actionMenuCoordinator = coordinator
     }
     
-    func createScannedDocument(for node: ListNode?) {
-//        let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments, type: .scanDocuments)
-//        if let node = node {
-//            let navigationViewController = self.presenter
-//            let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
-//                                                         actionMenu: actionMenu,
-//                                                         parentListNode: node,
-//                                                         createNodeViewModelDelegate: delegate,
-//                                                         isRenameNode: false)
-//            coordinator.start()
-//            createNodeSheetCoordinator = coordinator
-//        }
+    func saveScannedDocument(for node: ListNode?, delegate: CreateNodeViewModelDelegate?) {
+        if let node = node {
+            let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments, type: .scanDocuments)
+            let coordinator = CreateNodeSheetCoordinator(with: self.presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         createNodeViewType: .scanDocument)
+            coordinator.createNodeCoordinatorDelegate = self
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 
@@ -120,3 +122,39 @@ extension FilePreviewScreenCoordinator: NodeActionMoveDelegate {
     }
 }
 
+// MARK: - Scanned document delegate
+extension FilePreviewScreenCoordinator: CreateNodeCoordinatorDelegate {
+    func saveScannedDocument(with title: String?, description: String?) {
+        if let node = filePreviewViewController?.filePreviewViewModel?.listNode {
+            let nodeTitle = node.title
+            var extensionType = ""
+            let titleArray = nodeTitle.components(separatedBy: ".")
+            if titleArray.count > 1 {
+                extensionType = titleArray[1]
+            }
+            
+            let uploadTransfer = UploadTransfer(parentNodeId: node.parentGuid ?? "",
+                                                nodeName: title ?? "",
+                                                extensionType: extensionType,
+                                                mimetype: node.mimeType ?? "",
+                                                nodeDescription: "",
+                                                localFilenamePath: node.uploadLocalPath ?? "")
+            
+            let uploadTransferDataAccessor = UploadTransferDataAccessor()
+            uploadTransferDataAccessor.store(uploadTransfers: [uploadTransfer])
+            triggerUpload()
+            navigateBack()
+        }
+    }
+    
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        }
+    }
+}

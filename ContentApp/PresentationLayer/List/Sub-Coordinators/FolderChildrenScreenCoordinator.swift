@@ -32,6 +32,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
     private var photoLibraryCoordinator: PhotoLibraryScreenCoordinator?
     private var model: FolderDrillModel?
     private var fileManagerCoordinator: FileManagerScreenCoordinator?
+    private var scanDocumentsCoordinator: ScanDocumentsScreenCoordinator?
     var sourceNodeToMove: ListNode?
     var nodeActionsModel: NodeActionsViewModel?
 
@@ -121,7 +122,8 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
                                                      parentListNode: listNode,
-                                                     createNodeViewModelDelegate: delegate)
+                                                     createNodeViewModelDelegate: delegate,
+                                                     createNodeViewType: .create)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
     }
@@ -165,7 +167,10 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func scanDocumentsAction() {
-        AlfrescoLog.debug("FolderChildrenScreenCoordinator: scanDocumentsAction")
+        let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
+                                                        parentListNode: listNode)
+        coordinator.start()
+        scanDocumentsCoordinator = coordinator
     }
     
     func moveNodeTapped(for sourceNode: ListNode,
@@ -186,7 +191,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                          actionMenu: actionMenu,
                                                          parentListNode: node,
                                                          createNodeViewModelDelegate: delegate,
-                                                         isRenameNode: true)
+                                                         createNodeViewType: .rename)
             coordinator.start()
             createNodeSheetCoordinator = coordinator
         }

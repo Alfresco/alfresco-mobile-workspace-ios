@@ -126,7 +126,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
                                                      parentListNode: personalFilesNode(),
-                                                     createNodeViewModelDelegate: delegate)
+                                                     createNodeViewModelDelegate: delegate,
+                                                     createNodeViewType: .create)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
     }
@@ -194,7 +195,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                          actionMenu: actionMenu,
                                                          parentListNode: node,
                                                          createNodeViewModelDelegate: delegate,
-                                                         isRenameNode: true)
+                                                         createNodeViewType: .rename)
             coordinator.start()
             createNodeSheetCoordinator = coordinator
         }
