@@ -126,7 +126,8 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
         let coordinator = CreateNodeSheetCoordinator(with: presenter,
                                                      actionMenu: actionMenu,
                                                      parentListNode: personalFilesNode(),
-                                                     createNodeViewModelDelegate: delegate)
+                                                     createNodeViewModelDelegate: delegate,
+                                                     createNodeViewType: .create)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
     }
@@ -170,10 +171,16 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
     }
     
     func scanDocumentsAction() {
-        let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
-                                                        parentListNode: personalFilesNode())
-        coordinator.start()
-        scanDocumentsCoordinator = coordinator
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
+                                                            parentListNode: personalFilesNode())
+            coordinator.start()
+            scanDocumentsCoordinator = coordinator
+        } else {
+            let title = LocalizationConstants.Alert.alertTitle
+            let message = LocalizationConstants.Alert.cameraUnavailable
+            self.showAlert(with: title, and: message)
+        }
     }
     
     func moveNodeTapped(for sourceNode: ListNode,
@@ -194,7 +201,7 @@ extension BrowseTopLevelFolderScreenCoordinator: ListItemActionDelegate {
                                                          actionMenu: actionMenu,
                                                          parentListNode: node,
                                                          createNodeViewModelDelegate: delegate,
-                                                         isRenameNode: true)
+                                                         createNodeViewType: .rename)
             coordinator.start()
             createNodeSheetCoordinator = coordinator
         }

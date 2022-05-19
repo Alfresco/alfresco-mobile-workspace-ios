@@ -25,7 +25,7 @@ let extPhoto = "JPG"
 let extVideo = "MOV"
 let mimetypePhoto = "image/jpeg"
 let mimetypeVideo = "video/quicktime"
-let prefixPDFFileName = "PDF"
+let prefixScannedFileName = "Scan"
 
 enum CapturedAssetType {
     case image

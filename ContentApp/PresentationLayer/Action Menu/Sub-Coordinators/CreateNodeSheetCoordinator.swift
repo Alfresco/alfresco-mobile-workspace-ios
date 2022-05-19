@@ -19,6 +19,10 @@
 import UIKit
 import MaterialComponents.MaterialDialogs
 
+protocol CreateNodeCoordinatorDelegate: AnyObject {
+    func saveScannedDocument(with title: String?, description: String?)
+}
+
 class CreateNodeSheetCoordinator: Coordinator {
     private let presenter: UINavigationController
     private var createNodeSheetViewController: CreateNodeSheetViewControler?
@@ -26,20 +30,21 @@ class CreateNodeSheetCoordinator: Coordinator {
     private let parentListNode: ListNode
     private weak var createNodeViewModelDelegate: CreateNodeViewModelDelegate?
     private var dialogTransitionController: MDCDialogTransitionController
-    private var isRenameNode = false
+    var createNodeViewType: CreateNodeViewType = .create
+    weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
 
     init(with presenter: UINavigationController,
          actionMenu: ActionMenu,
          parentListNode: ListNode,
          createNodeViewModelDelegate: CreateNodeViewModelDelegate?,
-         isRenameNode: Bool = false) {
+         createNodeViewType: CreateNodeViewType) {
 
         self.presenter = presenter
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.createNodeViewModelDelegate = createNodeViewModelDelegate
         self.dialogTransitionController = MDCDialogTransitionController()
-        self.isRenameNode = isRenameNode
+        self.createNodeViewType = createNodeViewType
     }
 
     func start() {
@@ -48,8 +53,9 @@ class CreateNodeSheetCoordinator: Coordinator {
                                                       parentListNode: parentListNode,
                                                       coordinatorServices: coordinatorServices,
                                                       delegate: createNodeViewModelDelegate,
-                                                      isRenameNode: isRenameNode)
+                                                      createNodeViewType: createNodeViewType)
 
+        viewController.createNodeCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices
         viewController.createNodeViewModel = createNodeViewModel
         viewController.modalPresentationStyle = .custom
@@ -57,5 +63,12 @@ class CreateNodeSheetCoordinator: Coordinator {
         viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
         createNodeSheetViewController = viewController
         presenter.present(viewController, animated: true)
+    }
+}
+
+// MARK: - Scanned document delegate
+extension CreateNodeSheetCoordinator: CreateNodeCoordinatorDelegate {
+    func saveScannedDocument(with title: String?, description: String?) {
+        createNodeCoordinatorDelegate?.saveScannedDocument(with: title, description: description)
     }
 }

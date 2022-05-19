@@ -21,6 +21,7 @@ import UIKit
 protocol FilePreviewScreenCoordinatorDelegate: AnyObject {
     func navigateBack()
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
+    func saveScannedDocument(for node: ListNode?, delegate: CreateNodeViewModelDelegate?)
 }
 
 class FilePreviewScreenCoordinator: Coordinator {
@@ -31,17 +32,22 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let excludedActionsTypes: [ActionMenuType]
     private let shouldPreviewLatestContent: Bool
     private let isLocalFilePreview: Bool
+    private let isScannedDocument: Bool
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
+    weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
          excludedActions: [ActionMenuType] = [],
          shouldPreviewLatestContent: Bool = true,
-         isLocalFilePreview: Bool = false) {
+         isLocalFilePreview: Bool = false,
+         isScannedDocument: Bool = false) {
         self.presenter = presenter
         self.listNode = listNode
         self.excludedActionsTypes = excludedActions
         self.shouldPreviewLatestContent = shouldPreviewLatestContent
         self.isLocalFilePreview = isLocalFilePreview
+        self.isScannedDocument = isScannedDocument
     }
 
     func start() {
@@ -52,8 +58,8 @@ class FilePreviewScreenCoordinator: Coordinator {
                                                         coordinatorServices: coordinatorServices,
                                                         excludedActions: excludedActionsTypes,
                                                         shouldPreviewLatestContent: shouldPreviewLatestContent,
-                                                        isLocalFilePreview: isLocalFilePreview)
-
+                                                        isLocalFilePreview: isLocalFilePreview,
+                                                        isScannedDocument: isScannedDocument)
         viewController.filePreviewCoordinatorDelegate = self
         viewController.coordinatorServices = coordinatorServices
         viewController.filePreviewViewModel = filePreviewViewModel
@@ -90,6 +96,20 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         coordinator.start()
         actionMenuCoordinator = coordinator
     }
+    
+    func saveScannedDocument(for node: ListNode?, delegate: CreateNodeViewModelDelegate?) {
+        if let node = node {
+            let actionMenu = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments, type: .scanDocuments)
+            let coordinator = CreateNodeSheetCoordinator(with: self.presenter,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         createNodeViewType: .scanDocument)
+            coordinator.createNodeCoordinatorDelegate = self
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
+    }
 }
 
 extension FilePreviewScreenCoordinator: NodeActionMoveDelegate {
@@ -102,3 +122,47 @@ extension FilePreviewScreenCoordinator: NodeActionMoveDelegate {
     }
 }
 
+// MARK: - Scanned document delegate
+extension FilePreviewScreenCoordinator: CreateNodeCoordinatorDelegate {
+    func saveScannedDocument(with title: String?, description: String?) {
+        if let node = filePreviewViewController?.filePreviewViewModel?.listNode {
+            let nodeTitle = node.title
+            var extensionType = ""
+            let titleArray = nodeTitle.components(separatedBy: ".")
+            if titleArray.count > 1 {
+                extensionType = titleArray[1]
+            }
+            
+            let uploadTransfer = UploadTransfer(parentNodeId: node.parentGuid ?? "",
+                                                nodeName: title ?? "",
+                                                extensionType: extensionType,
+                                                mimetype: node.mimeType ?? "",
+                                                nodeDescription: "",
+                                                localFilenamePath: node.uploadLocalPath ?? "")
+            
+            let uploadTransferDataAccessor = UploadTransferDataAccessor()
+            uploadTransferDataAccessor.store(uploadTransfers: [uploadTransfer])
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                guard let sSelf = self else { return }
+                Snackbar.display(with: LocalizationConstants.Approved.uploadDocument,
+                                 type: .approve,
+                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                                 finish: nil)
+            })
+            triggerUpload()
+            navigateBack()
+        }
+    }
+    
+    func triggerUpload() {
+        let connectivityService = coordinatorServices.connectivityService
+        let syncTriggersService = coordinatorServices.syncTriggersService
+        syncTriggersService?.triggerSync(for: .userDidInitiateUploadTransfer)
+
+        if connectivityService?.status == .cellular &&
+            UserProfile.allowSyncOverCellularData == false {
+            syncTriggersService?.showOverrideSyncOnCellularDataDialog(for: .userDidInitiateUploadTransfer)
+        }
+    }
+}

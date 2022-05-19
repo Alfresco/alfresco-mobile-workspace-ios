@@ -52,7 +52,7 @@ extension FileManagerViewController: UIDocumentPickerDelegate {
     }
     
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate)
+        fileManagerDataSource?.fetchSelectedAssets(for: urls, and: fileManagerDelegate, isScannedDocument: false)
         self.dismiss(animated: true, completion: nil)
     }
     

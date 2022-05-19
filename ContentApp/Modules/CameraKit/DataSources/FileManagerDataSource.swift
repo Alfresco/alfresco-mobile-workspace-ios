@@ -27,7 +27,7 @@ class FileManagerDataSource {
         self.folderToSavePath = folderToSavePath
     }
     
-    func fetchSelectedAssets(for urls: [URL], and delegate: FileManagerAssetDelegate?) {
+    func fetchSelectedAssets(for urls: [URL], and delegate: FileManagerAssetDelegate?, isScannedDocument: Bool) {
         let fetchGroup = DispatchGroup()
         var fileAssets: [FileAsset] = []
         for url in urls {
@@ -42,7 +42,7 @@ class FileManagerDataSource {
         }
         
         fetchGroup.notify(queue: CameraKit.cameraWorkerQueue) {
-            delegate?.didEndFileManager(for: fileAssets)
+            delegate?.didEndFileManager(for: fileAssets, isScannedDocument: isScannedDocument)
         }
     }
     

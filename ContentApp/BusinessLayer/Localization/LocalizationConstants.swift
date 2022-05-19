@@ -133,7 +133,7 @@ struct LocalizationConstants {
         static let uploadMedia = NSLocalizedString("approved-upload-media", comment: "")
         static let movedFileFolderSuccess = NSLocalizedString("approved-moved-folder", comment: "")
         static let updated = NSLocalizedString("approved-update", comment: "")
-
+        static let uploadDocument = NSLocalizedString("approved-upload-scanned-document", comment: "")
     }
 
     struct Theme {
@@ -242,6 +242,8 @@ struct LocalizationConstants {
         static let sessionUnavailableMessage =  NSLocalizedString("dialog-session-unavailable-message", comment: "")
         static let internetUnavailableTitle =  NSLocalizedString("dialog-internet-unavailable-title", comment: "")
         static let internetUnavailableMessage =  NSLocalizedString("dialog-internet-unavailable-message", comment: "")
+        static let discardScanFilesTitle = NSLocalizedString("dialog-discard-scanner-title", comment: "")
+        static let discardScanFilesMessage = NSLocalizedString("dialog-discard-scanner-message", comment: "")
     }
 
     struct EmptyLists {

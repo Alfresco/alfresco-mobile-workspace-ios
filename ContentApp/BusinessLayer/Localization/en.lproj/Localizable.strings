@@ -119,6 +119,7 @@
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
 "approved-update" = "%@ was updated";
+"approved-upload-scanned-document" = "Document scheduled for upload.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";
@@ -301,3 +302,8 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Discard scan Files?";
+"dialog-discard-scanner-message" = "Scan files will be discarded if you exit.";
+

@@ -427,6 +427,7 @@
 		C9E1801227A96FCC0006747E /* EventObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECED27254308280097DB3F /* EventObservable.swift */; };
 		C9E1BF262729213300900C42 /* SearchNumberRangeComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */; };
 		C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */; };
+		C9E25F5528325159006978C3 /* ScanDocumentsKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9E25F5428325159006978C3 /* ScanDocumentsKit.swift */; };
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
 		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */; };
@@ -910,6 +911,7 @@
 		C9DCB7A22726827D0083D80B /* TestPreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPreviewViewModel.swift; sourceTree = "<group>"; };
 		C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewController.swift; sourceTree = "<group>"; };
 		C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewModel.swift; sourceTree = "<group>"; };
+		C9E25F5428325159006978C3 /* ScanDocumentsKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentsKit.swift; sourceTree = "<group>"; };
 		C9E79E7427A3E653002BC5A0 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9E79E7927A3E653002BC5A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		C9E79E7B27A3E653002BC5A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1801,6 +1803,7 @@
 			children = (
 				C9748BF1282F7CF000B277B3 /* ScanDocumentsScreenCoordinator.swift */,
 				C9748BF3282F835000B277B3 /* ScanDocumentsViewController.swift */,
+				C9E25F5428325159006978C3 /* ScanDocumentsKit.swift */,
 			);
 			path = "Sub-Coordinators";
 			sourceTree = "<group>";
@@ -3560,6 +3563,7 @@
 				C9D4FAB5278329F50008C4AA /* FileAsset.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
 				C947C5B727D0C2FB0000D902 /* UploadFilesScreenCoordinator.swift in Sources */,
+				C9E25F5528325159006978C3 /* ScanDocumentsKit.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
 				C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */,

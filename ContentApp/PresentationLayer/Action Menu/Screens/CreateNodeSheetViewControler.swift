@@ -29,15 +29,13 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     @IBOutlet weak var descriptionTextArea: MDCOutlinedTextArea!
     @IBOutlet weak var uploadButton: MDCButton!
     @IBOutlet weak var cancelButton: MDCButton!
-
     var createNodeViewModel: CreateNodeViewModel?
-    var isRenameNode = false
-
     var enableUploadButton = false {
         didSet {
             uploadButton.isEnabled = enableUploadButton
         }
     }
+    weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
 
     // MARK: - View Life Cycle
 
@@ -69,17 +67,18 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
-        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
+        let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self,
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
-                if isRenameNode {
-                    AlfrescoLog.debug("Rename Node API")
+                if createNodeViewType == .rename {
                     if let node = sSelf.createNodeViewModel?.parentListNode {
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                     }
+                } else if createNodeViewType == .scanDocument {
+                    sSelf.createNodeCoordinatorDelegate?.saveScannedDocument(with: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                 } else {
                     sSelf.createNodeViewModel?.createNode(with: nodeName,
                                                           description: (descriptionNode.isEmpty) ? nil : descriptionNode)
@@ -95,18 +94,30 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
-        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
-        if isRenameNode {
-            uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
+        let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
+        if createNodeViewType == .rename {
+            titleCreate.text = createNodeViewModel?.createAction()
             nameTextField.text = self.createNodeViewModel?.parentListNode.title ?? ""
+            uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
+            enableUploadButton(for: nameTextField.text)
+        } else if createNodeViewType == .scanDocument {
+            titleCreate.text = LocalizationConstants.General.create
+            nameTextField.text = getTitleForScannedDocument()
+            uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
             enableUploadButton(for: nameTextField.text)
         } else {
+            titleCreate.text = createNodeViewModel?.createAction()
             uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
         }
         cancelButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         descriptionTextArea.label.text = LocalizationConstants.TextFieldPlaceholders.description
         nameTextField.label.text = LocalizationConstants.TextFieldPlaceholders.name
-        titleCreate.text = createNodeViewModel?.createAction()
+    }
+    
+    private func getTitleForScannedDocument() -> String {
+        let title = self.createNodeViewModel?.parentListNode.title ?? ""
+        let titleArray = title.components(separatedBy: ".")
+        return titleArray.first ?? ""
     }
 
     override func applyComponentsThemes() {

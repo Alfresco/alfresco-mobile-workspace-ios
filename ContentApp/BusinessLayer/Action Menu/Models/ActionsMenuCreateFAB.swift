@@ -24,14 +24,15 @@ struct ActionsMenuCreateFAB {
         
         let actionCreateFolder = ActionMenu(title: LocalizationConstants.ActionMenu.createFolder,
                                             type: .createFolder)
-        var actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
-                                           type: .uploadMedia)
-        var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
-                                           type: .createMedia)
-        let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
-                                            type: .uploadFiles)
         let actionScanDocuments = ActionMenu(title: LocalizationConstants.ActionMenu.scanDocuments,
                                             type: .scanDocuments)
+        var actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createMedia,
+                                           type: .createMedia)
+        var actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadMedia,
+                                           type: .uploadMedia)
+        let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
+                                            type: .uploadFiles)
+       
         
         if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
@@ -41,11 +42,11 @@ struct ActionsMenuCreateFAB {
         }
         
         let actions1 = [actionCreateFolder,
-                        actionUploadMedia,
+                        actionScanDocuments,
                         actionCreateMedia,
-                        actionUploadFiles,
-                        actionScanDocuments]
-        
+                        actionUploadMedia,
+                        actionUploadFiles
+                        ]
         actions.append(actions1)
         return actions
     }
