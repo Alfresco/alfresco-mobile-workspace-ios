@@ -142,6 +142,14 @@ extension FilePreviewScreenCoordinator: CreateNodeCoordinatorDelegate {
             
             let uploadTransferDataAccessor = UploadTransferDataAccessor()
             uploadTransferDataAccessor.store(uploadTransfers: [uploadTransfer])
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: { [weak self] in
+                guard let sSelf = self else { return }
+                Snackbar.display(with: LocalizationConstants.Approved.uploadDocument,
+                                 type: .approve,
+                                 presentationHostViewOverride: sSelf.presenter.viewControllers.last?.view,
+                                 finish: nil)
+            })
             triggerUpload()
             navigateBack()
         }

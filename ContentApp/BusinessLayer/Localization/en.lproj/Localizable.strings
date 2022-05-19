@@ -119,6 +119,7 @@
 "approved-upload-media" = "Media scheduled for upload.";
 "approved-moved-folder" = "%@ moved successfully.";
 "approved-update" = "%@ was updated";
+"approved-upload-scanned-document" = "Document scheduled for upload.";
 
 // MARK: - Settings Screen
 "theme" = "Appearance";

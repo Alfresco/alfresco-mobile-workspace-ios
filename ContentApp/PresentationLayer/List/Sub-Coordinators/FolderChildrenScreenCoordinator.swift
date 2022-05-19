@@ -167,10 +167,16 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
     }
     
     func scanDocumentsAction() {
-        let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
-                                                        parentListNode: listNode)
-        coordinator.start()
-        scanDocumentsCoordinator = coordinator
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let coordinator = ScanDocumentsScreenCoordinator(with: presenter,
+                                                            parentListNode: listNode)
+            coordinator.start()
+            scanDocumentsCoordinator = coordinator
+        } else {
+            let title = LocalizationConstants.Alert.alertTitle
+            let message = LocalizationConstants.Alert.cameraUnavailable
+            self.showAlert(with: title, and: message)
+        }
     }
     
     func moveNodeTapped(for sourceNode: ListNode,
