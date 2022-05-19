@@ -57,11 +57,13 @@ class ResultViewController: SystemThemableViewController {
     private let recentSearchCellHeight: CGFloat = 44.0
     private let chipSearchCellMinimHeight: CGFloat = 32.0
     private let chipSearchCellMinimWidth: CGFloat = 52.0
-    private let configurationViewHeight: CGFloat = 50.0
+    private var configurationViewHeight: CGFloat = 50.0
     private let textChipMaxCharacters = 30
     private let textChipMaxPrefix = 5
     private let textChipMaxSufffix = 5
-
+    @IBOutlet weak var topConfigurationView: NSLayoutConstraint!
+    @IBOutlet weak var heightChipCollectionView: NSLayoutConstraint!
+    
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
@@ -75,17 +77,33 @@ class ResultViewController: SystemThemableViewController {
         pageController?.delegate = listComponentViewController
 
         if let listComponentView = listComponentViewController.view {
-            listComponentView.translatesAutoresizingMaskIntoConstraints = false
-
-            view.insertSubview(listComponentView, aboveSubview: chipsCollectionView)
-            listComponentView.topAnchor.constraint(equalTo: chipsCollectionView.bottomAnchor,
-                                                   constant: 5).isActive = true
-            listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
-                                                    constant: 0).isActive = true
-            listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor,
-                                                     constant: 0).isActive = true
-            listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                                      constant: 0).isActive = true
+            let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+            
+            if isMove == false {
+                listComponentView.translatesAutoresizingMaskIntoConstraints = false
+                view.insertSubview(listComponentView, aboveSubview: chipsCollectionView)
+                listComponentView.topAnchor.constraint(equalTo: chipsCollectionView.bottomAnchor,
+                                                       constant: 5).isActive = true
+                listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                                                        constant: 0).isActive = true
+                listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                                                         constant: 0).isActive = true
+                listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                          constant: 0).isActive = true
+            } else {
+                listComponentViewController.progressView.alpha = 0
+                listComponentView.translatesAutoresizingMaskIntoConstraints = false
+                
+                view.insertSubview(listComponentView, aboveSubview: progressView)
+                listComponentView.topAnchor.constraint(equalTo: progressView.bottomAnchor,
+                                                       constant: 0).isActive = true
+                listComponentView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor,
+                                                        constant: 0).isActive = true
+                listComponentView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor,
+                                                         constant: 0).isActive = true
+                listComponentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                                          constant: 0).isActive = true
+            }
         }
         resultsListController = listComponentViewController
         resultsListController?.listItemActionDelegate = self.listItemActionDelegate
@@ -98,7 +116,22 @@ class ResultViewController: SystemThemableViewController {
         addChipsCollectionViewFlowLayout()
         setupBindings()
         setupDropDownView()
+        removeSearchFacetsChips()
         self.pageController?.resultPageDelegate = self
+    }
+    
+    func removeSearchFacetsChips() {
+        let isMove = appDelegate()?.isMoveFilesAndFolderFlow ?? false
+        if isMove {
+            configurationView.alpha = 0
+            configurationView.isHidden = true
+            chipsCollectionView.alpha = 0
+        
+            heightConfigurationViewConstraint.constant = 0
+            heightChipCollectionView.constant = 0
+            topConfigurationView.constant = 0
+            configurationViewHeight = 0
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

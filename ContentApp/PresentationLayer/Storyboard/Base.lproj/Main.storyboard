@@ -1266,12 +1266,14 @@
                         <outlet property="chipsCollectionView" destination="q9L-jX-ymC" id="c9g-e0-qyq"/>
                         <outlet property="configurationImageView" destination="CPE-Ol-9RV" id="oan-4Z-HMA"/>
                         <outlet property="configurationView" destination="MXe-0K-ciV" id="vK3-GK-nxp"/>
+                        <outlet property="heightChipCollectionView" destination="67W-xI-NDf" id="7IM-rk-4fZ"/>
                         <outlet property="heightConfigurationViewConstraint" destination="NK9-co-Kh0" id="hVZ-BY-hiI"/>
                         <outlet property="progressView" destination="LRM-w0-NAG" id="lP6-cX-7hY"/>
                         <outlet property="recentSearchCollectionView" destination="R2V-xg-rmY" id="GL9-vH-gM0"/>
                         <outlet property="recentSearchesTitle" destination="G6H-m0-aVG" id="yDH-bn-Rcb"/>
                         <outlet property="recentSearchesView" destination="aW3-Eu-ZXR" id="eMM-yM-ZJu"/>
                         <outlet property="resetFilterButton" destination="d2E-wZ-pKp" id="fgP-SU-MQ9"/>
+                        <outlet property="topConfigurationView" destination="nWT-09-WXR" id="qtb-nr-5W0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YAh-kL-b3U" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
