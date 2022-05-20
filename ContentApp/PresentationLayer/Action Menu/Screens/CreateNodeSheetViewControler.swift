@@ -70,14 +70,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
         let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
-        if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if var nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self,
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
                 if isRenameNode {
-                    AlfrescoLog.debug("Rename Node API")
                     if let node = sSelf.createNodeViewModel?.parentListNode {
+                        nodeName = nodeName + "." + sSelf.getTitleAndExtensionForRenameNode().extensionn
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                     }
                 } else {
@@ -98,7 +98,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
         if isRenameNode {
             uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
-            nameTextField.text = self.createNodeViewModel?.parentListNode.title ?? ""
+            nameTextField.text = getTitleAndExtensionForRenameNode().name
             enableUploadButton(for: nameTextField.text)
         } else {
             uploadButton.setTitle(LocalizationConstants.General.create, for: .normal)
@@ -109,6 +109,15 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         titleCreate.text = createNodeViewModel?.createAction()
     }
 
+    private func getTitleAndExtensionForRenameNode() -> (name: String, extensionn: String) {
+        let title = self.createNodeViewModel?.parentListNode.title ?? ""
+        let titleArray = title.components(separatedBy: ".")
+        if titleArray.count > 1 {
+            return (titleArray[0], titleArray[1])
+        }
+        return ("", "")
+    }
+    
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard
