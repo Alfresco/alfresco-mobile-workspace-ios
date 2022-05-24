@@ -182,15 +182,6 @@ class CreateNodeViewModel {
                     actionHandler(action)
                 }
             cancelAction.accessibilityIdentifier = "cancelActionButton"
-
-//            if let presentationContext = UIViewController.applicationTopMostPresented {
-//                let downloadDialog = presentationContext.showDialog(title: nil,
-//                                                                    message: nil,
-//                                                                    actions: [cancelAction],
-//                                                                    accesoryView: uploadDialogView,
-//                                                                    completionHandler: {})
-//                return downloadDialog
-//            }
         }
         return nil
     }
