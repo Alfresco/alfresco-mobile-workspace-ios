@@ -66,7 +66,6 @@ extension ScanDocumentsViewController: VNDocumentCameraViewControllerDelegate {
     }
     
     func createPDF(with images: [UIImage]) {
-        AlfrescoLog.debug("Images: \(images)")
         let pdf = images.makePDF()
         if let data = pdf?.dataRepresentation() {
             let name = UIFunction.defaultFileName(with: prefixScannedFileName)
