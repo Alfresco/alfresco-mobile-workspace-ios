@@ -30,9 +30,18 @@ extension SystemSearchViewController: NodeActionsViewModelDelegate,
             displaySnackbar(with: String(format: LocalizationConstants.Approved.created,
                                          node?.truncateTailTitle() ?? ""),
                             type: .approve)
+            self.openFolderAfterCreate(for: node)
         }
     }
-
+    
+    func openFolderAfterCreate(for node: ListNode?) {
+        let controllers = self.navigationController?.viewControllers ?? []
+        for controller in controllers where controller is ListViewController {
+            (controller as? ListViewController)?.listController?.openFolderAfterCreate(for: node)
+            break
+        }
+    }
+    
     func handleFinishedAction(with action: ActionMenu?,
                               node: ListNode?,
                               error: Error?) {
