@@ -248,6 +248,17 @@ class ListComponentViewController: SystemThemableViewController {
         self.forceRefresh(with: indexPaths)
     }
     
+    func openFolderAfterCreate(for node: ListNode?) {
+        if let node = node {
+            guard let model = pageController?.dataSource else {
+                return
+            }
+            self.listItemActionDelegate?.showPreview(for: node,
+                                                      from: model)
+            self.listActionDelegate?.elementTapped(node: node)
+        }
+    }
+    
     private func forceRefresh(with indexPaths: [IndexPath]) {
         for indexPath in indexPaths {
             self.forceDisplayRefresh(for: indexPath)
