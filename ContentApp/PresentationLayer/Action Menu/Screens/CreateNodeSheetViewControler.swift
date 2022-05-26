@@ -111,11 +111,9 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     private func getTitleAndExtensionForRenameNode() -> (name: String, extensionn: String) {
         let title = self.createNodeViewModel?.parentListNode.title ?? ""
-        let titleArray = title.components(separatedBy: ".")
-        if titleArray.count > 1 {
-            return (titleArray[0], titleArray[1])
-        }
-        return ("", "")
+        let pathExtention = title.fileExtension()
+        let pathPrefix = title.fileName()
+        return (pathPrefix, pathExtention)
     }
     
     override func applyComponentsThemes() {
