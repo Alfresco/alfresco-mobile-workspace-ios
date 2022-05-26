@@ -69,13 +69,13 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
-        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
+        let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if var nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self,
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
-                if isRenameNode {
+                if createNodeViewType == .rename {
                     if let node = sSelf.createNodeViewModel?.parentListNode {
                         nodeName = nodeName + "." + sSelf.getTitleAndExtensionForRenameNode().extensionn
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
@@ -95,8 +95,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - Private Utils
 
     func addLocalization() {
-        let isRenameNode = self.createNodeViewModel?.isRenameNode ?? false
-        if isRenameNode {
+        let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
+        if createNodeViewType == .rename {
             uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
             nameTextField.text = getTitleAndExtensionForRenameNode().name
             enableUploadButton(for: nameTextField.text)

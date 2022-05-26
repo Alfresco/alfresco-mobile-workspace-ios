@@ -25,6 +25,12 @@ protocol CreateNodeViewModelDelegate: AnyObject {
     func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool)
 }
 
+enum CreateNodeViewType {
+    case create
+    case rename
+    case scanDocument
+}
+
 class CreateNodeViewModel {
     private var coordinatorServices: CoordinatorServices?
     private let nodeOperations: NodeOperations
@@ -35,7 +41,7 @@ class CreateNodeViewModel {
     private weak var delegate: CreateNodeViewModelDelegate?
     private var uploadDialog: MDCAlertController?
     private var uploadRequest: UploadRequest?
-    var isRenameNode = false
+    var createNodeViewType: CreateNodeViewType = .create
 
     // MARK: - Init
 
@@ -43,14 +49,14 @@ class CreateNodeViewModel {
          parentListNode: ListNode,
          coordinatorServices: CoordinatorServices?,
          delegate: CreateNodeViewModelDelegate?,
-         isRenameNode: Bool) {
+         createNodeViewType: CreateNodeViewType) {
 
         self.coordinatorServices = coordinatorServices
         self.nodeOperations = NodeOperations(accountService: coordinatorServices?.accountService)
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.delegate = delegate
-        self.isRenameNode = isRenameNode
+        self.createNodeViewType = createNodeViewType
     }
 
     // MARK: - Public

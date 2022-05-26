@@ -26,20 +26,20 @@ class CreateNodeSheetCoordinator: Coordinator {
     private let parentListNode: ListNode
     private weak var createNodeViewModelDelegate: CreateNodeViewModelDelegate?
     private var dialogTransitionController: MDCDialogTransitionController
-    private var isRenameNode = false
+    var createNodeViewType: CreateNodeViewType = .create
 
     init(with presenter: UINavigationController,
          actionMenu: ActionMenu,
          parentListNode: ListNode,
          createNodeViewModelDelegate: CreateNodeViewModelDelegate?,
-         isRenameNode: Bool = false) {
+         createNodeViewType: CreateNodeViewType) {
 
         self.presenter = presenter
         self.actionMenu = actionMenu
         self.parentListNode = parentListNode
         self.createNodeViewModelDelegate = createNodeViewModelDelegate
         self.dialogTransitionController = MDCDialogTransitionController()
-        self.isRenameNode = isRenameNode
+        self.createNodeViewType = createNodeViewType
     }
 
     func start() {
@@ -48,7 +48,7 @@ class CreateNodeSheetCoordinator: Coordinator {
                                                       parentListNode: parentListNode,
                                                       coordinatorServices: coordinatorServices,
                                                       delegate: createNodeViewModelDelegate,
-                                                      isRenameNode: isRenameNode)
+                                                      createNodeViewType: createNodeViewType)
 
         viewController.coordinatorServices = coordinatorServices
         viewController.createNodeViewModel = createNodeViewModel
