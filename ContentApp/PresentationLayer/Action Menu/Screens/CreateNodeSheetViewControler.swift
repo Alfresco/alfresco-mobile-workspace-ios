@@ -77,7 +77,10 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
                 if createNodeViewType == .rename {
                     if let node = sSelf.createNodeViewModel?.parentListNode {
-                        nodeName = nodeName + "." + sSelf.getTitleAndExtensionForRenameNode().extensionn
+                        let fileExtension = sSelf.getTitleAndExtensionForRenameNode().extensionn
+                        if !fileExtension.isEmpty {
+                            nodeName = nodeName + "." + sSelf.getTitleAndExtensionForRenameNode().extensionn
+                        }
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                     }
                 } else {
