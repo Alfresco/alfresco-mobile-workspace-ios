@@ -98,7 +98,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if createNodeViewType == .rename {
             titleCreate.text = createNodeViewModel?.createAction()
-            nameTextField.text = self.createNodeViewModel?.parentListNode.title ?? ""
+            nameTextField.text = getTitleAndExtensionForRenameNode().name
             uploadButton.setTitle(LocalizationConstants.General.save, for: .normal)
             enableUploadButton(for: nameTextField.text)
         } else if createNodeViewType == .scanDocument {
