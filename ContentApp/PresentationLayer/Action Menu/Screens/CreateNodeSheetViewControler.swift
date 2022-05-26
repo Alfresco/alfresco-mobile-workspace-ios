@@ -68,13 +68,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
-        if let nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+        if var nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
             self.dismiss(animated: true) { [weak self] in
                 guard let sSelf = self,
                       let descriptionNode = sSelf.descriptionTextArea.textView.text else { return }
                 if createNodeViewType == .rename {
                     if let node = sSelf.createNodeViewModel?.parentListNode {
+                        nodeName = nodeName + "." + sSelf.getTitleAndExtensionForRenameNode().extensionn
                         sSelf.createNodeViewModel?.updateNode(with: node, name: nodeName, description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                     }
                 } else if createNodeViewType == .scanDocument {
@@ -120,6 +121,13 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         return titleArray.first ?? ""
     }
 
+    private func getTitleAndExtensionForRenameNode() -> (name: String, extensionn: String) {
+        let title = self.createNodeViewModel?.parentListNode.title ?? ""
+        let pathExtention = title.fileExtension()
+        let pathPrefix = title.fileName()
+        return (pathPrefix, pathExtention)
+    }
+    
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
         guard
