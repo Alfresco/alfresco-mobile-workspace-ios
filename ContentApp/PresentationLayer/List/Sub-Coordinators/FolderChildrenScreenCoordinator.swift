@@ -121,7 +121,7 @@ extension FolderChildrenScreenCoordinator: ListItemActionDelegate {
                                                      actionMenu: actionMenu,
                                                      parentListNode: listNode,
                                                      createNodeViewModelDelegate: delegate,
-                                                     createNodeViewType: .rename)
+                                                     createNodeViewType: .create)
         coordinator.start()
         createNodeSheetCoordinator = coordinator
     }
