@@ -24,8 +24,11 @@ extension Array where Element: UIImage {
       func makePDF() -> PDFDocument? {
         let pdfDocument = PDFDocument()
         for (index, image) in self.enumerated() {
-            let pdfPage = PDFPage(image: image)
-            pdfDocument.insert(pdfPage!, at: index)
+            if let data = image.jpegData(compressionQuality: 0.75), let image = UIImage(data: data) {
+                if let pdfPage = PDFPage(image: image) {
+                    pdfDocument.insert(pdfPage, at: index)
+                }
+            }
         }
         return pdfDocument
     }
