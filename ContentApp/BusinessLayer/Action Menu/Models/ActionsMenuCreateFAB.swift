@@ -33,7 +33,6 @@ struct ActionsMenuCreateFAB {
         let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
                                             type: .uploadFiles)
        
-        
         if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
                                            type: .uploadMedia)
@@ -41,13 +40,16 @@ struct ActionsMenuCreateFAB {
                                            type: .createMedia)
         }
         
-        let actions1 = [actionCreateFolder,
-                        actionScanDocuments,
+        var actionMenus = [actionCreateFolder,
                         actionCreateMedia,
                         actionUploadMedia,
                         actionUploadFiles
                         ]
-        actions.append(actions1)
+        
+        if ConfigurationManager.shared.isPaidUser() {
+            actionMenus.insert(actionScanDocuments, at: 1)
+        }
+        actions.append(actionMenus)
         return actions
     }
 }
