@@ -33,28 +33,27 @@ struct ActionsMenuCreateFAB {
         let actionUploadFiles = ActionMenu(title: LocalizationConstants.ActionMenu.uploadFiles,
                                             type: .uploadFiles)
        
+        var actionMenus = [ActionMenu]()
         if !ConfigurationManager.shared.isPaidUser() {
             actionUploadMedia = ActionMenu(title: LocalizationConstants.ActionMenu.uploadSingleMedia,
                                            type: .uploadMedia)
             actionCreateMedia = ActionMenu(title: LocalizationConstants.ActionMenu.createSingleMedia,
                                            type: .createMedia)
-        }
-        
-        var actions1 = [actionCreateFolder,
-                        actionCreateMedia,
-                        actionUploadMedia,
-                        actionUploadFiles
-                        ]
-        if ConfigurationManager.shared.isPaidUser() {
-            actions1 = [actionCreateFolder,
+            
+            actionMenus = [actionCreateFolder,
+                            actionCreateMedia,
+                            actionUploadMedia,
+                            actionUploadFiles
+                            ]
+        } else {
+            actionMenus = [actionCreateFolder,
                             actionScanDocuments,
                             actionCreateMedia,
                             actionUploadMedia,
                             actionUploadFiles
                             ]
         }
-        
-        actions.append(actions1)
+        actions.append(actionMenus)
         return actions
     }
 }
