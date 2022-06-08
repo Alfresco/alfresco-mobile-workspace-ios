@@ -28,6 +28,9 @@
 "delete" = "Löschen";
 "create" = "Erstellen";
 "save" = "Speichern";
+"discard" = "Verwerfen";
+"rename" = "Umbenennen";
+"update" = "Aktualisieren";
 
 // MARK: - Buttons
 "connect" = "Verbinden";
@@ -114,6 +117,9 @@
 "approved-mark-offline" = "%@ wird offline zur Verfügung gestellt.";
 "approved-remove-offline" = "%@ ist offline nicht mehr verfügbar.";
 "approved-upload-media" = "Zum Hochladen vorgesehene Medien.";
+"approved-moved-folder" = "%@ wurde erfolgreich verschoben";
+"approved-update" = "%@ wurde aktualisiert";
+"approved-upload-scanned-document" = "Zum Hochladen vorgesehenes Dokument.";
 
 // MARK: - Settings Screen
 "theme" = "Aussehen";
@@ -185,7 +191,7 @@
 "APP.SEARCH.TEXT.FOLDER" = "Ordner";
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facet-Abfragen nach Typ";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facet-Abfragen nach Größe";
-"APP.SEARCH.FIELD.PLACEHOLDER" = "Suchen";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Suche";
 "file-size-unit" = "KB";
 
 // MARK: - Group List Section
@@ -193,7 +199,7 @@
 "yesterday" = "Gestern";
 "this-week" = "Diese Woche";
 "last-week" = "Letzte Woche";
-"this-month" = "Diesen Monat";
+"this-month" = "This month";
 "older" = "Älter";
 
 // MARK: - Browse Static List
@@ -215,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Zu Favoriten hinzufügen";
 "action-menu-remove-favorite" = "Aus Favoriten entfernen";
-"action-menu-move-trash" = "In Papierkorb verschieben";
+"action-menu-move-trash" = "In den Papierkorb bewegen";
 "action-menu-download" = "Öffnen mit";
 "action-menu-restore" = "Wiederherstellen";
 "action-menu-permanently-delete" = "Dauerhaft löschen";
@@ -227,7 +233,12 @@
 "action-menu-remove-offline" = "Offline entfernen";
 "action-menu-create-media" = "Bilder oder Videos aufnehmen";
 "action-menu-upload-media" = "Fotos oder Videos hochladen";
+"action-menu-create-single-media" = "Bilder oder Videos aufnehmen";
+"action-menu-upload-single-media" = "Foto oder Video hochladen";
 "action-menu-upload-files" = "Dateien hochladen";
+"action-menu-move-folder" = "Verschieben";
+"action-menu-rename-node" = "Umbenennen";
+"action-menu-scan-documents" = "Dokumente scannen";
 
 
 // MARK: - Dialog
@@ -239,14 +250,15 @@
 "dialog-session-expired-message" = "Sie wurden abgemeldet. Melden Sie sich zum Fortfahren wieder an.";
 "dialog-override-sync-cellular-data-title" = "Mobilfunkdaten verwenden?";
 "dialog-override-sync-cellular-data-message" = "Dadurch werden Ihre Einstellungen überschrieben und der Download erfolgt in diesem Fall über Mobilfunkdaten. Andernfalls beginnt der Download später nach dem Herstellen einer WLAN-Verbindung.";
+"dialog-discard-captures-title" = "Aufnahmen verwerfen?";
+"dialog-discard-captures-message" = "%d Mediendateien werden verworfen, wenn Sie beenden.";
 "dialog-session-unavailable-title" = "Sitzung nicht auffindbar";
 "dialog-session-unavailable-message" = "Tippen zum Starten von Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Keine Internetverbindung";
 "dialog-internet-unavailable-message" = "Bitte überprüfen Sie Ihre Internetverbindung und starten anschließend den Vorgang erneut.";
 
-
 // MARK: - Empty List
-"empty-recent-title" = "Keine aktuellen Dateien";
+"empty-recent-title" = "Keine benutzten Dateien";
 "empty-recent-description" = "Hier werden Dateien aufgeführt, die Sie anzeigen und bearbeiten.";
 "empty-favorites-files-folders-title" = "Keine Dateien oder Ordner als Favoriten";
 "empty-favorites-libraries-title" = "Keine Bibliotheken als Favoriten";
@@ -264,7 +276,7 @@
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";
-"privacy-photos-description" = "Um Fotos oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
+"privacy-photos-description" = "Um Bilder oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
 "privacy-camera-title" = "Mobile Workspace benötigt Kamerazugriff";
 "privacy-camera-description" = "Um Fotos und Videos aufzunehmen und hochzuladen, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
 "privacy-button" = "Datenschutzeinstellungen prüfen";
@@ -276,6 +288,10 @@
 "on-flash" = "An";
 "off-flash" = "Aus";
 
+// MARK: - Alert
+"alert-title" = "Warnung";
+"camera-unavailable" = "Gerät unterstützt keine Kamera";
+
 // MARK: - Extension
 "save-to-alfresco" = "Speichern für Alfresco";
 "upload" = "Hochladen";
@@ -285,3 +301,9 @@
 "waiting-title" = "Warten";
 "dialog-finished-uploading-message" = "Hochladen von %d Dateien abgeschlossen";
 "transfer-files" = "Übertragungen";
+"unsupported-file-format" = "Nicht unterstütztes Dateiformat";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Gescannte Dateien verwerfen?";
+"dialog-discard-scanner-message" = "Gescannte Dateien werden verworfen, wenn Sie beenden.";
+

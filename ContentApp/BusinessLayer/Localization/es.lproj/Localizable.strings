@@ -22,12 +22,15 @@
 // MARK: - General
 "retry" = "Reintentar";
 "yes" = "Sí";
-"ok" = "Aceptar";
+"ok" = "OK";
 "later" = "Más tarde";
 "cancel" = "Cancelar";
 "delete" = "Eliminar";
 "create" = "Crear";
 "save" = "Guardar";
+"discard" = "Descartar";
+"rename" = "Cambiar nombre";
+"update" = "Actualizar";
 
 // MARK: - Buttons
 "connect" = "Conectar";
@@ -69,7 +72,7 @@
 "sync-failed" = "Error al sincronizar";
 
 // MARK: - Tabs Titles
-"settings" = "﻿Configuración";
+"settings" = "Ajustes";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
@@ -114,6 +117,9 @@
 "approved-mark-offline" = "%@ estará disponible sin conexión.";
 "approved-remove-offline" = "%@ ya no estará disponible sin conexión.";
 "approved-upload-media" = "Ficheros multimedia programados para cargar.";
+"approved-moved-folder" = "%@ se ha movido correctamente";
+"approved-update" = "%@ se ha actualizado";
+"approved-upload-scanned-document" = "Ficheros programados para cargar.";
 
 // MARK: - Settings Screen
 "theme" = "Apariencia";
@@ -225,9 +231,14 @@
 "action-menu-create-folder" = "Nueva carpeta";
 "action-menu-mark-offline" = "Disponible sin conexión";
 "action-menu-remove-offline" = "Quitar sin conexión";
-"action-menu-create-media" = "Tomar una foto o un vídeo";
+"action-menu-create-media" = "Tomar fotos o vídeos";
 "action-menu-upload-media" = "Cargar fotos o vídeos";
+"action-menu-create-single-media" = "Tomar una foto o un vídeo";
+"action-menu-upload-single-media" = "Cargar una foto o vídeo";
 "action-menu-upload-files" = "Cargar ficheros";
+"action-menu-move-folder" = "Mover";
+"action-menu-rename-node" = "Cambiar nombre";
+"action-menu-scan-documents" = "Escanear documentos";
 
 
 // MARK: - Dialog
@@ -239,11 +250,12 @@
 "dialog-session-expired-message" = "Su sesión ya no está activa. Vuelva a iniciar sesión para continuar.";
 "dialog-override-sync-cellular-data-title" = "¿Utilizar los datos móviles?";
 "dialog-override-sync-cellular-data-message" = "Esto anulará su configuración y se descargará a través de datos móviles esta vez. De lo contrario, la descarga comenzará más tarde después de conectarse a Wi-Fi.";
+"dialog-discard-captures-title" = "¿Descartar capturas?";
+"dialog-discard-captures-message" = "Si sale, se descartarán %d ficheros multimedia.";
 "dialog-session-unavailable-title" = "Sesión no disponible";
 "dialog-session-unavailable-message" = "Toque para iniciar Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet no disponible";
 "dialog-internet-unavailable-message" = "Verifique su conexión a Internet y vuelva a intentarlo";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "No hay ficheros recientes";
@@ -251,7 +263,7 @@
 "empty-favorites-files-folders-title" = "No hay ficheros ni carpetas favoritos";
 "empty-favorites-libraries-title" = "No hay bibliotecas favoritas";
 "empty-favorites-description" = "Parece que no ha añadido nada.";
-"empty-folder-title" = "La carpeta está vacía";
+"empty-folder-title" = "Esta carpeta está vacía";
 "empty-folder-description" = "Parece que todavía no hay contenido.";
 "empty-search-title" = "¡Vaya!";
 "empty-search-description" = "No podemos encontrar lo que busca.";
@@ -260,7 +272,7 @@
 "empty-gallery-title" = "No hay fotos o vídeos";
 "empty-gallery-description" = "Intente añadir algunas fotos o vídeos a su dispositivo.";
 "empty-uploads-title" = "¡Carga completada!";
-"empty-uploads-description" = "No quedan ficheros para cargar. Vea que los ficheros estén en sus respectivas carpetas.";
+"empty-uploads-description" = "No quedan ficheros para cargar. Verifique los ficheros en sus respectivas carpetas.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
@@ -276,6 +288,10 @@
 "on-flash" = "Encendido";
 "off-flash" = "Apagado";
 
+// MARK: - Alert
+"alert-title" = "Alerta";
+"camera-unavailable" = "El dispositivo no es compatible con la cámara";
+
 // MARK: - Extension
 "save-to-alfresco" = "Guardar en Alfresco";
 "upload" = "Cargar";
@@ -285,3 +301,9 @@
 "waiting-title" = "En espera";
 "dialog-finished-uploading-message" = "Finalizada la carga de %d fichero(s)";
 "transfer-files" = "Transferencias";
+"unsupported-file-format" = "Formato de fichero no compatible";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "¿Descartar ficheros escaneados?";
+"dialog-discard-scanner-message" = "Si sale, se descartarán los ficheros escaneados.";
+
