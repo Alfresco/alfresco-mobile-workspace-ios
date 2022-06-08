@@ -394,7 +394,7 @@ PODS:
   - PromisesObjC (2.1.0)
   - SVGKit (2.1.1):
     - CocoaLumberjack (~> 3.0)
-  - SwiftLint (0.47.0)
+  - SwiftLint (0.47.1)
 
 DEPENDENCIES:
   - AlfrescoAuth
@@ -494,7 +494,7 @@ SPEC CHECKSUMS:
   ObjectBox: 3c91dfac79ef926595ee08c5833bf0c3227c9ca8
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
-  SwiftLint: d41cc46a2ae58ac6d9f26954bc89f1d72e71fdef
+  SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
 PODFILE CHECKSUM: 26f7fab81157642a982fdc33d4c574cb42bbd898
 
