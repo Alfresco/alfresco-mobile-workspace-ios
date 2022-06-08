@@ -292,3 +292,4 @@
 "dialog-finished-uploading-message" = "%d file(s) finished uploading";
 "transfer-files" = "Transfers";
 "unsupported-file-format" = "Unsupported File Format";
+"search_move_warning" = "You cannot move to your own folder and subfolders.";

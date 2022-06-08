@@ -63,7 +63,7 @@ class ResultViewController: SystemThemableViewController {
     private let textChipMaxSufffix = 5
     @IBOutlet weak var topConfigurationView: NSLayoutConstraint!
     @IBOutlet weak var heightChipCollectionView: NSLayoutConstraint!
-    
+
     // MARK: - View Life Cycle
 
     override func viewDidLoad() {
