@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:4924419163766400768",
-      "lastPropertyId": "21:6666884979958749184",
+      "lastPropertyId": "22:2401775353080933632",
       "name": "ListNode",
       "properties": [
         {
@@ -107,6 +107,11 @@
         {
           "id": "21:6666884979958749184",
           "name": "uploadLocalPath",
+          "type": 9
+        },
+        {
+          "id": "22:2401775353080933632",
+          "name": "elementIds",
           "type": 9
         }
       ],

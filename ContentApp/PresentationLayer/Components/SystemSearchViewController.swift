@@ -29,6 +29,8 @@ class SystemSearchViewController: SystemThemableViewController {
     weak var listItemActionDelegate: ListItemActionDelegate?
     var isChildFolder = false
     var openNodeDelegate: OpenNodeDelegate?
+    var destinationNodeToMove: ListNode?
+    var sourceNodeToMove: ListNode?
 
     // MARK: - View Life Cycle
 
@@ -169,6 +171,7 @@ class SystemSearchViewController: SystemThemableViewController {
     private func createSearchController() -> UISearchController {
         let rvc = ResultViewController.instantiateViewController()
         rvc.pageController = searchPageController
+        rvc.pageController?.sourceNodeToMove = self.sourceNodeToMove
         rvc.coordinatorServices = coordinatorServices
         rvc.resultScreenDelegate = self
         rvc.resultsViewModel = searchViewModel
@@ -270,6 +273,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
+        resultsViewController?.resultsListController?.sourceNodeToMove = sourceNodeToMove
 
         UIView.animate(withDuration: 0.2) {
             searchController.searchBar.alpha = 1.0

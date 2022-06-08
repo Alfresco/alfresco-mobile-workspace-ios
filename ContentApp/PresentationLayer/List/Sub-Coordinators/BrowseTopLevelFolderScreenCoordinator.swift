@@ -52,7 +52,6 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
         let searchViewModel = topLevelBrowseDataSource.globalSearchViewModel
         let searchPageController = ListPageController(dataSource: searchViewModel.searchModel,
                                                       services: coordinatorServices)
-
         viewController.pageController = pageController
         viewController.searchPageController = searchPageController
         viewController.viewModel = viewModel
