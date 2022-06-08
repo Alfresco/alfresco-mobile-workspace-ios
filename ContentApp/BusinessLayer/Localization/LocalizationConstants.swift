@@ -283,6 +283,7 @@ struct LocalizationConstants {
     struct Alert {
         static let alertTitle = NSLocalizedString("alert-title", comment: "")
         static let cameraUnavailable = NSLocalizedString("camera-unavailable", comment: "")
+        static let searchMoveWarning = NSLocalizedString("search_move_warning", comment: "")
     }
     
     struct AppExtension {

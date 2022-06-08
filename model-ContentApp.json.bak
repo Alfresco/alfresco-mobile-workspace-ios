@@ -114,7 +114,7 @@
     },
     {
       "id": "2:381938179637751040",
-      "lastPropertyId": "9:5958632298443843840",
+      "lastPropertyId": "10:5866070128195577600",
       "name": "UploadTransfer",
       "properties": [
         {
@@ -139,11 +139,6 @@
           "type": 9
         },
         {
-          "id": "5:3230068557200613376",
-          "name": "filePath",
-          "type": 9
-        },
-        {
           "id": "6:370033443724301568",
           "name": "syncStatus",
           "type": 9
@@ -156,6 +151,11 @@
         {
           "id": "9:5958632298443843840",
           "name": "mimetype",
+          "type": 9
+        },
+        {
+          "id": "10:5866070128195577600",
+          "name": "localFilenamePath",
           "type": 9
         }
       ],
@@ -172,7 +172,8 @@
   "retiredIndexUids": [],
   "retiredPropertyUids": [
     1132591789422262528,
-    7705025082092647680
+    7705025082092647680,
+    3230068557200613376
   ],
   "retiredRelationUids": [],
   "version": 1

@@ -94,6 +94,7 @@ class ListNode: Hashable, Entity, DiffAware {
     var isFile = false
     var isFolder = false
     var uploadLocalPath: String?
+    var elementIds: String?
 
     // objectbox: convert = { "default": ".unknown" }
     var nodeType: NodeType = .unknown
@@ -125,7 +126,8 @@ class ListNode: Hashable, Entity, DiffAware {
          destination: String? = nil,
          isFile: Bool = false,
          isFolder: Bool = false,
-         uploadLocalPath: String = "") {
+         uploadLocalPath: String = "",
+         elementIds: String? = nil) {
         self.guid = guid
         self.siteID = siteID
         self.parentGuid = parentGuid
@@ -144,6 +146,7 @@ class ListNode: Hashable, Entity, DiffAware {
         self.isFile = isFile
         self.isFolder = isFolder
         self.uploadLocalPath = uploadLocalPath
+        self.elementIds = elementIds
     }
 
     // Default initializer required by ObjectBox

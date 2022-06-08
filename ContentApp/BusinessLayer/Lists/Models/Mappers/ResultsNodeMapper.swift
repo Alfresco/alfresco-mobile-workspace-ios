@@ -37,6 +37,7 @@ struct ResultsNodeMapper {
             mimeType = node.nodeType
         }
 
+        let elementIds = self.getEntryIds(from: node.path?.elements ?? [])
         return ListNode(guid: node._id,
                         mimeType: mimeType,
                         title: node.name,
@@ -46,6 +47,16 @@ struct ResultsNodeMapper {
                         favorite: node.isFavorite,
                         allowableOperations: node.allowableOperations ?? [],
                         isFile: node.isFile,
-                        isFolder: node.isFolder)
+                        isFolder: node.isFolder,
+                        elementIds: elementIds)
+    }
+    
+    static func getEntryIds(from elements: [PathElement]) -> String? {
+        var elementIds: [String] = []
+        for element in elements {
+            elementIds.append(element._id ?? "")
+        }
+        let ids = elementIds.joined(separator: ",")
+        return ids
     }
 }

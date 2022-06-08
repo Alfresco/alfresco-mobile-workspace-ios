@@ -26,28 +26,28 @@ extension ListNode: ObjectBox.EntityInspectable {
 
     fileprivate static func buildEntity(modelBuilder: ObjectBox.ModelBuilder) throws {
         let entityBuilder = try modelBuilder.entityBuilder(for: ListNode.self, id: 1, uid: 4924419163766400768)
-        try entityBuilder.addProperty(name: "id", type: PropertyType.long, flags: [.id], id: 1, uid: 2761924956872080128)
-        try entityBuilder.addProperty(name: "parentGuid", type: PropertyType.string, id: 2, uid: 6727807577279065856)
-        try entityBuilder.addProperty(name: "guid", type: PropertyType.string, id: 3, uid: 1160052078537699328)
-        try entityBuilder.addProperty(name: "siteID", type: PropertyType.string, id: 4, uid: 958837345273675264)
-        try entityBuilder.addProperty(name: "destination", type: PropertyType.string, id: 5, uid: 3656813396238663424)
-        try entityBuilder.addProperty(name: "mimeType", type: PropertyType.string, id: 6, uid: 40203180090543360)
-        try entityBuilder.addProperty(name: "title", type: PropertyType.string, id: 7, uid: 7099218486325184512)
-        try entityBuilder.addProperty(name: "path", type: PropertyType.string, id: 8, uid: 3118078692928307712)
-        try entityBuilder.addProperty(name: "modifiedAt", type: PropertyType.date, id: 9, uid: 1855641798515070976)
-        try entityBuilder.addProperty(name: "favorite", type: PropertyType.bool, id: 10, uid: 8877005435172031744)
-        try entityBuilder.addProperty(name: "trashed", type: PropertyType.bool, id: 11, uid: 8306138110636922368)
-        try entityBuilder.addProperty(name: "markedAsOffline", type: PropertyType.bool, id: 12, uid: 8931151636810106368)
-        try entityBuilder.addProperty(name: "isFile", type: PropertyType.bool, id: 19, uid: 7009987470108192768)
-        try entityBuilder.addProperty(name: "isFolder", type: PropertyType.bool, id: 20, uid: 3222472111177428736)
-        try entityBuilder.addProperty(name: "uploadLocalPath", type: PropertyType.string, id: 21, uid: 6666884979958749184)
-        try entityBuilder.addProperty(name: "nodeType", type: PropertyType.string, id: 13, uid: 6370314685970737664)
-        try entityBuilder.addProperty(name: "siteRole", type: PropertyType.string, id: 14, uid: 8122952080249357824)
-        try entityBuilder.addProperty(name: "syncStatus", type: PropertyType.string, id: 15, uid: 4676429062915184384)
-        try entityBuilder.addProperty(name: "markedFor", type: PropertyType.string, id: 18, uid: 1597269330570867456)
-        try entityBuilder.addProperty(name: "allowableOperations", type: PropertyType.string, id: 17, uid: 186580639668120576)
-
-        try entityBuilder.lastProperty(id: 21, uid: 6666884979958749184)
+        try entityBuilder.addProperty(name: "id", type: Id.entityPropertyType, flags: [.id], id: 1, uid: 2761924956872080128)
+        try entityBuilder.addProperty(name: "parentGuid", type: String.entityPropertyType, id: 2, uid: 6727807577279065856)
+        try entityBuilder.addProperty(name: "guid", type: String.entityPropertyType, id: 3, uid: 1160052078537699328)
+        try entityBuilder.addProperty(name: "siteID", type: String.entityPropertyType, id: 4, uid: 958837345273675264)
+        try entityBuilder.addProperty(name: "destination", type: String.entityPropertyType, id: 5, uid: 3656813396238663424)
+        try entityBuilder.addProperty(name: "mimeType", type: String.entityPropertyType, id: 6, uid: 40203180090543360)
+        try entityBuilder.addProperty(name: "title", type: String.entityPropertyType, id: 7, uid: 7099218486325184512)
+        try entityBuilder.addProperty(name: "path", type: String.entityPropertyType, id: 8, uid: 3118078692928307712)
+        try entityBuilder.addProperty(name: "modifiedAt", type: Date.entityPropertyType, id: 9, uid: 1855641798515070976)
+        try entityBuilder.addProperty(name: "favorite", type: Bool.entityPropertyType, id: 10, uid: 8877005435172031744)
+        try entityBuilder.addProperty(name: "trashed", type: Bool.entityPropertyType, id: 11, uid: 8306138110636922368)
+        try entityBuilder.addProperty(name: "markedAsOffline", type: Bool.entityPropertyType, id: 12, uid: 8931151636810106368)
+        try entityBuilder.addProperty(name: "isFile", type: Bool.entityPropertyType, id: 19, uid: 7009987470108192768)
+        try entityBuilder.addProperty(name: "isFolder", type: Bool.entityPropertyType, id: 20, uid: 3222472111177428736)
+        try entityBuilder.addProperty(name: "uploadLocalPath", type: String.entityPropertyType, id: 21, uid: 6666884979958749184)
+        try entityBuilder.addProperty(name: "elementIds", type: String.entityPropertyType, id: 22, uid: 2401775353080933632)
+        try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 13, uid: 6370314685970737664)
+        try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 14, uid: 8122952080249357824)
+        try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 15, uid: 4676429062915184384)
+        try entityBuilder.addProperty(name: "markedFor", type: String.entityPropertyType, id: 18, uid: 1597269330570867456)
+        try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 17, uid: 186580639668120576)
+        try entityBuilder.lastProperty(id: 22, uid: 2401775353080933632)
     }
 }
 
@@ -142,6 +142,12 @@ extension ListNode {
     ///
     ///     box.query { ListNode.uploadLocalPath.startsWith("X") }
     internal static var uploadLocalPath: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 21, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.elementIds.startsWith("X") }
+    internal static var elementIds: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 22, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -303,6 +309,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .elementIds.startsWith("X") }
+
+    internal static var elementIds: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 22, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .nodeType.startsWith("X") }
 
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 13, isPrimaryKey: false) }
@@ -369,6 +383,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_title = propertyCollector.prepare(string: entity.title)
         let propertyOffset_path = propertyCollector.prepare(string: entity.path)
         let propertyOffset_uploadLocalPath = propertyCollector.prepare(string: entity.uploadLocalPath)
+        let propertyOffset_elementIds = propertyCollector.prepare(string: entity.elementIds)
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
@@ -390,6 +405,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_title, at: 2 + 2 * 7)
         propertyCollector.collect(dataOffset: propertyOffset_path, at: 2 + 2 * 8)
         propertyCollector.collect(dataOffset: propertyOffset_uploadLocalPath, at: 2 + 2 * 21)
+        propertyCollector.collect(dataOffset: propertyOffset_elementIds, at: 2 + 2 * 22)
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 13)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 14)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 15)
@@ -415,6 +431,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.isFile = entityReader.read(at: 2 + 2 * 19)
         entity.isFolder = entityReader.read(at: 2 + 2 * 20)
         entity.uploadLocalPath = entityReader.read(at: 2 + 2 * 21)
+        entity.elementIds = entityReader.read(at: 2 + 2 * 22)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 14)) ?? .unknown
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 15)) ?? .undefined
