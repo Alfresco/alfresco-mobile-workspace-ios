@@ -292,9 +292,11 @@ class ListComponentViewController: SystemThemableViewController {
                         if let node = model.listNode(for: context.indexPath) {
                             if viewModel.shouldPreviewNode(at: context.indexPath) == false { return }
                             if node.trashed == false {
-                                sSelf.listItemActionDelegate?.showPreview(for: node,
-                                                                          from: model)
-                                sSelf.listActionDelegate?.elementTapped(node: node)
+                                if sSelf.isNavigationAllowed(for: node) {
+                                    sSelf.listItemActionDelegate?.showPreview(for: node,
+                                                                              from: model)
+                                    sSelf.listActionDelegate?.elementTapped(node: node)
+                                }
                             } else {
                                 sSelf.listItemActionDelegate?.showActionSheetForListItem(for: node,
                                                                                          from: model,
@@ -306,6 +308,19 @@ class ListComponentViewController: SystemThemableViewController {
         }
         
         self.forceRefresh(with: indexPaths)
+    }
+    
+    func isNavigationAllowed(for node: ListNode?) -> Bool {
+        if let isMoveFiles = appDelegate()?.isMoveFilesAndFolderFlow, isMoveFiles, let source = self.sourceNodeToMove {
+            let destinationElementIds = node?.elementIds?.components(separatedBy: ",") ?? []
+            if destinationElementIds.contains(source.guid) {
+                Snackbar.display(with: LocalizationConstants.Alert.searchMoveWarning,
+                                 type: .approve,
+                                 finish: nil)
+                return false
+            }
+        }
+        return true
     }
     
     func openFolderAfterCreate(for node: ListNode?) {

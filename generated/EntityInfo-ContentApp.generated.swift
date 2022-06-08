@@ -41,13 +41,14 @@ extension ListNode: ObjectBox.EntityInspectable {
         try entityBuilder.addProperty(name: "isFile", type: Bool.entityPropertyType, id: 19, uid: 7009987470108192768)
         try entityBuilder.addProperty(name: "isFolder", type: Bool.entityPropertyType, id: 20, uid: 3222472111177428736)
         try entityBuilder.addProperty(name: "uploadLocalPath", type: String.entityPropertyType, id: 21, uid: 6666884979958749184)
+        try entityBuilder.addProperty(name: "elementIds", type: String.entityPropertyType, id: 22, uid: 2401775353080933632)
         try entityBuilder.addProperty(name: "nodeType", type: String.entityPropertyType, id: 13, uid: 6370314685970737664)
         try entityBuilder.addProperty(name: "siteRole", type: String.entityPropertyType, id: 14, uid: 8122952080249357824)
         try entityBuilder.addProperty(name: "syncStatus", type: String.entityPropertyType, id: 15, uid: 4676429062915184384)
         try entityBuilder.addProperty(name: "markedFor", type: String.entityPropertyType, id: 18, uid: 1597269330570867456)
         try entityBuilder.addProperty(name: "allowableOperations", type: String.entityPropertyType, id: 17, uid: 186580639668120576)
 
-        try entityBuilder.lastProperty(id: 21, uid: 6666884979958749184)
+        try entityBuilder.lastProperty(id: 22, uid: 2401775353080933632)
     }
 }
 
@@ -142,6 +143,12 @@ extension ListNode {
     ///
     ///     box.query { ListNode.uploadLocalPath.startsWith("X") }
     internal static var uploadLocalPath: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 21, isPrimaryKey: false) }
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
+    ///     box.query { ListNode.elementIds.startsWith("X") }
+    internal static var elementIds: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 22, isPrimaryKey: false) }
     /// Generated entity property information.
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
@@ -303,6 +310,14 @@ extension ObjectBox.Property where E == ListNode {
     ///
     /// You may want to use this in queries to specify fetch conditions, for example:
     ///
+    ///     box.query { .elementIds.startsWith("X") }
+
+    internal static var elementIds: Property<ListNode, String?, Void> { return Property<ListNode, String?, Void>(propertyId: 22, isPrimaryKey: false) }
+
+    /// Generated entity property information.
+    ///
+    /// You may want to use this in queries to specify fetch conditions, for example:
+    ///
     ///     box.query { .nodeType.startsWith("X") }
 
     internal static var nodeType: Property<ListNode, String, Void> { return Property<ListNode, String, Void>(propertyId: 13, isPrimaryKey: false) }
@@ -369,6 +384,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         let propertyOffset_title = propertyCollector.prepare(string: entity.title)
         let propertyOffset_path = propertyCollector.prepare(string: entity.path)
         let propertyOffset_uploadLocalPath = propertyCollector.prepare(string: entity.uploadLocalPath)
+        let propertyOffset_elementIds = propertyCollector.prepare(string: entity.elementIds)
         let propertyOffset_nodeType = propertyCollector.prepare(string: entity.nodeType.rawValue)
         let propertyOffset_siteRole = propertyCollector.prepare(string: entity.siteRole.rawValue)
         let propertyOffset_syncStatus = propertyCollector.prepare(string: entity.syncStatus.rawValue)
@@ -390,6 +406,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         propertyCollector.collect(dataOffset: propertyOffset_title, at: 2 + 2 * 7)
         propertyCollector.collect(dataOffset: propertyOffset_path, at: 2 + 2 * 8)
         propertyCollector.collect(dataOffset: propertyOffset_uploadLocalPath, at: 2 + 2 * 21)
+        propertyCollector.collect(dataOffset: propertyOffset_elementIds, at: 2 + 2 * 22)
         propertyCollector.collect(dataOffset: propertyOffset_nodeType, at: 2 + 2 * 13)
         propertyCollector.collect(dataOffset: propertyOffset_siteRole, at: 2 + 2 * 14)
         propertyCollector.collect(dataOffset: propertyOffset_syncStatus, at: 2 + 2 * 15)
@@ -415,6 +432,7 @@ internal class ListNodeBinding: ObjectBox.EntityBinding {
         entity.isFile = entityReader.read(at: 2 + 2 * 19)
         entity.isFolder = entityReader.read(at: 2 + 2 * 20)
         entity.uploadLocalPath = entityReader.read(at: 2 + 2 * 21)
+        entity.elementIds = entityReader.read(at: 2 + 2 * 22)
         entity.nodeType = optConstruct(NodeType.self, rawValue: entityReader.read(at: 2 + 2 * 13)) ?? .unknown
         entity.siteRole = optConstruct(SiteRole.self, rawValue: entityReader.read(at: 2 + 2 * 14)) ?? .unknown
         entity.syncStatus = optConstruct(SyncStatus.self, rawValue: entityReader.read(at: 2 + 2 * 15)) ?? .undefined
