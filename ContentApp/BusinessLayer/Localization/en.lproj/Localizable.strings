@@ -28,6 +28,7 @@
 "delete" = "Delete";
 "create" = "Create";
 "save" = "Save";
+"discard" = "Discard";
 "rename" = "Rename";
 "update" = "Update";
 
@@ -234,7 +235,6 @@
 "action-menu-upload-files" = "Upload files";
 "action-menu-move-folder" = "Move";
 "action-menu-rename-node" = "Rename";
-
 
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";

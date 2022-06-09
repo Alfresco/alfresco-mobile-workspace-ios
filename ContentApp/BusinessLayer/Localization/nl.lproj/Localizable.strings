@@ -28,6 +28,9 @@
 "delete" = "Verwijderen";
 "create" = "Maken";
 "save" = "Opslaan";
+"discard" = "Verwijderen";
+"rename" = "Naam wijzigen";
+"update" = "Bijwerken";
 
 // MARK: - Buttons
 "connect" = "Verbinden";
@@ -101,7 +104,7 @@
 "error-node-name-special-characters" = "Naam mag deze tekens niet bevatten: %@";
 "error-folder-name-end-period" = "Mapnaam mag niet eindigen op een punt %@";
 "error-folder-name-contain-only-spaces" = "Mapnaam mag niet alleen uit spaties bestaan";
-"error-file-name-empty" = "Bestandsnaam mag niet leeg zijn.";
+"error-file-name-empty" = "Bestandsnaam mag niet leeg zijn";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Wijzigingen in de configuratie zijn opgeslagen.";
@@ -114,6 +117,9 @@
 "approved-mark-offline" = "%@ wordt offline beschikbaar gemaakt.";
 "approved-remove-offline" = "%@ is niet langer offline beschikbaar.";
 "approved-upload-media" = "Media gepland om te uploaden.";
+"approved-moved-folder" = "%@ is verplaatst.";
+"approved-update" = "%@ is bijgewerkt";
+"approved-upload-scanned-document" = "Document gepland om te uploaden.";
 
 // MARK: - Settings Screen
 "theme" = "Weergave";
@@ -124,7 +130,7 @@
 "app-version" = "Appversie %@-%@";
 "sign-out-confirmation" = "Weet u zeker dat u wilt uitloggen?";
 "sync-data-title" = "Offlinebestanden bijwerken met";
-"sync-wifi-cellular-data" = "Wi-Fi en mobiele dataverbinding";
+"sync-wifi-cellular-data" = "Wi-Fi en mobiele gegevens";
 "sync-only-wifi" = "Alleen Wi-Fi";
 
 // MARK: - Search
@@ -186,7 +192,7 @@
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facetquery's op basis van type";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facetquery's op basis van grootte";
 "APP.SEARCH.FIELD.PLACEHOLDER" = "Zoeken";
-"file-size-unit" = "kB";
+"file-size-unit" = "KB";
 
 // MARK: - Group List Section
 "today" = "Vandaag";
@@ -225,10 +231,12 @@
 "action-menu-create-folder" = "Nieuwe map";
 "action-menu-mark-offline" = "Offline beschikbaar maken";
 "action-menu-remove-offline" = "Offline verwijderen";
-"action-menu-create-media" = "Een foto maken of een video opnemen";
+"action-menu-create-media" = "Foto's maken of video's opnemen";
 "action-menu-upload-media" = "Foto's of video's uploaden";
 "action-menu-upload-files" = "Bestanden uploaden";
-
+"action-menu-move-folder" = "Verplaatsen";
+"action-menu-rename-node" = "Naam wijzigen";
+"action-menu-scan-documents" = "Documenten scannen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
@@ -236,14 +244,13 @@
 "dialog-download-message" = "'%@' wordt gedownload";
 "dialog-upload-message" = "'%@' wordt geüpload";
 "dialog-session-expired-title" = "Sessie verlopen.";
-"dialog-session-expired-message" = "U bent niet meer aangemeld. Meld u opnieuw aan om door te gaan.";
-"dialog-override-sync-cellular-data-title" = "Mobiele dataverbinding gebruiken?";
-"dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via een mobiele dataverbinding. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
+"dialog-session-expired-message" = "U bent niet meer ingelogd. Log opnieuw in om door te gaan.";
+"dialog-override-sync-cellular-data-title" = "Mobiele gegevens gebruiken?";
+"dialog-override-sync-cellular-data-message" = "Hiermee worden uw instellingen overschreven en vindt het downloaden deze keer plaats via mobiele gegevens. Anders begint het downloaden later nadat verbinding is gemaakt met Wi-Fi.";
 "dialog-session-unavailable-title" = "Sessie niet beschikbaar";
 "dialog-session-unavailable-message" = "Tik om Alfresco Mobile Workspace te starten";
 "dialog-internet-unavailable-title" = "Internet niet beschikbaar";
 "dialog-internet-unavailable-message" = "Controleer uw internetverbinding en probeer het opnieuw";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "Geen recente bestanden";
@@ -252,21 +259,21 @@
 "empty-favorites-libraries-title" = "Geen favoriete bibliotheken";
 "empty-favorites-description" = "Het lijkt erop dat u niets hebt toegevoegd.";
 "empty-folder-title" = "Map is leeg";
-"empty-folder-description" = "Het lijkt erop dat hier nog niets te vinden is.";
+"empty-folder-description" = "Het lijkt erop dat hier nog niets is.";
 "empty-search-title" = "Oeps!";
-"empty-search-description" = "We kunnen niet vinden wat u zoekt.";
+"empty-search-description" = "Wat u zoekt, kan niet worden gevonden.";
 "empty-offline-title" = "Geen offlinecontent";
 "empty-offline-description" = "Content die u offline beschikbaar maakt, wordt hier weergegeven.";
 "empty-gallery-title" = "Geen foto's of video's";
-"empty-gallery-description" = "Probeer foto's of video's toe te voegen aan uw apparaat.";
+"empty-gallery-description" = "Voeg wat foto's of video's toe aan uw apparaat.";
 "empty-uploads-title" = "Uploaden voltooid!";
 "empty-uploads-description" = "Er zijn geen bestanden meer om te uploaden. Kijk of bestanden in de desbetreffende mappen staan.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace heeft toegang tot foto's nodig";
 "privacy-photos-description" = "Om afbeeldingen of video's op uw apparaat op te slaan, heeft Mobile Workspace toegang tot uw foto's nodig.";
-"privacy-camera-title" = "Mobile Workspace heeft toegang tot de camera nodig";
-"privacy-camera-description" = "Om foto's te maken en video's op te nemen, en deze te uploaden, heeft Mobile Workspace toegang tot uw foto's nodig.";
+"privacy-camera-title" = "Mobile Workspace heeft toegang tot camera nodig";
+"privacy-camera-description" = "Voor het maken en uploaden van foto's en video's heeft Mobile Workspace toegang tot uw foto's nodig.";
 "privacy-button" = "Privacy-instellingen bekijken";
 
 // MARK: - Camera
@@ -276,12 +283,21 @@
 "on-flash" = "Aan";
 "off-flash" = "Uit";
 
+// MARK: - Alert
+"alert-title" = "Waarschuwing";
+"camera-unavailable" = "Apparaat biedt geen ondersteuning voor camera";
+
 // MARK: - Extension
 "save-to-alfresco" = "Opslaan naar Alfresco";
 "upload" = "Uploaden";
 "dialog-override-sync-alfresco-app-message" = "Uploaden staat in de wachtrij. Volg de status in de mobiele app.";
-"dialog-uploading-message" = "%d bestanden uploaden";
+"dialog-uploading-message" = "%d bestand(en) uploaden";
 "uploading-title" = "Uploaden";
 "waiting-title" = "Wachten";
-"dialog-finished-uploading-message" = "Uploaden van %d bestanden is voltooid";
+"dialog-finished-uploading-message" = "Uploaden van %d bestand(en) voltooid";
 "transfer-files" = "Overdrachten";
+"unsupported-file-format" = "Niet-ondersteunde bestandsindeling";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Scanbestanden verwijderen?";
+"dialog-discard-scanner-message" = "Scanbestanden worden verwijderd als u afsluit.";

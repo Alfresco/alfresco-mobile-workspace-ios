@@ -28,16 +28,19 @@
 "delete" = "Elimina";
 "create" = "Crea";
 "save" = "Salva";
+"discard" = "Elimina";
+"rename" = "Rinomina";
+"update" = "Aggiorna";
 
 // MARK: - Buttons
 "connect" = "Connetti";
 "advanced-settings" = "Impost. avanzate";
 "need-help" = "Serve aiuto?";
 "need-help-alfresco" = "Come connettersi ad Alfresco?";
-"reset-to-default" = "Reimposta su predefinito";
+"reset-to-default" = "Reimposta su default";
 "sign-in" = "Accedi";
 "sign-in-with-sso" = "Accedi con SSO";
-"sign-out" = "Disconnetti";
+"sign-out" = "Esci";
 "sync-all" = "Sincronizza tutto";
 
 // MARK: - PlaceHolders
@@ -83,7 +86,7 @@
 "help-connect-title-section2" = "Accesso con SSO";
 "help-connect-section2-paragraph" = "Puoi immettere l'URL di Alfresco Identity Management Service per autenticarti con il provider di identità della tua organizzazione.\n\nDovrai quindi fornire l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 "help-advanced-settings-title-section1" = "Autenticazione con Alfresco";
-"help-advanced-settings-section1-paragraph" = "Se non utilizzi le impostazioni SSO di predefinito, puoi impostare qui i tuoi valori.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
+"help-advanced-settings-section1-paragraph" = "Se non utilizzi le impostazioni SSO di default, puoi impostare qui i tuoi valori.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 "help-sso-title-section1" = "Percorso repository dei contenuti";
 "help-sso-section1-paragraph" = "URL di Alfresco Content Services:\n\nQuesto è l'URL della tua istanza di Alfresco Content Services.\n\nPer richiedere assistenza, contatta l'amministratore di Alfresco.";
 
@@ -114,15 +117,18 @@
 "approved-mark-offline" = "%@ sarà reso disponibile offline.";
 "approved-remove-offline" = "%@ non sarà più disponibile offline.";
 "approved-upload-media" = "Contenuti multimediali pianificati per il caricamento.";
+"approved-moved-folder" = "%@ è stato spostato correttamente.";
+"approved-update" = "%@ è stato aggiornato";
+"approved-upload-scanned-document" = "Documenti pianificati per il caricamento.";
 
 // MARK: - Settings Screen
 "theme" = "Aspetto";
-"auto" = "Predefinito di sistema";
+"auto" = "Default di sistema";
 "light" = "Chiaro";
 "dark" = "Scuro";
 "failed-profile-info" = "Impossibile recuperare le informazioni del profilo per l'utente corrente.";
 "app-version" = "App versione %@-%@";
-"sign-out-confirmation" = "Vuoi disconnetterti?";
+"sign-out-confirmation" = "Vuoi uscire?";
 "sync-data-title" = "Aggiorna file offline utilizzando";
 "sync-wifi-cellular-data" = "Wi-Fi e dati cellulare";
 "sync-only-wifi" = "Solo Wi-Fi";
@@ -194,7 +200,7 @@
 "this-week" = "Questa settimana";
 "last-week" = "Scorsa settimana";
 "this-month" = "Questo mese";
-"older" = "Meno recenti";
+"older" = "Precedenti";
 
 // MARK: - Browse Static List
 "personal-files" = "File personali";
@@ -225,10 +231,12 @@
 "action-menu-create-folder" = "Nuova cartella";
 "action-menu-mark-offline" = "Rendi disponibile offline";
 "action-menu-remove-offline" = "Rimuovi offline";
-"action-menu-create-media" = "Acquisisci una foto o un video";
+"action-menu-create-media" = "Acquisisci foto o video";
 "action-menu-upload-media" = "Carica foto o video";
 "action-menu-upload-files" = "Carica file";
-
+"action-menu-move-folder" = "Sposta";
+"action-menu-rename-node" = "Rinomina";
+"action-menu-scan-documents" = "Acquisisci i documenti";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";
@@ -243,7 +251,6 @@
 "dialog-session-unavailable-message" = "Tocca per lanciare Alfresco Mobile Workspace";
 "dialog-internet-unavailable-title" = "Internet non disponibile";
 "dialog-internet-unavailable-message" = "Verifica la connessione Internet e riprova.";
-
 
 // MARK: - Empty List
 "empty-recent-title" = "Nessun file recente";
@@ -260,7 +267,7 @@
 "empty-gallery-title" = "Nessuna foto o video";
 "empty-gallery-description" = "Prova ad aggiungere delle foto o dei video al tuo dispositivo.";
 "empty-uploads-title" = "Caricamento completato!";
-"empty-uploads-description" = "Nessun altro file caricare. Verificare che file siano presenti nelle rispettive cartelle.";
+"empty-uploads-description" = "Nessun altro file da caricare. Verificare che i file siano presenti  nelle rispettive cartelle.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace deve accedere alle foto";
@@ -276,6 +283,10 @@
 "on-flash" = "Attiva";
 "off-flash" = "Disattiva";
 
+// MARK: - Alert
+"alert-title" = "Avviso";
+"camera-unavailable" = "Il dispositivo non supporta la fotocamera";
+
 // MARK: - Extension
 "save-to-alfresco" = "Salva in Alfresco";
 "upload" = "Carica";
@@ -285,3 +296,8 @@
 "waiting-title" = "Attendo";
 "dialog-finished-uploading-message" = "Caricamento di %d file terminato";
 "transfer-files" = "Trasferimenti";
+"unsupported-file-format" = "Formato file non supportato";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Vuoi eliminare i file acquisiti?";
+"dialog-discard-scanner-message" = "Se esci, i file acquisiti verranno eliminati.";

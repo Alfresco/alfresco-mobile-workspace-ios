@@ -28,6 +28,9 @@
 "delete" = "Supprimer";
 "create" = "Créer";
 "save" = "Enregistrer";
+"discard" = "Supprimer";
+"rename" = "Renommer";
+"update" = "Mis à jour";
 
 // MARK: - Buttons
 "connect" = "Connexion";
@@ -114,6 +117,9 @@
 "approved-mark-offline" = "%@ sera disponible hors ligne.";
 "approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
 "approved-upload-media" = "Importation du fichier multimédia prévue.";
+"approved-moved-folder" = "%@ a été déplacé avec succès.";
+"approved-update" = "%@ a été mis à jour";
+"approved-upload-scanned-document" = "Document prévu pour l'importation.";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -138,7 +144,7 @@
 "search-in" = "dans : ";
 
 // MARK: - Advance Search
-"DEFAULT_SEARCH" = "Par défaut";
+"DEFAULT_SEARCH" = "Défaut";
 "advance-search" = "Recherche avancée";
 "enter" = "Entrer";
 "apply" = "Appliquer";
@@ -228,7 +234,9 @@
 "action-menu-create-media" = "Prendre une photo ou une vidéo";
 "action-menu-upload-media" = "Importer des photos ou des vidéos";
 "action-menu-upload-files" = "Importer des fichiers";
-
+"action-menu-move-folder" = "Déplacer";
+"action-menu-rename-node" = "Renommer";
+"action-menu-scan-documents" = "Scanner les documents";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
@@ -260,7 +268,7 @@
 "empty-gallery-title" = "Aucune photo ou vidéo";
 "empty-gallery-description" = "Essayez d'ajouter des photos ou des vidéos dans votre appareil.";
 "empty-uploads-title" = "Importation terminée !";
-"empty-uploads-description" = "Il n\'y a plus de fichiers à importer. Veuillez afficher les fichiers dans leurs dossiers respectifs.";
+"empty-uploads-description" = "Il n'y a plus de fichiers à importer. Veuillez afficher les fichiers dans leurs dossiers respectifs.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace requiert l'accès aux photos";
@@ -276,12 +284,21 @@
 "on-flash" = "Activé";
 "off-flash" = "Désactivé";
 
+// MARK: - Alert
+"alert-title" = "Alerte";
+"camera-unavailable" = "L’appareil ne prend pas en charge la caméra";
+
 // MARK: - Extension
 "save-to-alfresco" = "Enregistrer dans Alfresco";
 "upload" = "Importer";
 "dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile.";
 "dialog-uploading-message" = "Importer %d fichier(s)";
-"uploading-title" = "Importation de '%@' en cours";
+"uploading-title" = "Importation";
 "waiting-title" = "Attendre";
 "dialog-finished-uploading-message" = "%d fichier(s) a terminé l'importation";
 "transfer-files" = "Transferts";
+"unsupported-file-format" = "Format de fichier non pris en charge";
+
+// MARK: - Scanner
+"dialog-discard-scanner-title" = "Supprimer le scannage des fichiers ?";
+"dialog-discard-scanner-message" = "Le scannage des fichiers sera supprimé si vous quittez l'application.";
