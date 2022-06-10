@@ -72,7 +72,7 @@
 "sync-failed" = "Error al sincronizar";
 
 // MARK: - Tabs Titles
-"settings" = "Ajustes";
+"settings" = "﻿Ajustes";
 "recent" = "Reciente";
 "favorites" = "Favoritos";
 "browse" = "Explorar";
@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Cambiar nombre";
 "action-menu-scan-documents" = "Escanear documentos";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
 "dialog-delete-message" = "%@ se eliminará permanentemente.";
@@ -306,4 +305,3 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "¿Descartar ficheros escaneados?";
 "dialog-discard-scanner-message" = "Si sale, se descartarán los ficheros escaneados.";
-

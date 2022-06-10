@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Renommer";
 "action-menu-scan-documents" = "Scanner les documents";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
 "dialog-delete-message" = "%@ sera supprimé définitivement.";
@@ -306,4 +305,3 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Supprimer le scannage des fichiers ?";
 "dialog-discard-scanner-message" = "Le scannage des fichiers sera supprimé si vous quittez l'application.";
-

@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Rinomina";
 "action-menu-scan-documents" = "Acquisisci i documenti";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Elimina";
 "dialog-delete-message" = "%@ verrà eliminato definitivamente.";
@@ -306,4 +305,3 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Vuoi eliminare i file acquisiti?";
 "dialog-discard-scanner-message" = "Se esci, i file acquisiti verranno eliminati.";
-

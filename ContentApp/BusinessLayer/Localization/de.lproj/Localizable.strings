@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Umbenennen";
 "action-menu-scan-documents" = "Dokumente scannen";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";
 "dialog-delete-message" = "%@ wird dauerhaft gelöscht.";
@@ -306,4 +305,3 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Gescannte Dateien verwerfen?";
 "dialog-discard-scanner-message" = "Gescannte Dateien werden verworfen, wenn Sie beenden.";
-
