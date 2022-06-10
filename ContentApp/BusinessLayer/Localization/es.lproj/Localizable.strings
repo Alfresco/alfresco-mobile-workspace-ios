@@ -221,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Añadir a favoritos";
 "action-menu-remove-favorite" = "Quitar de favoritos";
-"action-menu-move-trash" = "Mover a papelera";
+"action-menu-move-trash" = "Mover a la papelera";
 "action-menu-download" = "Abrir con";
 "action-menu-restore" = "Restaurar";
 "action-menu-permanently-delete" = "Eliminar permanentemente";
@@ -262,7 +262,7 @@
 "empty-favorites-files-folders-title" = "No hay ficheros ni carpetas favoritos";
 "empty-favorites-libraries-title" = "No hay bibliotecas favoritas";
 "empty-favorites-description" = "Parece que no ha añadido nada.";
-"empty-folder-title" = "Esta carpeta está vacía";
+"empty-folder-title" = "La carpeta está vacía";
 "empty-folder-description" = "Parece que todavía no hay contenido.";
 "empty-search-title" = "¡Vaya!";
 "empty-search-description" = "No podemos encontrar lo que busca.";
