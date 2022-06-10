@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Naam wijzigen";
 "action-menu-scan-documents" = "Documenten scannen";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Verwijderen";
 "dialog-delete-message" = "%@ wordt permanent verwijderd.";
@@ -306,4 +305,3 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Scanbestanden verwijderen?";
 "dialog-discard-scanner-message" = "Scanbestanden worden verwijderd als u afsluit.";
-

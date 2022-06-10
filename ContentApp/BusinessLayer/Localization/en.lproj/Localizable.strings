@@ -240,7 +240,6 @@
 "action-menu-rename-node" = "Rename";
 "action-menu-scan-documents" = "Scan documents";
 
-
 // MARK: - Dialog
 "dialog-delete-title" = "Delete";
 "dialog-delete-message" = "%@ will be permanently deleted.";
