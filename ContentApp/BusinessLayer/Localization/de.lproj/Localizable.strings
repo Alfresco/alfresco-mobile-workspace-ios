@@ -221,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Zu Favoriten hinzufügen";
 "action-menu-remove-favorite" = "Aus Favoriten entfernen";
-"action-menu-move-trash" = "In den Papierkorb bewegen";
+"action-menu-move-trash" = "In Papierkorb verschieben";
 "action-menu-download" = "Öffnen mit";
 "action-menu-restore" = "Wiederherstellen";
 "action-menu-permanently-delete" = "Dauerhaft löschen";
