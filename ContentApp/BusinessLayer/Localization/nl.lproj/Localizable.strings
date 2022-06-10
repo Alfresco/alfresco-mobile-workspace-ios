@@ -221,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Toevoegen aan Favorieten";
 "action-menu-remove-favorite" = "Verwijderen uit Favorieten";
-"action-menu-move-trash" = "Verplaatsen naar prullenmand";
+"action-menu-move-trash" = "Verplaatsen naar Prullenbak";
 "action-menu-download" = "Openen met";
 "action-menu-restore" = "Herstellen";
 "action-menu-permanently-delete" = "Permanent verwijderen";

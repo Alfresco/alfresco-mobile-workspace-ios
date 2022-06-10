@@ -221,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Zu Favoriten hinzufügen";
 "action-menu-remove-favorite" = "Aus Favoriten entfernen";
-"action-menu-move-trash" = "In den Papierkorb bewegen";
+"action-menu-move-trash" = "In Papierkorb verschieben";
 "action-menu-download" = "Öffnen mit";
 "action-menu-restore" = "Wiederherstellen";
 "action-menu-permanently-delete" = "Dauerhaft löschen";
@@ -231,7 +231,7 @@
 "action-menu-create-folder" = "Neuer Ordner";
 "action-menu-mark-offline" = "Offline zur Verfügung stellen";
 "action-menu-remove-offline" = "Offline entfernen";
-"action-menu-create-media" = "Bilder oder Videos aufnehmen";
+"action-menu-create-media" = "Fotos oder Videos aufnehmen";
 "action-menu-upload-media" = "Fotos oder Videos hochladen";
 "action-menu-create-single-media" = "Bilder oder Videos aufnehmen";
 "action-menu-upload-single-media" = "Foto oder Video hochladen";
