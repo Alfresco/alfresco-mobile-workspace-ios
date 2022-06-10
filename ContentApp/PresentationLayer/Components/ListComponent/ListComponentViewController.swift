@@ -221,6 +221,7 @@ class ListComponentViewController: SystemThemableViewController {
         cancelMoveButton.applyContainedTheme(withScheme: bigButtonScheme)
         cancelMoveButton.setBackgroundColor(currentTheme.onSurface5Color, for: .normal)
         cancelMoveButton.isUppercaseTitle = false
+        cancelMoveButton.setTitle(LocalizationConstants.General.cancel, for: .normal)
         cancelMoveButton.setShadowColor(.clear, for: .normal)
         cancelMoveButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         cancelMoveButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
