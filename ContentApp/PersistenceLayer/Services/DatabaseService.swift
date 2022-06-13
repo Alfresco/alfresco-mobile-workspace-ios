@@ -54,7 +54,7 @@ class DatabaseService: Service {
             AlfrescoLog.error("Unable to persist entity \(E.Type.self). Reason: \(error.localizedDescription)")
         }
     }
-
+    
     ///
     /// Stores an array of entities in the database
     /// - Parameter entity: Entity to be stored in the database
