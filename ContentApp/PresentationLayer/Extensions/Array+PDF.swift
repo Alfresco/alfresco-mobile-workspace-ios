@@ -33,4 +33,3 @@ extension Array where Element: UIImage {
         return pdfDocument
     }
 }
-
