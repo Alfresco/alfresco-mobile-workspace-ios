@@ -185,7 +185,7 @@ class FilePreviewViewModel {
         guard let listNode = listNode else { return }
         let fileExtension = listNode.title.split(separator: ".").last
         let mimeType = listNode.mimeType ?? ""
-        AnalyticsManager.shared.logEventPreviewFile(fileMimetype: mimeType, fileExtension: fileExtension ?? "", success: success)
+        AnalyticsManager.shared.previewFile(fileMimetype: mimeType, fileExtension: fileExtension ?? "", success: success)        
     }
 
     // MARK: - Private Helpers

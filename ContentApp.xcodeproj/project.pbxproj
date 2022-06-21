@@ -130,6 +130,7 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
+		C90A889A28619C05007695CC /* AnalyticsManager + ScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
@@ -785,6 +786,7 @@
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
+		C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + ScreenView.swift"; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
@@ -1726,8 +1728,9 @@
 		C940BB8C286024040064E2E7 /* Analytics  */ = {
 			isa = PBXGroup;
 			children = (
-				C940BB8F286024440064E2E7 /* AnalyticsManager.swift */,
 				C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */,
+				C940BB8F286024440064E2E7 /* AnalyticsManager.swift */,
+				C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */,
 			);
 			path = "Analytics ";
 			sourceTree = "<group>";
@@ -3718,6 +3721,7 @@
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
+				C90A889A28619C05007695CC /* AnalyticsManager + ScreenView.swift in Sources */,
 				C97BEB8326EB3B6200E05375 /* CollectionViewExtensions.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				F14E688A261702A9002FDEF9 /* CaptureSession.swift in Sources */,

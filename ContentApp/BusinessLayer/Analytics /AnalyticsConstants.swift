@@ -18,6 +18,17 @@
 
 import Foundation
 
+enum EventType: String {
+    case screenView = "screen_view"
+    case actionEvent = "action_event"
+    case apiTracker = "api_tracker"
+}
+
+enum EventName: String {
+    case filePreview = "Event_FilePreview"
+    case openWith = "Event_OpenWith"
+}
+
 struct AnalyticsConstants {
     
     struct CommonParameters {
@@ -30,14 +41,9 @@ struct AnalyticsConstants {
     }
     
     struct Parameters {
+        static let eventName = "event_name"
         static let fileMimetype = "file_mimetype"
         static let fileExtension = "file_extension"
         static let previewSuccess = "success"
     }
-    
-    struct Events {
-        static let filePreview = "Event_FilePreview"
-        static let openWith = "Event_OpenWith"
-    }
-    
 }

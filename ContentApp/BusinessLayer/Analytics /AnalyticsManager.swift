@@ -60,19 +60,7 @@ class AnalyticsManager: NSObject {
         return dictionary
     }
     
-    // MARK: - Events
-    func logEventPreviewFile(fileMimetype: String?, fileExtension: Any?, success: Bool) {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.fileMimetype] = fileMimetype ?? ""
-        parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
-        parameters[AnalyticsConstants.Parameters.previewSuccess] = success
-        Analytics.logEvent(AnalyticsConstants.Events.filePreview, parameters: parameters)
-    }
-    
-    func logEventOpenWith(fileMimetype: String?, fileExtension: Any?) {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.fileMimetype] = fileMimetype ?? ""
-        parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
-        Analytics.logEvent(AnalyticsConstants.Events.openWith, parameters: parameters)
+    func logEvent(type: EventType, parameters: [String: Any]) {
+        Analytics.logEvent(type.rawValue, parameters: parameters)
     }
 }
