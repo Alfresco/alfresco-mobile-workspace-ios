@@ -546,18 +546,25 @@ extension ResultViewController {
     func showSelectedComponent(for chip: SearchChipItem) {
         if chip.componentType == .text {
             showTextSelectorComponent()
+            AnalyticsManager.shared.searchFacets(name: "text")
         } else if chip.componentType == .checkList {
             showListSelectorComponent(isRadio: false)
+            AnalyticsManager.shared.searchFacets(name: "check-list")
         } else if chip.componentType == .radio {
             showListSelectorComponent(isRadio: true)
+            AnalyticsManager.shared.searchFacets(name: "radio")
         } else if chip.componentType == .contentSizeRange {
             showNumberRangeSelectorComponent()
+            AnalyticsManager.shared.searchFacets(name: "number-range")
         } else if chip.componentType == .contentSize {
             showSliderSelectorComponent()
+            AnalyticsManager.shared.searchFacets(name: "slider")
         } else if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent()
+            AnalyticsManager.shared.searchFacets(name: "date-range")
         } else if chip.componentType == .facet {
             showFacetSelectorComponent(name: chip.name, selectedValue: chip.selectedValue)
+            AnalyticsManager.shared.searchFacets(name: chip.name)
         }
     }
     

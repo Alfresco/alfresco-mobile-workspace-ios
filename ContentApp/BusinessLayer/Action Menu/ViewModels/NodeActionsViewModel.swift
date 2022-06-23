@@ -120,6 +120,7 @@ class NodeActionsViewModel {
                 sSelf.requestMoveToFolder(action: action)
             default: break
             }
+            sSelf.logEvent(with: action, node: sSelf.node)
         }
     }
 
@@ -477,6 +478,26 @@ class NodeActionsViewModel {
             clearController.present(activityViewController,
                                     animated: true,
                                     completion: nil)
+        }
+    }
+}
+
+// MARK: - Analytics
+extension NodeActionsViewModel {
+    
+    func logEvent(with action: ActionMenu?, node: ListNode?) {
+        guard let action = action else { return }
+        
+        switch action.type {
+        case .moveTrash:
+            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .moveToTrash)
+        case .restore:
+            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .restoreFromTrash)
+        case .permanentlyDelete:
+            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .permanentlyDelete)
+        case .moveToFolder:
+            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .move)
+        default: break
         }
     }
 }

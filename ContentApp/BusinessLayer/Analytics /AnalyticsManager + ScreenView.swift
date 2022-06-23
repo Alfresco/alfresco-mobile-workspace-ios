@@ -30,11 +30,47 @@ extension AnalyticsManager {
         self.logEvent(type: .screenView, parameters: parameters)
     }
     
-    func openWith(fileMimetype: String?, fileExtension: Any?) {
+    func fileActionEvent(for node: ListNode?, eventName: EventName) {
+        let fileExtension = node?.title.split(separator: ".").last
+        let mimeType = node?.mimeType ?? ""
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.fileMimetype] = fileMimetype ?? ""
+      
+        parameters[AnalyticsConstants.Parameters.fileMimetype] = mimeType
         parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.openWith.rawValue
+        parameters[AnalyticsConstants.Parameters.eventName] = eventName.rawValue
+        self.logEvent(type: .screenView, parameters: parameters)
+    }
+
+    func theme(name: String) {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.theme] = name
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.themeUpdated.rawValue
+        self.logEvent(type: .screenView, parameters: parameters)
+    }
+    
+    func appLaunched() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.appLaunched.rawValue
+        self.logEvent(type: .screenView, parameters: parameters)
+    }
+    
+    func searchFacets(name: String?) {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.facet] = name ?? ""
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.searchFacets.rawValue
+        self.logEvent(type: .screenView, parameters: parameters)
+    }
+    
+    func discardCaptures(count: Int) {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.assetsCount] = count
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.discardCaptures.rawValue
+        self.logEvent(type: .screenView, parameters: parameters)
+    }
+    
+    func scanDocuments() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.scanDocuments.rawValue
         self.logEvent(type: .screenView, parameters: parameters)
     }
 }
