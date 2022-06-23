@@ -7,7 +7,7 @@
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.471005699027-3rikujvd5qsag6kpuaptv3vte8cqpukj</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAfc6sZ_l8em9D8Y8FnpOm2xp2O6dICR2o</string>
+	<string>INSERT_KEY_HERE</string>
 	<key>GCM_SENDER_ID</key>
 	<string>471005699027</string>
 	<key>PLIST_VERSION</key>
@@ -19,15 +19,15 @@
 	<key>STORAGE_BUCKET</key>
 	<string>alfresco-mobile-workspace.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:471005699027:ios:db02b3050b08e4ca8e6d26</string>
 	<key>DATABASE_URL</key>

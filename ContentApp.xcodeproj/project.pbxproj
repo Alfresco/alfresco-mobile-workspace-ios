@@ -208,6 +208,7 @@
 		C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */; };
 		C99786BF27F75F730033DB3E /* OfflineEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30FCD8325A6F73500C4ABAF /* OfflineEvent.swift */; };
 		C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
+		C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
 		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
@@ -848,6 +849,7 @@
 		C993504527D8D9C900E2B849 /* SyncSharedNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSharedNodes.swift; sourceTree = "<group>"; };
 		C99786B827F738F60033DB3E /* CreateNodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeViewModel.swift; sourceTree = "<group>"; };
 		C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Actions.swift"; sourceTree = "<group>"; };
+		C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ContentApp.xcconfig; sourceTree = "<group>"; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
 		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
 		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2226,6 +2228,7 @@
 				B956050525026A6000D955BA /* GoogleService-Info.plist */,
 				E334C04D24755D9000F74880 /* Info.plist */,
 				C9AEE04B270D9DC900880235 /* Configurations.plist */,
+				C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */,
 				B997306A255E7CC70026166A /* InfoPlist.strings */,
 			);
 			path = "Supporting Files";
@@ -3045,6 +3048,7 @@
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 				C9AEE04C270D9DC900880235 /* Configurations.plist in Resources */,
+				C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */,
 				C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
