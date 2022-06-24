@@ -26,12 +26,6 @@ steps:
     path: $(cocoapods_path)
   displayName: Cache CocoaPods Specs
 
-- task: CmdLine@2
-  displayName: Variable substitution for GoogleAnalytics
-  inputs:
-    script: 'plutil -replace API_KEY_AMW -string $(GA_API_KEY_AMW) GoogleService-Info.plist'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/ContentApp/Supporting Files/'
-
 - task: Cache@2
   inputs:
     key: 'pods | Podfile.lock'
