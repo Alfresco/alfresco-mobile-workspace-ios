@@ -160,35 +160,6 @@ extension ListComponentViewController {
     
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
-        
-        switch action.type {
-        case .addFavorite:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .removeFromFavorites)
-        case .removeFavorite:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .addToFavorites)
-        case .moveTrash:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .moveToTrash)
-        case .restore:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .restoreFromTrash)
-        case .permanentlyDelete:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .permanentlyDelete)
-        case .moveToFolder:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .move)
-        case .download, .markOffline:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .makeOffline)
-        case .removeOffline:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .removeFromOffline)
-        case .createFolder:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .newFolder)
-        case .renameNode:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .rename)
-        case .createMedia:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .takePhotos)
-        case .uploadMedia:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .uploadMedia)
-        case .uploadFiles:
-            AnalyticsManager.shared.fileActionEvent(for: node, eventName: .uploadFiles)
-        default: break
-        }
+        AnalyticsManager.shared.fileActionEvent(for: node, action: action)
     }
 }

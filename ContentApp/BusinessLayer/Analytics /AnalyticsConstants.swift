@@ -25,26 +25,11 @@ enum EventType: String {
 }
 
 enum EventName: String {
-    case filePreview = "Event_FilePreview"
-    case openWith = "Event_OpenWith"
-    case addToFavorites = "Event_AddToFavorite"
-    case removeFromFavorites = "Event_RemoveFromFavorite"
-    case rename = "Event_Rename"
-    case move = "Event_Move"
-    case makeOffline = "Event_MakeOffline"
-    case removeFromOffline = "Event_RemoveFromOffline"
-    case moveToTrash = "Event_MoveToTrash"
-    case restoreFromTrash = "Event_RestoreFromTrash"
-    case permanentlyDelete = "Event_PermanantlyDelete"
-    case themeUpdated = "Event_ThemeUpdated"
-    case newFolder = "Event_NewFolder"
-    case uploadMedia = "Event_UploadMedia"
-    case takePhotos = "Event_TakePhotos"
-    case uploadFiles = "Event_UploadFiles"
-    case scanDocuments = "Event_ScanDocuments"
-    case appLaunched = "Event_AppLaunched"
-    case searchFacets = "Event_SearchFacets"
-    case discardCaptures = "Events_Discard_Captures"
+    case filePreview = "Event_filePreview"
+    case changeTheme = "Event_changeTheme"
+    case appLaunched = "Event_appLaunched"
+    case searchFacets = "Event_searchFacets"
+    case discardCaptures = "Event_discardCapture"
 }
 
 struct AnalyticsConstants {

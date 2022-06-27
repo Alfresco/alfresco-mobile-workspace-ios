@@ -130,7 +130,6 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
-		C90A889A28619C05007695CC /* AnalyticsManager + ScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
@@ -165,6 +164,7 @@
 		C947C5BB27D0C4680000D902 /* UploadNodesViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BA27D0C4680000D902 /* UploadNodesViewModelFactory.swift */; };
 		C947C5BD27D0D8A80000D902 /* UploadFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */; };
 		C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */; };
+		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
 		C95C46B627D0965E00DC3FF3 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C963196227DA0EF800BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
@@ -787,7 +787,6 @@
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
-		C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager + ScreenView.swift"; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
@@ -814,6 +813,7 @@
 		C947C5BA27D0C4680000D902 /* UploadNodesViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModelFactory.swift; sourceTree = "<group>"; };
 		C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFilesViewController.swift; sourceTree = "<group>"; };
 		C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModel.swift; sourceTree = "<group>"; };
+		C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+ActionEvents.swift"; sourceTree = "<group>"; };
 		C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBannerService.swift; sourceTree = "<group>"; };
 		C963196027DA0CFD00BE8746 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
@@ -1732,7 +1732,7 @@
 			children = (
 				C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */,
 				C940BB8F286024440064E2E7 /* AnalyticsManager.swift */,
-				C90A889928619C05007695CC /* AnalyticsManager + ScreenView.swift */,
+				C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */,
 			);
 			path = "Analytics ";
 			sourceTree = "<group>";
@@ -3658,6 +3658,7 @@
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
+				C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */,
 				E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */,
 				B90E3838255A86BC00FAFB81 /* FolderChildrenViewModelFactory.swift in Sources */,
 				B95831D62632DB1400E90AE5 /* Data+Hash.swift in Sources */,
@@ -3725,7 +3726,6 @@
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,
 				E31184D6247BEC9B0044BE0D /* AimsViewController.swift in Sources */,
-				C90A889A28619C05007695CC /* AnalyticsManager + ScreenView.swift in Sources */,
 				C97BEB8326EB3B6200E05375 /* CollectionViewExtensions.swift in Sources */,
 				E334C081247582B400F74880 /* ConnectViewController.swift in Sources */,
 				F14E688A261702A9002FDEF9 /* CaptureSession.swift in Sources */,

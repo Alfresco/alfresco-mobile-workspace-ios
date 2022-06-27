@@ -29,22 +29,23 @@ extension AnalyticsManager {
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.filePreview.rawValue
         self.logEvent(type: .screenView, parameters: parameters)
     }
-    
-    func fileActionEvent(for node: ListNode?, eventName: EventName) {
+
+    func fileActionEvent(for node: ListNode?, action: ActionMenu) {
         let fileExtension = node?.title.split(separator: ".").last
         let mimeType = node?.mimeType ?? ""
+        let eventName = String(format: "Event_%@", action.title)
         var parameters = self.commonParameters()
       
         parameters[AnalyticsConstants.Parameters.fileMimetype] = mimeType
         parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
-        parameters[AnalyticsConstants.Parameters.eventName] = eventName.rawValue
+        parameters[AnalyticsConstants.Parameters.eventName] = eventName
         self.logEvent(type: .screenView, parameters: parameters)
     }
-
+    
     func theme(name: String) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.theme] = name
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.themeUpdated.rawValue
+        parameters[AnalyticsConstants.Parameters.eventName] = EventName.changeTheme.rawValue
         self.logEvent(type: .screenView, parameters: parameters)
     }
     
@@ -65,12 +66,6 @@ extension AnalyticsManager {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.assetsCount] = count
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.discardCaptures.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
-    }
-    
-    func scanDocuments() {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.scanDocuments.rawValue
         self.logEvent(type: .screenView, parameters: parameters)
     }
 }
