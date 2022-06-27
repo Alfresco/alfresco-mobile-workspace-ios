@@ -167,8 +167,8 @@
 		C947C5BB27D0C4680000D902 /* UploadNodesViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BA27D0C4680000D902 /* UploadNodesViewModelFactory.swift */; };
 		C947C5BD27D0D8A80000D902 /* UploadFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */; };
 		C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */; };
-		C956D8B4282FB5CB00E16A70 /* Array+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */; };
 		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
+		C956D8B4282FB5CB00E16A70 /* Array+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */; };
 		C95C46B627D0965E00DC3FF3 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
 		C963196227DA0EF800BE8746 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C963196027DA0CFD00BE8746 /* URLExtension.swift */; };
@@ -214,7 +214,9 @@
 		C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */; };
 		C99786BF27F75F730033DB3E /* OfflineEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30FCD8325A6F73500C4ABAF /* OfflineEvent.swift */; };
 		C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
-		C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */; };
+		C998A5BA28697DC100D18743 /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */; };
+		C998A5BD28699B2700D18743 /* CameraKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F125263AEB7900F4428D /* CameraKit.swift */; };
+		C998A5BE28699B6200D18743 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B956050525026A6000D955BA /* GoogleService-Info.plist */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
 		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
@@ -319,7 +321,6 @@
 		C9A9117327A7B9DE002EBC7F /* AsyncClosureOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9B7530F25AC8974004F16E5 /* AsyncClosureOperation.swift */; };
 		C9A9117427A7B9E4002EBC7F /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3DCB306249A0A78003B8423 /* KeychainWrapper.swift */; };
 		C9A9117527A7B9EE002EBC7F /* DiskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30ADEF424A1EB7400C8C4E2 /* DiskService.swift */; };
-		C9A9117A27A7BA10002EBC7F /* CameraKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F125263AEB7900F4428D /* CameraKit.swift */; };
 		C9A9117B27A7BA14002EBC7F /* CameraKitTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F123263AEAB800F4428D /* CameraKitTheme.swift */; };
 		C9A9117C27A7BA16002EBC7F /* CameraKitLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9F127263AF3CD00F4428D /* CameraKitLocalization.swift */; };
 		C9A9117D27A7BA1C002EBC7F /* CameraKitCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130E15EC26297E23005E5DF4 /* CameraKitCaptureDelegate.swift */; };
@@ -827,8 +828,8 @@
 		C947C5BA27D0C4680000D902 /* UploadNodesViewModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModelFactory.swift; sourceTree = "<group>"; };
 		C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFilesViewController.swift; sourceTree = "<group>"; };
 		C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModel.swift; sourceTree = "<group>"; };
-		C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+PDF.swift"; sourceTree = "<group>"; };
 		C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+ActionEvents.swift"; sourceTree = "<group>"; };
+		C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+PDF.swift"; sourceTree = "<group>"; };
 		C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBannerService.swift; sourceTree = "<group>"; };
 		C963196027DA0CFD00BE8746 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		C96D3FB1272A9B280014C8D4 /* StringExtenion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtenion.swift; sourceTree = "<group>"; };
@@ -867,6 +868,8 @@
 		C99786B827F738F60033DB3E /* CreateNodeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeViewModel.swift; sourceTree = "<group>"; };
 		C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListComponent+Actions.swift"; sourceTree = "<group>"; };
 		C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ContentApp.xcconfig; sourceTree = "<group>"; };
+		C998A5C028699BC700D18743 /* FirebaseAnalytics.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FirebaseAnalytics.xcframework; path = Pods/FirebaseAnalytics/Frameworks/FirebaseAnalytics.xcframework; sourceTree = "<group>"; };
+		C998A5C428699BDB00D18743 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
 		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
 		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -1215,6 +1218,8 @@
 		743AC507EF375E62996672D9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C998A5C428699BDB00D18743 /* FirebaseCore.framework */,
+				C998A5C028699BC700D18743 /* FirebaseAnalytics.xcframework */,
 				259BCF582B02E2891EB92C7B /* Pods_ContentApp.framework */,
 				A2F7E0050B022E42B2A012FB /* Pods_ContentApp_ContentAppUITests.framework */,
 				1CDDBFF8A0B9CA864520114E /* Pods_ContentAppTests.framework */,
@@ -2984,7 +2989,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					C9E79E7327A3E653002BC5A0 = {
@@ -3049,6 +3054,7 @@
 				C9A9117127A7B9CE002EBC7F /* Localizable.strings in Resources */,
 				C9B6D27427C9437B00CF0C73 /* Inter-Thin.ttf in Resources */,
 				C9B6D27627C9438100CF0C73 /* Inter-Regular.ttf in Resources */,
+				C998A5BE28699B6200D18743 /* GoogleService-Info.plist in Resources */,
 				C9B6D27327C93D2700CF0C73 /* advance-search-config.json in Resources */,
 				C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */,
 				C9B6D27727C9438300CF0C73 /* Inter-Medium.ttf in Resources */,
@@ -3088,7 +3094,6 @@
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 				C9AEE04C270D9DC900880235 /* Configurations.plist in Resources */,
-				C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */,
 				C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3390,6 +3395,7 @@
 				C9C7F22D27BB82940039A6AE /* BrowseNode.swift in Sources */,
 				C9AFDFA127B8F8F8007233A5 /* RecentSearchesViewModel.swift in Sources */,
 				C9E17FF627A934AA0006747E /* ListNode.swift in Sources */,
+				C998A5BA28697DC100D18743 /* AnalyticsConstants.swift in Sources */,
 				C9A911B427A7BBF2002EBC7F /* CellConfigurable.swift in Sources */,
 				C9A9113927A7B863002EBC7F /* EmptyFolder.swift in Sources */,
 				C9A9119027A7BA5F002EBC7F /* PhotoGalleryDataSource.swift in Sources */,
@@ -3417,6 +3423,7 @@
 				C9A9113827A7B861002EBC7F /* EmptySearch.swift in Sources */,
 				C9A9111B27A7B805002EBC7F /* AdvancedSettingsViewModel.swift in Sources */,
 				C9AFDFA027B8F7AF007233A5 /* ResultViewController.swift in Sources */,
+				C998A5BD28699B2700D18743 /* CameraKit.swift in Sources */,
 				C9AFDF6327B8C9BF007233A5 /* ListComponent+DataSource.swift in Sources */,
 				C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */,
 				C918814C27AA8A4C00F850DF /* DataAccessor.swift in Sources */,
@@ -3477,7 +3484,6 @@
 				C9A9111127A7B7DE002EBC7F /* AccountProtocol.swift in Sources */,
 				C92F3DBC27BF632300952C59 /* MimeType.swift in Sources */,
 				C918811827AA414C00F850DF /* AIMSAccount.swift in Sources */,
-				C9A9117A27A7BA10002EBC7F /* CameraKit.swift in Sources */,
 				C9A9110A27A7B7B3002EBC7F /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
 				C9A9116B27A7B9AC002EBC7F /* APIConstants.swift in Sources */,
 				C9A9110527A7B7A6002EBC7F /* ThemingScene.swift in Sources */,
