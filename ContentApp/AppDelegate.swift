@@ -50,6 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ServerEdition.shared.checkVersion()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         migrateDatabaseIfNecessary()
+        AnalyticsManager.shared.appLaunched()
         return true
     }
 

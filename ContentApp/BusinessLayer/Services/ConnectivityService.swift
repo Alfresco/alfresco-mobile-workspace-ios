@@ -19,11 +19,26 @@
 import Foundation
 import Alamofire
 
-@objc enum ConnectivityStatus: Int {
+@objc enum ConnectivityStatus: Int, CustomStringConvertible {
     case unknown
     case noConnection
     case wifi
     case cellular
+    
+    var description: String {
+        get {
+            switch self {
+            case .unknown:
+                return "unknown"
+            case .noConnection:
+                return "noConnection"
+            case .wifi:
+                return "wifi"
+            case .cellular:
+                return "cellular"
+            }
+        }
+    }
 }
 
 protocol ConnectivityServiceProtocol {

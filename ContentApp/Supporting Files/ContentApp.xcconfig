@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2021 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -14,17 +14,6 @@
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
-//
+///******************************************************************************
 
-import Foundation
-
-struct AnalyticsConstants {
-    struct Events {
-        static let filePreview = "file_preview"
-    }
-    struct Parameters {
-        static let fileMimetype = "file_mimetype"
-        static let fileExtension = "file_extension"
-        static let previewSuccess = "success"
-    }
-}
+OTHER_CFLAGS=-DGA_API_KEY_AMW="@\"${ALFRESCO_IOS_GA_API_KEY}\""

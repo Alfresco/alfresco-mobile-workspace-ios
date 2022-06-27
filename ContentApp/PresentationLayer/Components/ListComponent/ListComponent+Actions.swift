@@ -47,7 +47,6 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             self.display(error: error)
         } else {
             guard let action = action else { return }
-
             if action.type.isFavoriteActions {
                 handleFavorite(action: action)
             } else if action.type.isMoveActions {
@@ -57,6 +56,7 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
             }
+            logEvent(with: action, node: node)
         }
     }
 
@@ -154,5 +154,14 @@ extension ListComponentViewController: NodeActionsViewModelDelegate,
             snackBar.snackBar.presentationHostViewOverride = view
             snackBar.show(completion: nil)
         }
+    }
+}
+
+// MARK: - Analytics
+extension ListComponentViewController {
+    
+    func logEvent(with action: ActionMenu?, node: ListNode?) {
+        guard let action = action else { return }
+        AnalyticsManager.shared.fileActionEvent(for: node, action: action)
     }
 }
