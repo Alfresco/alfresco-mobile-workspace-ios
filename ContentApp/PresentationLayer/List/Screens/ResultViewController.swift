@@ -564,7 +564,8 @@ extension ResultViewController {
         if chip.componentType == .facet {
             AnalyticsManager.shared.searchFacets(name: chip.name)
         } else {
-            AnalyticsManager.shared.searchFacets(name:chip.componentType?.rawValue)
+            let name = chip.componentType?.rawValue ?? ""
+            AnalyticsManager.shared.searchFacets(name: name)
         }
     }
     
