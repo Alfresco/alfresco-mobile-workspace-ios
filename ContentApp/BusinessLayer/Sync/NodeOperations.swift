@@ -105,7 +105,7 @@ class NodeOperations {
     func downloadContent(from url: URL,
                          to destinationURL: URL? = nil,
                          completionHandler: @escaping (URL?, APIError?) -> Void) -> DownloadRequest? {
-        var destination: DownloadRequest.DownloadFileDestination? = nil
+        var destination: DownloadRequest.DownloadFileDestination?
         if let destinationUrl = destinationURL {
             destination = { _, _ in
                 return (destinationUrl, [.removePreviousFile])
