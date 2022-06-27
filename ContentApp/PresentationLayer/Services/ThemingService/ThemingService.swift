@@ -112,9 +112,11 @@ class ThemingService: ThemingServiceProtocol {
         case .dark:
             activate(theme: DarkTheme.self)
             overrideUserInterfaceStyle(.dark)
+            AnalyticsManager.shared.theme(name: ThemeModeType.dark.rawValue)
         case .light:
             activate(theme: DefaultTheme.self)
             overrideUserInterfaceStyle(.light)
+            AnalyticsManager.shared.theme(name: ThemeModeType.light.rawValue)
         default: break
         }
     }

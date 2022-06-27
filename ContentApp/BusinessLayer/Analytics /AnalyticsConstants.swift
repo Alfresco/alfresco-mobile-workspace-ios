@@ -25,8 +25,11 @@ enum EventType: String {
 }
 
 enum EventName: String {
-    case filePreview = "Event_FilePreview"
-    case openWith = "Event_OpenWith"
+    case filePreview = "Event_filePreview"
+    case changeTheme = "Event_changeTheme"
+    case appLaunched = "Event_appLaunched"
+    case searchFacets = "Event_searchFacets"
+    case discardCaptures = "Event_discardCapture"
 }
 
 struct AnalyticsConstants {
@@ -45,5 +48,9 @@ struct AnalyticsConstants {
         static let fileMimetype = "file_mimetype"
         static let fileExtension = "file_extension"
         static let previewSuccess = "success"
+        static let isFile = "is_file"
+        static let theme = "theme_name"
+        static let facet = "facet_name"
+        static let assetsCount = "numberOfAssets"
     }
 }

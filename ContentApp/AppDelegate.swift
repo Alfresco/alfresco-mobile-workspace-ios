@@ -49,6 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         connectivityService?.startNetworkReachabilityObserver()
         UserDefaultsModel.set(value: true, for: KeyConstants.AdvanceSearch.fetchAdvanceSearchFromServer)
         migrateDatabaseIfNecessary()
+        AnalyticsManager.shared.appLaunched()
         return true
     }
 
