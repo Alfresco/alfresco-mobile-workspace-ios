@@ -120,6 +120,7 @@ class NodeActionsViewModel {
                 sSelf.requestMoveToFolder(action: action)
             default: break
             }
+            sSelf.logEvent(with: action, node: sSelf.node)
         }
     }
 
@@ -478,5 +479,14 @@ class NodeActionsViewModel {
                                     animated: true,
                                     completion: nil)
         }
+    }
+}
+
+// MARK: - Analytics
+extension NodeActionsViewModel {
+    
+    func logEvent(with action: ActionMenu?, node: ListNode?) {
+        guard let action = action else { return }
+        AnalyticsManager.shared.fileActionEvent(for: node, action: action)
     }
 }

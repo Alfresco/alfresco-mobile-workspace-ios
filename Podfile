@@ -5,44 +5,22 @@ use_frameworks!
 inhibit_all_warnings!
 
 target 'ContentApp' do
-  pod 'SwiftLint', '~> 0'
-  pod 'JWTDecode', '~> 2.0'
+  pod 'SwiftLint'
+  pod 'JWTDecode'
   pod 'Firebase/Crashlytics'
   pod 'Firebase/Analytics'
-  pod 'Nuke', '~> 9.0'
-  pod 'Gifu', '~> 3.0'
-  pod 'SVGKit', '~> 2.0'
+  pod 'Nuke'
+  pod 'Gifu'
+  pod 'SVGKit'
   pod 'ObjectBox'
-  pod 'FastCoding', '~> 3.0'
+  pod 'FastCoding'
   pod 'DropDown'
+  pod 'MaterialComponents', '~> 124.2'
 
   # Alfresco iOS Swift API
   pod 'AlfrescoAuth'
   pod 'AlfrescoContent'
 
-
-  # Material Components
-  pod 'MaterialComponents/Buttons', '~> 124.0'
-  pod 'MaterialComponents/Buttons+Theming', '~> 124.0'
-  pod 'MaterialComponents/TextControls+FilledTextFields', '~> 124.0'
-  pod 'MaterialComponents/TextControls+FilledTextFieldsTheming', '~> 124.0'
-  pod 'MaterialComponents/TextControls+OutlinedTextFields', '~> 124.0'
-  pod 'MaterialComponents/TextControls+OutlinedTextFieldsTheming', '~> 124.0'
-  pod 'MaterialComponents/TextControls+OutlinedTextAreas', '~> 124.0'
-  pod 'MaterialComponents/TextControls+OutlinedTextAreasTheming', '~> 124.0'
-  pod 'MaterialComponents/BottomSheet', '~> 124.0'
-  pod 'MaterialComponents/ActivityIndicator', '~> 124.0'
-  pod 'MaterialComponents/Snackbar', '~> 124.0'
-  pod 'MaterialComponents/Dialogs', '~> 124.0'
-  pod 'MaterialComponents/Dialogs+Theming', '~> 124.0'
-  pod 'MaterialComponents/BottomNavigation', '~> 124.0'
-  pod 'MaterialComponents/BottomNavigation+Theming', '~> 124.0'
-  pod 'MaterialComponents/Chips', '~> 124.0'
-  pod 'MaterialComponents/Chips+Theming', '~> 124.0'
-  pod 'MaterialComponents/ProgressView', '~> 124.0'
-  pod 'MaterialComponents/Tabs+TabBarView', '~> 124.0'
-  pod 'MaterialComponents/Tabs+TabBarViewTheming', '~> 124.0'
-  pod 'MaterialComponents/Slider'
   
   target 'ContentAppTests' do
     inherit! :search_paths

@@ -559,6 +559,14 @@ extension ResultViewController {
         } else if chip.componentType == .facet {
             showFacetSelectorComponent(name: chip.name, selectedValue: chip.selectedValue)
         }
+        
+        // analytics
+        if chip.componentType == .facet {
+            AnalyticsManager.shared.searchFacets(name: chip.name)
+        } else {
+            let name = chip.componentType?.rawValue ?? ""
+            AnalyticsManager.shared.searchFacets(name: name)
+        }
     }
     
     /// Text Component
