@@ -35,6 +35,7 @@ class UploadFilesScreenCoordinator: PresentingCoordinator {
 
         let viewController = UploadFilesViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.transferFiles
+        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
         uploadFilesViewController = viewController
 
         let viewModel = folderChildrenDataSource

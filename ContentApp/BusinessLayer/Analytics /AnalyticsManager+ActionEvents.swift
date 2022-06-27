@@ -27,7 +27,7 @@ extension AnalyticsManager {
         parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
         parameters[AnalyticsConstants.Parameters.previewSuccess] = success
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.filePreview.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
 
     func fileActionEvent(for node: ListNode?, action: ActionMenu) {
@@ -39,33 +39,33 @@ extension AnalyticsManager {
         parameters[AnalyticsConstants.Parameters.fileMimetype] = mimeType
         parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
         parameters[AnalyticsConstants.Parameters.eventName] = eventName
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
     
     func theme(name: String) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.theme] = name
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.changeTheme.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
     
     func appLaunched() {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.appLaunched.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
     
     func searchFacets(name: String?) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.facet] = name ?? ""
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.searchFacets.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
     
     func discardCaptures(count: Int) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.assetsCount] = count
         parameters[AnalyticsConstants.Parameters.eventName] = EventName.discardCaptures.rawValue
-        self.logEvent(type: .screenView, parameters: parameters)
+        self.logEvent(type: .actionEvent, parameters: parameters)
     }
 }

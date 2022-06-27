@@ -30,6 +30,7 @@ enum EventName: String {
     case appLaunched = "Event_appLaunched"
     case searchFacets = "Event_searchFacets"
     case discardCaptures = "Event_discardCapture"
+    case searchScreen = "Search"
 }
 
 struct AnalyticsConstants {
