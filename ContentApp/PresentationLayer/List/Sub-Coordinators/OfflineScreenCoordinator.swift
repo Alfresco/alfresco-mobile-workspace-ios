@@ -40,6 +40,7 @@ class OfflineScreenCoordinator: ListCoordinatorProtocol {
 
         let viewController = ListViewController()
         viewController.title = LocalizationConstants.ScreenTitles.offline
+        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
 
         let viewModel = offlineDataSource.offlineViewModel
         let pageController = ListPageController(dataSource: viewModel.model,

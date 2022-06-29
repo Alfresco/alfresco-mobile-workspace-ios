@@ -38,6 +38,7 @@ class OfflineFolderChildrenScreenCoordinator: Coordinator {
 
         let viewController = ListViewController()
         viewController.title = listNode.title
+        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
 
         let pageController = ListPageController(dataSource: viewModel.model,
                                                 services: coordinatorServices)

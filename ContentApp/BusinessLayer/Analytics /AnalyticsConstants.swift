@@ -19,7 +19,7 @@
 import Foundation
 
 enum EventType: String {
-    case screenView = "screen_view"
+    case screenView = "screen_views"
     case actionEvent = "action_event"
     case apiTracker = "api_tracker"
 }
@@ -30,6 +30,7 @@ enum EventName: String {
     case appLaunched = "Event_appLaunched"
     case searchFacets = "Event_searchFacets"
     case discardCaptures = "Event_discardCapture"
+    case searchScreen = "Search"
 }
 
 struct AnalyticsConstants {
