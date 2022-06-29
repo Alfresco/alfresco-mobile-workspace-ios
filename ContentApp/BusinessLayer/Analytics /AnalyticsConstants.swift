@@ -19,7 +19,7 @@
 import Foundation
 
 enum EventType: String {
-    case screenView = "screen_view"
+    case screenView = "screen_views"
     case actionEvent = "action_event"
     case apiTracker = "api_tracker"
 }
