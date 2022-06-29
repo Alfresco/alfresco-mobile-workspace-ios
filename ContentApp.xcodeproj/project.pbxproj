@@ -395,6 +395,7 @@
 		C9B6D27B27C9438D00CF0C73 /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008F24C84BD000F03D60 /* Inter-Bold.ttf */; };
 		C9B6D27C27C9438F00CF0C73 /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E369008E24C84BD000F03D60 /* Inter-Black.ttf */; };
 		C9BE5F0A2721B15A0091719D /* SearchTextComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE5F092721B15A0091719D /* SearchTextComponentViewModel.swift */; };
+		C9C51F1B286BEE88007D5BCF /* AnalyticsManager+APITracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C51F1A286BEE88007D5BCF /* AnalyticsManager+APITracker.swift */; };
 		C9C7F22327BB82020039A6AE /* FolderChildrenViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22127BB82020039A6AE /* FolderChildrenViewModelFactory.swift */; };
 		C9C7F22427BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22227BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift */; };
 		C9C7F22A27BB82940039A6AE /* FolderDrillModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F22627BB82940039A6AE /* FolderDrillModel.swift */; };
@@ -882,6 +883,7 @@
 		C9BE5F092721B15A0091719D /* SearchTextComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewModel.swift; sourceTree = "<group>"; };
 		C9C03BB227AB00BA00DA49B2 /* ContentAppDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ContentAppDebug.entitlements; sourceTree = "<group>"; };
 		C9C03BB327AB014500DA49B2 /* ShareDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareDebug.entitlements; sourceTree = "<group>"; };
+		C9C51F1A286BEE88007D5BCF /* AnalyticsManager+APITracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+APITracker.swift"; sourceTree = "<group>"; };
 		C9C7F22127BB82020039A6AE /* FolderChildrenViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderChildrenViewModelFactory.swift; sourceTree = "<group>"; };
 		C9C7F22227BB82020039A6AE /* TopLevelBrowseViewModelFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopLevelBrowseViewModelFactory.swift; sourceTree = "<group>"; };
 		C9C7F22627BB82940039A6AE /* FolderDrillModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderDrillModel.swift; sourceTree = "<group>"; };
@@ -1733,6 +1735,7 @@
 				C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */,
 				C940BB8F286024440064E2E7 /* AnalyticsManager.swift */,
 				C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */,
+				C9C51F1A286BEE88007D5BCF /* AnalyticsManager+APITracker.swift */,
 			);
 			path = "Analytics ";
 			sourceTree = "<group>";
@@ -3546,6 +3549,7 @@
 				E3A87A38251CBB2100AE8175 /* String+CompareVersions.swift in Sources */,
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
 				C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */,
+				C9C51F1B286BEE88007D5BCF /* AnalyticsManager+APITracker.swift in Sources */,
 				B946E84D25592DE500023A39 /* TopLevelBrowseViewModelFactory.swift in Sources */,
 				B90E383D255AAD7D00FAFB81 /* RecentViewModelFactory.swift in Sources */,
 				C940BB8E286024340064E2E7 /* AnalyticsConstants.swift in Sources */,

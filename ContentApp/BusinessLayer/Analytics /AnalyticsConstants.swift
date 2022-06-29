@@ -30,6 +30,10 @@ enum EventName: String {
     case appLaunched = "Event_appLaunched"
     case searchFacets = "Event_searchFacets"
     case discardCaptures = "Event_discardCapture"
+    case apiSyncStatus = "Syncing_Status"
+    case apiNewFolder = "NewFolder"
+    case apiUploadMedia = "UploadFiles"
+    case apiLogin = "login"
 }
 
 struct AnalyticsConstants {
@@ -52,5 +56,6 @@ struct AnalyticsConstants {
         static let theme = "theme_name"
         static let facet = "facet_name"
         static let assetsCount = "numberOfAssets"
+        static let fileSize = "file_size"
     }
 }
