@@ -32,7 +32,7 @@ public extension URL {
 }
 
 extension URL {
-    var attributes: [FileAttributeKey : Any]? {
+    var attributes: [FileAttributeKey: Any]? {
         do {
             return try FileManager.default.attributesOfItem(atPath: path)
         } catch let error as NSError {
