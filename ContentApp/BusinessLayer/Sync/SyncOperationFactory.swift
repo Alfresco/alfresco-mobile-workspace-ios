@@ -157,7 +157,7 @@ class SyncOperationFactory {
 
         return operation
     }
-
+    
     private func fetchChildrenNodeDetailsOperations(of node: ListNode,
                                                     paginationRequest: RequestPagination?,
                                                     on queue: OperationQueue) {
@@ -274,6 +274,7 @@ class SyncOperationFactory {
                 guard let fileURL = transferDataAccessor.uploadLocalPath(for: transfer) else { return }
                 do {
                     let fileData = try Data(contentsOf: fileURL)
+                    let fileSize = fileURL.fileSize
 
                     sSelf.nodeOperations.createNode(nodeId: transfer.parentNodeId,
                                                     name: transfer.nodeName,
@@ -288,6 +289,7 @@ class SyncOperationFactory {
                                                         }
 
                                                         if error == nil, let node = entry {
+                                                            AnalyticsManager.shared.apiTracker(name: EventName.apiUploadMedia.rawValue, fileSize: fileSize, success: true)
                                                             SyncSharedNodes.store(uploadedNode: transfer)
                                                             transfer.syncStatus = .synced
                                                             let listNode = transfer.updateListNode(with: node)
@@ -296,6 +298,7 @@ class SyncOperationFactory {
                                                             // transferDataAccessor.remove(transfer: transfer)
                                                             SyncBannerService.triggerSyncNotifyService()
                                                         } else {
+                                                            AnalyticsManager.shared.apiTracker(name: EventName.apiUploadMedia.rawValue, fileSize: fileSize, success: false)
                                                             transfer.syncStatus = .error
                                                             let listNode = transfer.listNode()
                                                             sSelf.publishSyncStatusEvent(for: listNode)
@@ -311,6 +314,10 @@ class SyncOperationFactory {
         }
         return operation
     }
+    
+    func syncStatusAnalyticsEvent(for url: URL, error: Error?) {
+    }
+
 
     private func downloadNodeRenditionOperation(node: ListNode) -> AsyncClosureOperation? {
         if FilePreview.preview(mimetype: node.mimeType) == .rendition {
