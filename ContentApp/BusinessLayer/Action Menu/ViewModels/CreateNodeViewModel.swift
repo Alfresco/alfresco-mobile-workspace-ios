@@ -119,7 +119,9 @@ class CreateNodeViewModel {
                                       description: nodeDescription,
                                       autoRename: autoRename) { [weak self] (result, error) in
                 guard let sSelf = self else { return }
-
+                let isSuccess = error == nil ? true: false
+                AnalyticsManager.shared.apiTracker(name: EventName.apiNewFolder.rawValue, fileSize: 0, success: isSuccess)
+                
                 if let error = error {
                     sSelf.delegate?.handleCreatedNode(node: nil,
                                                       error: error, isUpdate: false)

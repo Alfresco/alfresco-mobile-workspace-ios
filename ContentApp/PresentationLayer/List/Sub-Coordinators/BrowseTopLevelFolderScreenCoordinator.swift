@@ -42,6 +42,7 @@ class BrowseTopLevelFolderScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = browseNode.title
+        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
         viewController.sourceNodeToMove = sourceNodeToMove
         viewController.destinationNodeToMove = personalFilesNode()
 

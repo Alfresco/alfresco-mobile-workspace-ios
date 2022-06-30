@@ -42,6 +42,7 @@ class BrowseScreenCoordinator: PresentingCoordinator,
 
         let viewController = BrowseViewController.instantiateViewController()
         viewController.title = LocalizationConstants.ScreenTitles.browse
+        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
 
         let searchViewModel = browseDataSource.globalSearchViewModel
         let browseViewModel = browseDataSource.browseViewModel
