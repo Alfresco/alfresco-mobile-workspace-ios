@@ -162,6 +162,31 @@ extension ListComponentViewController {
     
     func logEvent(with action: ActionMenu?, node: ListNode?) {
         guard let action = action else { return }
-        AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+        if action.type.isFavoriteActions {
+            let actionn = action
+            switch action.type {
+            case .addFavorite:
+                actionn.title = LocalizationConstants.ActionMenu.removeFavorite
+                AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
+            case .removeFavorite:
+                actionn.title = LocalizationConstants.ActionMenu.addFavorite
+                AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
+            default: break
+            }
+        } else if action.type.isDownloadActions {
+            let actionn = action
+            switch action.type {
+            case .markOffline:
+                actionn.title = LocalizationConstants.ActionMenu.removeOffline
+                AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
+            case .removeOffline:
+                actionn.title = LocalizationConstants.ActionMenu.markOffline
+                AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
+            default: break
+            }
+            
+        } else {
+            AnalyticsManager.shared.fileActionEvent(for: node, action: action)
+        }
     }
 }

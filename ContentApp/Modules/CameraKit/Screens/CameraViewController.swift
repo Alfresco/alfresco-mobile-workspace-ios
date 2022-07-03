@@ -125,6 +125,7 @@ class CameraViewController: UIViewController {
                                 in: self) { [weak self] discarded in
             guard let sSelf = self else { return }
             if discarded {
+                AnalyticsManager.shared.discardCaptures(count: numberOfCapturedAssets)
                 sSelf.dismissCamera()
             }
         }
