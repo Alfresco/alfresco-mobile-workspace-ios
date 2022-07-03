@@ -41,7 +41,6 @@ class CameraKit {
                               in viewController: UIViewController,
                               handler: @escaping CameraKitDismissHandler) {
         
-//        AnalyticsManager.shared.discardCaptures(count: numberOfCapturedAssets)
         let title = LocalizationConstants.Dialog.discardCapturedAssetsTitle
         let message = String(format: LocalizationConstants.Dialog.discardCapturedAssetsMessage, numberOfCapturedAssets)
 
