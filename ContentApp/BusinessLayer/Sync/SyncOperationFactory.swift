@@ -315,10 +315,6 @@ class SyncOperationFactory {
         return operation
     }
     
-    func syncStatusAnalyticsEvent(for url: URL, error: Error?) {
-    }
-
-
     private func downloadNodeRenditionOperation(node: ListNode) -> AsyncClosureOperation? {
         if FilePreview.preview(mimetype: node.mimeType) == .rendition {
             let renditionDownloadOperation = AsyncClosureOperation { [weak self] completion, operation  in
