@@ -496,7 +496,8 @@ extension NodeActionsViewModel {
             case .removeFavorite:
                 actionn.title = LocalizationConstants.ActionMenu.addFavorite
                 AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
-            default: break
+            default:
+                AnalyticsManager.shared.fileActionEvent(for: node, action: action)
             }
         } else if action.type.isDownloadActions {
             let actionn = action
@@ -507,7 +508,8 @@ extension NodeActionsViewModel {
             case .removeOffline:
                 actionn.title = LocalizationConstants.ActionMenu.markOffline
                 AnalyticsManager.shared.fileActionEvent(for: node, action: actionn)
-            default: break
+            default:
+                AnalyticsManager.shared.fileActionEvent(for: node, action: action)
             }
             
         } else {

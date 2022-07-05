@@ -82,6 +82,7 @@ class FavoritesViewController: SystemSearchViewController {
                 selectTabItem(item: selectedItem)
             }
         }
+        AnalyticsManager.shared.pageViewEvent(for: self.title)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
