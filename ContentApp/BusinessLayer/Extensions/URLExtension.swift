@@ -41,7 +41,10 @@ extension URL {
         return [FileAttributeKey: Any]()
     }
 
-    var fileSize: UInt64 {
-        return attributes[.size] as? UInt64 ?? UInt64(0)
+    var fileSize: Double {
+        if let size = attributes[.size] as? NSNumber {
+            return size.doubleValue / 1000000.0
+        }
+        return 0.0
     }
 }
