@@ -77,6 +77,7 @@ class ListViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         listController?.viewWillAppear(animated)
         addAvatarInSettingsButton()
+        AnalyticsManager.shared.pageViewEvent(for: self.title)
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

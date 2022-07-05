@@ -39,6 +39,7 @@ class BrowseViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
         collectionView.reloadData()
+        AnalyticsManager.shared.pageViewEvent(for: self.title)
     }
 
     override func willTransition(to newCollection: UITraitCollection,
