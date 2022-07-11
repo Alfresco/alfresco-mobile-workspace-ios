@@ -31,6 +31,11 @@ class AIMSAccount: AccountProtocol, Equatable {
     var apiBasePath: String {
         return "\(session.parameters.fullContentURL)/\(session.parameters.path)/\(APIConstants.Path.base)"
     }
+    
+    var processAPIBasePath: String {
+        return "\(session.parameters.fullContentURL)"
+    }
+    
     var session: AIMSSession
 
     var ticket: String?

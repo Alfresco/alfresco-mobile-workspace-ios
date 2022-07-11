@@ -29,6 +29,9 @@ protocol AccountProtocol: AnyObject {
     /// Path for which domain specific requests are built
     var apiBasePath: String { get }
 
+    /// Path for which domain specific requests are built for the process service
+    var processAPIBasePath: String { get }
+
     /// Persists the authentication parameters for this account across multiple app launches
     func persistAuthenticationParameters()
 
