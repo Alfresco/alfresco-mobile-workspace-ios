@@ -25,6 +25,7 @@ protocol TabBarScreenCoordinatorDelegate: AnyObject {
     func showOfflineScreen()
     func showSettingsScreen()
     func scrollToTopOrPopToRoot(forScreen item: Int)
+    func showTasksScreen()
 }
 
 class TabBarScreenCoordinator: Coordinator {
@@ -35,6 +36,7 @@ class TabBarScreenCoordinator: Coordinator {
     private var browseCoordinator: BrowseScreenCoordinator?
     private var offlineCoordinator: OfflineScreenCoordinator?
     private var settingsCoordinator: SettingsScreenCoordinator?
+    private var tasksCoordinator: TasksScreenCoordinator?
 
     init(with presenter: UINavigationController) {
         self.presenter = presenter
@@ -56,18 +58,24 @@ class TabBarScreenCoordinator: Coordinator {
         let browseTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.browse,
                                             image: UIImage(named: "ic-browse-unselected"),
                                             selectedImage: UIImage(named: "ic-browse-selected"))
-
+        let tasksTabBarItem = UITabBarItem(title: LocalizationConstants.ScreenTitles.tasks,
+                                            image: UIImage(named: "ic-tasks-unselected"),
+                                            selectedImage: UIImage(named: "ic-tasks-selected"))
+        
         recentTabBarItem.accessibilityIdentifier = "recentTab"
         favoritesTabBarItem.accessibilityIdentifier = "favoritesTab"
         offlineTabBarItem.accessibilityIdentifier = "offlineTab"
         browseTabBarItem.accessibilityIdentifier = "browseTab"
+        tasksTabBarItem.accessibilityIdentifier = "tasksTab"
 
         recentTabBarItem.tag = 0
         favoritesTabBarItem.tag = 1
-        offlineTabBarItem.tag = 2
-        browseTabBarItem.tag = 3
+        tasksTabBarItem.tag = 2
+        offlineTabBarItem.tag = 3
+        browseTabBarItem.tag = 4
         viewController.tabs = [recentTabBarItem,
                                favoritesTabBarItem,
+                               tasksTabBarItem,
                                offlineTabBarItem,
                                browseTabBarItem]
         viewController.themingService = themingService
@@ -118,6 +126,13 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
             browseCoordinator?.start()
         }
     }
+    
+    func showTasksScreen() {
+        if let tabBarMainViewController = self.tabBarMainViewController {
+            tasksCoordinator = TasksScreenCoordinator(with: tabBarMainViewController)
+            tasksCoordinator?.start()
+        }
+    }
 
     func scrollToTopOrPopToRoot(forScreen item: Int) {
         switch item {
@@ -125,9 +140,11 @@ extension TabBarScreenCoordinator: TabBarScreenCoordinatorDelegate {
             recentCoordinator?.scrollToTopOrPopToRoot()
         case 1: // Favorites
             favoritesCoordinator?.scrollToTopOrPopToRoot()
-        case 2: // Offline
+        case 2: // tasks
+            tasksCoordinator?.scrollToTopOrPopToRoot()
+        case 3: // Offline
             offlineCoordinator?.scrollToTopOrPopToRoot()
-        case 3: // Browse
+        case 4: // Browse
             browseCoordinator?.scrollToTopOrPopToRoot()
         default:
             break

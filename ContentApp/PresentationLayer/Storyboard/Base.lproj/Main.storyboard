@@ -2668,6 +2668,22 @@
             </objects>
             <point key="canvasLocation" x="3588.7850467289718" y="933.69330453563725"/>
         </scene>
+        <!--Tasks List View Controller-->
+        <scene sceneID="BtP-MV-TVI">
+            <objects>
+                <viewController storyboardIdentifier="TasksListViewController" id="oVx-Jr-RUM" customClass="TasksListViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1xF-Df-hw3">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="cIe-22-zMY"/>
+                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qi3-Hd-ruI"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kI3-53-goo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1151" y="-1604"/>
+        </scene>
     </scenes>
     <resources>
         <image name="alfresco-logo" width="92" height="92"/>
@@ -2686,6 +2702,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.18823529411764706" green="0.69019607843137254" blue="0.7803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
