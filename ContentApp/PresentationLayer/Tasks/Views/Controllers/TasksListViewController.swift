@@ -20,13 +20,18 @@ import UIKit
 
 class TasksListViewController: SystemSearchViewController {
 
+    private let searchButtonAspectRatio: CGFloat = 30.0
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     var tableView = UITableView()
-    
+    private var searchController: UISearchController?
+    private var resultsViewController: SearchTasksViewController?
+
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
+        searchController = createSearchController()
+        navigationItem.searchController = searchController
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,5 +62,23 @@ class TasksListViewController: SystemSearchViewController {
 
     func scrollToTop() {
         // listController?.scrollToSection(0)
+    }
+    
+    private func createSearchController() -> UISearchController {
+        
+        let storyboard = UIStoryboard(name: "Tasks", bundle: nil)
+        let rvc = storyboard.instantiateViewController(withIdentifier: "SearchTasksViewController") as? SearchTasksViewController
+        rvc?.coordinatorServices = coordinatorServices
+
+        let searchController = UISearchController(searchResultsController: resultsViewController)
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.smartQuotesType = .no
+        searchController.searchBar.isAccessibilityElement = true
+        searchController.searchBar.accessibilityIdentifier = "searchBar"
+        return searchController
     }
 }
