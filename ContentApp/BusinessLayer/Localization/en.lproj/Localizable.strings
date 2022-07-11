@@ -79,6 +79,7 @@
 "offline" = "Offline";
 "preview-capture-asset" = "Preview";
 "gallery-upload" = "Photos";
+"tasks" = "Tasks";
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";

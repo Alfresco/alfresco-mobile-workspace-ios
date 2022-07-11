@@ -55,6 +55,7 @@ class TabBarMainViewController: UITabBarController {
 
         tabBarCoordinatorDelegate?.showRecentScreen()
         tabBarCoordinatorDelegate?.showFavoritesScreen()
+        tabBarCoordinatorDelegate?.showTasksScreen()
         tabBarCoordinatorDelegate?.showOfflineScreen()
         tabBarCoordinatorDelegate?.showBrowseScreen()
         addLocalization()
@@ -111,8 +112,8 @@ class TabBarMainViewController: UITabBarController {
         bottomNavigationBar.items = tabs
 
         if connectivityService?.hasInternetConnection() == false {
-            bottomNavigationBar.selectedItem = tabs[2]
-            self.selectedIndex = 2
+            bottomNavigationBar.selectedItem = tabs[3] // offline tab
+            self.selectedIndex = 3
         } else {
             bottomNavigationBar.selectedItem = tabs.first
         }
