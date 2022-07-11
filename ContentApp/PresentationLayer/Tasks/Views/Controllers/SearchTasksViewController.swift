@@ -23,6 +23,5 @@ class SearchTasksViewController: SystemSearchViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
 }

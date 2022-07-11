@@ -30,8 +30,8 @@ class TasksListViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
-        searchController = createSearchController()
-        navigationItem.searchController = searchController
+//        searchController = createSearchController()
+//        navigationItem.searchController = searchController
     }
     
     override func viewWillAppear(_ animated: Bool) {
