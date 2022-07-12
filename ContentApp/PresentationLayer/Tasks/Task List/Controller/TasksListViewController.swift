@@ -25,13 +25,20 @@ class TasksListViewController: SystemSearchViewController {
     var tableView = UITableView()
     private var searchController: UISearchController?
     private var resultsViewController: SearchTasksViewController?
-
+    var viewModel: TasksListViewModel {
+        return controller.viewModel
+    }
+    lazy var controller: TasksListController = {
+        return TasksListController()
+    }()
+    
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
-//        searchController = createSearchController()
-//        navigationItem.searchController = searchController
+        searchController = createSearchController()
+        navigationItem.searchController = searchController
+        setupBindings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +57,24 @@ class TasksListViewController: SystemSearchViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
        // collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    // MARK: - Set up Bindings
+    private func setupBindings() {
+        
+        // observing loader
+        self.viewModel.isLoading.addObserver { (isLoading) in
+            if isLoading {
+               // appLoader().showLoader()
+            } else {
+              //  appLoader().dismissLoader()
+            }
+        }
+         
+        // observing tasks
+        self.viewModel.tasks.addObserver() { [weak self] (tasks) in
+            //self?.controller.buildViewModels(addressList: addressList)
+        }
     }
     
     // MARK: - IBActions
