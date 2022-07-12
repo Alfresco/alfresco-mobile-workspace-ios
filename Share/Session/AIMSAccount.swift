@@ -34,7 +34,7 @@ class AIMSAccount: AccountProtocol, Equatable {
     }
     
     var processAPIBasePath: String {
-        return "\(session.parameters.fullContentURL)"
+        return "\(session.parameters.fullContentURL)/\(session.parameters.processAppClientID)/\(session.parameters.processAppQueryString)/\(session.parameters.processAppDefinition)"
     }
     
     var session: AIMSSession

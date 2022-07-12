@@ -29,9 +29,9 @@ class BasicAuthAccount: AccountProtocol, Equatable {
     }
     
     var processAPIBasePath: String {
-        return "\(parameters.fullHostnameURL)"
+        return "\(parameters.fullHostnameURL)/\(parameters.processAppClientID)/\(parameters.processAppQueryString)/\(parameters.processAppDefinition)"
     }
-    
+  
     var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
 
