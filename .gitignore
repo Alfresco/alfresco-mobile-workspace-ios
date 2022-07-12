@@ -7,7 +7,7 @@
 ## Build generated
 build/
 DerivedData/
-GoogleService-Info.plist
+**/ContentApp/Supporting Files/GoogleService-Info.plist
 
 ## Various settings
 *.pbxuser
