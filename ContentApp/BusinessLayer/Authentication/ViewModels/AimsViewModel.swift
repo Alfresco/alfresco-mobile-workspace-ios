@@ -117,6 +117,7 @@ extension AimsViewModel: AlfrescoAuthDelegate {
                 let account = AIMSAccount(with: accountSession)
 
                 AlfrescoContentAPI.basePath = account.apiBasePath
+                AlfrescoProcessAPI.basePath = account.processAPIBasePath
 
                 accountService?.register(account: account)
                 accountService?.activeAccount = account

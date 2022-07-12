@@ -50,6 +50,7 @@ class BasicAuthViewModel {
                     let account = BasicAuthAccount(with: accountParams, credential: basicAuthCredential)
 
                     AlfrescoContentAPI.basePath = account.apiBasePath
+                    AlfrescoProcessAPI.basePath = account.processAPIBasePath
 
                     sSelf.accountService?.register(account: account)
                     sSelf.accountService?.activeAccount = account

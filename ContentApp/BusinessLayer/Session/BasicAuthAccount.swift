@@ -20,12 +20,18 @@ import UIKit
 import AlfrescoContent
 
 class BasicAuthAccount: AccountProtocol, Equatable {
+    
     var identifier: String {
         return credential.username
     }
     var apiBasePath: String {
         return "\(parameters.fullHostnameURL)/\(parameters.path)/\(APIConstants.Path.base)"
     }
+    
+    var processAPIBasePath: String {
+        return "\(parameters.fullHostnameURL)/\(parameters.processAppClientID)/\(parameters.processAppQueryString)/\(parameters.processAppDefinition)"
+    }
+  
     var parameters: AuthenticationParameters
     var credential: BasicAuthCredential
 

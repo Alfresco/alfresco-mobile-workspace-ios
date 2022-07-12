@@ -194,6 +194,10 @@
 		C97BEB8026EB3AC700E05375 /* CollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB7A26EB3AC700E05375 /* CollectionFlowLayout.swift */; };
 		C97BEB8126EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB7C26EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift */; };
 		C97BEB8326EB3B6200E05375 /* CollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB8226EB3B6200E05375 /* CollectionViewExtensions.swift */; };
+		C97C025A287C142500C3CA52 /* TasksScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C0259287C142500C3CA52 /* TasksScreenCoordinator.swift */; };
+		C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97C0260287C1D1B00C3CA52 /* Tasks.storyboard */; };
+		C97C026B287C457500C3CA52 /* TasksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C0267287C457500C3CA52 /* TasksListViewController.swift */; };
+		C97C026C287C457500C3CA52 /* SearchTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C0268287C457500C3CA52 /* SearchTasksViewController.swift */; };
 		C9848014272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9848013272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift */; };
 		C9848016272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9848015272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift */; };
 		C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */ = {isa = PBXBuildFile; fileRef = C989FEA1272FD11D0081EB7E /* UITextField+MaxLength.swift */; };
@@ -856,6 +860,10 @@
 		C97BEB7A26EB3AC700E05375 /* CollectionFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionFlowLayout.swift; sourceTree = "<group>"; };
 		C97BEB7C26EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoGalleryCollectionViewCell.swift; sourceTree = "<group>"; };
 		C97BEB8226EB3B6200E05375 /* CollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewExtensions.swift; sourceTree = "<group>"; };
+		C97C0259287C142500C3CA52 /* TasksScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksScreenCoordinator.swift; sourceTree = "<group>"; };
+		C97C0260287C1D1B00C3CA52 /* Tasks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tasks.storyboard; sourceTree = "<group>"; };
+		C97C0267287C457500C3CA52 /* TasksListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksListViewController.swift; sourceTree = "<group>"; };
+		C97C0268287C457500C3CA52 /* SearchTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTasksViewController.swift; sourceTree = "<group>"; };
 		C9848013272A5BE200BB556B /* SearchSliderRangeComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSliderRangeComponentViewController.swift; sourceTree = "<group>"; };
 		C9848015272A5BF800BB556B /* SearchSliderRangeComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSliderRangeComponentViewModel.swift; sourceTree = "<group>"; };
 		C989FEA1272FD11D0081EB7E /* UITextField+MaxLength.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+MaxLength.swift"; sourceTree = "<group>"; };
@@ -1330,6 +1338,7 @@
 				B96B9AEC2480F7A80035AE97 /* Authentication */,
 				E3C128062498EB2700AE832F /* Settings */,
 				E3C128132498ECAD00AE832F /* TabBar */,
+				C97C025B287C148200C3CA52 /* Tasks */,
 				B9CCA30D24BF3AE700F1AD5C /* List */,
 				E3CF862524E69B13001C86B5 /* Files Preview */,
 				E386BAEC25C7DE8E005F3503 /* Choose Dialog */,
@@ -1895,6 +1904,55 @@
 			path = "Photo Gallery";
 			sourceTree = "<group>";
 		};
+		C97C025B287C148200C3CA52 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				C97C0269287C457500C3CA52 /* Models */,
+				C97C026A287C457500C3CA52 /* View Models */,
+				C97C0264287C457500C3CA52 /* Views */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
+		C97C0264287C457500C3CA52 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C97C0265287C457500C3CA52 /* Table Cells */,
+				C97C0266287C457500C3CA52 /* Controllers */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C97C0265287C457500C3CA52 /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Table Cells";
+			sourceTree = "<group>";
+		};
+		C97C0266287C457500C3CA52 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C97C0267287C457500C3CA52 /* TasksListViewController.swift */,
+				C97C0268287C457500C3CA52 /* SearchTasksViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C97C0269287C457500C3CA52 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C97C026A287C457500C3CA52 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 		C98C128C271E85EB001C84D6 /* Advance Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -2267,6 +2325,7 @@
 			isa = PBXGroup;
 			children = (
 				E334C04524755D8E00F74880 /* Main.storyboard */,
+				C97C0260287C1D1B00C3CA52 /* Tasks.storyboard */,
 			);
 			path = Storyboard;
 			sourceTree = "<group>";
@@ -2527,6 +2586,7 @@
 				E321380B24C5ABD00025A833 /* ListCoordinatorProtocol.swift */,
 				B99A882625E38FB700B3C16D /* PresentingCoordinator.swift */,
 				E3D25C8A2493EFB200FFD87F /* RecentScreenCoordinator.swift */,
+				C97C0259287C142500C3CA52 /* TasksScreenCoordinator.swift */,
 				E3D25C8C2493EFCC00FFD87F /* FavoritesScreenCoordinator.swift */,
 				E3A7F32C258A5B880089734D /* OfflineScreenCoordinator.swift */,
 				E315151025AC3E7900DF8735 /* OfflineFolderChildrenScreenCoordinator.swift */,
@@ -3096,6 +3156,7 @@
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
+				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
 				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
@@ -3550,6 +3611,7 @@
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */,
+				C97C025A287C142500C3CA52 /* TasksScreenCoordinator.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
 				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
 				B9ECED3A25432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift in Sources */,
@@ -3703,6 +3765,7 @@
 				E3AE4E9F2506641C0095C76E /* ZoomImageView.swift in Sources */,
 				B96B9AE0247FE9BE0035AE97 /* NeedHelpCoordinator.swift in Sources */,
 				E32C697825C4519D000FA6BD /* MultipleChoiceItemCollectionViewCell.swift in Sources */,
+				C97C026B287C457500C3CA52 /* TasksListViewController.swift in Sources */,
 				F1448CD32685AC1A00D90494 /* FullScreenVideoViewController.swift in Sources */,
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
@@ -3863,6 +3926,7 @@
 				B99E1C4F247FE63700116F05 /* NeedHelpViewController.swift in Sources */,
 				C9D4FAB327830EA50008C4AA /* FileManagerAssetDelegate.swift in Sources */,
 				F185B1812617495300407451 /* CameraViewController.swift in Sources */,
+				C97C026C287C457500C3CA52 /* SearchTasksViewController.swift in Sources */,
 				C9BE5F0A2721B15A0091719D /* SearchTextComponentViewModel.swift in Sources */,
 				B91A5E54247C28900063E938 /* AdvancedSettingsScreenCoordinator.swift in Sources */,
 				E35FB74C24766DFC004674FD /* ConnectViewModel.swift in Sources */,
