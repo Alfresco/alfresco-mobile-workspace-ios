@@ -122,6 +122,8 @@ class ShareViewController: SystemThemableViewController {
     
     private func registerAndPresent(account: AccountProtocol) {
         AlfrescoContentAPI.basePath = account.apiBasePath
+        AlfrescoProcessAPI.basePath = account.processAPIBasePath
+
         viewModel.accountService?.register(account: account)
         viewModel.accountService?.activeAccount = account
         DispatchQueue.main.asyncAfter(deadline: .now()+0.3) {

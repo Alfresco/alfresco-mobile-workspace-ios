@@ -43,6 +43,10 @@ class AuthenticationParameters: Codable {
         }
         return fullFormatURL
     }
+    
+    var processAppClientID: String = "activiti-app"
+    var processAppQueryString: String = "api"
+    var processAppDefinition: String = "enterprise"
 
     static func parameters() -> AuthenticationParameters {
         parameters(for: KeyConstants.Save.authSettingsParameters)
