@@ -7,7 +7,6 @@
 ## Build generated
 build/
 DerivedData/
-**/ContentApp/Supporting Files/GoogleService-Info.plist
 
 ## Various settings
 *.pbxuser
@@ -24,6 +23,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+*/GoogleService-Info.plist
 
 ## Obj-C/Swift specific
 *.hmap
