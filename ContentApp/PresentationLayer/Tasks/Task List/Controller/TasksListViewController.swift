@@ -25,7 +25,6 @@ class TasksListViewController: SystemSearchViewController {
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     private var searchController: UISearchController?
     private let searchButtonAspectRatio: CGFloat = 30.0
-    private var resultsViewController: SearchTasksViewController?
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
@@ -54,6 +53,11 @@ class TasksListViewController: SystemSearchViewController {
         collectionView.reloadData()
         AnalyticsManager.shared.pageViewEvent(for: self.title)
         updateTheme()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        view.isHidden = false
     }
     
     func updateTheme() {
@@ -117,8 +121,9 @@ class TasksListViewController: SystemSearchViewController {
         let storyboard = UIStoryboard(name: "Tasks", bundle: nil)
         let rvc = storyboard.instantiateViewController(withIdentifier: "SearchTasksViewController") as? SearchTasksViewController
         rvc?.coordinatorServices = coordinatorServices
+        tasksResultsViewController = rvc
 
-        let searchController = UISearchController(searchResultsController: resultsViewController)
+        let searchController = UISearchController(searchResultsController: tasksResultsViewController)
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
         searchController.searchResultsUpdater = self
@@ -127,6 +132,7 @@ class TasksListViewController: SystemSearchViewController {
         searchController.searchBar.smartQuotesType = .no
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
+        searchController.showsSearchResultsController = true
         return searchController
     }
     
