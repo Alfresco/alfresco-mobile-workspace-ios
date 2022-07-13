@@ -17,30 +17,18 @@
 //
 
 import UIKit
-import AlfrescoContent
 
-class TaskListCollectionViewCell: ListSelectableCell {
-    
-    @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var subtitle: UILabel!
-    var currentTheme: PresentationTheme?
+class TaskSectionCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Initialization code
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
         guard let currentTheme = currentTheme else { return }
-        self.currentTheme = currentTheme
         backgroundColor = currentTheme.surfaceColor
-        title.applyStyleBody1OnSurface(theme: currentTheme)
-        title.lineBreakMode = .byTruncatingTail
-        subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
-        subtitle.lineBreakMode = .byTruncatingHead
-    }
-    
-    func setupData(for task: Task) {
-        title.text = "Ankit"
-        subtitle.text = "Goyal"
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
     }
 }

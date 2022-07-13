@@ -17,64 +17,87 @@
 //
 
 import UIKit
+import MaterialComponents
+import AlfrescoContent
 
 class TasksListViewController: SystemSearchViewController {
 
-    private let searchButtonAspectRatio: CGFloat = 30.0
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    var tableView = UITableView()
     private var searchController: UISearchController?
+    private let searchButtonAspectRatio: CGFloat = 30.0
     private var resultsViewController: SearchTasksViewController?
-    var viewModel: TasksListViewModel {
-        return controller.viewModel
-    }
-    lazy var controller: TasksListController = {
-        return TasksListController()
-    }()
+    @IBOutlet weak var collectionView: PageFetchableCollectionView!
+    @IBOutlet weak var progressView: MDCProgressView!
+    lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
+    let regularCellHeight: CGFloat = 60.0
+    let sectionCellHeight: CGFloat = 54.0
     
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Set up progress view
+        progressView.progress = 0
+        progressView.mode = .indeterminate
+        
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
         searchController = createSearchController()
         navigationItem.searchController = searchController
         setupBindings()
+        registerCells()
+        getTaskList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
-        tableView.reloadData()
+        collectionView.reloadData()
         AnalyticsManager.shared.pageViewEvent(for: self.title)
+        updateTheme()
+    }
+    
+    func updateTheme() {
+        let activeTheme = coordinatorServices?.themingService?.activeTheme
+        progressView.progressTintColor = activeTheme?.primaryT1Color
+        progressView.trackTintColor = activeTheme?.primary30T1Color
     }
     
     override func willTransition(to newCollection: UITraitCollection,
                                  with coordinator: UIViewControllerTransitionCoordinator) {
         super.willTransition(to: newCollection, with: coordinator)
-        tableView.reloadData()
+        collectionView.reloadData()
+        updateTheme()
     }
     
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
-       // collectionView?.collectionViewLayout.invalidateLayout()
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    // MARK: - Get Tasks List
+    func getTaskList() {
+        let params = TaskListParams(page: viewModel.page)
+        viewModel.taskList(with: params) { taskList, error in
+            self.collectionView.reloadData()
+        }
     }
     
     // MARK: - Set up Bindings
     private func setupBindings() {
         
         // observing loader
-        self.viewModel.isLoading.addObserver { (isLoading) in
+        self.viewModel.isLoading.addObserver { [weak self] (isLoading) in
             if isLoading {
-               // appLoader().showLoader()
+                self?.startLoading()
             } else {
-              //  appLoader().dismissLoader()
+                self?.stopLoading()
             }
         }
-         
-        // observing tasks
-        self.viewModel.tasks.addObserver() { [weak self] (tasks) in
-            //self?.controller.buildViewModels(addressList: addressList)
-        }
+    }
+    
+    func registerCells() {
+        collectionView.register(UINib(nibName: "TaskListCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskListCollectionViewCell")
+        collectionView.register(UINib(nibName: "TaskSectionCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskSectionCollectionViewCell")
     }
     
     // MARK: - IBActions
@@ -105,5 +128,94 @@ class TasksListViewController: SystemSearchViewController {
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
         return searchController
+    }
+    
+    // MARK: - Public Helpers
+
+    func startLoading() {
+        progressView?.startAnimating()
+        progressView?.setHidden(false, animated: true)
+    }
+
+    func stopLoading() {
+        progressView?.stopAnimating()
+        progressView?.setHidden(true, animated: false)
+    }
+}
+
+// MARK: - Collection view data source and delegate
+extension TasksListViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: regularCellHeight)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel.numberOfItems(in: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForFooterInSection section: Int) -> CGSize {
+        let shouldDisplayListLoadingIndicator = false  //delegate?.shouldDisplayListLoadingIndicator() ?? false
+
+        if shouldDisplayListLoadingIndicator && viewModel.services.connectivityService?.hasInternetConnection() == true {
+            return CGSize(width: collectionView.bounds.width,
+                          height: regularCellHeight)
+        }
+        return CGSize(width: 0, height: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath) -> UICollectionReusableView {
+        switch kind {
+        case UICollectionView.elementKindSectionFooter:
+            let footerView =
+                collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self),
+                                                                for: indexPath)
+            
+            return footerView
+            
+        default:
+            assert(false, "Unexpected element kind")
+        }
+        
+        return UICollectionReusableView()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let identifierSection = String(describing: TaskSectionCollectionViewCell.self)
+        let identifierElement = String(describing: TaskListCollectionViewCell.self)
+
+        let node = viewModel.listNode(for: indexPath)
+        if node?.guid == listNodeSectionIdentifier {
+            guard let cell = collectionView
+                    .dequeueReusableCell(withReuseIdentifier: identifierSection,
+                                         for: indexPath) as? TaskSectionCollectionViewCell else { return UICollectionViewCell() }
+            cell.applyTheme(viewModel.services.themingService?.activeTheme)
+            cell.titleLabel.text = viewModel.titleForSectionHeader(at: indexPath)
+            return cell
+        } else {
+            guard let cell = collectionView
+                    .dequeueReusableCell(withReuseIdentifier: identifierElement,
+                                         for: indexPath) as? TaskListCollectionViewCell else { return UICollectionViewCell() }
+            cell.applyTheme(viewModel.services.themingService?.activeTheme)
+            cell.setupData(for: node)
+
+//            let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
+//            if isPaginationEnabled &&
+//                collectionView.lastItemIndexPath() == indexPath &&
+//                configuration.services.connectivityService?.hasInternetConnection() == true {
+//                if let collectionView = collectionView as? PageFetchableCollectionView {
+//                    collectionView.pageDelegate?.fetchNextContentPage(for: collectionView,
+//                                                                      itemAtIndexPath: indexPath)
+//                }
+//            }
+            return cell
+        }
     }
 }

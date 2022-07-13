@@ -59,4 +59,7 @@ struct DefaultTheme: PresentationTheme {
     var dividerColor = UIColor(hex: "#DEDEDF")
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#2A7DE1")
+    var taskErrorContainer = UIColor(hex: "#BA1B1B")
+    var taskWarningContainer = UIColor(hex: "#C95100")
+    var taskSuccessContainer = UIColor(hex: "#00754A")
 }
