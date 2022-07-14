@@ -60,5 +60,7 @@ protocol PresentationTheme {
     var photoShutterColor: UIColor { get }
     var videoShutterColor: UIColor { get }
     var badgeBackGroundColor: UIColor { get }
-
+    var taskErrorContainer: UIColor { get }
+    var taskWarningContainer: UIColor { get }
+    var taskSuccessContainer: UIColor { get }
 }

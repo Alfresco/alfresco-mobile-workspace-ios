@@ -79,7 +79,7 @@
 "offline" = "Offline";
 "preview-capture-asset" = "Preview";
 "gallery-upload" = "Photos";
-"tasks" = "Tasks";
+
 
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services URL";
@@ -307,3 +307,12 @@
 "dialog-discard-scanner-title" = "Discard scan Files?";
 "dialog-discard-scanner-message" = "Scan files will be discarded if you exit.";
 "search_move_warning" = "You cannot move to your own folder and subfolders.";
+
+// MARK: - Tasks
+"tasks-title" = "Tasks";
+"no-tasks-found" = "No Tasks Found";
+"create-task-message" = "Create a new task that you want to easily find later.";
+"low" = "Low";
+"medium" = "Medium";
+"high" = "High";
+"task-service-not-configured-message" = "This account is not configured on the process services. Please contact to administrator.";

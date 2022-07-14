@@ -305,3 +305,12 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Scanbestanden verwijderen?";
 "dialog-discard-scanner-message" = "Scanbestanden worden verwijderd als u afsluit.";
+
+// MARK: - Tasks
+"tasks-title" = "Taken";
+"no-tasks-found" = "Geen taken gevonden";
+"create-task-message" = "Maak een nieuwe taak aan die u later gemakkelijk wilt terugvinden.";
+"low" = "Laag";
+"medium" = "Middle";
+"high" = "Hoog";
+"task-service-not-configured-message" = "Deze account is niet geconfigureerd voor de 'Process Services'. Neem contact op met de beheerder.";
