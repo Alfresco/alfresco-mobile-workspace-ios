@@ -102,6 +102,9 @@ class TasksListViewController: SystemSearchViewController {
     func registerCells() {
         collectionView.register(UINib(nibName: "TaskListCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskListCollectionViewCell")
         collectionView.register(UINib(nibName: "TaskSectionCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskSectionCollectionViewCell")
+        collectionView.register(ActivityIndicatorFooterView.self,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self))
     }
     
     // MARK: - IBActions
@@ -165,8 +168,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForFooterInSection section: Int) -> CGSize {
-        let shouldDisplayListLoadingIndicator = false  //delegate?.shouldDisplayListLoadingIndicator() ?? false
-
+        let shouldDisplayListLoadingIndicator = viewModel.shouldDisplaTaskListLoadingIndicator()
         if shouldDisplayListLoadingIndicator && viewModel.services.connectivityService?.hasInternetConnection() == true {
             return CGSize(width: collectionView.bounds.width,
                           height: regularCellHeight)
@@ -212,13 +214,12 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             cell.applyTheme(viewModel.services.themingService?.activeTheme)
             cell.setupData(for: node)
 
-//            let isPaginationEnabled = delegate?.isPaginationEnabled() ?? true
+//            let isPaginationEnabled = true
 //            if isPaginationEnabled &&
 //                collectionView.lastItemIndexPath() == indexPath &&
-//                configuration.services.connectivityService?.hasInternetConnection() == true {
+//                viewModel.services.connectivityService?.hasInternetConnection() == true {
 //                if let collectionView = collectionView as? PageFetchableCollectionView {
-//                    collectionView.pageDelegate?.fetchNextContentPage(for: collectionView,
-//                                                                      itemAtIndexPath: indexPath)
+//                    getTaskList()
 //                }
 //            }
             return cell

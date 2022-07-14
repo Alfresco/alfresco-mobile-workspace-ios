@@ -64,6 +64,13 @@ class TasksListViewModel: NSObject {
         return ""
     }
     
+    func shouldDisplaTaskListLoadingIndicator() -> Bool {
+        if total > rawTasks.count {
+            return true
+        }
+        return false
+    }
+    
     // MARK: - Task List
     
     func taskList(with params: TaskListParams, completionHandler: @escaping (_ taskNodes: [TaskNode], _ error: Error?) -> Void) {
