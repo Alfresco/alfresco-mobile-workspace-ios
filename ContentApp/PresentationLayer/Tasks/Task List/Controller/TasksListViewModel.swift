@@ -73,7 +73,7 @@ class TasksListViewModel: NSObject {
     }
     
     func shouldAllowToFetchNewTasks() -> Bool {
-        if (total > rawTasks.count || rawTasks.isEmpty || total == 0 && requestInProgress == false) {
+        if total > rawTasks.count || rawTasks.isEmpty || total == 0 && requestInProgress == false {
             return true
         }
         return false
