@@ -39,9 +39,9 @@ class TasksListViewController: SystemSearchViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         
-        addSettingsButton(action: #selector(settingsButtonTapped), target: self)
-        searchController = createSearchController()
-        navigationItem.searchController = searchController
+//        addSettingsButton(action: #selector(settingsButtonTapped), target: self)
+//        searchController = createSearchController()
+//        navigationItem.searchController = searchController
         setupBindings()
         registerCells()
         getTaskList()
