@@ -90,7 +90,7 @@ struct LocalizationConstants {
         static let previewCaptureAsset = NSLocalizedString("preview-capture-asset", comment: "")
         static let galleryUpload = NSLocalizedString("gallery-upload", comment: "")
         static let transferFiles = NSLocalizedString("transfer-files", comment: "")
-        static let tasks = NSLocalizedString("tasks", comment: "")
+        static let tasks = NSLocalizedString("tasks-title", comment: "")
     }
 
     struct Help {
@@ -296,5 +296,14 @@ struct LocalizationConstants {
         static let waitingTitle = NSLocalizedString("waiting-title", comment: "")
         static let finishedUploadingMessage = NSLocalizedString("dialog-finished-uploading-message", comment: "")
         static let unsupportedFileFormat = NSLocalizedString("unsupported-file-format", comment: "")
+    }
+    
+    struct Tasks {
+        static let noTasksFound = NSLocalizedString("no-tasks-found", comment: "")
+        static let createTaskMessage = NSLocalizedString("create-task-message", comment: "")
+        static let low = NSLocalizedString("low", comment: "")
+        static let medium = NSLocalizedString("medium", comment: "")
+        static let high = NSLocalizedString("high", comment: "")
+        static let notConfiguredMessage = NSLocalizedString("task-service-not-configured-message", comment: "")
     }
 }

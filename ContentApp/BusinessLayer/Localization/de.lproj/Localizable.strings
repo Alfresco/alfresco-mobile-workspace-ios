@@ -305,3 +305,12 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Gescannte Dateien verwerfen?";
 "dialog-discard-scanner-message" = "Gescannte Dateien werden verworfen, wenn Sie beenden.";
+
+// MARK: - Tasks
+"tasks-title" = "Aufgaben";
+"no-tasks-found" = "Keine Aufgaben gefunden";
+"create-task-message" = "Erstellen Sie eine neue Aufgabe, die Sie später einfach wiederfinden können.";
+"low" = "Niedrig";
+"medium" = "Mittel";
+"high" = "Hoch";
+"task-service-not-configured-message" = "Dieses Konto ist nicht für 'Process Services' konfiguriert. Bitte wenden Sie sich an den Administrator.";
