@@ -301,3 +301,12 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Vuoi eliminare i file acquisiti?";
 "dialog-discard-scanner-message" = "Se esci, i file acquisiti verranno eliminati.";
+
+// MARK: - Tasks
+"tasks-title" = "Compiti";
+"no-tasks-found" = "Nessun compito trovato";
+"create-task-message" = "Crea un nuovo compito facile da trovare in seguito";
+"low" = "Bassa";
+"medium" = "Media";
+"high" = "Alta";
+"task-service-not-configured-message" = "Questo account non è configurato nei 'Process Services'. Contattare l'amministratore.";
