@@ -21,7 +21,7 @@ import AlfrescoContent
 
 class TaskNode {
     var guid = ""
-    var id: String?
+    var taskID: String?
     var title = ""
     var name: String?
     var description: String?
@@ -54,8 +54,20 @@ class TaskNode {
     var memberOfCandidateUsers: Bool?
     var managerOfCandidateGroup: Bool?
     
+    enum CodingKeys: String, CodingKey {
+        case taskID = "id"
+        case guid, title, name, description, category, assignee
+        case created, dueDate, endDate
+        case duration, priority, parentTaskId, parentTaskName, processInstanceId, processInstanceName
+        case processDefinitionId, processDefinitionName, processDefinitionDescription, processDefinitionKey
+        case processDefinitionCategory, processDefinitionVersion, processDefinitionDeploymentId
+        case formKey, processInstanceStartUserId, initiatorCanCompleteTask, deactivateUserTaskReassignment
+        case adhocTaskCanBeReassigned, taskDefinitionKey, executionId
+        case memberOfCandidateGroup, memberOfCandidateUsers, managerOfCandidateGroup
+    }
+    
     init(guid: String,
-         id: String? = nil,
+         taskID: String? = nil,
          title: String,
          name: String? = nil,
          description: String? = nil,
@@ -89,7 +101,7 @@ class TaskNode {
          managerOfCandidateGroup: Bool? = nil) {
         
         self.guid = guid
-        self.id = id
+        self.taskID = taskID
         self.title = title
         self.name = name
         self.description = description
@@ -126,13 +138,18 @@ class TaskNode {
 
 // MARK: Task Assignee
 class TaskNodeAssignee: Codable {
-    var id: Int
+    var assigneeID: Int
     var firstName: String?
     var lastName: String?
     var email: String?
     
-    init(id: Int, firstName: String?, lastName: String?, email: String?) {
-        self.id = id
+    enum CodingKeys: String, CodingKey {
+        case assigneeID = "id"
+        case firstName, lastName, email
+    }
+    
+    init(assigneeID: Int, firstName: String?, lastName: String?, email: String?) {
+        self.assigneeID = assigneeID
         self.firstName = firstName
         self.lastName = lastName
         self.email = email

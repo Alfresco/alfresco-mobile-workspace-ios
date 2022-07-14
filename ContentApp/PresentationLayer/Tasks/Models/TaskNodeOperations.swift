@@ -25,12 +25,12 @@ class TaskNodeOperations: NSObject {
         var nodes: [TaskNode] = []
         for task in tasks {
             
-            let assignee = TaskNodeAssignee(id: task.assignee?.id ?? -1,
+            let assignee = TaskNodeAssignee(assigneeID: task.assignee?.id ?? -1,
                                             firstName: task.assignee?.firstName,
                                             lastName: task.assignee?.lastName,
                                             email: task.assignee?.email)
             let node = TaskNode(guid: "",
-                                id: task.id,
+                                taskID: task.id,
                                 title: "",
                                 name: task.name,
                                 description: task.description,
