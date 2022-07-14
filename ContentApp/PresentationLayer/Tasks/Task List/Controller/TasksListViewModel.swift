@@ -23,8 +23,9 @@ class TasksListViewModel: NSObject {
     let isLoading = Observable<Bool>(true)
     var size = 0
     var total = 0
-    var start = 0
     var page = 0
+    var requestInProgress = false
+    var shouldRefreshList = true
     var groupedTasks: [TaskNode] = []
     var rawTasks: [TaskNode] = [] {
         didSet {
@@ -71,30 +72,44 @@ class TasksListViewModel: NSObject {
         return false
     }
     
+    func shouldAllowToFetchNewTasks() -> Bool {
+        if (total > rawTasks.count || rawTasks.isEmpty || total == 0 && requestInProgress == false) {
+            return true
+        }
+        return false
+    }
+    
     // MARK: - Task List
     
     func taskList(with params: TaskListParams, completionHandler: @escaping (_ taskNodes: [TaskNode], _ error: Error?) -> Void) {
         
-        self.isLoading.value = true
-        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            
-            TasksAPI.getTasksList(params: params) { data, error in
-                self.isLoading.value = false
-                if data != nil {
-                    let task = data?.data ?? []
-                    let taskNodes = TaskNodeOperations.processNodes(for: task)
-                    self.rawTasks.append(contentsOf: taskNodes)
-                    self.size = data?.size ?? 0
-                    self.total = data?.total ?? 0
-                    self.start = data?.start ?? 0
-                    self.updatePageNumber()
-                    completionHandler(taskNodes, nil)
-                } else {
-                    completionHandler([], error)
+        if shouldAllowToFetchNewTasks() {
+            self.isLoading.value = true
+            requestInProgress = true
+            services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+                
+                TasksAPI.getTasksList(params: params) { data, error in
+                    self.isLoading.value = false
+                    if data != nil {
+                        let task = data?.data ?? []
+                        let taskNodes = TaskNodeOperations.processNodes(for: task)
+                        if self.shouldRefreshList {
+                            self.rawTasks.removeAll()
+                        }
+                        self.shouldRefreshList = false
+                        self.rawTasks.append(contentsOf: taskNodes)
+                        self.size = data?.size ?? 0
+                        self.total = data?.total ?? 0
+                        self.updatePageNumber()
+                        self.requestInProgress = false
+                        completionHandler(taskNodes, nil)
+                    } else {
+                        completionHandler([], error)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
         
     func updatePageNumber() {

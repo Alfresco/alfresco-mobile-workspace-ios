@@ -39,7 +39,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
-        priorityLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        priorityLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
     }
     
     func setupData(for task: TaskNode?) {
@@ -62,16 +62,16 @@ class TaskListCollectionViewCell: ListSelectableCell {
             var priorityText = LocalizationConstants.Tasks.low
            
             if priority >= 0 && priority <= 3 { // low
-                textColor = currentTheme.taskErrorContainer
-                backgroundColor = currentTheme.taskErrorContainer.withAlphaComponent(0.24)
+                textColor = currentTheme.taskSuccessContainer
+                backgroundColor = currentTheme.taskSuccessContainer.withAlphaComponent(0.24)
                 priorityText = LocalizationConstants.Tasks.low
             } else if priority >= 4 && priority <= 7 { // medium
                 textColor = currentTheme.taskWarningContainer
                 backgroundColor = currentTheme.taskWarningContainer.withAlphaComponent(0.24)
                 priorityText = LocalizationConstants.Tasks.medium
             } else { // high
-                textColor = currentTheme.taskSuccessContainer
-                backgroundColor = currentTheme.taskSuccessContainer.withAlphaComponent(0.24)
+                textColor = currentTheme.taskErrorContainer
+                backgroundColor = currentTheme.taskErrorContainer.withAlphaComponent(0.24)
                 priorityText = LocalizationConstants.Tasks.high
             }
             priorityLabel.textColor = textColor
