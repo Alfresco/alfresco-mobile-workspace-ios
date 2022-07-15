@@ -27,6 +27,7 @@ class TasksListViewController: SystemSearchViewController {
     private let searchButtonAspectRatio: CGFloat = 30.0
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
+    var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
@@ -38,6 +39,10 @@ class TasksListViewController: SystemSearchViewController {
         // Set up progress view
         progressView.progress = 0
         progressView.mode = .indeterminate
+        addSettingsButton(action: #selector(settingsButtonTapped), target: self)
+        searchController = createSearchController()
+        navigationItem.searchController = searchController
+        addRefreshControl()
         setupBindings()
         registerCells()
         getTaskList()
@@ -72,6 +77,29 @@ class TasksListViewController: SystemSearchViewController {
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func addRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        collectionView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
+                                 for: .valueChanged)
+        self.refreshControl = refreshControl
+    }
+    
+    // MARK: - Public interface
+    
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
+        
+//        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+//        emptyListTitle.textAlignment = .center
+//        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+//        emptyListSubtitle.textAlignment = .center
+        
+        refreshControl?.tintColor = currentTheme.primaryT1Color
     }
     
     // MARK: - Get Tasks List
@@ -112,7 +140,17 @@ class TasksListViewController: SystemSearchViewController {
     // MARK: - Coordinator Public Methods
 
     func scrollToTop() {
-        // listController?.scrollToSection(0)
+        let indexPath = IndexPath(item: 0, section: 0)
+        var pointToScroll = CGPoint.zero
+        if collectionView.cellForItem(at: indexPath) != nil {
+            if let attributes =
+                collectionView.layoutAttributesForSupplementaryElement(ofKind: UICollectionView.elementKindSectionHeader,
+                                                                       at: indexPath) {
+                pointToScroll =
+                    CGPoint(x: 0, y: attributes.frame.origin.y - collectionView.contentInset.top)
+            }
+        }
+        collectionView.setContentOffset(pointToScroll, animated: true)
     }
     
     private func createSearchController() -> UISearchController {
@@ -145,6 +183,19 @@ class TasksListViewController: SystemSearchViewController {
     func stopLoading() {
         progressView?.stopAnimating()
         progressView?.setHidden(true, animated: false)
+        refreshControl?.endRefreshing()
+    }
+    
+    @objc private func handlePullToRefresh() {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            
+            sSelf.viewModel.shouldRefreshList = true
+            sSelf.viewModel.size = 0
+            sSelf.viewModel.total = 0
+            sSelf.viewModel.page = 0
+            sSelf.getTaskList()
+        }
     }
 }
 
@@ -210,14 +261,12 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             cell.applyTheme(viewModel.services.themingService?.activeTheme)
             cell.setupData(for: node)
 
-//            let isPaginationEnabled = true
-//            if isPaginationEnabled &&
-//                collectionView.lastItemIndexPath() == indexPath &&
-//                viewModel.services.connectivityService?.hasInternetConnection() == true {
-//                if let collectionView = collectionView as? PageFetchableCollectionView {
-//                    getTaskList()
-//                }
-//            }
+            let isPaginationEnabled = true
+            if isPaginationEnabled &&
+                collectionView.lastItemIndexPath() == indexPath &&
+                viewModel.services.connectivityService?.hasInternetConnection() == true {
+                getTaskList()
+            }
             return cell
         }
     }
