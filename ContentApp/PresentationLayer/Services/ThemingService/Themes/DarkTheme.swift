@@ -59,10 +59,10 @@ struct DarkTheme: PresentationTheme {
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#FFFFFF")
     
-    var taskErrorContainer = UIColor(hex: "#BA1B1B")
-    var taskWarningContainer = UIColor(hex: "#C95100")
-    var taskSuccessContainer = UIColor(hex: "#00754A")
-    var taskErrorTextColor = UIColor.white
-    var taskWarningTextColor = UIColor.white
-    var taskSuccessTextColor = UIColor.white
+    var taskErrorContainer = UIColor(hex: "#930006")
+    var taskWarningContainer = UIColor(hex: "#7B2F00")
+    var taskSuccessContainer = UIColor(hex: "#005231")
+    var taskErrorTextColor = UIColor(hex: "#FFDAD4")
+    var taskWarningTextColor = UIColor(hex: "#FFDBCA")
+    var taskSuccessTextColor = UIColor(hex: "#91F7BE")
 }
