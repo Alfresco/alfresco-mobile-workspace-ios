@@ -60,7 +60,10 @@ struct DefaultTheme: PresentationTheme {
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#2A7DE1")
     var badgeBackGroundColor = UIColor(hex: "#2A7DE1")
-    var taskErrorContainer = UIColor(hex: "#BA1B1B")
-    var taskWarningContainer = UIColor(hex: "#C95100")
-    var taskSuccessContainer = UIColor(hex: "#00754A")
+    var taskErrorContainer = UIColor(hex: "#BA1B1B", alpha: 0.24)
+    var taskWarningContainer = UIColor(hex: "#C95100", alpha: 0.24)
+    var taskSuccessContainer = UIColor(hex: "#00754A", alpha: 0.24)
+    var taskErrorTextColor = UIColor(hex: "#680003")
+    var taskWarningTextColor = UIColor(hex: "#6A3C00")
+    var taskSuccessTextColor = UIColor(hex: "#003A02")
 }

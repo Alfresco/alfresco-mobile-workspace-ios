@@ -39,7 +39,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.lineBreakMode = .byTruncatingTail
         subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
         subtitle.lineBreakMode = .byTruncatingHead
-        priorityLabel.applyStyleCaptionOnSurface60(theme: currentTheme)
+        priorityLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
     }
     
     func setupData(for task: TaskNode?) {
@@ -57,21 +57,21 @@ class TaskListCollectionViewCell: ListSelectableCell {
     func applyStyleCaptionOnPriority(for task: TaskNode?) {
         if let currentTheme = currentTheme {
             let priority = task?.priority ?? 0
-            var textColor: UIColor = currentTheme.taskErrorContainer
-            var backgroundColor: UIColor = currentTheme.taskErrorContainer.withAlphaComponent(0.24)
+            var textColor: UIColor = currentTheme.taskErrorTextColor
+            var backgroundColor: UIColor = currentTheme.taskErrorContainer
             var priorityText = LocalizationConstants.Tasks.low
            
             if priority >= 0 && priority <= 3 { // low
-                textColor = currentTheme.taskErrorContainer
-                backgroundColor = currentTheme.taskErrorContainer.withAlphaComponent(0.24)
+                textColor = currentTheme.taskSuccessTextColor
+                backgroundColor = currentTheme.taskSuccessContainer
                 priorityText = LocalizationConstants.Tasks.low
             } else if priority >= 4 && priority <= 7 { // medium
-                textColor = currentTheme.taskWarningContainer
-                backgroundColor = currentTheme.taskWarningContainer.withAlphaComponent(0.24)
+                textColor = currentTheme.taskWarningTextColor
+                backgroundColor = currentTheme.taskWarningContainer
                 priorityText = LocalizationConstants.Tasks.medium
             } else { // high
-                textColor = currentTheme.taskSuccessContainer
-                backgroundColor = currentTheme.taskSuccessContainer.withAlphaComponent(0.24)
+                textColor = currentTheme.taskErrorTextColor
+                backgroundColor = currentTheme.taskErrorContainer
                 priorityText = LocalizationConstants.Tasks.high
             }
             priorityLabel.textColor = textColor
