@@ -274,7 +274,7 @@ extension SystemSearchViewController: UISearchControllerDelegate {
         resultsViewController?.updateRecentSearches()
         resultsViewController?.clearDataSource()
         resultsViewController?.resultsListController?.sourceNodeToMove = sourceNodeToMove
-        AnalyticsManager.shared.pageViewEvent(for: EventName.searchScreen.rawValue)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.search)
         UIView.animate(withDuration: 0.2) {
             searchController.searchBar.alpha = 1.0
         }

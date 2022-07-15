@@ -79,6 +79,10 @@ class OfflineViewModel: ListComponentViewModel {
             syncTriggersService?.triggerSync(for: .userDidInitiateSync)
         }
     }
+    
+    override func fireAnalyticEvent() {
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.offlineTab)
+    }
 }
 
 // MARK: - SyncServiceDelegate

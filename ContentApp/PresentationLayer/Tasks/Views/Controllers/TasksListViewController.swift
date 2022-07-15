@@ -38,7 +38,7 @@ class TasksListViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
         tableView.reloadData()
-        AnalyticsManager.shared.pageViewEvent(for: self.title)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
     }
     
     override func willTransition(to newCollection: UITraitCollection,

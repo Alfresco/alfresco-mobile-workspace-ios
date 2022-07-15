@@ -21,10 +21,9 @@ import UIKit
 // MARK: - Page View Events
 extension AnalyticsManager {
     
-    func pageViewEvent(for title: String?) {
-        let eventName = String(format: "PageView_%@", title ?? "")
+    func pageViewEvent(for title: Event.Page) {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = eventName
-        self.logEvent(type: .screenView, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = title.rawValue
+        self.logEvent(name: title.rawValue, parameters: parameters)
     }
 }

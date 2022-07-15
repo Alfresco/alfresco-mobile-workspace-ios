@@ -32,7 +32,6 @@ class TasksScreenCoordinator: PresentingCoordinator {
         let storyboard = UIStoryboard(name: "Tasks", bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: "TasksListViewController") as? TasksListViewController {
             viewController.title = LocalizationConstants.ScreenTitles.tasks
-            AnalyticsManager.shared.pageViewEvent(for: viewController.title)
             
             viewController.coordinatorServices = coordinatorServices
             viewController.tabBarScreenDelegate = presenter

@@ -18,23 +18,56 @@
 
 import Foundation
 
-enum EventType: String {
-    case screenView = "screen_views"
-    case actionEvent = "action_event"
-    case apiTracker = "api_tracker"
+enum Event {
+
+    enum Action: String, CaseIterable {
+        case discardCaptures = "event_discard_capture"
+        case searchScreen = "Search"
+        case filePreview = "event_file_preview"
+        case download = "event_download"
+        case addFavorite = "event_add_to_favorites"
+        case removeFavorite = "event_remove_from_favorite"
+        case renameNode = "event_rename"
+        case moveToFolder = "event_move"
+        case markOffline = "event_Make_available_offline"
+        case removeOffline = "event_remove_offline"
+        case moveTrash = "event_move_to_trash"
+        case changeTheme = "event_change_theme"
+        case createFolder = "event_new_folder"
+        case uploadMedia = "event_upload_photos_or_videos"
+        case createMedia = "event_take_a_photo_or_video"
+        case uploadFiles = "event_upload_files"
+        case appLaunched = "event_app_launched"
+        case searchFacets = "event_search_facets"
+        case permanentlyDelete = "event_permanently_delete"
+        case restore = "event_restore"
+        case openWith = "event_open_with"
+    }
+    
+    enum API: String {
+        case apiNewFolder = "event_api_new_folder"
+        case apiUploadMedia = "event_api_upload_files"
+        case apiLogin = "event_api_login"
+    }
+    
+    enum Page: String {
+        case recentTab = "page_view_recent"
+        case favoritesTab = "page_view_favorites"
+        case offlineTab = "page_view_offline"
+        case browseTab = "page_view_browse"
+        case personalFiles = "page_view_personal_files"
+        case myLibraries = "page_view_my_libraries"
+        case shared = "page_view_shared"
+        case trash = "page_view_trash"
+        case search = "page_view_search"
+        case shareExtension = "page_view_share_extension"
+        case transfers = "page_view_transfers"
+        case taskTab = "page_view_tasks"
+    }
+    
 }
 
-enum EventName: String {
-    case filePreview = "Event_filePreview"
-    case changeTheme = "Event_changeTheme"
-    case appLaunched = "Event_appLaunched"
-    case searchFacets = "Event_searchFacets"
-    case discardCaptures = "Event_discardCapture"
-    case apiNewFolder = "NewFolder"
-    case apiUploadMedia = "UploadFiles"
-    case apiLogin = "login"
-    case searchScreen = "Search"
-}
+
 
 struct AnalyticsConstants {
     

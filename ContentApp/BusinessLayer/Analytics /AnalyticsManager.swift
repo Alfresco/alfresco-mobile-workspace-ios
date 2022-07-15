@@ -60,7 +60,7 @@ class AnalyticsManager: NSObject {
         return dictionary
     }
     
-    func logEvent(type: EventType, parameters: [String: Any]) {
-        Analytics.logEvent(type.rawValue, parameters: parameters)
+    func logEvent(name: String, parameters: [String: Any]) {
+        Analytics.logEvent(name, parameters: parameters)
     }
 }
