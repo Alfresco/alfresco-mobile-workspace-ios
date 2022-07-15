@@ -62,4 +62,7 @@ protocol PresentationTheme {
     var taskErrorContainer: UIColor { get }
     var taskWarningContainer: UIColor { get }
     var taskSuccessContainer: UIColor { get }
+    var taskErrorTextColor: UIColor { get }
+    var taskWarningTextColor: UIColor { get }
+    var taskSuccessTextColor: UIColor { get }
 }
