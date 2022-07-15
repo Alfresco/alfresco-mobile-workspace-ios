@@ -57,7 +57,7 @@ class TasksListViewController: SystemSearchViewController {
         super.viewWillAppear(animated)
         addAvatarInSettingsButton()
         collectionView.reloadData()
-        AnalyticsManager.shared.pageViewEvent(for: self.title)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
         updateTheme()
     }
     

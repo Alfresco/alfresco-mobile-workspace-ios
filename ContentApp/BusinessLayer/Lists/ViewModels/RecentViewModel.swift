@@ -38,4 +38,7 @@ class RecentViewModel: ListComponentViewModel {
     override func shouldDisplaySyncBanner() -> Bool {
         return true
     }
+    override func fireAnalyticEvent() {
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.recentTab)
+    }
 }

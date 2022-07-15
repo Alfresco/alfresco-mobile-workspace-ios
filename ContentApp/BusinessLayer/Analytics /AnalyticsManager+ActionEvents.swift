@@ -26,46 +26,51 @@ extension AnalyticsManager {
         parameters[AnalyticsConstants.Parameters.fileMimetype] = fileMimetype ?? ""
         parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
         parameters[AnalyticsConstants.Parameters.previewSuccess] = success
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.filePreview.rawValue
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.filePreview.rawValue
+        self.logEvent(name: Event.Action.filePreview.rawValue, parameters: parameters)
     }
 
     func fileActionEvent(for node: ListNode?, action: ActionMenu) {
-        let fileExtension = node?.title.split(separator: ".").last
-        let mimeType = node?.mimeType ?? ""
-        let eventName = String(format: "Event_%@", action.title)
-        var parameters = self.commonParameters()
-      
-        parameters[AnalyticsConstants.Parameters.fileMimetype] = mimeType
-        parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
-        parameters[AnalyticsConstants.Parameters.eventName] = eventName
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        if let mappedEvent = mapWithAnalyticAction(event: action.analyticEventName) {
+            let fileExtension = node?.title.split(separator: ".").last
+            let mimeType = node?.mimeType ?? ""
+            var parameters = self.commonParameters()
+            parameters[AnalyticsConstants.Parameters.fileMimetype] = mimeType
+            parameters[AnalyticsConstants.Parameters.fileExtension] = fileExtension ?? ""
+            parameters[AnalyticsConstants.Parameters.eventName] = mappedEvent.rawValue
+            self.logEvent(name: mappedEvent.rawValue, parameters: parameters)
+        }
+    }
+    
+    func mapWithAnalyticAction(event: String) -> Event.Action? {
+        let eventActionName = Event.Action.allCases.first(where: {"\($0)" == event})
+        return eventActionName
     }
     
     func theme(name: String) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.theme] = name
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.changeTheme.rawValue
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.changeTheme.rawValue
+        self.logEvent(name: Event.Action.changeTheme.rawValue, parameters: parameters)
     }
     
     func appLaunched() {
         var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.appLaunched.rawValue
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.appLaunched.rawValue
+        self.logEvent(name: Event.Action.appLaunched.rawValue, parameters: parameters)
     }
     
     func searchFacets(name: String?) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.facet] = name ?? ""
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.searchFacets.rawValue
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.searchFacets.rawValue
+        self.logEvent(name: Event.Action.searchFacets.rawValue, parameters: parameters)
     }
     
     func discardCaptures(count: Int) {
         var parameters = self.commonParameters()
         parameters[AnalyticsConstants.Parameters.assetsCount] = count
-        parameters[AnalyticsConstants.Parameters.eventName] = EventName.discardCaptures.rawValue
-        self.logEvent(type: .actionEvent, parameters: parameters)
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.discardCaptures.rawValue
+        self.logEvent(name: Event.Action.discardCaptures.rawValue, parameters: parameters)
     }
 }

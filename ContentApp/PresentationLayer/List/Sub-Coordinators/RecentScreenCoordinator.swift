@@ -39,7 +39,6 @@ class RecentScreenCoordinator: PresentingCoordinator,
 
         let viewController = ListViewController()
         viewController.title = LocalizationConstants.ScreenTitles.recent
-        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
         viewController.coordinatorServices = coordinatorServices
 
         let viewModel = recentDataSource.recentViewModel

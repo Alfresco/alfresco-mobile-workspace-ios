@@ -37,7 +37,6 @@ class FavoritesScreenCoordinator: PresentingCoordinator,
 
         let viewController = FavoritesViewController()
         viewController.title = LocalizationConstants.ScreenTitles.favorites
-        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
 
         let folderAndFilesViewModel = favoritesDataSource.foldersAndFilesViewModel
         let librariesViewModel = favoritesDataSource.librariesViewModel

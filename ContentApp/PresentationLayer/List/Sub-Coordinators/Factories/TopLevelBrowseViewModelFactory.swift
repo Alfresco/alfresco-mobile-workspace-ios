@@ -98,6 +98,7 @@ class TopLevelBrowseViewModelFactory {
         let model = FolderDrillModel(listNode: nil,
                                      services: services)
         let viewModel = FolderDrillViewModel(model: model)
+        viewModel.pageViewName = Event.Page.personalFiles.rawValue
 
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
@@ -119,7 +120,7 @@ class TopLevelBrowseViewModelFactory {
 
         let model = MyLibrariesModel(services: services)
         let viewModel = ListComponentViewModel(model: model)
-
+        viewModel.pageViewName = Event.Page.myLibraries.rawValue
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.site])
@@ -134,7 +135,7 @@ class TopLevelBrowseViewModelFactory {
 
         let model = SharedModel(services: services)
         let viewModel = ListComponentViewModel(model: model)
-
+        viewModel.pageViewName = Event.Page.shared.rawValue
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file])
@@ -152,7 +153,7 @@ class TopLevelBrowseViewModelFactory {
 
         let model = TrashModel(services: services)
         let viewModel = TrashViewModel(model: model)
-
+        viewModel.pageViewName = Event.Page.trash.rawValue
         eventBusService?.register(observer: model,
                                   for: MoveEvent.self,
                                   nodeTypes: [.file, .folder, .site])
@@ -165,7 +166,7 @@ class TopLevelBrowseViewModelFactory {
         let model = FolderDrillModel(listNode: nil,
                                      services: services)
         let viewModel = FolderDrillViewModel(model: model)
-
+        viewModel.pageViewName = Event.Page.personalFiles.rawValue
         eventBusService?.register(observer: model,
                                   for: FavouriteEvent.self,
                                   nodeTypes: [.file, .folder])
