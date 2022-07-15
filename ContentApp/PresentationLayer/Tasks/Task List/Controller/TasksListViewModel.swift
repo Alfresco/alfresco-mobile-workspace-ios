@@ -79,6 +79,14 @@ class TasksListViewModel: NSObject {
         return false
     }
     
+    func emptyList() -> EmptyListProtocol {
+        return EmptyTasks()
+    }
+    
+    func tasksNotConfigured() -> EmptyListProtocol {
+        return TasksNotConfigured()
+    }
+
     // MARK: - Task List
     
     func taskList(with params: TaskListParams, completionHandler: @escaping (_ taskNodes: [TaskNode], _ error: Error?) -> Void) {

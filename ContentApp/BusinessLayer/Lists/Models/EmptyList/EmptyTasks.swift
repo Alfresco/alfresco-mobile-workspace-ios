@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -16,18 +16,17 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-struct CellConstants {
-    
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-        static let taskList = "TaskListCollectionViewCell"
-        static let taskSection = "TaskSectionCollectionViewCell"
+struct EmptyTasks: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.Tasks.noTasksFound
+    var description = LocalizationConstants.Tasks.createTaskMessage
+}
 
-    }
-    
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
-    }
+struct TasksNotConfigured: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.Tasks.noTasksFound
+    var description = LocalizationConstants.Tasks.notConfiguredMessage
 }
