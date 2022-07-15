@@ -18,12 +18,15 @@
 
 import UIKit
 
-// MARK: - Page View Events
-extension AnalyticsManager {
+struct StoryboardConstants {
     
-    func pageViewEvent(for title: Event.Page) {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = title.rawValue
-        self.logEvent(name: title.rawValue, parameters: parameters)
+    struct storyboard {
+        static let tasks = "Tasks"
+    }
+    
+    struct controller {
+        static let taskList = "TasksListViewController"
+        static let searchTasks = "SearchTasksViewController"
     }
 }
+

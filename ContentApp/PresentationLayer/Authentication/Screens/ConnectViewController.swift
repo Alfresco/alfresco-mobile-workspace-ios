@@ -289,7 +289,7 @@ extension ConnectViewController: ConnectViewModelDelegate {
 
 extension ConnectViewController: AimsViewModelDelegate {
     func logInFailed(with error: APIError) {
-        AnalyticsManager.shared.apiTracker(name: EventName.apiLogin.rawValue, fileSize: 0, success: false)
+        AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: false)
         splashScreenDelegate?.backPadButtonNeedsTo(hide: true)
         if error.responseCode != ErrorCodes.AimsWebview.cancel {
             activityIndicator?.state = .isIdle
@@ -311,7 +311,7 @@ extension ConnectViewController: AimsViewModelDelegate {
         connectTextFieldAddMaterialComponents()
         Snackbar.dimissAll()
         connectScreenCoordinatorDelegate?.showApplicationTabBar()
-        AnalyticsManager.shared.apiTracker(name: EventName.apiLogin.rawValue, fileSize: 0, success: true)
+        AnalyticsManager.shared.apiTracker(name: Event.API.apiLogin.rawValue, fileSize: 0, success: true)
     }
 }
 

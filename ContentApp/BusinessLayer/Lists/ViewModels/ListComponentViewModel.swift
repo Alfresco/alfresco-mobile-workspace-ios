@@ -25,6 +25,7 @@ protocol ListComponentViewModelDelegate: AnyObject {
 class ListComponentViewModel {
     weak var delegate: ListComponentViewModelDelegate?
     var model: ListComponentModelProtocol
+    var pageViewName: String?
 
     init(model: ListComponentModelProtocol) {
         self.model = model
@@ -80,4 +81,6 @@ class ListComponentViewModel {
     func shouldDisplaySyncBanner() -> Bool {
         return false
     }
+    
+    func fireAnalyticEvent() { }
 }
