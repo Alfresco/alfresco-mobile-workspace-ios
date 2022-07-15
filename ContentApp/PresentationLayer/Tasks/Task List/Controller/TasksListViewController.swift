@@ -25,6 +25,10 @@ class TasksListViewController: SystemSearchViewController {
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
     private var searchController: UISearchController?
     private let searchButtonAspectRatio: CGFloat = 30.0
+    @IBOutlet weak var emptyListView: UIView!
+    @IBOutlet weak var emptyListTitle: UILabel!
+    @IBOutlet weak var emptyListSubtitle: UILabel!
+    @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
     var refreshControl: UIRefreshControl?
@@ -37,6 +41,7 @@ class TasksListViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         // Set up progress view
+        emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
@@ -93,27 +98,49 @@ class TasksListViewController: SystemSearchViewController {
         super.applyComponentsThemes()
         
         guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        
-//        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
-//        emptyListTitle.textAlignment = .center
-//        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
-//        emptyListSubtitle.textAlignment = .center
-        
+        emptyListView.backgroundColor = currentTheme.surfaceColor
+        emptyListTitle.applyeStyleHeadline6OnSurface(theme: currentTheme)
+        emptyListTitle.textAlignment = .center
+        emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
+        emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
     }
     
     // MARK: - Get Tasks List
     func getTaskList() {
         let params = TaskListParams(page: viewModel.page)
-        viewModel.taskList(with: params) { taskList, error in
-            self.collectionView.reloadData()
+        viewModel.taskList(with: params) {[weak self] taskList, error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.collectionView.reloadData()
+                sSelf.checkEmptyTaskListMessage()
+            } else {
+                sSelf.showTaskListNotConfiguredMessage()
+            }
         }
+    }
+    
+    func checkEmptyTaskListMessage() {
+        let isListEmpty = viewModel.isEmpty()
+        emptyListView.isHidden = !isListEmpty
+        if isListEmpty {
+            let emptyList = viewModel.emptyList()
+            emptyListImageView.image = emptyList.icon
+            emptyListTitle.text = emptyList.title
+            emptyListSubtitle.text = emptyList.description
+        }
+    }
+    
+    func showTaskListNotConfiguredMessage() {
+        emptyListView.isHidden = false
+        let emptyList = viewModel.tasksNotConfigured()
+        emptyListImageView.image = emptyList.icon
+        emptyListTitle.text = emptyList.title
+        emptyListSubtitle.text = emptyList.description
     }
     
     // MARK: - Set up Bindings
     private func setupBindings() {
-        
-        // observing loader
         self.viewModel.isLoading.addObserver { [weak self] (isLoading) in
             if isLoading {
                 self?.startLoading()
