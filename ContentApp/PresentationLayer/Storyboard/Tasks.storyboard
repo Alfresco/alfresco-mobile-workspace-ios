@@ -39,6 +39,52 @@
                                     <outlet property="delegate" destination="Y6W-OH-hqX" id="bu4-qw-hM9"/>
                                 </connections>
                             </collectionView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F0l-Ge-myc" userLabel="EmptyListView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kOC-im-tG6">
+                                        <rect key="frame" x="175" y="228.5" width="64" height="88"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListImageView">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="64" id="XXi-x7-UNR"/>
+                                            <constraint firstAttribute="height" constant="88" id="yu9-Wr-VON"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ooops.." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wIo-J7-c6i">
+                                        <rect key="frame" x="103.5" y="332.5" width="207" height="33.5"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListTitleLabel">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ebw-AU-3z7">
+                                        <rect key="frame" x="103.5" y="374" width="207" height="41"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="emptyListSubtitleLabel">
+                                            <bool key="isElement" value="YES"/>
+                                        </accessibility>
+                                        <string key="text">We can’t find what
+ you’re looking for</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="ebw-AU-3z7" firstAttribute="centerX" secondItem="F0l-Ge-myc" secondAttribute="centerX" id="BOL-pb-egr"/>
+                                    <constraint firstItem="kOC-im-tG6" firstAttribute="centerY" secondItem="F0l-Ge-myc" secondAttribute="centerY" multiplier="2/3" id="CgG-Fd-cSW"/>
+                                    <constraint firstItem="wIo-J7-c6i" firstAttribute="top" secondItem="kOC-im-tG6" secondAttribute="bottom" constant="16" id="IH4-d9-J2J"/>
+                                    <constraint firstItem="ebw-AU-3z7" firstAttribute="top" secondItem="wIo-J7-c6i" secondAttribute="bottom" constant="8" id="TIE-P1-c18"/>
+                                    <constraint firstItem="wIo-J7-c6i" firstAttribute="width" secondItem="F0l-Ge-myc" secondAttribute="width" multiplier="0.5" id="Z2y-Ic-67W"/>
+                                    <constraint firstItem="ebw-AU-3z7" firstAttribute="width" secondItem="F0l-Ge-myc" secondAttribute="width" multiplier="0.5" id="hVv-3f-NIe"/>
+                                    <constraint firstItem="kOC-im-tG6" firstAttribute="centerX" secondItem="F0l-Ge-myc" secondAttribute="centerX" id="l3l-Zv-7Pb"/>
+                                    <constraint firstItem="wIo-J7-c6i" firstAttribute="centerX" secondItem="F0l-Ge-myc" secondAttribute="centerX" id="lM6-th-Uea"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -46,14 +92,22 @@
                             <constraint firstAttribute="bottom" secondItem="5Gf-kf-zOp" secondAttribute="bottom" id="3ba-7Q-7dI"/>
                             <constraint firstItem="5Gf-kf-zOp" firstAttribute="top" secondItem="V7q-Hm-CnH" secondAttribute="bottom" constant="2" id="8Om-AK-QOP"/>
                             <constraint firstAttribute="trailing" secondItem="V7q-Hm-CnH" secondAttribute="trailing" id="CoW-bg-wO7"/>
+                            <constraint firstItem="F0l-Ge-myc" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="EEo-YI-DpO"/>
                             <constraint firstItem="V7q-Hm-CnH" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="XyJ-61-fEV"/>
                             <constraint firstItem="V7q-Hm-CnH" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="YMd-W8-4hX"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="F0l-Ge-myc" secondAttribute="trailing" id="e1D-Y5-N9b"/>
                             <constraint firstItem="5Gf-kf-zOp" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="f01-sI-7YI"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="leading" secondItem="F0l-Ge-myc" secondAttribute="leading" id="rRg-Es-QtN"/>
                             <constraint firstItem="5Gf-kf-zOp" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="ww5-Bq-Pu6"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="top" secondItem="F0l-Ge-myc" secondAttribute="top" id="zdO-vb-7va"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="5Gf-kf-zOp" id="yXU-pa-2nV"/>
+                        <outlet property="emptyListImageView" destination="kOC-im-tG6" id="qrD-cX-kHL"/>
+                        <outlet property="emptyListSubtitle" destination="ebw-AU-3z7" id="dsS-OV-boQ"/>
+                        <outlet property="emptyListTitle" destination="wIo-J7-c6i" id="IkJ-xf-Fop"/>
+                        <outlet property="emptyListView" destination="F0l-Ge-myc" id="YVr-fu-Sfj"/>
                         <outlet property="progressView" destination="V7q-Hm-CnH" id="hou-8J-p89"/>
                     </connections>
                 </viewController>

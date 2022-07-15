@@ -16,14 +16,17 @@
 //  limitations under the License.
 //
 
+import Foundation
 import UIKit
 
-// MARK: - Page View Events
-extension AnalyticsManager {
-    
-    func pageViewEvent(for title: Event.Page) {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.eventName] = title.rawValue
-        self.logEvent(name: title.rawValue, parameters: parameters)
-    }
+struct EmptyTasks: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.Tasks.noTasksFound
+    var description = LocalizationConstants.Tasks.createTaskMessage
+}
+
+struct TasksNotConfigured: EmptyListProtocol {
+    var icon = UIImage(named: "ic-empty-list-recents")
+    var title = LocalizationConstants.Tasks.noTasksFound
+    var description = LocalizationConstants.Tasks.notConfiguredMessage
 }

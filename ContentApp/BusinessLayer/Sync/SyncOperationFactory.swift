@@ -289,7 +289,7 @@ class SyncOperationFactory {
                                                         }
 
                                                         if error == nil, let node = entry {
-                                                            AnalyticsManager.shared.apiTracker(name: EventName.apiUploadMedia.rawValue, fileSize: fileSize, success: true)
+                                                            AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadMedia.rawValue, fileSize: fileSize, success: true)
                                                             SyncSharedNodes.store(uploadedNode: transfer)
                                                             transfer.syncStatus = .synced
                                                             let listNode = transfer.updateListNode(with: node)
@@ -298,7 +298,7 @@ class SyncOperationFactory {
                                                             // transferDataAccessor.remove(transfer: transfer)
                                                             SyncBannerService.triggerSyncNotifyService()
                                                         } else {
-                                                            AnalyticsManager.shared.apiTracker(name: EventName.apiUploadMedia.rawValue, fileSize: fileSize, success: false)
+                                                            AnalyticsManager.shared.apiTracker(name: Event.API.apiUploadMedia.rawValue, fileSize: fileSize, success: false)
                                                             transfer.syncStatus = .error
                                                             let listNode = transfer.listNode()
                                                             sSelf.publishSyncStatusEvent(for: listNode)

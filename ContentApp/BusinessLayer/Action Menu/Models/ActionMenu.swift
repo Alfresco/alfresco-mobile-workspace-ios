@@ -26,7 +26,7 @@ class ActionMenu {
         }
     }
     var icon: UIImage
-
+    var analyticEventName: String
     init(title: String, type: ActionMenuType, icon: UIImage? = nil) {
         self.title = title
         self.type = type
@@ -35,7 +35,9 @@ class ActionMenu {
         } else {
             self.icon = UIImage(named: self.type.rawValue) ?? UIImage()
         }
+        analyticEventName = "\(type)"
     }
+    
 }
 
 enum ActionMenuType: String {

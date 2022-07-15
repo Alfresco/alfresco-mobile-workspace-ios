@@ -49,7 +49,7 @@ class FolderChildrenScreenCoordinator: PresentingCoordinator {
 
         let viewController = ListViewController()
         viewController.title = listNode.title
-        AnalyticsManager.shared.pageViewEvent(for: viewController.title)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.personalFiles)
         viewController.sourceNodeToMove = sourceNodeToMove
         viewController.destinationNodeToMove = listNode
 

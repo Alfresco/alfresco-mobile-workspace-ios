@@ -22,6 +22,9 @@ struct CellConstants {
     
     struct CollectionCells {
         static let preview = "PreviewCollectionViewCell"
+        static let taskList = "TaskListCollectionViewCell"
+        static let taskSection = "TaskSectionCollectionViewCell"
+
     }
     
     struct TableCells {

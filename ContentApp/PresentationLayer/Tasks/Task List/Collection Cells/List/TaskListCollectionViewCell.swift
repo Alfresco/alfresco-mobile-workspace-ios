@@ -50,7 +50,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
     
     func userName(for task: TaskNode?) -> String? {
         let firstName = task?.assignee?.firstName ?? ""
-        let lastName = task?.assignee?.firstName ?? ""
+        let lastName = task?.assignee?.lastName ?? ""
         return String(format: "%@ %@", firstName, lastName)
     }
     
