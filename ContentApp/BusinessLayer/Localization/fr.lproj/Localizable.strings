@@ -302,3 +302,12 @@
 // MARK: - Scanner
 "dialog-discard-scanner-title" = "Supprimer le scannage des fichiers ?";
 "dialog-discard-scanner-message" = "Le scannage des fichiers sera supprimé si vous quittez l'application.";
+
+// MARK: - Tasks
+"tasks-title" = "Tâches";
+"no-tasks-found" = "Aucune tâche trouvée";
+"create-task-message" = "Créer une tâche facile à retrouver plus tard.";
+"low" = "Basse";
+"medium" = "Moyenne";
+"high" = "Élevée";
+"task-service-not-configured-message" = "Ce compte n'est pas configuré dans 'Process Services'. Veuillez contacter l'administrateur.";

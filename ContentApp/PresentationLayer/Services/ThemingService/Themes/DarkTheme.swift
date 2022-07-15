@@ -58,4 +58,7 @@ struct DarkTheme: PresentationTheme {
     var dividerColor = UIColor(hex: "#595959")
     var videoShutterColor = UIColor(hex: "#F34139")
     var photoShutterColor = UIColor(hex: "#FFFFFF")
+    var taskErrorContainer = UIColor(hex: "#BA1B1B")
+    var taskWarningContainer = UIColor(hex: "#C95100")
+    var taskSuccessContainer = UIColor(hex: "#00754A")
 }

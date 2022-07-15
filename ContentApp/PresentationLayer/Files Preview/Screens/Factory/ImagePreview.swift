@@ -181,7 +181,7 @@ class ImagePreview: UIView, FilePreviewProtocol {
     }
 
     private func displaySVG() {
-        guard let url = self.imageRequest?.urlRequest.url,
+        guard let url = self.imageRequest?.urlRequest?.url,
               let handler = imagePreviewHandler else { return }
         ImageDecoderRegistry.shared.register { _ in return ImageDecoders.Empty() }
         task = ImagePipeline.shared.loadImage(with: url,

@@ -18,20 +18,17 @@
 
 import UIKit
 
-// MARK: - API Tracker Events
-extension AnalyticsManager {
-    
-    func apiTracker(name: String?, fileSize: Double, success: Bool) {
-        if let name = name {
-            let eventName =  name + (success ? "_success" : "_fail")
-            var parameters = self.commonParameters()
-            if fileSize > 0 {
-                let size = "\(fileSize) MB"
-                parameters[AnalyticsConstants.Parameters.fileSize] = size
-            }
-            parameters[AnalyticsConstants.Parameters.previewSuccess] = success
-            parameters[AnalyticsConstants.Parameters.eventName] = eventName
-            self.logEvent(name: eventName, parameters: parameters)
-        }
+class TaskSectionCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    func applyTheme(_ currentTheme: PresentationTheme?) {
+        guard let currentTheme = currentTheme else { return }
+        backgroundColor = currentTheme.surfaceColor
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
     }
 }
