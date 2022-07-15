@@ -22,7 +22,6 @@ enum Event {
 
     enum Action: String, CaseIterable {
         case discardCaptures = "event_discard_capture"
-        case searchScreen = "Search"
         case filePreview = "event_file_preview"
         case download = "event_download"
         case addFavorite = "event_add_to_favorites"
@@ -42,8 +41,9 @@ enum Event {
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
         case openWith = "event_open_with"
+        case scanDocuments = "event_scan_documents"
     }
-    
+
     enum API: String {
         case apiNewFolder = "event_api_new_folder"
         case apiUploadMedia = "event_api_upload_files"
@@ -64,7 +64,6 @@ enum Event {
         case transfers = "page_view_transfers"
         case taskTab = "page_view_tasks"
     }
-    
 }
 
 struct AnalyticsConstants {
