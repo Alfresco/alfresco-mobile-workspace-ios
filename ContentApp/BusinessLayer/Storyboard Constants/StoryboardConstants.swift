@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,16 +18,15 @@
 
 import UIKit
 
-struct CellConstants {
+struct StoryboardConstants {
     
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-        static let taskList = "TaskListCollectionViewCell"
-        static let taskSection = "TaskSectionCollectionViewCell"
-
+    struct storyboard {
+        static let tasks = "Tasks"
     }
     
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
+    struct controller {
+        static let taskList = "TasksListViewController"
+        static let searchTasks = "SearchTasksViewController"
     }
 }
+

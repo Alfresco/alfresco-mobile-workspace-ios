@@ -131,6 +131,7 @@
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
 		C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBAD288149A70080EF69 /* EmptyTasks.swift */; };
+		C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBB0288152230080EF69 /* StoryboardConstants.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
@@ -802,6 +803,7 @@
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		C903CBAD288149A70080EF69 /* EmptyTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasks.swift; sourceTree = "<group>"; };
+		C903CBB0288152230080EF69 /* StoryboardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
@@ -1693,6 +1695,14 @@
 			path = EventDelivery;
 			sourceTree = "<group>";
 		};
+		C903CBAF2881520C0080EF69 /* Storyboard Constants */ = {
+			isa = PBXGroup;
+			children = (
+				C903CBB0288152230080EF69 /* StoryboardConstants.swift */,
+			);
+			path = "Storyboard Constants";
+			sourceTree = "<group>";
+		};
 		C91303AE275F4D51001F84D4 /* List with Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -1879,17 +1889,9 @@
 		C983A25F287D5F3D00CEDCAB /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				C983A260287D5F3D00CEDCAB /* Table Cells */,
 				C983A261287D5F3D00CEDCAB /* Controller */,
 			);
 			path = Search;
-			sourceTree = "<group>";
-		};
-		C983A260287D5F3D00CEDCAB /* Table Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Table Cells";
 			sourceTree = "<group>";
 		};
 		C983A261287D5F3D00CEDCAB /* Controller */ = {
@@ -2664,6 +2666,7 @@
 			isa = PBXGroup;
 			children = (
 				C97BEB7026EB36E400E05375 /* Cells */,
+				C903CBAF2881520C0080EF69 /* Storyboard Constants */,
 				F1E295CC261EF62E00C9B8EE /* PrivacyNotice */,
 				B9B7531425AC8F95004F16E5 /* Sync */,
 				B9ECECF8254301F10097DB3F /* EventDelivery */,
@@ -3765,6 +3768,7 @@
 				E30FCD8425A6F73500C4ABAF /* OfflineEvent.swift in Sources */,
 				B959CCD42476C91D00811F15 /* ThemingService.swift in Sources */,
 				B9E7D60724911D4D0056292B /* AIMSAccount.swift in Sources */,
+				C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */,
 				C9AEE049270D9D9E00880235 /* ConfigurationHelper.swift in Sources */,
 				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,

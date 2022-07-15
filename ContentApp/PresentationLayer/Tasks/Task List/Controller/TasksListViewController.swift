@@ -151,8 +151,8 @@ class TasksListViewController: SystemSearchViewController {
     }
     
     func registerCells() {
-        collectionView.register(UINib(nibName: "TaskListCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskListCollectionViewCell")
-        collectionView.register(UINib(nibName: "TaskSectionCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "TaskSectionCollectionViewCell")
+        collectionView.register(UINib(nibName: CellConstants.CollectionCells.taskList, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.taskList)
+        collectionView.register(UINib(nibName: CellConstants.CollectionCells.taskSection, bundle: nil), forCellWithReuseIdentifier: CellConstants.CollectionCells.taskSection)
         collectionView.register(ActivityIndicatorFooterView.self,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
                                 withReuseIdentifier: String(describing: ActivityIndicatorFooterView.self))
@@ -182,8 +182,8 @@ class TasksListViewController: SystemSearchViewController {
     
     private func createSearchController() -> UISearchController {
         
-        let storyboard = UIStoryboard(name: "Tasks", bundle: nil)
-        let rvc = storyboard.instantiateViewController(withIdentifier: "SearchTasksViewController") as? SearchTasksViewController
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        let rvc = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.searchTasks) as? SearchTasksViewController
         rvc?.coordinatorServices = coordinatorServices
         tasksResultsViewController = rvc
 
