@@ -51,6 +51,12 @@ class TasksListViewController: SystemSearchViewController {
         setupBindings()
         registerCells()
         getTaskList()
+        
+        // ReSignIn Notification
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.handleReSignIn(notification:)),
+                                               name: Notification.Name(KeyConstants.Notification.reSignin),
+                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -223,6 +229,10 @@ class TasksListViewController: SystemSearchViewController {
             sSelf.viewModel.page = 0
             sSelf.getTaskList()
         }
+    }
+    
+    @objc private func handleReSignIn(notification: Notification) {
+        getTaskList()
     }
 }
 
