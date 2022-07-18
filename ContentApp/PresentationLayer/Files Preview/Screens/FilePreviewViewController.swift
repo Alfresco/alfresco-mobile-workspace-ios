@@ -318,7 +318,10 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
                 handleMove(action: action, node: node)
             } else if action.type.isDownloadActions {
                 handleDownload(action: action, node: node)
-            } 
+            } else if action.type.isCreateActions {
+                handleSheetCreate(action: action, node: node)
+            }
+            logEvent(with: action, node: node)
         }
     }
 
@@ -372,6 +375,14 @@ extension FilePreviewViewController: NodeActionsViewModelDelegate {
         }
         displaySnackbar(with: snackBarMessage, type: .approve)
     }
+    
+    func handleSheetCreate(action: ActionMenu, node: ListNode?) {
+        switch action.type {
+        case .renameNode:
+            filePreviewCoordinatorDelegate?.renameNodeForListItem(for: node, actionMenu: action, delegate: self)
+        default: break
+        }
+    }
 
     func display(error: Error) {
         var snackBarMessage = ""
@@ -409,6 +420,31 @@ extension FilePreviewViewController: FilePreviewDelegate {
         if filePreviewViewModel.shouldDisplayActionsToolbar() {
             toolbar.isHidden = enable
         }
+    }
+}
+
+extension FilePreviewViewController: CreateNodeViewModelDelegate {
+
+    func handleCreatedNode(node: ListNode?, error: Error?, isUpdate: Bool) {
+        if node == nil && error == nil {
+            return
+        } else if let error = error {
+            self.display(error: error)
+        } else {
+            self.title = node?.title ?? ""
+            displaySnackbar(with: String(format: LocalizationConstants.Approved.updated,
+                                         node?.truncateTailTitle() ?? ""),
+                            type: .approve)
+        }
+    }
+}
+
+// MARK: - Analytics
+extension FilePreviewViewController {
+    
+    func logEvent(with action: ActionMenu?, node: ListNode?) {
+        guard let action = action else { return }
+        AnalyticsManager.shared.fileActionEvent(for: node, action: action)
     }
 }
 
