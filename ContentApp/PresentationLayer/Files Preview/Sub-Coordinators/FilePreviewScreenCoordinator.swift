@@ -22,6 +22,8 @@ protocol FilePreviewScreenCoordinatorDelegate: AnyObject {
     func navigateBack()
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
     func saveScannedDocument(for node: ListNode?, delegate: CreateNodeViewModelDelegate?)
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?)
 }
 
 class FilePreviewScreenCoordinator: Coordinator {
@@ -106,6 +108,18 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
                                                          createNodeViewModelDelegate: delegate,
                                                          createNodeViewType: .scanDocument)
             coordinator.createNodeCoordinatorDelegate = self
+        }
+    }
+    
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        if let node = node {
+            let navigationViewController = self.presenter
+            let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         createNodeViewType: .rename)
             coordinator.start()
             createNodeSheetCoordinator = coordinator
         }
