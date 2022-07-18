@@ -21,6 +21,8 @@ import UIKit
 protocol FilePreviewScreenCoordinatorDelegate: AnyObject {
     func navigateBack()
     func showActionSheetForListItem(node: ListNode, delegate: NodeActionsViewModelDelegate)
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?)
 }
 
 class FilePreviewScreenCoordinator: Coordinator {
@@ -31,6 +33,7 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let excludedActionsTypes: [ActionMenuType]
     private let shouldPreviewLatestContent: Bool
     private let isLocalFilePreview: Bool
+    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
@@ -89,6 +92,20 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
         }
         coordinator.start()
         actionMenuCoordinator = coordinator
+    }
+    
+    func renameNodeForListItem(for node: ListNode?, actionMenu: ActionMenu,
+                               delegate: CreateNodeViewModelDelegate?) {
+        if let node = node {
+            let navigationViewController = self.presenter
+            let coordinator = CreateNodeSheetCoordinator(with: navigationViewController,
+                                                         actionMenu: actionMenu,
+                                                         parentListNode: node,
+                                                         createNodeViewModelDelegate: delegate,
+                                                         createNodeViewType: .rename)
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
+        }
     }
 }
 

@@ -221,7 +221,6 @@
 		C99786BE27F75F2A0033DB3E /* ListComponent+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99786BD27F75F2A0033DB3E /* ListComponent+Actions.swift */; };
 		C99786BF27F75F730033DB3E /* OfflineEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30FCD8325A6F73500C4ABAF /* OfflineEvent.swift */; };
 		C99786C127F760060033DB3E /* FavouriteEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9318AAD254893090023689D /* FavouriteEvent.swift */; };
-		C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C997C9AE28643AF2006CA567 /* ContentApp.xcconfig */; };
 		C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */; };
 		C99D4AFB27D1F168009D3AD3 /* EmptyUploads.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
@@ -3069,7 +3068,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1320;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					C9E79E7327A3E653002BC5A0 = {
@@ -3176,7 +3175,6 @@
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 				C9AEE04C270D9DC900880235 /* Configurations.plist in Resources */,
-				C997C9AF28643AF2006CA567 /* ContentApp.xcconfig in Resources */,
 				C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
