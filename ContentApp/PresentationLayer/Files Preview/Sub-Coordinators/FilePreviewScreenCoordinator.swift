@@ -37,7 +37,6 @@ class FilePreviewScreenCoordinator: Coordinator {
     private let isScannedDocument: Bool
     private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
     weak var createNodeCoordinatorDelegate: CreateNodeCoordinatorDelegate?
-    private var createNodeSheetCoordinator: CreateNodeSheetCoordinator?
 
     init(with presenter: UINavigationController,
          listNode: ListNode,
