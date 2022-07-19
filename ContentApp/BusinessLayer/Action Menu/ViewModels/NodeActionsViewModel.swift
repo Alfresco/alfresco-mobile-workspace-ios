@@ -145,6 +145,7 @@ class NodeActionsViewModel {
 
             action.type = .removeOffline
             action.title = LocalizationConstants.ActionMenu.removeOffline
+            action.analyticEventName = "\(ActionMenuType.markOffline)"
 
             let offlineEvent = OfflineEvent(node: node, eventType: .marked)
             let eventBusService = coordinatorServices?.eventBusService
@@ -166,6 +167,7 @@ class NodeActionsViewModel {
 
             action.type = .markOffline
             action.title = LocalizationConstants.ActionMenu.markOffline
+            action.analyticEventName = "\(ActionMenuType.removeOffline)"
 
             let offlineEvent = OfflineEvent(node: node, eventType: .removed)
             let eventBusService = coordinatorServices?.eventBusService
@@ -194,7 +196,8 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = true
                 action.type = .removeFavorite
                 action.title = LocalizationConstants.ActionMenu.removeFavorite
-
+                action.analyticEventName = "\(ActionMenuType.addFavorite)"
+                
                 let favouriteEvent = FavouriteEvent(node: node, eventType: .addToFavourite)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
                 eventBusService?.publish(event: favouriteEvent, on: .mainQueue)
@@ -212,6 +215,7 @@ class NodeActionsViewModel {
                 sSelf.node?.favorite = false
                 action.type = .addFavorite
                 action.title = LocalizationConstants.ActionMenu.addFavorite
+                action.analyticEventName = "\(ActionMenuType.removeFavorite)"
 
                 let favouriteEvent = FavouriteEvent(node: node, eventType: .removeFromFavourites)
                 let eventBusService = sSelf.coordinatorServices?.eventBusService
