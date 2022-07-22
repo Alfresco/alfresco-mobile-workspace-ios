@@ -108,6 +108,8 @@ extension FilePreviewScreenCoordinator: FilePreviewScreenCoordinatorDelegate {
                                                          createNodeViewModelDelegate: delegate,
                                                          createNodeViewType: .scanDocument)
             coordinator.createNodeCoordinatorDelegate = self
+            coordinator.start()
+            createNodeSheetCoordinator = coordinator
         }
     }
     
