@@ -303,3 +303,7 @@
 "medium" = "Medium";
 "high" = "High";
 "task-service-not-configured-message" = "This account is not configured on the process services. Please contact to administrator.";
+
+// MARK: - Task Filters and Sorting
+"my-tasks" = "My Tasks";
+"completed-tasks" = "Completed Tasks";

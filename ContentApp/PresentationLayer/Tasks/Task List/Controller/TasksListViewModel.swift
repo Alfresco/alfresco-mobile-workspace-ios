@@ -28,7 +28,7 @@ class TasksListViewModel: NSObject {
     var shouldRefreshList = true
     var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
-    var filters: [TasksFilters] = []
+    var filter: TasksFilters?
     
     init(services: CoordinatorServices) {
         self.services = services
@@ -116,27 +116,5 @@ class TasksListViewModel: NSObject {
         if total > size {
             page = page + 1
         }
-    }
-}
-
-// MARK: - Filter List
-extension TasksListViewModel {
-    
-    func taskFilterList(completionHandler: @escaping (_ error: Error?) -> Void) {
-        
-        services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            
-            TasksAPI.getTasksFilters { data, error in
-                
-                if data != nil {
-                    let taskFilters = data?.data ?? []
-                    self.filters = TaskFilterOperations.processFilters(for: taskFilters)
-                    completionHandler(nil)
-                } else {
-                    completionHandler(error)
-                }
-            }
-        })
     }
 }

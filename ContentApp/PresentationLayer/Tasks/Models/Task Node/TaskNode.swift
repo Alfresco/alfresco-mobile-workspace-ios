@@ -29,7 +29,7 @@ class TaskNode {
     var created: Date?
     var dueDate: Date?
     var endDate: Date?
-    var duration: String?
+    var duration: Int?
     var priority: Int?
     var parentTaskId: Int?
     var parentTaskName: String?
@@ -75,7 +75,7 @@ class TaskNode {
          created: Date? = nil,
          dueDate: Date? = nil,
          endDate: Date? = nil,
-         duration: String? = nil,
+         duration: Int? = nil,
          priority: Int? = nil,
          parentTaskId: Int? = nil,
          parentTaskName: String? = nil,

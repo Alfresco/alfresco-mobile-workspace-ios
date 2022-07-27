@@ -17,6 +17,11 @@
 //
 
 import UIKit
+import DropDown
+
+protocol TasksSortAndFilterDelegate {
+    func didSelectTaskFilter(_ filter: TasksFilters)
+}
 
 class TasksSortAndFilterView: UIView {
 
@@ -26,9 +31,15 @@ class TasksSortAndFilterView: UIView {
     @IBOutlet weak var filterLabel: UILabel!
     @IBOutlet weak var filterButton: UIButton!
     var currentTheme: PresentationTheme?
+    lazy var viewModel = TasksSortAndFilterViewModel()
+    lazy var dropDown = DropDown()
+    var deleagte: TasksSortAndFilterDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        viewModel.getFilters()
+        setupDropDownView()
+        buildDropDownDataSource()
     }
     
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -37,6 +48,11 @@ class TasksSortAndFilterView: UIView {
         backgroundColor = currentTheme.surfaceColor
         filterLabel.applyStyleBody1OnSurface(theme: currentTheme)
         filterLabel.lineBreakMode = .byTruncatingTail
+        dropDown.backgroundColor = currentTheme.surfaceColor
+        dropDown.selectionBackgroundColor = currentTheme.primary15T1Color
+        dropDown.textColor = currentTheme.onSurfaceColor
+        dropDown.selectedTextColor = currentTheme.onSurfaceColor
+        
 //        subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
 //        subtitle.lineBreakMode = .byTruncatingHead
 //        iconImageView.tintColor = currentTheme.onSurface60Color
@@ -46,5 +62,34 @@ class TasksSortAndFilterView: UIView {
     }
     
     @IBAction func filterButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("filter button action")
+        dropDown.show()
+    }
+}
+
+// MARK: - Drop Down
+extension TasksSortAndFilterView {
+    func setupDropDownView() {
+        dropDown.anchorView = filterView
+        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
+        dropDown.cornerRadius = 6
+        dropDown.width = 200
+    }
+    
+    func buildDropDownDataSource() {
+        let searchFilters = viewModel.localizedFilterNames
+        dropDown.localizationKeysDataSource = searchFilters
+        dropDown.reloadAllComponents()
+        dropDown.selectionAction = { (index: Int, item: String) in
+            self.viewModel.filters = TasksFilters.updateSelectedFilter(at: index, for: self.viewModel.filters)
+            self.setFilterDetails()
+        }
+    }
+    
+    func setFilterDetails() {
+        if let filter = self.viewModel.selectedFilter {
+            filterLabel.text = filter.name
+            deleagte?.didSelectTaskFilter(filter)
+        }
     }
 }

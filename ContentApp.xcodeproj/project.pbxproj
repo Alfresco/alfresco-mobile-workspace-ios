@@ -133,6 +133,7 @@
 		C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBAD288149A70080EF69 /* EmptyTasks.swift */; };
 		C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBB0288152230080EF69 /* StoryboardConstants.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
+		C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
 		C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B3275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift */; };
@@ -141,7 +142,6 @@
 		C915CDD728905B6800819F86 /* TaskNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD428905B6800819F86 /* TaskNode.swift */; };
 		C915CDD828905B6800819F86 /* TaskNodeOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD528905B6800819F86 /* TaskNodeOperations.swift */; };
 		C915CDDA28905B9800819F86 /* TaskFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD928905B9800819F86 /* TaskFilters.swift */; };
-		C915CDDC28905D7D00819F86 /* TaskFilterOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDDB28905D7D00819F86 /* TaskFilterOperations.swift */; };
 		C918811727AA414C00F850DF /* AIMSSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = C918811527AA414C00F850DF /* AIMSSession.swift */; };
 		C918811827AA414C00F850DF /* AIMSAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C918811627AA414C00F850DF /* AIMSAccount.swift */; };
 		C918811B27AA417200F850DF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C918811A27AA417200F850DF /* Constants.swift */; };
@@ -808,6 +808,7 @@
 		C903CBAD288149A70080EF69 /* EmptyTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasks.swift; sourceTree = "<group>"; };
 		C903CBB0288152230080EF69 /* StoryboardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
+		C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksSortAndFilterViewModel.swift; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
 		C91303B3275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -816,7 +817,6 @@
 		C915CDD428905B6800819F86 /* TaskNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskNode.swift; sourceTree = "<group>"; };
 		C915CDD528905B6800819F86 /* TaskNodeOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskNodeOperations.swift; sourceTree = "<group>"; };
 		C915CDD928905B9800819F86 /* TaskFilters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilters.swift; sourceTree = "<group>"; };
-		C915CDDB28905D7D00819F86 /* TaskFilterOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskFilterOperations.swift; sourceTree = "<group>"; };
 		C918811527AA414C00F850DF /* AIMSSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIMSSession.swift; sourceTree = "<group>"; };
 		C918811627AA414C00F850DF /* AIMSAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIMSAccount.swift; sourceTree = "<group>"; };
 		C918811A27AA417200F850DF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -1740,6 +1740,7 @@
 			isa = PBXGroup;
 			children = (
 				C915CDCF288FEBCF00819F86 /* TasksSortAndFilterView.swift */,
+				C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */,
 				C915CDD1288FEBF500819F86 /* TasksSortAndFilterView.xib */,
 			);
 			path = "Sort and Filter";
@@ -1758,7 +1759,6 @@
 			isa = PBXGroup;
 			children = (
 				C915CDD928905B9800819F86 /* TaskFilters.swift */,
-				C915CDDB28905D7D00819F86 /* TaskFilterOperations.swift */,
 			);
 			path = "Task Filters";
 			sourceTree = "<group>";
@@ -3838,7 +3838,6 @@
 				B99D9BC4248682BA00FBFC9B /* BasicAuthCredential.swift in Sources */,
 				E363E43925655A5000CB5338 /* Error+StatusCode.swift in Sources */,
 				E32C698025C45834000FA6BD /* MultipleChoiseDialogScreenCoordinator.swift in Sources */,
-				C915CDDC28905D7D00819F86 /* TaskFilterOperations.swift in Sources */,
 				C989FEA2272FD11D0081EB7E /* UITextField+MaxLength.swift in Sources */,
 				F14E68A126172800002FDEF9 /* UIDeviceOrientation+VideoOrientation.swift in Sources */,
 				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
@@ -3936,6 +3935,7 @@
 				E324779F24AB4F0B006D4B6F /* FileIcon.swift in Sources */,
 				E3E9ED4524CB25FF00F1A2C2 /* BrowseViewModel.swift in Sources */,
 				B9A90E7D2664F25F00B89766 /* SearchViewModel.swift in Sources */,
+				C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */,
 				B9AC16D324B4B3280084F929 /* UIViewController+Hierarchy.swift in Sources */,
 				F185B1A326175C8800407451 /* CameraStoryboardInstantiable.swift in Sources */,
 				E30ADEF524A1EB7400C8C4E2 /* DiskService.swift in Sources */,

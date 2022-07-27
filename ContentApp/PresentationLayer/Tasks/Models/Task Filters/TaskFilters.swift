@@ -20,38 +20,55 @@
 class TasksFilters {
     var id: Int?
     var name: String?
-    var recent: Bool?
-    var icon: String?
     var isSelected: Bool?
-    var filter: TasksFilterQuery?
+    var state: String?
     
     init(id: Int?,
          name: String?,
-         recent: Bool?,
-         icon: String?,
          isSelected: Bool? = false,
-         filter: TasksFilterQuery?) {
+         state: String?) {
         
         self.id = id
         self.name = name
-        self.recent = recent
-        self.icon = icon
         self.isSelected = isSelected
-        self.filter = filter
+        self.state = state
     }
-}
-
-// MARK: Task Assignee
-class TasksFilterQuery: Codable {
-    var sort: String?
-    var name: String?
-    var assignment: String?
     
-    init(sort: String?,
-         name: String?,
-         assignment: String?) {
-        self.sort = sort
-        self.name = name
-        self.assignment = assignment
+    static func getFiltersList() -> [TasksFilters] {
+        // active tasks
+        let activeTasks = TasksFilters.createFilter(for: 1,
+                                        name: LocalizationConstants.Tasks.myTasks,
+                                        isSelected: true,
+                                        state: nil)
+        
+        // completed tasks
+        let completedTasks = TasksFilters.createFilter(for: 2,
+                                        name: LocalizationConstants.Tasks.completedTasks,
+                                        state: "completed")
+        
+        return [activeTasks, completedTasks]
+    }
+    
+    private static func createFilter(for id: Int?,
+                                     name: String?,
+                                     isSelected: Bool? = false,
+                                     state: String?) -> TasksFilters {
+        let taskFilter = TasksFilters(id: id,
+                                      name: name,
+                                      isSelected: isSelected,
+                                      state: state)
+        return taskFilter
+    }
+    
+    // MARK: - Update selected filter
+    static func updateSelectedFilter(at index: Int, for filters: [TasksFilters]) -> [TasksFilters] {
+        for count in 0 ..< filters.count {
+            if count == index {
+                filters[count].isSelected = true
+            } else {
+                filters[count].isSelected = false
+            }
+        }
+        return filters
     }
 }
