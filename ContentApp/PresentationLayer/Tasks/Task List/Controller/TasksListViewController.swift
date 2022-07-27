@@ -35,6 +35,9 @@ class TasksListViewController: SystemSearchViewController {
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
+    var sortFilterView: TasksSortAndFilterView?
+    @IBOutlet weak var topTasksCollectionView: NSLayoutConstraint!
+    
     
     // MARK: - View did load
     override func viewDidLoad() {
@@ -50,7 +53,9 @@ class TasksListViewController: SystemSearchViewController {
         addRefreshControl()
         setupBindings()
         registerCells()
+        getTaskFilters()
         getTaskList()
+        addSortAndFilterView()
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -76,6 +81,16 @@ class TasksListViewController: SystemSearchViewController {
         let activeTheme = coordinatorServices?.themingService?.activeTheme
         progressView.progressTintColor = activeTheme?.primaryT1Color
         progressView.trackTintColor = activeTheme?.primary30T1Color
+    }
+    
+    // MARK: - Sort and Filter View
+    func addSortAndFilterView() {
+        
+        if let sortFilterView: TasksSortAndFilterView = .fromNib() {
+            sortFilterView.frame = CGRect(x: 10, y: topBarHeight+55.0, width: self.view.frame.size.width - 20.0, height: 103.0)
+            self.view.addSubview(sortFilterView)
+            self.sortFilterView = sortFilterView
+        }
     }
     
     override func willTransition(to newCollection: UITraitCollection,
@@ -110,6 +125,7 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        self.sortFilterView?.applyTheme(currentTheme)
     }
     
     // MARK: - Get Tasks List
@@ -129,6 +145,7 @@ class TasksListViewController: SystemSearchViewController {
     func checkEmptyTaskListMessage() {
         let isListEmpty = viewModel.isEmpty()
         emptyListView.isHidden = !isListEmpty
+        self.sortFilterView?.isHidden = isListEmpty
         if isListEmpty {
             let emptyList = viewModel.emptyList()
             emptyListImageView.image = emptyList.icon
@@ -139,10 +156,24 @@ class TasksListViewController: SystemSearchViewController {
     
     func showTaskListNotConfiguredMessage() {
         emptyListView.isHidden = false
+        self.sortFilterView?.isHidden = true
         let emptyList = viewModel.tasksNotConfigured()
         emptyListImageView.image = emptyList.icon
         emptyListTitle.text = emptyList.title
         emptyListSubtitle.text = emptyList.description
+    }
+    
+    // MARK: - Task Filter List
+    func getTaskFilters() {
+        viewModel.taskFilterList {[weak self] error in
+            guard let sSelf = self else { return }
+            if error == nil {
+//                sSelf.collectionView.reloadData()
+//                sSelf.checkEmptyTaskListMessage()
+            } else {
+                sSelf.sortFilterView?.isHidden = true
+            }
+        }
     }
     
     // MARK: - Set up Bindings
