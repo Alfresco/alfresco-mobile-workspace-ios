@@ -158,11 +158,6 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
                         didSelectItemAt indexPath: IndexPath) {
         self.selectChipCollectionCell(for: indexPath)
     }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        didDeselectItemAt indexPath: IndexPath) {
-        self.selectChipCollectionCell(for: indexPath)
-    }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
