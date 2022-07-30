@@ -269,26 +269,24 @@ extension TasksSortAndFilterView {
         self.navigationController?.present(bottomSheet, animated: true, completion: nil)
     }
     
-    // List or Radio Component
+    // Radio Component
     private func showListSelectorComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
-//        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
-//            let viewController = SearchListComponentViewController.instantiateViewController()
-//            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-//            bottomSheet.dismissOnDraggingDownSheet = false
-//            bottomSheet.delegate = self
-//            viewController.coordinatorServices = coordinatorServices
-//            viewController.listViewModel.isRadioList = isRadio
-//            viewController.listViewModel.selectedCategory = selectedCategory
-//            viewController.callback = { (category, query, isBackButtonTapped) in
-//                if isBackButtonTapped {
-//                    self.resetChip()
-//                } else {
-//                    let selectedValue = category?.component?.settings?.selectedValue
-//                    self.updateSelectedChip(with: selectedValue, and: query)
-//                }
-//            }
-//            self.present(bottomSheet, animated: true, completion: nil)
-//        }
+       
+        let viewController = SearchListComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        bottomSheet.delegate = self
+        viewController.coordinatorServices = coordinatorServices
+        viewController.listViewModel.isRadioList = true
+        viewController.listViewModel.taskChip = chip
+        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+            if isBackButtonTapped {
+                 self.resetChip()
+            } else if let selectedChip = selectedChip {
+                self.updateChip(for: selectedChip, and: indexPath)
+            }
+        }
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
     }
     
     //  Text Component

@@ -35,6 +35,7 @@ class SearchListComponentViewController: SystemThemableViewController {
     lazy var controller: SearchListComponentController = { return SearchListComponentController() }()
     let maxHeightTableView: CGFloat =  UIConstants.ScreenHeight - 300.0
     var callback: SearchComponentCallBack?
+    var taskFilterCallBack: TaskFilterCallBack?
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -128,19 +129,32 @@ class SearchListComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissButtonAction(_ sender: Any) {
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, true)
+        if controller.listViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.controller.listViewModel.taskChip, true)
+
+        } else {
+            self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, true)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
         self.controller.applyFilterAction()
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        if controller.listViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.controller.listViewModel.taskChip, false)
+        } else {
+            self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.controller.resetFilterAction()
-        self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        if controller.listViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.controller.listViewModel.taskChip, false)
+        } else {
+            self.callback?(self.listViewModel.selectedCategory, self.listViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
 }

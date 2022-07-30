@@ -185,10 +185,10 @@ class SearchCalendarComponentViewModel: NSObject {
     func resetTaskFilter() {
         if let chip = taskChip {
             chip.selectedValue = nil
-            chip.options[0].isSelected = false
-            chip.options[0].value = nil
-            chip.options[1].isSelected = false
-            chip.options[1].value = nil
+            for index in 0 ..< chip.options.count - 1 {
+                chip.options[index].isSelected = false
+                chip.options[index].value = nil
+            }
             taskChip = chip
         }
     }
