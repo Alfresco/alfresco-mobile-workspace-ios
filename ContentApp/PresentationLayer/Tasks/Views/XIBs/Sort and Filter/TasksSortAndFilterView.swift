@@ -67,7 +67,8 @@ class TasksSortAndFilterView: UIView {
     }
     
     @IBAction func resetFilterButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("reset filter button action")
+        viewModel.resetChipsAction()
+        chipsCollectionView.reloadData()
     }
     
     func addChipsCollectionViewFlowLayout() {

@@ -68,4 +68,28 @@ class TasksSortAndFilterViewModel: NSObject {
         }
         completionHandler(true)
     }
+    
+    func resetChipsAction() {
+        
+        let filteredChips = self.chips.filter({($0.selectedValue != nil)})
+        if !filteredChips.isEmpty {
+            for chip in filteredChips {
+                if let index = self.chips.firstIndex(where: {($0.chipId == chip.chipId)}) {
+                    chip.selected = false
+                    chip.selectedValue = nil
+                    
+                    var chipOptions = [TaskOptions]()
+                    for option in chip.options {
+                        option.isSelected = false
+                        if chip.componentType == .dateRange {
+                            option.value = nil
+                        }
+                        chipOptions.append(option)
+                    }
+                    chip.options = chipOptions
+                    self.chips[index] = chip
+                }
+            }
+        }
+    }
 }
