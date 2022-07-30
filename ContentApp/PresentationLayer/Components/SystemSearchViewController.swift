@@ -22,8 +22,6 @@ class SystemSearchViewController: SystemThemableViewController {
     private var resultsViewController: ResultViewController?
     private var searchController: UISearchController?
     private let searchButtonAspectRatio: CGFloat = 30.0
-    var tasksResultsViewController: SearchTasksViewController?
-
     var searchViewModel: SearchViewModel?
     var searchPageController: ListPageController?
 
@@ -266,24 +264,18 @@ extension SystemSearchViewController: ResultViewControllerDelegate {
 
 extension SystemSearchViewController: UISearchControllerDelegate {
     func willPresentSearchController(_ searchController: UISearchController) {
-        if self.tasksResultsViewController != nil {
-            UIView.animate(withDuration: 0.2) {
-                searchController.searchBar.alpha = 1.0
-            }
-        } else {
-            guard let searchViewModel = self.searchViewModel else { return }
-            
-            searchViewModel.loadAppConfigurationsForSearch()
-            let searchFilters = searchViewModel.searchFilters
-            resultsViewController?.resetFacetsArray()
-            resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
-            resultsViewController?.updateRecentSearches()
-            resultsViewController?.clearDataSource()
-            resultsViewController?.resultsListController?.sourceNodeToMove = sourceNodeToMove
-            AnalyticsManager.shared.pageViewEvent(for: Event.Page.search)
-            UIView.animate(withDuration: 0.2) {
-                searchController.searchBar.alpha = 1.0
-            }
+        guard let searchViewModel = self.searchViewModel else { return }
+        
+        searchViewModel.loadAppConfigurationsForSearch()
+        let searchFilters = searchViewModel.searchFilters
+        resultsViewController?.resetFacetsArray()
+        resultsViewController?.updateChips(searchViewModel.searchModel.defaultSearchChips(for: searchFilters, and: -1))
+        resultsViewController?.updateRecentSearches()
+        resultsViewController?.clearDataSource()
+        resultsViewController?.resultsListController?.sourceNodeToMove = sourceNodeToMove
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.search)
+        UIView.animate(withDuration: 0.2) {
+            searchController.searchBar.alpha = 1.0
         }
     }
 

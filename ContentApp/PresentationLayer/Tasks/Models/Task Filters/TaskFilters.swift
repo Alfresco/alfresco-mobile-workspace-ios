@@ -16,59 +16,39 @@
 //  limitations under the License.
 //
 
-// MARK: Tasks
-class TasksFilters {
-    var id: Int?
+// MARK: Task Filters
+class Filter: Codable {
+    var filters = [TasksFilters]()
+}
+class TasksFilters: Codable {
+    var filterID: Int?
     var name: String?
-    var isSelected: Bool?
-    var state: String?
+    var selector: TaskComponentType?
+    var options: [TaskOptions]?
+    var query: String?
+    var value: String?
+    var isSelected = false
     
-    init(id: Int?,
-         name: String?,
-         isSelected: Bool? = false,
-         state: String?) {
-        
-        self.id = id
-        self.name = name
-        self.isSelected = isSelected
-        self.state = state
-    }
-    
-    static func getFiltersList() -> [TasksFilters] {
-        // active tasks
-        let activeTasks = TasksFilters.createFilter(for: 1,
-                                        name: LocalizationConstants.Tasks.myTasks,
-                                        isSelected: true,
-                                        state: nil)
-        
-        // completed tasks
-        let completedTasks = TasksFilters.createFilter(for: 2,
-                                        name: LocalizationConstants.Tasks.completedTasks,
-                                        state: "completed")
-        
-        return [activeTasks, completedTasks]
-    }
-    
-    private static func createFilter(for id: Int?,
-                                     name: String?,
-                                     isSelected: Bool? = false,
-                                     state: String?) -> TasksFilters {
-        let taskFilter = TasksFilters(id: id,
-                                      name: name,
-                                      isSelected: isSelected,
-                                      state: state)
-        return taskFilter
-    }
-    
-    // MARK: - Update selected filter
-    static func updateSelectedFilter(at index: Int, for filters: [TasksFilters]) -> [TasksFilters] {
-        for count in 0 ..< filters.count {
-            if count == index {
-                filters[count].isSelected = true
-            } else {
-                filters[count].isSelected = false
-            }
-        }
-        return filters
+    enum CodingKeys: String, CodingKey {
+        case filterID = "id"
+        case name
+        case selector
+        case options
+        case query
+        case value
     }
 }
+
+class TaskOptions: Codable {
+    var label: String?
+    var query: String?
+    var value: String?
+    var isSelected = false
+    
+    enum CodingKeys: String, CodingKey {
+        case label
+        case query
+        case value
+    }
+}
+

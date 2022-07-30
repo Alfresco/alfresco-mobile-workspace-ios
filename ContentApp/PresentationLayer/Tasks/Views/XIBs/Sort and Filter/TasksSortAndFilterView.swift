@@ -17,79 +17,234 @@
 //
 
 import UIKit
-import DropDown
-
-protocol TasksSortAndFilterDelegate {
-    func didSelectTaskFilter(_ filter: TasksFilters)
-}
+import MaterialComponents.MaterialChips
+import MaterialComponents.MaterialChips_Theming
+import MaterialComponents.MDCChipView
+import MaterialComponents.MDCChipView_MaterialTheming
 
 class TasksSortAndFilterView: UIView {
 
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var filterView: UIView!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var filterLabel: UILabel!
-    @IBOutlet weak var filterButton: UIButton!
+    @IBOutlet weak var chipsCollectionView: UICollectionView!
+    @IBOutlet weak var resetFilterButton: UIButton!
     var currentTheme: PresentationTheme?
     lazy var viewModel = TasksSortAndFilterViewModel()
-    lazy var dropDown = DropDown()
-    var deleagte: TasksSortAndFilterDelegate?
+    var coordinatorServices: CoordinatorServices?
+    private let textChipMaxCharacters = 30
+    private let textChipMaxPrefix = 5
+    private let textChipMaxSufffix = 5
+    private let chipSearchCellMinimWidth: CGFloat = 52.0
+    private let chipSearchCellMinimHeight: CGFloat = 32.0
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        viewModel.getFilters()
-        setupDropDownView()
-        buildDropDownDataSource()
+        addChipsCollectionViewFlowLayout()
+        chipsCollectionView.dataSource = self
+        chipsCollectionView.delegate = self
     }
     
-    func applyTheme(_ currentTheme: PresentationTheme?) {
-        guard let currentTheme = currentTheme else { return }
+    func applyTheme(_ currentTheme: PresentationTheme?, coordinatorServices: CoordinatorServices?) {
+        guard let currentTheme = currentTheme, let coordinatorServices = coordinatorServices else { return }
         self.currentTheme = currentTheme
+        self.coordinatorServices = coordinatorServices
         backgroundColor = currentTheme.surfaceColor
-        filterLabel.applyStyleBody1OnSurface(theme: currentTheme)
-        filterLabel.lineBreakMode = .byTruncatingTail
-        dropDown.backgroundColor = currentTheme.surfaceColor
-        dropDown.selectionBackgroundColor = currentTheme.primary15T1Color
-        dropDown.textColor = currentTheme.onSurfaceColor
-        dropDown.selectedTextColor = currentTheme.onSurfaceColor
-        
-//        subtitle.applyStyleCaptionOnSurface60(theme: currentTheme)
-//        subtitle.lineBreakMode = .byTruncatingHead
-//        iconImageView.tintColor = currentTheme.onSurface60Color
-//        moreButton.tintColor = currentTheme.onSurface60Color
-//        syncStatusImageView.tintColor = currentTheme.onSurface60Color
-//        disableFiles(isDisable: isDisable)
+        resetFilterButton.tintColor = currentTheme.onSurfaceColor
+        resetFilterButton.accessibilityIdentifier = "searchResetButton"
+        chipsCollectionView.reloadData()
     }
     
-    @IBAction func filterButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("filter button action")
-        dropDown.show()
+    func buildDataSource() {
+        viewModel.loadFiltersFromAppBundle { [weak self] isDone in
+            guard let sSelf = self else { return }
+            sSelf.chipsCollectionView.reloadData()
+        }
+    }
+    
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("reset filter button action")
+    }
+    
+    func addChipsCollectionViewFlowLayout() {
+        chipsCollectionView.register(MDCChipCollectionViewCell.self,
+                                     forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
+        chipsCollectionView.allowsMultipleSelection = false
+        let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.scrollDirection = .horizontal
+        chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
 }
 
-// MARK: - Drop Down
-extension TasksSortAndFilterView {
-    func setupDropDownView() {
-        dropDown.anchorView = filterView
-        dropDown.bottomOffset = CGPoint(x: 0, y: (dropDown.anchorView?.plainView.bounds.height)!)
-        dropDown.cornerRadius = 6
-        dropDown.width = 200
+// MARK: - UICollectionView DataSource & Delegate
+
+extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int) -> Int {
+        return viewModel.chips.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let reuseIdentifier = String(describing: MDCChipCollectionViewCell.self)
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier,
+                                                         for: indexPath) as? MDCChipCollectionViewCell {
+            let chip = viewModel.chips[indexPath.row]
+            let selectedValue = chip.selectedValue ?? ""
+            let name = chip.name
+            if selectedValue.isEmpty {
+                cell.chipView.titleLabel.text = name
+            } else {
+                cell.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
+            }
+            cell.chipView.isSelected = chip.selected
+            if chip.selected {
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .top)
+                cell.isSelected = true
+            }
+            
+            if let themeService = coordinatorServices?.themingService {
+                if chip.selected {
+                    let scheme = themeService.containerScheming(for: .searchChipSelected)
+                    let backgroundColor = themeService.activeTheme?.primary15T1Color
+                    
+                    cell.chipView.applyOutlinedTheme(withScheme: scheme)
+                    cell.chipView.setBackgroundColor(backgroundColor, for: .selected)
+                } else {
+                    let scheme = themeService.containerScheming(for: .searchChipUnselected)
+                    let backgroundColor = themeService.activeTheme?.surfaceColor
+                    let borderColor = themeService.activeTheme?.onSurface15Color
+                    
+                    cell.chipView.applyOutlinedTheme(withScheme: scheme)
+                    cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
+                    cell.chipView.setBorderColor(borderColor, for: .normal)
+                }
+            }
+            return cell
+        }
+        
+        return UICollectionViewCell()
     }
     
-    func buildDropDownDataSource() {
-        let searchFilters = viewModel.localizedFilterNames
-        dropDown.localizationKeysDataSource = searchFilters
-        dropDown.reloadAllComponents()
-        dropDown.selectionAction = { (index: Int, item: String) in
-            self.viewModel.filters = TasksFilters.updateSelectedFilter(at: index, for: self.viewModel.filters)
-            self.setFilterDetails()
+    func getChipSelectedValue(for value: String) -> String {
+        let selectedValueArray = value.components(separatedBy: ",")
+        if selectedValueArray.count > 1 {
+            let firstValue = selectedValueArray[0]
+            let count = selectedValueArray.count - 1
+            if firstValue.count > textChipMaxCharacters {
+                let prefixString = String(firstValue.prefix(textChipMaxPrefix))
+                let suffixString = String(firstValue.suffix(textChipMaxSufffix))
+                let shortString = String(format: "%@ ... %@", prefixString, suffixString)
+                return String(format: "%@ + %d", shortString, count)
+            } else {
+                return String(format: "%@ + %d", firstValue, count)
+            }
+        } else if value.count > textChipMaxCharacters {
+            let prefixString = String(value.prefix(textChipMaxCharacters))
+            return String(format: "%@...", prefixString)
+        } else {
+            return value
         }
     }
     
-    func setFilterDetails() {
-        if let filter = self.viewModel.selectedFilter {
-            filterLabel.text = filter.name
-            deleagte?.didSelectTaskFilter(filter)
+//    func collectionView(_ collectionView: UICollectionView,
+//                        didSelectItemAt indexPath: IndexPath) {
+//        switch collectionView {
+//        case recentSearchCollectionView:
+//            resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
+//        case chipsCollectionView:
+//            self.selectChipCollectionCell(for: indexPath)
+//        default: break
+//        }
+//    }
+
+//    func collectionView(_ collectionView: UICollectionView,
+//                        didDeselectItemAt indexPath: IndexPath) {
+//        switch collectionView {
+//        case chipsCollectionView:
+//            let chip = searchChipsViewModel.chips[indexPath.row]
+//            let componentType = chip.componentType
+//            if componentType == nil {
+//                self.deSelectChipCollectionCell(for: indexPath)
+//            } else {
+//                self.selectChipCollectionCell(for: indexPath)
+//            }
+//        default: break
+//        }
+//    }
+    
+//    private func selectChipCollectionCell(for indexPath: IndexPath) {
+//        let chip = searchChipsViewModel.chips[indexPath.row]
+//        let componentType = chip.componentType
+//        chip.selected = true
+//        if let themeService = coordinatorServices?.themingService {
+//            let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+//
+//            let scheme = themeService.containerScheming(for: .searchChipSelected)
+//            let backgroundColor = themeService.activeTheme?.primary15T1Color
+//
+//            cell?.chipView.applyOutlinedTheme(withScheme: scheme)
+//            cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
+//        }
+//        self.chipTapped(for: chip)
+//        if componentType != nil {
+//            self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+//            self.resultsViewModel?.selectedChip = chip
+//            self.showSelectedComponent(for: chip)
+//        }
+//        reloadChipCollectionWithoutScroll()
+//    }
+    
+//    private func deSelectChipCollectionCell(for indexPath: IndexPath) {
+//        let chip = searchChipsViewModel.chips[indexPath.row]
+//        chip.selected = false
+//        self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
+//        self.resultsViewModel?.selectedChip = chip
+//        if let themeService = coordinatorServices?.themingService {
+//            if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
+//                let scheme = themeService.containerScheming(for: .searchChipUnselected)
+//                let backgroundColor = themeService.activeTheme?.surfaceColor
+//                let borderColor = themeService.activeTheme?.onSurface15Color
+//
+//                cell.chipView.applyOutlinedTheme(withScheme: scheme)
+//                cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
+//                cell.chipView.setBorderColor(borderColor, for: .normal)
+//            }
+//        }
+//        self.chipTapped(for: chip)
+//    }
+    
+//    private func chipTapped(for chip: SearchChipItem) {
+//        let searchFilters = resultsViewModel?.searchFilters ?? []
+//        if searchFilters.isEmpty || chip.componentType == nil {
+//            resultScreenDelegate?.chipTapped(chip: chip)
+//            resultsListController?.scrollToSection(0)
+//        }
+//    }
+
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let chip = viewModel.chips[indexPath.row]
+        let name = chip.name ?? ""
+        let selectedValue = chip.selectedValue ?? ""
+        let text = selectedValue.isEmpty ? name : selectedValue
+        let value = getChipSelectedValue(for: text)
+        let width = getTextWidth(for: value)
+        return CGSize(width: width,
+                      height: chipSearchCellMinimHeight)
+    }
+    
+    private func getTextWidth(for text: String) -> CGFloat {
+        if let activeTheme = coordinatorServices?.themingService?.activeTheme {
+            let font = activeTheme.captionTextStyle.font
+            let fontAttributes = [NSAttributedString.Key.font: font]
+            let size = (text as NSString).size(withAttributes: fontAttributes)
+            let textWidth = size.width + 35.0
+            let width = textWidth < chipSearchCellMinimWidth ? chipSearchCellMinimWidth : textWidth
+            return width
         }
+        return chipSearchCellMinimWidth
     }
 }

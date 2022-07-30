@@ -134,6 +134,8 @@
 		C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBB0288152230080EF69 /* StoryboardConstants.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */; };
+		C911EF9E2891507800C55F67 /* TaskChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9D2891507800C55F67 /* TaskChipItem.swift */; };
+		C911EFA028926C6800C55F67 /* task_filters.json in Resources */ = {isa = PBXBuildFile; fileRef = C911EF9F28926C6800C55F67 /* task_filters.json */; };
 		C91303B0275F4D75001F84D4 /* SearchFacetListComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */; };
 		C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */; };
 		C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91303B3275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift */; };
@@ -198,7 +200,6 @@
 		C97BEB8326EB3B6200E05375 /* CollectionViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97BEB8226EB3B6200E05375 /* CollectionViewExtensions.swift */; };
 		C97C025A287C142500C3CA52 /* TasksScreenCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97C0259287C142500C3CA52 /* TasksScreenCoordinator.swift */; };
 		C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C97C0260287C1D1B00C3CA52 /* Tasks.storyboard */; };
-		C983A267287D5F3D00CEDCAB /* SearchTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C983A262287D5F3D00CEDCAB /* SearchTasksViewController.swift */; };
 		C983A268287D5F3D00CEDCAB /* TasksListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C983A266287D5F3D00CEDCAB /* TasksListViewController.swift */; };
 		C983A26A287D604E00CEDCAB /* TasksListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C983A269287D604E00CEDCAB /* TasksListViewModel.swift */; };
 		C983A27F287EF4B400CEDCAB /* TaskListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C983A27B287EF4B400CEDCAB /* TaskListCollectionViewCell.swift */; };
@@ -809,6 +810,8 @@
 		C903CBB0288152230080EF69 /* StoryboardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksSortAndFilterViewModel.swift; sourceTree = "<group>"; };
+		C911EF9D2891507800C55F67 /* TaskChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskChipItem.swift; sourceTree = "<group>"; };
+		C911EF9F28926C6800C55F67 /* task_filters.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = task_filters.json; sourceTree = "<group>"; };
 		C91303AF275F4D75001F84D4 /* SearchFacetListComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewController.swift; sourceTree = "<group>"; };
 		C91303B1275F4DA4001F84D4 /* SearchFacetListComponentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentController.swift; sourceTree = "<group>"; };
 		C91303B3275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetListComponentViewModel.swift; sourceTree = "<group>"; };
@@ -864,7 +867,6 @@
 		C97BEB8226EB3B6200E05375 /* CollectionViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewExtensions.swift; sourceTree = "<group>"; };
 		C97C0259287C142500C3CA52 /* TasksScreenCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksScreenCoordinator.swift; sourceTree = "<group>"; };
 		C97C0260287C1D1B00C3CA52 /* Tasks.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Tasks.storyboard; sourceTree = "<group>"; };
-		C983A262287D5F3D00CEDCAB /* SearchTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTasksViewController.swift; sourceTree = "<group>"; };
 		C983A266287D5F3D00CEDCAB /* TasksListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksListViewController.swift; sourceTree = "<group>"; };
 		C983A269287D604E00CEDCAB /* TasksListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksListViewModel.swift; sourceTree = "<group>"; };
 		C983A27B287EF4B400CEDCAB /* TaskListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1758,7 +1760,9 @@
 		C915CDD628905B6800819F86 /* Task Filters */ = {
 			isa = PBXGroup;
 			children = (
+				C911EF9F28926C6800C55F67 /* task_filters.json */,
 				C915CDD928905B9800819F86 /* TaskFilters.swift */,
+				C911EF9D2891507800C55F67 /* TaskChipItem.swift */,
 			);
 			path = "Task Filters";
 			sourceTree = "<group>";
@@ -1932,25 +1936,8 @@
 				C983A274287EDEC200CEDCAB /* Models */,
 				C915CDCC288FEB5100819F86 /* Views */,
 				C983A263287D5F3D00CEDCAB /* Task List */,
-				C983A25F287D5F3D00CEDCAB /* Search */,
 			);
 			path = Tasks;
-			sourceTree = "<group>";
-		};
-		C983A25F287D5F3D00CEDCAB /* Search */ = {
-			isa = PBXGroup;
-			children = (
-				C983A261287D5F3D00CEDCAB /* Controller */,
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
-		C983A261287D5F3D00CEDCAB /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				C983A262287D5F3D00CEDCAB /* SearchTasksViewController.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		C983A263287D5F3D00CEDCAB /* Task List */ = {
@@ -3202,6 +3189,7 @@
 				B9F17149256C116900AD1E3A /* word.docx in Resources */,
 				E334C04C24755D9000F74880 /* LaunchScreen.storyboard in Resources */,
 				E3436F8B250B8C4A00634C62 /* MediaPreview.xib in Resources */,
+				C911EFA028926C6800C55F67 /* task_filters.json in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */,
 				B9F17145256C115A00AD1E3A /* powerpoint.pptx in Resources */,
@@ -3778,7 +3766,6 @@
 				C9E1BF282729214900900C42 /* SearchNumberRangeComponentViewModel.swift in Sources */,
 				C91303B4275F4DB8001F84D4 /* SearchFacetListComponentViewModel.swift in Sources */,
 				C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */,
-				C983A267287D5F3D00CEDCAB /* SearchTasksViewController.swift in Sources */,
 				C9CD69CD2824B42E00A98FD0 /* SystemSearch+ListActions.swift in Sources */,
 				F1E613E12629608B0013A5D8 /* CameraViewController+Layout.swift in Sources */,
 				E3EC133824A4C7930068E3C7 /* UserProfile.swift in Sources */,
@@ -3874,6 +3861,7 @@
 				F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */,
 				C963196127DA0CFD00BE8746 /* URLExtension.swift in Sources */,
 				B9834C59266FA50A0052E138 /* OfflineFolderDrillModel.swift in Sources */,
+				C911EF9E2891507800C55F67 /* TaskChipItem.swift in Sources */,
 				E315151B25AC49BA00DF8735 /* OfflineFolderChildrenViewModelFactory.swift in Sources */,
 				B91A5E50247BD5E90063E938 /* ApplicationCoordinator.swift in Sources */,
 				B9ECECFA254302420097DB3F /* NodeEvent.swift in Sources */,

@@ -28,7 +28,6 @@ class TasksListViewModel: NSObject {
     var shouldRefreshList = true
     var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
-    var filter: TasksFilters?
     
     init(services: CoordinatorServices) {
         self.services = services
@@ -89,32 +88,27 @@ class TasksListViewModel: NSObject {
             services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
-                TasksAPI.getTasksList(params: params) { data, error in
-                    self.isLoading.value = false
+                TasksAPI.getTasksList(params: params) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
                     if data != nil {
                         let task = data?.data ?? []
                         let taskNodes = TaskNodeOperations.processNodes(for: task)
-                        if self.shouldRefreshList {
-                            self.rawTasks.removeAll()
+                        if sSelf.shouldRefreshList {
+                            sSelf.rawTasks.removeAll()
                         }
-                        self.shouldRefreshList = false
-                        self.rawTasks.append(contentsOf: taskNodes)
-                        self.size = data?.size ?? 0
-                        self.total = data?.total ?? 0
-                        self.updatePageNumber()
-                        self.requestInProgress = false
+                        sSelf.shouldRefreshList = false
+                        sSelf.rawTasks.append(contentsOf: taskNodes)
+                        sSelf.size = data?.size ?? 0
+                        sSelf.total = data?.total ?? 0
+                        sSelf.page = sSelf.total > sSelf.size ? sSelf.page + 1 : sSelf.page
+                        sSelf.requestInProgress = false
                         completionHandler(taskNodes, nil)
                     } else {
                         completionHandler([], error)
                     }
                 }
             })
-        }
-    }
-        
-    func updatePageNumber() {
-        if total > size {
-            page = page + 1
         }
     }
 }

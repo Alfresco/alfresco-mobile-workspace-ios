@@ -46,12 +46,11 @@ class TasksListViewController: SystemSearchViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
-        searchController = createSearchController()
-        navigationItem.searchController = searchController
         addRefreshControl()
         setupBindings()
         registerCells()
         addSortAndFilterView()
+        getTaskList()
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -111,13 +110,12 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
-        self.sortFilterView?.applyTheme(currentTheme)
+        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services)
     }
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        let state = self.viewModel.filter?.state ?? ""
-        let params = TaskListParams(page: viewModel.page, state: state)
+        let params = TaskListParams(page: viewModel.page)
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
             if error == nil {
@@ -187,26 +185,6 @@ class TasksListViewController: SystemSearchViewController {
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
-    }
-    
-    private func createSearchController() -> UISearchController {
-        
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        let rvc = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.searchTasks) as? SearchTasksViewController
-        rvc?.coordinatorServices = coordinatorServices
-        tasksResultsViewController = rvc
-
-        let searchController = UISearchController(searchResultsController: tasksResultsViewController)
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.smartQuotesType = .no
-        searchController.searchBar.isAccessibilityElement = true
-        searchController.searchBar.accessibilityIdentifier = "searchBar"
-        searchController.showsSearchResultsController = true
-        return searchController
     }
     
     // MARK: - Public Helpers
@@ -312,22 +290,16 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
     }
 }
 
-// MARK: - Sort and Filter View Delegate
-extension TasksListViewController: TasksSortAndFilterDelegate {
+// MARK: - Filter View Delegate
+
+extension TasksListViewController {
     func addSortAndFilterView() {
         if let sortFilterView: TasksSortAndFilterView = .fromNib() {
-            sortFilterView.frame = CGRect(x: 10, y: topBarHeight+55.0, width: self.view.frame.size.width - 20.0, height: 103.0)
-            sortFilterView.deleagte = self
-            sortFilterView.setFilterDetails()
+            sortFilterView.frame = CGRect(x: 10, y: topBarHeight+10.0, width: self.view.frame.size.width - 20.0, height: 53.0)
+            sortFilterView.buildDataSource()
             self.view.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
         }
-    }
-    
-    func didSelectTaskFilter(_ filter: TasksFilters) {
-        self.viewModel.filter = filter
-        self.viewModel.rawTasks.removeAll()
-        getTaskList()
     }
 }
 

@@ -20,22 +20,51 @@ import UIKit
 
 class TasksSortAndFilterViewModel: NSObject {
     var filters: [TasksFilters] = []
+    var chips = [TaskChipItem]()
 
-    func getFilters() {
-        self.filters = TasksFilters.getFiltersList()
-    }
-    
-    var localizedFilterNames: [String] {
-        var names = [String]()
-        for filter in filters {
-            let localizedName = NSLocalizedString(filter.name ?? "", comment: "")
-            names.append(localizedName)
-
+    // MARK: - load filters from bundle
+    func loadFiltersFromAppBundle(_ completionHandler: @escaping (_ isDone: Bool?) -> Void) {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.Tasks.configFile, withExtension: KeyConstants.Tasks.configFileExtension) {
+            do {
+                let data = try Data(contentsOf: fileUrl, options: [])
+                parseAppConfiguration(for: data) { isDone in
+                    completionHandler(isDone)
+                }
+            } catch let error {
+                AlfrescoLog.error(error.localizedDescription)
+            }
         }
-        return names
     }
     
-    var selectedFilter: TasksFilters? {
-        return filters.filter({ $0.isSelected == true }).first
+    private func parseAppConfiguration(for data: Data?, _ completionHandler: @escaping (_ isDone: Bool?) -> Void) {
+        if let json = data {
+            do {
+                let decoded = try JSONDecoder().decode(Filter.self, from: json)
+                self.filters = decoded.filters
+                createChipsForTaskFilters { isDone in
+                    completionHandler(isDone)
+                }
+            } catch {
+                AlfrescoLog.error(error)
+            }
+        }
+    }
+    
+    private func createChipsForTaskFilters(_ completionHandler: @escaping (_ isDone: Bool?) -> Void) {
+        chips.removeAll()
+        for filter in filters {
+            let name = NSLocalizedString(filter.name ?? "", comment: "")
+            if let componentType = filter.selector {
+                let chip = TaskChipItem(chipId: filter.filterID,
+                                        name: name,
+                                        selected: false,
+                                        selectedValue: nil,
+                                        componentType: componentType,
+                                        query: filter.query,
+                                        options: filter.options)
+                chips.append(chip)
+            }
+        }
+        completionHandler(true)
     }
 }
