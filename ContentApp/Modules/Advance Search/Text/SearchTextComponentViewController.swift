@@ -34,6 +34,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
     @IBOutlet weak var resetButton: MDCButton!
     lazy var textViewModel = SearchTextComponentViewModel()
     var callback: SearchComponentCallBack?
+    var taskFilterCallBack: TaskFilterCallBack?
 
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -109,7 +110,11 @@ class SearchTextComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, true)
+        if textViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.textViewModel.taskChip, true)
+        } else {
+            self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, true)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -120,13 +125,22 @@ class SearchTextComponentViewController: SystemThemableViewController {
         } else {
             self.textViewModel.applyFilter(with: text)
         }
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        
+        if textViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.textViewModel.taskChip, false)
+        } else {
+            self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         self.textViewModel.applyFilter(with: nil)
-        self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        if textViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.textViewModel.taskChip, false)
+        } else {
+            self.callback?(self.textViewModel.selectedCategory, self.textViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

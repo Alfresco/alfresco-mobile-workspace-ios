@@ -226,9 +226,7 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
     }
     
     func reloadChipCollectionWithoutScroll() {
-        DispatchQueue.main.async {
-            self.chipsCollectionView.reloadDataWithoutScroll()
-        }
+        self.chipsCollectionView.reloadData()
     }
 }
 
@@ -291,23 +289,20 @@ extension TasksSortAndFilterView {
     
     //  Text Component
     private func showTextSelectorComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
-//        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
-//            let viewController = SearchTextComponentViewController.instantiateViewController()
-//            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
-//            bottomSheet.dismissOnDraggingDownSheet = false
-//            bottomSheet.delegate = self
-//            viewController.coordinatorServices = coordinatorServices
-//            viewController.textViewModel.selectedCategory = selectedCategory
-//            viewController.callback = { (category, query, isBackButtonTapped) in
-//                if isBackButtonTapped {
-//                    self.resetChip()
-//                } else {
-//                    let selectedValue = category?.component?.settings?.selectedValue
-//                    self.updateSelectedChip(with: selectedValue, and: query)
-//                }
-//            }
-//            self.present(bottomSheet, animated: true, completion: nil)
-//        }
+        let viewController = SearchTextComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        bottomSheet.delegate = self
+        viewController.coordinatorServices = coordinatorServices
+        viewController.textViewModel.taskChip = chip
+        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+            if isBackButtonTapped {
+                 self.resetChip()
+            } else if let selectedChip = selectedChip {
+                self.updateChip(for: selectedChip, and: indexPath)
+            }
+        }
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
     }
     
     func updateChip(for chip: TaskChipItem, and indexPath: IndexPath) {
