@@ -21,6 +21,7 @@ import UIKit
 class TasksSortAndFilterViewModel: NSObject {
     var filters: [TasksFilters] = []
     var chips = [TaskChipItem]()
+    var selectedChip: TaskChipItem?
 
     // MARK: - load filters from bundle
     func loadFiltersFromAppBundle(_ completionHandler: @escaping (_ isDone: Bool?) -> Void) {

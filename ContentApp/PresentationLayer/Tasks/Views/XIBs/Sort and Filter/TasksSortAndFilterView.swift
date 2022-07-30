@@ -51,9 +51,12 @@ class TasksSortAndFilterView: UIView {
         self.coordinatorServices = coordinatorServices
         self.navigationController = navigationController
         backgroundColor = currentTheme.surfaceColor
+        
+        baseView.backgroundColor = currentTheme.surfaceColor
+        resetFilterButton.backgroundColor = currentTheme.surfaceColor
         resetFilterButton.tintColor = currentTheme.onSurfaceColor
         resetFilterButton.accessibilityIdentifier = "searchResetButton"
-        chipsCollectionView.reloadData()
+        chipsCollectionView.reloadData()        
     }
     
     func buildDataSource() {
@@ -72,6 +75,7 @@ class TasksSortAndFilterView: UIView {
                                      forCellWithReuseIdentifier: "MDCChipCollectionViewCell")
         chipsCollectionView.allowsMultipleSelection = false
         let collectionViewFlowLayout = UICollectionViewFlowLayout()
+        collectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         collectionViewFlowLayout.scrollDirection = .horizontal
         chipsCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
@@ -200,12 +204,14 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
         }
         
         self.showSelectedComponent(for: chip, and: indexPath)
+        self.viewModel.selectedChip = chip
         reloadChipCollectionWithoutScroll()
     }
     
     private func deSelectChipCollectionCell(for indexPath: IndexPath) {
         let chip = viewModel.chips[indexPath.row]
         chip.selected = false
+        self.viewModel.selectedChip = chip
         if let themeService = coordinatorServices?.themingService {
             if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
                 let scheme = themeService.containerScheming(for: .searchChipUnselected)
@@ -255,7 +261,7 @@ extension TasksSortAndFilterView {
         viewController.calendarViewModel.taskChip = chip
         viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
             if isBackButtonTapped {
-                // self.resetChip()
+                 self.resetChip()
             } else if let selectedChip = selectedChip {
                 self.updateChip(for: selectedChip, and: indexPath)
             }
@@ -318,49 +324,25 @@ extension TasksSortAndFilterView {
             self.deSelectChipCollectionCell(for: indexPath)
             // call api
         }
-
-        
-//        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
-//        if index >= 0 {
-//            let chip = searchChipsViewModel.chips[index]
-//            if let selectedValue = value, !selectedValue.isEmpty {
-//                chip.selectedValue = selectedValue
-//                chip.query = query
-//                searchChipsViewModel.chips[index] = chip
-//                reloadChipCollectionWithoutScroll()
-//                resultScreenDelegate?.chipTapped(chip: chip)
-//                resultsListController?.scrollToSection(0)
-//
-//            } else {
-//                let indexPath = IndexPath(row: index, section: 0)
-//                chip.selectedValue = ""
-//                chip.query = nil
-//                searchChipsViewModel.chips[index] = chip
-//                reloadChipCollectionWithoutScroll()
-//                self.deSelectChipCollectionCell(for: indexPath)
-//                resultScreenDelegate?.chipTapped(chip: chip)
-//                resultsListController?.scrollToSection(0)
-//            }
-//        }
     }
 }
 
 // MARK: - Bottom sheet delegate
 extension TasksSortAndFilterView: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
-        //self.resetChip()
+        self.resetChip()
     }
     
-//    func resetChip() {
-//        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
-//        if index >= 0 {
-//            let chip = searchChipsViewModel.chips[index]
-//            let selectedValue = chip.selectedValue
-//            if selectedValue.isEmpty {
-//                let indexPath = IndexPath(row: index, section: 0)
-//                self.deSelectChipCollectionCell(for: indexPath)
-//                reloadChipCollectionWithoutScroll()
-//            }
-//        }
-//    }
+    func resetChip() {
+        if let selectedChip = self.viewModel.selectedChip {
+            if let index = self.viewModel.chips.firstIndex(where: {$0.chipId == selectedChip.chipId}) {
+                let selectedValue = selectedChip.selectedValue ?? ""
+                if selectedValue.isEmpty {
+                    let indexPath = IndexPath(row: index, section: 0)
+                    self.deSelectChipCollectionCell(for: indexPath)
+                    reloadChipCollectionWithoutScroll()
+                }
+            }
+        }
+    }
 }

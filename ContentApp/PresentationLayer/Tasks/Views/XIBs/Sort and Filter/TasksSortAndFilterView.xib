@@ -18,7 +18,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="447" height="43"/>
                     <subviews>
                         <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="MNl-Un-kDX">
-                            <rect key="frame" x="10" y="5" width="393" height="33"/>
+                            <rect key="frame" x="10" y="5" width="377" height="33"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="33" id="PUX-UB-eOj"/>
@@ -36,10 +36,9 @@
                             </connections>
                         </collectionView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vaM-Wq-82g" userLabel="resetFilterButton">
-                            <rect key="frame" x="403" y="-0.5" width="44" height="44"/>
+                            <rect key="frame" x="387" y="0.0" width="60" height="43"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="44" id="Kfi-SH-5Fg"/>
-                                <constraint firstAttribute="width" secondItem="vaM-Wq-82g" secondAttribute="height" id="pr8-aX-3LV"/>
+                                <constraint firstAttribute="width" constant="60" id="Kfi-SH-5Fg"/>
                             </constraints>
                             <color key="tintColor" red="0.12941176469999999" green="0.13725490200000001" blue="0.15686274510000001" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" image="ic-reset-to-default">
@@ -53,6 +52,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="vaM-Wq-82g" secondAttribute="trailing" id="8Jo-bG-E3a"/>
+                        <constraint firstItem="vaM-Wq-82g" firstAttribute="height" secondItem="x39-K2-Mi8" secondAttribute="height" id="9KB-fP-8yb"/>
                         <constraint firstItem="MNl-Un-kDX" firstAttribute="leading" secondItem="x39-K2-Mi8" secondAttribute="leading" constant="10" id="Foe-VK-4op"/>
                         <constraint firstItem="vaM-Wq-82g" firstAttribute="centerY" secondItem="x39-K2-Mi8" secondAttribute="centerY" id="Kgv-cI-owU"/>
                         <constraint firstAttribute="bottom" secondItem="MNl-Un-kDX" secondAttribute="bottom" constant="5" id="MQq-MF-VEf"/>

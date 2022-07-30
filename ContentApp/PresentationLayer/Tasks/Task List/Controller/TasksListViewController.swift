@@ -295,7 +295,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
 extension TasksListViewController {
     func addSortAndFilterView() {
         if let sortFilterView: TasksSortAndFilterView = .fromNib() {
-            sortFilterView.frame = CGRect(x: 10, y: topBarHeight+10.0, width: self.view.frame.size.width - 20.0, height: 53.0)
+            sortFilterView.frame = CGRect(x: 0, y: topBarHeight+10.0, width: self.view.frame.size.width, height: 43.0)
             sortFilterView.buildDataSource()
             self.view.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
