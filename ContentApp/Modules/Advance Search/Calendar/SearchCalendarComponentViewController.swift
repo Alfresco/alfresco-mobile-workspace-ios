@@ -36,6 +36,7 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     let datePicker = UIDatePicker()
     lazy var calendarViewModel = SearchCalendarComponentViewModel()
     var callback: SearchComponentCallBack?
+    var taskFilterCallBack: TaskFilterCallBack?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -142,30 +143,54 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, true)
+        if calendarViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.calendarViewModel.taskChip, true)
+        } else {
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, true)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
-        if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
-            if fromDate > toDate {
-                swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+        if calendarViewModel.isTaskFilter {
+            if calendarViewModel.selectedFromDate == nil && calendarViewModel.selectedToDate == nil {
+                applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+                return
+            } else if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+                if fromDate > toDate {
+                    swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+                }
             }
+            
             calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
-            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+            self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
             self.dismiss(animated: true, completion: nil)
         } else {
-            if calendarViewModel.selectedFromDate == nil {
-                applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
-            } else if calendarViewModel.selectedToDate == nil {
-                applyError(on: toTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+                if fromDate > toDate {
+                    swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+                }
+                calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
+                self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                if calendarViewModel.selectedFromDate == nil {
+                    applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+                } else if calendarViewModel.selectedToDate == nil {
+                    applyError(on: toTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+                }
             }
         }
     }
     
     @IBAction func resetButtonAction(_ sender: Any) {
         calendarViewModel.resetFilter()
-        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+        if calendarViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
+        } else {
+            calendarViewModel.resetFilter()
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

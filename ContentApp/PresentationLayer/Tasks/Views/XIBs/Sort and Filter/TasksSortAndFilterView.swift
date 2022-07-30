@@ -30,6 +30,7 @@ class TasksSortAndFilterView: UIView {
     var currentTheme: PresentationTheme?
     lazy var viewModel = TasksSortAndFilterViewModel()
     var coordinatorServices: CoordinatorServices?
+    var navigationController: UINavigationController?
     private let textChipMaxCharacters = 30
     private let textChipMaxPrefix = 5
     private let textChipMaxSufffix = 5
@@ -43,10 +44,12 @@ class TasksSortAndFilterView: UIView {
         chipsCollectionView.delegate = self
     }
     
-    func applyTheme(_ currentTheme: PresentationTheme?, coordinatorServices: CoordinatorServices?) {
-        guard let currentTheme = currentTheme, let coordinatorServices = coordinatorServices else { return }
+    func applyTheme(_ currentTheme: PresentationTheme?, coordinatorServices: CoordinatorServices?, navigationController: UINavigationController?) {
+        
+        guard let currentTheme = currentTheme, let coordinatorServices = coordinatorServices, let navigationController = navigationController else { return }
         self.currentTheme = currentTheme
         self.coordinatorServices = coordinatorServices
+        self.navigationController = navigationController
         backgroundColor = currentTheme.surfaceColor
         resetFilterButton.tintColor = currentTheme.onSurfaceColor
         resetFilterButton.accessibilityIdentifier = "searchResetButton"
@@ -147,81 +150,16 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
         }
     }
     
-//    func collectionView(_ collectionView: UICollectionView,
-//                        didSelectItemAt indexPath: IndexPath) {
-//        switch collectionView {
-//        case recentSearchCollectionView:
-//            resultScreenDelegate?.recentSearchTapped(string: recentSearchesViewModel.searches[indexPath.row])
-//        case chipsCollectionView:
-//            self.selectChipCollectionCell(for: indexPath)
-//        default: break
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView,
+                        didSelectItemAt indexPath: IndexPath) {
+        self.selectChipCollectionCell(for: indexPath)
+    }
 
-//    func collectionView(_ collectionView: UICollectionView,
-//                        didDeselectItemAt indexPath: IndexPath) {
-//        switch collectionView {
-//        case chipsCollectionView:
-//            let chip = searchChipsViewModel.chips[indexPath.row]
-//            let componentType = chip.componentType
-//            if componentType == nil {
-//                self.deSelectChipCollectionCell(for: indexPath)
-//            } else {
-//                self.selectChipCollectionCell(for: indexPath)
-//            }
-//        default: break
-//        }
-//    }
+    func collectionView(_ collectionView: UICollectionView,
+                        didDeselectItemAt indexPath: IndexPath) {
+        self.selectChipCollectionCell(for: indexPath)
+    }
     
-//    private func selectChipCollectionCell(for indexPath: IndexPath) {
-//        let chip = searchChipsViewModel.chips[indexPath.row]
-//        let componentType = chip.componentType
-//        chip.selected = true
-//        if let themeService = coordinatorServices?.themingService {
-//            let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
-//
-//            let scheme = themeService.containerScheming(for: .searchChipSelected)
-//            let backgroundColor = themeService.activeTheme?.primary15T1Color
-//
-//            cell?.chipView.applyOutlinedTheme(withScheme: scheme)
-//            cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
-//        }
-//        self.chipTapped(for: chip)
-//        if componentType != nil {
-//            self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
-//            self.resultsViewModel?.selectedChip = chip
-//            self.showSelectedComponent(for: chip)
-//        }
-//        reloadChipCollectionWithoutScroll()
-//    }
-    
-//    private func deSelectChipCollectionCell(for indexPath: IndexPath) {
-//        let chip = searchChipsViewModel.chips[indexPath.row]
-//        chip.selected = false
-//        self.resultsViewModel?.selectedCategory = self.resultsViewModel?.getSelectedCategory(for: chip.componentType)
-//        self.resultsViewModel?.selectedChip = chip
-//        if let themeService = coordinatorServices?.themingService {
-//            if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
-//                let scheme = themeService.containerScheming(for: .searchChipUnselected)
-//                let backgroundColor = themeService.activeTheme?.surfaceColor
-//                let borderColor = themeService.activeTheme?.onSurface15Color
-//
-//                cell.chipView.applyOutlinedTheme(withScheme: scheme)
-//                cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
-//                cell.chipView.setBorderColor(borderColor, for: .normal)
-//            }
-//        }
-//        self.chipTapped(for: chip)
-//    }
-    
-//    private func chipTapped(for chip: SearchChipItem) {
-//        let searchFilters = resultsViewModel?.searchFilters ?? []
-//        if searchFilters.isEmpty || chip.componentType == nil {
-//            resultScreenDelegate?.chipTapped(chip: chip)
-//            resultsListController?.scrollToSection(0)
-//        }
-//    }
-
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -247,4 +185,182 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
         }
         return chipSearchCellMinimWidth
     }
+    
+    private func selectChipCollectionCell(for indexPath: IndexPath) {
+        let chip = viewModel.chips[indexPath.row]
+        chip.selected = true
+        if let themeService = coordinatorServices?.themingService {
+            let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell
+
+            let scheme = themeService.containerScheming(for: .searchChipSelected)
+            let backgroundColor = themeService.activeTheme?.primary15T1Color
+
+            cell?.chipView.applyOutlinedTheme(withScheme: scheme)
+            cell?.chipView.setBackgroundColor(backgroundColor, for: .selected)
+        }
+        
+        self.showSelectedComponent(for: chip, and: indexPath)
+        reloadChipCollectionWithoutScroll()
+    }
+    
+    private func deSelectChipCollectionCell(for indexPath: IndexPath) {
+        let chip = viewModel.chips[indexPath.row]
+        chip.selected = false
+        if let themeService = coordinatorServices?.themingService {
+            if let cell = chipsCollectionView.cellForItem(at: indexPath) as? MDCChipCollectionViewCell {
+                let scheme = themeService.containerScheming(for: .searchChipUnselected)
+                let backgroundColor = themeService.activeTheme?.surfaceColor
+                let borderColor = themeService.activeTheme?.onSurface15Color
+
+                cell.chipView.applyOutlinedTheme(withScheme: scheme)
+                cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
+                cell.chipView.setBorderColor(borderColor, for: .normal)
+            }
+        }
+    }
+    
+    func reloadChipCollectionWithoutScroll() {
+        DispatchQueue.main.async {
+            self.chipsCollectionView.reloadDataWithoutScroll()
+        }
+    }
+}
+
+// MARK: - Filter Components Components
+extension TasksSortAndFilterView {
+    
+    func showSelectedComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
+        
+        if chip.componentType == .dateRange {
+            showCalendarSelectorComponent(for: chip, and: indexPath)
+        } else if chip.componentType == .radio {
+            showListSelectorComponent(for: chip, and: indexPath)
+        } else if chip.componentType == .text {
+            showTextSelectorComponent(for: chip, and: indexPath)
+        }
+        
+        // analytics
+        let name = chip.componentType?.rawValue ?? ""
+        AnalyticsManager.shared.taskFilters(name: name)
+    }
+    
+    // Calendar Component
+    private func showCalendarSelectorComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
+      
+        let viewController = SearchCalendarComponentViewController.instantiateViewController()
+        let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+        bottomSheet.dismissOnDraggingDownSheet = false
+        bottomSheet.delegate = self
+        viewController.coordinatorServices = coordinatorServices
+        viewController.calendarViewModel.taskChip = chip
+        viewController.taskFilterCallBack = { (selectedChip, isBackButtonTapped) in
+            if isBackButtonTapped {
+                // self.resetChip()
+            } else if let selectedChip = selectedChip {
+                self.updateChip(for: selectedChip, and: indexPath)
+            }
+        }
+        self.navigationController?.present(bottomSheet, animated: true, completion: nil)
+    }
+    
+    // List or Radio Component
+    private func showListSelectorComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
+//        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+//            let viewController = SearchListComponentViewController.instantiateViewController()
+//            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+//            bottomSheet.dismissOnDraggingDownSheet = false
+//            bottomSheet.delegate = self
+//            viewController.coordinatorServices = coordinatorServices
+//            viewController.listViewModel.isRadioList = isRadio
+//            viewController.listViewModel.selectedCategory = selectedCategory
+//            viewController.callback = { (category, query, isBackButtonTapped) in
+//                if isBackButtonTapped {
+//                    self.resetChip()
+//                } else {
+//                    let selectedValue = category?.component?.settings?.selectedValue
+//                    self.updateSelectedChip(with: selectedValue, and: query)
+//                }
+//            }
+//            self.present(bottomSheet, animated: true, completion: nil)
+//        }
+    }
+    
+    //  Text Component
+    private func showTextSelectorComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
+//        if let selectedCategory = resultsViewModel?.getSelectedCategory() {
+//            let viewController = SearchTextComponentViewController.instantiateViewController()
+//            let bottomSheet = MDCBottomSheetController(contentViewController: viewController)
+//            bottomSheet.dismissOnDraggingDownSheet = false
+//            bottomSheet.delegate = self
+//            viewController.coordinatorServices = coordinatorServices
+//            viewController.textViewModel.selectedCategory = selectedCategory
+//            viewController.callback = { (category, query, isBackButtonTapped) in
+//                if isBackButtonTapped {
+//                    self.resetChip()
+//                } else {
+//                    let selectedValue = category?.component?.settings?.selectedValue
+//                    self.updateSelectedChip(with: selectedValue, and: query)
+//                }
+//            }
+//            self.present(bottomSheet, animated: true, completion: nil)
+//        }
+    }
+    
+    func updateChip(for chip: TaskChipItem, and indexPath: IndexPath) {
+        
+        self.viewModel.chips[indexPath.row] = chip
+        let selectedValue = self.viewModel.chips[indexPath.row].selectedValue ?? ""
+        if !selectedValue.isEmpty {
+            reloadChipCollectionWithoutScroll()
+            // call api
+        } else {
+            reloadChipCollectionWithoutScroll()
+            self.deSelectChipCollectionCell(for: indexPath)
+            // call api
+        }
+
+        
+//        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
+//        if index >= 0 {
+//            let chip = searchChipsViewModel.chips[index]
+//            if let selectedValue = value, !selectedValue.isEmpty {
+//                chip.selectedValue = selectedValue
+//                chip.query = query
+//                searchChipsViewModel.chips[index] = chip
+//                reloadChipCollectionWithoutScroll()
+//                resultScreenDelegate?.chipTapped(chip: chip)
+//                resultsListController?.scrollToSection(0)
+//
+//            } else {
+//                let indexPath = IndexPath(row: index, section: 0)
+//                chip.selectedValue = ""
+//                chip.query = nil
+//                searchChipsViewModel.chips[index] = chip
+//                reloadChipCollectionWithoutScroll()
+//                self.deSelectChipCollectionCell(for: indexPath)
+//                resultScreenDelegate?.chipTapped(chip: chip)
+//                resultsListController?.scrollToSection(0)
+//            }
+//        }
+    }
+}
+
+// MARK: - Bottom sheet delegate
+extension TasksSortAndFilterView: MDCBottomSheetControllerDelegate {
+    func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
+        //self.resetChip()
+    }
+    
+//    func resetChip() {
+//        let index = resultsViewModel?.getIndexOfSelectedChip(for: searchChipsViewModel.chips) ?? -1
+//        if index >= 0 {
+//            let chip = searchChipsViewModel.chips[index]
+//            let selectedValue = chip.selectedValue
+//            if selectedValue.isEmpty {
+//                let indexPath = IndexPath(row: index, section: 0)
+//                self.deSelectChipCollectionCell(for: indexPath)
+//                reloadChipCollectionWithoutScroll()
+//            }
+//        }
+//    }
 }

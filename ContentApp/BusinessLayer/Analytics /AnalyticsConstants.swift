@@ -42,6 +42,7 @@ enum Event {
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
         case openWith = "event_open_with"
+        case taskFilter = "event_task_filters"
     }
     
     enum API: String {
@@ -64,7 +65,6 @@ enum Event {
         case transfers = "page_view_transfers"
         case taskTab = "page_view_tasks"
     }
-    
 }
 
 struct AnalyticsConstants {
@@ -88,5 +88,7 @@ struct AnalyticsConstants {
         static let facet = "facet_name"
         static let assetsCount = "numberOfAssets"
         static let fileSize = "file_size"
+        
+        static let taskFilter = "task_filter"
     }
 }

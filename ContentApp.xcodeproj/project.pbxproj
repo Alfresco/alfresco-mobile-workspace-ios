@@ -444,6 +444,8 @@
 		C9E79E7A27A3E653002BC5A0 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9E79E7827A3E653002BC5A0 /* MainInterface.storyboard */; };
 		C9E79E7E27A3E653002BC5A0 /* Share.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C9E79E7427A3E653002BC5A0 /* Share.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C9EA38F7281E416C008AC8C8 /* FilesandFolderListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9EA38F6281E416C008AC8C8 /* FilesandFolderListViewController.swift */; };
+		C9F11DBE28954DF000DA4BA6 /* TaskChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9D2891507800C55F67 /* TaskChipItem.swift */; };
+		C9F11DBF28954E3A00DA4BA6 /* TaskFilters.swift in Sources */ = {isa = PBXBuildFile; fileRef = C915CDD928905B9800819F86 /* TaskFilters.swift */; };
 		C9F55154272BE82C007A8B3A /* SearchCalendarComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55153272BE82C007A8B3A /* SearchCalendarComponentViewController.swift */; };
 		C9F55156272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F55155272BE83D007A8B3A /* SearchCalendarComponentViewModel.swift */; };
 		C9F7945727B3C0B40012ABA0 /* UserDefaultsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F7945627B3C0B40012ABA0 /* UserDefaultsModel.swift */; };
@@ -3498,6 +3500,7 @@
 				C918812627AA421400F850DF /* NodeOperations.swift in Sources */,
 				C9A9110927A7B7B1002EBC7F /* SearchComponentsThemingServiceWorker.swift in Sources */,
 				C9A9116627A7B99B002EBC7F /* Data+Hash.swift in Sources */,
+				C9F11DBF28954E3A00DA4BA6 /* TaskFilters.swift in Sources */,
 				C9A9119127A7BA62002EBC7F /* FileManagerDataSource.swift in Sources */,
 				C9E17FF827A94BD40006747E /* AccountService.swift in Sources */,
 				C9AFDF6127B8C877007233A5 /* ListComponentViewController.swift in Sources */,
@@ -3602,6 +3605,7 @@
 				C9A910FA27A7B784002EBC7F /* AVPlayer+Playing.swift in Sources */,
 				C9A9111127A7B7DE002EBC7F /* AccountProtocol.swift in Sources */,
 				C92F3DBC27BF632300952C59 /* MimeType.swift in Sources */,
+				C9F11DBE28954DF000DA4BA6 /* TaskChipItem.swift in Sources */,
 				C918811827AA414C00F850DF /* AIMSAccount.swift in Sources */,
 				C9B6D27127C936F600CF0C73 /* ConfigurationManager.swift in Sources */,
 				C9A9117A27A7BA10002EBC7F /* CameraKit.swift in Sources */,

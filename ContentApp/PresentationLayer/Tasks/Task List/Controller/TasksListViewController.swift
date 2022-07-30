@@ -110,7 +110,7 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
-        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services)
+        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
     }
     
     // MARK: - Get Tasks List

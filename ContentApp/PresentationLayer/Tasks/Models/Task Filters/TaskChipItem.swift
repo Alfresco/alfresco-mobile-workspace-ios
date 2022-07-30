@@ -33,9 +33,16 @@ class TaskChipItem: Equatable {
     var selectedValue: String?
     var componentType: TaskComponentType?
     var query: String?
-    var options: [TaskOptions]?
+    var options: [TaskOptions] = []
     
-    init(chipId: Int?, name: String?, selected: Bool = false, selectedValue: String?, componentType: TaskComponentType?, query: String?, options: [TaskOptions]?) {
+    init(chipId: Int?,
+         name: String?,
+         selected: Bool = false,
+         selectedValue: String?,
+         componentType: TaskComponentType?,
+         query: String?,
+         options: [TaskOptions]) {
+        
         self.chipId = chipId
         self.name = name
         self.selected = selected
