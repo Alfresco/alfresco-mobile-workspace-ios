@@ -307,3 +307,12 @@
 // MARK: - Task Filters and Sorting
 "active-tasks" = "Active";
 "completed-tasks" = "Completed";
+
+// MARK: - Accessbility
+"user-profile" = "User Profile";
+"reset-filters" = "Reset Filters";
+"tasks-filter-collection" = "Tasks filter collection";
+"tasks-filter-collection-hint" = "Used to filter and reset tasks";
+"priority" = "Priority";
+"title" = "Title";
+"assignee" = "Assignee";

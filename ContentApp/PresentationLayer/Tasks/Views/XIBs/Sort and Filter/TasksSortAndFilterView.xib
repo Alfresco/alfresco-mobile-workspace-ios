@@ -63,9 +63,6 @@
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <accessibility key="accessibilityConfiguration">
-                <bool key="isElement" value="YES"/>
-            </accessibility>
             <constraints>
                 <constraint firstItem="x39-K2-Mi8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="PHe-Xl-ZXX"/>
                 <constraint firstItem="x39-K2-Mi8" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="QdG-mC-X1P"/>

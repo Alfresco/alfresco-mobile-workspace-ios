@@ -29,6 +29,13 @@ class TaskListCollectionViewCell: ListSelectableCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         priorityView.layer.cornerRadius = priorityView.frame.size.height/2.0
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+        title.accessibilityLabel = LocalizationConstants.Accessibility.title
+        subtitle.accessibilityLabel = LocalizationConstants.Accessibility.assignee
+        priorityLabel.accessibilityLabel = LocalizationConstants.Accessibility.priority
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -46,6 +53,10 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.text = task?.name
         subtitle.text = userName(for: task)
         applyStyleCaptionOnPriority(for: task)
+        
+        title.accessibilityValue = title.text
+        subtitle.accessibilityValue = subtitle.text
+        priorityLabel.accessibilityValue = priorityLabel.text
     }
     
     func userName(for task: TaskNode?) -> String? {

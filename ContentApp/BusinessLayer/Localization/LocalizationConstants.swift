@@ -300,4 +300,15 @@ struct LocalizationConstants {
         static let activeTasks = NSLocalizedString("active-tasks", comment: "")
         static let completedTasks = NSLocalizedString("completed-tasks", comment: "")
     }
+    
+    struct Accessibility {
+        static let userProfile = NSLocalizedString("user-profile", comment: "")
+        static let resetFilters = NSLocalizedString("reset-filters", comment: "")
+        static let tasksCollection = NSLocalizedString("tasks-filter-collection", comment: "")
+        static let tasksCollectionHint = NSLocalizedString("tasks-filter-collection-hint", comment: "")
+        static let priority = NSLocalizedString("priority", comment: "")
+        static let title = NSLocalizedString("title", comment: "")
+        static let assignee = NSLocalizedString("assignee", comment: "")
+
+    }
 }

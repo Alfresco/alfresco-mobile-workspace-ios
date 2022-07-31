@@ -42,6 +42,12 @@ class TasksSortAndFilterView: UIView {
         addChipsCollectionViewFlowLayout()
         chipsCollectionView.dataSource = self
         chipsCollectionView.delegate = self
+        addAccessibility()
+    }
+    
+    func addAccessibility() {
+        resetFilterButton.accessibilityLabel = LocalizationConstants.Accessibility.resetFilters
+        resetFilterButton.accessibilityTraits = .button
     }
     
     func applyTheme(_ currentTheme: PresentationTheme?, coordinatorServices: CoordinatorServices?, navigationController: UINavigationController?) {
@@ -56,7 +62,7 @@ class TasksSortAndFilterView: UIView {
         resetFilterButton.backgroundColor = currentTheme.surfaceColor
         resetFilterButton.tintColor = currentTheme.onSurfaceColor
         resetFilterButton.accessibilityIdentifier = "searchResetButton"
-        chipsCollectionView.reloadData()        
+        chipsCollectionView.reloadData()
     }
     
     func buildDataSource() {
@@ -100,10 +106,12 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
             let chip = viewModel.chips[indexPath.row]
             let selectedValue = chip.selectedValue ?? ""
             let name = chip.name
+            var chipSelectedValue = ""
             if selectedValue.isEmpty {
                 cell.chipView.titleLabel.text = name
             } else {
-                cell.chipView.titleLabel.text = getChipSelectedValue(for: selectedValue)
+                chipSelectedValue = getChipSelectedValue(for: selectedValue)
+                cell.chipView.titleLabel.text = chipSelectedValue
             }
             cell.chipView.isSelected = chip.selected
             if chip.selected {
@@ -128,6 +136,9 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
                     cell.chipView.setBorderColor(borderColor, for: .normal)
                 }
             }
+            
+            cell.chipView.titleLabel.accessibilityLabel = name
+            cell.chipView.titleLabel.accessibilityValue = chipSelectedValue
             return cell
         }
         
