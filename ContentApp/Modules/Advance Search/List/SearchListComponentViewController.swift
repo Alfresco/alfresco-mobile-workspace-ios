@@ -52,6 +52,7 @@ class SearchListComponentViewController: SystemThemableViewController {
         setupBindings()
         applyButton.accessibilityIdentifier = "applyActionButton-listComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-listComponent"
+        addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +107,11 @@ class SearchListComponentViewController: SystemThemableViewController {
         resetButton.setShadowColor(.clear, for: .normal)
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+    }
+    
+    func addAccessibility() {
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
     }
     
     private func applyLocalization() {

@@ -316,3 +316,5 @@
 "priority" = "Priority";
 "title" = "Title";
 "assignee" = "Assignee";
+"close-button" = "Close button";
+"list-option" = "List option";

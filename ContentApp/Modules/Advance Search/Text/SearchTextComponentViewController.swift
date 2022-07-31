@@ -48,6 +48,7 @@ class SearchTextComponentViewController: SystemThemableViewController {
         keywordTextField.becomeFirstResponder()
         applyButton.accessibilityIdentifier = "applyActionButton-textComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-textComponent"
+        addAccessibility()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +98,12 @@ class SearchTextComponentViewController: SystemThemableViewController {
         resetButton.setShadowColor(.clear, for: .normal)
         resetButton.setTitleColor(currentTheme.onSurfaceColor, for: .normal)
         resetButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+    }
+    
+    func addAccessibility() {
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        keywordTextField.accessibilityTraits = .searchField
     }
     
     private func applyLocalization() {

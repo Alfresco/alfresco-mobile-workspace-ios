@@ -309,6 +309,7 @@ struct LocalizationConstants {
         static let priority = NSLocalizedString("priority", comment: "")
         static let title = NSLocalizedString("title", comment: "")
         static let assignee = NSLocalizedString("assignee", comment: "")
-
+        static let closeButton = NSLocalizedString("close-button", comment: "")
+        static let listOption = NSLocalizedString("list-option", comment: "")
     }
 }

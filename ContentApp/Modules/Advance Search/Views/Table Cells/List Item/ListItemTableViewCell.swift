@@ -22,6 +22,7 @@ class ListItemTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var checkBoxImageView: UIImageView!
+    @IBOutlet weak var listItemButton: UIButton!
     var viewModel: ListItemCellViewModel?
 
     override func awakeFromNib() {
@@ -35,6 +36,10 @@ class ListItemTableViewCell: UITableViewCell, CellConfigurable {
         self.checkBoxImageView.image = viewModel.image
         titleLabel.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
         checkBoxImageView.accessibilityIdentifier = "\(String(describing: self.titleLabel.text))"
+        
+        listItemButton.accessibilityLabel = self.titleLabel.text
+        listItemButton.accessibilityHint = LocalizationConstants.Accessibility.listOption
+        listItemButton.accessibilityValue = "\(viewModel.isSelected)"
     }
     
     // MARK: - Apply Themes and Localization
