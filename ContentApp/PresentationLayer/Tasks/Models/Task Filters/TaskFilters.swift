@@ -28,6 +28,7 @@ class TasksFilters: Codable {
     var query: String?
     var value: String?
     var isSelected = false
+    var accessibilityIdentifier: String?
     
     enum CodingKeys: String, CodingKey {
         case filterID = "id"
@@ -36,6 +37,7 @@ class TasksFilters: Codable {
         case options
         case query
         case value
+        case accessibilityIdentifier
     }
 }
 
@@ -44,11 +46,13 @@ class TaskOptions: Codable {
     var query: String?
     var value: String?
     var isSelected = false
+    var accessibilityIdentifier: String?
     
     enum CodingKeys: String, CodingKey {
         case label
         case query
         case value
+        case accessibilityIdentifier
     }
 }
 

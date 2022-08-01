@@ -50,8 +50,6 @@ class SearchListComponentViewController: SystemThemableViewController {
         registerCells()
         controller.buildViewModel()
         setupBindings()
-        applyButton.accessibilityIdentifier = "applyActionButton-listComponent"
-        resetButton.accessibilityIdentifier = "resetActionButton-listComponent"
         addAccessibility()
     }
     
@@ -112,6 +110,9 @@ class SearchListComponentViewController: SystemThemableViewController {
     func addAccessibility() {
         dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        
+        applyButton.accessibilityIdentifier = "applyActionButton-listComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-listComponent"
     }
     
     private func applyLocalization() {

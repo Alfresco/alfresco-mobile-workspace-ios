@@ -34,14 +34,16 @@ class TaskChipItem: Equatable {
     var componentType: TaskComponentType?
     var query: String?
     var options: [TaskOptions] = []
-    
+    var accessibilityIdentifier: String?
+
     init(chipId: Int?,
          name: String?,
          selected: Bool = false,
          selectedValue: String?,
          componentType: TaskComponentType?,
          query: String?,
-         options: [TaskOptions]) {
+         options: [TaskOptions],
+         accessibilityIdentifier: String?) {
         
         self.chipId = chipId
         self.name = name
@@ -50,6 +52,7 @@ class TaskChipItem: Equatable {
         self.componentType = componentType
         self.query = query
         self.options = options
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     static func == (lhs: TaskChipItem, rhs: TaskChipItem) -> Bool {

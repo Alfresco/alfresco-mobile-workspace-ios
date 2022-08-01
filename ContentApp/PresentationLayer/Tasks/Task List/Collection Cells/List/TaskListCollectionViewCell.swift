@@ -36,6 +36,10 @@ class TaskListCollectionViewCell: ListSelectableCell {
         title.accessibilityLabel = LocalizationConstants.Accessibility.title
         subtitle.accessibilityLabel = LocalizationConstants.Accessibility.assignee
         priorityLabel.accessibilityLabel = LocalizationConstants.Accessibility.priority
+        
+        title.accessibilityIdentifier = "title"
+        subtitle.accessibilityIdentifier = "sub-title"
+        priorityLabel.accessibilityIdentifier = "priority"
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {

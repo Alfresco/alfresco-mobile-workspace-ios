@@ -47,8 +47,6 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
-        applyButton.accessibilityIdentifier = "applyActionButton-calendarComponent"
-        resetButton.accessibilityIdentifier = "resetActionButton-calendarComponent"
         addAccessibility()
     }
     
@@ -57,6 +55,11 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
         fromTextField.accessibilityTraits = .button
         toTextField.accessibilityTraits = .button
+        
+        fromTextField.accessibilityIdentifier = "fromTextField-calendarComponent"
+        toTextField.accessibilityIdentifier = "toTextField-calendarComponent"
+        applyButton.accessibilityIdentifier = "applyActionButton-calendarComponent"
+        resetButton.accessibilityIdentifier = "resetActionButton-calendarComponent"
     }
     
     override func viewWillAppear(_ animated: Bool) {

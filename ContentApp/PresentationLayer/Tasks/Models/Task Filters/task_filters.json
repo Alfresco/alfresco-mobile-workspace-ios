@@ -4,16 +4,19 @@
       "id": 0,
       "name": "Due date",
       "selector": "date-range",
+      "accessibilityIdentifier": "due-date",
       "options": [
         {
           "label": "Due before",
           "query": "dueBefore",
-          "value": ""
+          "value": "",
+          "accessibilityIdentifier": "due-before"
         },
         {
           "label": "Due After",
           "query": "dueAfter",
-          "value": ""
+          "value": "",
+          "accessibilityIdentifier": "due-after"
         }
       ]
     },
@@ -21,16 +24,19 @@
       "id": 1,
       "name": "Status",
       "selector": "radio",
+      "accessibilityIdentifier": "status",
       "options": [
         {
           "label": "Active",
           "query": "state",
-          "value": ""
+          "value": "",
+          "accessibilityIdentifier": "active"
         },
         {
           "label": "Completed",
           "query": "state",
-          "value": "completed"
+          "value": "completed",
+          "accessibilityIdentifier": "completed"
         }
       ]
     },
@@ -39,7 +45,8 @@
       "name": "Task Name",
       "selector": "text",
       "query": "text",
-      "value": ""
+      "value": "",
+      "accessibilityIdentifier": "task-name"
     }
   ]
 }

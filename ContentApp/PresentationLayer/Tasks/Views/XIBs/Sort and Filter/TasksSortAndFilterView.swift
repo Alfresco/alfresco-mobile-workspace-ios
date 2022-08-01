@@ -137,8 +137,10 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
                 }
             }
             
-            cell.chipView.titleLabel.accessibilityLabel = name
-            cell.chipView.titleLabel.accessibilityValue = chipSelectedValue
+            cell.accessibilityIdentifier = name
+            cell.chipView.accessibilityLabel = name
+            cell.chipView.accessibilityValue = chipSelectedValue
+            cell.chipView.accessibilityIdentifier = chip.accessibilityIdentifier ?? ""
             return cell
         }
         

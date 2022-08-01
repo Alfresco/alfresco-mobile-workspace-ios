@@ -40,6 +40,7 @@ class ListItemTableViewCell: UITableViewCell, CellConfigurable {
         listItemButton.accessibilityLabel = self.titleLabel.text
         listItemButton.accessibilityHint = LocalizationConstants.Accessibility.listOption
         listItemButton.accessibilityValue = "\(viewModel.isSelected)"
+        listItemButton.accessibilityIdentifier = "list-option"
     }
     
     // MARK: - Apply Themes and Localization

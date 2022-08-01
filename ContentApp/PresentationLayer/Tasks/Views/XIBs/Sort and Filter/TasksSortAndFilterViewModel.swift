@@ -62,7 +62,8 @@ class TasksSortAndFilterViewModel: NSObject {
                                         selectedValue: nil,
                                         componentType: componentType,
                                         query: filter.query,
-                                        options: filter.options ?? [])
+                                        options: filter.options ?? [],
+                                        accessibilityIdentifier: filter.accessibilityIdentifier)
                 chips.append(chip)
             }
         }
