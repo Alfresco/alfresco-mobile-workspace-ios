@@ -41,8 +41,12 @@ enum Event {
         case searchFacets = "event_search_facets"
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
-        case openWith = "event_open_with"
-        case taskFilter = "event_task_filters"
+        case openWith = "event_open_with"        
+        
+        case taskFilterDueDate = "event_due_date"
+        case taskFilterStatus = "event_status"
+        case taskFilterTaskName = "event_task_name"
+        case taskFilterReset = "event_reset"
     }
     
     enum API: String {
@@ -88,7 +92,5 @@ struct AnalyticsConstants {
         static let facet = "facet_name"
         static let assetsCount = "numberOfAssets"
         static let fileSize = "file_size"
-        
-        static let taskFilter = "task_filter"
     }
 }

@@ -75,9 +75,10 @@ extension AnalyticsManager {
     }
     
     func taskFilters(name: String?) {
-        var parameters = self.commonParameters()
-        parameters[AnalyticsConstants.Parameters.taskFilter] = name ?? ""
-        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskFilter.rawValue
-        self.logEvent(name: Event.Action.taskFilter.rawValue, parameters: parameters)
+        if let name = name {
+            var parameters = self.commonParameters()
+            parameters[AnalyticsConstants.Parameters.eventName] = name
+            self.logEvent(name: name, parameters: parameters)
+        }
     }
 }

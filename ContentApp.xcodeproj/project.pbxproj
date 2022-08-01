@@ -212,6 +212,8 @@
 		C98C1290271E8687001C84D6 /* SearchComponents.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C98C128F271E8687001C84D6 /* SearchComponents.storyboard */; };
 		C98C1292271E87BF001C84D6 /* SearchTextComponentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */; };
 		C98C1295271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */; };
+		C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */; };
+		C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */; };
 		C992F4D427FAC754002C4D41 /* CreateNodeSheetCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */; };
 		C992F4D527FAC754002C4D41 /* CreateNodeSheetViewControler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */; };
 		C992F4D827FB01EE002C4D41 /* NodeActionsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */; };
@@ -881,6 +883,8 @@
 		C98C128F271E8687001C84D6 /* SearchComponents.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SearchComponents.storyboard; sourceTree = "<group>"; };
 		C98C1291271E87BF001C84D6 /* SearchTextComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextComponentViewController.swift; sourceTree = "<group>"; };
 		C98C1294271E8D53001C84D6 /* SearchComponentsStoryboardInstantiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchComponentsStoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchListComponentViewModel.swift; sourceTree = "<group>"; };
+		C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSearchTextComponentViewModel.swift; sourceTree = "<group>"; };
 		C992F4D127FAC753002C4D41 /* CreateNodeSheetCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetCoordinator.swift; sourceTree = "<group>"; };
 		C992F4D327FAC754002C4D41 /* CreateNodeSheetViewControler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNodeSheetViewControler.swift; sourceTree = "<group>"; };
 		C992F4D727FB01EE002C4D41 /* NodeActionsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeActionsViewModel.swift; sourceTree = "<group>"; };
@@ -2361,6 +2365,8 @@
 			children = (
 				C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */,
 				C928AE32282A5F4900378327 /* TestNodeViewModel.swift */,
+				C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */,
+				C98DCD3A2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift */,
 				E334C05824755D9000F74880 /* Info.plist */,
 			);
 			path = ContentAppTests;
@@ -4009,6 +4015,8 @@
 			files = (
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,
 				C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */,
+				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
+				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

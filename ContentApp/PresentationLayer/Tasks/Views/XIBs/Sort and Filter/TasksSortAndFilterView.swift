@@ -72,9 +72,10 @@ class TasksSortAndFilterView: UIView {
         }
     }
     
-    @IBAction func resetFilterButtonAction(_ sender: Any) {
+    @IBAction func resetFilterButtonAction(_ sender: Any) {        
         viewModel.resetChipsAction()
         chipsCollectionView.reloadData()
+        AnalyticsManager.shared.taskFilters(name: Event.Action.taskFilterReset.rawValue)
     }
     
     func addChipsCollectionViewFlowLayout() {
@@ -253,7 +254,19 @@ extension TasksSortAndFilterView {
         }
         
         // analytics
-        let name = chip.componentType?.rawValue ?? ""
+        var name = ""
+        switch chip.componentType {
+        case .dateRange:
+            name = Event.Action.taskFilterDueDate.rawValue
+        case .radio:
+            name = Event.Action.taskFilterStatus.rawValue
+        case .text:
+            name = Event.Action.taskFilterTaskName.rawValue
+        case nil:
+            name = ""
+        case .some(.none):
+            name = ""
+        }
         AnalyticsManager.shared.taskFilters(name: name)
     }
     
