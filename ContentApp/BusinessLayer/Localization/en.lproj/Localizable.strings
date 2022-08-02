@@ -304,10 +304,6 @@
 "high" = "High";
 "task-service-not-configured-message" = "This account is not configured on the process services. Please contact to administrator.";
 
-// MARK: - Task Filters and Sorting
-"active-tasks" = "Active";
-"completed-tasks" = "Completed";
-
 // MARK: - Accessbility
 "user-profile" = "User Profile";
 "reset-filters" = "Reset Filters";
