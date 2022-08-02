@@ -22,14 +22,28 @@ import AlfrescoContent
 class SearchTextComponentViewModel {
     var selectedCategory: SearchCategories?
     var queryBuilder: String?
-
+    var taskChip: TaskChipItem?
+    
+    var isTaskFilter: Bool {
+        if taskChip != nil {
+            return true
+        }
+        return false
+    }
+    
     var title: String {
-        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        if isTaskFilter {
+            return NSLocalizedString(taskChip?.name ?? "", comment: "")
+        } else {
+            return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        }
     }
     
     // MARK: - To get placeholder for selector
     func getPlaceholder() -> String {
-        if let selectedCategory = self.selectedCategory {
+        if isTaskFilter {
+            return title
+        } else if let selectedCategory = self.selectedCategory {
             let placeholder = selectedCategory.component?.settings?.placeholder ?? ""
             return NSLocalizedString(placeholder, comment: "")
         }
@@ -38,7 +52,9 @@ class SearchTextComponentViewModel {
     
     // MARK: - To get already added value for selector
     func getValue() -> String {
-        if let selectedCategory = self.selectedCategory {
+        if isTaskFilter {
+            return taskChip?.selectedValue ?? ""
+        } else if let selectedCategory = self.selectedCategory {
             return selectedCategory.component?.settings?.selectedValue ?? ""
         }
         return ""
@@ -46,7 +62,9 @@ class SearchTextComponentViewModel {
     
     // MARK: - To reset filter, pass nil else pass value
     func applyFilter(with value: String?) {
-        if let selectedCategory = self.selectedCategory {
+        if isTaskFilter {
+            taskChip?.selectedValue = value
+        } else if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
             let settings = component?.settings
             settings?.selectedValue = value

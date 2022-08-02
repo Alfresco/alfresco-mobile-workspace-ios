@@ -41,7 +41,11 @@ enum Event {
         case searchFacets = "event_search_facets"
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
-        case openWith = "event_open_with"
+        case openWith = "event_open_with"        
+        case createdDateRange = "event_due_date"
+        case radio = "event_status"
+        case text = "event_task_name"
+        case taskFilterReset = "event_reset"
     }
     
     enum API: String {
@@ -64,7 +68,6 @@ enum Event {
         case transfers = "page_view_transfers"
         case taskTab = "page_view_tasks"
     }
-    
 }
 
 struct AnalyticsConstants {

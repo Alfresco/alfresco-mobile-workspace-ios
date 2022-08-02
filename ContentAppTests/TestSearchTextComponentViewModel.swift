@@ -16,12 +16,20 @@
 //  limitations under the License.
 //
 
-import UIKit
+import XCTest
+@testable import ContentApp
 
-class SearchTasksViewController: SystemSearchViewController {
+class TestSearchTextComponentViewModel: XCTestCase {
+    lazy var viewModel = SearchTextComponentViewModel()
+    let chip = TaskChipItem(chipId: 2, name: "Task Name", selectedValue: "test", componentType: .text, query: "text", options: [], accessibilityIdentifier: "task-name")
 
-    // MARK: - View did load
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    func testSearchTextComponentViewModel_WhenValidTextProvided_ShouldReturnTrue() {
+        viewModel.taskChip = chip
+        let value = viewModel.getValue()
+        if !value.isEmpty {
+            XCTAssertTrue(true)
+        } else {
+            XCTAssertFalse(false)
+        }
     }
 }

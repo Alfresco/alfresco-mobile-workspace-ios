@@ -36,6 +36,7 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     let datePicker = UIDatePicker()
     lazy var calendarViewModel = SearchCalendarComponentViewModel()
     var callback: SearchComponentCallBack?
+    var taskFilterCallBack: TaskFilterCallBack?
     
     // MARK: - View Life Cycle
     override func viewDidLoad() {
@@ -46,6 +47,17 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
         hideKeyboardWhenTappedAround()
         applyLocalization()
         applyComponentsThemes()
+        addAccessibility()
+    }
+    
+    func addAccessibility() {
+        dismissButton.accessibilityLabel = LocalizationConstants.Accessibility.closeButton
+        headerTitleLabel.accessibilityHint = LocalizationConstants.Accessibility.title
+        fromTextField.accessibilityTraits = .button
+        toTextField.accessibilityTraits = .button
+        
+        fromTextField.accessibilityIdentifier = "fromTextField-calendarComponent"
+        toTextField.accessibilityIdentifier = "toTextField-calendarComponent"
         applyButton.accessibilityIdentifier = "applyActionButton-calendarComponent"
         resetButton.accessibilityIdentifier = "resetActionButton-calendarComponent"
     }
@@ -142,11 +154,38 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     }
     
     @IBAction func dismissComponentButtonAction(_ sender: Any) {
-        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, true)
+        if calendarViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.calendarViewModel.taskChip, true)
+        } else {
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, true)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func applyButtonAction(_ sender: Any) {
+        if calendarViewModel.isTaskFilter {
+            applyFilterdForTasks()
+        } else {
+            applyFilterForSearch()
+        }
+    }
+    
+    private func applyFilterdForTasks() {
+        if calendarViewModel.selectedFromDate == nil && calendarViewModel.selectedToDate == nil {
+            applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            return
+        } else if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+            if fromDate > toDate {
+                swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+            }
+        }
+        
+        calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
+        self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func applyFilterForSearch() {
         if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
             if fromDate > toDate {
                 swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
@@ -165,7 +204,12 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     
     @IBAction func resetButtonAction(_ sender: Any) {
         calendarViewModel.resetFilter()
-        self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+        if calendarViewModel.isTaskFilter {
+            self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
+        } else {
+            calendarViewModel.resetFilter()
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

@@ -303,3 +303,14 @@
 "medium" = "Medium";
 "high" = "High";
 "task-service-not-configured-message" = "This account is not configured on the process services. Please contact to administrator.";
+
+// MARK: - Accessbility
+"user-profile" = "User Profile";
+"reset-filters" = "Reset Filters";
+"tasks-filter-collection" = "Tasks filter collection";
+"tasks-filter-collection-hint" = "Used to filter and reset tasks";
+"priority" = "Priority";
+"title" = "Title";
+"assignee" = "Assignee";
+"close-button" = "Close button";
+"list-option" = "List option";

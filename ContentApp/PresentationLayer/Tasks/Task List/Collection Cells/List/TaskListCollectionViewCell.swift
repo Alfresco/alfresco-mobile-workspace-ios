@@ -25,10 +25,22 @@ class TaskListCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var priorityView: UIView!
     @IBOutlet weak var priorityLabel: UILabel!
     var currentTheme: PresentationTheme?
+    lazy var viewModel = TaskListCollectionCellViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         priorityView.layer.cornerRadius = priorityView.frame.size.height/2.0
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+        title.accessibilityLabel = LocalizationConstants.Accessibility.title
+        subtitle.accessibilityLabel = LocalizationConstants.Accessibility.assignee
+        priorityLabel.accessibilityLabel = LocalizationConstants.Accessibility.priority
+        
+        title.accessibilityIdentifier = "title"
+        subtitle.accessibilityIdentifier = "sub-title"
+        priorityLabel.accessibilityIdentifier = "priority"
     }
 
     func applyTheme(_ currentTheme: PresentationTheme?) {
@@ -43,40 +55,17 @@ class TaskListCollectionViewCell: ListSelectableCell {
     }
     
     func setupData(for task: TaskNode?) {
-        title.text = task?.name
-        subtitle.text = userName(for: task)
-        applyStyleCaptionOnPriority(for: task)
-    }
-    
-    func userName(for task: TaskNode?) -> String? {
-        let firstName = task?.assignee?.firstName ?? ""
-        let lastName = task?.assignee?.lastName ?? ""
-        return String(format: "%@ %@", firstName, lastName)
-    }
-    
-    func applyStyleCaptionOnPriority(for task: TaskNode?) {
-        if let currentTheme = currentTheme {
-            let priority = task?.priority ?? 0
-            var textColor: UIColor = currentTheme.taskErrorTextColor
-            var backgroundColor: UIColor = currentTheme.taskErrorContainer
-            var priorityText = LocalizationConstants.Tasks.low
-           
-            if priority >= 0 && priority <= 3 { // low
-                textColor = currentTheme.taskSuccessTextColor
-                backgroundColor = currentTheme.taskSuccessContainer
-                priorityText = LocalizationConstants.Tasks.low
-            } else if priority >= 4 && priority <= 7 { // medium
-                textColor = currentTheme.taskWarningTextColor
-                backgroundColor = currentTheme.taskWarningContainer
-                priorityText = LocalizationConstants.Tasks.medium
-            } else { // high
-                textColor = currentTheme.taskErrorTextColor
-                backgroundColor = currentTheme.taskErrorContainer
-                priorityText = LocalizationConstants.Tasks.high
-            }
-            priorityLabel.textColor = textColor
-            priorityView.backgroundColor = backgroundColor
-            priorityLabel.text = priorityText
-        }
+        guard let task = task, let currentTheme = currentTheme else { return }
+        viewModel.task = task
+        
+        title.text = viewModel.name
+        subtitle.text = viewModel.userName
+        priorityLabel.textColor = viewModel.getColors(for: currentTheme).textColor
+        priorityView.backgroundColor = viewModel.getColors(for: currentTheme).backgroundColor
+        priorityLabel.text = viewModel.getColors(for: currentTheme).priorityText
+        
+        title.accessibilityValue = title.text
+        subtitle.accessibilityValue = subtitle.text
+        priorityLabel.accessibilityValue = priorityLabel.text
     }
 }
