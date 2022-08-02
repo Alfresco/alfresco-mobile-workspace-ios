@@ -126,6 +126,7 @@ extension TasksSortAndFilterView: UICollectionViewDelegateFlowLayout, UICollecti
                     let backgroundColor = themeService.activeTheme?.primary15T1Color
                     
                     cell.chipView.applyOutlinedTheme(withScheme: scheme)
+                    cell.chipView.setBackgroundColor(backgroundColor, for: .normal)
                     cell.chipView.setBackgroundColor(backgroundColor, for: .selected)
                 } else {
                     let scheme = themeService.containerScheming(for: .searchChipUnselected)
