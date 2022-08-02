@@ -297,8 +297,6 @@ struct LocalizationConstants {
         static let medium = NSLocalizedString("medium", comment: "")
         static let high = NSLocalizedString("high", comment: "")
         static let notConfiguredMessage = NSLocalizedString("task-service-not-configured-message", comment: "")
-        static let activeTasks = NSLocalizedString("active-tasks", comment: "")
-        static let completedTasks = NSLocalizedString("completed-tasks", comment: "")
     }
     
     struct Accessibility {
