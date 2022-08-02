@@ -18,20 +18,12 @@
 
 import Foundation
 
-// MARK: Component Types for Tasks
-enum TaskComponentType: String, Codable {
-    case dateRange = "date-range"
-    case radio = "radio"
-    case text = "text"
-    case none = "none"
-}
-
 class TaskChipItem: Equatable {
     var chipId: Int?
     var name: String?
     var selected = false
     var selectedValue: String?
-    var componentType: TaskComponentType?
+    var componentType: ComponentType?
     var query: String?
     var options: [TaskOptions] = []
     var accessibilityIdentifier: String?
@@ -40,7 +32,7 @@ class TaskChipItem: Equatable {
          name: String?,
          selected: Bool = false,
          selectedValue: String?,
-         componentType: TaskComponentType?,
+         componentType: ComponentType?,
          query: String?,
          options: [TaskOptions],
          accessibilityIdentifier: String?) {

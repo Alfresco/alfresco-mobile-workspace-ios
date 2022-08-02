@@ -23,7 +23,7 @@ class Filter: Codable {
 class TasksFilters: Codable {
     var filterID: Int?
     var name: String?
-    var selector: TaskComponentType?
+    var selector: ComponentType?
     var options: [TaskOptions]?
     var query: String?
     var value: String?

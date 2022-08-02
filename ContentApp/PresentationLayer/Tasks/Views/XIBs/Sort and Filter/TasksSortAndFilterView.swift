@@ -246,7 +246,7 @@ extension TasksSortAndFilterView {
     
     func showSelectedComponent(for chip: TaskChipItem, and indexPath: IndexPath) {
         
-        if chip.componentType == .dateRange {
+        if chip.componentType == .createdDateRange {
             showCalendarSelectorComponent(for: chip, and: indexPath)
         } else if chip.componentType == .radio {
             showListSelectorComponent(for: chip, and: indexPath)
@@ -257,15 +257,13 @@ extension TasksSortAndFilterView {
         // analytics
         var name = ""
         switch chip.componentType {
-        case .dateRange:
+        case .createdDateRange:
             name = Event.Action.taskFilterDueDate.rawValue
         case .radio:
             name = Event.Action.taskFilterStatus.rawValue
         case .text:
             name = Event.Action.taskFilterTaskName.rawValue
-        case nil:
-            name = ""
-        case .some(.none):
+        default:
             name = ""
         }
         AnalyticsManager.shared.taskFilters(name: name)

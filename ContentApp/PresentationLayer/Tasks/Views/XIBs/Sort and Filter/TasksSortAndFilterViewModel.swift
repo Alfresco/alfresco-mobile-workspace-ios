@@ -82,7 +82,7 @@ class TasksSortAndFilterViewModel: NSObject {
                     var chipOptions = [TaskOptions]()
                     for option in chip.options {
                         option.isSelected = false
-                        if chip.componentType == .dateRange {
+                        if chip.componentType == .createdDateRange {
                             option.value = nil
                         }
                         chipOptions.append(option)
