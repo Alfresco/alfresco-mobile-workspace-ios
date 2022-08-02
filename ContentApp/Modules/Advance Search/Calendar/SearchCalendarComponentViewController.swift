@@ -164,32 +164,40 @@ class SearchCalendarComponentViewController: SystemThemableViewController {
     
     @IBAction func applyButtonAction(_ sender: Any) {
         if calendarViewModel.isTaskFilter {
-            if calendarViewModel.selectedFromDate == nil && calendarViewModel.selectedToDate == nil {
-                applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
-                return
-            } else if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
-                if fromDate > toDate {
-                    swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
-                }
+            applyFilterdForTasks()
+        } else {
+            applyFilterForSearch()
+        }
+    }
+    
+    private func applyFilterdForTasks() {
+        if calendarViewModel.selectedFromDate == nil && calendarViewModel.selectedToDate == nil {
+            applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            return
+        } else if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+            if fromDate > toDate {
+                swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
             }
-            
+        }
+        
+        calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
+        self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    private func applyFilterForSearch() {
+        if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
+            if fromDate > toDate {
+                swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
+            }
             calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
-            self.taskFilterCallBack?(self.calendarViewModel.taskChip, false)
+            self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
             self.dismiss(animated: true, completion: nil)
         } else {
-            if let fromDate = calendarViewModel.selectedFromDate, let toDate = calendarViewModel.selectedToDate {
-                if fromDate > toDate {
-                    swap(parameterOne: &calendarViewModel.selectedFromDate, parameterTwo: &calendarViewModel.selectedToDate)
-                }
-                calendarViewModel.applyFilter(fromValue: fromTextField.text, toValue: toTextField.text)
-                self.callback?(self.calendarViewModel.selectedCategory, self.calendarViewModel.queryBuilder, false)
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                if calendarViewModel.selectedFromDate == nil {
-                    applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
-                } else if calendarViewModel.selectedToDate == nil {
-                    applyError(on: toTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
-                }
+            if calendarViewModel.selectedFromDate == nil {
+                applyError(on: fromTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
+            } else if calendarViewModel.selectedToDate == nil {
+                applyError(on: toTextField, with: LocalizationConstants.AdvanceSearch.errorRequiredValue)
             }
         }
     }
