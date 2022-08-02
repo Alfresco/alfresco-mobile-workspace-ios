@@ -61,6 +61,7 @@ class AnalyticsManager: NSObject {
     }
     
     func logEvent(name: String, parameters: [String: Any]) {
-        Analytics.logEvent(name, parameters: parameters)
+        print("***** \(parameters) *******")
+      //  Analytics.logEvent(name, parameters: parameters)
     }
 }

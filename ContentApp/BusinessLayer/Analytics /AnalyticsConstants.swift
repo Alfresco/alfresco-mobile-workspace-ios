@@ -42,10 +42,9 @@ enum Event {
         case permanentlyDelete = "event_permanently_delete"
         case restore = "event_restore"
         case openWith = "event_open_with"        
-        
-        case taskFilterDueDate = "event_due_date"
-        case taskFilterStatus = "event_status"
-        case taskFilterTaskName = "event_task_name"
+        case createdDateRange = "event_due_date"
+        case radio = "event_status"
+        case text = "event_task_name"
         case taskFilterReset = "event_reset"
     }
     
