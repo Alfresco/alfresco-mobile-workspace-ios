@@ -335,10 +335,38 @@ extension TasksSortAndFilterView {
     
     private func updateResult(for chip: TaskChipItem) {
         if chip.componentType == .createdDateRange {
-            let fromDate = chip.options[0].value ?? ""
-            let toDate = chip.options[1].value ?? ""
-            self.callBack?(chip.componentType, [fromDate, toDate])
+            updateDateRangeComponent(for: chip)
+        } else if chip.componentType == .radio {
+            updateRadioComponent(for: chip)
+        } else if chip.componentType == .text {
+            updateTextComponent(for: chip)
         }
+    }
+    
+    private func updateDateRangeComponent(for chip: TaskChipItem) {
+        let fromDate = chip.options[0].value ?? ""
+        let toDate = chip.options[1].value ?? ""
+        self.callBack?(chip.componentType, [fromDate, toDate])
+    }
+    
+    private func updateRadioComponent(for chip: TaskChipItem) {
+        var callBackTriggered = false
+        let options = chip.options
+        for option in options where option.isSelected {
+            callBackTriggered = true
+            let value = option.value ?? ""
+            self.callBack?(chip.componentType, [value])
+            break
+        }
+        
+        if callBackTriggered == false {
+            self.callBack?(chip.componentType, [""])
+        }
+    }
+    
+    private func updateTextComponent(for chip: TaskChipItem) {
+        let text = chip.selectedValue ?? ""
+        self.callBack?(chip.componentType, [text])
     }
 }
 

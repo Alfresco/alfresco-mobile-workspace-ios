@@ -117,7 +117,9 @@ class TasksListViewController: SystemSearchViewController {
     func getTaskList() {
         let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
                                     dueBefore: viewModel.filterParams.dueBefore,
-                                    page: viewModel.page)
+                                    page: viewModel.page,
+                                    state: viewModel.filterParams.state,
+                                    text: viewModel.filterParams.text)
         
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
@@ -305,6 +307,10 @@ extension TasksListViewController {
             sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
                 if type == .createdDateRange {
                     self.updateCalendarComponent(with: value)
+                } else if type == .radio {
+                    self.updateStatusComponent(with: value)
+                } else if type == .text {
+                    self.updateTextComponent(with: value)
                 }
             }
         }
@@ -313,6 +319,16 @@ extension TasksListViewController {
     private func updateCalendarComponent(with value: [String]) {
         self.viewModel.filterParams.dueBefore = value[0]
         self.viewModel.filterParams.dueAfter = value[1]
+        self.handlePullToRefresh()
+    }
+    
+    private func updateStatusComponent(with value: [String]) {
+        self.viewModel.filterParams.state = value.first
+        self.handlePullToRefresh()
+    }
+    
+    private func updateTextComponent(with value: [String]) {
+        self.viewModel.filterParams.text = value.first
         self.handlePullToRefresh()
     }
 }
