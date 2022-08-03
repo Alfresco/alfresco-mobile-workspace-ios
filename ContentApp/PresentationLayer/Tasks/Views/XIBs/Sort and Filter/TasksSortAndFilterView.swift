@@ -36,7 +36,7 @@ class TasksSortAndFilterView: UIView {
     private let textChipMaxSufffix = 5
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let chipSearchCellMinimHeight: CGFloat = 32.0
-    typealias TaskListFilterCallBack = (_ type: ComponentType?, _ value: [String], _ isReset: Bool) -> Void
+    typealias TaskListFilterCallBack = (_ type: ComponentType?, _ value: [String]) -> Void
     var callBack: TaskListFilterCallBack?
 
     override func awakeFromNib() {
@@ -77,7 +77,7 @@ class TasksSortAndFilterView: UIView {
     @IBAction func resetFilterButtonAction(_ sender: Any) {
         viewModel.resetChipsAction { isDone in
             AnalyticsManager.shared.taskFilters(name: "\(Event.Action.taskFilterReset)")
-            self.callBack?(nil, [], true)
+            self.callBack?(nil, [])
         }
         chipsCollectionView.reloadData()
     }
@@ -348,7 +348,7 @@ extension TasksSortAndFilterView {
     private func updateDateRangeComponent(for chip: TaskChipItem) {
         let fromDate = chip.options[0].value ?? ""
         let toDate = chip.options[1].value ?? ""
-        self.callBack?(chip.componentType, [fromDate, toDate], false)
+        self.callBack?(chip.componentType, [fromDate, toDate])
     }
     
     private func updateRadioComponent(for chip: TaskChipItem) {
@@ -357,18 +357,18 @@ extension TasksSortAndFilterView {
         for option in options where option.isSelected {
             callBackTriggered = true
             let value = option.value ?? ""
-            self.callBack?(chip.componentType, [value], false)
+            self.callBack?(chip.componentType, [value])
             break
         }
         
         if callBackTriggered == false {
-            self.callBack?(chip.componentType, [""], false)
+            self.callBack?(chip.componentType, [""])
         }
     }
     
     private func updateTextComponent(for chip: TaskChipItem) {
         let text = chip.selectedValue ?? ""
-        self.callBack?(chip.componentType, [text], false)
+        self.callBack?(chip.componentType, [text])
     }
 }
 

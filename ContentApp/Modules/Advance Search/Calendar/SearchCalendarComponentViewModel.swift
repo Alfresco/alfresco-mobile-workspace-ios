@@ -60,13 +60,13 @@ class SearchCalendarComponentViewModel: NSObject {
     }
     
     func date(from dateString: String, format: String? = nil) -> Date? {
-        var dateFormatt = dateFormat
+        var localDateFormat = dateFormat
         if format != nil {
-            dateFormatt = format!
+            localDateFormat = format!
         }
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.dateFormat = dateFormatt
+        dateFormatter.dateFormat = localDateFormat
         return dateFormatter.date(from: dateString)
     }
     
