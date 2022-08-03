@@ -132,6 +132,7 @@
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
 		C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBAD288149A70080EF69 /* EmptyTasks.swift */; };
 		C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBB0288152230080EF69 /* StoryboardConstants.swift */; };
+		C90B0934289A5FBA00F98F9E /* TaskListFilterParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90B0933289A5FBA00F98F9E /* TaskListFilterParams.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C90FCAA32898E5F800C110B1 /* TaskListCollectionCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90FCAA22898E5F800C110B1 /* TaskListCollectionCellViewModel.swift */; };
 		C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */; };
@@ -813,6 +814,7 @@
 		BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		C903CBAD288149A70080EF69 /* EmptyTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasks.swift; sourceTree = "<group>"; };
 		C903CBB0288152230080EF69 /* StoryboardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
+		C90B0933289A5FBA00F98F9E /* TaskListFilterParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListFilterParams.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C90FCAA22898E5F800C110B1 /* TaskListCollectionCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskListCollectionCellViewModel.swift; sourceTree = "<group>"; };
 		C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksSortAndFilterViewModel.swift; sourceTree = "<group>"; };
@@ -1962,6 +1964,7 @@
 			children = (
 				C983A266287D5F3D00CEDCAB /* TasksListViewController.swift */,
 				C983A269287D604E00CEDCAB /* TasksListViewModel.swift */,
+				C90B0933289A5FBA00F98F9E /* TaskListFilterParams.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3971,6 +3974,7 @@
 				B9A8E26924CEAC2F00ED9C3B /* ListComponentViewController.swift in Sources */,
 				B9E7D60924911F190056292B /* AccountService.swift in Sources */,
 				E350BD44249CB836008E381F /* SettingsLabelTableViewCell.swift in Sources */,
+				C90B0934289A5FBA00F98F9E /* TaskListFilterParams.swift in Sources */,
 				C97BEB6626EB35A500E05375 /* PreviewController.swift in Sources */,
 				C973EC732726CA6200912015 /* TableViewExtension.swift in Sources */,
 				E32C698525C45A9E000FA6BD /* ThemeModeDialogViewModel.swift in Sources */,

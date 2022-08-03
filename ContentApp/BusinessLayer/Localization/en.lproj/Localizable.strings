@@ -302,7 +302,7 @@
 "low" = "Low";
 "medium" = "Medium";
 "high" = "High";
-"task-service-not-configured-message" = "This account is not configured on the process services. Please contact to administrator.";
+"task-service-not-configured-message" = "This account is not configured on the process services.";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";

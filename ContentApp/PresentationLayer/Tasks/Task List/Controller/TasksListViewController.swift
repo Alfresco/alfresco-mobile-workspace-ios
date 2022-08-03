@@ -115,7 +115,10 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        let params = TaskListParams(page: viewModel.page)
+        let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
+                                    dueBefore: viewModel.filterParams.dueBefore,
+                                    page: viewModel.page)
+        
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
             if error == nil {
@@ -299,7 +302,17 @@ extension TasksListViewController {
             sortFilterView.buildDataSource()
             self.view.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
+            sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
+                if type == .createdDateRange {
+                    self.updateCalendarComponent(with: value)
+                }
+            }
         }
     }
+    
+    private func updateCalendarComponent(with value: [String]) {
+        self.viewModel.filterParams.dueBefore = value[0]
+        self.viewModel.filterParams.dueAfter = value[1]
+        self.handlePullToRefresh()
+    }
 }
-

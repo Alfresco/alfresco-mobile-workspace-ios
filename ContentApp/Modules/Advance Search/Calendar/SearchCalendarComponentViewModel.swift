@@ -59,11 +59,25 @@ class SearchCalendarComponentViewModel: NSObject {
         return dateFormatter.string(from: date)
     }
     
-    func date(from dateString: String) -> Date? {
+    func date(from dateString: String, format: String? = nil) -> Date? {
+        var dateFormatt = dateFormat
+        if format != nil {
+            dateFormatt = format!
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.dateFormat = dateFormat
+        dateFormatter.dateFormat = dateFormatt
         return dateFormatter.date(from: dateString)
+    }
+    
+    func formatDate(from dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = dateFormat
+            return dateFormatter.string(from: date)
+        }
+        return nil
     }
     
     func getMinimumAndMaximumDateForFromTextField() -> (minimumDate: Date?, maximumDate: Date?) {
@@ -112,10 +126,10 @@ class SearchCalendarComponentViewModel: NSObject {
             selectedToDate = self.date(from: toDate)
             return (fromDate, toDate)
         } else if let chip = taskChip {
-            let fromDate = chip.options[0].value ?? ""
-            let toDate = chip.options[1].value ?? ""
-            selectedFromDate = self.date(from: fromDate)
-            selectedToDate = self.date(from: toDate)
+            let fromDate = self.formatDate(from: chip.options[0].value ?? "") ?? ""
+            let toDate = self.formatDate(from: chip.options[1].value ?? "") ?? ""
+            selectedFromDate = self.date(from: fromDate, format: "yyyy-MM-dd")
+            selectedToDate = self.date(from: toDate, format: "yyyy-MM-dd")
             return (fromDate, toDate)
         }
         return (nil, nil)
@@ -185,7 +199,7 @@ class SearchCalendarComponentViewModel: NSObject {
     func resetTaskFilter() {
         if let chip = taskChip {
             chip.selectedValue = nil
-            for index in 0 ..< chip.options.count - 1 {
+            for index in 0 ..< chip.options.count {
                 chip.options[index].isSelected = false
                 chip.options[index].value = nil
             }

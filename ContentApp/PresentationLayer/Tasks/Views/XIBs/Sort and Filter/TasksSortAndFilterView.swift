@@ -36,6 +36,8 @@ class TasksSortAndFilterView: UIView {
     private let textChipMaxSufffix = 5
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let chipSearchCellMinimHeight: CGFloat = 32.0
+    typealias TaskListFilterCallBack = (_ type: ComponentType?, _ value: [String]) -> Void
+    var callBack: TaskListFilterCallBack?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -323,11 +325,19 @@ extension TasksSortAndFilterView {
         let selectedValue = self.viewModel.chips[indexPath.row].selectedValue ?? ""
         if !selectedValue.isEmpty {
             reloadChipCollectionWithoutScroll()
-            // call api
+            self.updateResult(for: chip)
         } else {
             reloadChipCollectionWithoutScroll()
             self.deSelectChipCollectionCell(for: indexPath)
-            // call api
+            self.updateResult(for: chip)
+        }
+    }
+    
+    private func updateResult(for chip: TaskChipItem) {
+        if chip.componentType == .createdDateRange {
+            let fromDate = chip.options[0].value ?? ""
+            let toDate = chip.options[1].value ?? ""
+            self.callBack?(chip.componentType, [fromDate, toDate])
         }
     }
 }
