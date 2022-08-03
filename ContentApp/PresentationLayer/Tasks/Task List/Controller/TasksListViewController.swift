@@ -304,8 +304,10 @@ extension TasksListViewController {
             sortFilterView.buildDataSource()
             self.view.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
-            sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
-                if type == .createdDateRange {
+            sortFilterView.callBack = { (type: ComponentType?, value: [String], isReset: Bool) in
+                if isReset {
+                    self.resetComponents()
+                } else if type == .createdDateRange {
                     self.updateCalendarComponent(with: value)
                 } else if type == .radio {
                     self.updateStatusComponent(with: value)
@@ -329,6 +331,14 @@ extension TasksListViewController {
     
     private func updateTextComponent(with value: [String]) {
         self.viewModel.filterParams.text = value.first
+        self.handlePullToRefresh()
+    }
+    
+    private func resetComponents() {
+        self.viewModel.filterParams.dueBefore = nil
+        self.viewModel.filterParams.dueAfter = nil
+        self.viewModel.filterParams.state = nil
+        self.viewModel.filterParams.text = nil
         self.handlePullToRefresh()
     }
 }
