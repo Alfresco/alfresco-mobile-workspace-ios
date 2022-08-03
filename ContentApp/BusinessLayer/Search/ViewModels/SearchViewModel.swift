@@ -23,7 +23,6 @@ typealias SearchComponentCallBack = (SearchCategories?, String?, Bool) -> Void
 typealias FacetComponentsCallBack = (_ value: String?, _ query: String?, _ isBackPressed: Bool) -> Void
 typealias TaskFilterCallBack = (_ chip: TaskChipItem?, _ isBackPressed: Bool) -> Void
 
-
 class SearchViewModel: ListComponentViewModel {
     var searchModel: SearchModelProtocol
     init(model: SearchModelProtocol) {

@@ -193,11 +193,6 @@ class SearchListComponentController: NSObject {
                     self.listViewModel.taskSelectedOptions.append(object)
                 }
             }
-            
-            if listViewModel.isRadioList && listViewModel.taskSelectedOptions.isEmpty, let taskOption = options.first {
-                taskOption.isSelected = true
-                self.listViewModel.taskSelectedOptions.append(taskOption)
-            }
         }
     }
     
@@ -219,11 +214,17 @@ class SearchListComponentController: NSObject {
     // MARK: - Radio List
     private func updateSelectedValueForRadioList(for index: Int) {
         if listViewModel.isTaskFilter {
-            let options = listViewModel.taskChip?.options ?? []
-            let option = options[index]
-            option.isSelected = true
             listViewModel.taskSelectedOptions.removeAll()
-            listViewModel.taskSelectedOptions.append(option)
+            var options = listViewModel.taskChip?.options ?? []
+            for counter in 0 ..< options.count {
+                let option = options[counter]
+                option.isSelected = false
+                if counter == index {
+                    option.isSelected = true
+                    listViewModel.taskSelectedOptions.append(option)
+                }
+                options[counter] = option
+            }
             buildViewModel()
         } else if let category = self.listViewModel.selectedCategory {
             let options = category.component?.settings?.options ?? []

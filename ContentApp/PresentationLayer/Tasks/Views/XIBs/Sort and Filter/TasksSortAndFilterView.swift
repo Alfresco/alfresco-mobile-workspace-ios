@@ -36,6 +36,8 @@ class TasksSortAndFilterView: UIView {
     private let textChipMaxSufffix = 5
     private let chipSearchCellMinimWidth: CGFloat = 52.0
     private let chipSearchCellMinimHeight: CGFloat = 32.0
+    typealias TaskListFilterCallBack = (_ type: ComponentType?, _ value: [String]) -> Void
+    var callBack: TaskListFilterCallBack?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -72,10 +74,12 @@ class TasksSortAndFilterView: UIView {
         }
     }
     
-    @IBAction func resetFilterButtonAction(_ sender: Any) {        
-        viewModel.resetChipsAction()
+    @IBAction func resetFilterButtonAction(_ sender: Any) {
+        viewModel.resetChipsAction { isDone in
+            AnalyticsManager.shared.taskFilters(name: "\(Event.Action.taskFilterReset)")
+            self.callBack?(nil, [])
+        }
         chipsCollectionView.reloadData()
-        AnalyticsManager.shared.taskFilters(name: "\(Event.Action.taskFilterReset)")
     }
     
     func addChipsCollectionViewFlowLayout() {
@@ -323,12 +327,48 @@ extension TasksSortAndFilterView {
         let selectedValue = self.viewModel.chips[indexPath.row].selectedValue ?? ""
         if !selectedValue.isEmpty {
             reloadChipCollectionWithoutScroll()
-            // call api
+            self.updateResult(for: chip)
         } else {
             reloadChipCollectionWithoutScroll()
             self.deSelectChipCollectionCell(for: indexPath)
-            // call api
+            self.updateResult(for: chip)
         }
+    }
+    
+    private func updateResult(for chip: TaskChipItem) {
+        if chip.componentType == .createdDateRange {
+            updateDateRangeComponent(for: chip)
+        } else if chip.componentType == .radio {
+            updateRadioComponent(for: chip)
+        } else if chip.componentType == .text {
+            updateTextComponent(for: chip)
+        }
+    }
+    
+    private func updateDateRangeComponent(for chip: TaskChipItem) {
+        let fromDate = chip.options[0].value ?? ""
+        let toDate = chip.options[1].value ?? ""
+        self.callBack?(chip.componentType, [fromDate, toDate])
+    }
+    
+    private func updateRadioComponent(for chip: TaskChipItem) {
+        var callBackTriggered = false
+        let options = chip.options
+        for option in options where option.isSelected {
+            callBackTriggered = true
+            let value = option.value ?? ""
+            self.callBack?(chip.componentType, [value])
+            break
+        }
+        
+        if callBackTriggered == false {
+            self.callBack?(chip.componentType, [""])
+        }
+    }
+    
+    private func updateTextComponent(for chip: TaskChipItem) {
+        let text = chip.selectedValue ?? ""
+        self.callBack?(chip.componentType, [text])
     }
 }
 

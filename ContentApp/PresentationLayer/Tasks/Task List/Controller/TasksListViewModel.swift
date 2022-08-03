@@ -28,6 +28,7 @@ class TasksListViewModel: NSObject {
     var shouldRefreshList = true
     var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
+    lazy var filterParams = TaskListFilterParams()
     
     init(services: CoordinatorServices) {
         self.services = services

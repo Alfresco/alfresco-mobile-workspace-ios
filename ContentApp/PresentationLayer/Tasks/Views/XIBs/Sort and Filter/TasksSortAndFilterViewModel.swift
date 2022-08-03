@@ -70,7 +70,7 @@ class TasksSortAndFilterViewModel: NSObject {
         completionHandler(true)
     }
     
-    func resetChipsAction() {
+    func resetChipsAction(_ completionHandler: @escaping (_ isDone: Bool?) -> Void) {
         
         let filteredChips = self.chips.filter({($0.selectedValue != nil)})
         if !filteredChips.isEmpty {
@@ -91,6 +91,7 @@ class TasksSortAndFilterViewModel: NSObject {
                     self.chips[index] = chip
                 }
             }
+            completionHandler(true)
         }
     }
 }
