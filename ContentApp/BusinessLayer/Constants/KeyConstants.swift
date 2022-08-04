@@ -64,4 +64,9 @@ struct KeyConstants {
         static let uploadedNodes = "uploadedNodes"
         static let userDidInitiateLogout = "userDidInitiateLogout"
     }
+    
+    struct Tasks {
+        static let configFile = "task_filters"
+        static let configFileExtension = "json"
+    }
 }

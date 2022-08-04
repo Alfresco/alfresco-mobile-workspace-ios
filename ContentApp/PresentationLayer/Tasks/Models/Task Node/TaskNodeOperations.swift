@@ -16,7 +16,6 @@
 //  limitations under the License.
 //
 
-import UIKit
 import AlfrescoContent
 
 class TaskNodeOperations: NSObject {

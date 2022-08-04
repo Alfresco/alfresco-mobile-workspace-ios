@@ -26,13 +26,10 @@ class TasksListViewModel: NSObject {
     var page = 0
     var requestInProgress = false
     var shouldRefreshList = true
-    var groupedTasks: [TaskNode] = []
-    var rawTasks: [TaskNode] = [] {
-        didSet {
-            createSectionArray(rawTasks)
-        }
-    }
+    var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
+    lazy var filterParams = TaskListFilterParams()
+    
     init(services: CoordinatorServices) {
         self.services = services
     }
@@ -42,26 +39,21 @@ class TasksListViewModel: NSObject {
     }
     
     func numberOfItems(in section: Int) -> Int {
-        return groupedTasks.count
+        return rawTasks.count
     }
 
     func listNodes() -> [TaskNode] {
-        return groupedTasks
+        return rawTasks
     }
 
     func listNode(for indexPath: IndexPath) -> TaskNode? {
-        if !groupedTasks.isEmpty && groupedTasks.count > indexPath.row {
-            return groupedTasks[indexPath.row]
+        if !rawTasks.isEmpty && rawTasks.count > indexPath.row {
+            return rawTasks[indexPath.row]
         }
         return nil
     }
     
     func titleForSectionHeader(at indexPath: IndexPath) -> String {
-        if let listNode = self.listNode(for: indexPath) {
-            if listNode.guid == listNodeSectionIdentifier {
-                return listNode.title
-            }
-        }
         return ""
     }
     
@@ -97,20 +89,21 @@ class TasksListViewModel: NSObject {
             services.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
-                TasksAPI.getTasksList(params: params) { data, error in
-                    self.isLoading.value = false
+                TasksAPI.getTasksList(params: params) {[weak self] data, error in
+                    guard let sSelf = self else { return }
+                    sSelf.isLoading.value = false
                     if data != nil {
                         let task = data?.data ?? []
                         let taskNodes = TaskNodeOperations.processNodes(for: task)
-                        if self.shouldRefreshList {
-                            self.rawTasks.removeAll()
+                        if sSelf.shouldRefreshList {
+                            sSelf.rawTasks.removeAll()
                         }
-                        self.shouldRefreshList = false
-                        self.rawTasks.append(contentsOf: taskNodes)
-                        self.size = data?.size ?? 0
-                        self.total = data?.total ?? 0
-                        self.updatePageNumber()
-                        self.requestInProgress = false
+                        sSelf.shouldRefreshList = false
+                        sSelf.rawTasks.append(contentsOf: taskNodes)
+                        sSelf.size = data?.size ?? 0
+                        sSelf.total = data?.total ?? 0
+                        sSelf.page = sSelf.total > sSelf.size ? sSelf.page + 1 : sSelf.page
+                        sSelf.requestInProgress = false
                         completionHandler(taskNodes, nil)
                     } else {
                         completionHandler([], error)
@@ -118,51 +111,5 @@ class TasksListViewModel: NSObject {
                 }
             })
         }
-    }
-        
-    func updatePageNumber() {
-        if total > size {
-            page = page + 1
-        }
-    }
-    
-    private func createSectionArray(_ results: [TaskNode]) {
-        groupedTasks = []
-        for element in results {
-            if let date = element.created {
-                var groupType: GroupedListType = .today
-                if date.isInToday {
-                    groupType = .today
-                } else if date.isInYesterday {
-                    groupType = .yesterday
-                } else if date.isInThisWeek {
-                    groupType = .thisWeek
-                } else if date.isInLastWeek {
-                    groupType = .lastWeek
-                } else {
-                    groupType = .older
-                }
-                add(element: element, type: groupType)
-            } else {
-                add(element: element, type: .today)
-            }
-        }
-    }
-    
-    private func add(element: TaskNode, type: GroupedListType) {
-        let section = GroupedList(type: type)
-        var newGroupList = true
-        for element in groupedTasks {
-            if element.guid == listNodeSectionIdentifier &&
-                element.title == section.titleGroup {
-                newGroupList = false
-            }
-        }
-
-        if newGroupList {
-            let sectionNode = TaskNode(guid: listNodeSectionIdentifier, title: section.titleGroup)
-            groupedTasks.append(sectionNode)
-        }
-        groupedTasks.append(element)
     }
 }

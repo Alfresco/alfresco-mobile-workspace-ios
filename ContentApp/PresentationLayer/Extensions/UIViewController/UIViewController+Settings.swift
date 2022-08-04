@@ -36,6 +36,7 @@ extension UIViewController {
         let settingsButtonAspectRatio: CGFloat = 30.0
         settingsButton = UIButton(type: .custom)
         settingsButton.accessibilityIdentifier = "settingsButton"
+        settingsButton.accessibilityLabel = LocalizationConstants.Accessibility.userProfile
         settingsButton.frame = CGRect(x: 0.0, y: 0.0,
                                       width: settingsButtonAspectRatio,
                                       height: settingsButtonAspectRatio)

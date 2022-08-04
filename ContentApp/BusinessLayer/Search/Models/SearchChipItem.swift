@@ -28,7 +28,7 @@ enum CMType: String {
 }
 
 // MARK: Component Types for Advance Search
-enum ComponentType: String {
+enum ComponentType: String, Codable {
     case text = "text"
     case checkList = "check-list"
     case contentSize = "slider"

@@ -27,9 +27,21 @@ class SearchCalendarComponentViewModel: NSObject {
     var selectedFromDate: Date?
     var selectedToDate: Date?
     var queryBuilder: String?
+    var taskChip: TaskChipItem?
+    
+    var isTaskFilter: Bool {
+        if taskChip != nil {
+            return true
+        }
+        return false
+    }
 
     var title: String {
-        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        if isTaskFilter {
+            return NSLocalizedString(taskChip?.name ?? "", comment: "")
+        } else {
+            return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        }
     }
     
     var dateFormat: String {
@@ -47,11 +59,25 @@ class SearchCalendarComponentViewModel: NSObject {
         return dateFormatter.string(from: date)
     }
     
-    func date(from dateString: String) -> Date? {
+    func date(from dateString: String, format: String? = nil) -> Date? {
+        var localDateFormat = dateFormat
+        if format != nil {
+            localDateFormat = format!
+        }
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.dateFormat = dateFormat
+        dateFormatter.dateFormat = localDateFormat
         return dateFormatter.date(from: dateString)
+    }
+    
+    func formatDate(from dateString: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = dateFormat
+            return dateFormatter.string(from: date)
+        }
+        return nil
     }
     
     func getMinimumAndMaximumDateForFromTextField() -> (minimumDate: Date?, maximumDate: Date?) {
@@ -84,17 +110,27 @@ class SearchCalendarComponentViewModel: NSObject {
     
     // MARK: - Update Selected Values
     func getPrefilledValues() -> (fromDate: String?, toDate: String?) {
-        if let selectedCategory = self.selectedCategory {
+        var selectedValue = ""
+        if isTaskFilter {
+            selectedValue = taskChip?.selectedValue ?? ""
+        } else if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
-            let selectedValue = component?.settings?.selectedValue ?? ""
-            let valuesArray = selectedValue.components(separatedBy: stringConcatenator)
-            if valuesArray.count > 1 {
-                let fromDate = valuesArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
-                let toDate = valuesArray[1].trimmingCharacters(in: .whitespacesAndNewlines)
-                selectedFromDate = self.date(from: fromDate)
-                selectedToDate = self.date(from: toDate)
-                return (fromDate, toDate)
-            }
+            selectedValue = component?.settings?.selectedValue ?? ""
+        }
+        
+        let valuesArray = selectedValue.components(separatedBy: stringConcatenator)
+        if valuesArray.count > 1 {
+            let fromDate = valuesArray[0].trimmingCharacters(in: .whitespacesAndNewlines)
+            let toDate = valuesArray[1].trimmingCharacters(in: .whitespacesAndNewlines)
+            selectedFromDate = self.date(from: fromDate)
+            selectedToDate = self.date(from: toDate)
+            return (fromDate, toDate)
+        } else if let chip = taskChip {
+            let fromDate = self.formatDate(from: chip.options[0].value ?? "") ?? ""
+            let toDate = self.formatDate(from: chip.options[1].value ?? "") ?? ""
+            selectedFromDate = self.date(from: fromDate, format: "yyyy-MM-dd")
+            selectedToDate = self.date(from: toDate, format: "yyyy-MM-dd")
+            return (fromDate, toDate)
         }
         return (nil, nil)
     }
@@ -103,7 +139,9 @@ class SearchCalendarComponentViewModel: NSObject {
     func applyFilter(fromValue: String?, toValue: String?) {
         let minimumValue = (fromValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let maximumValue = (toValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        if !minimumValue.isEmpty && !maximumValue.isEmpty {
+        if isTaskFilter {
+            self.applyTaskFilter(fromValue: fromValue, toValue: toValue)
+        } else if !minimumValue.isEmpty && !maximumValue.isEmpty {
             let value = String(format: "%@ %@ %@", minimumValue, stringConcatenator, maximumValue)
             if let selectedCategory = self.selectedCategory {
                 let component = selectedCategory.component
@@ -117,9 +155,37 @@ class SearchCalendarComponentViewModel: NSObject {
         }
     }
     
+    func applyTaskFilter(fromValue: String?, toValue: String?) {
+        let minimumValue = (fromValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let maximumValue = (toValue ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if let options = taskChip?.options {
+            var value = ""
+            if !minimumValue.isEmpty && !maximumValue.isEmpty {
+                value = String(format: "%@ %@ %@", minimumValue, stringConcatenator, maximumValue)
+                
+                options[0].isSelected = true
+                options[1].isSelected = true
+                options[0].value = getTaskDateString(from: getSelectedFromDate())
+                options[1].value = getTaskDateString(from: getSelectedToDate())
+            } else if !minimumValue.isEmpty {
+                value = minimumValue
+                options[0].isSelected = true
+                options[0].value = getTaskDateString(from: getSelectedFromDate())
+            } else if !maximumValue.isEmpty {
+                value = maximumValue
+                options[1].isSelected = true
+                options[1].value = getTaskDateString(from: getSelectedToDate())
+            }
+            taskChip?.selectedValue = value
+            taskChip?.options = options
+        }
+    }
+    
     // MARK: - Reset Filter
     func resetFilter() {
-        if let selectedCategory = self.selectedCategory {
+        if isTaskFilter {
+            resetTaskFilter()
+        } else if let selectedCategory = self.selectedCategory {
             let component = selectedCategory.component
             let settings = component?.settings
             settings?.selectedValue = nil
@@ -127,6 +193,17 @@ class SearchCalendarComponentViewModel: NSObject {
             selectedCategory.component = component
             self.selectedCategory = selectedCategory
             queryBuilder = buildQuery(with: nil)
+        }
+    }
+    
+    func resetTaskFilter() {
+        if let chip = taskChip {
+            chip.selectedValue = nil
+            for index in 0 ..< chip.options.count {
+                chip.options[index].isSelected = false
+                chip.options[index].value = nil
+            }
+            taskChip = chip
         }
     }
     
@@ -145,6 +222,13 @@ class SearchCalendarComponentViewModel: NSObject {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone.current
         dateFormatter.dateFormat = "yyyy-MM-dd'T'\(time)Z"
+        return dateFormatter.string(from: date)
+    }
+    
+    func getTaskDateString(from date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: date)
     }
 }

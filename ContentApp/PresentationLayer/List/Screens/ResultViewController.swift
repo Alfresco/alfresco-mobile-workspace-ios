@@ -759,6 +759,7 @@ extension ResultViewController {
     }
 }
 
+// MARK: - Bottom sheet delegate
 extension ResultViewController: MDCBottomSheetControllerDelegate {
     func bottomSheetControllerDidDismissBottomSheet(_ controller: MDCBottomSheetController) {
         self.resetChip()

@@ -306,4 +306,16 @@ struct LocalizationConstants {
         static let high = NSLocalizedString("high", comment: "")
         static let notConfiguredMessage = NSLocalizedString("task-service-not-configured-message", comment: "")
     }
+    
+    struct Accessibility {
+        static let userProfile = NSLocalizedString("user-profile", comment: "")
+        static let resetFilters = NSLocalizedString("reset-filters", comment: "")
+        static let tasksCollection = NSLocalizedString("tasks-filter-collection", comment: "")
+        static let tasksCollectionHint = NSLocalizedString("tasks-filter-collection-hint", comment: "")
+        static let priority = NSLocalizedString("priority", comment: "")
+        static let title = NSLocalizedString("title", comment: "")
+        static let assignee = NSLocalizedString("assignee", comment: "")
+        static let closeButton = NSLocalizedString("close-button", comment: "")
+        static let listOption = NSLocalizedString("list-option", comment: "")
+    }
 }
