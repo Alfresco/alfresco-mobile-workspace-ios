@@ -26,9 +26,22 @@ class SearchListComponentViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     let stringConcatenator = ", "
     var queryBuilder: String?
+    var taskChip: TaskChipItem?
+    var taskSelectedOptions = [TaskOptions]()
 
+    var isTaskFilter: Bool {
+        if taskChip != nil {
+            return true
+        }
+        return false
+    }
+    
     var title: String {
-        return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        if isTaskFilter {
+            return NSLocalizedString(taskChip?.name ?? "", comment: "")
+        } else {
+            return NSLocalizedString(selectedCategory?.name ?? "", comment: "")
+        }
     }
     
     // MARK: - Query Builder

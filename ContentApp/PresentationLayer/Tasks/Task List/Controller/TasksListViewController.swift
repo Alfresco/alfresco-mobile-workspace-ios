@@ -35,6 +35,7 @@ class TasksListViewController: SystemSearchViewController {
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
     let sectionCellHeight: CGFloat = 54.0
+    var sortFilterView: TasksSortAndFilterView?
     
     // MARK: - View did load
     override func viewDidLoad() {
@@ -45,11 +46,10 @@ class TasksListViewController: SystemSearchViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         addSettingsButton(action: #selector(settingsButtonTapped), target: self)
-        searchController = createSearchController()
-        navigationItem.searchController = searchController
         addRefreshControl()
         setupBindings()
         registerCells()
+        addSortAndFilterView()
         getTaskList()
         
         // ReSignIn Notification
@@ -110,11 +110,17 @@ class TasksListViewController: SystemSearchViewController {
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
     }
     
     // MARK: - Get Tasks List
     func getTaskList() {
-        let params = TaskListParams(page: viewModel.page)
+        let params = TaskListParams(dueAfter: viewModel.filterParams.dueAfter,
+                                    dueBefore: viewModel.filterParams.dueBefore,
+                                    page: viewModel.page,
+                                    state: viewModel.filterParams.state,
+                                    text: viewModel.filterParams.text)
+        
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
             if error == nil {
@@ -184,26 +190,6 @@ class TasksListViewController: SystemSearchViewController {
             }
         }
         collectionView.setContentOffset(pointToScroll, animated: true)
-    }
-    
-    private func createSearchController() -> UISearchController {
-        
-        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
-        let rvc = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.searchTasks) as? SearchTasksViewController
-        rvc?.coordinatorServices = coordinatorServices
-        tasksResultsViewController = rvc
-
-        let searchController = UISearchController(searchResultsController: tasksResultsViewController)
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.delegate = self
-        searchController.searchResultsUpdater = self
-        searchController.delegate = self
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.smartQuotesType = .no
-        searchController.searchBar.isAccessibilityElement = true
-        searchController.searchBar.accessibilityIdentifier = "searchBar"
-        searchController.showsSearchResultsController = true
-        return searchController
     }
     
     // MARK: - Public Helpers
@@ -306,5 +292,58 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             }
             return cell
         }
+    }
+}
+
+// MARK: - Filter View Delegate
+
+extension TasksListViewController {
+    func addSortAndFilterView() {
+        if let sortFilterView: TasksSortAndFilterView = .fromNib() {
+            sortFilterView.frame = CGRect(x: 0, y: topBarHeight+10.0, width: self.view.frame.size.width, height: 43.0)
+            sortFilterView.buildDataSource()
+            self.view.addSubview(sortFilterView)
+            self.sortFilterView = sortFilterView
+            sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
+                self.updateComponent(type: type, value: value)
+            }
+        }
+    }
+    
+    private func updateComponent(type: ComponentType?, value: [String]) {
+        switch type {
+        case .createdDateRange:
+            self.updateCalendarComponent(with: value)
+        case .radio:
+            self.updateStatusComponent(with: value)
+        case .text:
+            self.updateTextComponent(with: value)
+        default:
+            self.resetComponents()
+        }
+    }
+    
+    private func updateCalendarComponent(with value: [String]) {
+        self.viewModel.filterParams.dueAfter = value[0]
+        self.viewModel.filterParams.dueBefore = value[1]
+        self.handlePullToRefresh()
+    }
+    
+    private func updateStatusComponent(with value: [String]) {
+        self.viewModel.filterParams.state = value.first
+        self.handlePullToRefresh()
+    }
+    
+    private func updateTextComponent(with value: [String]) {
+        self.viewModel.filterParams.text = value.first
+        self.handlePullToRefresh()
+    }
+    
+    private func resetComponents() {
+        self.viewModel.filterParams.dueBefore = nil
+        self.viewModel.filterParams.dueAfter = nil
+        self.viewModel.filterParams.state = nil
+        self.viewModel.filterParams.text = nil
+        self.handlePullToRefresh()
     }
 }

@@ -27,6 +27,7 @@ class ActionMenu {
     }
     var icon: UIImage
     var analyticEventName: String
+    
     init(title: String, type: ActionMenuType, icon: UIImage? = nil) {
         self.title = title
         self.type = type
