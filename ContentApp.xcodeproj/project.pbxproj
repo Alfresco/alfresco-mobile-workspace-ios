@@ -240,6 +240,10 @@
 		C9A759AF289BCA37006603E0 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759AD289BCA37006603E0 /* InfoTableViewCell.swift */; };
 		C9A759B0289BCA37006603E0 /* InfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9A759AE289BCA37006603E0 /* InfoTableViewCell.xib */; };
 		C9A759B2289BCA49006603E0 /* InfoTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759B1289BCA49006603E0 /* InfoTableCellViewModel.swift */; };
+		C9A759B5289BD6FA006603E0 /* PriorityTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759B3289BD6FA006603E0 /* PriorityTableViewCell.swift */; };
+		C9A759B6289BD6FA006603E0 /* PriorityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9A759B4289BD6FA006603E0 /* PriorityTableViewCell.xib */; };
+		C9A759B8289BD70B006603E0 /* PriorityTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759B7289BD70B006603E0 /* PriorityTableCellViewModel.swift */; };
+		C9A759BB289BE415006603E0 /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A759BA289BE415006603E0 /* Enums.swift */; };
 		C9A9108027A7B455002EBC7F /* ConnectivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30B077B25B6C9FA0030FE3B /* ConnectivityService.swift */; };
 		C9A9108127A7B45B002EBC7F /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F115D4702657DAE00049EF8D /* LocationService.swift */; };
 		C9A9108227A7B460002EBC7F /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91A5E47247825E20063E938 /* ServiceRepository.swift */; };
@@ -916,6 +920,10 @@
 		C9A759AD289BCA37006603E0 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
 		C9A759AE289BCA37006603E0 /* InfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoTableViewCell.xib; sourceTree = "<group>"; };
 		C9A759B1289BCA49006603E0 /* InfoTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoTableCellViewModel.swift; sourceTree = "<group>"; };
+		C9A759B3289BD6FA006603E0 /* PriorityTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityTableViewCell.swift; sourceTree = "<group>"; };
+		C9A759B4289BD6FA006603E0 /* PriorityTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PriorityTableViewCell.xib; sourceTree = "<group>"; };
+		C9A759B7289BD70B006603E0 /* PriorityTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityTableCellViewModel.swift; sourceTree = "<group>"; };
+		C9A759BA289BE415006603E0 /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		C9A9FB3B27ABB30F0091B7E8 /* ShareViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		C9A9FB3C27ABB30F0091B7E8 /* ShareViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareViewModel.swift; sourceTree = "<group>"; };
 		C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestSearchViewModel.swift; sourceTree = "<group>"; };
@@ -2130,6 +2138,9 @@
 		C9A759A3289BBAD9006603E0 /* Priority Table Cell */ = {
 			isa = PBXGroup;
 			children = (
+				C9A759B3289BD6FA006603E0 /* PriorityTableViewCell.swift */,
+				C9A759B7289BD70B006603E0 /* PriorityTableCellViewModel.swift */,
+				C9A759B4289BD6FA006603E0 /* PriorityTableViewCell.xib */,
 			);
 			path = "Priority Table Cell";
 			sourceTree = "<group>";
@@ -2152,6 +2163,14 @@
 				C9A759AE289BCA37006603E0 /* InfoTableViewCell.xib */,
 			);
 			path = "Info Table Cell";
+			sourceTree = "<group>";
+		};
+		C9A759B9289BE403006603E0 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				C9A759BA289BE415006603E0 /* Enums.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		C9A9FB3827ABB30F0091B7E8 /* Controllers */ = {
@@ -2805,6 +2824,7 @@
 				B96B9AF22480F9D70035AE97 /* Extensions */,
 				C940BB8C286024040064E2E7 /* Analytics  */,
 				B96B9AF32480FA5A0035AE97 /* Constants */,
+				C9A759B9289BE403006603E0 /* Helper */,
 				B96B9AF42480FA710035AE97 /* Services */,
 				E334C07724755E7E00F74880 /* Localization */,
 			);
@@ -3280,6 +3300,7 @@
 				C9A759A1289BBAA1006603E0 /* TaskListCollectionViewCell.xib in Resources */,
 				E369009F24C8552F00F03D60 /* Inter-Black.ttf in Resources */,
 				C9AEE04A270D9D9E00880235 /* advance-search-config.json in Resources */,
+				C9A759B6289BD6FA006603E0 /* PriorityTableViewCell.xib in Resources */,
 				B9F17145256C115A00AD1E3A /* powerpoint.pptx in Resources */,
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
@@ -3807,6 +3828,7 @@
 				C9A759AB289BBB72006603E0 /* TitleTableCellViewModel.swift in Sources */,
 				4DEE4C8A2630413200D9D368 /* ShutterButton.swift in Sources */,
 				E3A87A38251CBB2100AE8175 /* String+CompareVersions.swift in Sources */,
+				C9A759BB289BE415006603E0 /* Enums.swift in Sources */,
 				E3D9C03124D93AB60034D3CB /* RefreshIndicatorView.swift in Sources */,
 				C91303B2275F4DA4001F84D4 /* SearchFacetListComponentController.swift in Sources */,
 				C9C51F1B286BEE88007D5BCF /* AnalyticsManager+APITracker.swift in Sources */,
@@ -3904,6 +3926,7 @@
 				C9AEE049270D9D9E00880235 /* ConfigurationHelper.swift in Sources */,
 				E3E2BDA624CC29BC00D8A7EC /* SharedLinkMapper.swift in Sources */,
 				B99E1C47247FA77300116F05 /* CALayer+Animations.swift in Sources */,
+				C9A759B5289BD6FA006603E0 /* PriorityTableViewCell.swift in Sources */,
 				B9A9F124263AEAB800F4428D /* CameraKitTheme.swift in Sources */,
 				B99D9BBA24866F1400FBFC9B /* GetContentServicesProfile.swift in Sources */,
 				C973EC612726959C00912015 /* SearchListComponentViewController.swift in Sources */,
@@ -3953,6 +3976,7 @@
 				C9A759AF289BCA37006603E0 /* InfoTableViewCell.swift in Sources */,
 				B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
+				C9A759B8289BD70B006603E0 /* PriorityTableCellViewModel.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,
 				B93E08FA25665297009732C3 /* PrivacyNoticeViewController.swift in Sources */,
 				F14E68B226173B6B002FDEF9 /* CapturedAsset.swift in Sources */,

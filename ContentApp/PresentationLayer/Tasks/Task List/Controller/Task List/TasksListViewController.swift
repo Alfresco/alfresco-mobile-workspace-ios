@@ -75,16 +75,12 @@ class TasksListViewController: SystemSearchViewController {
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
     
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        collectionView.reloadData()
-        updateTheme()
-    }
-    
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         collectionView?.collectionViewLayout.invalidateLayout()
+        sortFilterView?.backgroundColor = .blue
+        print("******* TOP BAR HEIGHT ****** \(topBarHeight)")
     }
     
     func addRefreshControl() {

@@ -18,12 +18,6 @@
 
 import UIKit
 
-enum TaskPriority {
-    case low
-    case medium
-    case high
-}
-
 class TaskListCollectionCellViewModel: NSObject {
     var task: TaskNode?
     
