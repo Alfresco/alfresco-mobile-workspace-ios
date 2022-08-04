@@ -29,6 +29,7 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var filterBaseView: UIView!    
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
@@ -79,8 +80,6 @@ class TasksListViewController: SystemSearchViewController {
                                      with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         collectionView?.collectionViewLayout.invalidateLayout()
-        sortFilterView?.backgroundColor = .blue
-        print("******* TOP BAR HEIGHT ****** \(topBarHeight)")
     }
     
     func addRefreshControl() {
@@ -304,9 +303,9 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
 extension TasksListViewController {
     func addSortAndFilterView() {
         if let sortFilterView: TasksSortAndFilterView = .fromNib() {
-            sortFilterView.frame = CGRect(x: 0, y: topBarHeight+10.0, width: self.view.frame.size.width, height: 43.0)
+            sortFilterView.frame = CGRect(x: 0, y: 0, width: filterBaseView.frame.size.width, height: 43.0)
             sortFilterView.buildDataSource()
-            self.view.addSubview(sortFilterView)
+            filterBaseView.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
             sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
                 self.updateComponent(type: type, value: value)
