@@ -324,8 +324,8 @@ extension TasksListViewController {
     }
     
     private func updateCalendarComponent(with value: [String]) {
-        self.viewModel.filterParams.dueBefore = value[0]
-        self.viewModel.filterParams.dueAfter = value[1]
+        self.viewModel.filterParams.dueAfter = value[0]
+        self.viewModel.filterParams.dueBefore = value[1]
         self.handlePullToRefresh()
     }
     
