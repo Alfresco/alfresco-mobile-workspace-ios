@@ -21,17 +21,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="364" height="60"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0P-Qd-tg9" userLabel="titleLabel">
-                                <rect key="frame" x="20" y="10" width="324" height="40"/>
+                                <rect key="frame" x="15" y="15" width="334" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="C0P-Qd-tg9" firstAttribute="top" secondItem="DTE-7I-5xk" secondAttribute="top" constant="10" id="Kmf-pB-cIW"/>
-                            <constraint firstAttribute="trailing" secondItem="C0P-Qd-tg9" secondAttribute="trailing" constant="20" id="M3P-jf-VWs"/>
-                            <constraint firstItem="C0P-Qd-tg9" firstAttribute="leading" secondItem="DTE-7I-5xk" secondAttribute="leading" constant="20" id="a1D-ba-n5N"/>
-                            <constraint firstAttribute="bottom" secondItem="C0P-Qd-tg9" secondAttribute="bottom" constant="10" id="wGH-sL-qua"/>
+                            <constraint firstItem="C0P-Qd-tg9" firstAttribute="top" secondItem="DTE-7I-5xk" secondAttribute="top" constant="15" id="Kmf-pB-cIW"/>
+                            <constraint firstAttribute="trailing" secondItem="C0P-Qd-tg9" secondAttribute="trailing" constant="15" id="M3P-jf-VWs"/>
+                            <constraint firstItem="C0P-Qd-tg9" firstAttribute="leading" secondItem="DTE-7I-5xk" secondAttribute="leading" constant="15" id="a1D-ba-n5N"/>
+                            <constraint firstAttribute="bottom" secondItem="C0P-Qd-tg9" secondAttribute="bottom" constant="15" id="wGH-sL-qua"/>
                         </constraints>
                     </view>
                 </subviews>

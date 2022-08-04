@@ -16,18 +16,38 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 import AlfrescoContent
 
-class TaskDetailViewModel: NSObject {
-    var services: CoordinatorServices
+class TaskDetailViewModel {
+    var services: CoordinatorServices?
     var taskNode: TaskNode?
-    
-    init(services: CoordinatorServices) {
-        self.services = services
-    }
-    
+    let rowViewModels = Observable<[RowViewModel]>([])
+
     var name: String? {
         return taskNode?.name
     }
+    
+    var dueDate: Date? {
+        return taskNode?.dueDate
+    }
+    
+    func getDueDate() -> String? {
+        if let dueDate = dueDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMM yyyy"
+            return dateFormatter.string(from: dueDate)
+        }
+        return nil
+    }
+    
+    var priority: Int? {
+        return taskNode?.priority
+    }
+    
+    var assigneeName: String {
+        let firstName = taskNode?.assignee?.firstName ?? ""
+        let lastName = taskNode?.assignee?.lastName ?? ""
+        return String(format: "%@ %@", firstName, lastName)
+    }    
 }

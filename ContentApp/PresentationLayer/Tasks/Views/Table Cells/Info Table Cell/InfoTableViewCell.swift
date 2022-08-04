@@ -54,7 +54,7 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
         infoImageView.tintColor = currentTheme.onSurfaceColor
-        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         valueLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
     }
 }

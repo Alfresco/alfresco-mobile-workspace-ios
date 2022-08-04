@@ -141,17 +141,30 @@
                                     <constraint firstAttribute="height" constant="2" id="DR2-yE-OUj"/>
                                 </constraints>
                             </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Vxl-Fo-Jkp">
+                                <rect key="frame" x="0.0" y="56" width="414" height="806"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="6ED-HH-jw4" id="yei-M6-ffi"/>
+                                    <outlet property="delegate" destination="6ED-HH-jw4" id="Wro-fY-MH0"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="JlV-s5-609"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Vxl-Fo-Jkp" firstAttribute="top" secondItem="7Xz-dz-F5b" secondAttribute="bottom" constant="10" id="6hO-F0-Unt"/>
                             <constraint firstItem="7Xz-dz-F5b" firstAttribute="top" secondItem="JlV-s5-609" secondAttribute="top" id="DY4-Df-Ayk"/>
+                            <constraint firstItem="JlV-s5-609" firstAttribute="bottom" secondItem="Vxl-Fo-Jkp" secondAttribute="bottom" id="Jgk-1r-aIy"/>
                             <constraint firstItem="7Xz-dz-F5b" firstAttribute="leading" secondItem="Xas-5K-pnv" secondAttribute="leading" id="Mw2-CN-aRK"/>
+                            <constraint firstItem="JlV-s5-609" firstAttribute="trailing" secondItem="Vxl-Fo-Jkp" secondAttribute="trailing" id="QDq-oi-gM3"/>
                             <constraint firstAttribute="trailing" secondItem="7Xz-dz-F5b" secondAttribute="trailing" id="lAu-8Y-Hit"/>
+                            <constraint firstItem="Vxl-Fo-Jkp" firstAttribute="leading" secondItem="JlV-s5-609" secondAttribute="leading" id="yBF-c0-JoZ"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="progressView" destination="7Xz-dz-F5b" id="GtJ-L6-uPv"/>
+                        <outlet property="tableView" destination="Vxl-Fo-Jkp" id="JAy-YF-p4w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hbA-Wo-oxk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

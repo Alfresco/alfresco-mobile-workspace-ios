@@ -29,15 +29,14 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        priorityView.layer.cornerRadius = priorityView.frame.size.height / 2.0
     }
     
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? PriorityTableCellViewModel else { return }
         self.viewModel = viewModel
-//        infoImageView.image = viewModel.image
-//        titleLabel.text = viewModel.title
-//        valueLabel.text = viewModel.value
-//        addAccessibility()
+        titleLabel.text = viewModel.title
+        addAccessibility()
     }
     
     private func addAccessibility() {
@@ -56,6 +55,10 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
         priorityIcon.tintColor = currentTheme.onSurfaceColor
-        titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        
+        priorityLabel.textColor = viewModel?.getPriorityValues(for: currentTheme).textColor
+        priorityView.backgroundColor = viewModel?.getPriorityValues(for: currentTheme).backgroundColor
+        priorityLabel.text = viewModel?.getPriorityValues(for: currentTheme).priorityText
     }
 }

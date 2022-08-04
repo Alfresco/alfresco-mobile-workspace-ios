@@ -21,7 +21,7 @@ import UIKit
 class PriorityTableCellViewModel: RowViewModel {
     
     var title: String?
-    var priority: Int?
+    var priority: Int = 0
     
     func cellIdentifier() -> String {
         return "PriorityTableViewCell"
@@ -30,6 +30,38 @@ class PriorityTableCellViewModel: RowViewModel {
     init(title: String?,
          priority: Int?) {
         self.title = title
-        self.priority = priority
+        self.priority = priority ?? 0
+    }
+    
+    var taskPriority: TaskPriority {
+        if priority >= 0 && priority <= 3 {
+            return .low
+        } else if priority >= 4 && priority <= 7 {
+            return .medium
+        } else {
+            return .high
+        }
+    }
+    
+    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
+       
+        var textColor: UIColor = currentTheme.taskErrorTextColor
+        var backgroundColor: UIColor = currentTheme.taskErrorContainer
+        var priorityText = LocalizationConstants.Tasks.low
+       
+        if taskPriority == .low {
+            textColor = currentTheme.taskSuccessTextColor
+            backgroundColor = currentTheme.taskSuccessContainer
+            priorityText = LocalizationConstants.Tasks.low
+        } else if taskPriority == .medium {
+            textColor = currentTheme.taskWarningTextColor
+            backgroundColor = currentTheme.taskWarningContainer
+            priorityText = LocalizationConstants.Tasks.medium
+        } else if taskPriority == .high {
+            textColor = currentTheme.taskErrorTextColor
+            backgroundColor = currentTheme.taskErrorContainer
+            priorityText = LocalizationConstants.Tasks.high
+        }
+        return(textColor, backgroundColor, priorityText)
     }
 }

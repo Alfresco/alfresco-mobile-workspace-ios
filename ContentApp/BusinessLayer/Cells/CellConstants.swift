@@ -29,5 +29,8 @@ struct CellConstants {
     
     struct TableCells {
         static let listItem = "ListItemTableViewCell"
+        static let titleCell = "TitleTableViewCell"
+        static let infoCell = "InfoTableViewCell"
+        static let priorityCell = "PriorityTableViewCell"
     }
 }
