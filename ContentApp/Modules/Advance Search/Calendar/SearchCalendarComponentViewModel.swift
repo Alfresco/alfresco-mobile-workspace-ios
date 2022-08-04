@@ -82,14 +82,26 @@ class SearchCalendarComponentViewModel: NSObject {
     
     func getMinimumAndMaximumDateForFromTextField() -> (minimumDate: Date?, maximumDate: Date?) {
         if let toDate = selectedToDate {
-            return (nil, toDate)
+            if isTaskFilter {
+                return (nil, toDate)
+            } else {
+                return (nil, toDate)
+            }
+        } else if isTaskFilter {
+            return (nil, nil)
         }
         return (nil, Date())
     }
     
     func getMinimumAndMaximumDateForToTextField() -> (minimumDate: Date?, maximumDate: Date?) {
         if let fromDate = selectedFromDate {
-            return (fromDate, Date())
+            if isTaskFilter {
+                return (fromDate, nil)
+            } else {
+                return (fromDate, Date())
+            }
+        } else if isTaskFilter {
+            return (nil, nil)
         }
         return (nil, Date())
     }
