@@ -90,8 +90,6 @@ class TaskDetailViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.taskDetailTitle
-        
-        //viewModel.name
     }
     
     func registerCells() {
