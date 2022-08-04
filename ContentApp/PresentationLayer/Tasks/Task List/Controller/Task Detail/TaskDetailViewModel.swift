@@ -17,16 +17,17 @@
 //
 
 import UIKit
+import AlfrescoContent
 
-struct StoryboardConstants {
+class TaskDetailViewModel: NSObject {
+    var services: CoordinatorServices
+    var taskNode: TaskNode?
     
-    struct storyboard {
-        static let tasks = "Tasks"
+    init(services: CoordinatorServices) {
+        self.services = services
     }
     
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
+    var name: String? {
+        return taskNode?.name
     }
 }
-

@@ -23,8 +23,6 @@ import AlfrescoContent
 class TasksListViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    private var searchController: UISearchController?
-    private let searchButtonAspectRatio: CGFloat = 30.0
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
@@ -41,7 +39,6 @@ class TasksListViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set up progress view
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -291,6 +288,17 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
                 getTaskList()
             }
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let taskNode = viewModel.listNode(for: indexPath)
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.taskNode = taskNode
+            self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
 }

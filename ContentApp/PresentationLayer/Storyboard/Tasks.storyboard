@@ -115,6 +115,38 @@
             </objects>
             <point key="canvasLocation" x="-14" y="73"/>
         </scene>
+        <!--Task Detail View Controller-->
+        <scene sceneID="OU4-4x-WUG">
+            <objects>
+                <viewController storyboardIdentifier="TaskDetailViewController" id="6ED-HH-jw4" customClass="TaskDetailViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Xas-5K-pnv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Xz-dz-F5b" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="DR2-yE-OUj"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="JlV-s5-609"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="7Xz-dz-F5b" firstAttribute="top" secondItem="JlV-s5-609" secondAttribute="top" id="DY4-Df-Ayk"/>
+                            <constraint firstItem="7Xz-dz-F5b" firstAttribute="leading" secondItem="Xas-5K-pnv" secondAttribute="leading" id="Mw2-CN-aRK"/>
+                            <constraint firstAttribute="trailing" secondItem="7Xz-dz-F5b" secondAttribute="trailing" id="lAu-8Y-Hit"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="7Xz-dz-F5b" id="GtJ-L6-uPv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hbA-Wo-oxk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="722" y="73"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="systemBackgroundColor">

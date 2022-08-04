@@ -303,6 +303,7 @@
 "medium" = "Medium";
 "high" = "High";
 "task-service-not-configured-message" = "This account is not configured on the process services.";
+"task-detail-title" = "Task view";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
