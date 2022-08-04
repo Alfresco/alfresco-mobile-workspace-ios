@@ -18,32 +18,43 @@
 
 import UIKit
 
-class TitleTableViewCell: UITableViewCell, CellConfigurable {
+class InfoTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
+    @IBOutlet weak var infoImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    var viewModel: TitleTableCellViewModel?
-    
+    @IBOutlet weak var valueLabel: UILabel!
+    var viewModel: InfoTableCellViewModel?
+
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
     func setup(viewModel: RowViewModel) {
-        guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
+        guard let viewModel = viewModel as? InfoTableCellViewModel else { return }
         self.viewModel = viewModel
+        infoImageView.image = viewModel.image
         titleLabel.text = viewModel.title
+        valueLabel.text = viewModel.value
         addAccessibility()
     }
     
     private func addAccessibility() {
-        titleLabel.accessibilityIdentifier = "title"
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
+        if let title = viewModel?.title, let value = viewModel?.value {
+            titleLabel.accessibilityIdentifier = "title-\(title)"
+            titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.dueDate
+            
+            valueLabel.accessibilityIdentifier = "value-\(value)"
+            valueLabel.accessibilityLabel = LocalizationConstants.Accessibility.dueDate
+            titleLabel.accessibilityValue = valueLabel.text
+        }
     }
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
+        infoImageView.tintColor = currentTheme.onSurfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        valueLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
     }
 }
