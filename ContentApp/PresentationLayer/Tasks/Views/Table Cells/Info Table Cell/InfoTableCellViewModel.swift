@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,19 +18,28 @@
 
 import UIKit
 
-struct CellConstants {
-    
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-        static let taskList = "TaskListCollectionViewCell"
-        static let taskSection = "TaskSectionCollectionViewCell"
+class InfoTableCellViewModel: RowViewModel {
 
+    var imageName: String?
+    var title: String?
+    var value: String?
+
+    func cellIdentifier() -> String {
+        return "InfoTableViewCell"
     }
     
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
-        static let titleCell = "TitleTableViewCell"
-        static let infoCell = "InfoTableViewCell"
-        static let priorityCell = "PriorityTableViewCell"
+    init(imageName: String?,
+         title: String?,
+         value: String?) {
+        self.imageName = imageName
+        self.title = title
+        self.value = value
+    }
+    
+    var image: UIImage? {
+        if let name = imageName, let image =  UIImage(named: name) {
+            return image
+        }
+        return nil
     }
 }

@@ -26,7 +26,7 @@ struct StoryboardConstants {
     
     struct controller {
         static let taskList = "TasksListViewController"
-        static let searchTasks = "SearchTasksViewController"
+        static let taskDetail = "TaskDetailViewController"
     }
 }
 

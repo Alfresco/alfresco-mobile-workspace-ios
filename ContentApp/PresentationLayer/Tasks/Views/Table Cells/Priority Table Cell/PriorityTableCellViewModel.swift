@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,19 +18,24 @@
 
 import UIKit
 
-struct CellConstants {
+class PriorityTableCellViewModel: RowViewModel {
     
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-        static let taskList = "TaskListCollectionViewCell"
-        static let taskSection = "TaskSectionCollectionViewCell"
-
+    var title: String?
+    var priority: String?
+    var priorityTextColor: UIColor
+    var priorityBackgroundColor: UIColor
+    
+    func cellIdentifier() -> String {
+        return "PriorityTableViewCell"
     }
     
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
-        static let titleCell = "TitleTableViewCell"
-        static let infoCell = "InfoTableViewCell"
-        static let priorityCell = "PriorityTableViewCell"
+    init(title: String?,
+         priority: String?,
+         priorityTextColor: UIColor,
+         priorityBackgroundColor: UIColor) {
+        self.title = title
+        self.priority = priority
+        self.priorityTextColor = priorityTextColor
+        self.priorityBackgroundColor = priorityBackgroundColor
     }
 }
