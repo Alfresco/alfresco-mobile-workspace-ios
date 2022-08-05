@@ -24,7 +24,6 @@ class TaskDetailViewController: SystemSearchViewController {
 
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
-    var refreshControl: UIRefreshControl?
     var viewModel: TaskDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDetailController = { return TaskDetailController() }()
     
@@ -35,12 +34,11 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.services = coordinatorServices ?? CoordinatorServices()
         progressView.progress = 0
         progressView.mode = .indeterminate
-        addRefreshControl()
         applyLocalization()
         registerCells()
         controller.buildViewModel()
         setupBindings()
-
+        getTaskDetails()
         
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
@@ -70,21 +68,6 @@ class TaskDetailViewController: SystemSearchViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
     
-    func addRefreshControl() {
-        let refreshControl = UIRefreshControl()
-        tableView.addSubview(refreshControl)
-        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
-                                 for: .valueChanged)
-        self.refreshControl = refreshControl
-    }
-    
-    // MARK: - Public interface
-    override func applyComponentsThemes() {
-        super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
-        refreshControl?.tintColor = currentTheme.primaryT1Color
-    }
-    
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.taskDetailTitle
     }
@@ -105,31 +88,40 @@ class TaskDetailViewController: SystemSearchViewController {
     func stopLoading() {
         progressView?.stopAnimating()
         progressView?.setHidden(true, animated: false)
-        refreshControl?.endRefreshing()
     }
-    
-    @objc private func handlePullToRefresh() {
-//        DispatchQueue.main.async { [weak self] in
-//            guard let sSelf = self else { return }
-//
-//            sSelf.viewModel.shouldRefreshList = true
-//            sSelf.viewModel.size = 0
-//            sSelf.viewModel.total = 0
-//            sSelf.viewModel.page = 0
-//            sSelf.getTaskList()
-//        }
-    }
-    
+
     @objc private func handleReSignIn(notification: Notification) {
-        // getTaskList()
+        getTaskDetails()
     }
     
     // MARK: - Set up Bindings
     private func setupBindings() {
+        
+        /* observer loader */
+        self.viewModel.isLoading.addObserver { [weak self] (isLoading) in
+            guard let sSelf = self else { return }
+            if isLoading {
+                sSelf.startLoading()
+            } else {
+                sSelf.stopLoading()
+            }
+        }
+        
         /* observing rows */
         self.viewModel.rowViewModels.addObserver() { [weak self] (rows) in
+            guard let sSelf = self else { return }
             DispatchQueue.main.async {
-                self?.tableView.reloadData()
+                sSelf.tableView.reloadData()
+            }
+        }
+    }
+    
+    private func getTaskDetails() {
+        let taskID = viewModel.taskID
+        viewModel.taskDetails(with: taskID) { [weak self] taskNodes, error in
+            guard let sSelf = self else { return }
+            if error != nil {
+                sSelf.controller.buildViewModel()
             }
         }
     }

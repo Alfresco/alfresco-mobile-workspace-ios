@@ -43,7 +43,9 @@ class TaskDetailController: NSObject {
         viewModel.rowViewModels.value = [titleCellVM(),
                                          dueDateCellVM(),
                                          priorityCellVM(),
-                                         assignedCellVM()
+                                         assignedCellVM(),
+                                         statusCellVM(),
+                                         identifierCellVM()
         ]
     }
     
@@ -64,6 +66,16 @@ class TaskDetailController: NSObject {
     
     private func assignedCellVM() -> InfoTableCellViewModel {
         let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.assigneeName)
+        return rowVM
+    }
+    
+    private func statusCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-status-icon", title: LocalizationConstants.Tasks.status, value: viewModel.status)
+        return rowVM
+    }
+    
+    private func identifierCellVM() -> InfoTableCellViewModel {
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID)
         return rowVM
     }
 }

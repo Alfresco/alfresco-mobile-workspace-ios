@@ -298,8 +298,12 @@ struct LocalizationConstants {
         static let high = NSLocalizedString("high", comment: "")
         static let notConfiguredMessage = NSLocalizedString("task-service-not-configured-message", comment: "")
         static let taskDetailTitle = NSLocalizedString("task-detail-title", comment: "")
+        static let active = NSLocalizedString("active-title", comment: "")
+        static let completed = NSLocalizedString("completed-title", comment: "")
+        static let status = NSLocalizedString("status-title", comment: "")
+        static let identifier = NSLocalizedString("identifier-title", comment: "")
     }
-    
+
     struct Accessibility {
         static let userProfile = NSLocalizedString("user-profile", comment: "")
         static let resetFilters = NSLocalizedString("reset-filters", comment: "")

@@ -23,6 +23,7 @@ class TaskDetailViewModel {
     var services: CoordinatorServices?
     var taskNode: TaskNode?
     let rowViewModels = Observable<[RowViewModel]>([])
+    let isLoading = Observable<Bool>(true)
 
     var name: String? {
         return taskNode?.name
@@ -48,6 +49,42 @@ class TaskDetailViewModel {
     var assigneeName: String {
         let firstName = taskNode?.assignee?.firstName ?? ""
         let lastName = taskNode?.assignee?.lastName ?? ""
-        return String(format: "%@ %@", firstName, lastName)
-    }    
+        return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    var status: String {
+        if taskNode?.endDate == nil {
+            return LocalizationConstants.Tasks.active
+        }
+        return LocalizationConstants.Tasks.completed
+    }
+    
+    var taskID: String {
+        return taskNode?.taskID ?? ""
+    }
+    
+    // MARK: - Task details
+    
+    func taskDetails(with taskId: String, completionHandler: @escaping (_ taskNodes: TaskNode?, _ error: Error?) -> Void) {
+        
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+            
+            TasksAPI.getTasksDetails(with: taskId) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if data != nil {
+                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
+                    if !taskNodes.isEmpty {
+                        sSelf.taskNode = taskNodes.first
+                        completionHandler(sSelf.taskNode, nil)
+                    }
+                    
+                } else {
+                    completionHandler(nil, error)
+                }
+            }
+        })
+    }
 }
