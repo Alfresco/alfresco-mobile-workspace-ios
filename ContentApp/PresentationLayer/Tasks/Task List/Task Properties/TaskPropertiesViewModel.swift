@@ -46,7 +46,7 @@ class TaskPropertiesViewModel: NSObject {
         }
     }
     
-    func getColors(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
+    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
        
         var textColor: UIColor = currentTheme.taskErrorTextColor
         var backgroundColor: UIColor = currentTheme.taskErrorContainer

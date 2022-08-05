@@ -25,7 +25,7 @@ class TaskDetailViewController: SystemSearchViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
     var viewModel: TaskDetailViewModel { return controller.viewModel }
-    lazy var controller: TaskDetailController = { return TaskDetailController() }()
+    lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
     // MARK: - View did load
     override func viewDidLoad() {

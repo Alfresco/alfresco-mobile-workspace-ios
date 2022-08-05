@@ -21,47 +21,21 @@ import UIKit
 class PriorityTableCellViewModel: RowViewModel {
     
     var title: String?
-    var priority: Int = 0
+    var priority: String?
+    var priorityTextColor: UIColor
+    var priorityBackgroundColor: UIColor
     
     func cellIdentifier() -> String {
         return "PriorityTableViewCell"
     }
     
     init(title: String?,
-         priority: Int?) {
+         priority: String?,
+         priorityTextColor: UIColor,
+         priorityBackgroundColor: UIColor) {
         self.title = title
-        self.priority = priority ?? 0
-    }
-    
-    var taskPriority: TaskPriority {
-        if priority >= 0 && priority <= 3 {
-            return .low
-        } else if priority >= 4 && priority <= 7 {
-            return .medium
-        } else {
-            return .high
-        }
-    }
-    
-    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
-       
-        var textColor: UIColor = currentTheme.taskErrorTextColor
-        var backgroundColor: UIColor = currentTheme.taskErrorContainer
-        var priorityText = LocalizationConstants.Tasks.low
-       
-        if taskPriority == .low {
-            textColor = currentTheme.taskSuccessTextColor
-            backgroundColor = currentTheme.taskSuccessContainer
-            priorityText = LocalizationConstants.Tasks.low
-        } else if taskPriority == .medium {
-            textColor = currentTheme.taskWarningTextColor
-            backgroundColor = currentTheme.taskWarningContainer
-            priorityText = LocalizationConstants.Tasks.medium
-        } else if taskPriority == .high {
-            textColor = currentTheme.taskErrorTextColor
-            backgroundColor = currentTheme.taskErrorContainer
-            priorityText = LocalizationConstants.Tasks.high
-        }
-        return(textColor, backgroundColor, priorityText)
+        self.priority = priority
+        self.priorityTextColor = priorityTextColor
+        self.priorityBackgroundColor = priorityBackgroundColor
     }
 }

@@ -20,9 +20,11 @@ import UIKit
 
 class TaskDetailController: NSObject {
     let viewModel: TaskDetailViewModel
+    var currentTheme: PresentationTheme?
 
-    init(viewModel: TaskDetailViewModel = TaskDetailViewModel()) {
+    init(viewModel: TaskDetailViewModel = TaskDetailViewModel(), currentTheme: PresentationTheme?) {
         self.viewModel = viewModel
+        self.currentTheme = currentTheme
     }
     
     func cellIdentifier(for viewModel: RowViewModel) -> String {
@@ -40,13 +42,19 @@ class TaskDetailController: NSObject {
     
     // MARK: - Build View Models
     func buildViewModel() {
-        viewModel.rowViewModels.value = [titleCellVM(),
-                                         dueDateCellVM(),
-                                         priorityCellVM(),
-                                         assignedCellVM(),
-                                         statusCellVM(),
-                                         identifierCellVM()
-        ]
+        var rowViewModels = [RowViewModel]()
+        rowViewModels.append(titleCellVM())
+        rowViewModels.append(dueDateCellVM())
+        
+        if priorityCellVM() != nil {
+            rowViewModels.append(priorityCellVM()!)
+        }
+
+        rowViewModels.append(assignedCellVM())
+        rowViewModels.append(statusCellVM())
+        rowViewModels.append(identifierCellVM())
+        
+        self.viewModel.rowViewModels.value = rowViewModels
     }
     
     private func titleCellVM() -> TitleTableCellViewModel {
@@ -59,9 +67,19 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func priorityCellVM() -> PriorityTableCellViewModel {
-        let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority, priority: viewModel.priority)
-        return rowVM
+    private func priorityCellVM() -> PriorityTableCellViewModel? {
+        if let currentTheme = self.currentTheme {
+            let textColor = viewModel.getPriorityValues(for: currentTheme).textColor
+            let backgroundColor = viewModel.getPriorityValues(for: currentTheme).backgroundColor
+            let priorityText = viewModel.getPriorityValues(for: currentTheme).priorityText
+
+            let rowVM = PriorityTableCellViewModel(title: LocalizationConstants.Accessibility.priority,
+                                                   priority: priorityText,
+                                                   priorityTextColor: textColor,
+                                                   priorityBackgroundColor: backgroundColor)
+            return rowVM
+        }
+        return nil
     }
     
     private func assignedCellVM() -> InfoTableCellViewModel {

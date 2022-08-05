@@ -60,9 +60,9 @@ class TaskListCollectionViewCell: ListSelectableCell {
         
         title.text = viewModel.taskName
         subtitle.text = viewModel.userName
-        priorityLabel.textColor = viewModel.getColors(for: currentTheme).textColor
-        priorityView.backgroundColor = viewModel.getColors(for: currentTheme).backgroundColor
-        priorityLabel.text = viewModel.getColors(for: currentTheme).priorityText
+        priorityLabel.textColor = viewModel.getPriorityValues(for: currentTheme).textColor
+        priorityView.backgroundColor = viewModel.getPriorityValues(for: currentTheme).backgroundColor
+        priorityLabel.text = viewModel.getPriorityValues(for: currentTheme).priorityText
         
         title.accessibilityValue = title.text
         subtitle.accessibilityValue = subtitle.text

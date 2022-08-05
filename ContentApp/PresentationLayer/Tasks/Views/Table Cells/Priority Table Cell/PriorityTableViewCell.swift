@@ -52,8 +52,8 @@ class PriorityTableViewCell: UITableViewCell, CellConfigurable {
         priorityIcon.tintColor = currentTheme.onSurfaceColor
         titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         
-        priorityLabel.textColor = viewModel?.getPriorityValues(for: currentTheme).textColor
-        priorityView.backgroundColor = viewModel?.getPriorityValues(for: currentTheme).backgroundColor
-        priorityLabel.text = viewModel?.getPriorityValues(for: currentTheme).priorityText
+        priorityLabel.textColor = viewModel?.priorityTextColor
+        priorityView.backgroundColor = viewModel?.priorityBackgroundColor
+        priorityLabel.text = viewModel?.priority
     }
 }
