@@ -25,7 +25,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
     @IBOutlet weak var priorityView: UIView!
     @IBOutlet weak var priorityLabel: UILabel!
     var currentTheme: PresentationTheme?
-    lazy var viewModel = TaskListCollectionCellViewModel()
+    lazy var viewModel = TaskPropertiesViewModel()
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -58,7 +58,7 @@ class TaskListCollectionViewCell: ListSelectableCell {
         guard let task = task, let currentTheme = currentTheme else { return }
         viewModel.task = task
         
-        title.text = viewModel.name
+        title.text = viewModel.taskName
         subtitle.text = viewModel.userName
         priorityLabel.textColor = viewModel.getColors(for: currentTheme).textColor
         priorityView.backgroundColor = viewModel.getColors(for: currentTheme).backgroundColor

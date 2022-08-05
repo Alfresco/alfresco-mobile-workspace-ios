@@ -19,49 +19,10 @@
 import Foundation
 import AlfrescoContent
 
-class TaskDetailViewModel {
+class TaskDetailViewModel: TaskPropertiesViewModel {
     var services: CoordinatorServices?
-    var taskNode: TaskNode?
     let rowViewModels = Observable<[RowViewModel]>([])
     let isLoading = Observable<Bool>(true)
-
-    var name: String? {
-        return taskNode?.name
-    }
-    
-    var dueDate: Date? {
-        return taskNode?.dueDate
-    }
-    
-    func getDueDate() -> String? {
-        if let dueDate = dueDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM yyyy"
-            return dateFormatter.string(from: dueDate)
-        }
-        return nil
-    }
-    
-    var priority: Int? {
-        return taskNode?.priority
-    }
-    
-    var assigneeName: String {
-        let firstName = taskNode?.assignee?.firstName ?? ""
-        let lastName = taskNode?.assignee?.lastName ?? ""
-        return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
-    }
-    
-    var status: String {
-        if taskNode?.endDate == nil {
-            return LocalizationConstants.Tasks.active
-        }
-        return LocalizationConstants.Tasks.completed
-    }
-    
-    var taskID: String {
-        return taskNode?.taskID ?? ""
-    }
     
     // MARK: - Task details
     
@@ -77,8 +38,8 @@ class TaskDetailViewModel {
                 if data != nil {
                     let taskNodes = TaskNodeOperations.processNodes(for: [data!])
                     if !taskNodes.isEmpty {
-                        sSelf.taskNode = taskNodes.first
-                        completionHandler(sSelf.taskNode, nil)
+                        sSelf.task = taskNodes.first
+                        completionHandler(sSelf.task, nil)
                     }
                     
                 } else {

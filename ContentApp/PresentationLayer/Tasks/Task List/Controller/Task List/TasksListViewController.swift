@@ -292,7 +292,7 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
             viewController.coordinatorServices = coordinatorServices
-            viewController.viewModel.taskNode = taskNode
+            viewController.viewModel.task = taskNode
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }

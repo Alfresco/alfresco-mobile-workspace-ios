@@ -50,7 +50,7 @@ class TaskDetailController: NSObject {
     }
     
     private func titleCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: viewModel.name)
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName)
         return rowVM
     }
 
