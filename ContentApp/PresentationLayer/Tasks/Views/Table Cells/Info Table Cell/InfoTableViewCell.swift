@@ -39,14 +39,9 @@ class InfoTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        if let title = viewModel?.title, let value = viewModel?.value {
-            titleLabel.accessibilityIdentifier = "title-\(title)"
-            titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.dueDate
-            
-            valueLabel.accessibilityIdentifier = "value-\(value)"
-            valueLabel.accessibilityLabel = LocalizationConstants.Accessibility.dueDate
-            titleLabel.accessibilityValue = valueLabel.text
-        }
+        baseView.accessibilityIdentifier = titleLabel.text
+        baseView.accessibilityLabel = titleLabel.text
+        baseView.accessibilityValue = valueLabel.text
     }
     
     // MARK: - Apply Themes and Localization

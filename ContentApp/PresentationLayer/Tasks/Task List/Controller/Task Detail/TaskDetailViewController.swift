@@ -36,6 +36,7 @@ class TaskDetailViewController: SystemSearchViewController {
         progressView.mode = .indeterminate
         applyLocalization()
         registerCells()
+        addAccessibility()
         controller.buildViewModel()
         setupBindings()
         getTaskDetails()
@@ -76,6 +77,13 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.titleCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.titleCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.infoCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.infoCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.priorityCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.priorityCell)
+    }
+    
+    private func addAccessibility() {
+        self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
+        self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
+        
+        self.navigationItem.leftBarButtonItem?.accessibilityLabel = "ABC"
     }
     
     // MARK: - Public Helpers

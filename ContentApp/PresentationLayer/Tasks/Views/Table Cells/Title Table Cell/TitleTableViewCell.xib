@@ -22,11 +22,17 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C0P-Qd-tg9" userLabel="titleLabel">
                                 <rect key="frame" x="15" y="15" width="334" height="30"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <accessibility key="accessibilityConfiguration">
+                            <bool key="isElement" value="YES"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="C0P-Qd-tg9" firstAttribute="top" secondItem="DTE-7I-5xk" secondAttribute="top" constant="15" id="Kmf-pB-cIW"/>
                             <constraint firstAttribute="trailing" secondItem="C0P-Qd-tg9" secondAttribute="trailing" constant="15" id="M3P-jf-VWs"/>

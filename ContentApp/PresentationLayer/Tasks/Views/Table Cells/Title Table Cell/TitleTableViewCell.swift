@@ -34,10 +34,10 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         addAccessibility()
     }
     
-    private func addAccessibility() {
-        titleLabel.accessibilityIdentifier = "title"
-        titleLabel.accessibilityLabel = LocalizationConstants.Accessibility.title
-        titleLabel.accessibilityValue = titleLabel.text
+    private func addAccessibility() {        
+        baseView.accessibilityIdentifier = "title"
+        baseView.accessibilityLabel = LocalizationConstants.Accessibility.title
+        baseView.accessibilityValue = titleLabel.text
     }
     
     // MARK: - Apply Themes and Localization

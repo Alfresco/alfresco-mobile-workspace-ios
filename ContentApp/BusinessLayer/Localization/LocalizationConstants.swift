@@ -315,5 +315,6 @@ struct LocalizationConstants {
         static let closeButton = NSLocalizedString("close-button", comment: "")
         static let listOption = NSLocalizedString("list-option", comment: "")
         static let dueDate = NSLocalizedString("due-date", comment: "")
+        static let back = NSLocalizedString("back-title", comment: "")
     }
 }
