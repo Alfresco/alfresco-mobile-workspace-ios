@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2021 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -18,19 +18,9 @@
 
 import UIKit
 
-struct CellConstants {
-    
-    struct CollectionCells {
-        static let preview = "PreviewCollectionViewCell"
-        static let taskList = "TaskListCollectionViewCell"
-        static let taskSection = "TaskSectionCollectionViewCell"
-
-    }
-    
-    struct TableCells {
-        static let listItem = "ListItemTableViewCell"
-        static let titleCell = "TitleTableViewCell"
-        static let infoCell = "InfoTableViewCell"
-        static let priorityCell = "PriorityTableViewCell"
-    }
+// MARK: - Task Priority
+enum TaskPriority {
+    case low
+    case medium
+    case high
 }

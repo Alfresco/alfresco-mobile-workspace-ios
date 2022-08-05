@@ -23,14 +23,13 @@ import AlfrescoContent
 class TasksListViewController: SystemSearchViewController {
 
     weak var tabBarScreenDelegate: TabBarScreenDelegate?
-    private var searchController: UISearchController?
-    private let searchButtonAspectRatio: CGFloat = 30.0
     @IBOutlet weak var emptyListView: UIView!
     @IBOutlet weak var emptyListTitle: UILabel!
     @IBOutlet weak var emptyListSubtitle: UILabel!
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
+    @IBOutlet weak var filterBaseView: UIView!    
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
@@ -41,7 +40,6 @@ class TasksListViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Set up progress view
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -78,15 +76,9 @@ class TasksListViewController: SystemSearchViewController {
         progressView.trackTintColor = activeTheme?.primary30T1Color
     }
     
-    override func willTransition(to newCollection: UITraitCollection,
-                                 with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        collectionView.reloadData()
-        updateTheme()
-    }
-    
     override func viewWillTransition(to size: CGSize,
                                      with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
@@ -293,6 +285,17 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             return cell
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let taskNode = viewModel.listNode(for: indexPath)
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.task = taskNode
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }
 
 // MARK: - Filter View Delegate
@@ -300,9 +303,9 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
 extension TasksListViewController {
     func addSortAndFilterView() {
         if let sortFilterView: TasksSortAndFilterView = .fromNib() {
-            sortFilterView.frame = CGRect(x: 0, y: topBarHeight+10.0, width: self.view.frame.size.width, height: 43.0)
+            sortFilterView.frame = CGRect(x: 0, y: 0, width: filterBaseView.frame.size.width, height: 43.0)
             sortFilterView.buildDataSource()
-            self.view.addSubview(sortFilterView)
+            filterBaseView.addSubview(sortFilterView)
             self.sortFilterView = sortFilterView
             sortFilterView.callBack = { (type: ComponentType?, value: [String]) in
                 self.updateComponent(type: type, value: value)
