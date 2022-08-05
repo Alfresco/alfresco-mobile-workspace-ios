@@ -303,6 +303,11 @@
 "medium" = "Medium";
 "high" = "High";
 "task-service-not-configured-message" = "This account is not configured on the process services.";
+"task-detail-title" = "Task view";
+"active-title" = "Active";
+"completed-title" = "Completed";
+"status-title" = "Status";
+"identifier-title" = "Identifier";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
@@ -314,3 +319,5 @@
 "assignee" = "Assignee";
 "close-button" = "Close button";
 "list-option" = "List option";
+"due-date" = "Due date";
+"back-title" = "Back";

@@ -18,30 +18,16 @@
 
 import UIKit
 
-enum TaskPriority {
-    case low
-    case medium
-    case high
-}
-
-class TaskListCollectionCellViewModel: NSObject {
+class TaskPropertiesViewModel: NSObject {
     var task: TaskNode?
     
-    var name: String? {
+    var taskName: String? {
         return task?.name
     }
     
-    var firstName: String? {
-        return task?.assignee?.firstName
-    }
-    
-    var lastName: String? {
-        return task?.assignee?.lastName
-    }
-    
     var userName: String? {
-        if let firstName = firstName, let lastName = lastName {
-            return String(format: "%@ %@", firstName, lastName)
+        if let firstName = task?.assignee?.firstName, let lastName = task?.assignee?.lastName {
+            return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return nil
     }
@@ -60,7 +46,7 @@ class TaskListCollectionCellViewModel: NSObject {
         }
     }
     
-    func getColors(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
+    func getPriorityValues(for currentTheme: PresentationTheme) -> (textColor: UIColor, backgroundColor: UIColor, priorityText: String) {
        
         var textColor: UIColor = currentTheme.taskErrorTextColor
         var backgroundColor: UIColor = currentTheme.taskErrorContainer
@@ -80,5 +66,35 @@ class TaskListCollectionCellViewModel: NSObject {
             priorityText = LocalizationConstants.Tasks.high
         }
         return(textColor, backgroundColor, priorityText)
+    }
+    
+    var dueDate: Date? {
+        return task?.dueDate
+    }
+    
+    func getDueDate() -> String? {
+        if let dueDate = dueDate {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd MMM yyyy"
+            return dateFormatter.string(from: dueDate)
+        }
+        return nil
+    }
+    
+    var assigneeName: String {
+        let firstName = task?.assignee?.firstName ?? ""
+        let lastName = task?.assignee?.lastName ?? ""
+        return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    var status: String {
+        if task?.endDate == nil {
+            return LocalizationConstants.Tasks.active
+        }
+        return LocalizationConstants.Tasks.completed
+    }
+    
+    var taskID: String {
+        return task?.taskID ?? ""
     }
 }
