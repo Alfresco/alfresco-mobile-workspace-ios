@@ -308,6 +308,7 @@
 "completed-title" = "Completed";
 "status-title" = "Status";
 "identifier-title" = "Identifier";
+"add-comment-placeholder" = "Add a comment...";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";

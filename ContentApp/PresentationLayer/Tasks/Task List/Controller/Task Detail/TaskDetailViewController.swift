@@ -77,13 +77,12 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.titleCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.titleCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.infoCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.infoCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.priorityCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.priorityCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.addCommentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addCommentCell)
     }
     
     private func addAccessibility() {
         self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
         self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
-        
-        self.navigationItem.leftBarButtonItem?.accessibilityLabel = "ABC"
     }
     
     // MARK: - Public Helpers
@@ -156,6 +155,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? InfoTableViewCell)?.applyTheme(with: theme)
             } else if cell is PriorityTableViewCell {
                 (cell as? PriorityTableViewCell)?.applyTheme(with: theme)
+            } else if cell is AddCommentTableViewCell {
+                (cell as? AddCommentTableViewCell)?.applyTheme(with: theme)
             }
         }
         

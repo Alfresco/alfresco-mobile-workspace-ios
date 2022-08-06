@@ -35,6 +35,8 @@ class TaskDetailController: NSObject {
             return InfoTableViewCell.cellIdentifier()
         case is PriorityTableCellViewModel:
             return PriorityTableViewCell.cellIdentifier()
+        case is AddCommentTableCellViewModel:
+            return AddCommentTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -53,6 +55,7 @@ class TaskDetailController: NSObject {
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
+        rowViewModels.append(addCommentCellVM())        
         
         self.viewModel.rowViewModels.value = rowViewModels
     }
@@ -93,7 +96,12 @@ class TaskDetailController: NSObject {
     }
     
     private func identifierCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false)
+        return rowVM
+    }
+    
+    private func addCommentCellVM() -> AddCommentTableCellViewModel {
+        let rowVM = AddCommentTableCellViewModel()
         return rowVM
     }
 }

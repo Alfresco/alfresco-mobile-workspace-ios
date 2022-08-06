@@ -18,31 +18,9 @@
 
 import UIKit
 
-class InfoTableCellViewModel: RowViewModel {
-
-    var imageName: String?
-    var title: String?
-    var value: String?
-    var isHideDivider = true
+class AddCommentTableCellViewModel: RowViewModel {
 
     func cellIdentifier() -> String {
-        return "InfoTableViewCell"
-    }
-    
-    init(imageName: String?,
-         title: String?,
-         value: String?,
-         isHideDivider: Bool = true) {
-        self.imageName = imageName
-        self.title = title
-        self.value = value
-        self.isHideDivider = isHideDivider
-    }
-    
-    var image: UIImage? {
-        if let name = imageName, let image =  UIImage(named: name) {
-            return image
-        }
-        return nil
+        return "AddCommentTableViewCell"
     }
 }

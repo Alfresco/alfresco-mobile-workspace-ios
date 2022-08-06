@@ -18,41 +18,39 @@
 
 import UIKit
 
-class InfoTableViewCell: UITableViewCell, CellConfigurable {
+class AddCommentTableViewCell: UITableViewCell, CellConfigurable {
+
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var infoImageView: UIImageView!
+    @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var valueLabel: UILabel!
     @IBOutlet weak var divider: UIView!
-    var viewModel: InfoTableCellViewModel?
+    var viewModel: AddCommentTableCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        // Initialization code
     }
-    
+
     func setup(viewModel: RowViewModel) {
-        guard let viewModel = viewModel as? InfoTableCellViewModel else { return }
+        guard let viewModel = viewModel as? AddCommentTableCellViewModel else { return }
         self.viewModel = viewModel
-        infoImageView.image = viewModel.image
-        titleLabel.text = viewModel.title
-        valueLabel.text = viewModel.value
-        divider.isHidden = viewModel.isHideDivider
+        userImageView.image = UIImage(named: "ic-username")
+        titleLabel.text = LocalizationConstants.Tasks.addCommentPlaceholder
         addAccessibility()
     }
     
     private func addAccessibility() {
         baseView.accessibilityIdentifier = titleLabel.text
         baseView.accessibilityLabel = titleLabel.text
-        baseView.accessibilityValue = valueLabel.text
+        baseView.accessibilityTraits = .button
     }
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
-        infoImageView.tintColor = currentTheme.onSurfaceColor
+        userImageView.tintColor = currentTheme.onSurfaceColor
         titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
-        valueLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
         divider.backgroundColor = currentTheme.onSurface12Color
     }
 }
