@@ -18,8 +18,7 @@
 
 import Foundation
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
+class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
     let comments = Observable<[TaskCommentModel]>([])
 }

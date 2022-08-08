@@ -35,6 +35,12 @@ class TaskDetailController: NSObject {
             return InfoTableViewCell.cellIdentifier()
         case is PriorityTableCellViewModel:
             return PriorityTableViewCell.cellIdentifier()
+        case is AddCommentTableCellViewModel:
+            return AddCommentTableViewCell.cellIdentifier()
+        case is TaskCommentTableCellViewModel:
+            return TaskCommentTableViewCell.cellIdentifier()
+        case is TaskHeaderTableCellViewModel:
+            return TaskHeaderTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -53,7 +59,13 @@ class TaskDetailController: NSObject {
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
+        rowViewModels.append(taskHeaderCellVM())
         
+        if lastestCommentCellVM() != nil {
+            rowViewModels.append(lastestCommentCellVM()!)
+        }
+        
+        rowViewModels.append(addCommentCellVM())
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -83,7 +95,7 @@ class TaskDetailController: NSObject {
     }
     
     private func assignedCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.assigneeName)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName)
         return rowVM
     }
     
@@ -93,7 +105,41 @@ class TaskDetailController: NSObject {
     }
     
     private func identifierCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-identifier-icon", title: LocalizationConstants.Tasks.identifier, value: viewModel.taskID, isHideDivider: false)
         return rowVM
+    }
+    
+    private func taskHeaderCellVM() -> TaskHeaderTableCellViewModel {
+        let commentsCount = viewModel.comments.value.count
+        let isHideDetailButton = commentsCount == 0 ? true:false
+        let rowVM = TaskHeaderTableCellViewModel(title: LocalizationConstants.Tasks.commentsTitle,
+                                                 subTitle: String(format: LocalizationConstants.Tasks.headerSubTitle, commentsCount),
+                                                 buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
+                                                 isHideDetailButton: isHideDetailButton)
+        rowVM.viewAllAction = {
+            self.viewModel.viewAllCommentsAction?(false)
+        }
+        return rowVM
+    }
+    
+    private func addCommentCellVM() -> AddCommentTableCellViewModel {
+        let rowVM = AddCommentTableCellViewModel()
+        rowVM.addCommentAction = {
+            self.viewModel.viewAllCommentsAction?(true)
+        }
+        return rowVM
+    }
+    
+    private func lastestCommentCellVM() -> TaskCommentTableCellViewModel? {
+        if let comment = self.viewModel.comments.value.last {
+            let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
+                                                      userName: comment.createdBy?.userName,
+                                                      commentID: comment.commentID,
+                                                      comment: comment.message,
+                                                      dateString: comment.messageDate)
+            return rowVM
+        }
+        
+        return nil
     }
 }

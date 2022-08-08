@@ -66,6 +66,7 @@ enum Event {
         case shareExtension = "page_view_share_extension"
         case transfers = "page_view_transfers"
         case taskTab = "page_view_tasks"
+        case taskDetailScreen = "page_view_task_view"
     }
 }
 

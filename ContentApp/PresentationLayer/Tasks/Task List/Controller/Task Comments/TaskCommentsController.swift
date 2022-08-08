@@ -18,31 +18,26 @@
 
 import UIKit
 
-class InfoTableCellViewModel: RowViewModel {
+class TaskCommentsController: NSObject {
+    let viewModel: TaskCommentsViewModel
+    var currentTheme: PresentationTheme?
 
-    var imageName: String?
-    var title: String?
-    var value: String?
-    var isHideDivider = true
-
-    func cellIdentifier() -> String {
-        return "InfoTableViewCell"
+    init(viewModel: TaskCommentsViewModel = TaskCommentsViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
     }
     
-    init(imageName: String?,
-         title: String?,
-         value: String?,
-         isHideDivider: Bool = true) {
-        self.imageName = imageName
-        self.title = title
-        self.value = value
-        self.isHideDivider = isHideDivider
-    }
-    
-    var image: UIImage? {
-        if let name = imageName, let image =  UIImage(named: name) {
-            return image
+    func cellIdentifier(for viewModel: RowViewModel) -> String {
+        switch viewModel {
+        case is TaskCommentTableCellViewModel:
+            return TaskCommentTableViewCell.cellIdentifier()
+        default:
+            fatalError("Unexpected view model type: \(viewModel)")
         }
-        return nil
+    }
+    
+    // MARK: - Build View Models
+    func buildViewModel() {
+        
     }
 }
