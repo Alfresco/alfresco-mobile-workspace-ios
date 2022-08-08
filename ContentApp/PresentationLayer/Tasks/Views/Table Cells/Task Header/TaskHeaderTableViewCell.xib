@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="81" id="KGk-i7-Jjw" customClass="TaskHeaderTableViewCell" customModule="ContentApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="427" height="81"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="427" height="81"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OT2-JR-xXw" userLabel="baseView">
+                        <rect key="frame" x="0.0" y="0.0" width="427" height="81"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mi3-Hi-dhq" userLabel="viewAllButton">
+                                <rect key="frame" x="312" y="0.0" width="100" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Qow-WF-sFj"/>
+                                    <constraint firstAttribute="width" constant="100" id="tlY-bd-h0N"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="View all"/>
+                                <connections>
+                                    <action selector="viewAllButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CkF-aI-MuP"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZW-WV-hoX" userLabel="titleHeader">
+                                <rect key="frame" x="15" y="15" width="287" height="20.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B1C-8P-UEg" userLabel="titleSubHeader">
+                                <rect key="frame" x="15" y="45.5" width="397" height="20.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mi3-Hi-dhq" firstAttribute="leading" secondItem="nZW-WV-hoX" secondAttribute="trailing" constant="10" id="3U3-wN-47W"/>
+                            <constraint firstItem="nZW-WV-hoX" firstAttribute="leading" secondItem="OT2-JR-xXw" secondAttribute="leading" constant="15" id="3oL-rS-VNe"/>
+                            <constraint firstItem="B1C-8P-UEg" firstAttribute="top" secondItem="nZW-WV-hoX" secondAttribute="bottom" constant="10" id="3sG-13-Ll9"/>
+                            <constraint firstAttribute="trailing" secondItem="mi3-Hi-dhq" secondAttribute="trailing" constant="15" id="Aoa-bR-cox"/>
+                            <constraint firstAttribute="trailing" secondItem="B1C-8P-UEg" secondAttribute="trailing" constant="15" id="fiN-ma-03I"/>
+                            <constraint firstItem="mi3-Hi-dhq" firstAttribute="top" secondItem="OT2-JR-xXw" secondAttribute="top" id="fqj-G9-q4w"/>
+                            <constraint firstItem="nZW-WV-hoX" firstAttribute="top" secondItem="OT2-JR-xXw" secondAttribute="top" constant="15" id="qxq-nA-eLl"/>
+                            <constraint firstItem="B1C-8P-UEg" firstAttribute="leading" secondItem="nZW-WV-hoX" secondAttribute="leading" id="yBg-ug-8Xa"/>
+                            <constraint firstAttribute="bottom" secondItem="B1C-8P-UEg" secondAttribute="bottom" constant="15" id="zXl-CI-Pdl"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="OT2-JR-xXw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="kav-ov-cl5"/>
+                    <constraint firstItem="OT2-JR-xXw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="lpf-P3-J0G"/>
+                    <constraint firstAttribute="bottom" secondItem="OT2-JR-xXw" secondAttribute="bottom" id="tH2-8S-v3V"/>
+                    <constraint firstAttribute="trailing" secondItem="OT2-JR-xXw" secondAttribute="trailing" id="uX6-Mk-eHZ"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="baseView" destination="OT2-JR-xXw" id="0hX-0D-a8a"/>
+                <outlet property="titleHeaderLabel" destination="nZW-WV-hoX" id="ldA-IJ-56S"/>
+                <outlet property="titleSubHeaderLabel" destination="B1C-8P-UEg" id="CHT-JA-qO9"/>
+                <outlet property="viewAllButton" destination="mi3-Hi-dhq" id="C9l-m7-PvC"/>
+            </connections>
+            <point key="canvasLocation" x="242.75362318840581" y="23.102678571428569"/>
+        </tableViewCell>
+    </objects>
+</document>

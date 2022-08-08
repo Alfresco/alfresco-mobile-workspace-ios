@@ -81,6 +81,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.priorityCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.priorityCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.addCommentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addCommentCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.commentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.commentCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
     }
     
     private func addAccessibility() {
@@ -135,8 +136,9 @@ class TaskDetailViewController: SystemSearchViewController {
         }
         
         /* observe add comment action */
-        viewModel.addCommentAction = {
-            AlfrescoLog.debug("******* Add comment action ********")
+        viewModel.viewAllCommentsAction = { [weak self] (isAddComment) in
+            guard let sSelf = self else { return }
+            sSelf.showComments(isAddComment: isAddComment)
         }
     }
     
@@ -159,6 +161,10 @@ class TaskDetailViewController: SystemSearchViewController {
                 sSelf.controller.buildViewModel()
             }
         }
+    }
+    
+    private func showComments(isAddComment: Bool) {
+        AlfrescoLog.debug("******* Add comment action \(isAddComment) ********")
     }
 }
 
@@ -187,6 +193,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? AddCommentTableViewCell)?.applyTheme(with: theme)
             } else if cell is TaskCommentTableViewCell {
                 (cell as? TaskCommentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is TaskHeaderTableViewCell {
+                (cell as? TaskHeaderTableViewCell)?.applyTheme(with: theme)
             }
         }
         

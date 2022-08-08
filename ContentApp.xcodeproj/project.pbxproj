@@ -163,6 +163,9 @@
 		C9205C7E28A12B9300DEF5AC /* TaskCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7D28A12B9300DEF5AC /* TaskCommentsViewController.swift */; };
 		C9205C8028A12BA600DEF5AC /* TaskCommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7F28A12BA600DEF5AC /* TaskCommentsController.swift */; };
 		C9205C8228A12BEA00DEF5AC /* TaskCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8128A12BEA00DEF5AC /* TaskCommentsViewModel.swift */; };
+		C9205C8628A173C000DEF5AC /* TaskHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8428A173C000DEF5AC /* TaskHeaderTableViewCell.swift */; };
+		C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9205C8528A173C000DEF5AC /* TaskHeaderTableViewCell.xib */; };
+		C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */; };
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
@@ -868,6 +871,9 @@
 		C9205C7D28A12B9300DEF5AC /* TaskCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsViewController.swift; sourceTree = "<group>"; };
 		C9205C7F28A12BA600DEF5AC /* TaskCommentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsController.swift; sourceTree = "<group>"; };
 		C9205C8128A12BEA00DEF5AC /* TaskCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsViewModel.swift; sourceTree = "<group>"; };
+		C9205C8428A173C000DEF5AC /* TaskHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderTableViewCell.swift; sourceTree = "<group>"; };
+		C9205C8528A173C000DEF5AC /* TaskHeaderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskHeaderTableViewCell.xib; sourceTree = "<group>"; };
+		C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderTableCellViewModel.swift; sourceTree = "<group>"; };
 		C928AE32282A5F4900378327 /* TestNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNodeViewModel.swift; sourceTree = "<group>"; };
 		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
 		C92F3DBB27BF632300952C59 /* MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
@@ -1905,6 +1911,16 @@
 			path = "Task Comments";
 			sourceTree = "<group>";
 		};
+		C9205C8328A173A700DEF5AC /* Task Header */ = {
+			isa = PBXGroup;
+			children = (
+				C9205C8428A173C000DEF5AC /* TaskHeaderTableViewCell.swift */,
+				C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */,
+				C9205C8528A173C000DEF5AC /* TaskHeaderTableViewCell.xib */,
+			);
+			path = "Task Header";
+			sourceTree = "<group>";
+		};
 		C93A06AD27B91A530027097B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2212,6 +2228,7 @@
 				C9A759A3289BBAD9006603E0 /* Priority Table Cell */,
 				C95C28BF289E45A000000080 /* Add Comment Table Cell */,
 				C9205C7528A0FA8700DEF5AC /* Task Comment */,
+				C9205C8328A173A700DEF5AC /* Task Header */,
 			);
 			path = "Table Cells";
 			sourceTree = "<group>";
@@ -3388,6 +3405,7 @@
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
 				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
 				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
+				C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */,
 				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
 				F185B1A72617663000407451 /* Camera.storyboard in Resources */,
 				B9973068255E7CC70026166A /* InfoPlist.strings in Resources */,
@@ -4085,6 +4103,7 @@
 				B9834C57266E43E70052E138 /* OfflineModel.swift in Sources */,
 				E3A7F32D258A5B880089734D /* OfflineScreenCoordinator.swift in Sources */,
 				B9A90E6D2657F9A900B89766 /* ListComponentViewModel.swift in Sources */,
+				C9205C8628A173C000DEF5AC /* TaskHeaderTableViewCell.swift in Sources */,
 				C973EC692726BD7D00912015 /* ListItemTableViewCell.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
@@ -4114,6 +4133,7 @@
 				E3EFAB25248F8BB700635521 /* NSError+Mapper.swift in Sources */,
 				C97BEB6C26EB363100E05375 /* RowViewModel.swift in Sources */,
 				C9D4FAAD278305730008C4AA /* FileManagerScreenCoordinator.swift in Sources */,
+				C9205C8928A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift in Sources */,
 				E3CF862B24E69DC7001C86B5 /* FilePreviewViewController.swift in Sources */,
 				E3D25C8B2493EFB200FFD87F /* RecentScreenCoordinator.swift in Sources */,
 				E31184DE247C06BE0044BE0D /* AdvancedSettingsViewModel.swift in Sources */,

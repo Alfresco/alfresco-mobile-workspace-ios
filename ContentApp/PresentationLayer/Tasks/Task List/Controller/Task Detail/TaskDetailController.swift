@@ -39,6 +39,8 @@ class TaskDetailController: NSObject {
             return AddCommentTableViewCell.cellIdentifier()
         case is TaskCommentTableCellViewModel:
             return TaskCommentTableViewCell.cellIdentifier()
+        case is TaskHeaderTableCellViewModel:
+            return TaskHeaderTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -57,6 +59,7 @@ class TaskDetailController: NSObject {
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
+        rowViewModels.append(taskHeaderCellVM())
         
         if lastestCommentCellVM() != nil {
             rowViewModels.append(lastestCommentCellVM()!)
@@ -106,10 +109,23 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
+    private func taskHeaderCellVM() -> TaskHeaderTableCellViewModel {
+        let commentsCount = viewModel.comments.value.count
+        let isHideDetailButton = commentsCount == 0 ? true:false
+        let rowVM = TaskHeaderTableCellViewModel(title: LocalizationConstants.Tasks.commentsTitle,
+                                                 subTitle: String(format: LocalizationConstants.Tasks.headerSubTitle, commentsCount),
+                                                 buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
+                                                 isHideDetailButton: isHideDetailButton)
+        rowVM.viewAllAction = {
+            self.viewModel.viewAllCommentsAction?(false)
+        }
+        return rowVM
+    }
+    
     private func addCommentCellVM() -> AddCommentTableCellViewModel {
         let rowVM = AddCommentTableCellViewModel()
         rowVM.addCommentAction = {
-            self.viewModel.addCommentAction?()
+            self.viewModel.viewAllCommentsAction?(true)
         }
         return rowVM
     }

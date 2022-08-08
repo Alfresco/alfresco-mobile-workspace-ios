@@ -302,7 +302,11 @@ struct LocalizationConstants {
         static let completed = NSLocalizedString("completed-title", comment: "")
         static let status = NSLocalizedString("status-title", comment: "")
         static let identifier = NSLocalizedString("identifier-title", comment: "")
-        static let addCommentPlaceholder = NSLocalizedString("add-comment-placeholder", comment: "")        
+        static let addCommentPlaceholder = NSLocalizedString("add-comment-placeholder", comment: "")
+        static let commentsTitle = NSLocalizedString("comments-title", comment: "")
+        static let headerSubTitle = NSLocalizedString("header-subtitle-message", comment: "")
+        static let attachedFilesTitle = NSLocalizedString("attached-files-title", comment: "")
+        static let viewAllTitle = NSLocalizedString("view-all-title", comment: "")
     }
 
     struct Accessibility {
