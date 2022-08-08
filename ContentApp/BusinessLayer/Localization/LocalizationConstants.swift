@@ -302,6 +302,11 @@ struct LocalizationConstants {
         static let completed = NSLocalizedString("completed-title", comment: "")
         static let status = NSLocalizedString("status-title", comment: "")
         static let identifier = NSLocalizedString("identifier-title", comment: "")
+        static let addCommentPlaceholder = NSLocalizedString("add-comment-placeholder", comment: "")
+        static let commentsTitle = NSLocalizedString("comments-title", comment: "")
+        static let headerSubTitle = NSLocalizedString("header-subtitle-message", comment: "")
+        static let attachedFilesTitle = NSLocalizedString("attached-files-title", comment: "")
+        static let viewAllTitle = NSLocalizedString("view-all-title", comment: "")
     }
 
     struct Accessibility {
@@ -316,5 +321,8 @@ struct LocalizationConstants {
         static let listOption = NSLocalizedString("list-option", comment: "")
         static let dueDate = NSLocalizedString("due-date", comment: "")
         static let back = NSLocalizedString("back-title", comment: "")
+        static let date = NSLocalizedString("date-title", comment: "")
+        static let userName = NSLocalizedString("user-name", comment: "")
+        static let commentTitle = NSLocalizedString("comment-title", comment: "")
     }
 }

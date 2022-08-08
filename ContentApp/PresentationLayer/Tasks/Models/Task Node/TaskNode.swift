@@ -141,7 +141,8 @@ class TaskNodeAssignee: Codable {
     var firstName: String?
     var lastName: String?
     var email: String?
-    
+    var userName: String?
+
     enum CodingKeys: String, CodingKey {
         case assigneeID = "id"
         case firstName, lastName, email
@@ -152,5 +153,9 @@ class TaskNodeAssignee: Codable {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
+        
+        if let firstName = firstName, let lastName = lastName {
+            self.userName = String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
+        }
     }
 }

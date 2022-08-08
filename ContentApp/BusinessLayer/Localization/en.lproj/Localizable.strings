@@ -308,6 +308,11 @@
 "completed-title" = "Completed";
 "status-title" = "Status";
 "identifier-title" = "Identifier";
+"add-comment-placeholder" = "Add a comment...";
+"comments-title" = "Comments";
+"header-subtitle-message" = "%d comment(s)";
+"attached-files-title" = "Attached files";
+"view-all-title" = "View all";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
@@ -321,3 +326,6 @@
 "list-option" = "List option";
 "due-date" = "Due date";
 "back-title" = "Back";
+"date-title" = "Date";
+"user-name" = "User name";
+"comment-title" = "Comment";

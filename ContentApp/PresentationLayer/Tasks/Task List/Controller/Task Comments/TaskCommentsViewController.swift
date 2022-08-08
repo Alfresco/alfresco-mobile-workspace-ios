@@ -16,10 +16,17 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
+import AlfrescoContent
+import MaterialComponents
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
+class TaskCommentsViewController: SystemSearchViewController {
+
+    var viewModel: TaskCommentsViewModel { return controller.viewModel }
+    lazy var controller: TaskCommentsController = { return TaskCommentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
+    
+    // MARK: - View did load
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
 }

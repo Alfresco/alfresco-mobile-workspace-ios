@@ -40,7 +40,9 @@ class TaskDetailViewController: SystemSearchViewController {
         controller.buildViewModel()
         setupBindings()
         getTaskDetails()
-        
+        getTaskComments()
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
+
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -77,13 +79,15 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.titleCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.titleCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.infoCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.infoCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.priorityCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.priorityCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.addCommentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addCommentCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.commentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.commentCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
     }
     
     private func addAccessibility() {
         self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
         self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
-        
-        self.navigationItem.leftBarButtonItem?.accessibilityLabel = "ABC"
+        progressView.isAccessibilityElement = false
     }
     
     // MARK: - Public Helpers
@@ -106,7 +110,7 @@ class TaskDetailViewController: SystemSearchViewController {
     private func setupBindings() {
         
         /* observer loader */
-        self.viewModel.isLoading.addObserver { [weak self] (isLoading) in
+        viewModel.isLoading.addObserver { [weak self] (isLoading) in
             guard let sSelf = self else { return }
             if isLoading {
                 sSelf.startLoading()
@@ -116,11 +120,25 @@ class TaskDetailViewController: SystemSearchViewController {
         }
         
         /* observing rows */
-        self.viewModel.rowViewModels.addObserver() { [weak self] (rows) in
+        viewModel.rowViewModels.addObserver() { [weak self] (rows) in
             guard let sSelf = self else { return }
             DispatchQueue.main.async {
                 sSelf.tableView.reloadData()
             }
+        }
+        
+        /* observing comments */
+        viewModel.comments.addObserver() { [weak self] (comments) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
+        }
+        
+        /* observe add comment action */
+        viewModel.viewAllCommentsAction = { [weak self] (isAddComment) in
+            guard let sSelf = self else { return }
+            sSelf.showComments(isAddComment: isAddComment)
         }
     }
     
@@ -128,10 +146,25 @@ class TaskDetailViewController: SystemSearchViewController {
         let taskID = viewModel.taskID
         viewModel.taskDetails(with: taskID) { [weak self] taskNodes, error in
             guard let sSelf = self else { return }
-            if error != nil {
+            if error == nil {
                 sSelf.controller.buildViewModel()
             }
         }
+    }
+    
+    private func getTaskComments() {
+        let taskID = viewModel.taskID
+        viewModel.taskComments(with: taskID) { [weak self] comments, error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.viewModel.comments.value = comments
+                sSelf.controller.buildViewModel()
+            }
+        }
+    }
+    
+    private func showComments(isAddComment: Bool) {
+        AlfrescoLog.debug("******* Add comment action \(isAddComment) ********")
     }
 }
 
@@ -156,6 +189,12 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? InfoTableViewCell)?.applyTheme(with: theme)
             } else if cell is PriorityTableViewCell {
                 (cell as? PriorityTableViewCell)?.applyTheme(with: theme)
+            } else if cell is AddCommentTableViewCell {
+                (cell as? AddCommentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is TaskCommentTableViewCell {
+                (cell as? TaskCommentTableViewCell)?.applyTheme(with: theme)
+            } else if cell is TaskHeaderTableViewCell {
+                (cell as? TaskHeaderTableViewCell)?.applyTheme(with: theme)
             }
         }
         

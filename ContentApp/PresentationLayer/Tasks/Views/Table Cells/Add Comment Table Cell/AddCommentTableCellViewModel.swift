@@ -16,10 +16,12 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
+class AddCommentTableCellViewModel: RowViewModel {
+    var addCommentAction: (() -> Void)?
+
+    func cellIdentifier() -> String {
+        return "AddCommentTableViewCell"
+    }
 }
