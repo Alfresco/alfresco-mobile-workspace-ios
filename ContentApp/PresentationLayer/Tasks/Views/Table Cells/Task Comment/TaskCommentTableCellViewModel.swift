@@ -18,10 +18,31 @@
 
 import UIKit
 
-class AddCommentTableCellViewModel: RowViewModel {
-    var addCommentAction: (() -> Void)?
+class TaskCommentTableCellViewModel: RowViewModel {
+    
+    var userID: Int?
+    var userName: String?
+    var nameInitials: String?
+    var commentID: Int?
+    var comment: String?
+    var dateString: String?
 
     func cellIdentifier() -> String {
-        return "AddCommentTableViewCell"
+        return "TaskCommentTableViewCell"
+    }
+    
+    init(userID: Int?,
+         userName: String?,
+         nameInitials: String?,
+         commentID: Int?,
+         comment: String?,
+         dateString: String?) {
+        
+        self.userID = userID
+        self.userName = userName
+        self.nameInitials = nameInitials
+        self.commentID = commentID
+        self.comment = comment
+        self.dateString = dateString
     }
 }

@@ -17,35 +17,9 @@
 //
 
 import Foundation
-import AlfrescoContent
 
 class TaskDetailViewModel: TaskPropertiesViewModel {
-    var services: CoordinatorServices?
     let rowViewModels = Observable<[RowViewModel]>([])
-    let isLoading = Observable<Bool>(true)
-    
-    // MARK: - Task details
-    
-    func taskDetails(with taskId: String, completionHandler: @escaping (_ taskNodes: TaskNode?, _ error: Error?) -> Void) {
-        
-        self.isLoading.value = true
-        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
-            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-            
-            TasksAPI.getTasksDetails(with: taskId) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
-                if data != nil {
-                    let taskNodes = TaskNodeOperations.processNodes(for: [data!])
-                    if !taskNodes.isEmpty {
-                        sSelf.task = taskNodes.first
-                        completionHandler(sSelf.task, nil)
-                    }
-                    
-                } else {
-                    completionHandler(nil, error)
-                }
-            }
-        })
-    }
+    var addCommentAction: (() -> Void)?
+    let comments = Observable<[TaskCommentModel]>([])
 }

@@ -20,16 +20,15 @@ import UIKit
 
 class TaskPropertiesViewModel: NSObject {
     var task: TaskNode?
-    
+    var services: CoordinatorServices?
+    let isLoading = Observable<Bool>(true)
+
     var taskName: String? {
         return task?.name
     }
     
     var userName: String? {
-        if let firstName = task?.assignee?.firstName, let lastName = task?.assignee?.lastName {
-            return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
-        }
-        return nil
+        return task?.assignee?.userName
     }
     
     var priority: Int {
@@ -79,12 +78,6 @@ class TaskPropertiesViewModel: NSObject {
             return dateFormatter.string(from: dueDate)
         }
         return nil
-    }
-    
-    var assigneeName: String {
-        let firstName = task?.assignee?.firstName ?? ""
-        let lastName = task?.assignee?.lastName ?? ""
-        return String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     var status: String {

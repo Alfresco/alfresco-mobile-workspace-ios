@@ -33,5 +33,6 @@ struct CellConstants {
         static let infoCell = "InfoTableViewCell"
         static let priorityCell = "PriorityTableViewCell"
         static let addCommentCell = "AddCommentTableViewCell"
+        static let commentCell = "TaskCommentTableViewCell"
     }
 }

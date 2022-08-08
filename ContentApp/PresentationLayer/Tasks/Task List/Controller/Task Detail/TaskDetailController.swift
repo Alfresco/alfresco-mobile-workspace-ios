@@ -37,6 +37,8 @@ class TaskDetailController: NSObject {
             return PriorityTableViewCell.cellIdentifier()
         case is AddCommentTableCellViewModel:
             return AddCommentTableViewCell.cellIdentifier()
+        case is TaskCommentTableCellViewModel:
+            return TaskCommentTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -55,8 +57,12 @@ class TaskDetailController: NSObject {
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
-        rowViewModels.append(addCommentCellVM())        
         
+        if lastestCommentCellVM() != nil {
+            rowViewModels.append(lastestCommentCellVM()!)
+        }
+        
+        rowViewModels.append(addCommentCellVM())
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -86,7 +92,7 @@ class TaskDetailController: NSObject {
     }
     
     private func assignedCellVM() -> InfoTableCellViewModel {
-        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.assigneeName)
+        let rowVM = InfoTableCellViewModel(imageName: "ic-assigned-icon", title: LocalizationConstants.Accessibility.assignee, value: viewModel.userName)
         return rowVM
     }
     
@@ -102,6 +108,23 @@ class TaskDetailController: NSObject {
     
     private func addCommentCellVM() -> AddCommentTableCellViewModel {
         let rowVM = AddCommentTableCellViewModel()
+        rowVM.addCommentAction = {
+            self.viewModel.addCommentAction?()
+        }
         return rowVM
+    }
+    
+    private func lastestCommentCellVM() -> TaskCommentTableCellViewModel? {
+        if let comment = self.viewModel.comments.value.last {
+            let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
+                                                      userName: comment.createdBy?.userName,
+                                                      nameInitials: comment.createdBy?.userInitials,
+                                                      commentID: comment.commentID,
+                                                      comment: comment.message,
+                                                      dateString: comment.messageDate)
+            return rowVM
+        }
+        
+        return nil
     }
 }

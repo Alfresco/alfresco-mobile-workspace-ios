@@ -154,6 +154,12 @@
 		C918813727AA66A500F850DF /* UploadTransferDataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1338258D262D817D000FFD4E /* UploadTransferDataAccessor.swift */; };
 		C918814A27AA8A1400F850DF /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3EC133724A4C7930068E3C7 /* UserProfile.swift */; };
 		C918814C27AA8A4C00F850DF /* DataAccessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13382592262D87ED000FFD4E /* DataAccessor.swift */; };
+		C9205C6A28A0D6AE00DEF5AC /* TaskProperties+APIs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C6928A0D6AE00DEF5AC /* TaskProperties+APIs.swift */; };
+		C9205C7228A0D94300DEF5AC /* TaskCommentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7128A0D94300DEF5AC /* TaskCommentOperations.swift */; };
+		C9205C7428A0D96700DEF5AC /* TaskCommentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7328A0D96700DEF5AC /* TaskCommentModel.swift */; };
+		C9205C7828A0FAA100DEF5AC /* TaskCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7628A0FAA100DEF5AC /* TaskCommentTableViewCell.swift */; };
+		C9205C7928A0FAA100DEF5AC /* TaskCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9205C7728A0FAA100DEF5AC /* TaskCommentTableViewCell.xib */; };
+		C9205C7B28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7A28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift */; };
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
@@ -850,6 +856,12 @@
 		C918811E27AA41B900F850DF /* ThemingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemingService.swift; sourceTree = "<group>"; };
 		C918812227AA421400F850DF /* ListNodeDataAccessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListNodeDataAccessor.swift; sourceTree = "<group>"; };
 		C918812427AA421400F850DF /* NodeOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeOperations.swift; sourceTree = "<group>"; };
+		C9205C6928A0D6AE00DEF5AC /* TaskProperties+APIs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TaskProperties+APIs.swift"; sourceTree = "<group>"; };
+		C9205C7128A0D94300DEF5AC /* TaskCommentOperations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskCommentOperations.swift; sourceTree = "<group>"; };
+		C9205C7328A0D96700DEF5AC /* TaskCommentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentModel.swift; sourceTree = "<group>"; };
+		C9205C7628A0FAA100DEF5AC /* TaskCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentTableViewCell.swift; sourceTree = "<group>"; };
+		C9205C7728A0FAA100DEF5AC /* TaskCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCommentTableViewCell.xib; sourceTree = "<group>"; };
+		C9205C7A28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentTableCellViewModel.swift; sourceTree = "<group>"; };
 		C928AE32282A5F4900378327 /* TestNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNodeViewModel.swift; sourceTree = "<group>"; };
 		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
 		C92F3DBB27BF632300952C59 /* MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
@@ -1858,6 +1870,25 @@
 			path = Sync;
 			sourceTree = "<group>";
 		};
+		C9205C7028A0D94300DEF5AC /* Task Comments */ = {
+			isa = PBXGroup;
+			children = (
+				C9205C7128A0D94300DEF5AC /* TaskCommentOperations.swift */,
+				C9205C7328A0D96700DEF5AC /* TaskCommentModel.swift */,
+			);
+			path = "Task Comments";
+			sourceTree = "<group>";
+		};
+		C9205C7528A0FA8700DEF5AC /* Task Comment */ = {
+			isa = PBXGroup;
+			children = (
+				C9205C7628A0FAA100DEF5AC /* TaskCommentTableViewCell.swift */,
+				C9205C7A28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift */,
+				C9205C7728A0FAA100DEF5AC /* TaskCommentTableViewCell.xib */,
+			);
+			path = "Task Comment";
+			sourceTree = "<group>";
+		};
 		C93A06AD27B91A530027097B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1892,6 +1923,7 @@
 			isa = PBXGroup;
 			children = (
 				C96870ED289D37D0000E4DA0 /* TaskPropertiesViewModel.swift */,
+				C9205C6928A0D6AE00DEF5AC /* TaskProperties+APIs.swift */,
 			);
 			path = "Task Properties";
 			sourceTree = "<group>";
@@ -2025,6 +2057,7 @@
 		C983A274287EDEC200CEDCAB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C9205C7028A0D94300DEF5AC /* Task Comments */,
 				C915CDD328905B6800819F86 /* Task Node */,
 				C915CDD628905B6800819F86 /* Task Filters */,
 			);
@@ -2161,6 +2194,7 @@
 				C9A759AC289BCA23006603E0 /* Info Table Cell */,
 				C9A759A3289BBAD9006603E0 /* Priority Table Cell */,
 				C95C28BF289E45A000000080 /* Add Comment Table Cell */,
+				C9205C7528A0FA8700DEF5AC /* Task Comment */,
 			);
 			path = "Table Cells";
 			sourceTree = "<group>";
@@ -3349,6 +3383,7 @@
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
 				C973EC6A2726BD7D00912015 /* ListItemTableViewCell.xib in Resources */,
 				B903E69F251A15C400F35D4D /* GoogleService-Info.plist in Resources */,
+				C9205C7928A0FAA100DEF5AC /* TaskCommentTableViewCell.xib in Resources */,
 				E36900A224C8552F00F03D60 /* Inter-ExtraLight.ttf in Resources */,
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
@@ -3809,6 +3844,7 @@
 				B99D9BC62486850C00FBFC9B /* AIMSAuthenticationProvider.swift in Sources */,
 				E3E2BDA424CC280B00D8A7EC /* TrashViewModel.swift in Sources */,
 				F188EE63262DCC4E0019F4E7 /* FlashMenu.swift in Sources */,
+				C9205C7428A0D96700DEF5AC /* TaskCommentModel.swift in Sources */,
 				C97C025A287C142500C3CA52 /* TasksScreenCoordinator.swift in Sources */,
 				E37618062476912000DA13ED /* Mirror+Description.swift in Sources */,
 				E3C7FB9D2507C22100A228FC /* FileWithoutPreview.swift in Sources */,
@@ -3830,6 +3866,7 @@
 				F1AC6C3C262065680096743B /* PreviewViewModel.swift in Sources */,
 				C973EC6C2726BD9300912015 /* ListItemCellViewModel.swift in Sources */,
 				B9958E0E24DA9D570058BCE1 /* ScrollViewPageController.swift in Sources */,
+				C9205C6A28A0D6AE00DEF5AC /* TaskProperties+APIs.swift in Sources */,
 				C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */,
 				C9A7598F289BB0CC006603E0 /* TasksListViewModel.swift in Sources */,
 				E3A9B2A92518F52700A548E7 /* UITextView+Theming.swift in Sources */,
@@ -3987,6 +4024,7 @@
 				E3FADB9D2538703000BA6F9B /* ActionMenuCollectionViewCell.swift in Sources */,
 				B90E3838255A86BC00FAFB81 /* FolderChildrenViewModelFactory.swift in Sources */,
 				B95831D62632DB1400E90AE5 /* Data+Hash.swift in Sources */,
+				C9205C7228A0D94300DEF5AC /* TaskCommentOperations.swift in Sources */,
 				E363E3532562865000CB5338 /* EmptyFolder.swift in Sources */,
 				B9FC629D24C6C90600246606 /* UICollectionView+ItemIndex.swift in Sources */,
 				C9A7598E289BB0CC006603E0 /* TaskListFilterParams.swift in Sources */,
@@ -4005,6 +4043,7 @@
 				C973EC712726C8EA00912015 /* SearchListComponentController.swift in Sources */,
 				E348EDE12498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift in Sources */,
 				E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */,
+				C9205C7828A0FAA100DEF5AC /* TaskCommentTableViewCell.swift in Sources */,
 				B9AE0BB924C03D170001289C /* NavigationRoutes.swift in Sources */,
 				C9A759AF289BCA37006603E0 /* InfoTableViewCell.swift in Sources */,
 				B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
@@ -4123,6 +4162,7 @@
 				1338258E262D817D000FFD4E /* UploadTransferDataAccessor.swift in Sources */,
 				E321BAD3248111F400BE938E /* UIFont+InterFont.swift in Sources */,
 				C9CFA5EB289C48940097E581 /* TaskDetailController.swift in Sources */,
+				C9205C7B28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift in Sources */,
 				E3208D372541C4E8005DAFB4 /* UIView+RoundCorners.swift in Sources */,
 				C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */,
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,

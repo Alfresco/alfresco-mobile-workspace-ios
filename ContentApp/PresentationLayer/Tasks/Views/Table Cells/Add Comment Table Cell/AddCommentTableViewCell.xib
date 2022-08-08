@@ -58,9 +58,23 @@
                             <constraint firstItem="mPM-YB-4bD" firstAttribute="leading" secondItem="m7U-gh-8uq" secondAttribute="trailing" constant="15" id="x38-Hb-Ns3"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fg-cC-eu0" userLabel="addCommentButton">
+                        <rect key="frame" x="0.0" y="0.0" width="399" height="79"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal">
+                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="addCommentButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ZFe-2b-6CO"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="1fg-cC-eu0" firstAttribute="leading" secondItem="gvD-wk-SEC" secondAttribute="leading" id="1nB-y3-vPD"/>
+                    <constraint firstItem="1fg-cC-eu0" firstAttribute="trailing" secondItem="gvD-wk-SEC" secondAttribute="trailing" id="LJu-yY-btO"/>
+                    <constraint firstItem="1fg-cC-eu0" firstAttribute="bottom" secondItem="gvD-wk-SEC" secondAttribute="bottom" id="VLP-VO-lUs"/>
                     <constraint firstItem="gvD-wk-SEC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ee0-SL-1Uo"/>
+                    <constraint firstItem="1fg-cC-eu0" firstAttribute="top" secondItem="gvD-wk-SEC" secondAttribute="top" id="fo4-oh-ycb"/>
                     <constraint firstAttribute="trailing" secondItem="gvD-wk-SEC" secondAttribute="trailing" id="pef-uu-y66"/>
                     <constraint firstAttribute="bottom" secondItem="gvD-wk-SEC" secondAttribute="bottom" id="tbq-dp-VSX"/>
                     <constraint firstItem="gvD-wk-SEC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ttA-qP-w1o"/>

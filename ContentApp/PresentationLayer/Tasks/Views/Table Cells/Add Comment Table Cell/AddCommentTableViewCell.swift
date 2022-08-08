@@ -53,4 +53,8 @@ class AddCommentTableViewCell: UITableViewCell, CellConfigurable {
         titleLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         divider.backgroundColor = currentTheme.onSurface12Color
     }
+    
+    @IBAction func addCommentButtonAction(_ sender: Any) {
+        self.viewModel?.addCommentAction?()
+    }
 }
