@@ -18,28 +18,26 @@
 
 import UIKit
 
-class TaskCommentTableCellViewModel: RowViewModel {
-    
-    var userID: Int?
-    var userName: String?
-    var commentID: Int?
-    var comment: String?
-    var dateString: String?
+class TaskCommentsController: NSObject {
+    let viewModel: TaskCommentsViewModel
+    var currentTheme: PresentationTheme?
 
-    func cellIdentifier() -> String {
-        return "TaskCommentTableViewCell"
+    init(viewModel: TaskCommentsViewModel = TaskCommentsViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
     }
     
-    init(userID: Int?,
-         userName: String?,
-         commentID: Int?,
-         comment: String?,
-         dateString: String?) {
+    func cellIdentifier(for viewModel: RowViewModel) -> String {
+        switch viewModel {
+        case is TaskCommentTableCellViewModel:
+            return TaskCommentTableViewCell.cellIdentifier()
+        default:
+            fatalError("Unexpected view model type: \(viewModel)")
+        }
+    }
+    
+    // MARK: - Build View Models
+    func buildViewModel() {
         
-        self.userID = userID
-        self.userName = userName
-        self.commentID = commentID
-        self.comment = comment
-        self.dateString = dateString
     }
 }

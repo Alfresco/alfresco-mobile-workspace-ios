@@ -160,6 +160,9 @@
 		C9205C7828A0FAA100DEF5AC /* TaskCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7628A0FAA100DEF5AC /* TaskCommentTableViewCell.swift */; };
 		C9205C7928A0FAA100DEF5AC /* TaskCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9205C7728A0FAA100DEF5AC /* TaskCommentTableViewCell.xib */; };
 		C9205C7B28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7A28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift */; };
+		C9205C7E28A12B9300DEF5AC /* TaskCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7D28A12B9300DEF5AC /* TaskCommentsViewController.swift */; };
+		C9205C8028A12BA600DEF5AC /* TaskCommentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C7F28A12BA600DEF5AC /* TaskCommentsController.swift */; };
+		C9205C8228A12BEA00DEF5AC /* TaskCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9205C8128A12BEA00DEF5AC /* TaskCommentsViewModel.swift */; };
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
@@ -862,6 +865,9 @@
 		C9205C7628A0FAA100DEF5AC /* TaskCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentTableViewCell.swift; sourceTree = "<group>"; };
 		C9205C7728A0FAA100DEF5AC /* TaskCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskCommentTableViewCell.xib; sourceTree = "<group>"; };
 		C9205C7A28A0FAB500DEF5AC /* TaskCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentTableCellViewModel.swift; sourceTree = "<group>"; };
+		C9205C7D28A12B9300DEF5AC /* TaskCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsViewController.swift; sourceTree = "<group>"; };
+		C9205C7F28A12BA600DEF5AC /* TaskCommentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsController.swift; sourceTree = "<group>"; };
+		C9205C8128A12BEA00DEF5AC /* TaskCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCommentsViewModel.swift; sourceTree = "<group>"; };
 		C928AE32282A5F4900378327 /* TestNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNodeViewModel.swift; sourceTree = "<group>"; };
 		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
 		C92F3DBB27BF632300952C59 /* MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
@@ -1889,6 +1895,16 @@
 			path = "Task Comment";
 			sourceTree = "<group>";
 		};
+		C9205C7C28A12B6A00DEF5AC /* Task Comments */ = {
+			isa = PBXGroup;
+			children = (
+				C9205C7D28A12B9300DEF5AC /* TaskCommentsViewController.swift */,
+				C9205C7F28A12BA600DEF5AC /* TaskCommentsController.swift */,
+				C9205C8128A12BEA00DEF5AC /* TaskCommentsViewModel.swift */,
+			);
+			path = "Task Comments";
+			sourceTree = "<group>";
+		};
 		C93A06AD27B91A530027097B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2050,6 +2066,7 @@
 			children = (
 				C9A75989289BB0CC006603E0 /* Task List */,
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
+				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3820,9 +3837,11 @@
 				B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
+				C9205C8228A12BEA00DEF5AC /* TaskCommentsViewModel.swift in Sources */,
 				133825D526300DC6000FFD4E /* String+Paths.swift in Sources */,
 				F16A3ED4261D860C007D06FF /* UIView+Rotate.swift in Sources */,
 				C993504727D8DB2B00E2B849 /* SyncSharedNodes.swift in Sources */,
+				C9205C7E28A12B9300DEF5AC /* TaskCommentsViewController.swift in Sources */,
 				F1E295CE261EF65100C9B8EE /* PrivacyNoticeModelProtocol.swift in Sources */,
 				F168F46E262488150002D3A5 /* PhotoGalleryDataSource.swift in Sources */,
 				C915CDDA28905B9800819F86 /* TaskFilters.swift in Sources */,
@@ -4047,6 +4066,7 @@
 				B9AE0BB924C03D170001289C /* NavigationRoutes.swift in Sources */,
 				C9A759AF289BCA37006603E0 /* InfoTableViewCell.swift in Sources */,
 				B99B5BE924BC9B1A0039A6F2 /* ApplicationTabBarThemingServiceWorker.swift in Sources */,
+				C9205C8028A12BA600DEF5AC /* TaskCommentsController.swift in Sources */,
 				E3F1AEE324D1DFFF009DC5F9 /* ProfileService.swift in Sources */,
 				C9A759B8289BD70B006603E0 /* PriorityTableCellViewModel.swift in Sources */,
 				E3D25C872493EF2E00FFD87F /* ListViewController.swift in Sources */,

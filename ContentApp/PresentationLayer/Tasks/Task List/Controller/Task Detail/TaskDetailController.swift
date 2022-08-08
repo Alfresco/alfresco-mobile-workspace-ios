@@ -118,7 +118,6 @@ class TaskDetailController: NSObject {
         if let comment = self.viewModel.comments.value.last {
             let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
                                                       userName: comment.createdBy?.userName,
-                                                      nameInitials: comment.createdBy?.userInitials,
                                                       commentID: comment.commentID,
                                                       comment: comment.message,
                                                       dateString: comment.messageDate)

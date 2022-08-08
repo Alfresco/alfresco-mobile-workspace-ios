@@ -16,30 +16,9 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-class TaskCommentTableCellViewModel: RowViewModel {
-    
-    var userID: Int?
-    var userName: String?
-    var commentID: Int?
-    var comment: String?
-    var dateString: String?
-
-    func cellIdentifier() -> String {
-        return "TaskCommentTableViewCell"
-    }
-    
-    init(userID: Int?,
-         userName: String?,
-         commentID: Int?,
-         comment: String?,
-         dateString: String?) {
-        
-        self.userID = userID
-        self.userName = userName
-        self.commentID = commentID
-        self.comment = comment
-        self.dateString = dateString
-    }
+class TaskCommentsViewModel: TaskPropertiesViewModel {
+    let rowViewModels = Observable<[RowViewModel]>([])
+    let comments = Observable<[TaskCommentModel]>([])
 }

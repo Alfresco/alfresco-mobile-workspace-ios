@@ -17,29 +17,16 @@
 //
 
 import UIKit
+import AlfrescoContent
+import MaterialComponents
 
-class TaskCommentTableCellViewModel: RowViewModel {
-    
-    var userID: Int?
-    var userName: String?
-    var commentID: Int?
-    var comment: String?
-    var dateString: String?
+class TaskCommentsViewController: SystemSearchViewController {
 
-    func cellIdentifier() -> String {
-        return "TaskCommentTableViewCell"
-    }
+    var viewModel: TaskCommentsViewModel { return controller.viewModel }
+    lazy var controller: TaskCommentsController = { return TaskCommentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
-    init(userID: Int?,
-         userName: String?,
-         commentID: Int?,
-         comment: String?,
-         dateString: String?) {
-        
-        self.userID = userID
-        self.userName = userName
-        self.commentID = commentID
-        self.comment = comment
-        self.dateString = dateString
+    // MARK: - View did load
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 }
