@@ -60,6 +60,9 @@
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1fg-cC-eu0" userLabel="addCommentButton">
                         <rect key="frame" x="0.0" y="0.0" width="399" height="79"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <bool key="isElement" value="NO"/>
+                        </accessibility>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal">
                             <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

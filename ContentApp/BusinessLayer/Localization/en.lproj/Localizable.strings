@@ -326,3 +326,6 @@
 "list-option" = "List option";
 "due-date" = "Due date";
 "back-title" = "Back";
+"date-title" = "Date";
+"user-name" = "User name";
+"comment-title" = "Comment";

@@ -61,9 +61,20 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-//        baseView.accessibilityIdentifier = titleLabel.text
-//        baseView.accessibilityLabel = titleLabel.text
-//        baseView.accessibilityValue = priorityLabel.text
+        dateLabel.isAccessibilityElement = true
+        dateLabel.accessibilityIdentifier = "date"
+        dateLabel.accessibilityLabel = LocalizationConstants.Accessibility.date
+        dateLabel.accessibilityValue = dateLabel.text
+        
+        userNameLabel.isAccessibilityElement = true
+        userNameLabel.accessibilityIdentifier = "user-name"
+        userNameLabel.accessibilityLabel = LocalizationConstants.Accessibility.userName
+        userNameLabel.accessibilityValue = userNameLabel.text
+        
+        commentLabel.isAccessibilityElement = true
+        commentLabel.accessibilityIdentifier = "comment"
+        commentLabel.accessibilityLabel = LocalizationConstants.Accessibility.commentTitle
+        commentLabel.accessibilityValue = commentLabel.text
     }
     
     // MARK: - Apply Themes and Localization

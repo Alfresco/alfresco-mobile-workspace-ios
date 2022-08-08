@@ -40,7 +40,8 @@ class AddCommentTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addAccessibility() {
-        baseView.accessibilityIdentifier = titleLabel.text
+        baseView.isAccessibilityElement = true
+        baseView.accessibilityIdentifier = "add-comment"
         baseView.accessibilityLabel = titleLabel.text
         baseView.accessibilityTraits = .button
     }

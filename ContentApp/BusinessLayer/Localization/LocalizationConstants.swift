@@ -321,5 +321,8 @@ struct LocalizationConstants {
         static let listOption = NSLocalizedString("list-option", comment: "")
         static let dueDate = NSLocalizedString("due-date", comment: "")
         static let back = NSLocalizedString("back-title", comment: "")
+        static let date = NSLocalizedString("date-title", comment: "")
+        static let userName = NSLocalizedString("user-name", comment: "")
+        static let commentTitle = NSLocalizedString("comment-title", comment: "")
     }
 }
