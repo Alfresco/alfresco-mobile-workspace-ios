@@ -41,7 +41,7 @@ class TaskDetailViewController: SystemSearchViewController {
         setupBindings()
         getTaskDetails()
         getTaskComments()
-        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailTab)
+        AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
