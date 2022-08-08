@@ -64,3 +64,12 @@ extension Date {
         return Int64(self.timeIntervalSince1970 * 1000)
     }
 }
+
+// MARK: - Date string from Date
+extension Date {
+    func dateString(format: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
+}

@@ -39,15 +39,6 @@ class TaskCommentModel {
         self.createdBy = createdBy
         self.commentID = commentID
         self.message = message
-        self.messageDate = self.dateFrom(date: created)
-    }
-    
-    private func dateFrom(date: Date?) -> String? {
-        if let createdDate = date {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM yyyy"
-            return dateFormatter.string(from: createdDate)
-        }
-        return nil
+        self.messageDate = created?.dateString(format: "dd MMM yyyy")
     }
 }

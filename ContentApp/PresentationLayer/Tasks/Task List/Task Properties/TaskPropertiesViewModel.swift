@@ -72,12 +72,7 @@ class TaskPropertiesViewModel: NSObject {
     }
     
     func getDueDate() -> String? {
-        if let dueDate = dueDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd MMM yyyy"
-            return dateFormatter.string(from: dueDate)
-        }
-        return nil
+        dueDate?.dateString(format: "dd MMM yyyy")
     }
     
     var status: String {
