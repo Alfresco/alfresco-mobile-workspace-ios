@@ -16,10 +16,27 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
+class TaskHeaderTableCellViewModel: RowViewModel {
+
+    var title: String?
+    var subTitle: String?
+    var buttonTitle: String?
+    var isHideDetailButton = true
+    var viewAllAction: (() -> Void)?
+
+    func cellIdentifier() -> String {
+        return "TaskHeaderTableViewCell"
+    }
+    
+    init(title: String?,
+         subTitle: String?,
+         buttonTitle: String?,
+         isHideDetailButton: Bool) {
+        self.title = title
+        self.subTitle = subTitle
+        self.buttonTitle = buttonTitle
+        self.isHideDetailButton = isHideDetailButton
+    }
 }

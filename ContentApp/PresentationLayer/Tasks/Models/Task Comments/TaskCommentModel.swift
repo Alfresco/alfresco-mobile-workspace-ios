@@ -16,10 +16,29 @@
 //  limitations under the License.
 //
 
-import Foundation
+import AlfrescoContent
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
+class TaskCommentModel {
+    var created: Date?
+    var createdBy: TaskNodeAssignee?
+    var commentID: Int?
+    var message: String?
+    var messageDate: String?
+
+    enum CodingKeys: String, CodingKey {
+        case commentID = "id"
+        case created, createdBy, message
+    }
+    
+    init(created: Date?,
+         createdBy: TaskNodeAssignee?,
+         commentID: Int?,
+         message: String?) {
+        
+        self.created = created
+        self.createdBy = createdBy
+        self.commentID = commentID
+        self.message = message
+        self.messageDate = created?.dateString(format: "dd MMM yyyy")
+    }
 }
