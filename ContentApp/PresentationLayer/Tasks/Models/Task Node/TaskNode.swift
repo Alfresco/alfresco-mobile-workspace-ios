@@ -152,10 +152,7 @@ class TaskNodeAssignee: Codable {
         self.assigneeID = assigneeID
         self.firstName = firstName
         self.lastName = lastName
-        self.email = email
-        
-        if let firstName = firstName, let lastName = lastName {
-            self.userName = String(format: "%@ %@", firstName, lastName).trimmingCharacters(in: .whitespacesAndNewlines)
-        }
+        self.email = email        
+        self.userName = String(format: "%@ %@", firstName ?? "", lastName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }

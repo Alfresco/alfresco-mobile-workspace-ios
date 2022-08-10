@@ -310,7 +310,7 @@
 "identifier-title" = "Identifier";
 "add-comment-placeholder" = "Add a comment...";
 "comments-title" = "Comments";
-"header-subtitle-message" = "%d comment(s)";
+"title-multiple-comment" = "%d comments";
 "attached-files-title" = "Attached files";
 "view-all-title" = "View all";
 

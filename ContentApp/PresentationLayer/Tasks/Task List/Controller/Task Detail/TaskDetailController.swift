@@ -59,7 +59,10 @@ class TaskDetailController: NSObject {
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
-        rowViewModels.append(taskHeaderCellVM())
+         
+        if taskHeaderCellVM() != nil {
+            rowViewModels.append(taskHeaderCellVM()!)
+        }
         
         if lastestCommentCellVM() != nil {
             rowViewModels.append(lastestCommentCellVM()!)
@@ -109,11 +112,18 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func taskHeaderCellVM() -> TaskHeaderTableCellViewModel {
+    private func taskHeaderCellVM() -> TaskHeaderTableCellViewModel? {
         let commentsCount = viewModel.comments.value.count
+        if commentsCount == 0 {
+            return nil
+        }
+        var subTitle = String(format: LocalizationConstants.Tasks.multipleCommentTitle, commentsCount)
+        if commentsCount == 1 {
+            subTitle = ""
+        }
         let isHideDetailButton = commentsCount == 0 ? true:false
         let rowVM = TaskHeaderTableCellViewModel(title: LocalizationConstants.Tasks.commentsTitle,
-                                                 subTitle: String(format: LocalizationConstants.Tasks.headerSubTitle, commentsCount),
+                                                 subTitle: subTitle,
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
                                                  isHideDetailButton: isHideDetailButton)
         rowVM.viewAllAction = {

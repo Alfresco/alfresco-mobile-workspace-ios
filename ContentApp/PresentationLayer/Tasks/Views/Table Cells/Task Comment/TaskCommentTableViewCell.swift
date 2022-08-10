@@ -83,7 +83,7 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         self.currentTheme = currentTheme
         self.backgroundColor = currentTheme.surfaceColor
         userNameLabel.applyStyleSubtitle2OnSurface(theme: currentTheme)
-        dateLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
+        dateLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
         commentLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         updateUserImage()
     }
