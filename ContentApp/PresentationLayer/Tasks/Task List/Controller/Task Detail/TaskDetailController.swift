@@ -43,6 +43,8 @@ class TaskDetailController: NSObject {
             return TaskHeaderTableViewCell.cellIdentifier()
         case is EmptyPlaceholderTableCellViewModel:
             return EmptyPlaceholderTableViewCell.cellIdentifier()
+        case is TaskAttachmentTableCellViewModel:
+            return TaskAttachmentTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -73,10 +75,12 @@ class TaskDetailController: NSObject {
         rowViewModels.append(addCommentCellVM())
         rowViewModels.append(attachmentsHeaderCellVM())
         
-        if attachmentsPlaceholder() != nil {
-            rowViewModels.append(attachmentsPlaceholder()!)
+        if attachmentsPlaceholderCellVM() != nil {
+            rowViewModels.append(attachmentsPlaceholderCellVM()!)
         }
-
+        
+        let attachments = attachmentsCellVM()
+        rowViewModels.append(contentsOf: attachments)
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -185,12 +189,24 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func attachmentsPlaceholder() -> EmptyPlaceholderTableCellViewModel? {
+    private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
         if viewModel.attachments.value.isEmpty {
             let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
             let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
             return rowVM
         }
         return nil
+    }
+    
+    private func attachmentsCellVM() -> [RowViewModel] {
+        var rowVMs = [RowViewModel]()
+        let attachments = viewModel.attachments.value
+        if !attachments.isEmpty {
+            for attachment in attachments {
+                let rowVM = TaskAttachmentTableCellViewModel(attachment: attachment)
+                rowVMs.append(rowVM)
+            }
+        }
+        return rowVMs
     }
 }

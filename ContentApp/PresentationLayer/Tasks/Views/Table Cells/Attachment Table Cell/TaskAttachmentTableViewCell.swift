@@ -18,7 +18,7 @@
 
 import UIKit
 
-class TaskAttachmentTableViewCell: UITableViewCell {
+class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var attachmentView: UIView!
@@ -26,9 +26,26 @@ class TaskAttachmentTableViewCell: UITableViewCell {
     @IBOutlet weak var bottomParentView: NSLayoutConstraint!
     var viewModel: TaskAttachmentTableCellViewModel?
 
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    func setup(viewModel: RowViewModel) {
+        guard let viewModel = viewModel as? TaskAttachmentTableCellViewModel else { return }
+        self.viewModel = viewModel
+        addAccessibility()
+    }
+    
+    private func addAccessibility() {
+//        baseView.accessibilityLabel = titleHeader.text
+//        baseView.accessibilityIdentifier = "placeholder-title"
+    }
+    
+    // MARK: - Apply Themes and Localization
+    func applyTheme(with service: MaterialDesignThemingService?) {
+        guard let currentTheme = service?.activeTheme else { return }
+        self.backgroundColor = .red //currentTheme.surfaceColor
+        parentView.backgroundColor = currentTheme.neutral95Color
     }
 }

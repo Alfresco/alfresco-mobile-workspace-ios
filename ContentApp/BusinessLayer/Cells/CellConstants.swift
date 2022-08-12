@@ -36,5 +36,7 @@ struct CellConstants {
         static let commentCell = "TaskCommentTableViewCell"
         static let taskHeaderCell = "TaskHeaderTableViewCell"
         static let emptyPlaceholderCell = "EmptyPlaceholderTableViewCell"
+        static let taskAttachment = "TaskAttachmentTableViewCell"
     }
 }
+

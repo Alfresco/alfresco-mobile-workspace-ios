@@ -84,6 +84,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.commentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.commentCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.emptyPlaceholderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.emptyPlaceholderCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.taskAttachment, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskAttachment)
     }
     
     private func addAccessibility() {
@@ -228,6 +229,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? TaskHeaderTableViewCell)?.applyTheme(with: theme)
             } else if cell is EmptyPlaceholderTableViewCell {
                 (cell as? EmptyPlaceholderTableViewCell)?.applyTheme(with: theme)
+            } else if cell is TaskAttachmentTableViewCell {
+                (cell as? TaskAttachmentTableViewCell)?.applyTheme(with: theme)
             }
         }
         
