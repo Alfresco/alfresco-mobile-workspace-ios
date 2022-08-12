@@ -18,32 +18,45 @@
 
 import UIKit
 
-class TaskHeaderTableCellViewModel: RowViewModel {
-
-    var title: String?
-    var subTitle: String?
-    var buttonTitle: String?
-    var isHideDetailButton = true
-    var viewAllAction: (() -> Void)?
+class TaskAttachmentTableCellViewModel: RowViewModel {
+    var attachment: TaskAttachmentModel?
+    var isFirst = true
+    var isLast = false
+    var name: String? {
+        return attachment?.name
+    }
     
-    var topSubHeader: CGFloat {
-        if let subTitle = subTitle, !subTitle.isEmpty {
+    var mimeType: String? {
+        return attachment?.mimeType
+    }
+    
+    var icon: UIImage? {
+        return FileIcon.icon(for: mimeType)
+    }
+    
+    var topConstraint: CGFloat {
+        if isFirst {
+            return 15.0
+        }
+        return 0.0
+    }
+    
+    var bottomConstraint: CGFloat {
+        if isLast {
             return 15.0
         }
         return 0.0
     }
     
     func cellIdentifier() -> String {
-        return "TaskHeaderTableViewCell"
+        return "TaskAttachmentTableViewCell"
     }
     
-    init(title: String?,
-         subTitle: String?,
-         buttonTitle: String?,
-         isHideDetailButton: Bool) {
-        self.title = title
-        self.subTitle = subTitle
-        self.buttonTitle = buttonTitle
-        self.isHideDetailButton = isHideDetailButton
+    init(attachment: TaskAttachmentModel?,
+         isFirst: Bool,
+         isLast: Bool) {
+        self.attachment = attachment
+        self.isFirst = isFirst
+        self.isLast = isLast
     }
 }

@@ -312,11 +312,14 @@ struct LocalizationConstants {
         static let identifier = NSLocalizedString("identifier-title", comment: "")
         static let addCommentPlaceholder = NSLocalizedString("add-comment-placeholder", comment: "")
         static let commentsTitle = NSLocalizedString("comments-title", comment: "")
-        static let headerSubTitle = NSLocalizedString("header-subtitle-message", comment: "")
+        static let multipleCommentTitle = NSLocalizedString("title-multiple-comment", comment: "")
         static let attachedFilesTitle = NSLocalizedString("attached-files-title", comment: "")
+        static let multipleAttachmentsTitle = NSLocalizedString("title-multiple-attachments", comment: "")
         static let viewAllTitle = NSLocalizedString("view-all-title", comment: "")
+        static let readMore = NSLocalizedString("read-more", comment: "")
+        static let noAttachedFilesPlaceholder = NSLocalizedString("no-attached-files-placeholder", comment: "")
     }
-
+    
     struct Accessibility {
         static let userProfile = NSLocalizedString("user-profile", comment: "")
         static let resetFilters = NSLocalizedString("reset-filters", comment: "")
