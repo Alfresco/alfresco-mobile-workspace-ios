@@ -20,29 +20,27 @@ import AlfrescoContent
 
 class TaskAttachmentOperations: NSObject {
 
-    static func processAttachments(for taskAttachments: [TaskAttachment]?) -> [TaskAttachmentModel] {
+    static func processAttachments(for taskAttachments: [TaskAttachment]) -> [TaskAttachmentModel] {
         var attachments: [TaskAttachmentModel] = []
-        if let taskAttachments = taskAttachments {
-            for attachment in taskAttachments {
-                
-                let assignee = TaskNodeAssignee(assigneeID: attachment.createdBy?.id ?? -1,
-                                                firstName: attachment.createdBy?.firstName,
-                                                lastName: attachment.createdBy?.lastName,
-                                                email: attachment.createdBy?.email)
-               
-                let attachment = TaskAttachmentModel(attachmentID: attachment.id,
-                                                     name: attachment.name,
-                                                     created: attachment.created,
-                                                     createdBy: assignee,
-                                                     relatedContent: attachment.relatedContent,
-                                                     contentAvailable: attachment.contentAvailable,
-                                                     link: attachment.link,
-                                                     mimeType: attachment.mimeType,
-                                                     simpleType: attachment.simpleType,
-                                                     previewStatus: attachment.previewStatus,
-                                                     thumbnailStatus: attachment.thumbnailStatus)
-                attachments.append(attachment)
-            }
+        for attachment in taskAttachments {
+            
+            let assignee = TaskNodeAssignee(assigneeID: attachment.createdBy?.id ?? -1,
+                                            firstName: attachment.createdBy?.firstName,
+                                            lastName: attachment.createdBy?.lastName,
+                                            email: attachment.createdBy?.email)
+           
+            let attachment = TaskAttachmentModel(attachmentID: attachment.id,
+                                                 name: attachment.name,
+                                                 created: attachment.created,
+                                                 createdBy: assignee,
+                                                 relatedContent: attachment.relatedContent,
+                                                 contentAvailable: attachment.contentAvailable,
+                                                 link: attachment.link,
+                                                 mimeType: attachment.mimeType,
+                                                 simpleType: attachment.simpleType,
+                                                 previewStatus: attachment.previewStatus,
+                                                 thumbnailStatus: attachment.thumbnailStatus)
+            attachments.append(attachment)
         }
         return attachments
     }

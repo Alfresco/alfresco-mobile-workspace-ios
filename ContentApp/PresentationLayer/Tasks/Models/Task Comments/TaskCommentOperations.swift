@@ -20,22 +20,20 @@ import AlfrescoContent
 
 class TaskCommentOperations: NSObject {
   
-    static func processComments(for taskComments: [TaskComment]?) -> [TaskCommentModel] {
+    static func processComments(for taskComments: [TaskComment]) -> [TaskCommentModel] {
         var comments: [TaskCommentModel] = []
-        if let taskComments = taskComments {
-            for comment in taskComments {
-                
-                let assignee = TaskNodeAssignee(assigneeID: comment.createdBy?.id ?? -1,
-                                                firstName: comment.createdBy?.firstName,
-                                                lastName: comment.createdBy?.lastName,
-                                                email: comment.createdBy?.email)
-               
-                let comment = TaskCommentModel(created: comment.created,
-                                               createdBy: assignee,
-                                               commentID: comment.id,
-                                               message: comment.message)
-                comments.append(comment)
-            }
+        for comment in taskComments {
+            
+            let assignee = TaskNodeAssignee(assigneeID: comment.createdBy?.id ?? -1,
+                                            firstName: comment.createdBy?.firstName,
+                                            lastName: comment.createdBy?.lastName,
+                                            email: comment.createdBy?.email)
+           
+            let comment = TaskCommentModel(created: comment.created,
+                                           createdBy: assignee,
+                                           commentID: comment.id,
+                                           message: comment.message)
+            comments.append(comment)
         }
         return comments
     }

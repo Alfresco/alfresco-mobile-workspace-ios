@@ -54,8 +54,12 @@ extension TaskPropertiesViewModel {
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 if data != nil {
-                    let comments = TaskCommentOperations.processComments(for: data?.data)
-                    completionHandler(comments, nil)
+                    if let taskComments = data?.data {
+                        let comments = TaskCommentOperations.processComments(for: taskComments)
+                        completionHandler(comments, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
                 } else {
                     completionHandler([], error)
                 }
@@ -72,8 +76,12 @@ extension TaskPropertiesViewModel {
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 if data != nil {
-                    let attachements = TaskAttachmentOperations.processAttachments(for: data?.data)
-                    completionHandler(attachements, nil)
+                    if let taskAttachments = data?.data {
+                        let attachements = TaskAttachmentOperations.processAttachments(for: taskAttachments)
+                        completionHandler(attachements, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
                 } else {
                     completionHandler([], error)
                 }
