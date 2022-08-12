@@ -24,6 +24,7 @@ class TaskHeaderTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var viewAllButton: UIButton!
     @IBOutlet weak var titleHeaderLabel: UILabel!
     @IBOutlet weak var titleSubHeaderLabel: UILabel!
+    @IBOutlet weak var topSubHeader: NSLayoutConstraint!
     var viewModel: TaskHeaderTableCellViewModel?
 
     override func awakeFromNib() {
@@ -38,6 +39,7 @@ class TaskHeaderTableViewCell: UITableViewCell, CellConfigurable {
         titleSubHeaderLabel.text = viewModel.subTitle
         viewAllButton.setTitle(viewModel.buttonTitle, for: .normal)
         viewAllButton.isHidden = viewModel.isHideDetailButton
+        topSubHeader.constant = viewModel.topSubHeader
         addAccessibility()
     }
     

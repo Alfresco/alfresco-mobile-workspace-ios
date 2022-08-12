@@ -3,7 +3,7 @@ PODS:
   - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoContent (0.2.18):
+  - AlfrescoContent (0.2.20):
     - Alamofire (~> 4.9.0)
   - AlfrescoCore (0.1.2)
   - AppAuth (1.5.0):
@@ -16,6 +16,7 @@ PODS:
     - CocoaLumberjack/Core (= 3.7.4)
   - CocoaLumberjack/Core (3.7.4)
   - DropDown (2.3.13)
+  - ExpandableLabel (0.5.2)
   - FastCoding (3.3)
   - Firebase/Analytics (9.3.0):
     - Firebase/Core
@@ -775,6 +776,7 @@ DEPENDENCIES:
   - AlfrescoAuth
   - AlfrescoContent
   - DropDown
+  - ExpandableLabel
   - FastCoding
   - Firebase/Analytics
   - Firebase/Crashlytics
@@ -795,6 +797,7 @@ SPEC REPOS:
     - AppAuth
     - CocoaLumberjack
     - DropDown
+    - ExpandableLabel
     - FastCoding
     - Firebase
     - FirebaseAnalytics
@@ -823,11 +826,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
-  AlfrescoContent: 1e3eef8ddfce039d7d6ea72d0232df7cf20e25b6
+  AlfrescoContent: 9cb9098f73d170c7f60ec500ac875503ca72270b
   AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
+  ExpandableLabel: c2fab6d27860c572d67134b30522a5917746171d
   FastCoding: 3b590f7143a229780fa744b35084d85d9461587e
   Firebase: ef75abb1cdbc746d5a38f4e26c422c807b189b8c
   FirebaseAnalytics: bf46f5163f44097ce2c789de0b3e6f87f1da834a
@@ -853,6 +857,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
-PODFILE CHECKSUM: 6f400bf0d9ba28103011761b0e336e7bf47f0cac
+PODFILE CHECKSUM: d85c14de298060c22fc13284333cd12195ef3af2
 
 COCOAPODS: 1.11.3

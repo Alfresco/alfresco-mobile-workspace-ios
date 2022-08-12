@@ -310,9 +310,12 @@
 "identifier-title" = "Identifier";
 "add-comment-placeholder" = "Add a comment...";
 "comments-title" = "Comments";
-"header-subtitle-message" = "%d comment(s)";
+"title-multiple-comment" = "%d comments";
 "attached-files-title" = "Attached files";
+"title-multiple-attachments" = "%d attachments";
 "view-all-title" = "View all";
+"read-more" = "Read More";
+"no-attached-files-placeholder" = "No Attached Files";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
