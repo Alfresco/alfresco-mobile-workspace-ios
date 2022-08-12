@@ -41,6 +41,7 @@ class TaskDetailViewController: SystemSearchViewController {
         setupBindings()
         getTaskDetails()
         getTaskComments()
+        getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
 
         // ReSignIn Notification
@@ -82,6 +83,7 @@ class TaskDetailViewController: SystemSearchViewController {
         self.tableView.register(UINib(nibName: CellConstants.TableCells.addCommentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.addCommentCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.commentCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.commentCell)
         self.tableView.register(UINib(nibName: CellConstants.TableCells.taskHeaderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.taskHeaderCell)
+        self.tableView.register(UINib(nibName: CellConstants.TableCells.emptyPlaceholderCell, bundle: nil), forCellReuseIdentifier: CellConstants.TableCells.emptyPlaceholderCell)
     }
     
     private func addAccessibility() {
@@ -140,6 +142,20 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.showComments(isAddComment: isAddComment)
         }
+        
+        /* observing attachments */
+        viewModel.attachments.addObserver { [weak self] (attachments) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
+        }
+        
+        /* observe view all attachments action */
+        viewModel.viewAllAttachmentsAction = { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.viewAllAttachments()
+        }
     }
     
     private func getTaskDetails() {
@@ -163,8 +179,23 @@ class TaskDetailViewController: SystemSearchViewController {
         }
     }
     
+    private func getTaskAttachments() {
+        let taskID = viewModel.taskID
+        viewModel.taskAttachments(with: taskID) { [weak self] taskAttachments, error in
+            guard let sSelf = self else { return }
+            if error == nil {
+                sSelf.viewModel.attachments.value = taskAttachments
+                sSelf.controller.buildViewModel()
+            }
+        }
+    }
+    
     private func showComments(isAddComment: Bool) {
         AlfrescoLog.debug("******* Add comment action \(isAddComment) ********")
+    }
+    
+    private func viewAllAttachments() {
+        AlfrescoLog.debug("******* view all attachments ********")
     }
 }
 
@@ -195,6 +226,8 @@ extension TaskDetailViewController: UITableViewDelegate, UITableViewDataSource {
                 (cell as? TaskCommentTableViewCell)?.applyTheme(with: theme)
             } else if cell is TaskHeaderTableViewCell {
                 (cell as? TaskHeaderTableViewCell)?.applyTheme(with: theme)
+            } else if cell is EmptyPlaceholderTableViewCell {
+                (cell as? EmptyPlaceholderTableViewCell)?.applyTheme(with: theme)
             }
         }
         

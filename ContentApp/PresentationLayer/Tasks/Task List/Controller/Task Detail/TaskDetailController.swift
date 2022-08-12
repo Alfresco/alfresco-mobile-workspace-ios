@@ -41,6 +41,8 @@ class TaskDetailController: NSObject {
             return TaskCommentTableViewCell.cellIdentifier()
         case is TaskHeaderTableCellViewModel:
             return TaskHeaderTableViewCell.cellIdentifier()
+        case is EmptyPlaceholderTableCellViewModel:
+            return EmptyPlaceholderTableViewCell.cellIdentifier()
         default:
             fatalError("Unexpected view model type: \(viewModel)")
         }
@@ -69,6 +71,12 @@ class TaskDetailController: NSObject {
         }
         
         rowViewModels.append(addCommentCellVM())
+        rowViewModels.append(attachmentsHeaderCellVM())
+        
+        if attachmentsPlaceholder() != nil {
+            rowViewModels.append(attachmentsPlaceholder()!)
+        }
+
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
@@ -112,13 +120,14 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
+    // MARK: - Comments
     private func taskHeaderCellVM() -> TaskHeaderTableCellViewModel? {
         let commentsCount = viewModel.comments.value.count
         if commentsCount == 0 {
             return nil
         }
         var subTitle = String(format: LocalizationConstants.Tasks.multipleCommentTitle, commentsCount)
-        if commentsCount == 1 {
+        if commentsCount < 2 {
             subTitle = ""
         }
         let isHideDetailButton = commentsCount == 0 ? true:false
@@ -146,10 +155,42 @@ class TaskDetailController: NSObject {
                                                       userName: comment.createdBy?.userName,
                                                       commentID: comment.commentID,
                                                       comment: comment.message,
-                                                      dateString: comment.messageDate)
+                                                      dateString: comment.messageDate,
+                                                      isShowReadMore: true)
+            rowVM.didSelectCommentAction = {
+                self.viewModel.viewAllCommentsAction?(false)
+            }
             return rowVM
         }
         
+        return nil
+    }
+    
+    // MARK: - Attachments
+    private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel {
+        let attachmentsCount = viewModel.attachments.value.count
+        let title = LocalizationConstants.Tasks.attachedFilesTitle
+        var subTitle = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachmentsCount)
+        if attachmentsCount < 2 {
+            subTitle = ""
+        }
+        let isHideDetailButton = attachmentsCount > 4 ? false:true
+        let rowVM = TaskHeaderTableCellViewModel(title: title ,
+                                                 subTitle: subTitle,
+                                                 buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
+                                                 isHideDetailButton: isHideDetailButton)
+        rowVM.viewAllAction = {
+            self.viewModel.viewAllAttachmentsAction?()
+        }
+        return rowVM
+    }
+    
+    private func attachmentsPlaceholder() -> EmptyPlaceholderTableCellViewModel? {
+        if viewModel.attachments.value.isEmpty {
+            let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
+            let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
+            return rowVM
+        }
         return nil
     }
 }

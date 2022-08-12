@@ -58,7 +58,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRY-Dj-x0T" userLabel="commentLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRY-Dj-x0T" userLabel="commentLabel" customClass="ExpandableLabel" customModule="ExpandableLabel">
                                 <rect key="frame" x="58" y="45.5" width="308" height="20.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -68,11 +68,24 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vce-Be-YZD" userLabel="didSelectButton">
+                                <rect key="frame" x="0.0" y="0.0" width="381" height="116"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="didSelectCellAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="CXG-tm-vic"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="vce-Be-YZD" secondAttribute="bottom" id="6et-gC-yDt"/>
                             <constraint firstItem="zSb-06-YSq" firstAttribute="top" secondItem="Xq6-Ib-AaO" secondAttribute="top" constant="15" id="FyV-JT-jkE"/>
                             <constraint firstAttribute="trailing" secondItem="bYC-jm-Pj0" secondAttribute="trailing" constant="15" id="LjQ-YN-qqL"/>
+                            <constraint firstItem="vce-Be-YZD" firstAttribute="leading" secondItem="Xq6-Ib-AaO" secondAttribute="leading" id="QTr-mN-Hlp"/>
+                            <constraint firstItem="vce-Be-YZD" firstAttribute="top" secondItem="Xq6-Ib-AaO" secondAttribute="top" id="Z9i-02-BOv"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="TRY-Dj-x0T" secondAttribute="bottom" constant="10" id="e2U-f2-dPl"/>
                             <constraint firstItem="Kmn-na-KB1" firstAttribute="top" secondItem="Xq6-Ib-AaO" secondAttribute="top" constant="20" id="ezR-Th-mMy"/>
                             <constraint firstItem="TRY-Dj-x0T" firstAttribute="leading" secondItem="zSb-06-YSq" secondAttribute="leading" id="h8N-VK-T2d"/>
@@ -82,6 +95,7 @@
                             <constraint firstItem="bYC-jm-Pj0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="zSb-06-YSq" secondAttribute="trailing" constant="15" id="oEz-tp-UJg"/>
                             <constraint firstItem="TRY-Dj-x0T" firstAttribute="top" secondItem="zSb-06-YSq" secondAttribute="bottom" constant="10" id="omg-E4-Xzp"/>
                             <constraint firstItem="TRY-Dj-x0T" firstAttribute="trailing" secondItem="bYC-jm-Pj0" secondAttribute="trailing" id="tNl-yg-zlY"/>
+                            <constraint firstAttribute="trailing" secondItem="vce-Be-YZD" secondAttribute="trailing" id="wLL-Z3-pys"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -96,7 +110,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="baseView" destination="Xq6-Ib-AaO" id="14i-26-3Xk"/>
-                <outlet property="commentLabel" destination="TRY-Dj-x0T" id="HRh-EE-XNl"/>
+                <outlet property="commentLabel" destination="TRY-Dj-x0T" id="bqU-kr-ZGh"/>
                 <outlet property="dateLabel" destination="bYC-jm-Pj0" id="XSt-vw-f9y"/>
                 <outlet property="userImageBaseView" destination="Kmn-na-KB1" id="QAN-uj-WZU"/>
                 <outlet property="userImageView" destination="m97-Af-cbA" id="QfQ-wZ-Gi3"/>

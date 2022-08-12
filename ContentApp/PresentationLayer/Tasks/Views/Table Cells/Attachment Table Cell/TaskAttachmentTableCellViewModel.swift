@@ -16,12 +16,12 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
-    let attachments = Observable<[TaskAttachmentModel]>([])
-    var viewAllAttachmentsAction: (() -> Void)?
+class TaskAttachmentTableCellViewModel: RowViewModel {
+
+    func cellIdentifier() -> String {
+        return "TaskAttachmentTableViewCell"
+    }
+
 }

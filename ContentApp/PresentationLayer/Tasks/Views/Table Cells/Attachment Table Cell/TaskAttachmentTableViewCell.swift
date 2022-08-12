@@ -16,12 +16,19 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
-    let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
-    let attachments = Observable<[TaskAttachmentModel]>([])
-    var viewAllAttachmentsAction: (() -> Void)?
+class TaskAttachmentTableViewCell: UITableViewCell {
+    @IBOutlet weak var baseView: UIView!
+    @IBOutlet weak var parentView: UIView!
+    @IBOutlet weak var attachmentView: UIView!
+    @IBOutlet weak var topParentView: NSLayoutConstraint!
+    @IBOutlet weak var bottomParentView: NSLayoutConstraint!
+    var viewModel: TaskAttachmentTableCellViewModel?
+
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
 }

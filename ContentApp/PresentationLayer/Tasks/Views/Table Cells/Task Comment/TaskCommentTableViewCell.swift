@@ -17,6 +17,7 @@
 //
 
 import UIKit
+import ExpandableLabel
 
 class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
 
@@ -25,13 +26,18 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var commentLabel: UILabel!
+    @IBOutlet weak var commentLabel: ExpandableLabel!
     var viewModel: TaskCommentTableCellViewModel?
     var currentTheme: PresentationTheme?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         userImageBaseView.layer.cornerRadius = userImageBaseView.frame.size.height/2.0
+        self.addReadMore()
+    }
+    
+    @IBAction func didSelectCellAction(_ sender: Any) {
+        viewModel?.didSelectCommentAction?()
     }
     
     func setup(viewModel: RowViewModel) {
@@ -43,6 +49,7 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         userNameLabel.text = viewModel.userName
         commentLabel.text = viewModel.comment
         addAccessibility()
+        commentLabel.numberOfLines = viewModel.isShowReadMore ? 4:0
     }
     
     private func updateUserImage() {
@@ -86,5 +93,13 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         dateLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
         commentLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         updateUserImage()
+    }
+    
+    private func addReadMore() {
+        commentLabel.collapsed = true
+        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0),
+                      NSAttributedString.Key.foregroundColor: UIColor(hex: "#2A7DE1")]
+        commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
+        commentLabel.text = viewModel?.comment
     }
 }

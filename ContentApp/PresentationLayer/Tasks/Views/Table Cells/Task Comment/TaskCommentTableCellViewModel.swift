@@ -25,6 +25,8 @@ class TaskCommentTableCellViewModel: RowViewModel {
     var commentID: Int?
     var comment: String?
     var dateString: String?
+    var isShowReadMore = false
+    var didSelectCommentAction: (() -> Void)?
 
     func cellIdentifier() -> String {
         return "TaskCommentTableViewCell"
@@ -34,12 +36,14 @@ class TaskCommentTableCellViewModel: RowViewModel {
          userName: String?,
          commentID: Int?,
          comment: String?,
-         dateString: String?) {
+         dateString: String?,
+         isShowReadMore: Bool = false) {
         
         self.userID = userID
         self.userName = userName
         self.commentID = commentID
         self.comment = comment
         self.dateString = dateString
+        self.isShowReadMore = isShowReadMore
     }
 }

@@ -62,4 +62,22 @@ extension TaskPropertiesViewModel {
             }
         })
     }
+    
+    func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [TaskAttachmentModel], _ error: Error?) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            TaskAttachmentsAPI.getTaskAttachments(with: taskId) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if data != nil {
+                    let attachements = TaskAttachmentOperations.processAttachments(for: data?.data)
+                    completionHandler(attachements, nil)
+                } else {
+                    completionHandler([], error)
+                }
+            }
+        })
+    }
 }
