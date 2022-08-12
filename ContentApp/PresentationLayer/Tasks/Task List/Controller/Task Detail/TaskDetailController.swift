@@ -200,10 +200,24 @@ class TaskDetailController: NSObject {
     
     private func attachmentsCellVM() -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
-        let attachments = viewModel.attachments.value
+        var attachments = viewModel.attachments.value
+        let arraySlice = attachments.prefix(4)
+        attachments = Array(arraySlice)
+        
+        var isFirst = false
+        var isLast = false
         if !attachments.isEmpty {
-            for attachment in attachments {
-                let rowVM = TaskAttachmentTableCellViewModel(attachment: attachment)
+            for index in 0 ..< attachments.count {
+                if index == 0 {
+                    isFirst = true
+                } else if index == attachments.count - 1 {
+                    isLast = true
+                }
+            
+                let attachment = attachments[index]
+                let rowVM = TaskAttachmentTableCellViewModel(attachment: attachment,
+                                                             isFirst: isFirst,
+                                                             isLast: isLast)
                 rowVMs.append(rowVM)
             }
         }

@@ -43,6 +43,7 @@ class TaskDetailViewController: SystemSearchViewController {
         getTaskComments()
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
+        tableView.contentInset.bottom = 50
 
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,

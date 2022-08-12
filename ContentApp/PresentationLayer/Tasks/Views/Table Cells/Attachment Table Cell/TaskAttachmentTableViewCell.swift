@@ -20,32 +20,40 @@ import UIKit
 
 class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
-    @IBOutlet weak var parentView: UIView!
     @IBOutlet weak var attachmentView: UIView!
-    @IBOutlet weak var topParentView: NSLayoutConstraint!
-    @IBOutlet weak var bottomParentView: NSLayoutConstraint!
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var topAttachmentView: NSLayoutConstraint!
+    @IBOutlet weak var bottomAttachmentView: NSLayoutConstraint!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        attachmentView.layer.cornerRadius = 6.0
     }
     
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? TaskAttachmentTableCellViewModel else { return }
         self.viewModel = viewModel
+        title.text = viewModel.name
+        iconImageView.image = viewModel.icon
+        topAttachmentView.constant = viewModel.topConstraint
+        bottomAttachmentView.constant = viewModel.bottomConstraint
         addAccessibility()
     }
     
     private func addAccessibility() {
-//        baseView.accessibilityLabel = titleHeader.text
-//        baseView.accessibilityIdentifier = "placeholder-title"
+        baseView.accessibilityLabel = title.text
+        baseView.accessibilityIdentifier = "task-attachment"
+        baseView.accessibilityTraits = .button
     }
     
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
-        self.backgroundColor = .red //currentTheme.surfaceColor
-        parentView.backgroundColor = currentTheme.neutral95Color
+        self.backgroundColor = currentTheme.surfaceColor
+        baseView.backgroundColor = currentTheme.neutral95Color
+        title.applyStyleBody1OnSurface(theme: currentTheme)
+        iconImageView.tintColor = currentTheme.onSurface60Color
     }
 }
