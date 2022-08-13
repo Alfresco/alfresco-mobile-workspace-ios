@@ -18,32 +18,14 @@
 
 import UIKit
 
-class TaskCommentTableCellViewModel: RowViewModel {
+class EmptyPlaceholderTableCellViewModel: RowViewModel {
+    var title: String?
     
-    var userID: Int?
-    var userName: String?
-    var commentID: Int?
-    var comment: String?
-    var dateString: String?
-    var isShowReadMore = false
-    var didSelectCommentAction: (() -> Void)?
-
     func cellIdentifier() -> String {
-        return "TaskCommentTableViewCell"
+        return "TaskHeaderTableViewCell"
     }
     
-    init(userID: Int?,
-         userName: String?,
-         commentID: Int?,
-         comment: String?,
-         dateString: String?,
-         isShowReadMore: Bool = false) {
-        
-        self.userID = userID
-        self.userName = userName
-        self.commentID = commentID
-        self.comment = comment
-        self.dateString = dateString
-        self.isShowReadMore = isShowReadMore
+    init(title: String?) {
+        self.title = title
     }
 }

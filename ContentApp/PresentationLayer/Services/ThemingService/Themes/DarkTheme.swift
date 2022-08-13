@@ -66,4 +66,5 @@ struct DarkTheme: PresentationTheme {
     var taskErrorTextColor = UIColor(hex: "#FFDAD4")
     var taskWarningTextColor = UIColor(hex: "#FFDBCA")
     var taskSuccessTextColor = UIColor(hex: "#91F7BE")
+    var neutral95Color = UIColor.clear
 }

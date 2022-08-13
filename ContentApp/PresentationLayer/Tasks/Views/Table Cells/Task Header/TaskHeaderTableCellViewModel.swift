@@ -25,7 +25,14 @@ class TaskHeaderTableCellViewModel: RowViewModel {
     var buttonTitle: String?
     var isHideDetailButton = true
     var viewAllAction: (() -> Void)?
-
+    
+    var topSubHeader: CGFloat {
+        if let subTitle = subTitle, !subTitle.isEmpty {
+            return 15.0
+        }
+        return 0.0
+    }
+    
     func cellIdentifier() -> String {
         return "TaskHeaderTableViewCell"
     }

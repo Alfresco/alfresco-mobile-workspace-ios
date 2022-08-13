@@ -81,6 +81,7 @@
                 <outlet property="baseView" destination="OT2-JR-xXw" id="0hX-0D-a8a"/>
                 <outlet property="titleHeaderLabel" destination="nZW-WV-hoX" id="ldA-IJ-56S"/>
                 <outlet property="titleSubHeaderLabel" destination="B1C-8P-UEg" id="CHT-JA-qO9"/>
+                <outlet property="topSubHeader" destination="3sG-13-Ll9" id="dmM-T2-uTK"/>
                 <outlet property="viewAllButton" destination="mi3-Hi-dhq" id="C9l-m7-PvC"/>
             </connections>
             <point key="canvasLocation" x="242.75362318840581" y="23.102678571428569"/>

@@ -181,6 +181,14 @@
 		C92F3DC527BFEF5200952C59 /* Dictionary+HashableNodeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ECED3925432B9B0097DB3F /* Dictionary+HashableNodeEvent.swift */; };
 		C92F3DC727BFF05000952C59 /* SyncTriggersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */; };
 		C93A06AF27B91A530027097B /* StoryboardInstantiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */; };
+		C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */; };
+		C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */; };
+		C93A246B28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */; };
+		C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C93A246A28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib */; };
+		C93A246E28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246D28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift */; };
+		C93A247128A6445C005F46C2 /* TaskAttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A246F28A6445C005F46C2 /* TaskAttachmentTableViewCell.swift */; };
+		C93A247228A6445C005F46C2 /* TaskAttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C93A247028A6445C005F46C2 /* TaskAttachmentTableViewCell.xib */; };
+		C93A247428A6446D005F46C2 /* TaskAttachmentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93A247328A6446D005F46C2 /* TaskAttachmentTableCellViewModel.swift */; };
 		C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */; };
 		C93EF2C127C7C24B00093E3D /* DatabaseMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */; };
 		C940BB8E286024340064E2E7 /* AnalyticsConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */; };
@@ -899,6 +907,14 @@
 		C92F3DC127BFED0700952C59 /* EventBusService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventBusService.swift; sourceTree = "<group>"; };
 		C92F3DC627BFF05000952C59 /* SyncTriggersService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncTriggersService.swift; sourceTree = "<group>"; };
 		C93A06AE27B91A530027097B /* StoryboardInstantiable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardInstantiable.swift; sourceTree = "<group>"; };
+		C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentOperations.swift; sourceTree = "<group>"; };
+		C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentModel.swift; sourceTree = "<group>"; };
+		C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderTableViewCell.swift; sourceTree = "<group>"; };
+		C93A246A28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmptyPlaceholderTableViewCell.xib; sourceTree = "<group>"; };
+		C93A246D28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyPlaceholderTableCellViewModel.swift; sourceTree = "<group>"; };
+		C93A246F28A6445C005F46C2 /* TaskAttachmentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentTableViewCell.swift; sourceTree = "<group>"; };
+		C93A247028A6445C005F46C2 /* TaskAttachmentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TaskAttachmentTableViewCell.xib; sourceTree = "<group>"; };
+		C93A247328A6446D005F46C2 /* TaskAttachmentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentTableCellViewModel.swift; sourceTree = "<group>"; };
 		C93EF2BF27C7BB0D00093E3D /* DatabaseMigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseMigrationService.swift; sourceTree = "<group>"; };
 		C940BB8D286024340064E2E7 /* AnalyticsConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsConstants.swift; sourceTree = "<group>"; };
 		C940BB8F286024440064E2E7 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
@@ -1968,6 +1984,35 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		C93A246228A628AF005F46C2 /* Task Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				C93A246328A628C4005F46C2 /* TaskAttachmentOperations.swift */,
+				C93A246528A628D8005F46C2 /* TaskAttachmentModel.swift */,
+			);
+			path = "Task Attachments";
+			sourceTree = "<group>";
+		};
+		C93A246728A636D4005F46C2 /* Empty Placeholder */ = {
+			isa = PBXGroup;
+			children = (
+				C93A246928A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift */,
+				C93A246D28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift */,
+				C93A246A28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib */,
+			);
+			path = "Empty Placeholder";
+			sourceTree = "<group>";
+		};
+		C93A246828A636D4005F46C2 /* Attachment Table Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C93A246F28A6445C005F46C2 /* TaskAttachmentTableViewCell.swift */,
+				C93A247328A6446D005F46C2 /* TaskAttachmentTableCellViewModel.swift */,
+				C93A247028A6445C005F46C2 /* TaskAttachmentTableViewCell.xib */,
+			);
+			path = "Attachment Table Cell";
+			sourceTree = "<group>";
+		};
 		C940BB8C286024040064E2E7 /* Analytics  */ = {
 			isa = PBXGroup;
 			children = (
@@ -2147,6 +2192,7 @@
 		C983A274287EDEC200CEDCAB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C93A246228A628AF005F46C2 /* Task Attachments */,
 				C9205C7028A0D94300DEF5AC /* Task Comments */,
 				C915CDD328905B6800819F86 /* Task Node */,
 				C915CDD628905B6800819F86 /* Task Filters */,
@@ -2286,6 +2332,8 @@
 				C95C28BF289E45A000000080 /* Add Comment Table Cell */,
 				C9205C7528A0FA8700DEF5AC /* Task Comment */,
 				C9205C8328A173A700DEF5AC /* Task Header */,
+				C93A246728A636D4005F46C2 /* Empty Placeholder */,
+				C93A246828A636D4005F46C2 /* Attachment Table Cell */,
 			);
 			path = "Table Cells";
 			sourceTree = "<group>";
@@ -3439,6 +3487,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C93A246C28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.xib in Resources */,
 				C9A759A9289BBB60006603E0 /* TitleTableViewCell.xib in Resources */,
 				E36900A324C8552F00F03D60 /* Inter-Light.ttf in Resources */,
 				B9F17149256C116900AD1E3A /* word.docx in Resources */,
@@ -3453,6 +3502,7 @@
 				E32B643224B360F100085472 /* ListElementCollectionViewCell.xib in Resources */,
 				E36900A624C8552F00F03D60 /* Inter-SemiBold.ttf in Resources */,
 				E36900A124C8552F00F03D60 /* Inter-ExtraBold.ttf in Resources */,
+				C93A247228A6445C005F46C2 /* TaskAttachmentTableViewCell.xib in Resources */,
 				E36900A724C8552F00F03D60 /* Inter-Thin.ttf in Resources */,
 				C9205C8728A173C000DEF5AC /* TaskHeaderTableViewCell.xib in Resources */,
 				E36900A024C8552F00F03D60 /* Inter-Bold.ttf in Resources */,
@@ -3902,6 +3952,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C93A247128A6445C005F46C2 /* TaskAttachmentTableViewCell.swift in Sources */,
 				B9B908DF2507D2550013ED81 /* PDFRenderer+FilePreviewProtocol.swift in Sources */,
 				E363E3582562867200CB5338 /* EmptySearch.swift in Sources */,
 				E30E341E24B8812600836629 /* SearchComponentsThemingServiceWorker.swift in Sources */,
@@ -3996,6 +4047,7 @@
 				B9318AAE254893090023689D /* FavouriteEvent.swift in Sources */,
 				B99D9BC224867D7C00FBFC9B /* BasicAuthenticationProvider.swift in Sources */,
 				E3E9ED4324CB24E100F1A2C2 /* BrowseStaticNodeCollectionViewCell.swift in Sources */,
+				C93A246428A628C4005F46C2 /* TaskAttachmentOperations.swift in Sources */,
 				E3ADD05E24927A8E006DF519 /* SettingsItem.swift in Sources */,
 				E32B643124B360F100085472 /* ListElementCollectionViewCell.swift in Sources */,
 				C973EC63272695AA00912015 /* SearchListComponentViewModel.swift in Sources */,
@@ -4159,10 +4211,12 @@
 				E3A7F32D258A5B880089734D /* OfflineScreenCoordinator.swift in Sources */,
 				B9A90E6D2657F9A900B89766 /* ListComponentViewModel.swift in Sources */,
 				C9205C8628A173C000DEF5AC /* TaskHeaderTableViewCell.swift in Sources */,
+				C93A246B28A636F9005F46C2 /* EmptyPlaceholderTableViewCell.swift in Sources */,
 				C973EC692726BD7D00912015 /* ListItemTableViewCell.swift in Sources */,
 				E32B642C24B358FD00085472 /* ResultViewController.swift in Sources */,
 				B944AADD255AB99F00965709 /* FavoritesViewModelFactory.swift in Sources */,
 				B9B630A624812575004833BC /* NeedHelpConnectScreenModel.swift in Sources */,
+				C93A246628A628D8005F46C2 /* TaskAttachmentModel.swift in Sources */,
 				F14E68922617066A002FDEF9 /* SessionPreview.swift in Sources */,
 				B9834C5D267368A00052E138 /* FavoritesModel.swift in Sources */,
 				C993459627D89CAD0079DABD /* UserDefaultExtension.swift in Sources */,
@@ -4271,6 +4325,7 @@
 				B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */,
 				E3ADD05A24926F87006DF519 /* SettingsScreenCoordinator.swift in Sources */,
 				E3436F8A250B8C4A00634C62 /* AVPlayer+Playing.swift in Sources */,
+				C93A246E28A6370D005F46C2 /* EmptyPlaceholderTableCellViewModel.swift in Sources */,
 				B9AC16D124B32E520084F929 /* NavigationURLPathComponent.swift in Sources */,
 				B9288AC5249A42950007096A /* UINavigationController+FadePresentation.swift in Sources */,
 				B9A90E6F265B96B000B89766 /* ListComponentModel.swift in Sources */,
@@ -4285,6 +4340,7 @@
 				C96D3FB2272A9B280014C8D4 /* StringExtenion.swift in Sources */,
 				E335E72C2538653A0036E090 /* ActionMenuViewController.swift in Sources */,
 				E35FB746247664A9004674FD /* LoginService.swift in Sources */,
+				C93A247428A6446D005F46C2 /* TaskAttachmentTableCellViewModel.swift in Sources */,
 				E30661532487828E00750D5C /* UIScrollView+ScrollTo.swift in Sources */,
 				F14E68972617157A002FDEF9 /* PhotoCaptureSession.swift in Sources */,
 				E3A2A8FD247E7D230046582C /* UIView+LayerTransformations.swift in Sources */,

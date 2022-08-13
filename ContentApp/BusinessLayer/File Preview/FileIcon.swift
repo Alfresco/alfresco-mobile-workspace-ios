@@ -229,4 +229,26 @@ class FileIcon {
             return UIImage(named: IconType.generic.rawValue)
         }
     }
+    
+    static func icon(for mimetype: String?) -> UIImage? {
+        guard let mimetype = mimetype else {
+            return UIImage(named: IconType.generic.rawValue)
+        }
+
+        if let iconType = self.map[mimetype] {
+            return UIImage(named: iconType.rawValue)
+        } else if mimetype.hasPrefix("video/") {
+            return UIImage(named: IconType.video.rawValue)
+        } else if mimetype.hasPrefix("audio/") {
+            return UIImage(named: IconType.audio.rawValue)
+        } else if mimetype.hasPrefix("image/") {
+            return UIImage(named: IconType.image.rawValue)
+        } else if mimetype.hasPrefix("text/") {
+            return UIImage(named: IconType.document.rawValue)
+        } else {
+            // If no matching happened based on mime type information is possible that we're
+            // dealing with a custom type
+            return UIImage(named: IconType.generic.rawValue)
+        }
+    }
 }

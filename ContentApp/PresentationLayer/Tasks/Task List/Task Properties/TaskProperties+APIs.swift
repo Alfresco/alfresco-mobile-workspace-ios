@@ -54,8 +54,34 @@ extension TaskPropertiesViewModel {
                 guard let sSelf = self else { return }
                 sSelf.isLoading.value = false
                 if data != nil {
-                    let comments = TaskCommentOperations.processComments(for: data?.data)
-                    completionHandler(comments, nil)
+                    if let taskComments = data?.data {
+                        let comments = TaskCommentOperations.processComments(for: taskComments)
+                        completionHandler(comments, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
+                } else {
+                    completionHandler([], error)
+                }
+            }
+        })
+    }
+    
+    func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [TaskAttachmentModel], _ error: Error?) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            TaskAttachmentsAPI.getTaskAttachments(with: taskId) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if data != nil {
+                    if let taskAttachments = data?.data {
+                        let attachements = TaskAttachmentOperations.processAttachments(for: taskAttachments)
+                        completionHandler(attachements, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
                 } else {
                     completionHandler([], error)
                 }
