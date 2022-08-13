@@ -24,4 +24,5 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     let comments = Observable<[TaskCommentModel]>([])
     let attachments = Observable<[TaskAttachmentModel]>([])
     var viewAllAttachmentsAction: (() -> Void)?
+    var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
 }

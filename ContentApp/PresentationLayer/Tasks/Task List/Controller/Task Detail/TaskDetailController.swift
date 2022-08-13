@@ -218,6 +218,10 @@ class TaskDetailController: NSObject {
                 let rowVM = TaskAttachmentTableCellViewModel(attachment: attachment,
                                                              isFirst: isFirst,
                                                              isLast: isLast)
+                rowVM.didSelectTaskAttachment = { [weak self] in
+                    guard let sSelf = self else { return }
+                    sSelf.viewModel.didSelectTaskAttachment?(attachment)
+                }
                 rowVMs.append(rowVM)
             }
         }

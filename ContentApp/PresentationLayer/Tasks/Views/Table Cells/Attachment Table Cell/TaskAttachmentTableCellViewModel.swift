@@ -22,6 +22,7 @@ class TaskAttachmentTableCellViewModel: RowViewModel {
     var attachment: TaskAttachmentModel?
     var isFirst = true
     var isLast = false
+    var didSelectTaskAttachment: (() -> Void)?
     var name: String? {
         return attachment?.name
     }

@@ -48,6 +48,10 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         baseView.accessibilityTraits = .button
     }
     
+    @IBAction func didSelectButtonAction(_ sender: Any) {
+        viewModel?.didSelectTaskAttachment?()
+    }
+    
     // MARK: - Apply Themes and Localization
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
