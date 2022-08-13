@@ -204,7 +204,6 @@ class TaskDetailViewController: SystemSearchViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.isShowKeyboard = isAddComment
             viewController.viewModel.comments = viewModel.comments
-            viewController.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
