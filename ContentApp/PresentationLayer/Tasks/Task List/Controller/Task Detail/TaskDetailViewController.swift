@@ -158,6 +158,12 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             sSelf.viewAllAttachments()
         }
+        
+        /* observer did select task attachment */
+        viewModel.didSelectTaskAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectAttachment(attachment: attachment)
+        }
     }
     
     private func getTaskDetails() {
@@ -198,6 +204,10 @@ class TaskDetailViewController: SystemSearchViewController {
     
     private func viewAllAttachments() {
         AlfrescoLog.debug("******* view all attachments ********")
+    }
+    
+    private func didSelectAttachment(attachment: TaskAttachmentModel) {
+        AlfrescoLog.debug("******* did select attachments ********")
     }
 }
 
