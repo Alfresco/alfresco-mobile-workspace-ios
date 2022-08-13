@@ -199,7 +199,14 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func showComments(isAddComment: Bool) {
-        AlfrescoLog.debug("******* Add comment action \(isAddComment) ********")
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskComments) as? TaskCommentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.isShowKeyboard = isAddComment
+            viewController.viewModel.comments = viewModel.comments
+            viewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     private func viewAllAttachments() {

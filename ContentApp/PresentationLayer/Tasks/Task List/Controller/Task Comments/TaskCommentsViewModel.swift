@@ -20,5 +20,6 @@ import Foundation
 
 class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-    let comments = Observable<[TaskCommentModel]>([])
+    var comments = Observable<[TaskCommentModel]>([])
+    var isShowKeyboard = false
 }

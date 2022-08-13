@@ -28,5 +28,6 @@ class TaskCommentsViewController: SystemSearchViewController {
     // MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.services = coordinatorServices ?? CoordinatorServices()
     }
 }
