@@ -195,6 +195,8 @@
 		C947C5BD27D0D8A80000D902 /* UploadFilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */; };
 		C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */; };
 		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
+		C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
+		C957AC5D28AAAF5200086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
 		C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */; };
 		C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */; };
 		C95C28C5289E45E600000080 /* AddCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */; };
@@ -906,6 +908,7 @@
 		C947C5BC27D0D8A70000D902 /* UploadFilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadFilesViewController.swift; sourceTree = "<group>"; };
 		C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModel.swift; sourceTree = "<group>"; };
 		C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+ActionEvents.swift"; sourceTree = "<group>"; };
+		C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
 		C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableViewCell.swift; sourceTree = "<group>"; };
 		C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCommentTableViewCell.xib; sourceTree = "<group>"; };
 		C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableCellViewModel.swift; sourceTree = "<group>"; };
@@ -2316,6 +2319,7 @@
 			children = (
 				C9A759BA289BE415006603E0 /* Enums.swift */,
 				C95C28C6289E4F8D00000080 /* InitialsImageView.swift */,
+				C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -3726,6 +3730,7 @@
 				C9A9113727A7B85E002EBC7F /* EmptyRecents.swift in Sources */,
 				C9E1801227A96FCC0006747E /* EventObservable.swift in Sources */,
 				C9A9110827A7B7AF002EBC7F /* SettingsComponentsThemingServiceWorker.swift in Sources */,
+				C957AC5D28AAAF5200086DF2 /* UIFunction.swift in Sources */,
 				C9AFDF8C27B8F328007233A5 /* SearchRequestBuilder.swift in Sources */,
 				C9A911B127A7BBC7002EBC7F /* NavigationURLPathComponent.swift in Sources */,
 				C9B6D27227C9373000CF0C73 /* ConfigurationHelper.swift in Sources */,
@@ -4180,6 +4185,7 @@
 				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
 				B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */,
 				C915CDD828905B6800819F86 /* TaskNodeOperations.swift in Sources */,
+				C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */,
 				C97BEB8126EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3E8B0112548683D00CD399D /* UImage+Color.swift in Sources */,

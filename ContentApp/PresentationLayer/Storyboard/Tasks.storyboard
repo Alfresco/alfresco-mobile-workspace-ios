@@ -338,6 +338,7 @@
                         <outlet property="progressView" destination="UF6-mh-gVl" id="OUX-kq-dRB"/>
                         <outlet property="sendButton" destination="5aZ-br-n2u" id="TMo-VL-iwa"/>
                         <outlet property="tableView" destination="exY-F3-j7S" id="UWP-nb-U7J"/>
+                        <outlet property="textBaseView" destination="aTv-ey-sHU" id="pxu-GM-Ch3"/>
                         <outlet property="textView" destination="N2A-We-ZzG" id="QPv-Ts-VTu"/>
                         <outlet property="userImageView" destination="RQ3-Qf-7hG" id="YKf-ct-Y3x"/>
                     </connections>

@@ -17,9 +17,12 @@
 //
 
 import Foundation
+import UIKit
 
 class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var comments = Observable<[TaskCommentModel]>([])
     var isShowKeyboard = false
+    var keyboardShown: Bool = false
+    var keyboardHeight: CGFloat = 0
 }

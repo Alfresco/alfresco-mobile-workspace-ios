@@ -28,6 +28,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var sendButton: MDCButton!
+    @IBOutlet weak var textBaseView: UIView!
     @IBOutlet weak var textView: GrowingTextView!
     @IBOutlet weak var divider: UIView!
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
@@ -49,6 +50,10 @@ class TaskCommentsViewController: SystemSearchViewController {
         getTaskComments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskCommentsScreen)
         tableView.contentInset.bottom = 50
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,6 +120,7 @@ class TaskCommentsViewController: SystemSearchViewController {
         bottomView.backgroundColor = currentTheme.surfaceColor
         userImageView.tintColor = currentTheme.onSurfaceColor
         
+        textBaseView.backgroundColor = currentTheme.surfaceColor
         textView.backgroundColor = currentTheme.surfaceColor
         textView.textColor = currentTheme.onSurface60Color
         textView.placeholderColor = currentTheme.onSurface60Color
@@ -208,5 +214,40 @@ extension TaskCommentsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
+    }
+}
+
+// MARK: - KeyBoard
+extension TaskCommentsViewController {
+    
+    @objc func keyboardWillShow(_ notification: Notification) {
+        viewModel.keyboardShown = true
+        let (height, duration, _) = UIFunction.getKeyboardAnimationOptions(notification: notification)
+        viewModel.keyboardHeight = height ?? 0
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: duration ?? 0, delay: 0, options: .curveEaseOut, animations: {
+                
+                let yAxisFromBottom = (self.viewModel.keyboardHeight - self.view.safeAreaInsets.bottom) + 10.0
+                self.bottomViewBottomConstraint.constant = yAxisFromBottom
+                self.view.layoutIfNeeded()
+                
+            }, completion: nil)
+            self.viewModel.keyboardShown = true
+        }
+    }
+    
+    @objc func keyboardWillHide(_ notification: Notification) {
+        viewModel.keyboardShown = false
+        viewModel.keyboardHeight = 0
+        
+        let (_, duration, _) = UIFunction.getKeyboardAnimationOptions(notification: notification)
+        
+        DispatchQueue.main.async {
+            UIView.animate(withDuration: duration ?? 0, delay: 0, options: .curveEaseOut, animations: {
+                self.bottomViewBottomConstraint.constant = 0
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
     }
 }
