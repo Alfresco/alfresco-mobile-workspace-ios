@@ -114,6 +114,7 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.7.0):
     - GoogleUtilities/Logger
+  - GrowingTextView (0.7.2)
   - JWTDecode (2.6.3)
   - MaterialComponents (124.2.0):
     - MaterialComponents/ActionSheet (= 124.2.0)
@@ -781,6 +782,7 @@ DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Crashlytics
   - Gifu
+  - GrowingTextView
   - JWTDecode
   - MaterialComponents (~> 124.2)
   - Nuke
@@ -810,6 +812,7 @@ SPEC REPOS:
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
+    - GrowingTextView
     - JWTDecode
     - MaterialComponents
     - MDFInternationalization
@@ -844,6 +847,7 @@ SPEC CHECKSUMS:
   GoogleAppMeasurement: b907bdad775b6975a8108762345b2cfbf1a93c37
   GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
+  GrowingTextView: 876bf42005b5e4a4fd740597db12caaf41f0fe6c
   JWTDecode: 33e5e26e5ddbd21b2065820894c08fef0cad9509
   MaterialComponents: 1a9b2d9d45b1601ae544de85089adc4c464306d4
   MDFInternationalization: d697c55307816222a55685c4ccb1044ffb030c12
@@ -857,6 +861,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
-PODFILE CHECKSUM: d85c14de298060c22fc13284333cd12195ef3af2
+PODFILE CHECKSUM: c69030aab81a1cea109123113395aba0773476f7
 
 COCOAPODS: 1.11.3

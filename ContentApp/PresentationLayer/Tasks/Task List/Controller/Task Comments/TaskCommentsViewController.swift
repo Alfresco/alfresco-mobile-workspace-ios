@@ -19,10 +19,18 @@
 import UIKit
 import AlfrescoContent
 import MaterialComponents
+import GrowingTextView
 
 class TaskCommentsViewController: SystemSearchViewController {
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var commentsCountLabel: UILabel!
+    @IBOutlet weak var bottomView: UIView!
+    @IBOutlet weak var userImageView: UIImageView!
+    @IBOutlet weak var sendButton: MDCButton!
+    @IBOutlet weak var textView: GrowingTextView!
+    @IBOutlet weak var divider: UIView!
+    @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
     var viewModel: TaskCommentsViewModel { return controller.viewModel }
     lazy var controller: TaskCommentsController = { return TaskCommentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -73,6 +81,10 @@ class TaskCommentsViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.commentsTitle
+        commentsCountLabel.text = String(format: LocalizationConstants.Tasks.multipleCommentTitle, viewModel.comments.value.count)
+        sendButton.setTitle(LocalizationConstants.Tasks.send, for: .normal)
+        textView.placeholder = LocalizationConstants.Tasks.addCommentPlaceholder
+        userImageView.image = UIImage(named: "ic-username")
     }
     
     func registerCells() {
@@ -83,10 +95,36 @@ class TaskCommentsViewController: SystemSearchViewController {
         self.navigationItem.backBarButtonItem?.accessibilityLabel = LocalizationConstants.Accessibility.back
         self.navigationItem.backBarButtonItem?.accessibilityIdentifier = "back-button"
         progressView.isAccessibilityElement = false
+        commentsCountLabel.accessibilityTraits = .updatesFrequently
+        commentsCountLabel.accessibilityLabel = commentsCountLabel.text
+        
+        sendButton.accessibilityIdentifier = "send-button"
+        textView.accessibilityTraits = .searchField
+        textView.accessibilityIdentifier = "text-view"
+        textView.accessibilityLabel = textView.placeholder
     }
     
     // MARK: - Public Helpers
 
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+        let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
+        
+        commentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
+        bottomView.backgroundColor = currentTheme.surfaceColor
+        userImageView.tintColor = currentTheme.onSurfaceColor
+        
+        textView.backgroundColor = currentTheme.surfaceColor
+        textView.textColor = currentTheme.onSurface60Color
+        textView.placeholderColor = currentTheme.onSurface60Color
+        textView.font = currentTheme.subtitle2TextStyle.font
+        
+        sendButton.applyTextTheme(withScheme: bigButtonScheme)
+        sendButton.isUppercaseTitle = false
+        divider.backgroundColor = currentTheme.onSurface12Color
+    }
+    
     func startLoading() {
         progressView?.startAnimating()
         progressView?.setHidden(false, animated: true)
@@ -95,6 +133,10 @@ class TaskCommentsViewController: SystemSearchViewController {
     func stopLoading() {
         progressView?.stopAnimating()
         progressView?.setHidden(true, animated: false)
+    }
+    
+    @IBAction func sendButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("send button action")
     }
     
     // MARK: - Set up Bindings
@@ -122,6 +164,7 @@ class TaskCommentsViewController: SystemSearchViewController {
         viewModel.comments.addObserver() { [weak self] (comments) in
             guard let sSelf = self else { return }
             DispatchQueue.main.async {
+                sSelf.applyLocalization()
                 sSelf.tableView.reloadData()
             }
         }
