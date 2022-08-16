@@ -159,7 +159,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     
     @IBAction func sendButtonAction(_ sender: Any) {
         AlfrescoLog.debug("send button action")
-        self.addComment(message: "ankit")
+        self.addComment(message: textView.text)
     }
     
     // MARK: - Set up Bindings

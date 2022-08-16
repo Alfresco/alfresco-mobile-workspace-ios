@@ -55,6 +55,7 @@ class TaskDetailViewController: SystemSearchViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateTheme()
+        controller.updateLatestComment()
     }
     
     override func viewDidAppear(_ animated: Bool) {

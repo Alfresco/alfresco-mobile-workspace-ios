@@ -68,8 +68,8 @@ class TaskDetailController: NSObject {
             rowViewModels.append(taskHeaderCellVM()!)
         }
         
-        if lastestCommentCellVM() != nil {
-            rowViewModels.append(lastestCommentCellVM()!)
+        if latestCommentCellVM() != nil {
+            rowViewModels.append(latestCommentCellVM()!)
         }
         
         rowViewModels.append(addCommentCellVM())
@@ -153,8 +153,8 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func lastestCommentCellVM() -> TaskCommentTableCellViewModel? {
-        if let comment = self.viewModel.comments.value.last {
+    private func latestCommentCellVM() -> TaskCommentTableCellViewModel? {
+        if let comment = self.viewModel.latestComment {
             let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
                                                       userName: comment.createdBy?.userName,
                                                       commentID: comment.commentID,
@@ -226,5 +226,15 @@ class TaskDetailController: NSObject {
             }
         }
         return rowVMs
+    }
+    
+    func updateLatestComment() {
+        var rowViewModels = self.viewModel.rowViewModels.value
+        if let index = rowViewModels.firstIndex(where: { $0.cellIdentifier() == CellConstants.TableCells.commentCell }) {
+            if latestCommentCellVM() != nil {
+                rowViewModels[index] = latestCommentCellVM()!
+            }
+            self.viewModel.rowViewModels.value = rowViewModels
+        }
     }
 }

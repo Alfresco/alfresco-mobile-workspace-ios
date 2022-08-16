@@ -21,11 +21,10 @@ import UIKit
 
 class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-    var comments = Observable<[TaskCommentModel]>([])
     var isShowKeyboard = false
     var keyboardShown = false
     var keyboardHeight: CGFloat = 0
-    
+
     func isAddCommentAllowed(for message: String?) -> (isAllowed: Bool, message: String) {
         let text = (message ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if text.isEmpty {
