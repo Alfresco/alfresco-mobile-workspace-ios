@@ -204,6 +204,7 @@ class TaskDetailViewController: SystemSearchViewController {
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.isShowKeyboard = isAddComment
             viewController.viewModel.comments = viewModel.comments
+            viewController.viewModel.task = viewModel.task
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
