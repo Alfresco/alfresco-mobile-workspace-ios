@@ -23,6 +23,6 @@ class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var comments = Observable<[TaskCommentModel]>([])
     var isShowKeyboard = false
-    var keyboardShown: Bool = false
+    var keyboardShown = false
     var keyboardHeight: CGFloat = 0
 }

@@ -26,12 +26,12 @@ class TaskCommentsViewController: SystemSearchViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var commentsCountLabel: UILabel!
     @IBOutlet weak var bottomView: UIView!
-    @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var sendButton: MDCButton!
     @IBOutlet weak var textBaseView: UIView!
     @IBOutlet weak var textView: GrowingTextView!
     @IBOutlet weak var divider: UIView!
     @IBOutlet weak var bottomViewBottomConstraint: NSLayoutConstraint!
+    var refreshControl: UIRefreshControl?
     var viewModel: TaskCommentsViewModel { return controller.viewModel }
     lazy var controller: TaskCommentsController = { return TaskCommentsController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -43,6 +43,7 @@ class TaskCommentsViewController: SystemSearchViewController {
         progressView.progress = 0
         progressView.mode = .indeterminate
         applyLocalization()
+        addRefreshControl()
         registerCells()
         addAccessibility()
         controller.buildViewModel()
@@ -84,12 +85,19 @@ class TaskCommentsViewController: SystemSearchViewController {
         super.viewWillTransition(to: size, with: coordinator)
     }
     
+    func addRefreshControl() {
+        let refreshControl = UIRefreshControl()
+        tableView.addSubview(refreshControl)
+        refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
+                                 for: .valueChanged)
+        self.refreshControl = refreshControl
+    }
+    
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.commentsTitle
         commentsCountLabel.text = String(format: LocalizationConstants.Tasks.multipleCommentTitle, viewModel.comments.value.count)
         sendButton.setTitle(LocalizationConstants.Tasks.send, for: .normal)
         textView.placeholder = LocalizationConstants.Tasks.addCommentPlaceholder
-        userImageView.image = UIImage(named: "ic-username")
     }
     
     func registerCells() {
@@ -109,6 +117,13 @@ class TaskCommentsViewController: SystemSearchViewController {
         textView.accessibilityLabel = textView.placeholder
     }
     
+    @objc private func handlePullToRefresh() {
+        DispatchQueue.main.async { [weak self] in
+            guard let sSelf = self else { return }
+            sSelf.getTaskComments()
+        }
+    }
+    
     // MARK: - Public Helpers
 
     override func applyComponentsThemes() {
@@ -118,8 +133,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         
         commentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         bottomView.backgroundColor = currentTheme.surfaceColor
-        userImageView.tintColor = currentTheme.onSurfaceColor
-        
+        refreshControl?.tintColor = currentTheme.primaryT1Color
+
         textBaseView.backgroundColor = currentTheme.surfaceColor
         textView.backgroundColor = currentTheme.surfaceColor
         textView.textColor = currentTheme.onSurface60Color
@@ -139,6 +154,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     func stopLoading() {
         progressView?.stopAnimating()
         progressView?.setHidden(true, animated: false)
+        refreshControl?.endRefreshing()
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {

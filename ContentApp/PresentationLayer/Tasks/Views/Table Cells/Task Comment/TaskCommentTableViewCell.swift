@@ -55,14 +55,14 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     private func updateUserImage() {
         if let userName = viewModel?.userName, let currentTheme = currentTheme {
             let attributes = getTextAttributes()
-            userImageView.setImageForName(userName, backgroundColor: currentTheme.backgroundColor, circular: true, textAttributes: attributes, gradient: false)
+            userImageView.setImageForName(userName, backgroundColor: currentTheme.onSurface12Color, circular: true, textAttributes: attributes, gradient: false)
         }
     }
     
     private func getTextAttributes() -> [NSAttributedString.Key: AnyObject]? {
         if let currentTheme = currentTheme {
             return [NSAttributedString.Key(rawValue: NSAttributedString.Key.font.rawValue): UIFont.inter(style: .medium, size: 12.0),
-                    NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): currentTheme.onSurface60Color]
+                    NSAttributedString.Key(rawValue: NSAttributedString.Key.foregroundColor.rawValue): currentTheme.onSurface12TextColor]
         }
         return nil
     }

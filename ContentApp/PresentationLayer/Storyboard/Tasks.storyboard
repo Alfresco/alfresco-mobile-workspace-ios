@@ -226,30 +226,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5aX-7v-e19" userLabel="bottomView">
                                 <rect key="frame" x="0.0" y="811.5" width="414" height="50.5"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="33J-gj-hUJ" userLabel="userDPView">
-                                        <rect key="frame" x="0.0" y="0.5" width="50" height="50"/>
-                                        <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RQ3-Qf-7hG">
-                                                <rect key="frame" x="11" y="11" width="28" height="28"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="28" id="TOb-OI-MNc"/>
-                                                    <constraint firstAttribute="height" constant="28" id="gCA-A7-PjM"/>
-                                                </constraints>
-                                            </imageView>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="5TL-Sw-6Q5"/>
-                                            <constraint firstItem="RQ3-Qf-7hG" firstAttribute="centerY" secondItem="33J-gj-hUJ" secondAttribute="centerY" id="Uib-Yq-snV"/>
-                                            <constraint firstItem="RQ3-Qf-7hG" firstAttribute="centerX" secondItem="33J-gj-hUJ" secondAttribute="centerX" id="cJe-jc-0Am"/>
-                                            <constraint firstAttribute="width" constant="50" id="la1-xA-UkP"/>
-                                        </constraints>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LK5-UK-8uW" userLabel="sendButtonViewView">
                                         <rect key="frame" x="344" y="0.5" width="70" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aZ-br-n2u" userLabel="sendButton" customClass="MDCButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="70" height="50"/>
+                                                <rect key="frame" x="0.0" y="5" width="70" height="45"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Send"/>
                                                 <connections>
@@ -259,7 +240,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="5aZ-br-n2u" firstAttribute="top" secondItem="LK5-UK-8uW" secondAttribute="top" id="9ZT-av-Jcv"/>
+                                            <constraint firstItem="5aZ-br-n2u" firstAttribute="top" secondItem="LK5-UK-8uW" secondAttribute="top" constant="5" id="9ZT-av-Jcv"/>
                                             <constraint firstAttribute="bottom" secondItem="5aZ-br-n2u" secondAttribute="bottom" id="b3j-UB-Pcw"/>
                                             <constraint firstAttribute="height" constant="50" id="kEe-q8-gU5"/>
                                             <constraint firstAttribute="width" constant="70" id="r3k-ka-HL3"/>
@@ -268,10 +249,10 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aTv-ey-sHU" userLabel="textBaseView">
-                                        <rect key="frame" x="55" y="10" width="284" height="40.5"/>
+                                        <rect key="frame" x="10" y="10" width="329" height="40.5"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-We-ZzG" userLabel="textView" customClass="GrowingTextView" customModule="GrowingTextView">
-                                                <rect key="frame" x="0.0" y="0.0" width="284" height="35.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="35.5"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -283,6 +264,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
                                                         <real key="value" value="100"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="maxLength">
+                                                        <integer key="value" value="250"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textView>
@@ -299,12 +283,10 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="LK5-UK-8uW" secondAttribute="bottom" id="BSW-O5-Gzg"/>
-                                    <constraint firstAttribute="bottom" secondItem="33J-gj-hUJ" secondAttribute="bottom" id="BbD-ex-Rbs"/>
                                     <constraint firstItem="LK5-UK-8uW" firstAttribute="leading" secondItem="aTv-ey-sHU" secondAttribute="trailing" constant="5" id="ChE-65-ae8"/>
-                                    <constraint firstItem="33J-gj-hUJ" firstAttribute="leading" secondItem="5aX-7v-e19" secondAttribute="leading" id="LDL-wL-z5v"/>
                                     <constraint firstAttribute="trailing" secondItem="LK5-UK-8uW" secondAttribute="trailing" id="ZRI-Cj-lnb"/>
-                                    <constraint firstItem="aTv-ey-sHU" firstAttribute="leading" secondItem="33J-gj-hUJ" secondAttribute="trailing" constant="5" id="pHo-5O-Cmi"/>
                                     <constraint firstItem="aTv-ey-sHU" firstAttribute="top" secondItem="5aX-7v-e19" secondAttribute="top" constant="10" id="rfU-OA-i5F"/>
+                                    <constraint firstItem="aTv-ey-sHU" firstAttribute="leading" secondItem="5aX-7v-e19" secondAttribute="leading" constant="10" id="uGJ-GQ-qvH"/>
                                     <constraint firstAttribute="bottom" secondItem="aTv-ey-sHU" secondAttribute="bottom" id="yZ8-AP-vK4"/>
                                 </constraints>
                             </view>
@@ -340,7 +322,6 @@
                         <outlet property="tableView" destination="exY-F3-j7S" id="UWP-nb-U7J"/>
                         <outlet property="textBaseView" destination="aTv-ey-sHU" id="pxu-GM-Ch3"/>
                         <outlet property="textView" destination="N2A-We-ZzG" id="QPv-Ts-VTu"/>
-                        <outlet property="userImageView" destination="RQ3-Qf-7hG" id="YKf-ct-Y3x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zf4-dL-y1k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

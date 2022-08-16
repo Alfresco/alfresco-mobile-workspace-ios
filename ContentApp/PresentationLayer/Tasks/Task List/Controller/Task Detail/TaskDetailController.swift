@@ -134,7 +134,7 @@ class TaskDetailController: NSObject {
         if commentsCount < 2 {
             subTitle = ""
         }
-        let isHideDetailButton = commentsCount == 0 ? true:false
+        let isHideDetailButton = commentsCount > 1 ? false:true
         let rowVM = TaskHeaderTableCellViewModel(title: LocalizationConstants.Tasks.commentsTitle,
                                                  subTitle: subTitle,
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
