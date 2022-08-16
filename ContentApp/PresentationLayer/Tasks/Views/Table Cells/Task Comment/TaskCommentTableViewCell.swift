@@ -27,6 +27,7 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var commentLabel: ExpandableLabel!
+    @IBOutlet weak var didSelectButton: UIButton!
     var viewModel: TaskCommentTableCellViewModel?
     var currentTheme: PresentationTheme?
 
@@ -50,6 +51,7 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         commentLabel.text = viewModel.comment
         addAccessibility()
         commentLabel.numberOfLines = viewModel.isShowReadMore ? 4:0
+        didSelectButton.isUserInteractionEnabled = viewModel.isShowReadMore
     }
     
     private func updateUserImage() {

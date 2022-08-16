@@ -159,6 +159,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     
     @IBAction func sendButtonAction(_ sender: Any) {
         AlfrescoLog.debug("send button action")
+        self.addComment(message: "ankit")
     }
     
     // MARK: - Set up Bindings
@@ -199,6 +200,20 @@ class TaskCommentsViewController: SystemSearchViewController {
             if error == nil {
                 sSelf.viewModel.comments.value = comments
                 sSelf.controller.buildViewModel()
+            }
+        }
+    }
+    
+    private func addComment(message: String?) {
+        if viewModel.isAddCommentAllowed(for: message).isAllowed {
+            let text = viewModel.isAddCommentAllowed(for: message).message
+            let taskID = viewModel.taskID
+            viewModel.addTaskComment(with: taskID, message: text) { [weak self] taskComment, error in
+                guard let sSelf = self else { return }
+                if error == nil {
+                    sSelf.viewModel.comments.value.append(contentsOf: taskComment)
+                    sSelf.controller.buildViewModel()
+                }
             }
         }
     }

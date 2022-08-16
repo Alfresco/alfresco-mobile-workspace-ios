@@ -116,6 +116,7 @@
                 <outlet property="baseView" destination="Xq6-Ib-AaO" id="14i-26-3Xk"/>
                 <outlet property="commentLabel" destination="TRY-Dj-x0T" id="bqU-kr-ZGh"/>
                 <outlet property="dateLabel" destination="bYC-jm-Pj0" id="XSt-vw-f9y"/>
+                <outlet property="didSelectButton" destination="vce-Be-YZD" id="eD7-Qm-wgl"/>
                 <outlet property="userImageBaseView" destination="Kmn-na-KB1" id="QAN-uj-WZU"/>
                 <outlet property="userImageView" destination="m97-Af-cbA" id="QfQ-wZ-Gi3"/>
                 <outlet property="userNameLabel" destination="zSb-06-YSq" id="4RB-Iv-R0O"/>

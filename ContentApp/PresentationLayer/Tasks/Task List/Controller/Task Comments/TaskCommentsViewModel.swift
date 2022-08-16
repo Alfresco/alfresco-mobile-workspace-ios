@@ -25,4 +25,13 @@ class TaskCommentsViewModel: TaskPropertiesViewModel {
     var isShowKeyboard = false
     var keyboardShown = false
     var keyboardHeight: CGFloat = 0
+    
+    func isAddCommentAllowed(for message: String?) -> (isAllowed: Bool, message: String) {
+        let text = (message ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.isEmpty {
+            return (false, text)
+        } else {
+            return (true, text)
+        }
+    }
 }
