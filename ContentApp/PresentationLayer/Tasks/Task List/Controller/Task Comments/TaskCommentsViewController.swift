@@ -50,7 +50,7 @@ class TaskCommentsViewController: SystemSearchViewController {
         setupBindings()
         getTaskComments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskCommentsScreen)
-        tableView.contentInset.bottom = 50
+        scrollToBottom(animated: false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
@@ -72,6 +72,22 @@ class TaskCommentsViewController: SystemSearchViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.isHidden = false
+        showKeyboard()
+    }
+    
+    private func showKeyboard() {
+        if viewModel.isShowKeyboard {
+            textView.becomeFirstResponder()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if viewModel.isAddComment {
+            self.viewModel.isAddComment = false
+            self.scrollToBottom(animated: true)
+        } else {
+            self.scrollToBottom(animated: false)
+        }
     }
     
     func updateTheme() {
@@ -158,7 +174,6 @@ class TaskCommentsViewController: SystemSearchViewController {
     }
     
     @IBAction func sendButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("send button action")
         self.addComment(message: textView.text)
     }
     
@@ -178,18 +193,14 @@ class TaskCommentsViewController: SystemSearchViewController {
         /* observing rows */
         viewModel.rowViewModels.addObserver() { [weak self] (rows) in
             guard let sSelf = self else { return }
-            DispatchQueue.main.async {
-                sSelf.tableView.reloadData()
-            }
+            sSelf.tableView.reloadData()
         }
         
         /* observing comments */
         viewModel.comments.addObserver() { [weak self] (comments) in
             guard let sSelf = self else { return }
-            DispatchQueue.main.async {
-                sSelf.applyLocalization()
-                sSelf.tableView.reloadData()
-            }
+            sSelf.applyLocalization()
+            sSelf.tableView.reloadData()
         }
     }
     
@@ -200,21 +211,31 @@ class TaskCommentsViewController: SystemSearchViewController {
             if error == nil {
                 sSelf.viewModel.comments.value = comments
                 sSelf.controller.buildViewModel()
+                sSelf.scrollToBottom(animated: true)
             }
         }
     }
     
     private func addComment(message: String?) {
         if viewModel.isAddCommentAllowed(for: message).isAllowed {
+            viewModel.isAddComment = true
+            self.textView.text = nil
             let text = viewModel.isAddCommentAllowed(for: message).message
             let taskID = viewModel.taskID
             viewModel.addTaskComment(with: taskID, message: text) { [weak self] taskComment, error in
                 guard let sSelf = self else { return }
                 if error == nil {
                     sSelf.viewModel.comments.value.append(contentsOf: taskComment)
-                    sSelf.controller.buildViewModel()
+                    sSelf.controller.updateViewModel(for: taskComment)
                 }
             }
+        }
+    }
+    
+    private func scrollToBottom(animated: Bool) {
+        if !viewModel.rowViewModels.value.isEmpty {
+            let indexPath = IndexPath(row: viewModel.rowViewModels.value.count - 1, section: 0)
+            self.tableView?.scrollToRow(at: indexPath, at: .bottom, animated: animated)
         }
     }
 }

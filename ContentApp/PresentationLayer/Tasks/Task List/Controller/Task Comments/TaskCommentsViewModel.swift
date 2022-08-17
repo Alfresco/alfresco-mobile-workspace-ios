@@ -24,6 +24,7 @@ class TaskCommentsViewModel: TaskPropertiesViewModel {
     var isShowKeyboard = false
     var keyboardShown = false
     var keyboardHeight: CGFloat = 0
+    var isAddComment = false
     var commentsCount: String? {
         if comments.value.count > 1 {
             return String(format: LocalizationConstants.Tasks.multipleCommentTitle, comments.value.count)

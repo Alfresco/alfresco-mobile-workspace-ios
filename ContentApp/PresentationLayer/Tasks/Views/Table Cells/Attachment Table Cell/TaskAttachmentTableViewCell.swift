@@ -56,8 +56,11 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     func applyTheme(with service: MaterialDesignThemingService?) {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
-        baseView.backgroundColor = currentTheme.neutral95Color
+        baseView.backgroundColor =  .clear // currentTheme.neutral95Color
         title.applyStyleBody1OnSurface(theme: currentTheme)
         iconImageView.tintColor = currentTheme.onSurface60Color
+        
+        attachmentView.layer.borderWidth = 1.0
+        attachmentView.layer.borderColor = currentTheme.neutral95Color.cgColor
     }
 }

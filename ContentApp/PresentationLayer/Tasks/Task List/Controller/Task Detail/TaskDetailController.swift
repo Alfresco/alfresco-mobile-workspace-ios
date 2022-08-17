@@ -230,6 +230,16 @@ class TaskDetailController: NSObject {
     
     func updateLatestComment() {
         var rowViewModels = self.viewModel.rowViewModels.value
+        
+        // ------- update comment count ------
+        if let index = rowViewModels.firstIndex(where: { $0.cellIdentifier() == CellConstants.TableCells.taskHeaderCell }) {
+            if taskHeaderCellVM() != nil {
+                rowViewModels[index] = taskHeaderCellVM()!
+            }
+            self.viewModel.rowViewModels.value = rowViewModels
+        }
+        
+        // ------- update latest comment ------
         if let index = rowViewModels.firstIndex(where: { $0.cellIdentifier() == CellConstants.TableCells.commentCell }) {
             if latestCommentCellVM() != nil {
                 rowViewModels[index] = latestCommentCellVM()!

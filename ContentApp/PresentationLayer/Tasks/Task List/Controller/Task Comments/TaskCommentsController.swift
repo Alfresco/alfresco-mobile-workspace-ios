@@ -40,14 +40,18 @@ class TaskCommentsController: NSObject {
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
        
-        let comments = commentsCellVM()
+        let comments = commentsCellVM(for: viewModel.comments.value)
         rowViewModels.append(contentsOf: comments)
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
-    private func commentsCellVM() -> [RowViewModel] {
+    func updateViewModel(for comments: [TaskCommentModel]) {
+        let taskComments = commentsCellVM(for: comments)
+        self.viewModel.rowViewModels.value.append(contentsOf: taskComments)
+    }
+    
+    private func commentsCellVM(for comments: [TaskCommentModel]) -> [RowViewModel] {
         var rowVMs = [RowViewModel]()
-        let comments = viewModel.comments.value
         if !comments.isEmpty {
             for comment in comments {
                 let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
