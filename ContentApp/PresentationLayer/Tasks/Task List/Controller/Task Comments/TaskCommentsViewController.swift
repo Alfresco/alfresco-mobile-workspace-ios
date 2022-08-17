@@ -95,7 +95,7 @@ class TaskCommentsViewController: SystemSearchViewController {
     
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.commentsTitle
-        commentsCountLabel.text = String(format: LocalizationConstants.Tasks.multipleCommentTitle, viewModel.comments.value.count)
+        commentsCountLabel.text = viewModel.commentsCount
         sendButton.setTitle(LocalizationConstants.Tasks.send, for: .normal)
         textView.placeholder = LocalizationConstants.Tasks.addCommentPlaceholder
     }

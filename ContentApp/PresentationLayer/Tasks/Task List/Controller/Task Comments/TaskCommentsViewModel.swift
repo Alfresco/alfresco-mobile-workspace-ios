@@ -24,6 +24,12 @@ class TaskCommentsViewModel: TaskPropertiesViewModel {
     var isShowKeyboard = false
     var keyboardShown = false
     var keyboardHeight: CGFloat = 0
+    var commentsCount: String? {
+        if comments.value.count > 1 {
+            return String(format: LocalizationConstants.Tasks.multipleCommentTitle, comments.value.count)
+        }
+        return nil
+    }
 
     func isAddCommentAllowed(for message: String?) -> (isAllowed: Bool, message: String) {
         let text = (message ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
