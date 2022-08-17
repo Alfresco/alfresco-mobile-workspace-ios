@@ -74,14 +74,11 @@ extension TaskPropertiesViewModel {
     // MARK: - Task add a comment
     
     func addTaskComment(with taskId: String, message: String, completionHandler: @escaping (_ taskComment: [TaskCommentModel], _ error: Error?) -> Void) {
-        self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
             AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
 
             let params = TaskCommentParams(message: message)
-            TaskCommentsAPI.postTaskComment(taskId: taskId, params: params) {[weak self] data, error in
-                guard let sSelf = self else { return }
-                sSelf.isLoading.value = false
+            TaskCommentsAPI.postTaskComment(taskId: taskId, params: params) { data, error in
                 if data != nil {
                     if let taskComment = data {
                         let comments = TaskCommentOperations.processComments(for: [taskComment])
