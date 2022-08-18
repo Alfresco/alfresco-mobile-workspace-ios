@@ -40,4 +40,11 @@ class TaskCommentsViewModel: TaskPropertiesViewModel {
             return (true, text)
         }
     }
+    
+    func isScrollAllowed(numberOfRows: Int) -> Bool {
+        if !rowViewModels.value.isEmpty && numberOfRows >= rowViewModels.value.count {
+            return true
+        }
+        return false
+    }
 }

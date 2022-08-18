@@ -317,6 +317,7 @@
 "read-more" = "Read More";
 "no-attached-files-placeholder" = "No Attached Files";
 "send-title" = "Send";
+"no-due-date" = "No due date";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
