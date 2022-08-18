@@ -220,6 +220,7 @@ class TaskCommentsViewController: SystemSearchViewController {
             viewModel.isAddComment = true
             self.textView.text = nil
             setDefaultStateForSendButton()
+            self.view.endEditing(true)
             
             let text = viewModel.isAddCommentAllowed(for: message).message
             let taskID = viewModel.taskID
