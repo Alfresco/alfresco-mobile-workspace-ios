@@ -53,7 +53,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         scrollToBottom(animated: false)
         textView.delegate = self
         setDefaultStateForSendButton()
-        
+        tableView.contentInset.bottom = 30
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
@@ -192,14 +193,18 @@ class TaskCommentsViewController: SystemSearchViewController {
         /* observing rows */
         viewModel.rowViewModels.addObserver() { [weak self] (rows) in
             guard let sSelf = self else { return }
-            sSelf.tableView.reloadData()
+            DispatchQueue.main.async {
+                sSelf.tableView.reloadData()
+            }
         }
         
         /* observing comments */
         viewModel.comments.addObserver() { [weak self] (comments) in
             guard let sSelf = self else { return }
-            sSelf.applyLocalization()
-            sSelf.tableView.reloadData()
+            DispatchQueue.main.async {
+                sSelf.applyLocalization()
+                sSelf.tableView.reloadData()
+            }
         }
     }
     
@@ -210,7 +215,9 @@ class TaskCommentsViewController: SystemSearchViewController {
             if error == nil {
                 sSelf.viewModel.comments.value = comments
                 sSelf.controller.buildViewModel()
-                sSelf.scrollToBottom(animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    sSelf.scrollToBottom(animated: true)
+                })
             }
         }
     }
@@ -235,7 +242,8 @@ class TaskCommentsViewController: SystemSearchViewController {
     }
     
     private func scrollToBottom(animated: Bool) {
-        if !viewModel.rowViewModels.value.isEmpty {
+        let numberOfRows = tableView.numberOfRows(inSection: 0)
+        if viewModel.isScrollAllowed(numberOfRows: numberOfRows) {
             let indexPath = IndexPath(row: viewModel.rowViewModels.value.count - 1, section: 0)
             self.tableView?.scrollToRow(at: indexPath, at: .bottom, animated: animated)
         }
@@ -288,6 +296,7 @@ extension TaskCommentsViewController {
                 
             }, completion: nil)
             self.viewModel.keyboardShown = true
+            self.scrollToBottom(animated: true)
         }
     }
     
@@ -302,6 +311,7 @@ extension TaskCommentsViewController {
                 self.bottomViewBottomConstraint.constant = 0
                 self.view.layoutIfNeeded()
             }, completion: nil)
+            self.scrollToBottom(animated: false)
         }
     }
 }

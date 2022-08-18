@@ -98,10 +98,12 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     }
     
     private func addReadMore() {
-        commentLabel.collapsed = true
-        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0),
-                      NSAttributedString.Key.foregroundColor: UIColor(hex: "#2A7DE1")]
-        commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
-        commentLabel.text = viewModel?.comment
+        DispatchQueue.main.async {
+            self.commentLabel.collapsed = true
+            let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0),
+                          NSAttributedString.Key.foregroundColor: UIColor(hex: "#2A7DE1")]
+            self.commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
+            self.commentLabel.text = self.viewModel?.comment
+        }
     }
 }
