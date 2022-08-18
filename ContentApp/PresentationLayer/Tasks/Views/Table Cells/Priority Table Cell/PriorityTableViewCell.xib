@@ -21,10 +21,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="427" height="60"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic-priority-icon" translatesAutoresizingMaskIntoConstraints="NO" id="8s2-kM-dFX" userLabel="priorityIcon">
-                                <rect key="frame" x="15" y="19" width="20" height="22"/>
+                                <rect key="frame" x="15" y="10" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="5Jo-nu-IUT"/>
-                                    <constraint firstAttribute="height" constant="22" id="H9g-ZS-aiO"/>
+                                    <constraint firstAttribute="width" constant="40" id="5Jo-nu-IUT"/>
+                                    <constraint firstAttribute="width" secondItem="8s2-kM-dFX" secondAttribute="height" multiplier="1:1" id="OJ2-Kk-0cP"/>
                                 </constraints>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </imageView>
@@ -61,7 +61,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oig-d6-XBK" userLabel="titleLabel">
-                                <rect key="frame" x="55" y="15" width="155" height="30"/>
+                                <rect key="frame" x="75" y="15" width="135" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <bool key="isElement" value="NO"/>

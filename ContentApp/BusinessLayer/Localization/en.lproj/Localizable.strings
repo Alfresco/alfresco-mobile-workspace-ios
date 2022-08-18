@@ -329,6 +329,7 @@
 "view-all-title" = "View all";
 "read-more" = "Read More";
 "no-attached-files-placeholder" = "No Attached Files";
+"send-title" = "Send";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";

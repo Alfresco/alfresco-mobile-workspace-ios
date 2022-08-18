@@ -22,6 +22,8 @@ import AlfrescoContent
 // MARK: - Task APIs
 extension TaskPropertiesViewModel {
     
+    // MARK: - Task details
+
     func taskDetails(with taskId: String, completionHandler: @escaping (_ taskNodes: TaskNode?, _ error: Error?) -> Void) {
         
         self.isLoading.value = true
@@ -45,6 +47,8 @@ extension TaskPropertiesViewModel {
         })
     }
     
+    // MARK: - Task comment history
+
     func taskComments(with taskId: String, completionHandler: @escaping (_ taskComments: [TaskCommentModel], _ error: Error?) -> Void) {
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
@@ -67,6 +71,30 @@ extension TaskPropertiesViewModel {
         })
     }
     
+    // MARK: - Task add a comment
+    
+    func addTaskComment(with taskId: String, message: String, completionHandler: @escaping (_ taskComment: [TaskCommentModel], _ error: Error?) -> Void) {
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            let params = TaskCommentParams(message: message)
+            TaskCommentsAPI.postTaskComment(taskId: taskId, params: params) { data, error in
+                if data != nil {
+                    if let taskComment = data {
+                        let comments = TaskCommentOperations.processComments(for: [taskComment])
+                        completionHandler(comments, nil)
+                    } else {
+                        completionHandler([], nil)
+                    }
+                } else {
+                    completionHandler([], error)
+                }
+            }
+        })
+    }
+    
+    // MARK: - Task attachments
+
     func taskAttachments(with taskId: String, completionHandler: @escaping (_ taskAttachments: [TaskAttachmentModel], _ error: Error?) -> Void) {
         self.isLoading.value = true
         services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in

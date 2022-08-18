@@ -17,8 +17,27 @@
 //
 
 import Foundation
+import UIKit
 
 class TaskCommentsViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-    let comments = Observable<[TaskCommentModel]>([])
+    var isShowKeyboard = false
+    var keyboardShown = false
+    var keyboardHeight: CGFloat = 0
+    var isAddComment = false
+    var commentsCount: String? {
+        if comments.value.count > 1 {
+            return String(format: LocalizationConstants.Tasks.multipleCommentTitle, comments.value.count)
+        }
+        return nil
+    }
+
+    func isAddCommentAllowed(for message: String?) -> (isAllowed: Bool, message: String) {
+        let text = (message ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        if text.isEmpty {
+            return (false, text)
+        } else {
+            return (true, text)
+        }
+    }
 }
