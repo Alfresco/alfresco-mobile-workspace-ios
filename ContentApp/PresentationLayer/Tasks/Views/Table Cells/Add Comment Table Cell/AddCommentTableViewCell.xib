@@ -22,14 +22,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="399" height="79"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="m7U-gh-8uq">
-                                <rect key="frame" x="15" y="15" width="28" height="28"/>
+                                <rect key="frame" x="15" y="15" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="28" id="9Y7-vF-8k6"/>
-                                    <constraint firstAttribute="height" constant="28" id="fhn-R2-Zv1"/>
+                                    <constraint firstAttribute="width" constant="40" id="9Y7-vF-8k6"/>
+                                    <constraint firstAttribute="width" secondItem="m7U-gh-8uq" secondAttribute="height" id="yog-G2-I6P"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mPM-YB-4bD" userLabel="titleLabel">
-                                <rect key="frame" x="58" y="0.0" width="326" height="58"/>
+                                <rect key="frame" x="70" y="12" width="314" height="46"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <bool key="isElement" value="NO"/>
                                 </accessibility>

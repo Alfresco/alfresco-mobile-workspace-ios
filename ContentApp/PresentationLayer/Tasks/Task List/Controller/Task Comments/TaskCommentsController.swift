@@ -38,6 +38,32 @@ class TaskCommentsController: NSObject {
     
     // MARK: - Build View Models
     func buildViewModel() {
-        
+        var rowViewModels = [RowViewModel]()
+       
+        let comments = commentsCellVM(for: viewModel.comments.value)
+        rowViewModels.append(contentsOf: comments)
+        self.viewModel.rowViewModels.value = rowViewModels
+    }
+    
+    func updateViewModel(for comments: [TaskCommentModel]) {
+        let taskComments = commentsCellVM(for: comments)
+        self.viewModel.rowViewModels.value.append(contentsOf: taskComments)
+    }
+    
+    private func commentsCellVM(for comments: [TaskCommentModel]) -> [RowViewModel] {
+        var rowVMs = [RowViewModel]()
+        if !comments.isEmpty {
+            for comment in comments {
+                let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
+                                                          userName: comment.createdBy?.userName,
+                                                          commentID: comment.commentID,
+                                                          comment: comment.message,
+                                                          dateString: comment.messageDate,
+                                                          isShowReadMore: false)
+                rowVMs.append(rowVM)
+            }
+        }
+
+        return rowVMs
     }
 }

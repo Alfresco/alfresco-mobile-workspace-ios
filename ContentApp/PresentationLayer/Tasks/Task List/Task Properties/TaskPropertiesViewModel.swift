@@ -22,6 +22,7 @@ class TaskPropertiesViewModel: NSObject {
     var task: TaskNode?
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
+    var comments = Observable<[TaskCommentModel]>([])
 
     var taskName: String? {
         return task?.name
@@ -84,5 +85,12 @@ class TaskPropertiesViewModel: NSObject {
     
     var taskID: String {
         return task?.taskID ?? ""
+    }
+    
+    var latestComment: TaskCommentModel? {
+        if let comment = comments.value.last {
+            return comment
+        }
+        return nil
     }
 }

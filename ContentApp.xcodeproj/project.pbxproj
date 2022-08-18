@@ -131,10 +131,9 @@
 		B9FC629F24C704F100246606 /* ActivityIndicatorFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC629E24C704F100246606 /* ActivityIndicatorFooterView.swift */; };
 		B9FC62A324C71CF400246606 /* RecentSearchesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */; };
 		B9FC62A524C71D0200246606 /* SearchChipsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */; };
-		C90A2CB22830D134008601F5 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A2CB12830D134008601F5 /* UIFunction.swift */; };
-		C90A2CB42830E286008601F5 /* PDCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A2CB32830E286008601F5 /* PDCache.swift */; };
 		C903CBAE288149A70080EF69 /* EmptyTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBAD288149A70080EF69 /* EmptyTasks.swift */; };
 		C903CBB1288152230080EF69 /* StoryboardConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903CBB0288152230080EF69 /* StoryboardConstants.swift */; };
+		C90A2CB42830E286008601F5 /* PDCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90A2CB32830E286008601F5 /* PDCache.swift */; };
 		C90D2B98275897A3006C8A40 /* SearchFacetFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */; };
 		C911EF9C2890F67600C55F67 /* TasksSortAndFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */; };
 		C911EF9E2891507800C55F67 /* TaskChipItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C911EF9D2891507800C55F67 /* TaskChipItem.swift */; };
@@ -199,6 +198,7 @@
 		C947C5BF27D0D9CA0000D902 /* UploadNodesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */; };
 		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
 		C956D8B4282FB5CB00E16A70 /* Array+PDF.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */; };
+		C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
 		C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */; };
 		C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */; };
 		C95C28C5289E45E600000080 /* AddCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */; };
@@ -863,11 +863,9 @@
 		B9FC62A224C71CF400246606 /* RecentSearchesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSearchesViewModel.swift; sourceTree = "<group>"; };
 		B9FC62A424C71D0200246606 /* SearchChipsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchChipsViewModel.swift; sourceTree = "<group>"; };
 		C733BE845AAF1A36661ED9DA /* Pods-Share.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.debug.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.debug.xcconfig"; sourceTree = "<group>"; };
-		C90A2CB12830D134008601F5 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
-		C90A2CB32830E286008601F5 /* PDCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDCache.swift; sourceTree = "<group>"; };
-		BB46D2BADEA2836E7A3A00DF /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		C903CBAD288149A70080EF69 /* EmptyTasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTasks.swift; sourceTree = "<group>"; };
 		C903CBB0288152230080EF69 /* StoryboardConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryboardConstants.swift; sourceTree = "<group>"; };
+		C90A2CB32830E286008601F5 /* PDCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDCache.swift; sourceTree = "<group>"; };
 		C90D2B97275897A3006C8A40 /* SearchFacetFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFacetFields.swift; sourceTree = "<group>"; };
 		C911EF9B2890F67600C55F67 /* TasksSortAndFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksSortAndFilterViewModel.swift; sourceTree = "<group>"; };
 		C911EF9D2891507800C55F67 /* TaskChipItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskChipItem.swift; sourceTree = "<group>"; };
@@ -924,6 +922,7 @@
 		C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModel.swift; sourceTree = "<group>"; };
 		C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+ActionEvents.swift"; sourceTree = "<group>"; };
 		C956D8B3282FB5CB00E16A70 /* Array+PDF.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+PDF.swift"; sourceTree = "<group>"; };
+		C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
 		C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableViewCell.swift; sourceTree = "<group>"; };
 		C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCommentTableViewCell.xib; sourceTree = "<group>"; };
 		C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableCellViewModel.swift; sourceTree = "<group>"; };
@@ -975,7 +974,6 @@
 		C998A5C428699BDB00D18743 /* FirebaseCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FirebaseCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C99D4AF827D1E164009D3AD3 /* UploadNodesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesModel.swift; sourceTree = "<group>"; };
 		C99D4AFA27D1F168009D3AD3 /* EmptyUploads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyUploads.swift; sourceTree = "<group>"; };
-		C9A40D2609CC454959FE4CCB /* Pods-ContentAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ContentAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ContentAppTests/Pods-ContentAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C9A7598A289BB0CC006603E0 /* TaskListFilterParams.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskListFilterParams.swift; sourceTree = "<group>"; };
 		C9A7598B289BB0CC006603E0 /* TasksListViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksListViewModel.swift; sourceTree = "<group>"; };
 		C9A7598C289BB0CC006603E0 /* TasksListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksListViewController.swift; sourceTree = "<group>"; };
@@ -1041,9 +1039,9 @@
 		C9D4FAB227830EA50008C4AA /* FileManagerAssetDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerAssetDelegate.swift; sourceTree = "<group>"; };
 		C9D4FAB4278329F50008C4AA /* FileAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAsset.swift; sourceTree = "<group>"; };
 		C9D4FAB6278344AA0008C4AA /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		C9D5334B2869C91400224873 /* AnalyticsManager+PageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+PageEvents.swift"; sourceTree = "<group>"; };
 		C9DCB7A02726825A0083D80B /* ServerEdition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerEdition.swift; sourceTree = "<group>"; };
 		C9DCB7A22726827D0083D80B /* TestPreviewViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestPreviewViewModel.swift; sourceTree = "<group>"; };
-		C9D5334B2869C91400224873 /* AnalyticsManager+PageEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+PageEvents.swift"; sourceTree = "<group>"; };
 		C9E1BF252729213300900C42 /* SearchNumberRangeComponentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewController.swift; sourceTree = "<group>"; };
 		C9E1BF272729214900900C42 /* SearchNumberRangeComponentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchNumberRangeComponentViewModel.swift; sourceTree = "<group>"; };
 		C9E25F5428325159006978C3 /* ScanDocumentsKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanDocumentsKit.swift; sourceTree = "<group>"; };
@@ -1634,7 +1632,6 @@
 				E3E0F81D25CAFC5700DBC6F6 /* ErrorCodes.swift */,
 				E3E0F82225CB09E500DBC6F6 /* APIConstants.swift */,
 				E3724FD725CBD2D10005AA1C /* KeyConstants.swift */,
-				C90A2CB12830D134008601F5 /* UIFunction.swift */,
 				C90A2CB32830E286008601F5 /* PDCache.swift */,
 			);
 			path = Constants;
@@ -2373,6 +2370,7 @@
 			children = (
 				C9A759BA289BE415006603E0 /* Enums.swift */,
 				C95C28C6289E4F8D00000080 /* InitialsImageView.swift */,
+				C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -4159,7 +4157,6 @@
 				C93EF2C027C7BB0D00093E3D /* DatabaseMigrationService.swift in Sources */,
 				E3BEB135255C3390008228AD /* Double+TimeFormat.swift in Sources */,
 				B9958E0824D852590058BCE1 /* FavoritesViewController.swift in Sources */,
-				C90A2CB22830D134008601F5 /* UIFunction.swift in Sources */,
 				E3E9ED4D24CB3C6A00F1A2C2 /* FolderDrillViewModel.swift in Sources */,
 				E303CE2124C876DF00E0BF5F /* FavoritesViewModel.swift in Sources */,
 				E3E9ED4B24CB360B00F1A2C2 /* BrowseTopLevelFolderScreenCoordinator.swift in Sources */,
@@ -4236,6 +4233,7 @@
 				B95605022501208600D955BA /* PDFRenderer.swift in Sources */,
 				B9A9F126263AEB7900F4428D /* CameraKit.swift in Sources */,
 				C915CDD828905B6800819F86 /* TaskNodeOperations.swift in Sources */,
+				C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */,
 				C97BEB8126EB3AC700E05375 /* PhotoGalleryCollectionViewCell.swift in Sources */,
 				E31184DC247C01470044BE0D /* AimsViewModel.swift in Sources */,
 				E3E8B0112548683D00CD399D /* UImage+Color.swift in Sources */,

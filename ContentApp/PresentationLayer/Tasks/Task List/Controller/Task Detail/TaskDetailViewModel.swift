@@ -21,8 +21,8 @@ import Foundation
 class TaskDetailViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
     var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    let comments = Observable<[TaskCommentModel]>([])
     let attachments = Observable<[TaskAttachmentModel]>([])
     var viewAllAttachmentsAction: (() -> Void)?
     var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
+    var isAttachmentsLoaded = false
 }
