@@ -55,6 +55,7 @@ class TaskDetailViewController: SystemSearchViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateTheme()
+        controller.updateLatestComment()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -193,13 +194,21 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.viewModel.attachments.value = taskAttachments
+                sSelf.viewModel.isAttachmentsLoaded = true
                 sSelf.controller.buildViewModel()
             }
         }
     }
     
     private func showComments(isAddComment: Bool) {
-        AlfrescoLog.debug("******* Add comment action \(isAddComment) ********")
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskComments) as? TaskCommentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.isShowKeyboard = isAddComment
+            viewController.viewModel.comments = viewModel.comments
+            viewController.viewModel.task = viewModel.task
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     private func viewAllAttachments() {

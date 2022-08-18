@@ -59,31 +59,39 @@ class TaskDetailController: NSObject {
         if priorityCellVM() != nil {
             rowViewModels.append(priorityCellVM()!)
         }
-
+        
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
-         
+        
+        /* comments */
         if taskHeaderCellVM() != nil {
             rowViewModels.append(taskHeaderCellVM()!)
         }
         
-        if lastestCommentCellVM() != nil {
-            rowViewModels.append(lastestCommentCellVM()!)
+        if latestCommentCellVM() != nil {
+            rowViewModels.append(latestCommentCellVM()!)
         }
         
         rowViewModels.append(addCommentCellVM())
-        rowViewModels.append(attachmentsHeaderCellVM())
         
-        if attachmentsPlaceholderCellVM() != nil {
-            rowViewModels.append(attachmentsPlaceholderCellVM()!)
+        /* attachments */
+        if viewModel.isAttachmentsLoaded {
+            rowViewModels.append(attachmentSpaceCellVM())
+            rowViewModels.append(attachmentsHeaderCellVM())
+            
+            if attachmentsPlaceholderCellVM() != nil {
+                rowViewModels.append(attachmentsPlaceholderCellVM()!)
+            }
+            
+            let attachments = attachmentsCellVM()
+            rowViewModels.append(contentsOf: attachments)
         }
         
-        let attachments = attachmentsCellVM()
-        rowViewModels.append(contentsOf: attachments)
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
+    // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
         let rowVM = TitleTableCellViewModel(title: viewModel.taskName)
         return rowVM
@@ -134,7 +142,7 @@ class TaskDetailController: NSObject {
         if commentsCount < 2 {
             subTitle = ""
         }
-        let isHideDetailButton = commentsCount == 0 ? true:false
+        let isHideDetailButton = commentsCount > 1 ? false:true
         let rowVM = TaskHeaderTableCellViewModel(title: LocalizationConstants.Tasks.commentsTitle,
                                                  subTitle: subTitle,
                                                  buttonTitle: LocalizationConstants.Tasks.viewAllTitle,
@@ -153,8 +161,8 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func lastestCommentCellVM() -> TaskCommentTableCellViewModel? {
-        if let comment = self.viewModel.comments.value.last {
+    private func latestCommentCellVM() -> TaskCommentTableCellViewModel? {
+        if let comment = self.viewModel.latestComment {
             let rowVM = TaskCommentTableCellViewModel(userID: comment.createdBy?.assigneeID,
                                                       userName: comment.createdBy?.userName,
                                                       commentID: comment.commentID,
@@ -171,6 +179,11 @@ class TaskDetailController: NSObject {
     }
     
     // MARK: - Attachments
+    private func attachmentSpaceCellVM() -> TitleTableCellViewModel {
+        let rowVM = TitleTableCellViewModel(title: "")
+        return rowVM
+    }
+    
     private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel {
         let attachmentsCount = viewModel.attachments.value.count
         let title = LocalizationConstants.Tasks.attachedFilesTitle
@@ -226,5 +239,25 @@ class TaskDetailController: NSObject {
             }
         }
         return rowVMs
+    }
+    
+    func updateLatestComment() {
+        var rowViewModels = self.viewModel.rowViewModels.value
+        
+        // ------- update comment count ------
+        if let index = rowViewModels.firstIndex(where: { $0.cellIdentifier() == CellConstants.TableCells.taskHeaderCell }) {
+            if taskHeaderCellVM() != nil {
+                rowViewModels[index] = taskHeaderCellVM()!
+            }
+            self.viewModel.rowViewModels.value = rowViewModels
+        }
+        
+        // ------- update latest comment ------
+        if let index = rowViewModels.firstIndex(where: { $0.cellIdentifier() == CellConstants.TableCells.commentCell }) {
+            if latestCommentCellVM() != nil {
+                rowViewModels[index] = latestCommentCellVM()!
+            }
+            self.viewModel.rowViewModels.value = rowViewModels
+        }
     }
 }

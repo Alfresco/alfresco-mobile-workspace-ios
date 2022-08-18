@@ -23,6 +23,32 @@ class UserProfile {
     static var repository = ApplicationBootstrap.shared().repository
     static var accountService = repository.service(of: AccountService.identifier) as? AccountService
 
+    static var firstName: String {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.displayFirstName)"
+            return UserDefaultsModel.value(for: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.displayFirstName)"
+            UserDefaultsModel.set(value: newValue, for: key)
+        }
+    }
+
+    static var lastName: String {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.displayLastName)"
+            return UserDefaultsModel.value(for: key) as? String ?? ""
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.displayLastName)"
+            UserDefaultsModel.set(value: newValue, for: key)
+        }
+    }
+    
     static var displayName: String {
         get {
             let identifier = accountService?.activeAccount?.identifier ?? ""
@@ -91,13 +117,15 @@ class UserProfile {
     // MARK: - Persist Data
 
     static func persistUserProfile(person: Person) {
-        var profileName = person.firstName
-        if let lastName = person.lastName {
-            profileName = "\(profileName) \(lastName)"
-        }
+        let firstName = person.firstName
+        let lastName = person.lastName ?? ""
+        var profileName = "\(firstName) \(lastName)".trimmingCharacters(in: .whitespacesAndNewlines)
         if let displayName = person.displayName {
             profileName = displayName
         }
+        
+        UserProfile.firstName = firstName
+        UserProfile.lastName = lastName
         UserProfile.displayName = profileName
         UserProfile.email = person.email
     }
@@ -105,6 +133,8 @@ class UserProfile {
     // MARK: - Remove Data
 
     static func removeUserProfile(forAccountIdentifier identifier: String) {
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.displayFirstName)")
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.displayLastName)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.displayProfileName)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.emailProfile)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.personalFilesID)")
