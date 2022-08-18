@@ -51,6 +51,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         getTaskComments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskCommentsScreen)
         scrollToBottom(animated: false)
+        textView.delegate = self
+        setDefaultStateForSendButton()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
@@ -112,7 +114,6 @@ class TaskCommentsViewController: SystemSearchViewController {
     private func applyLocalization() {
         self.title = LocalizationConstants.Tasks.commentsTitle
         commentsCountLabel.text = viewModel.commentsCount
-        sendButton.setTitle(LocalizationConstants.Tasks.send, for: .normal)
         textView.placeholder = LocalizationConstants.Tasks.addCommentPlaceholder
     }
     
@@ -156,10 +157,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         textView.textColor = currentTheme.onSurface60Color
         textView.placeholderColor = currentTheme.onSurface60Color
         textView.font = currentTheme.subtitle2TextStyle.font
-        
-        sendButton.applyTextTheme(withScheme: bigButtonScheme)
-        sendButton.isUppercaseTitle = false
         divider.backgroundColor = currentTheme.onSurface12Color
+        sendButton.backgroundColor = currentTheme.surfaceColor
     }
     
     func startLoading() {
@@ -220,6 +219,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         if viewModel.isAddCommentAllowed(for: message).isAllowed {
             viewModel.isAddComment = true
             self.textView.text = nil
+            setDefaultStateForSendButton()
+            
             let text = viewModel.isAddCommentAllowed(for: message).message
             let taskID = viewModel.taskID
             viewModel.addTaskComment(with: taskID, message: text) { [weak self] taskComment, error in
@@ -301,5 +302,22 @@ extension TaskCommentsViewController {
                 self.view.layoutIfNeeded()
             }, completion: nil)
         }
+    }
+}
+
+// MARK: - Text view delegate
+extension TaskCommentsViewController: GrowingTextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if viewModel.isAddCommentAllowed(for: textView.text).isAllowed {
+            sendButton.isUserInteractionEnabled = true
+            sendButton.isSelected = true
+        } else {
+            setDefaultStateForSendButton()
+        }
+    }
+    
+    private func setDefaultStateForSendButton() {
+        sendButton.isUserInteractionEnabled = false
+        sendButton.isSelected = false
     }
 }
