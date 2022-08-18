@@ -311,6 +311,7 @@ struct LocalizationConstants {
         static let readMore = NSLocalizedString("read-more", comment: "")
         static let noAttachedFilesPlaceholder = NSLocalizedString("no-attached-files-placeholder", comment: "")
         static let send = NSLocalizedString("send-title", comment: "")
+        static let noDueDate = NSLocalizedString("no-due-date", comment: "")
     }
     
     struct Accessibility {
