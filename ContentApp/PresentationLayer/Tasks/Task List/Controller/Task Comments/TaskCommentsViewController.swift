@@ -54,10 +54,21 @@ class TaskCommentsViewController: SystemSearchViewController {
         textView.delegate = self
         setDefaultStateForSendButton()
         tableView.contentInset.bottom = 30
-
+        addTapGestureToDismissKeyboard()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func addTapGestureToDismissKeyboard() {
+        let hideKeyboard = UITapGestureRecognizer(target: self, action: #selector(self.navigationBarTap))
+        hideKeyboard.numberOfTapsRequired = 1
+        navigationController?.navigationBar.addGestureRecognizer(hideKeyboard)
+    }
+    
+    @objc func navigationBarTap(_ recognizer: UIGestureRecognizer) {
+        view.endEditing(true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -146,8 +157,7 @@ class TaskCommentsViewController: SystemSearchViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-        let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         
         commentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         bottomView.backgroundColor = currentTheme.surfaceColor
