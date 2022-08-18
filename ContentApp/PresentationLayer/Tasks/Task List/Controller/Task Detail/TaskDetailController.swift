@@ -77,7 +77,7 @@ class TaskDetailController: NSObject {
         
         /* attachments */
         if viewModel.isAttachmentsLoaded {
-            rowViewModels.append(attachmentSpaceCellVM())
+            rowViewModels.append(spaceCellVM())
             rowViewModels.append(attachmentsHeaderCellVM())
             
             if attachmentsPlaceholderCellVM() != nil {
@@ -179,7 +179,7 @@ class TaskDetailController: NSObject {
     }
     
     // MARK: - Attachments
-    private func attachmentSpaceCellVM() -> TitleTableCellViewModel {
+    private func spaceCellVM() -> TitleTableCellViewModel {
         let rowVM = TitleTableCellViewModel(title: "")
         return rowVM
     }

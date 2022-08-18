@@ -73,7 +73,11 @@ class TaskPropertiesViewModel: NSObject {
     }
     
     func getDueDate() -> String? {
-        dueDate?.dateString(format: "dd MMM yyyy")
+        if let dueDate = dueDate?.dateString(format: "dd MMM yyyy") {
+            return dueDate
+        } else {
+            return LocalizationConstants.Tasks.noDueDate
+        }
     }
     
     var status: String {
