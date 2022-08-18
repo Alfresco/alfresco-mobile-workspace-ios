@@ -194,6 +194,7 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.viewModel.attachments.value = taskAttachments
+                sSelf.viewModel.isAttachmentsLoaded = true
                 sSelf.controller.buildViewModel()
             }
         }

@@ -59,11 +59,12 @@ class TaskDetailController: NSObject {
         if priorityCellVM() != nil {
             rowViewModels.append(priorityCellVM()!)
         }
-
+        
         rowViewModels.append(assignedCellVM())
         rowViewModels.append(statusCellVM())
         rowViewModels.append(identifierCellVM())
-         
+        
+        /* comments */
         if taskHeaderCellVM() != nil {
             rowViewModels.append(taskHeaderCellVM()!)
         }
@@ -73,17 +74,24 @@ class TaskDetailController: NSObject {
         }
         
         rowViewModels.append(addCommentCellVM())
-        rowViewModels.append(attachmentsHeaderCellVM())
         
-        if attachmentsPlaceholderCellVM() != nil {
-            rowViewModels.append(attachmentsPlaceholderCellVM()!)
+        /* attachments */
+        if viewModel.isAttachmentsLoaded {
+            rowViewModels.append(attachmentSpaceCellVM())
+            rowViewModels.append(attachmentsHeaderCellVM())
+            
+            if attachmentsPlaceholderCellVM() != nil {
+                rowViewModels.append(attachmentsPlaceholderCellVM()!)
+            }
+            
+            let attachments = attachmentsCellVM()
+            rowViewModels.append(contentsOf: attachments)
         }
         
-        let attachments = attachmentsCellVM()
-        rowViewModels.append(contentsOf: attachments)
         self.viewModel.rowViewModels.value = rowViewModels
     }
     
+    // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
         let rowVM = TitleTableCellViewModel(title: viewModel.taskName)
         return rowVM
@@ -171,6 +179,11 @@ class TaskDetailController: NSObject {
     }
     
     // MARK: - Attachments
+    private func attachmentSpaceCellVM() -> TitleTableCellViewModel {
+        let rowVM = TitleTableCellViewModel(title: "")
+        return rowVM
+    }
+    
     private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel {
         let attachmentsCount = viewModel.attachments.value.count
         let title = LocalizationConstants.Tasks.attachedFilesTitle
