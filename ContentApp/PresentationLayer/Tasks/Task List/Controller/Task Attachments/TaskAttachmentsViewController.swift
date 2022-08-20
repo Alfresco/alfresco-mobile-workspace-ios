@@ -146,6 +146,21 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 sSelf.tableView.reloadData()
             }
         }
+        
+        /* observing comments */
+        viewModel.attachments.addObserver() { [weak self] (attachments) in
+            guard let sSelf = self else { return }
+            DispatchQueue.main.async {
+                sSelf.applyLocalization()
+                sSelf.tableView.reloadData()
+            }
+        }
+        
+        /* observer did select task attachment */
+        viewModel.didSelectTaskAttachment = { [weak self] (attachment) in
+            guard let sSelf = self else { return }
+            sSelf.didSelectAttachment(attachment: attachment)
+        }
     }
     
     private func getTaskAttachments() {
@@ -157,6 +172,10 @@ class TaskAttachmentsViewController: SystemSearchViewController {
                 sSelf.controller.buildViewModel()
             }
         }
+    }
+    
+    private func didSelectAttachment(attachment: TaskAttachmentModel) {
+        AlfrescoLog.debug("******* did select attachments ********")
     }
 }
 

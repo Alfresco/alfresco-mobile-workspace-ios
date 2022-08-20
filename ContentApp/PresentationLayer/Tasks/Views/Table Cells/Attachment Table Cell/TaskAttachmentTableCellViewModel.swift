@@ -19,25 +19,19 @@
 import UIKit
 
 class TaskAttachmentTableCellViewModel: RowViewModel {
-    var attachment: TaskAttachmentModel?
-    var didSelectTaskAttachment: (() -> Void)?
-    var name: String? {
-        return attachment?.name
-    }
-    
-    var mimeType: String? {
-        return attachment?.mimeType
-    }
-    
+    var name: String?
+    var mimeType: String?
     var icon: UIImage? {
         return FileIcon.icon(for: mimeType)
     }
-    
+    var didSelectTaskAttachment: (() -> Void)?
+
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
     }
     
-    init(attachment: TaskAttachmentModel?) {
-        self.attachment = attachment
+    init(name: String?, mimeType: String?) {
+        self.name = name
+        self.mimeType = mimeType
     }
 }
