@@ -54,23 +54,12 @@ class TaskCommentsViewController: SystemSearchViewController {
         textView.delegate = self
         setDefaultStateForSendButton()
         tableView.contentInset.bottom = 30
-        addTapGestureToDismissKeyboard()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
-    
-    private func addTapGestureToDismissKeyboard() {
-        let hideKeyboard = UITapGestureRecognizer(target: self, action: #selector(self.navigationBarTap))
-        hideKeyboard.numberOfTapsRequired = 1
-        navigationController?.navigationBar.addGestureRecognizer(hideKeyboard)
-    }
-    
-    @objc func navigationBarTap(_ recognizer: UIGestureRecognizer) {
-        view.endEditing(true)
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true

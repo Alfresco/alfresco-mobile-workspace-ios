@@ -16,11 +16,14 @@
 //  limitations under the License.
 //
 
-import Foundation
+import UIKit
 
-class TaskDetailViewModel: TaskPropertiesViewModel {
+class TaskAttachmentsControllerViewModel: TaskPropertiesViewModel {
     let rowViewModels = Observable<[RowViewModel]>([])
-    var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
-    var viewAllAttachmentsAction: (() -> Void)?
-    var isAttachmentsLoaded = false
+    var attachmentsCount: String? {
+        if attachments.value.count > 1 {
+            return String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachments.value.count)
+        }
+        return nil
+    }
 }

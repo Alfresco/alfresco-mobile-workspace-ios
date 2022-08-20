@@ -116,4 +116,20 @@ extension TaskPropertiesViewModel {
             }
         })
     }
+    
+    func downloadContent(for contentId: String,
+                         to destinationURL: URL,
+                         completionHandler: @escaping (_ data: Data?, _ error: Error?) -> Void) {
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
+                if data != nil {
+                    completionHandler(data, nil)
+                } else {
+                    completionHandler(nil, error)
+                }
+            }
+        })
+    }
 }
