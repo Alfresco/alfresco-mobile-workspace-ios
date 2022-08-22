@@ -169,6 +169,9 @@
 		C924B3CB27D3732C000D2607 /* SyncBannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C46B527D0965E00DC3FF3 /* SyncBannerService.swift */; };
 		C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C928AE32282A5F4900378327 /* TestNodeViewModel.swift */; };
 		C92A67CF274CFEA300AAA4A1 /* FacetFilterMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */; };
+		C92EBB2028B13B6B003DFA15 /* TaskAttachmentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB1F28B13B6B003DFA15 /* TaskAttachmentsViewController.swift */; };
+		C92EBB2228B13B80003DFA15 /* TaskAttachmentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB2128B13B80003DFA15 /* TaskAttachmentsController.swift */; };
+		C92EBB2428B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */; };
 		C92F3DBC27BF632300952C59 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DBB27BF632300952C59 /* MimeType.swift */; };
 		C92F3DBE27BFEC6C00952C59 /* SyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DBD27BFEC6C00952C59 /* SyncService.swift */; };
 		C92F3DC027BFECCA00952C59 /* SyncOperationFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92F3DBF27BFECCA00952C59 /* SyncOperationFactory.swift */; };
@@ -886,6 +889,9 @@
 		C9205C8828A173D300DEF5AC /* TaskHeaderTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskHeaderTableCellViewModel.swift; sourceTree = "<group>"; };
 		C928AE32282A5F4900378327 /* TestNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNodeViewModel.swift; sourceTree = "<group>"; };
 		C92A67CE274CFEA300AAA4A1 /* FacetFilterMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacetFilterMapper.swift; sourceTree = "<group>"; };
+		C92EBB1F28B13B6B003DFA15 /* TaskAttachmentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsViewController.swift; sourceTree = "<group>"; };
+		C92EBB2128B13B80003DFA15 /* TaskAttachmentsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsController.swift; sourceTree = "<group>"; };
+		C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskAttachmentsControllerViewModel.swift; sourceTree = "<group>"; };
 		C92F3DBB27BF632300952C59 /* MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
 		C92F3DBD27BFEC6C00952C59 /* SyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncService.swift; sourceTree = "<group>"; };
 		C92F3DBF27BFECCA00952C59 /* SyncOperationFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncOperationFactory.swift; sourceTree = "<group>"; };
@@ -1940,6 +1946,16 @@
 			path = "Task Header";
 			sourceTree = "<group>";
 		};
+		C92EBB1E28B13B4D003DFA15 /* Task Attachments */ = {
+			isa = PBXGroup;
+			children = (
+				C92EBB1F28B13B6B003DFA15 /* TaskAttachmentsViewController.swift */,
+				C92EBB2128B13B80003DFA15 /* TaskAttachmentsController.swift */,
+				C92EBB2328B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift */,
+			);
+			path = "Task Attachments";
+			sourceTree = "<group>";
+		};
 		C93A06AD27B91A530027097B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2131,6 +2147,7 @@
 				C9A75989289BB0CC006603E0 /* Task List */,
 				C9A7598D289BB0CC006603E0 /* Task Detail */,
 				C9205C7C28A12B6A00DEF5AC /* Task Comments */,
+				C92EBB1E28B13B4D003DFA15 /* Task Attachments */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3983,6 +4000,7 @@
 				E37D1CA32493EB53006373FD /* TabBarScreenCoordinator.swift in Sources */,
 				C9D4FAB5278329F50008C4AA /* FileAsset.swift in Sources */,
 				E3E9ED3F24CB224F00F1A2C2 /* BrowseScreenCoordinator.swift in Sources */,
+				C92EBB2028B13B6B003DFA15 /* TaskAttachmentsViewController.swift in Sources */,
 				C947C5B727D0C2FB0000D902 /* UploadFilesScreenCoordinator.swift in Sources */,
 				E3E9ED4724CB263400F1A2C2 /* BrowseNode.swift in Sources */,
 				B9EE37E8266A44A70020A3FC /* SearchModel.swift in Sources */,
@@ -4135,6 +4153,7 @@
 				E31184DA247BFE5B0044BE0D /* BasicAuthViewModel.swift in Sources */,
 				E3ADD05C249279D8006DF519 /* SettingsItemTableViewCell.swift in Sources */,
 				C973EC712726C8EA00912015 /* SearchListComponentController.swift in Sources */,
+				C92EBB2228B13B80003DFA15 /* TaskAttachmentsController.swift in Sources */,
 				E348EDE12498A3D000F489B4 /* MaterialDesignThemingServiceWorkerProtocol.swift in Sources */,
 				E3B1EAE924C194DA00E72712 /* GroupedList.swift in Sources */,
 				C9205C7828A0FAA100DEF5AC /* TaskCommentTableViewCell.swift in Sources */,
@@ -4267,6 +4286,7 @@
 				C99D4AF927D1E164009D3AD3 /* UploadNodesModel.swift in Sources */,
 				E350BD42249C981A008E381F /* SettingsTableViewCellProtocol.swift in Sources */,
 				E3429F1625627B66004EBD2F /* EmptyListProtocol.swift in Sources */,
+				C92EBB2428B13B97003DFA15 /* TaskAttachmentsControllerViewModel.swift in Sources */,
 				B959CCDA2477AD3D00811F15 /* LoginComponentsThemingServiceWorker.swift in Sources */,
 				C97BEB6D26EB363100E05375 /* Observable.swift in Sources */,
 				B9BB9F252636D36D00C2FB85 /* Collection+SafeRange.swift in Sources */,

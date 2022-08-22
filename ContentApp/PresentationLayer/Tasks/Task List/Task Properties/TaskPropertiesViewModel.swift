@@ -23,6 +23,8 @@ class TaskPropertiesViewModel: NSObject {
     var services: CoordinatorServices?
     let isLoading = Observable<Bool>(true)
     var comments = Observable<[TaskCommentModel]>([])
+    var attachments = Observable<[TaskAttachmentModel]>([])
+    var didSelectTaskAttachment: ((TaskAttachmentModel) -> Void)?
 
     var taskName: String? {
         return task?.name

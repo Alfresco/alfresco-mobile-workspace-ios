@@ -266,7 +266,7 @@
                                                         <real key="value" value="30"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="maxHeight">
-                                                        <real key="value" value="100"/>
+                                                        <real key="value" value="80"/>
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="maxLength">
                                                         <integer key="value" value="250"/>
@@ -330,6 +330,77 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zf4-dL-y1k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1406" y="73"/>
+        </scene>
+        <!--Task Attachments View Controller-->
+        <scene sceneID="ewJ-aH-kw6">
+            <objects>
+                <viewController storyboardIdentifier="TaskAttachmentsViewController" id="xRV-ln-mE9" customClass="TaskAttachmentsViewController" customModule="ContentApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qtm-Mg-43U">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wg1-6W-0Yx" customClass="MDCProgressView">
+                                <rect key="frame" x="0.0" y="44" width="414" height="2"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="2" id="LpU-bM-tq5"/>
+                                </constraints>
+                            </view>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LOx-p6-ZdA" userLabel="attachmentsCountView">
+                                <rect key="frame" x="0.0" y="51" width="414" height="30.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uYB-Mf-POj" userLabel="titleHeader">
+                                        <rect key="frame" x="20" y="5" width="374" height="20.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="title-header">
+                                            <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
+                                        </accessibility>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="uYB-Mf-POj" firstAttribute="top" secondItem="LOx-p6-ZdA" secondAttribute="top" constant="5" id="0Vi-ko-dZU"/>
+                                    <constraint firstAttribute="bottom" secondItem="uYB-Mf-POj" secondAttribute="bottom" constant="5" id="Vj8-K3-G8p"/>
+                                    <constraint firstAttribute="trailing" secondItem="uYB-Mf-POj" secondAttribute="trailing" constant="20" id="eNQ-Cf-TYV"/>
+                                    <constraint firstItem="uYB-Mf-POj" firstAttribute="leading" secondItem="LOx-p6-ZdA" secondAttribute="leading" constant="20" id="v8s-vu-PzR"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="wW7-P7-lyf">
+                                <rect key="frame" x="0.0" y="91.5" width="414" height="770.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="xRV-ln-mE9" id="Toz-fX-IDd"/>
+                                    <outlet property="delegate" destination="xRV-ln-mE9" id="OKb-GB-Erk"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ysd-sx-pNT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wg1-6W-0Yx" firstAttribute="top" secondItem="Ysd-sx-pNT" secondAttribute="top" id="1I1-99-Pb4"/>
+                            <constraint firstItem="LOx-p6-ZdA" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="2ug-BJ-CMx"/>
+                            <constraint firstItem="wW7-P7-lyf" firstAttribute="top" secondItem="LOx-p6-ZdA" secondAttribute="bottom" constant="10" id="4A3-wZ-ECW"/>
+                            <constraint firstItem="wW7-P7-lyf" firstAttribute="leading" secondItem="Ysd-sx-pNT" secondAttribute="leading" id="Cnf-uA-9fl"/>
+                            <constraint firstItem="LOx-p6-ZdA" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="Eff-OI-SB9"/>
+                            <constraint firstItem="wW7-P7-lyf" firstAttribute="trailing" secondItem="Ysd-sx-pNT" secondAttribute="trailing" id="aPe-Ch-Fae"/>
+                            <constraint firstItem="Wg1-6W-0Yx" firstAttribute="leading" secondItem="qtm-Mg-43U" secondAttribute="leading" id="hXm-q5-wu3"/>
+                            <constraint firstItem="LOx-p6-ZdA" firstAttribute="top" secondItem="Wg1-6W-0Yx" secondAttribute="bottom" constant="5" id="mtS-zs-IFX"/>
+                            <constraint firstItem="Ysd-sx-pNT" firstAttribute="bottom" secondItem="wW7-P7-lyf" secondAttribute="bottom" id="nVL-HT-jgO"/>
+                            <constraint firstAttribute="trailing" secondItem="Wg1-6W-0Yx" secondAttribute="trailing" id="qtr-18-kNf"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="attachmentsCountLabel" destination="uYB-Mf-POj" id="FYw-J0-zQt"/>
+                        <outlet property="progressView" destination="Wg1-6W-0Yx" id="K64-Ng-9AX"/>
+                        <outlet property="tableView" destination="wW7-P7-lyf" id="hIp-hy-jtY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ik3-R3-Uv9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2093" y="74"/>
         </scene>
     </scenes>
     <designables>

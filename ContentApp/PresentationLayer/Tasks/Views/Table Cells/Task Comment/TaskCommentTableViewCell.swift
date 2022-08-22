@@ -27,7 +27,6 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var commentLabel: ExpandableLabel!
-    @IBOutlet weak var didSelectButton: UIButton!
     var viewModel: TaskCommentTableCellViewModel?
     var currentTheme: PresentationTheme?
 
@@ -35,10 +34,6 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         super.awakeFromNib()
         userImageBaseView.layer.cornerRadius = userImageBaseView.frame.size.height/2.0
         self.addReadMore()
-    }
-    
-    @IBAction func didSelectCellAction(_ sender: Any) {
-        viewModel?.didSelectCommentAction?()
     }
     
     func setup(viewModel: RowViewModel) {
@@ -51,7 +46,20 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         commentLabel.text = viewModel.comment
         addAccessibility()
         commentLabel.numberOfLines = viewModel.isShowReadMore ? 4:0
-        didSelectButton.isUserInteractionEnabled = viewModel.isShowReadMore
+        addTapGesture()
+        addReadMore()
+    }
+    
+    private func addTapGesture() {
+        let isShowReadMore = viewModel?.isShowReadMore ?? false
+        if isShowReadMore {
+            let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleTap(_:)))
+            baseView.addGestureRecognizer(tap)
+        }
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer? = nil) {
+        viewModel?.didSelectCommentAction?()
     }
     
     private func updateUserImage() {
@@ -95,15 +103,14 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         dateLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
         commentLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         updateUserImage()
+        addReadMore()
     }
     
     private func addReadMore() {
-        DispatchQueue.main.async {
-            self.commentLabel.collapsed = true
-            let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14.0),
+        self.commentLabel.collapsed = true
+        let attributes = [NSAttributedString.Key.font: UIFont.inter(style: .medium, size: 14.0),
                           NSAttributedString.Key.foregroundColor: UIColor(hex: "#2A7DE1")]
-            self.commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
-            self.commentLabel.text = self.viewModel?.comment
-        }
+        self.commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
+        self.commentLabel.text = self.viewModel?.comment
     }
 }

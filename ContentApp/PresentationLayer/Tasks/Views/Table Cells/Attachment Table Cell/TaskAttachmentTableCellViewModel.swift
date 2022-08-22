@@ -19,45 +19,19 @@
 import UIKit
 
 class TaskAttachmentTableCellViewModel: RowViewModel {
-    var attachment: TaskAttachmentModel?
-    var isFirst = true
-    var isLast = false
-    var didSelectTaskAttachment: (() -> Void)?
-    var name: String? {
-        return attachment?.name
-    }
-    
-    var mimeType: String? {
-        return attachment?.mimeType
-    }
-    
+    var name: String?
+    var mimeType: String?
     var icon: UIImage? {
         return FileIcon.icon(for: mimeType)
     }
-    
-    var topConstraint: CGFloat {
-        if isFirst {
-            return 15.0
-        }
-        return 0.0
-    }
-    
-    var bottomConstraint: CGFloat {
-        if isLast {
-            return 15.0
-        }
-        return 0.0
-    }
-    
+    var didSelectTaskAttachment: (() -> Void)?
+
     func cellIdentifier() -> String {
         return "TaskAttachmentTableViewCell"
     }
     
-    init(attachment: TaskAttachmentModel?,
-         isFirst: Bool,
-         isLast: Bool) {
-        self.attachment = attachment
-        self.isFirst = isFirst
-        self.isLast = isLast
+    init(name: String?, mimeType: String?) {
+        self.name = name
+        self.mimeType = mimeType
     }
 }
