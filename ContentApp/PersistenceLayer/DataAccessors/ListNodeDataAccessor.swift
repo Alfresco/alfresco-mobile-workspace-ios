@@ -288,4 +288,14 @@ class ListNodeDataAccessor: DataAccessor {
         }
         return []
     }
+    
+    // MARK: - Download attachment
+    func localPath(for title: String, attachmentId: String, pathExtention: String) -> URL? {
+        guard let accountIdentifier = nodeOperations.accountService?.activeAccount?.identifier else { return nil }
+        let localPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var localURL = URL(fileURLWithPath: localPath)
+        localURL.appendPathComponent(attachmentId)
+        localURL.appendPathComponent(String(format: "%@", title))
+        return localURL
+    }
 }

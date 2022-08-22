@@ -196,4 +196,22 @@ class DiskService {
         }
         return nil
     }
+    
+    static func saveAttachment(data: Data?, path: String) {
+        let fileManager = FileManager.default
+        if fileManager.createFile(atPath: path, contents: data, attributes: nil) {
+            AlfrescoLog.debug("File created successfully.")
+        } else {
+            AlfrescoLog.error("File not created.")
+        }
+    }
+    
+    static func isFileExists(at path: String) -> Bool {
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: path) {
+            return true
+        } else {
+            return false
+        }
+    }
 }
