@@ -132,7 +132,7 @@ extension TaskPropertiesViewModel {
         } else {
             services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
-
+                
                 TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
                     if data != nil {
                         DiskService.saveAttachment(data: data, path: downloadURL.path)
