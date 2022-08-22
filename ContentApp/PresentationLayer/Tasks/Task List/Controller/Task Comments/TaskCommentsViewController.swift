@@ -54,12 +54,13 @@ class TaskCommentsViewController: SystemSearchViewController {
         textView.delegate = self
         setDefaultStateForSendButton()
         tableView.contentInset.bottom = 30
+        tableView.keyboardDismissMode = .onDrag
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(_:)), name: UIWindow.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(_:)), name: UIWindow.keyboardWillHideNotification, object: nil)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
@@ -89,7 +90,9 @@ class TaskCommentsViewController: SystemSearchViewController {
             self.viewModel.isAddComment = false
             self.scrollToBottom(animated: true)
         } else {
-            self.scrollToBottom(animated: false)
+            if !viewModel.keyboardShown {
+                self.scrollToBottom(animated: false)
+            }
         }
     }
     
@@ -146,8 +149,7 @@ class TaskCommentsViewController: SystemSearchViewController {
 
     override func applyComponentsThemes() {
         super.applyComponentsThemes()
-        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
-        let bigButtonScheme = coordinatorServices?.themingService?.containerScheming(for: .loginBigButton) else { return }
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme else { return }
         
         commentsCountLabel.applyStyleBody2OnSurface60(theme: currentTheme)
         bottomView.backgroundColor = currentTheme.surfaceColor
@@ -215,7 +217,7 @@ class TaskCommentsViewController: SystemSearchViewController {
             if error == nil {
                 sSelf.viewModel.comments.value = comments
                 sSelf.controller.buildViewModel()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                     sSelf.scrollToBottom(animated: true)
                 })
             }
@@ -311,7 +313,6 @@ extension TaskCommentsViewController {
                 self.bottomViewBottomConstraint.constant = 0
                 self.view.layoutIfNeeded()
             }, completion: nil)
-            self.scrollToBottom(animated: false)
         }
     }
 }

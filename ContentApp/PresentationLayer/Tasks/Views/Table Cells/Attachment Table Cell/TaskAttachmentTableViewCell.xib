@@ -22,10 +22,10 @@
                         <rect key="frame" x="15" y="0.0" width="412" height="76"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RDg-WX-Agz" userLabel="attachmentView">
-                                <rect key="frame" x="15" y="0.0" width="382" height="76"/>
+                                <rect key="frame" x="15" y="5" width="382" height="66"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Aqw-1Y-4Nj">
-                                        <rect key="frame" x="15" y="26" width="24" height="24"/>
+                                        <rect key="frame" x="15" y="21" width="24" height="24"/>
                                         <accessibility key="accessibilityConfiguration" identifier="nodeIconImageView">
                                             <bool key="isElement" value="NO"/>
                                         </accessibility>
@@ -35,7 +35,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nnW-be-8n6" userLabel="titleHeader">
-                                        <rect key="frame" x="49" y="25" width="303" height="26"/>
+                                        <rect key="frame" x="49" y="25" width="303" height="16"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="title-header">
                                             <accessibilityTraits key="traits" notEnabled="YES"/>
@@ -80,8 +80,8 @@
                             <constraint firstItem="fZG-w5-CwC" firstAttribute="top" secondItem="t8q-JM-V2H" secondAttribute="top" id="FN7-dE-PkJ"/>
                             <constraint firstAttribute="trailing" secondItem="fZG-w5-CwC" secondAttribute="trailing" id="GxP-DP-Iln"/>
                             <constraint firstItem="RDg-WX-Agz" firstAttribute="leading" secondItem="t8q-JM-V2H" secondAttribute="leading" constant="15" id="Xj1-tS-rOI"/>
-                            <constraint firstItem="RDg-WX-Agz" firstAttribute="top" secondItem="t8q-JM-V2H" secondAttribute="top" id="YcI-ig-rsf"/>
-                            <constraint firstAttribute="bottom" secondItem="RDg-WX-Agz" secondAttribute="bottom" id="Zlb-sC-1Tk"/>
+                            <constraint firstItem="RDg-WX-Agz" firstAttribute="top" secondItem="t8q-JM-V2H" secondAttribute="top" constant="5" id="YcI-ig-rsf"/>
+                            <constraint firstAttribute="bottom" secondItem="RDg-WX-Agz" secondAttribute="bottom" constant="5" id="Zlb-sC-1Tk"/>
                             <constraint firstItem="fZG-w5-CwC" firstAttribute="leading" secondItem="t8q-JM-V2H" secondAttribute="leading" id="vjQ-TG-sYI"/>
                         </constraints>
                     </view>
@@ -98,10 +98,8 @@
             <connections>
                 <outlet property="attachmentView" destination="RDg-WX-Agz" id="o5m-y5-459"/>
                 <outlet property="baseView" destination="t8q-JM-V2H" id="3L6-0m-gkc"/>
-                <outlet property="bottomAttachmentView" destination="Zlb-sC-1Tk" id="hVs-07-sr7"/>
                 <outlet property="iconImageView" destination="Aqw-1Y-4Nj" id="T7x-G9-5Zo"/>
                 <outlet property="title" destination="nnW-be-8n6" id="c1K-fr-B7h"/>
-                <outlet property="topAttachmentView" destination="YcI-ig-rsf" id="QfM-LA-hnV"/>
             </connections>
             <point key="canvasLocation" x="273.91304347826087" y="47.544642857142854"/>
         </tableViewCell>

@@ -217,20 +217,10 @@ class TaskDetailController: NSObject {
         let arraySlice = attachments.prefix(4)
         attachments = Array(arraySlice)
         
-        var isFirst = false
-        var isLast = false
         if !attachments.isEmpty {
-            for index in 0 ..< attachments.count {
-                if index == 0 {
-                    isFirst = true
-                } else if index == attachments.count - 1 {
-                    isLast = true
-                }
-            
-                let attachment = attachments[index]
-                let rowVM = TaskAttachmentTableCellViewModel(attachment: attachment,
-                                                             isFirst: isFirst,
-                                                             isLast: isLast)
+            for attachment in attachments {
+                let rowVM = TaskAttachmentTableCellViewModel(name: attachment.name,
+                                                             mimeType: attachment.mimeType)
                 rowVM.didSelectTaskAttachment = { [weak self] in
                     guard let sSelf = self else { return }
                     sSelf.viewModel.didSelectTaskAttachment?(attachment)

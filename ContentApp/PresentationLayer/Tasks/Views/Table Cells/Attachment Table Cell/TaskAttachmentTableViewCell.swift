@@ -23,8 +23,6 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var attachmentView: UIView!
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var topAttachmentView: NSLayoutConstraint!
-    @IBOutlet weak var bottomAttachmentView: NSLayoutConstraint!
     var viewModel: TaskAttachmentTableCellViewModel?
 
     override func awakeFromNib() {
@@ -37,8 +35,6 @@ class TaskAttachmentTableViewCell: UITableViewCell, CellConfigurable {
         self.viewModel = viewModel
         title.text = viewModel.name
         iconImageView.image = viewModel.icon
-        topAttachmentView.constant = viewModel.topConstraint
-        bottomAttachmentView.constant = viewModel.bottomConstraint
         addAccessibility()
     }
     
