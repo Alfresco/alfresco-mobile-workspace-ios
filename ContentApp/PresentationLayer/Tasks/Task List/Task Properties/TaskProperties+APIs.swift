@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoContent
+import MaterialComponents.MaterialDialogs
 
 // MARK: - Task APIs
 extension TaskPropertiesViewModel {
@@ -115,5 +116,32 @@ extension TaskPropertiesViewModel {
                 }
             }
         })
+    }
+    
+    func downloadContent(for title: String,
+                         contentId: String,
+                         completionHandler: @escaping (_ downloadedPath: String?, _ error: Error?) -> Void) {
+        guard let accountIdentifier = self.services?.accountService?.activeAccount?.identifier else { return }
+        let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
+        var downloadURL = URL(fileURLWithPath: downloadPath)
+        downloadURL.appendPathComponent(contentId)
+        downloadURL.appendPathComponent(title)
+        
+        if DiskService.isFileExists(at: downloadURL.path) {
+            completionHandler(downloadURL.path, nil)
+        } else {
+            services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+                AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+                
+                TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
+                    if data != nil {
+                        DiskService.saveAttachment(data: data, path: downloadURL.path)
+                        completionHandler(downloadURL.path, nil)
+                    } else {
+                        completionHandler(nil, error)
+                    }
+                }
+            })
+        }
     }
 }

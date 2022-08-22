@@ -212,11 +212,22 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     private func viewAllAttachments() {
-        AlfrescoLog.debug("******* view all attachments ********")
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskAttachments) as? TaskAttachmentsViewController {
+            viewController.coordinatorServices = coordinatorServices
+            viewController.viewModel.attachments = viewModel.attachments
+            viewController.viewModel.task = viewModel.task
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     private func didSelectAttachment(attachment: TaskAttachmentModel) {
         AlfrescoLog.debug("******* did select attachments ********")
+        let title = attachment.name ?? ""
+        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
+        viewModel.downloadContent(for: title, contentId: attachmentId) { path, error in
+            AlfrescoLog.debug("******* attachment data \(path) ********")
+        }
     }
 }
 
