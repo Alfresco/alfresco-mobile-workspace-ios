@@ -223,6 +223,11 @@ class TaskDetailViewController: SystemSearchViewController {
     
     private func didSelectAttachment(attachment: TaskAttachmentModel) {
         AlfrescoLog.debug("******* did select attachments ********")
+        let title = attachment.name ?? ""
+        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
+        viewModel.downloadContent(for: title, contentId: attachmentId) { path, error in
+            AlfrescoLog.debug("******* attachment data \(path) ********")
+        }
     }
 }
 
