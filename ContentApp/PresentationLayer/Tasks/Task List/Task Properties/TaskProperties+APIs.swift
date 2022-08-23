@@ -122,26 +122,58 @@ extension TaskPropertiesViewModel {
                          contentId: String,
                          completionHandler: @escaping (_ downloadedPath: String?, _ error: Error?) -> Void) {
         guard let accountIdentifier = self.services?.accountService?.activeAccount?.identifier else { return }
-        let downloadPath = DiskService.documentsDirectoryPath(for: accountIdentifier)
-        var downloadURL = URL(fileURLWithPath: downloadPath)
-        downloadURL.appendPathComponent(contentId)
-        downloadURL.appendPathComponent(title)
-        
-        if DiskService.isFileExists(at: downloadURL.path) {
-            completionHandler(downloadURL.path, nil)
+       
+        if let path = DiskService.isFileExists(accountIdentifier: accountIdentifier, attachmentId: contentId, name: title) {
+            completionHandler(path, nil)
         } else {
+            var downloadDialog: MDCAlertController?
+            downloadDialog = self.showDownloadDialog(title: title, actionHandler: { _ in
+                downloadDialog?.dismiss(animated: true, completion: nil)
+            })
+            
             services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
                 TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
                     if data != nil {
-                        DiskService.saveAttachment(data: data, path: downloadURL.path)
-                        completionHandler(downloadURL.path, nil)
+                        if let path = DiskService.saveAttachment(accountIdentifier: accountIdentifier, attachmentId: contentId, data: data, name: title) {
+                            completionHandler(path, nil)
+                        }
                     } else {
                         completionHandler(nil, error)
                     }
+                    downloadDialog?.dismiss(animated: true, completion: nil)
                 }
             })
         }
+    }
+    
+    private func showDownloadDialog(title: String, actionHandler: @escaping (MDCAlertAction) -> Void) -> MDCAlertController? {
+        if let downloadDialogView: DownloadDialog = .fromNib() {
+            let themingService = services?.themingService
+            downloadDialogView.messageLabel.text =
+                String(format: LocalizationConstants.Dialog.downloadMessage,
+                       title)
+            downloadDialogView.activityIndicator.startAnimating()
+            downloadDialogView.applyTheme(themingService?.activeTheme)
+
+            let cancelAction =
+                MDCAlertAction(title: LocalizationConstants.General.cancel) { action in
+                    actionHandler(action)
+            }
+            cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+            if let presentationContext = UIViewController.applicationTopMostPresented {
+                let downloadDialog = presentationContext.showDialog(title: nil,
+                                                                    message: nil,
+                                                                    actions: [cancelAction],
+                                                                    accesoryView: downloadDialogView,
+                                                                    completionHandler: {})
+
+                return downloadDialog
+            }
+        }
+
+        return nil
     }
 }
