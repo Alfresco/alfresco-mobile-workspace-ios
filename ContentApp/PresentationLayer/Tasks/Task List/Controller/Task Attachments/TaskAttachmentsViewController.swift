@@ -175,7 +175,12 @@ class TaskAttachmentsViewController: SystemSearchViewController {
     }
     
     private func didSelectAttachment(attachment: TaskAttachmentModel) {
-        AlfrescoLog.debug("******* did select attachments ********")
+        let title = attachment.name ?? ""
+        let attachmentId = String(format: "%d", attachment.attachmentID ?? -1)
+        viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
+            guard let sSelf = self, let path = path else { return }
+            sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+        }
     }
 }
 
