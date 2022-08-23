@@ -62,6 +62,7 @@ class FilePreviewViewModel {
     var pdfRenderer: PDFRenderer?
     var filePreview: FilePreviewProtocol?
     var isLocalFilePreview = false
+    var isContentAlreadyDownloaded = false
 
     // MARK: - Public interface
 
@@ -70,7 +71,8 @@ class FilePreviewViewModel {
          coordinatorServices: CoordinatorServices,
          excludedActions: [ActionMenuType] = [],
          shouldPreviewLatestContent: Bool,
-         isLocalFilePreview: Bool) {
+         isLocalFilePreview: Bool,
+         isContentAlreadyDownloaded: Bool) {
 
         self.listNode = listNode
         self.viewModelDelegate = delegate
@@ -79,6 +81,7 @@ class FilePreviewViewModel {
         self.excludedActionsTypes = excludedActions
         self.shouldPreviewLatestContent = shouldPreviewLatestContent
         self.isLocalFilePreview = isLocalFilePreview
+        self.isContentAlreadyDownloaded = isContentAlreadyDownloaded
     }
 
     func requestUpdateNodeDetails() {
@@ -125,6 +128,11 @@ class FilePreviewViewModel {
 
     func requestFilePreview(with size: CGSize?) {
         guard var size = size, let listNode = listNode else { return }
+        
+        if isContentAlreadyDownloaded {
+            previewOffline(with: size)
+            return
+        }
 
         if listNodeDataAccessor.isContentDownloaded(for: listNode) &&
             shouldPreviewLatestContent == false {
@@ -235,7 +243,9 @@ class FilePreviewViewModel {
         let filePreviewType = FilePreview.preview(mimetype: listNode.mimeType)
         var previewURL = listNodeDataAccessor.fileLocalPath(for: listNode)        
         
-        if isLocalFilePreview {
+        if isContentAlreadyDownloaded {
+            previewURL = URL(fileURLWithPath: listNode.path)
+        } else if isLocalFilePreview {
             if listNodeDataAccessor.isMediaContentLocal(for: listNode) {
                 previewURL = listNodeDataAccessor.mediaLocalPath(for: listNode)
             }
