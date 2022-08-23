@@ -100,3 +100,35 @@ class TaskPropertiesViewModel: NSObject {
         return nil
     }
 }
+
+// MARK: - Show Preview
+extension TaskPropertiesViewModel {
+   
+    func showPreviewController(with path: String, attachment: TaskAttachmentModel, navigationController: UINavigationController?) {
+        if let navigationViewController = navigationController, let node = listNodeForPreview(with: path, attachment: attachment) {
+            
+            let coordinator = FilePreviewScreenCoordinator(with: navigationViewController,
+                                                           listNode: node,
+                                                           excludedActions: [.moveTrash,
+                                                                             .addFavorite,
+                                                                             .removeFavorite],
+                                                           shouldPreviewLatestContent: false,
+                                                           isLocalFilePreview: true,
+                                                           isContentAlreadyDownloaded: true)
+            coordinator.start()
+        }
+    }
+    
+    private func listNodeForPreview(with path: String, attachment: TaskAttachmentModel) -> ListNode? {
+        return ListNode(guid: "0",
+                        mimeType: attachment.mimeType,
+                        title: attachment.name ?? "",
+                        path: path,
+                        nodeType: .file,
+                        favorite: false,
+                        syncStatus: .error,
+                        markedOfflineStatus: .upload,
+                        allowableOperations: [AllowableOperationsType.delete.rawValue],
+                        uploadLocalPath: path)
+    }
+}

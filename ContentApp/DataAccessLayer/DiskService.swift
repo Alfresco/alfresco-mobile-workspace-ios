@@ -210,21 +210,30 @@ class DiskService {
         return nil
     }
     
-    static func saveAttachment(data: Data?, path: String) {
+    static func saveAttachment(accountIdentifier: String, attachmentId: String, data: Data?, name: String) -> String? {
         let fileManager = FileManager.default
-        if fileManager.createFile(atPath: path, contents: data, attributes: nil) {
-            AlfrescoLog.debug("File created successfully.")
-        } else {
-            AlfrescoLog.error("File not created.")
+        let path = documentsDirectoryPath(for: accountIdentifier)
+        if create(directoryPath: path) {
+            let attachmentName = "\(attachmentId)-\(name)"
+            let attachmentPath = "\(path)/\(attachmentName)"
+            fileManager.createFile(atPath: attachmentPath,
+                                   contents: data, attributes: nil)
+            return attachmentPath
         }
+        return nil
     }
     
-    static func isFileExists(at path: String) -> Bool {
+    static func isFileExists(accountIdentifier: String, attachmentId: String, name: String) -> String? {
         let fileManager = FileManager.default
-        if fileManager.fileExists(atPath: path) {
-            return true
+        let path = documentsDirectoryPath(for: accountIdentifier)
+        var downloadURL = URL(fileURLWithPath: path)
+        let attachmentName = "\(attachmentId)-\(name)"
+        downloadURL.appendPathComponent(attachmentName)
+
+        if fileManager.fileExists(atPath: downloadURL.path) {
+            return downloadURL.path
         } else {
-            return false
+            return nil
         }
     }
 }
