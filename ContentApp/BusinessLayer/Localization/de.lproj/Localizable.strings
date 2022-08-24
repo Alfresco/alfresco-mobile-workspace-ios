@@ -80,6 +80,7 @@
 "preview-capture-asset" = "Vorschau";
 "gallery-upload" = "Fotos";
 
+
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services-URL";
 "help-connect-section1-paragraph" = "Sie können die URL Ihrer Alfresco Content Services-Instanz eingeben. Dafür müssen Sie Ihren Benutzernamen und das Passwort eingeben.";
@@ -117,9 +118,8 @@
 "approved-mark-offline" = "%@ wird offline zur Verfügung gestellt.";
 "approved-remove-offline" = "%@ ist offline nicht mehr verfügbar.";
 "approved-upload-media" = "Zum Hochladen vorgesehene Medien.";
-"approved-moved-folder" = "%@ wurde erfolgreich verschoben";
+"approved-moved-folder" = "%@ erforlgreich verschoben.";
 "approved-update" = "%@ wurde aktualisiert";
-"approved-upload-scanned-document" = "Zum Hochladen vorgesehenes Dokument.";
 
 // MARK: - Settings Screen
 "theme" = "Aussehen";
@@ -191,7 +191,7 @@
 "APP.SEARCH.TEXT.FOLDER" = "Ordner";
 "SEARCH.FACET_QUERIES.TYPE_FACET_QUERIES" = "Facet-Abfragen nach Typ";
 "SEARCH.FACET_QUERIES.SIZE_FACET_QUERIES" = "Facet-Abfragen nach Größe";
-"APP.SEARCH.FIELD.PLACEHOLDER" = "Suche";
+"APP.SEARCH.FIELD.PLACEHOLDER" = "Suchen";
 "file-size-unit" = "KB";
 
 // MARK: - Group List Section
@@ -199,7 +199,7 @@
 "yesterday" = "Gestern";
 "this-week" = "Diese Woche";
 "last-week" = "Letzte Woche";
-"this-month" = "This month";
+"this-month" = "Diesen Monat";
 "older" = "Älter";
 
 // MARK: - Browse Static List
@@ -236,7 +236,6 @@
 "action-menu-upload-files" = "Dateien hochladen";
 "action-menu-move-folder" = "Verschieben";
 "action-menu-rename-node" = "Umbenennen";
-"action-menu-scan-documents" = "Dokumente scannen";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Löschen";
@@ -254,7 +253,7 @@
 
 
 // MARK: - Empty List
-"empty-recent-title" = "Keine benutzten Dateien";
+"empty-recent-title" = "Keine aktuellen Dateien";
 "empty-recent-description" = "Hier werden Dateien aufgeführt, die Sie anzeigen und bearbeiten.";
 "empty-favorites-files-folders-title" = "Keine Dateien oder Ordner als Favoriten";
 "empty-favorites-libraries-title" = "Keine Bibliotheken als Favoriten";
@@ -272,7 +271,7 @@
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace benötigt Fotozugriff";
-"privacy-photos-description" = "Um Bilder oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
+"privacy-photos-description" = "Um Fotos oder Videos auf Ihrem Gerät zu speichern, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
 "privacy-camera-title" = "Mobile Workspace benötigt Kamerazugriff";
 "privacy-camera-description" = "Um Fotos und Videos aufzunehmen und hochzuladen, benötigt Mobile Workspace Zugriff auf Ihre Fotos.";
 "privacy-button" = "Datenschutzeinstellungen prüfen";
@@ -284,10 +283,6 @@
 "on-flash" = "An";
 "off-flash" = "Aus";
 
-// MARK: - Alert
-"alert-title" = "Warnung";
-"camera-unavailable" = "Gerät unterstützt keine Kamera";
-
 // MARK: - Extension
 "save-to-alfresco" = "Speichern für Alfresco";
 "upload" = "Hochladen";
@@ -298,16 +293,44 @@
 "dialog-finished-uploading-message" = "Hochladen von %d Dateien abgeschlossen";
 "transfer-files" = "Übertragungen";
 "unsupported-file-format" = "Nicht unterstütztes Dateiformat";
-
-// MARK: - Scanner
-"dialog-discard-scanner-title" = "Gescannte Dateien verwerfen?";
-"dialog-discard-scanner-message" = "Gescannte Dateien werden verworfen, wenn Sie beenden.";
+"search_move_warning" = "Sie können nicht in Ihren eigenen Ordner und Unterordner wechseln.";
 
 // MARK: - Tasks
 "tasks-title" = "Aufgaben";
 "no-tasks-found" = "Keine Aufgaben gefunden";
-"create-task-message" = "Erstellen Sie eine neue Aufgabe, die Sie später einfach wiederfinden können.";
+"create-task-message" = "Erstellen Sie eine neue Aufgabe, die Sie später leicht wiederfinden möchten.";
 "low" = "Niedrig";
 "medium" = "Mittel";
 "high" = "Hoch";
-"task-service-not-configured-message" = "Dieses Konto ist nicht für 'Process Services' konfiguriert. Bitte wenden Sie sich an den Administrator.";
+"task-service-not-configured-message" = "Dieses Konto ist nicht in  „Process Services“ konfiguriert.";
+"task-detail-title" = "Aufgabenansicht";
+"active-title" = "Aktiv";
+"completed-title" = "Abgeschlossen";
+"status-title" = "Status";
+"identifier-title" = "Identifikator";
+"add-comment-placeholder" = "Kommentar hinzufügen";
+"comments-title" = "Kommentare";
+"title-multiple-comment" = "%d Kommentare";
+"attached-files-title" = "Angehängte Dateien";
+"title-multiple-attachments" = "%d Anhänge";
+"view-all-title" = "Alle anzeigen";
+"read-more" = "Mehr lesen";
+"no-attached-files-placeholder" = "Keine angehängten Dateien";
+"send-title" = "Senden";
+"no-due-date" = "Kein Fälligkeitsdatum";
+
+// MARK: - Accessbility
+"user-profile" = "Benutzerprofil";
+"reset-filters" = "Filter zurücksetzen";
+"tasks-filter-collection" = "Filtersammlung für Aufgaben";
+"tasks-filter-collection-hint" = "Zum Filtern und Zurücksetzen von Aufgaben";
+"priority" = "Priorität";
+"title" = "Titel";
+"assignee" = "Zugewiesener Benutzer";
+"close-button" = "Schaltfläche „Schließen“";
+"list-option" = "Listenoption";
+"due-date" = "Fälligkeitsdatum";
+"back-title" = "Zurück";
+"date-title" = "Datum";
+"user-name" = "Benutzername";
+"comment-title" = "Kommentar";
