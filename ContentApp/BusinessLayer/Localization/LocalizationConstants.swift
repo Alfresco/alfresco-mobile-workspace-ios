@@ -237,6 +237,9 @@ struct LocalizationConstants {
         static let sessionUnavailableMessage =  NSLocalizedString("dialog-session-unavailable-message", comment: "")
         static let internetUnavailableTitle =  NSLocalizedString("dialog-internet-unavailable-title", comment: "")
         static let internetUnavailableMessage =  NSLocalizedString("dialog-internet-unavailable-message", comment: "")
+        static let completeTaskTitle =  NSLocalizedString("complete-task-dialog-title", comment: "")
+        static let completeTaskMessage =  NSLocalizedString("complete-task-dialog-message", comment: "")
+        static let confirmTitle =  NSLocalizedString("confirm-title", comment: "")
     }
 
     struct EmptyLists {
@@ -330,5 +333,6 @@ struct LocalizationConstants {
         static let date = NSLocalizedString("date-title", comment: "")
         static let userName = NSLocalizedString("user-name", comment: "")
         static let commentTitle = NSLocalizedString("comment-title", comment: "")
+        static let sendButton = NSLocalizedString("send-button", comment: "")
     }
 }

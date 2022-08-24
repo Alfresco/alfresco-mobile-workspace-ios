@@ -319,6 +319,9 @@
 "send-title" = "Send";
 "no-due-date" = "No due date";
 "complete-title" = "Complete";
+"complete-task-dialog-title" = "Complete Task";
+"complete-task-dialog-message" = "Are you sure you want to complete the task?";
+"confirm-title" = "Confirm";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";
@@ -335,3 +338,4 @@
 "date-title" = "Date";
 "user-name" = "User name";
 "comment-title" = "Comment";
+"send-button" = "Send button";

@@ -259,6 +259,25 @@ class TaskDetailViewController: SystemSearchViewController {
     }
     
     @IBAction func completeTaskButtonAction(_ sender: Any) {
+        let title = LocalizationConstants.Dialog.completeTaskTitle
+        let message = LocalizationConstants.Dialog.completeTaskMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.completeTask()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    @objc private func completeTask() {
         let taskID = viewModel.taskID
         viewModel.completeTask(with: taskID) {[weak self] isSuccess in
             guard let sSelf = self else { return }

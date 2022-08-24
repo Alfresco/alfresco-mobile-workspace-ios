@@ -134,8 +134,9 @@ class TaskCommentsViewController: SystemSearchViewController {
         commentsCountLabel.accessibilityTraits = .updatesFrequently
         commentsCountLabel.accessibilityLabel = commentsCountLabel.text
         
+        sendButton.accessibilityLabel = LocalizationConstants.Accessibility.sendButton
         sendButton.accessibilityIdentifier = "send-button"
-        textView.accessibilityTraits = .searchField
+        textView.accessibilityTraits = .staticText
         textView.accessibilityIdentifier = "text-view"
         textView.accessibilityLabel = textView.placeholder
     }
