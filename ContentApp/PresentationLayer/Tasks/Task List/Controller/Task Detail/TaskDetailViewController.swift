@@ -24,6 +24,8 @@ class TaskDetailViewController: SystemSearchViewController {
 
     @IBOutlet weak var progressView: MDCProgressView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var completeTaskView: UIView!
+    @IBOutlet weak var completeTaskButton: MDCButton!
     var viewModel: TaskDetailViewModel { return controller.viewModel }
     lazy var controller: TaskDetailController = { return TaskDetailController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -43,8 +45,8 @@ class TaskDetailViewController: SystemSearchViewController {
         getTaskComments()
         getTaskAttachments()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskDetailScreen)
-        tableView.contentInset.bottom = 50
-
+        checkForCompleteTaskButton()
+        
         // ReSignIn Notification
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.handleReSignIn(notification:)),
@@ -97,6 +99,21 @@ class TaskDetailViewController: SystemSearchViewController {
     
     // MARK: - Public Helpers
 
+    override func applyComponentsThemes() {
+        super.applyComponentsThemes()
+        
+        guard let currentTheme = coordinatorServices?.themingService?.activeTheme,
+              let buttonScheme = coordinatorServices?.themingService?.containerScheming(for: .dialogButton)
+        else { return }
+        
+        completeTaskView.backgroundColor = currentTheme.surfaceColor
+        completeTaskButton.applyContainedTheme(withScheme: buttonScheme)
+        completeTaskButton.isUppercaseTitle = false
+        completeTaskButton.setTitle(LocalizationConstants.Tasks.completeTitle, for: .normal)
+        completeTaskButton.layer.cornerRadius = UIConstants.cornerRadiusDialog
+        completeTaskButton.setShadowColor(.clear, for: .normal)
+    }
+    
     func startLoading() {
         progressView?.startAnimating()
         progressView?.setHidden(false, animated: true)
@@ -109,6 +126,16 @@ class TaskDetailViewController: SystemSearchViewController {
 
     @objc private func handleReSignIn(notification: Notification) {
         getTaskDetails()
+    }
+    
+    private func checkForCompleteTaskButton() {
+        if viewModel.isAllowedToCompleteTask() {
+            completeTaskView.isHidden = false
+            tableView.contentInset.bottom = 90
+        } else {
+            completeTaskView.isHidden = true
+            tableView.contentInset.bottom = 50
+        }
     }
     
     // MARK: - Set up Bindings
@@ -173,6 +200,7 @@ class TaskDetailViewController: SystemSearchViewController {
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.controller.buildViewModel()
+                sSelf.checkForCompleteTaskButton()
             }
         }
     }
@@ -227,6 +255,36 @@ class TaskDetailViewController: SystemSearchViewController {
         viewModel.downloadContent(for: title, contentId: attachmentId) {[weak self] path, error in
             guard let sSelf = self, let path = path else { return }
             sSelf.viewModel.showPreviewController(with: path, attachment: attachment, navigationController: sSelf.navigationController)
+        }
+    }
+    
+    @IBAction func completeTaskButtonAction(_ sender: Any) {
+        let title = LocalizationConstants.Dialog.completeTaskTitle
+        let message = LocalizationConstants.Dialog.completeTaskMessage
+
+        let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
+            guard let sSelf = self else { return }
+            sSelf.completeTask()
+        }
+        confirmAction.accessibilityIdentifier = "confirmActionButton"
+        
+        let cancelAction = MDCAlertAction(title: LocalizationConstants.General.cancel) { _ in }
+        cancelAction.accessibilityIdentifier = "cancelActionButton"
+
+        _ = self.showDialog(title: title,
+                                       message: message,
+                                       actions: [confirmAction, cancelAction],
+                                       completionHandler: {})
+    }
+    
+    @objc private func completeTask() {
+        let taskID = viewModel.taskID
+        viewModel.completeTask(with: taskID) {[weak self] isSuccess in
+            guard let sSelf = self else { return }
+            if isSuccess {
+                sSelf.viewModel.didRefreshTaskList?()
+                sSelf.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }

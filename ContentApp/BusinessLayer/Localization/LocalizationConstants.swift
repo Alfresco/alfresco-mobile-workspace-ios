@@ -245,6 +245,9 @@ struct LocalizationConstants {
         static let internetUnavailableMessage =  NSLocalizedString("dialog-internet-unavailable-message", comment: "")
         static let discardScanFilesTitle = NSLocalizedString("dialog-discard-scanner-title", comment: "")
         static let discardScanFilesMessage = NSLocalizedString("dialog-discard-scanner-message", comment: "")
+        static let completeTaskTitle =  NSLocalizedString("complete-task-dialog-title", comment: "")
+        static let completeTaskMessage =  NSLocalizedString("complete-task-dialog-message", comment: "")
+        static let confirmTitle =  NSLocalizedString("confirm-title", comment: "")
     }
 
     struct EmptyLists {
@@ -320,6 +323,7 @@ struct LocalizationConstants {
         static let noAttachedFilesPlaceholder = NSLocalizedString("no-attached-files-placeholder", comment: "")
         static let send = NSLocalizedString("send-title", comment: "")
         static let noDueDate = NSLocalizedString("no-due-date", comment: "")
+        static let completeTitle = NSLocalizedString("complete-title", comment: "")
     }
     
     struct Accessibility {
@@ -337,5 +341,6 @@ struct LocalizationConstants {
         static let date = NSLocalizedString("date-title", comment: "")
         static let userName = NSLocalizedString("user-name", comment: "")
         static let commentTitle = NSLocalizedString("comment-title", comment: "")
+        static let sendButton = NSLocalizedString("send-button", comment: "")
     }
 }

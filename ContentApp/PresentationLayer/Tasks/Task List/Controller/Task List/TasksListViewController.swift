@@ -294,6 +294,9 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
             viewController.coordinatorServices = coordinatorServices
             viewController.viewModel.task = taskNode
             self.navigationController?.pushViewController(viewController, animated: true)
+            viewController.viewModel.didRefreshTaskList = {
+                self.handlePullToRefresh()
+            }
         }
     }
 }
