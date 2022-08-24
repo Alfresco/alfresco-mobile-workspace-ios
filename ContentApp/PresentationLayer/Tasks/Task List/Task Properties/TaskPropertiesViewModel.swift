@@ -82,11 +82,18 @@ class TaskPropertiesViewModel: NSObject {
         }
     }
     
-    var status: String {
+    var isTaskCompleted: Bool {
         if task?.endDate == nil {
-            return LocalizationConstants.Tasks.active
+            return false
         }
-        return LocalizationConstants.Tasks.completed
+        return true
+    }
+    
+    var status: String {
+        if isTaskCompleted {
+            return LocalizationConstants.Tasks.completed
+        }
+        return LocalizationConstants.Tasks.active
     }
     
     var taskID: String {
@@ -98,6 +105,17 @@ class TaskPropertiesViewModel: NSObject {
             return comment
         }
         return nil
+    }
+    
+    func isAllowedToCompleteTask() -> Bool {
+        let userEmail = UserProfile.email
+        let assigneeEmail = task?.assignee?.email ?? ""
+        if !userEmail.isEmpty {
+            if userEmail == assigneeEmail && isTaskCompleted == false {
+                return true
+            }
+        }
+        return false
     }
 }
 

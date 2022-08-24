@@ -23,4 +23,5 @@ class TaskDetailViewModel: TaskPropertiesViewModel {
     var viewAllCommentsAction: ((_ isAddComment: Bool) -> Void)?
     var viewAllAttachmentsAction: (() -> Void)?
     var isAttachmentsLoaded = false
+    var didRefreshTaskList: (() -> Void)?
 }
