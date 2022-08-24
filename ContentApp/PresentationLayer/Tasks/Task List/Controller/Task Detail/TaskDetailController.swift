@@ -73,7 +73,9 @@ class TaskDetailController: NSObject {
             rowViewModels.append(latestCommentCellVM()!)
         }
         
-        rowViewModels.append(addCommentCellVM())
+        if !viewModel.isTaskCompleted {
+            rowViewModels.append(addCommentCellVM())
+        }
         
         /* attachments */
         if viewModel.isAttachmentsLoaded {
