@@ -119,6 +119,8 @@ class TaskCommentsViewController: SystemSearchViewController {
         self.title = LocalizationConstants.Tasks.commentsTitle
         commentsCountLabel.text = viewModel.commentsCount
         textView.placeholder = LocalizationConstants.Tasks.addCommentPlaceholder
+        bottomView.isHidden = viewModel.isTaskCompleted
+        divider.isHidden = bottomView.isHidden
     }
     
     func registerCells() {

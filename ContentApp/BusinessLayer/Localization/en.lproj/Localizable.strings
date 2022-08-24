@@ -318,6 +318,7 @@
 "no-attached-files-placeholder" = "No Attached Files";
 "send-title" = "Send";
 "no-due-date" = "No due date";
+"complete-title" = "Complete";
 
 // MARK: - Accessbility
 "user-profile" = "User Profile";

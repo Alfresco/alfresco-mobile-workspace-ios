@@ -176,4 +176,23 @@ extension TaskPropertiesViewModel {
 
         return nil
     }
+    
+    // MARK: - Task attachments
+
+    func completeTask(with taskId: String, completionHandler: @escaping (_ isSuccess: Bool) -> Void) {
+        self.isLoading.value = true
+        services?.accountService?.getSessionForCurrentAccount(completionHandler: { authenticationProvider in
+            AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
+
+            TasksAPI.completeTask(with: taskId) {[weak self] data, error in
+                guard let sSelf = self else { return }
+                sSelf.isLoading.value = false
+                if error == nil {
+                    completionHandler(true)
+                } else {
+                    completionHandler(false)
+                }
+            }
+        })
+    }
 }
