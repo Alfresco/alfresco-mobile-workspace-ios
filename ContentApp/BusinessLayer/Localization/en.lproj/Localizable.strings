@@ -339,3 +339,10 @@
 "user-name" = "User name";
 "comment-title" = "Comment";
 "send-button" = "Send button";
+
+// MARK: - Task filters
+"Due date" = "Due date";
+"Status" = "Status";
+"Task Name" = "Task Name";
+"Active" = "Active";
+"Completed" = "Completed";
