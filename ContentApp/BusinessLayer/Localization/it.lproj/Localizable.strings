@@ -318,6 +318,10 @@
 "no-attached-files-placeholder" = "Nessun file allegato";
 "send-title" = "Invia";
 "no-due-date" = "Nessuna scadenza";
+"complete-title" = "Per completare";
+"complete-task-dialog-title" = "Completa compito";
+"complete-task-dialog-message" = "Completare il compito?";
+"confirm-title" = "Conferma";
 
 // MARK: - Accessbility
 "user-profile" = "Profilo utente";
@@ -334,3 +338,11 @@
 "date-title" = "Data";
 "user-name" = "Nome utente";
 "comment-title" = "Commento";
+"send-button" = "Pulsante Invia";
+
+// MARK: - Task filters
+"Due date" = "Scadenza";
+"Status" = "Stato";
+"Task Name" = "Nome compito";
+"Active" = "Attivo";
+"Completed" = "Completato";
