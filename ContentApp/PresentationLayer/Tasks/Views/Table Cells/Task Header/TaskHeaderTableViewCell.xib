@@ -21,10 +21,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="427" height="81"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mi3-Hi-dhq" userLabel="viewAllButton">
-                                <rect key="frame" x="312" y="0.0" width="100" height="50"/>
+                                <rect key="frame" x="287" y="0.0" width="125" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Qow-WF-sFj"/>
-                                    <constraint firstAttribute="width" constant="100" id="tlY-bd-h0N"/>
+                                    <constraint firstAttribute="width" constant="125" id="tlY-bd-h0N"/>
                                 </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="View all"/>
@@ -33,7 +33,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nZW-WV-hoX" userLabel="titleHeader">
-                                <rect key="frame" x="15" y="15" width="287" height="20.5"/>
+                                <rect key="frame" x="15" y="15" width="262" height="20.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration" identifier="title-header">
                                     <accessibilityTraits key="traits" notEnabled="YES"/>
