@@ -30,7 +30,7 @@
 "save" = "Enregistrer";
 "discard" = "Supprimer";
 "rename" = "Renommer";
-"update" = "Mis à jour";
+"update" = "Mettre à jour";
 
 // MARK: - Buttons
 "connect" = "Connexion";
@@ -80,6 +80,7 @@
 "preview-capture-asset" = "Aperçu";
 "gallery-upload" = "Photos";
 
+
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL d'Alfresco Content Services";
 "help-connect-section1-paragraph" = "Vous pouvez saisir l'URL de votre instance d'Alfresco Content Services. Vous devrez entrer vos nom d'utilisateur et mot de passe pour vous authentifier.";
@@ -104,7 +105,7 @@
 "error-node-name-special-characters" = "Le nom ne peut pas contenir les caractères suivants : %@";
 "error-folder-name-end-period" = "Le nom de dossier ne peut pas se terminer par un point %@";
 "error-folder-name-contain-only-spaces" = "Le nom de dossier ne peut pas contenir uniquement des espaces";
-"error-file-name-empty" = "Le nom de fichier ne peut pas être vide.";
+"error-file-name-empty" = "Le nom du fichier ne peut pas être vide.";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
@@ -117,9 +118,8 @@
 "approved-mark-offline" = "%@ sera disponible hors ligne.";
 "approved-remove-offline" = "%@ ne sera plus disponible hors ligne.";
 "approved-upload-media" = "Importation du fichier multimédia prévue.";
-"approved-moved-folder" = "%@ a été déplacé avec succès.";
+"approved-moved-folder" = "%@ déplacé avec succès.";
 "approved-update" = "%@ a été mis à jour";
-"approved-upload-scanned-document" = "Document prévu pour l'importation.";
 
 // MARK: - Settings Screen
 "theme" = "Apparence";
@@ -144,7 +144,7 @@
 "search-in" = "dans : ";
 
 // MARK: - Advance Search
-"DEFAULT_SEARCH" = "Défaut";
+"DEFAULT_SEARCH" = "Par défaut";
 "advance-search" = "Recherche avancée";
 "enter" = "Entrer";
 "apply" = "Appliquer";
@@ -238,7 +238,6 @@
 "action-menu-upload-files" = "Importer des fichiers";
 "action-menu-move-folder" = "Déplacer";
 "action-menu-rename-node" = "Renommer";
-"action-menu-scan-documents" = "Scanner les documents";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Supprimer";
@@ -287,30 +286,54 @@
 "on-flash" = "Activé";
 "off-flash" = "Désactivé";
 
-// MARK: - Alert
-"alert-title" = "Alerte";
-"camera-unavailable" = "L’appareil ne prend pas en charge la caméra";
-
 // MARK: - Extension
 "save-to-alfresco" = "Enregistrer dans Alfresco";
 "upload" = "Importer";
-"dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile.";
+"dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile";
 "dialog-uploading-message" = "Importer %d fichier(s)";
-"uploading-title" = "Importation";
+"uploading-title" = "Importation en cours";
 "waiting-title" = "Attendre";
 "dialog-finished-uploading-message" = "%d fichier(s) a terminé l'importation";
 "transfer-files" = "Transferts";
-"unsupported-file-format" = "Format de fichier non pris en charge";
-
-// MARK: - Scanner
-"dialog-discard-scanner-title" = "Supprimer le scannage des fichiers ?";
-"dialog-discard-scanner-message" = "Le scannage des fichiers sera supprimé si vous quittez l'application.";
+"unsupported-file-format" = "Format du fichier non pris en charge";
+"search_move_warning" = "Vous ne pouvez pas déplacer vers votre propre dossier et sous-dossiers.";
 
 // MARK: - Tasks
 "tasks-title" = "Tâches";
 "no-tasks-found" = "Aucune tâche trouvée";
-"create-task-message" = "Créer une tâche facile à retrouver plus tard.";
+"create-task-message" = "Créez une nouvelle tâche que vous pouvez facilement retrouver plus tard.";
 "low" = "Basse";
 "medium" = "Moyenne";
 "high" = "Élevée";
-"task-service-not-configured-message" = "Ce compte n'est pas configuré dans 'Process Services'. Veuillez contacter l'administrateur.";
+"task-service-not-configured-message" = "Ce compte n'est pas configuré sur 'Process Services'.";
+"task-detail-title" = "Affichage de la tâche";
+"active-title" = "Actif";
+"completed-title" = "Terminé";
+"status-title" = "Statut";
+"identifier-title" = "Identifiant";
+"add-comment-placeholder" = "Ajouter un commentaire...";
+"comments-title" = "Commentaires";
+"title-multiple-comment" = "%d commentaires";
+"attached-files-title" = "Fichiers joints";
+"title-multiple-attachments" = "%d pièces jointes";
+"view-all-title" = "Afficher tout";
+"read-more" = "En savoir plus";
+"no-attached-files-placeholder" = "Aucun fichier joint";
+"send-title" = "Envoyer";
+"no-due-date" = "Aucune date d'échéance";
+
+// MARK: - Accessbility
+"user-profile" = "Profil de l'utilisateur";
+"reset-filters" = "Réinitialiser les filtres";
+"tasks-filter-collection" = "Collection de filtres de tâches";
+"tasks-filter-collection-hint" = "Utilisé pour filtrer et réinitialiser les tâches";
+"priority" = "Priorité";
+"title" = "Titre";
+"assignee" = "Personne assignée";
+"close-button" = "Bouton Fermer";
+"list-option" = "Option de liste";
+"due-date" = "Date d'échéance";
+"back-title" = "Retour";
+"date-title" = "Date";
+"user-name" = "Nom d'utilisateur";
+"comment-title" = "Commentaire";

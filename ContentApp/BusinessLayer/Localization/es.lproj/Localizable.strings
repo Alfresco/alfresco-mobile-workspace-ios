@@ -80,6 +80,7 @@
 "preview-capture-asset" = "Vista previa";
 "gallery-upload" = "Fotos";
 
+
 // MARK: - Help Textviews
 "help-connect-title-section1" = "URL de Alfresco Content Services";
 "help-connect-section1-paragraph" = "Puede introducir la URL de su instancia de Alfresco Content Services. Tendrá que introducir su nombre de usuario y contraseña para autenticarse.";
@@ -117,9 +118,8 @@
 "approved-mark-offline" = "%@ estará disponible sin conexión.";
 "approved-remove-offline" = "%@ ya no estará disponible sin conexión.";
 "approved-upload-media" = "Ficheros multimedia programados para cargar.";
-"approved-moved-folder" = "%@ se ha movido correctamente";
-"approved-update" = "%@ se ha actualizado";
-"approved-upload-scanned-document" = "Ficheros programados para cargar.";
+"approved-moved-folder" = "%@ movido correctamente.";
+"approved-update" = "%@ actualizado";
 
 // MARK: - Settings Screen
 "theme" = "Apariencia";
@@ -221,7 +221,7 @@
 // MARK: - Actions Menu Sheet
 "action-menu-add-favorite" = "Añadir a favoritos";
 "action-menu-remove-favorite" = "Quitar de favoritos";
-"action-menu-move-trash" = "Mover a la papelera";
+"action-menu-move-trash" = "Mover a papelera";
 "action-menu-download" = "Abrir con";
 "action-menu-restore" = "Restaurar";
 "action-menu-permanently-delete" = "Eliminar permanentemente";
@@ -231,14 +231,13 @@
 "action-menu-create-folder" = "Nueva carpeta";
 "action-menu-mark-offline" = "Disponible sin conexión";
 "action-menu-remove-offline" = "Quitar sin conexión";
-"action-menu-create-media" = "Tomar fotos o vídeos";
+"action-menu-create-media" = "Tomar una foto o un vídeo";
 "action-menu-upload-media" = "Cargar fotos o vídeos";
 "action-menu-create-single-media" = "Tomar una foto o un vídeo";
 "action-menu-upload-single-media" = "Cargar una foto o vídeo";
 "action-menu-upload-files" = "Cargar ficheros";
 "action-menu-move-folder" = "Mover";
 "action-menu-rename-node" = "Cambiar nombre";
-"action-menu-scan-documents" = "Escanear documentos";
 
 // MARK: - Dialog
 "dialog-delete-title" = "Eliminar";
@@ -271,7 +270,7 @@
 "empty-gallery-title" = "No hay fotos o vídeos";
 "empty-gallery-description" = "Intente añadir algunas fotos o vídeos a su dispositivo.";
 "empty-uploads-title" = "¡Carga completada!";
-"empty-uploads-description" = "No quedan ficheros para cargar. Verifique los ficheros en sus respectivas carpetas.";
+"empty-uploads-description" = "No quedan ficheros para cargar. Vea los ficheros desde sus respectivas carpetas.";
 
 // MARK: - Privacy settings
 "privacy-photos-title" = "Mobile Workspace necesita acceso a las fotos";
@@ -287,10 +286,6 @@
 "on-flash" = "Encendido";
 "off-flash" = "Apagado";
 
-// MARK: - Alert
-"alert-title" = "Alerta";
-"camera-unavailable" = "El dispositivo no es compatible con la cámara";
-
 // MARK: - Extension
 "save-to-alfresco" = "Guardar en Alfresco";
 "upload" = "Cargar";
@@ -300,17 +295,45 @@
 "waiting-title" = "En espera";
 "dialog-finished-uploading-message" = "Finalizada la carga de %d fichero(s)";
 "transfer-files" = "Transferencias";
-"unsupported-file-format" = "Formato de fichero no compatible";
-
-// MARK: - Scanner
-"dialog-discard-scanner-title" = "¿Descartar ficheros escaneados?";
-"dialog-discard-scanner-message" = "Si sale, se descartarán los ficheros escaneados.";
+"unsupported-file-format" = "Formato de fichero incompatible";
+"search_move_warning" = "No puede mover a su propia carpeta y subcarpetas.";
 
 // MARK: - Tasks
 "tasks-title" = "Tareas";
-"no-tasks-found" = "No se encontró ninguna tarea";
-"create-task-message" = "Crear una nueva tarea fácil de encontrar más adelante";
+"no-tasks-found" = "No se encontraron tareas";
+"create-task-message" = "Puede crear una tarea que desee encontrar con facilidad más adelante.";
 "low" = "Baja";
-"medium" = "Media";
+"medium" = "Mediano";
 "high" = "Alta";
-"task-service-not-configured-message" = "Esta cuenta no está configurada en 'Process Services'. Póngase en contacto con el administrador.";
+"task-service-not-configured-message" = "Esta cuenta no está configurada en \"Process Services\"";
+"task-detail-title" = "Ver Tarea";
+"active-title" = "Activo";
+"completed-title" = "Completada";
+"status-title" = "Estado";
+"identifier-title" = "Identificador";
+"add-comment-placeholder" = "Añadir un comentario...";
+"comments-title" = "Comentarios";
+"title-multiple-comment" = "%d comentarios";
+"attached-files-title" = "Ficheros adjuntos";
+"title-multiple-attachments" = "%d adjuntos";
+"view-all-title" = "Ver todo";
+"read-more" = "Leer más";
+"no-attached-files-placeholder" = "No hay ficheros adjuntos";
+"send-title" = "Enviar";
+"no-due-date" = "Sin fecha de vencimiento";
+
+// MARK: - Accessbility
+"user-profile" = "Perfil de usuario";
+"reset-filters" = "Restablecer filtros";
+"tasks-filter-collection" = "Colección de filtros de tareas";
+"tasks-filter-collection-hint" = "Se utiliza para filtrar y restablecer tareas";
+"priority" = "Prioridad";
+"title" = "Título";
+"assignee" = "Usuario asignado";
+"close-button" = "Botón cerrar";
+"list-option" = "Opción de lista";
+"due-date" = "Fecha de vencimiento";
+"back-title" = "Volver";
+"date-title" = "Fecha";
+"user-name" = "Nombre de usuario";
+"comment-title" = "Comentario";
