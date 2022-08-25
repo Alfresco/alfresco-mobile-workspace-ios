@@ -126,8 +126,10 @@ extension TaskPropertiesViewModel {
         if let path = DiskService.isFileExists(accountIdentifier: accountIdentifier, attachmentId: contentId, name: title) {
             completionHandler(path, nil)
         } else {
+            var isCancelDownload = false
             var downloadDialog: MDCAlertController?
             downloadDialog = self.showDownloadDialog(title: title, actionHandler: { _ in
+                isCancelDownload = true
                 downloadDialog?.dismiss(animated: true, completion: nil)
             })
             
@@ -137,7 +139,11 @@ extension TaskPropertiesViewModel {
                 TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
                     if data != nil {
                         if let path = DiskService.saveAttachment(accountIdentifier: accountIdentifier, attachmentId: contentId, data: data, name: title) {
-                            completionHandler(path, nil)
+                            if isCancelDownload == false {
+                                completionHandler(path, nil)
+                            } else {
+                                completionHandler(nil, error)
+                            }
                         }
                     } else {
                         completionHandler(nil, error)
