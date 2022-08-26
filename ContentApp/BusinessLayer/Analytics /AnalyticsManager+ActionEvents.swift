@@ -81,4 +81,10 @@ extension AnalyticsManager {
             self.logEvent(name: mappedEvent.rawValue, parameters: parameters)
         }
     }
+    
+    func didTapTaskCompleteAlert() {
+        var parameters = self.commonParameters()
+        parameters[AnalyticsConstants.Parameters.eventName] = Event.Action.taskComplete.rawValue
+        self.logEvent(name: Event.Action.taskComplete.rawValue, parameters: parameters)
+    }
 }

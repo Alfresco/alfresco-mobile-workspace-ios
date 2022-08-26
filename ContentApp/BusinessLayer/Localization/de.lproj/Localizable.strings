@@ -321,6 +321,10 @@
 "no-attached-files-placeholder" = "Keine angehängten Dateien";
 "send-title" = "Senden";
 "no-due-date" = "Kein Fälligkeitsdatum";
+"complete-title" = "Abgeschlossen";
+"complete-task-dialog-title" = "Aufgabe abschließen";
+"complete-task-dialog-message" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen?";
+"confirm-title" = "Bestätigen";
 
 // MARK: - Accessbility
 "user-profile" = "Benutzerprofil";
@@ -337,3 +341,11 @@
 "date-title" = "Datum";
 "user-name" = "Benutzername";
 "comment-title" = "Kommentar";
+"send-button" = "Schaltfläche „Senden“";
+
+// MARK: - Task filters
+"Due date" = "Fälligkeitsdatum";
+"Status" = "Status";
+"Task Name" = "Aufgabenname";
+"Active" = "Aktiv";
+"Completed" = "Abgeschlossen";

@@ -137,13 +137,9 @@ extension TaskPropertiesViewModel {
                 AlfrescoContentAPI.customHeaders = authenticationProvider.authorizationHeader()
                 
                 TaskAttachmentsAPI.getTaskAttachmentContent(contentId: contentId) { data, error in
-                    if data != nil {
+                    if data != nil && isCancelDownload == false {
                         if let path = DiskService.saveAttachment(accountIdentifier: accountIdentifier, attachmentId: contentId, data: data, name: title) {
-                            if isCancelDownload == false {
-                                completionHandler(path, nil)
-                            } else {
-                                completionHandler(nil, error)
-                            }
+                            completionHandler(path, nil)
                         }
                     } else {
                         completionHandler(nil, error)
