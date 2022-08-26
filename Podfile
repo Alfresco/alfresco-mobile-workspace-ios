@@ -16,7 +16,6 @@ target 'ContentApp' do
   pod 'FastCoding'
   pod 'DropDown'
   pod 'MaterialComponents', '~> 124.2'
-  pod "ExpandableLabel"
   pod 'GrowingTextView'
 
   # Alfresco iOS Swift API

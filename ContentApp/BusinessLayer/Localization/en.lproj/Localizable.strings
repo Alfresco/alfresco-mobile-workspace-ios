@@ -302,7 +302,7 @@
 "low" = "Low";
 "medium" = "Medium";
 "high" = "High";
-"task-service-not-configured-message" = "This account is not configured on the process services.";
+"task-service-not-configured-message" = "Tasks are not enabled for this account.";
 "task-detail-title" = "Task view";
 "active-title" = "Active";
 "completed-title" = "Completed";
@@ -320,7 +320,7 @@
 "no-due-date" = "No due date";
 "complete-title" = "Complete";
 "complete-task-dialog-title" = "Complete Task";
-"complete-task-dialog-message" = "Are you sure you want to complete the task?";
+"complete-task-dialog-message" = "Are you sure you want to complete the task? You will no longer be able to make any changes.";
 "confirm-title" = "Confirm";
 
 // MARK: - Accessbility

@@ -16,20 +16,19 @@ PODS:
     - CocoaLumberjack/Core (= 3.7.4)
   - CocoaLumberjack/Core (3.7.4)
   - DropDown (2.3.13)
-  - ExpandableLabel (0.5.2)
   - FastCoding (3.3)
-  - Firebase/Analytics (9.3.0):
+  - Firebase/Analytics (9.5.0):
     - Firebase/Core
-  - Firebase/Core (9.3.0):
+  - Firebase/Core (9.5.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (~> 9.3.0)
-  - Firebase/CoreOnly (9.3.0):
-    - FirebaseCore (= 9.3.0)
-  - Firebase/Crashlytics (9.3.0):
+    - FirebaseAnalytics (~> 9.5.0)
+  - Firebase/CoreOnly (9.5.0):
+    - FirebaseCore (= 9.5.0)
+  - Firebase/Crashlytics (9.5.0):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 9.3.0)
-  - FirebaseAnalytics (9.3.0):
-    - FirebaseAnalytics/AdIdSupport (= 9.3.0)
+    - FirebaseCrashlytics (~> 9.5.0)
+  - FirebaseAnalytics (9.5.0):
+    - FirebaseAnalytics/AdIdSupport (= 9.5.0)
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -37,61 +36,61 @@ PODS:
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseAnalytics/AdIdSupport (9.3.0):
+  - FirebaseAnalytics/AdIdSupport (9.5.0):
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
-    - GoogleAppMeasurement (= 9.3.0)
+    - GoogleAppMeasurement (= 9.5.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCore (9.3.0):
+  - FirebaseCore (9.5.0):
     - FirebaseCoreDiagnostics (~> 9.0)
     - FirebaseCoreInternal (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
-  - FirebaseCoreDiagnostics (9.3.0):
+  - FirebaseCoreDiagnostics (9.5.0):
     - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/Logger (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - FirebaseCoreInternal (9.3.0):
+  - FirebaseCoreInternal (9.5.0):
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
-  - FirebaseCrashlytics (9.3.0):
+  - FirebaseCrashlytics (9.5.0):
     - FirebaseCore (~> 9.0)
     - FirebaseInstallations (~> 9.0)
     - GoogleDataTransport (< 10.0.0, >= 9.1.4)
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (~> 2.1)
-  - FirebaseInstallations (9.3.0):
+  - FirebaseInstallations (9.5.0):
     - FirebaseCore (~> 9.0)
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (~> 2.1)
   - Gifu (3.3.1)
-  - GoogleAppMeasurement (9.3.0):
-    - GoogleAppMeasurement/AdIdSupport (= 9.3.0)
+  - GoogleAppMeasurement (9.5.0):
+    - GoogleAppMeasurement/AdIdSupport (= 9.5.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/AdIdSupport (9.3.0):
-    - GoogleAppMeasurement/WithoutAdIdSupport (= 9.3.0)
+  - GoogleAppMeasurement/AdIdSupport (9.5.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 9.5.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleAppMeasurement/WithoutAdIdSupport (9.3.0):
+  - GoogleAppMeasurement/WithoutAdIdSupport (9.5.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
     - GoogleUtilities/MethodSwizzler (~> 7.7)
     - GoogleUtilities/Network (~> 7.7)
     - "GoogleUtilities/NSData+zlib (~> 7.7)"
     - nanopb (< 2.30910.0, >= 2.30908.0)
-  - GoogleDataTransport (9.1.4):
+  - GoogleDataTransport (9.2.0):
     - GoogleUtilities/Environment (~> 7.7)
     - nanopb (< 2.30910.0, >= 2.30908.0)
     - PromisesObjC (< 3.0, >= 1.2)
@@ -777,7 +776,6 @@ DEPENDENCIES:
   - AlfrescoAuth
   - AlfrescoContent
   - DropDown
-  - ExpandableLabel
   - FastCoding
   - Firebase/Analytics
   - Firebase/Crashlytics
@@ -799,7 +797,6 @@ SPEC REPOS:
     - AppAuth
     - CocoaLumberjack
     - DropDown
-    - ExpandableLabel
     - FastCoding
     - Firebase
     - FirebaseAnalytics
@@ -834,18 +831,17 @@ SPEC CHECKSUMS:
   AppAuth: 80317d99ac7ff2801a2f18ff86b48cd315ed465d
   CocoaLumberjack: 543c79c114dadc3b1aba95641d8738b06b05b646
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
-  ExpandableLabel: c2fab6d27860c572d67134b30522a5917746171d
   FastCoding: 3b590f7143a229780fa744b35084d85d9461587e
-  Firebase: ef75abb1cdbc746d5a38f4e26c422c807b189b8c
-  FirebaseAnalytics: bf46f5163f44097ce2c789de0b3e6f87f1da834a
-  FirebaseCore: c088995ece701a021a48a1348ea0174877de2a6a
-  FirebaseCoreDiagnostics: 060eb57cc56dfaf40b1b1b5874a5c17c41ce79f8
-  FirebaseCoreInternal: 635d1c9a612a6502b6377a0c92af83758076ffff
-  FirebaseCrashlytics: 65a5b349e664e986e6c7486b0a9b5ed8c11d0491
-  FirebaseInstallations: 54b40022cb06e462740c9f2b9fbe38b5e78a825a
+  Firebase: 800f16f07af493d98d017446a315c27af0552f41
+  FirebaseAnalytics: 1b60984a408320dda637306f3f733699ef8473d7
+  FirebaseCore: 25c0400b670fd1e2f2104349cd3b5dcce8d9418f
+  FirebaseCoreDiagnostics: 17cbf4e72b1dbd64bfdc33d4b1f07bce4f16f1d8
+  FirebaseCoreInternal: 50a8e39cae8abf72d5145d07ea34c3244f70862b
+  FirebaseCrashlytics: d20fa38bb8c88cb0f1c9211286bc23ab58c1b464
+  FirebaseInstallations: 41f811b530c41dd90973d0174381cdb3fcb5e839
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
-  GoogleAppMeasurement: b907bdad775b6975a8108762345b2cfbf1a93c37
-  GoogleDataTransport: 5fffe35792f8b96ec8d6775f5eccd83c998d5a3b
+  GoogleAppMeasurement: 6ee231473fbd75c11221dfce489894334024eead
+  GoogleDataTransport: 1c8145da7117bd68bbbed00cf304edb6a24de00f
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
   GrowingTextView: 876bf42005b5e4a4fd740597db12caaf41f0fe6c
   JWTDecode: 33e5e26e5ddbd21b2065820894c08fef0cad9509
@@ -861,6 +857,6 @@ SPEC CHECKSUMS:
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftLint: f80f1be7fa96d30e0aa68e58d45d4ea1ccaac519
 
-PODFILE CHECKSUM: c69030aab81a1cea109123113395aba0773476f7
+PODFILE CHECKSUM: f9fb165d62f1b2dad53a15efcfd4039a52e20519
 
 COCOAPODS: 1.11.3

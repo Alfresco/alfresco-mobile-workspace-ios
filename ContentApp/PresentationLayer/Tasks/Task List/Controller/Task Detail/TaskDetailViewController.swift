@@ -264,6 +264,7 @@ class TaskDetailViewController: SystemSearchViewController {
 
         let confirmAction = MDCAlertAction(title: LocalizationConstants.Dialog.confirmTitle) { [weak self] _ in
             guard let sSelf = self else { return }
+            AnalyticsManager.shared.didTapTaskCompleteAlert()
             sSelf.completeTask()
         }
         confirmAction.accessibilityIdentifier = "confirmActionButton"

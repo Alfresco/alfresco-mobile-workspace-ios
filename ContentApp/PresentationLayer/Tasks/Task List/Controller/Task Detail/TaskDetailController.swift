@@ -80,7 +80,10 @@ class TaskDetailController: NSObject {
         /* attachments */
         if viewModel.isAttachmentsLoaded {
             rowViewModels.append(spaceCellVM())
-            rowViewModels.append(attachmentsHeaderCellVM())
+            
+            if attachmentsHeaderCellVM() != nil {
+                rowViewModels.append(attachmentsHeaderCellVM()!)
+            }
             
             if attachmentsPlaceholderCellVM() != nil {
                 rowViewModels.append(attachmentsPlaceholderCellVM()!)
@@ -186,8 +189,12 @@ class TaskDetailController: NSObject {
         return rowVM
     }
     
-    private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel {
+    private func attachmentsHeaderCellVM() -> TaskHeaderTableCellViewModel? {
         let attachmentsCount = viewModel.attachments.value.count
+        if viewModel.isTaskCompleted && attachmentsCount == 0 {
+            return nil
+        }
+
         let title = LocalizationConstants.Tasks.attachedFilesTitle
         var subTitle = String(format: LocalizationConstants.Tasks.multipleAttachmentsTitle, attachmentsCount)
         if attachmentsCount < 2 {
@@ -205,7 +212,7 @@ class TaskDetailController: NSObject {
     }
     
     private func attachmentsPlaceholderCellVM() -> EmptyPlaceholderTableCellViewModel? {
-        if viewModel.attachments.value.isEmpty {
+        if viewModel.attachments.value.isEmpty && !viewModel.isTaskCompleted {
             let title = LocalizationConstants.Tasks.noAttachedFilesPlaceholder
             let rowVM = EmptyPlaceholderTableCellViewModel(title: title)
             return rowVM
