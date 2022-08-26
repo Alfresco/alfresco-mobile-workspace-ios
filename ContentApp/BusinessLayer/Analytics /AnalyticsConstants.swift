@@ -46,6 +46,7 @@ enum Event {
         case radio = "event_status"
         case text = "event_task_name"
         case taskFilterReset = "event_reset"
+        case taskComplete = "event_task_complete"
     }
     
     enum API: String {

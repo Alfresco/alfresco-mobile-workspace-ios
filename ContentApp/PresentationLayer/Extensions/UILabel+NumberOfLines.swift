@@ -57,7 +57,9 @@ extension UILabel {
 
         var linesArray: [String] = []
         for line in lines {
+            // swiftlint:disable force_cast
             let lineRef = line as! CTLine
+            // swiftlint:enable force_cast
             let lineRange = CTLineGetStringRange(lineRef)
             let range = NSRange(location: lineRange.location, length: lineRange.length)
             let lineString = (text as NSString).substring(with: range)
