@@ -322,6 +322,10 @@
 "no-attached-files-placeholder" = "Geen bijgevoegde bestanden";
 "send-title" = "Verzenden";
 "no-due-date" = "Geen vervaldatum";
+"complete-title" = "Voltooien";
+"complete-task-dialog-title" = "Taak voltooien";
+"complete-task-dialog-message" = "Weet u zeker dat u de taak wilt voltooien?";
+"confirm-title" = "Bevestigen";
 
 // MARK: - Accessbility
 "user-profile" = "Gebruikersprofiel";
@@ -338,3 +342,11 @@
 "date-title" = "Datum";
 "user-name" = "Gebruikersnaam";
 "comment-title" = "Opmerking";
+"send-button" = "Knop Verzenden";
+
+// MARK: - Task filters
+"Due date" = "Vervaldatum";
+"Status" = "Status";
+"Task Name" = "Taaknaam";
+"Active" = "Actief";
+"Completed" = "Voltooid";

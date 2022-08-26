@@ -17,7 +17,6 @@
 //
 
 import UIKit
-import ExpandableLabel
 
 class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
 
@@ -26,14 +25,13 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var userImageView: UIImageView!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var commentLabel: ExpandableLabel!
+    @IBOutlet weak var commentLabel: UILabel!
     var viewModel: TaskCommentTableCellViewModel?
     var currentTheme: PresentationTheme?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         userImageBaseView.layer.cornerRadius = userImageBaseView.frame.size.height/2.0
-        self.addReadMore()
     }
     
     func setup(viewModel: RowViewModel) {
@@ -43,11 +41,14 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         updateUserImage()
         dateLabel.text = viewModel.dateString
         userNameLabel.text = viewModel.userName
-        commentLabel.text = viewModel.comment
-        addAccessibility()
         commentLabel.numberOfLines = viewModel.isShowReadMore ? 4:0
+        commentLabel.text = viewModel.comment
+        DispatchQueue.main.async {
+            self.commentLabel.text = self.textWithReadMore()
+        }
+        
+        addAccessibility()
         addTapGesture()
-        addReadMore()
     }
     
     private func addTapGesture() {
@@ -103,14 +104,20 @@ class TaskCommentTableViewCell: UITableViewCell, CellConfigurable {
         dateLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
         commentLabel.applyStyleSubtitle2OnSurface60(theme: currentTheme)
         updateUserImage()
-        addReadMore()
     }
     
-    private func addReadMore() {
-        self.commentLabel.collapsed = true
-        let attributes = [NSAttributedString.Key.font: UIFont.inter(style: .medium, size: 14.0),
-                          NSAttributedString.Key.foregroundColor: UIColor(hex: "#2A7DE1")]
-        self.commentLabel.collapsedAttributedLink = NSAttributedString(string: "Read More", attributes: attributes)
-        self.commentLabel.text = self.viewModel?.comment
+    private func textWithReadMore() -> String? {
+        if commentLabel.maxNumberOfLines >= commentLabel.numberOfVisibleLines {
+            let stringArray = self.commentLabel.lines
+            var commentText = ""
+            for text in stringArray {
+                commentText = String(format: "%@%@", commentText, text)
+            }
+            
+            commentText = commentText.trimmingCharacters(in: .whitespacesAndNewlines)
+            commentText = String(format: "%@...", commentText)
+            return commentText
+        }
+        return viewModel?.comment
     }
 }

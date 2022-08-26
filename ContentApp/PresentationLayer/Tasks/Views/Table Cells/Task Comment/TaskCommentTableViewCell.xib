@@ -58,7 +58,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRY-Dj-x0T" userLabel="commentLabel" customClass="ExpandableLabel" customModule="ExpandableLabel">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Loading..." textAlignment="natural" lineBreakMode="middleTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TRY-Dj-x0T" userLabel="commentLabel">
                                 <rect key="frame" x="75" y="45.5" width="291" height="20.5"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -96,7 +96,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="baseView" destination="Xq6-Ib-AaO" id="14i-26-3Xk"/>
-                <outlet property="commentLabel" destination="TRY-Dj-x0T" id="bqU-kr-ZGh"/>
+                <outlet property="commentLabel" destination="TRY-Dj-x0T" id="yR9-4a-bKg"/>
                 <outlet property="dateLabel" destination="bYC-jm-Pj0" id="XSt-vw-f9y"/>
                 <outlet property="userImageBaseView" destination="Kmn-na-KB1" id="QAN-uj-WZU"/>
                 <outlet property="userImageView" destination="m97-Af-cbA" id="QfQ-wZ-Gi3"/>

@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2005-2020 Alfresco Software Limited.
+// Copyright (C) 2005-2022 Alfresco Software Limited.
 //
 // This file is part of the Alfresco Content Mobile iOS App.
 //
@@ -28,7 +28,7 @@
 "delete" = "Supprimer";
 "create" = "Créer";
 "save" = "Enregistrer";
-"discard" = "Supprimer";
+"discard" = "Ignorer";
 "rename" = "Renommer";
 "update" = "Mettre à jour";
 
@@ -321,6 +321,10 @@
 "no-attached-files-placeholder" = "Aucun fichier joint";
 "send-title" = "Envoyer";
 "no-due-date" = "Aucune date d'échéance";
+"complete-title" = "A terminer";
+"complete-task-dialog-title" = "Terminer la tâche";
+"complete-task-dialog-message" = "Etes-vous sûr de vouloir terminer la tâche ?";
+"confirm-title" = "Confirmer";
 
 // MARK: - Accessbility
 "user-profile" = "Profil de l'utilisateur";
@@ -337,3 +341,11 @@
 "date-title" = "Date";
 "user-name" = "Nom d'utilisateur";
 "comment-title" = "Commentaire";
+"send-button" = "Bouton Envoyer";
+
+// MARK: - Task filters
+"Due date" = "Date d'échéance";
+"Status" = "Statut";
+"Task Name" = "Nom de la tâche";
+"Active" = "Actif";
+"Completed" = "Terminée";

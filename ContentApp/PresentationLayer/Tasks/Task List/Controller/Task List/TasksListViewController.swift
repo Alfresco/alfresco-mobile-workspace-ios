@@ -40,6 +40,7 @@ class TasksListViewController: SystemSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        checkFilterView()
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -116,6 +117,10 @@ class TasksListViewController: SystemSearchViewController {
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
             if error == nil {
+                if sSelf.viewModel.isTasksChipsVisible == false && !sSelf.viewModel.rawTasks.isEmpty {
+                    sSelf.viewModel.isTasksChipsVisible = true
+                    sSelf.checkFilterView()
+                }
                 sSelf.collectionView.reloadData()
                 sSelf.checkEmptyTaskListMessage()
             } else {
@@ -141,6 +146,14 @@ class TasksListViewController: SystemSearchViewController {
         emptyListImageView.image = emptyList.icon
         emptyListTitle.text = emptyList.title
         emptyListSubtitle.text = emptyList.description
+    }
+    
+    private func checkFilterView() {
+        if viewModel.isTasksChipsVisible {
+            filterBaseView.isHidden = false
+        } else {
+            filterBaseView.isHidden = true
+        }
     }
     
     // MARK: - Set up Bindings
