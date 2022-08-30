@@ -56,6 +56,7 @@ class TaskDetailViewController: SystemSearchViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
         updateTheme()
         controller.updateLatestComment()
     }
