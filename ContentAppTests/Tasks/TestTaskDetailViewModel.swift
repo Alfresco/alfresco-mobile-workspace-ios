@@ -18,52 +18,44 @@
 
 import XCTest
 @testable import ContentApp
+@testable import AlfrescoContent
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()
+    var task: TaskNode?
 
-    
-    
-    
-    private func createTask() {
-        {
-          "id": "76",
-          "name": "Task 19",
-          "description": "",
-          "category": null,
-          "assignee": {
-            "id": 16,
-            "firstName": "Demo",
-            "lastName": "User",
-            "email": "demo@alfresco.com"
-          },
-          "created": "2022-08-30T08:06:43.783+0000",
-          "dueDate": null,
-          "endDate": null,
-          "duration": null,
-          "priority": 9,
-          "parentTaskId": null,
-          "parentTaskName": null,
-          "processInstanceId": null,
-          "processInstanceName": null,
-          "processDefinitionId": null,
-          "processDefinitionName": null,
-          "processDefinitionDescription": null,
-          "processDefinitionKey": null,
-          "processDefinitionCategory": null,
-          "processDefinitionVersion": 0,
-          "processDefinitionDeploymentId": null,
-          "formKey": null,
-          "processInstanceStartUserId": null,
-          "initiatorCanCompleteTask": false,
-          "deactivateUserTaskReassignment": false,
-          "adhocTaskCanBeReassigned": false,
-          "taskDefinitionKey": null,
-          "executionId": null,
-          "memberOfCandidateGroup": false,
-          "memberOfCandidateUsers": false,
-          "managerOfCandidateGroup": false
+    // MARK: - load tasks from bundle
+    func loadTasksFromAppBundle(_ completionHandler: @escaping (_ task: TaskNode?) -> Void) {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.Tasks.mockTasks, withExtension: KeyConstants.Tasks.configFileExtension) {
+            do {
+                let data = try Data(contentsOf: fileUrl, options: [])
+                parseAppConfiguration(for: data) { isDone in
+                    completionHandler(isDone)
+                }
+            } catch let error {
+                AlfrescoLog.error(error.localizedDescription)
+            }
         }
     }
     
+    private func parseAppConfiguration(for data: Data?, _ completionHandler: @escaping (_ task: TaskNode?) -> Void) {
+        if let json = data {
+            do {
+                let decoded = try JSONDecoder().decode(Task.self, from: json)
+                let taskNodes = TaskNodeOperations.processNodes(for: [decoded])
+                if !taskNodes.isEmpty {
+                    self.task = taskNodes.first
+                    completionHandler(self.task)
+                }
+            } catch {
+                AlfrescoLog.error(error)
+            }
+        }
+    }
+    
+    func testTaskDetailViewModel_WhenValidDueDateProvided_ShouldReturnDate() {
+        self.loadTasksFromAppBundle { task in
+            
+        }
+    }
 }
