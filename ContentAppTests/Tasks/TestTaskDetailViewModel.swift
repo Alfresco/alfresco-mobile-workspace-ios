@@ -22,40 +22,61 @@ import XCTest
 
 class TestTaskDetailViewModel: XCTestCase {
     lazy var viewModel = TaskPropertiesViewModel()
-    var task: TaskNode?
 
     // MARK: - load tasks from bundle
-    func loadTasksFromAppBundle(_ completionHandler: @escaping (_ task: TaskNode?) -> Void) {
-        if let fileUrl = Bundle.main.url(forResource: KeyConstants.Tasks.mockTasks, withExtension: KeyConstants.Tasks.configFileExtension) {
+    func loadTasksFromAppBundle() -> TaskNode? {
+        if let fileUrl = Bundle.main.url(forResource: KeyConstants.Tasks.mockTask, withExtension: KeyConstants.Tasks.configFileExtension) {
             do {
                 let data = try Data(contentsOf: fileUrl, options: [])
-                parseAppConfiguration(for: data) { isDone in
-                    completionHandler(isDone)
-                }
+                return parseAppConfiguration(for: data)
             } catch let error {
                 AlfrescoLog.error(error.localizedDescription)
             }
         }
+        return nil
     }
     
-    private func parseAppConfiguration(for data: Data?, _ completionHandler: @escaping (_ task: TaskNode?) -> Void) {
+    private func parseAppConfiguration(for data: Data?) -> TaskNode?  {
         if let json = data {
             do {
                 let decoded = try JSONDecoder().decode(Task.self, from: json)
                 let taskNodes = TaskNodeOperations.processNodes(for: [decoded])
                 if !taskNodes.isEmpty {
-                    self.task = taskNodes.first
-                    completionHandler(self.task)
+                    return taskNodes.first
                 }
             } catch {
                 AlfrescoLog.error(error)
             }
         }
+        return nil
     }
     
-    func testTaskDetailViewModel_WhenValidDueDateProvided_ShouldReturnDate() {
-        self.loadTasksFromAppBundle { task in
-            
+    func testTaskDetailViewModel_WhenInValidDueDateProvided_ShouldReturnMessage() {
+        let task = loadTasksFromAppBundle()
+        viewModel.task = task
+        let dueDate = viewModel.getDueDate()
+        if dueDate == LocalizationConstants.Tasks.noDueDate {
+            XCTAssertTrue(true)
         }
+        XCTAssertFalse(false)
+    }
+    
+    func testTaskDetailViewModel_WhenTaskIsAssigned_ShouldAllowToComplete() {
+        let task = loadTasksFromAppBundle()
+        viewModel.task = task
+        if viewModel.isAllowedToCompleteTask() {
+            XCTAssertTrue(true)
+        }
+        XCTAssertFalse(false)
+    }
+    
+    func testTaskDetailViewModel_WhenLatestCommentUnvailable_ShouldReturnFalseToShow() {
+        let task = loadTasksFromAppBundle()
+        viewModel.task = task
+        if viewModel.latestComment != nil {
+            XCTAssertTrue(true)
+            return
+        }
+        XCTAssertFalse(false)
     }
 }

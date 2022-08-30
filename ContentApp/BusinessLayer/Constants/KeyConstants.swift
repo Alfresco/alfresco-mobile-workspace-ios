@@ -71,6 +71,7 @@ struct KeyConstants {
     struct Tasks {
         static let configFile = "task_filters"
         static let configFileExtension = "json"
-        static let mockTasks = "mockTasks"
+        static let mockTask = "mockTasks"
+        static let mockComments = "mockComments"
     }
 }

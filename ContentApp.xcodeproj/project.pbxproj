@@ -202,6 +202,11 @@
 		C957AC5D28AAAF5200086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
 		C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */; };
 		C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
+		C95B2A2E28BE0621007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
+		C95B2A2F28BE0622007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
+		C95B2A3228BE153E007841F4 /* TestTaskCommentsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B2A3128BE153E007841F4 /* TestTaskCommentsViewModel.swift */; };
+		C95B2A3428BE1650007841F4 /* mockComments.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A3328BE1650007841F4 /* mockComments.json */; };
+		C95B2A3528BE1866007841F4 /* mockComments.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A3328BE1650007841F4 /* mockComments.json */; };
 		C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */; };
 		C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */; };
 		C95C28C5289E45E600000080 /* AddCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */; };
@@ -920,6 +925,8 @@
 		C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
 		C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTaskDetailViewModel.swift; sourceTree = "<group>"; };
 		C95B2A2B28BE01CD007841F4 /* mockTasks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mockTasks.json; sourceTree = "<group>"; };
+		C95B2A3128BE153E007841F4 /* TestTaskCommentsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTaskCommentsViewModel.swift; sourceTree = "<group>"; };
+		C95B2A3328BE1650007841F4 /* mockComments.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mockComments.json; sourceTree = "<group>"; };
 		C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableViewCell.swift; sourceTree = "<group>"; };
 		C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCommentTableViewCell.xib; sourceTree = "<group>"; };
 		C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableCellViewModel.swift; sourceTree = "<group>"; };
@@ -2015,7 +2022,9 @@
 			isa = PBXGroup;
 			children = (
 				C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */,
+				C95B2A3128BE153E007841F4 /* TestTaskCommentsViewModel.swift */,
 				C95B2A2B28BE01CD007841F4 /* mockTasks.json */,
+				C95B2A3328BE1650007841F4 /* mockComments.json */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -3456,6 +3465,7 @@
 				C9A910CB27A7B6D2002EBC7F /* MediaPreview.xib in Resources */,
 				C9A911A927A7BAC7002EBC7F /* Assets.xcassets in Resources */,
 				C9B6D27A27C9438A00CF0C73 /* Inter-ExtraBold.ttf in Resources */,
+				C95B2A2F28BE0622007841F4 /* mockTasks.json in Resources */,
 				C9B6D27527C9437E00CF0C73 /* Inter-SemiBold.ttf in Resources */,
 				C9B6D27927C9438800CF0C73 /* Inter-ExtraLight.ttf in Resources */,
 				C9B6D27B27C9438D00CF0C73 /* Inter-Bold.ttf in Resources */,
@@ -3501,6 +3511,7 @@
 				C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */,
 				C915CDD2288FEBF500819F86 /* TasksSortAndFilterView.xib in Resources */,
 				C9A7599E289BBAA1006603E0 /* TaskSectionCollectionViewCell.xib in Resources */,
+				C95B2A3528BE1866007841F4 /* mockComments.json in Resources */,
 				C97BEB7F26EB3AC700E05375 /* PreviewCollectionViewCell.xib in Resources */,
 				B9F17141256C115700AD1E3A /* excel.xlsx in Resources */,
 				E334C04924755D9000F74880 /* Assets.xcassets in Resources */,
@@ -3511,6 +3522,7 @@
 				E36900A424C8552F00F03D60 /* Inter-Medium.ttf in Resources */,
 				C97C0261287C1D1B00C3CA52 /* Tasks.storyboard in Resources */,
 				B944AB26255BF20500965709 /* DownloadDialog.xib in Resources */,
+				C95B2A2E28BE0621007841F4 /* mockTasks.json in Resources */,
 				E36900A524C8552F00F03D60 /* Inter-Regular.ttf in Resources */,
 				E334C04724755D8E00F74880 /* Main.storyboard in Resources */,
 				C9A759B0289BCA37006603E0 /* InfoTableViewCell.xib in Resources */,
@@ -3524,6 +3536,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */,
+				C95B2A3428BE1650007841F4 /* mockComments.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4345,6 +4358,7 @@
 				C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */,
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,
 				C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */,
+				C95B2A3228BE153E007841F4 /* TestTaskCommentsViewModel.swift in Sources */,
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
 				C98DCD3B2897AB76000AE0E8 /* TestSearchTextComponentViewModel.swift in Sources */,
 			);
