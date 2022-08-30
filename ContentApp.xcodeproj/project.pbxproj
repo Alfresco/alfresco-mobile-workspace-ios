@@ -200,6 +200,8 @@
 		C94E94E728693B8000B7C51D /* AnalyticsManager+ActionEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */; };
 		C957AC5C28AAAF0F00086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
 		C957AC5D28AAAF5200086DF2 /* UIFunction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */; };
+		C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */; };
+		C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */ = {isa = PBXBuildFile; fileRef = C95B2A2B28BE01CD007841F4 /* mockTasks.json */; };
 		C95C28C2289E45C900000080 /* AddCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */; };
 		C95C28C3289E45C900000080 /* AddCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */; };
 		C95C28C5289E45E600000080 /* AddCommentTableCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */; };
@@ -916,6 +918,8 @@
 		C947C5BE27D0D9CA0000D902 /* UploadNodesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadNodesViewModel.swift; sourceTree = "<group>"; };
 		C94E94E628693B8000B7C51D /* AnalyticsManager+ActionEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AnalyticsManager+ActionEvents.swift"; sourceTree = "<group>"; };
 		C957AC5B28AAAF0F00086DF2 /* UIFunction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFunction.swift; sourceTree = "<group>"; };
+		C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestTaskDetailViewModel.swift; sourceTree = "<group>"; };
+		C95B2A2B28BE01CD007841F4 /* mockTasks.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = mockTasks.json; sourceTree = "<group>"; };
 		C95C28C0289E45C900000080 /* AddCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableViewCell.swift; sourceTree = "<group>"; };
 		C95C28C1289E45C900000080 /* AddCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddCommentTableViewCell.xib; sourceTree = "<group>"; };
 		C95C28C4289E45E600000080 /* AddCommentTableCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentTableCellViewModel.swift; sourceTree = "<group>"; };
@@ -2007,6 +2011,15 @@
 			path = "Analytics ";
 			sourceTree = "<group>";
 		};
+		C95B2A2928BE01CD007841F4 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				C95B2A2A28BE01CD007841F4 /* TestTaskDetailViewModel.swift */,
+				C95B2A2B28BE01CD007841F4 /* mockTasks.json */,
+			);
+			path = Tasks;
+			sourceTree = "<group>";
+		};
 		C95C28BF289E45A000000080 /* Add Comment Table Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2630,6 +2643,7 @@
 		E334C05524755D9000F74880 /* ContentAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				C95B2A2928BE01CD007841F4 /* Tasks */,
 				C9AEE041270D9D5D00880235 /* TestSearchViewModel.swift */,
 				C928AE32282A5F4900378327 /* TestNodeViewModel.swift */,
 				C98DCD3828979E31000AE0E8 /* TestSearchListComponentViewModel.swift */,
@@ -3509,6 +3523,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95B2A2D28BE01CD007841F4 /* mockTasks.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4327,6 +4342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95B2A2C28BE01CD007841F4 /* TestTaskDetailViewModel.swift in Sources */,
 				C928AE33282A5F4900378327 /* TestNodeViewModel.swift in Sources */,
 				C9AEE042270D9D5D00880235 /* TestSearchViewModel.swift in Sources */,
 				C98DCD3928979E31000AE0E8 /* TestSearchListComponentViewModel.swift in Sources */,
