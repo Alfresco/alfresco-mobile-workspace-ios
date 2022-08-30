@@ -308,7 +308,7 @@
 "completed-title" = "Abgeschlossen";
 "status-title" = "Status";
 "identifier-title" = "Identifikator";
-"add-comment-placeholder" = "Kommentar hinzufügen";
+"add-comment-placeholder" = "Einen Kommentar hinzufügen..."; 
 "comments-title" = "Kommentare";
 "title-multiple-comment" = "%d Kommentare";
 "attached-files-title" = "Angehängte Dateien";
