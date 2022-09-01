@@ -302,13 +302,13 @@
 "low" = "Niedrig";
 "medium" = "Mittel";
 "high" = "Hoch";
-"task-service-not-configured-message" = "Dieses Konto ist nicht in  „Process Services“ konfiguriert.";
+"task-service-not-configured-message" = "Aufgaben sind für diesen Account nicht aktiviert.";
 "task-detail-title" = "Aufgabenansicht";
 "active-title" = "Aktiv";
 "completed-title" = "Abgeschlossen";
 "status-title" = "Status";
 "identifier-title" = "Identifikator";
-"add-comment-placeholder" = "Einen Kommentar hinzufügen..."; 
+"add-comment-placeholder" = "Kommentar hinzufügen";
 "comments-title" = "Kommentare";
 "title-multiple-comment" = "%d Kommentare";
 "attached-files-title" = "Angehängte Dateien";
@@ -320,7 +320,7 @@
 "no-due-date" = "Kein Fälligkeitsdatum";
 "complete-title" = "Abgeschlossen";
 "complete-task-dialog-title" = "Aufgabe abschließen";
-"complete-task-dialog-message" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen?";
+"complete-task-dialog-message" = "Sind Sie sicher, dass Sie die Aufgabe abschließen wollen? Sie werden keine Änderungen mehr vornehmen können.";
 "confirm-title" = "Bestätigen";
 
 // MARK: - Accessbility

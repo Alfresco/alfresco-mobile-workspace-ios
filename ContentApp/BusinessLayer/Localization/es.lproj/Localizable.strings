@@ -302,7 +302,7 @@
 "low" = "Baja";
 "medium" = "Mediano";
 "high" = "Alta";
-"task-service-not-configured-message" = "Esta cuenta no está configurada en \"Process Services\"";
+"task-service-not-configured-message" = "Las tareas no están habilitadas para esta cuenta.";
 "task-detail-title" = "Ver Tarea";
 "active-title" = "Activo";
 "completed-title" = "Completada";
@@ -320,7 +320,7 @@
 "no-due-date" = "Sin fecha de vencimiento";
 "complete-title" = "Por completar";
 "complete-task-dialog-title" = "Completar tarea";
-"complete-task-dialog-message" = "¿Está seguro de que desea completar la tarea?";
+"complete-task-dialog-message" = "¿Está seguro de que desea completar la tarea? Ya no podrá realizar ningún cambio.";
 "confirm-title" = "Confirmar";
 
 // MARK: - Accessbility
