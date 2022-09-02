@@ -53,6 +53,8 @@ class FilePreviewViewController: SystemThemableViewController {
         } else {
             startPreviewingNode()
         }
+        
+        addDownloadContentButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +94,84 @@ class FilePreviewViewController: SystemThemableViewController {
 
     func allowInterfaceRotation() {
         ControllerRotation.lockOrientation(.all)
+    }
+    
+    private func addDownloadContentButton() {
+        let isContentAlreadyDownloaded = filePreviewViewModel?.isContentAlreadyDownloaded ?? false
+        if isContentAlreadyDownloaded {
+            let downloadButton = UIButton(type: .custom)
+            downloadButton.accessibilityIdentifier = "downloadButton"
+            downloadButton.frame = CGRect(x: 0.0, y: 0.0,
+                                        width: 30.0,
+                                        height: 30.0)
+            downloadButton.imageView?.contentMode = .scaleAspectFill
+            downloadButton.layer.masksToBounds = true
+            downloadButton.addTarget(self,
+                                   action: #selector(downloadButtonTapped),
+                                   for: UIControl.Event.touchUpInside)
+            downloadButton.setImage(UIImage(named: "ic-action-download"),
+                                  for: .normal)
+
+            let searchBarButtonItem = UIBarButtonItem(customView: downloadButton)
+            searchBarButtonItem.accessibilityIdentifier = "downloadBarButton"
+            let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: 30.0)
+            currWidth?.isActive = true
+            let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: 30.0)
+            currHeight?.isActive = true
+            self.navigationItem.rightBarButtonItem = searchBarButtonItem
+        }
+    }
+    
+    @objc func downloadButtonTapped() {
+        let path = filePreviewViewModel?.listNode?.path ?? ""
+        let fileUrl = URL(fileURLWithPath: path)
+        displayActivityViewController(for: fileUrl)
+    }
+    
+    private func displayActivityViewController(for url: URL) {
+        guard let presentationContext = UIViewController.applicationTopMostPresented else { return }
+        
+        AlfrescoLog.debug("____ URL _____ \(url)")
+
+        let activityViewController =
+            UIActivityViewController(activityItems: [url],
+                                     applicationActivities: nil)
+        activityViewController.modalPresentationStyle = .popover
+
+        let clearController = UIViewController()
+        clearController.view.backgroundColor = .clear
+        clearController.modalPresentationStyle = .overCurrentContext
+
+        activityViewController.completionWithItemsHandler = { [weak self] (activity, success, _, _) in
+            guard let sSelf = self else { return }
+
+            activityViewController.dismiss(animated: true)
+            clearController.dismiss(animated: false) {
+                // Will not base check on error code as used constants have been deprecated
+                if activity?.rawValue == KeyConstants.Save.toCameraRoll && !success {
+                    let privacyVC = PrivacyNoticeViewController.instantiateViewController()
+                    privacyVC.viewModel = PrivacyNoticePhotosModel()
+                    privacyVC.coordinatorServices = sSelf.coordinatorServices
+                    presentationContext.present(privacyVC,
+                                                animated: true,
+                                                completion: nil)
+                }
+            }
+        }
+
+        if let popoverController = activityViewController.popoverPresentationController {
+            popoverController.sourceRect = presentationContext.view.bounds
+            popoverController.sourceView = presentationContext.view
+
+            popoverController.permittedArrowDirections = []
+        }
+
+        presentationContext.present(clearController,
+                                    animated: false) {
+            clearController.present(activityViewController,
+                                    animated: true,
+                                    completion: nil)
+        }
     }
 
     // MARK: - IBActions
