@@ -105,7 +105,7 @@
 "error-node-name-special-characters" = "Le nom ne peut pas contenir les caractères suivants : %@";
 "error-folder-name-end-period" = "Le nom de dossier ne peut pas se terminer par un point %@";
 "error-folder-name-contain-only-spaces" = "Le nom de dossier ne peut pas contenir uniquement des espaces";
-"error-file-name-empty" = "Le nom du fichier ne peut pas être vide.";
+"error-file-name-empty" = "Le nom du fichier ne peut pas être vide";
 
 // MARK: - Snackbar approved
 "approved-login-save-settings" = "Les modifications apportées à la configuration ont été enregistrées.";
@@ -289,14 +289,14 @@
 // MARK: - Extension
 "save-to-alfresco" = "Enregistrer dans Alfresco";
 "upload" = "Importer";
-"dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile";
-"dialog-uploading-message" = "Importer %d fichier(s)";
-"uploading-title" = "Importation en cours";
+"dialog-override-sync-alfresco-app-message" = "Importation en file d'attente. Veuillez suivre le statut dans l'application mobile.";
+"dialog-uploading-message" = "Importation de %d fichier(s)";
+"uploading-title" = "Importation";
 "waiting-title" = "Attendre";
 "dialog-finished-uploading-message" = "%d fichier(s) a terminé l'importation";
 "transfer-files" = "Transferts";
 "unsupported-file-format" = "Format du fichier non pris en charge";
-"search_move_warning" = "Vous ne pouvez pas déplacer vers votre propre dossier et sous-dossiers.";
+"search_move_warning" = "Vous ne pouvez pas déplacer vers votre propre dossier et vos sous-dossiers.";
 
 // MARK: - Tasks
 "tasks-title" = "Tâches";
@@ -305,7 +305,7 @@
 "low" = "Basse";
 "medium" = "Moyenne";
 "high" = "Élevée";
-"task-service-not-configured-message" = "Ce compte n'est pas configuré sur 'Process Services'.";
+"task-service-not-configured-message" = "Les tâches ne sont pas activées pour ce compte.";
 "task-detail-title" = "Affichage de la tâche";
 "active-title" = "Actif";
 "completed-title" = "Terminé";
@@ -321,9 +321,9 @@
 "no-attached-files-placeholder" = "Aucun fichier joint";
 "send-title" = "Envoyer";
 "no-due-date" = "Aucune date d'échéance";
-"complete-title" = "A terminer";
+"complete-title" = "Terminer";
 "complete-task-dialog-title" = "Terminer la tâche";
-"complete-task-dialog-message" = "Etes-vous sûr de vouloir terminer la tâche ?";
+"complete-task-dialog-message" = "Etes-vous sûr de vouloir terminer la tâche ? Vous ne pourrez plus faire de modifications.";
 "confirm-title" = "Confirmer";
 
 // MARK: - Accessbility

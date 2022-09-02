@@ -38,9 +38,9 @@
 "need-help" = "Hulp nodig?";
 "need-help-alfresco" = "Verbinding maken met Alfresco?";
 "reset-to-default" = "Standaardinstellingen herstellen";
-"sign-in" = "Inloggen";
-"sign-in-with-sso" = "Inloggen met SSO";
-"sign-out" = "Uitloggen";
+"sign-in" = "Aanmelden";
+"sign-in-with-sso" = "Aanmelden met SSO";
+"sign-out" = "Afmelden";
 "sync-all" = "Alles synchroniseren";
 
 // MARK: - PlaceHolders
@@ -51,7 +51,7 @@
 "client-id" = "Client-id";
 "username-or-email" = "Gebruikersnaam of e-mailadres";
 "password" = "Wachtwoord";
-"content-services-url" = "URL contentservices";
+"content-services-url" = "Content Services-URL";
 "description" = "Beschrijving toevoegen";
 "name" = "Naam";
 "file-name" = "Bestandsnaam";
@@ -62,12 +62,12 @@
 "alfresco-content-settings" = "Alfresco Content Services-instellingen";
 "authentication" = "Verificatie";
 "info-connect-to" = "Verbonden met: ";
-"info-aims-connect-to"  = "Inloggen bij: ";
-"login-allow-sso" = "Geef de URL van uw contentservices-omgeving op.";
+"info-aims-connect-to"  = "Aanmelden bij: ";
+"login-allow-sso" = "Geef de URL van uw Content Services-omgeving op.";
 "help" = "Help";
 "how-to-connect-to-alfresco" = "Verbinding maken met Alfresco";
 "connecting" = "Verbinden";
-"signing-in" = "Inloggen";
+"signing-in" = "Aanmelden";
 "syncing" = "Synchroniseren...";
 "sync-failed" = "Synchroniseren mislukt";
 
@@ -84,7 +84,7 @@
 // MARK: - Help Textviews
 "help-connect-title-section1" = "Alfresco Content Services-URL";
 "help-connect-section1-paragraph" = "U kunt de URL van uw Alfresco Content Services-instance invoeren. Hiervoor moet u uw gebruikersnaam en wachtwoord opgeven voor verificatie.";
-"help-connect-title-section2" = "Inloggen met SSO";
+"help-connect-title-section2" = "Aanmelden met SSO";
 "help-connect-section2-paragraph" = "U kunt de URL van uw Alfresco Identity Management Service invoeren voor verificatie met de identiteitsprovider van uw organisatie.\n\nU moet de URL van uw Alfresco Content Services-instance naderhand opgeven.\n\nNeem contact op met uw Alfresco-beheerder als u hulp nodig hebt.";
 "help-advanced-settings-title-section1" = "Verifiëren met Alfresco";
 "help-advanced-settings-section1-paragraph" = "Als u de standaard SSO-instellingen niet gebruikt, kunnen uw waarden hier worden ingesteld.\n\nNeem contact op met uw Alfresco-beheerder als u hulp nodig hebt.";
@@ -96,7 +96,7 @@
 "error-login-alfresco-url" = "Kan geen verificatieservice vinden op de opgegeven Alfresco-URL.";
 "error-login-check-connect-url" = "Controleer de URL waarmee u verbinding wilt maken.";
 "error-login-wrong-credential" = "Onjuiste gebruikersnaam of wachtwoord opgegeven.";
-"error-logjn-no-longer-authenticated" = "U bent niet meer geverifieerd, log opnieuw in.";
+"error-logjn-no-longer-authenticated" = "U bent niet meer geverifieerd, meld u opnieuw aan.";
 "error-something-went-wrong" = "Er is iets fout gegaan!";
 "warning-login-path-empty" = "Pad mag niet leeg zijn, ga naar Geavanceerde instellingen.";
 "error-unknown" = "Onbekende fout opgetreden.";
@@ -128,7 +128,7 @@
 "dark" = "Donker";
 "failed-profile-info" = "Kan profielinformatie voor huidige gebruiker niet ophalen.";
 "app-version" = "Appversie %@-%@";
-"sign-out-confirmation" = "Weet u zeker dat u wilt uitloggen?";
+"sign-out-confirmation" = "Weet u zeker dat u zich wilt afmelden?";
 "sync-data-title" = "Offlinebestanden bijwerken met";
 "sync-wifi-cellular-data" = "Wi-Fi en mobiele dataverbinding";
 "sync-only-wifi" = "Alleen Wi-Fi";
@@ -226,7 +226,7 @@
 "action-menu-restore" = "Herstellen";
 "action-menu-permanently-delete" = "Permanent verwijderen";
 "action-menu-create-ms-word" = "Word-document";
-"action-menu-create-ms-excel" = "Excel-spreadsheet";
+"action-menu-create-ms-excel" = "Excel-werkblad";
 "action-menu-create-ms-powerpoint" = "PowerPoint-presentatie";
 "action-menu-create-folder" = "Nieuwe map";
 "action-menu-mark-offline" = "Offline beschikbaar maken";
@@ -306,7 +306,7 @@
 "low" = "Laag";
 "medium" = "Gemiddeld";
 "high" = "Hoog";
-"task-service-not-configured-message" = "Dit account is niet geconfigureerd in Process Services.";
+"task-service-not-configured-message" = "Taken zijn niet ingeschakeld voor dit account.";
 "task-detail-title" = "Taakweergave";
 "active-title" = "Actief";
 "completed-title" = "Voltooid";
@@ -324,7 +324,7 @@
 "no-due-date" = "Geen vervaldatum";
 "complete-title" = "Voltooien";
 "complete-task-dialog-title" = "Taak voltooien";
-"complete-task-dialog-message" = "Weet u zeker dat u de taak wilt voltooien?";
+"complete-task-dialog-message" = "Weet u zeker dat u de taak wilt voltooien? U kunt geen wijzigingen meer aanbrengen.";
 "confirm-title" = "Bevestigen";
 
 // MARK: - Accessbility

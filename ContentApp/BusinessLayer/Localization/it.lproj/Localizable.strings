@@ -48,10 +48,10 @@
 "port" = "Porta";
 "path" = "Percorso";
 "realm" = "Area di autenticazione";
-"client-id" = "ID client";
+"client-id" = "ID cliente";
 "username-or-email" = "Nome utente o e-mail";
 "password" = "Password";
-"content-services-url" = "URL di Content Services";
+"content-services-url" = "URL Content Services";
 "description" = "Aggiungi descrizione";
 "name" = "Nome";
 "file-name" = "Nome file";
@@ -226,7 +226,7 @@
 "action-menu-restore" = "Ripristina";
 "action-menu-permanently-delete" = "Elimina definitivamente";
 "action-menu-create-ms-word" = "Documento Word";
-"action-menu-create-ms-excel" = "Foglio di calcolo di Excel";
+"action-menu-create-ms-excel" = "Foglio di calcolo Excel";
 "action-menu-create-ms-powerpoint" = "Presentazione di PowerPoint";
 "action-menu-create-folder" = "Nuova cartella";
 "action-menu-mark-offline" = "Rendi disponibile offline";
@@ -306,7 +306,7 @@
 "low" = "Bassa";
 "medium" = "Media";
 "high" = "Alta";
-"task-service-not-configured-message" = "Questo account non è configurato in Process Services.";
+"task-service-not-configured-message" = "I compiti non sono abilitati per questo account.";
 "task-detail-title" = "Vista compito";
 "active-title" = "Attivo";
 "completed-title" = "Completato";
@@ -324,7 +324,7 @@
 "no-due-date" = "Nessuna scadenza";
 "complete-title" = "Per completare";
 "complete-task-dialog-title" = "Completa compito";
-"complete-task-dialog-message" = "Completare il compito?";
+"complete-task-dialog-message" = "Vuoi completare il compito? Non potrai più apportare modifiche.";
 "confirm-title" = "Conferma";
 
 // MARK: - Accessbility
