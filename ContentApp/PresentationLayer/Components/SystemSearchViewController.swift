@@ -186,6 +186,9 @@ class SystemSearchViewController: SystemThemableViewController {
         searchController.searchBar.smartQuotesType = .no
         searchController.searchBar.isAccessibilityElement = true
         searchController.searchBar.accessibilityIdentifier = "searchBar"
+        searchController.searchBar.accessibilityTraits = .searchField
+        searchController.searchBar.accessibilityLabel = LocalizationConstants.AdvanceSearch.searchPlaceholder
+
         return searchController
     }
     

@@ -58,7 +58,9 @@ class SearchFacetListComponentViewController: SystemThemableViewController {
         heightSearchView.constant = facetViewModel.heightAndAlphaOfSearchView().height
         searchView.alpha = facetViewModel.heightAndAlphaOfSearchView().alpha
         applyButton.accessibilityIdentifier = "applyActionButton-facetComponent"
-        resetButton.accessibilityIdentifier = "resetActionButton-facetComponent"        
+        resetButton.accessibilityIdentifier = "resetActionButton-facetComponent"
+        searchView.accessibilityTraits = .button
+
     }
 
     override func viewWillAppear(_ animated: Bool) {
