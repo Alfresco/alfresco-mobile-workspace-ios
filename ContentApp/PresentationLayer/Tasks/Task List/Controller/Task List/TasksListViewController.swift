@@ -65,6 +65,7 @@ class TasksListViewController: SystemSearchViewController {
         collectionView.reloadData()
         AnalyticsManager.shared.pageViewEvent(for: Event.Page.taskTab)
         updateTheme()
+        getAPSUserDetails()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,6 +91,14 @@ class TasksListViewController: SystemSearchViewController {
         refreshControl.addTarget(self, action: #selector(handlePullToRefresh),
                                  for: .valueChanged)
         self.refreshControl = refreshControl
+    }
+    
+    private func getAPSUserDetails() {
+        let apsUserID = UserProfile.apsUserID ?? -1
+        if apsUserID == -1 && viewModel.isTasksConfigured {
+            // fetch APS user id
+            ProfileService.fetchAPSProfileDetails()
+        }
     }
     
     // MARK: - Public interface
@@ -118,10 +127,13 @@ class TasksListViewController: SystemSearchViewController {
         viewModel.taskList(with: params) {[weak self] taskList, error in
             guard let sSelf = self else { return }
             if error == nil {
+                sSelf.viewModel.isTasksConfigured = true
                 sSelf.collectionView.reloadData()
                 sSelf.checkEmptyTaskListMessage()
                 sSelf.filterBaseView.isHidden = false
+                sSelf.getAPSUserDetails()
             } else {
+                sSelf.viewModel.isTasksConfigured = false
                 sSelf.showTaskListNotConfiguredMessage()
             }
         }

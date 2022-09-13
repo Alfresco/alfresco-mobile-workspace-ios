@@ -38,6 +38,7 @@ struct KeyConstants {
         static let toCameraRoll = "com.apple.UIKit.activity.SaveToCameraRoll"
         static let displayFirstName = "kSaveDiplayFirstName"
         static let displayLastName = "kSaveDiplayLastName"
+        static let apsUserId = "kAPSUserId"
     }
 
     struct Notification {

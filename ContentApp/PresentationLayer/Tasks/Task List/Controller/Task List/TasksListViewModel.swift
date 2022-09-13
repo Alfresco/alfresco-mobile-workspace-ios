@@ -29,6 +29,7 @@ class TasksListViewModel: NSObject {
     var rawTasks: [TaskNode] = []
     var services: CoordinatorServices
     lazy var filterParams = TaskListFilterParams()
+    var isTasksConfigured = false
     
     init(services: CoordinatorServices) {
         self.services = services

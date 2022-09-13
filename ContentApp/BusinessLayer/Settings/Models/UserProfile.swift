@@ -129,6 +129,19 @@ class UserProfile {
         UserProfile.displayName = profileName
         UserProfile.email = person.email
     }
+    
+    static var apsUserID: Int? {
+        get {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.apsUserId)"
+            return UserDefaultsModel.value(for: key) as? Int ?? -1
+        }
+        set {
+            let identifier = accountService?.activeAccount?.identifier ?? ""
+            let key = "\(identifier)-\(KeyConstants.Save.apsUserId)"
+            UserDefaultsModel.set(value: newValue ?? -1, for: key)
+        }
+    }
 
     // MARK: - Remove Data
 
@@ -140,5 +153,9 @@ class UserProfile {
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.personalFilesID)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.allowSyncOverCellularData)")
         UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.allowOnceSyncOverCellularData)")
+        
+        UserDefaultsModel.remove(forKey: KeyConstants.Save.displayFirstName)
+        UserDefaultsModel.remove(forKey: KeyConstants.Save.displayLastName)
+        UserDefaultsModel.remove(forKey: "\(identifier)-\(KeyConstants.Save.apsUserId)")
     }
 }
