@@ -18,18 +18,12 @@
 
 import UIKit
 
-struct StoryboardConstants {
-    
-    struct storyboard {
-        static let tasks = "Tasks"
-    }
-    
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
-        static let taskComments = "TaskCommentsViewController"
-        static let taskAttachments = "TaskAttachmentsViewController"
-        static let createTask = "CreateTaskViewController"
+class CreateTaskController: NSObject {
+    let viewModel: CreateTaskViewModel
+    var currentTheme: PresentationTheme?
+
+    init(viewModel: CreateTaskViewModel = CreateTaskViewModel(), currentTheme: PresentationTheme?) {
+        self.viewModel = viewModel
+        self.currentTheme = currentTheme
     }
 }
-

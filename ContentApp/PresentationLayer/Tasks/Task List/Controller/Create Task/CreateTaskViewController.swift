@@ -17,19 +17,19 @@
 //
 
 import UIKit
+import AlfrescoContent
+import MaterialComponents
 
-struct StoryboardConstants {
+class CreateTaskViewController: SystemSearchViewController {
+
+    var viewModel: CreateTaskViewModel { return controller.viewModel }
+    lazy var controller: CreateTaskController = { return CreateTaskController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
-    struct storyboard {
-        static let tasks = "Tasks"
-    }
-    
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
-        static let taskComments = "TaskCommentsViewController"
-        static let taskAttachments = "TaskAttachmentsViewController"
-        static let createTask = "CreateTaskViewController"
+    // MARK: - View did load
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        AlfrescoLog.debug("Jai Shri Ram. JHMPPWPBJASHJH")
+        
+        viewModel.services = coordinatorServices ?? CoordinatorServices()
     }
 }
-

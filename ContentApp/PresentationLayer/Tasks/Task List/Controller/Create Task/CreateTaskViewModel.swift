@@ -16,20 +16,8 @@
 //  limitations under the License.
 //
 
-import UIKit
+import Foundation
 
-struct StoryboardConstants {
-    
-    struct storyboard {
-        static let tasks = "Tasks"
-    }
-    
-    struct controller {
-        static let taskList = "TasksListViewController"
-        static let taskDetail = "TaskDetailViewController"
-        static let taskComments = "TaskCommentsViewController"
-        static let taskAttachments = "TaskAttachmentsViewController"
-        static let createTask = "CreateTaskViewController"
-    }
+class CreateTaskViewModel: TaskPropertiesViewModel {
+
 }
-

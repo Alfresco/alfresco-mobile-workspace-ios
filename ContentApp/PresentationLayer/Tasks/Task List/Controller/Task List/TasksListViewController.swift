@@ -29,7 +29,8 @@ class TasksListViewController: SystemSearchViewController {
     @IBOutlet weak var emptyListImageView: UIImageView!
     @IBOutlet weak var collectionView: PageFetchableCollectionView!
     @IBOutlet weak var progressView: MDCProgressView!
-    @IBOutlet weak var filterBaseView: UIView!    
+    @IBOutlet weak var filterBaseView: UIView!
+    @IBOutlet weak var createTaskButton: MDCFloatingButton!
     var refreshControl: UIRefreshControl?
     lazy var viewModel = TasksListViewModel(services: coordinatorServices ?? CoordinatorServices())
     let regularCellHeight: CGFloat = 60.0
@@ -41,6 +42,7 @@ class TasksListViewController: SystemSearchViewController {
         super.viewDidLoad()
         
         filterBaseView.isHidden = true
+        createTaskButton.isHidden = true
         emptyListView.isHidden = true
         progressView.progress = 0
         progressView.mode = .indeterminate
@@ -112,7 +114,10 @@ class TasksListViewController: SystemSearchViewController {
         emptyListTitle.textAlignment = .center
         emptyListSubtitle.applyStyleBody2OnSurface60(theme: currentTheme)
         emptyListSubtitle.textAlignment = .center
+        
         refreshControl?.tintColor = currentTheme.primaryT1Color
+        createTaskButton.backgroundColor = currentTheme.primaryT1Color
+        createTaskButton.tintColor = currentTheme.onPrimaryColor
         self.sortFilterView?.applyTheme(currentTheme, coordinatorServices: viewModel.services, navigationController: self.navigationController)
     }
     
@@ -131,6 +136,7 @@ class TasksListViewController: SystemSearchViewController {
                 sSelf.collectionView.reloadData()
                 sSelf.checkEmptyTaskListMessage()
                 sSelf.filterBaseView.isHidden = false
+                sSelf.createTaskButton.isHidden = false
                 sSelf.getAPSUserDetails()
             } else {
                 sSelf.viewModel.isTasksConfigured = false
@@ -157,6 +163,7 @@ class TasksListViewController: SystemSearchViewController {
         emptyListTitle.text = emptyList.title
         emptyListSubtitle.text = emptyList.description
         filterBaseView.isHidden = true
+        createTaskButton.isHidden = true
     }
     
     // MARK: - Set up Bindings
@@ -179,7 +186,17 @@ class TasksListViewController: SystemSearchViewController {
     }
     
     // MARK: - IBActions
-
+    
+    @IBAction func createTaskButtonAction(_ sender: Any) {
+        AlfrescoLog.debug("create task button action")
+        
+        let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
+        if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.createTask) as? CreateTaskViewController {
+            viewController.coordinatorServices = coordinatorServices
+            self.navigationController?.present(viewController, animated: true, completion: nil)
+        }
+    }
+    
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
     }
