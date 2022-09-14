@@ -188,12 +188,11 @@ class TasksListViewController: SystemSearchViewController {
     // MARK: - IBActions
     
     @IBAction func createTaskButtonAction(_ sender: Any) {
-        AlfrescoLog.debug("create task button action")
-        
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.createTask) as? CreateTaskViewController {
             viewController.coordinatorServices = coordinatorServices
-            self.navigationController?.present(viewController, animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController, animated: true, completion: nil)
         }
     }
     

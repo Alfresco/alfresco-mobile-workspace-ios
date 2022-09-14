@@ -22,6 +22,7 @@ import MaterialComponents
 
 class CreateTaskViewController: SystemSearchViewController {
 
+    private let searchButtonAspectRatio: CGFloat = 30.0
     var viewModel: CreateTaskViewModel { return controller.viewModel }
     lazy var controller: CreateTaskController = { return CreateTaskController( currentTheme: coordinatorServices?.themingService?.activeTheme) }()
     
@@ -30,6 +31,31 @@ class CreateTaskViewController: SystemSearchViewController {
         super.viewDidLoad()
         AlfrescoLog.debug("Jai Shri Ram. JHMPPWPBJASHJH")
         
+        navigationController?.navigationBar.barTintColor = UIColor.green
         viewModel.services = coordinatorServices ?? CoordinatorServices()
+        addBackButton()
+    }
+    
+    private func addBackButton() {
+        let backButton = UIButton(type: .custom)
+        backButton.accessibilityIdentifier = "backButton"
+        backButton.frame = CGRect(x: 0.0, y: 0.0,
+                                    width: searchButtonAspectRatio,
+                                    height: searchButtonAspectRatio)
+        backButton.imageView?.contentMode = .scaleAspectFill
+        backButton.layer.masksToBounds = true
+        backButton.addTarget(self,
+                               action: #selector(backButtonTapped),
+                               for: UIControl.Event.touchUpInside)
+        backButton.setImage(UIImage(named: "ic-close"),
+                              for: .normal)
+
+        let searchBarButtonItem = UIBarButtonItem(customView: backButton)
+        searchBarButtonItem.accessibilityIdentifier = "backBarButton"
+        let currWidth = searchBarButtonItem.customView?.widthAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currWidth?.isActive = true
+        let currHeight = searchBarButtonItem.customView?.heightAnchor.constraint(equalToConstant: searchButtonAspectRatio)
+        currHeight?.isActive = true
+        self.navigationItem.leftBarButtonItem = searchBarButtonItem
     }
 }
