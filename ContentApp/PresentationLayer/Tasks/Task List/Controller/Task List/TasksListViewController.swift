@@ -407,6 +407,7 @@ extension TasksListViewController {
     }
 
     private func createTask(with title: String?, description: String?) {
+        AnalyticsManager.shared.didTapCreateTask()
         let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
         self.viewModel.createTask(params: params) { taskNode, error in
             self.handlePullToRefresh()
