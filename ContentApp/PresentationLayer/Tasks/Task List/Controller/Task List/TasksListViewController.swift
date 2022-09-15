@@ -189,22 +189,6 @@ class TasksListViewController: SystemSearchViewController {
     
     // MARK: - IBActions
     
-    @IBAction func createTaskButtonAction(_ sender: Any) {
-        
-        let viewController = CreateNodeSheetViewControler.instantiateViewController()
-        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
-                                                      delegate: self,
-                                                      createTaskViewType: .createTask,
-                                                      task: nil)
-        
-        viewController.coordinatorServices = coordinatorServices
-        viewController.createTaskViewModel = createTaskViewModel
-        viewController.modalPresentationStyle = .custom
-        viewController.transitioningDelegate = dialogTransitionController
-        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
-        self.present(viewController, animated: true)
-    }
-    
     @objc func settingsButtonTapped() {
         tabBarScreenDelegate?.showSettingsScreen()
     }
@@ -330,6 +314,10 @@ extension TasksListViewController: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         let taskNode = viewModel.listNode(for: indexPath)
+        showTaskDetails(for: taskNode)
+    }
+    
+    private func showTaskDetails(for taskNode: TaskNode?) {
         let storyboard = UIStoryboard(name: StoryboardConstants.storyboard.tasks, bundle: nil)
         if let viewController = storyboard.instantiateViewController(withIdentifier: StoryboardConstants.controller.taskDetail) as? TaskDetailViewController {
             viewController.coordinatorServices = coordinatorServices
@@ -395,10 +383,35 @@ extension TasksListViewController {
     }
 }
 
-// MARK: - Create Task View Model Delegate
-extension TasksListViewController: CreateTaskViewModelDelegate {
+// MARK: - Create Task
+
+extension TasksListViewController {
     
-    func handleCreatedTask(task: TaskNode?, error: Error?, isUpdate: Bool) {
-        AlfrescoLog.debug("***** handleCreatedTask ********")
+    @IBAction func createTaskButtonAction(_ sender: Any) {
+        
+        let viewController = CreateNodeSheetViewControler.instantiateViewController()
+        let createTaskViewModel = CreateTaskViewModel(coordinatorServices: coordinatorServices,
+                                                      createTaskViewType: .createTask,
+                                                      task: nil)
+        
+        viewController.coordinatorServices = coordinatorServices
+        viewController.createTaskViewModel = createTaskViewModel
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = dialogTransitionController
+        viewController.mdc_dialogPresentationController?.dismissOnBackgroundTap = false
+        self.present(viewController, animated: true)
+        viewController.callBack = { [weak self] (task, title, description) in
+            guard let sSelf = self else { return }
+            sSelf.createTask(with: title, description: description)
+        }
+    }
+
+    private func createTask(with title: String?, description: String?) {
+        let params = TaskBodyCreate(name: title, priority: "0", dueDate: nil, description: description)
+        self.viewModel.createTask(params: params) { taskNode, error in
+            self.handlePullToRefresh()
+            self.showTaskDetails(for: taskNode)
+        }
     }
 }
+

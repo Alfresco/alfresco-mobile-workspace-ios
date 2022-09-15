@@ -21,6 +21,7 @@ import MaterialComponents.MaterialButtons
 import MaterialComponents.MaterialButtons_Theming
 import MaterialComponents.MaterialTextControls_OutlinedTextFields
 import MaterialComponents.MaterialTextControls_OutlinedTextFieldsTheming
+import AlfrescoContent
 
 class CreateNodeSheetViewControler: SystemThemableViewController {
 
@@ -38,6 +39,10 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
             uploadButton.isEnabled = enableUploadButton
         }
     }
+    
+    typealias TaskOperationCallBack = (_ task: TaskNode?, _ title: String?, _ description: String?) -> Void
+    var callBack: TaskOperationCallBack?
+
 
     // MARK: - View Life Cycle
 
@@ -69,6 +74,14 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     // MARK: - IBActions
 
     @IBAction func uploadButtonTapped(_ sender: MDCButton) {
+        if createNodeViewModel != nil {
+            uploadButtonActionForNodes()
+        } else if createTaskViewModel != nil {
+            uploadButtonActionForTasks()
+        }
+    }
+    
+    private func uploadButtonActionForNodes() {
         let createNodeViewType = self.createNodeViewModel?.createNodeViewType ?? .create
         if var nodeName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
            !nodeName.isEmpty {
@@ -87,6 +100,18 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
                     sSelf.createNodeViewModel?.createNode(with: nodeName,
                                                           description: (descriptionNode.isEmpty) ? nil : descriptionNode)
                 }
+            }
+        }
+    }
+    
+    private func uploadButtonActionForTasks() {
+        
+        if let taskName = nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
+           !taskName.isEmpty {
+            self.dismiss(animated: true) { [weak self] in
+                guard let sSelf = self,
+                      let taskDescription = sSelf.descriptionTextArea.textView.text else { return }
+                sSelf.callBack?(sSelf.createTaskViewModel?.task, taskName, taskDescription)
             }
         }
     }

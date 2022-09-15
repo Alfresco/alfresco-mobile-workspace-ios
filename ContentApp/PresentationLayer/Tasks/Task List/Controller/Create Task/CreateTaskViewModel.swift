@@ -21,29 +21,19 @@ import AlfrescoContent
 import Alamofire
 import MaterialComponents.MaterialDialogs
 
-protocol CreateTaskViewModelDelegate: AnyObject {
-    func handleCreatedTask(task: TaskNode?, error: Error?, isUpdate: Bool)
-}
-
 enum CreateTaskViewType {
     case createTask
     case editTask
 }
 
-class CreateTaskViewModel: NSObject {
+class CreateTaskViewModel: TaskPropertiesViewModel {
     private var coordinatorServices: CoordinatorServices?
-    private weak var delegate: CreateTaskViewModelDelegate?
     var createTaskViewType: CreateTaskViewType = .createTask
-    var task: TaskNode?
     var title: String? {
         if task != nil {
             return LocalizationConstants.Tasks.editTask
         }
         return LocalizationConstants.Tasks.newTask
-    }
-    
-    var taskName: String? {
-        return task?.name
     }
     
     var taskDescription: String? {
@@ -60,19 +50,12 @@ class CreateTaskViewModel: NSObject {
     // MARK: - Init
 
     init(coordinatorServices: CoordinatorServices?,
-         delegate: CreateTaskViewModelDelegate?,
          createTaskViewType: CreateTaskViewType,
          task: TaskNode?) {
 
+        super.init()
         self.coordinatorServices = coordinatorServices
-        self.delegate = delegate
         self.createTaskViewType = createTaskViewType
         self.task = task
-    }
-    
-    // MARK: - Public
-
-    func createTask(with name: String, description: String?) {
-        AlfrescoLog.debug("Create Task with name: \(name) and description: \(description)")
     }
 }
