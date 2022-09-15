@@ -21,6 +21,7 @@ import UIKit
 class TitleTableViewCell: UITableViewCell, CellConfigurable {
     @IBOutlet weak var baseView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel!
     var viewModel: TitleTableCellViewModel?
     
     override func awakeFromNib() {
@@ -31,6 +32,7 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         guard let viewModel = viewModel as? TitleTableCellViewModel else { return }
         self.viewModel = viewModel
         titleLabel.text = viewModel.title
+        subTitleLabel.text = viewModel.subTitle
         addAccessibility()
     }
     
@@ -45,5 +47,6 @@ class TitleTableViewCell: UITableViewCell, CellConfigurable {
         guard let currentTheme = service?.activeTheme else { return }
         self.backgroundColor = currentTheme.surfaceColor
         titleLabel.applyStyleSubtitle1OnSurface(theme: currentTheme)
+        subTitleLabel.applyStyleSubtitle2OnSurface30(theme: currentTheme)
     }
 }

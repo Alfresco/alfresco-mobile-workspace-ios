@@ -20,15 +20,15 @@ import UIKit
 
 class TitleTableCellViewModel: RowViewModel {
     var title: String?
-    var isSubTitle = false
+    var subTitle: String?
     
     func cellIdentifier() -> String {
         return "TitleTableViewCell"
     }
     
     init(title: String?,
-         isSubTitle: Bool) {
+         subTitle: String?) {
         self.title = title
-        self.isSubTitle = isSubTitle
+        self.subTitle = subTitle
     }
 }

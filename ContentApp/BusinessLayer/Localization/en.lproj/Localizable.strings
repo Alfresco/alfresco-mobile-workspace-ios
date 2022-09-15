@@ -346,3 +346,6 @@
 "Task Name" = "Task Name";
 "Active" = "Active";
 "Completed" = "Completed";
+
+// MARK: - Task Operations
+"no-description" = "No description";

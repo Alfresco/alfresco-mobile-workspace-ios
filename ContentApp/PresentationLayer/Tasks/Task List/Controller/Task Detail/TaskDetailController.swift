@@ -54,11 +54,6 @@ class TaskDetailController: NSObject {
     func buildViewModel() {
         var rowViewModels = [RowViewModel]()
         rowViewModels.append(titleCellVM())
-        
-        if descriptionCellVM() != nil {
-            rowViewModels.append(descriptionCellVM()!)
-        }
-        
         rowViewModels.append(dueDateCellVM())
         
         if priorityCellVM() != nil {
@@ -103,17 +98,8 @@ class TaskDetailController: NSObject {
     
     // MARK: - Title
     private func titleCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, isSubTitle: false)
+        let rowVM = TitleTableCellViewModel(title: viewModel.taskName, subTitle: viewModel.taskDescription)
         return rowVM
-    }
-    
-    // MARK: - Description
-    private func descriptionCellVM() -> TitleTableCellViewModel? {
-        if let taskDescription = viewModel.taskDescription {
-            let rowVM = TitleTableCellViewModel(title: taskDescription, isSubTitle: true)
-            return rowVM
-        }
-        return nil
     }
     
     private func dueDateCellVM() -> InfoTableCellViewModel {
@@ -199,7 +185,7 @@ class TaskDetailController: NSObject {
     
     // MARK: - Attachments
     private func spaceCellVM() -> TitleTableCellViewModel {
-        let rowVM = TitleTableCellViewModel(title: "", isSubTitle: false)
+        let rowVM = TitleTableCellViewModel(title: "", subTitle: nil)
         return rowVM
     }
     
