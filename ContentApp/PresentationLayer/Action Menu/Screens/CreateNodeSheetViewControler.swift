@@ -33,7 +33,8 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
     var createNodeViewModel: CreateNodeViewModel?
     var createTaskViewModel: CreateTaskViewModel?
     var isRenameNode = false
-    let maxLength = 255
+    let maxLengthOfTextField = 255
+    let maxLengthOfTextView = 500
 
     var enableUploadButton = false {
         didSet {
@@ -50,6 +51,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         super.viewDidLoad()
 
         descriptionTextArea.maximumNumberOfVisibleRows = 2
+        descriptionTextArea.textView.delegate = self
         uploadButton.isEnabled = false
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
@@ -218,7 +220,7 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
         if createTaskViewModel != nil {
             let currentString = (textField.text ?? "") as NSString
             let newString = currentString.replacingCharacters(in: range, with: string)
-            return newString.count <= maxLength
+            return newString.count <= maxLengthOfTextField
         }
         return true
     }
@@ -282,5 +284,18 @@ extension CreateNodeSheetViewControler: UITextFieldDelegate {
         nameTextField.applyTheme(withScheme: loginTextFieldScheme)
         nameTextField.leadingAssistiveLabel.text = ""
         nameTextField.trailingView = nil
+    }
+}
+
+// MARK: - UITextView Delegate
+
+extension CreateNodeSheetViewControler: UITextViewDelegate {
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if createTaskViewModel != nil {
+            let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+            return newText.count < maxLengthOfTextView
+        }
+        return true
     }
 }
