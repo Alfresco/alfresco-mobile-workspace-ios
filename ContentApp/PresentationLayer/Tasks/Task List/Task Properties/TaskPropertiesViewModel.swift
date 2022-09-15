@@ -30,6 +30,10 @@ class TaskPropertiesViewModel: NSObject {
         return task?.name
     }
     
+    var taskDescription: String? {
+        return task?.description
+    }
+    
     var userName: String? {
         return task?.assignee?.userName
     }
