@@ -55,6 +55,7 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         uploadButton.isEnabled = false
         view.layer.cornerRadius = UIConstants.cornerRadiusDialog
         addLocalization()
+        addAccessibility()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -130,6 +131,23 @@ class CreateNodeSheetViewControler: SystemThemableViewController {
         } else if createTaskViewModel != nil {
             addLocalizationForTasks()
         }
+    }
+    
+    private func addAccessibility() {
+        
+        titleCreate.accessibilityIdentifier = "title"
+        titleCreate.accessibilityLabel = LocalizationConstants.Accessibility.title
+        titleCreate.accessibilityValue = titleCreate.text
+
+        nameTextField.accessibilityIdentifier = "name-textField"
+        nameTextField.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.name
+        nameTextField.accessibilityValue = nameTextField.text
+        nameTextField.accessibilityTraits = .staticText
+        
+        descriptionTextArea.accessibilityIdentifier = "description-textView"
+        descriptionTextArea.accessibilityLabel = LocalizationConstants.TextFieldPlaceholders.description
+        descriptionTextArea.accessibilityValue = descriptionTextArea.textView.text
+        descriptionTextArea.accessibilityTraits = .staticText
     }
     
     private func addLocalizationForNodes() {
